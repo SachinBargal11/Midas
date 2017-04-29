@@ -76,21 +76,28 @@
 
     </header>
     <div class="card-block">
-        <form [formGroup]="digitalForm" (submit)="saveDigitalForm()" (window:resize)="beResponsive()">
-            <embed src="./Consent_iCare Clinic.pdf" width="500px" height="500px" />
-            <div class="sig-container" #sigContainer1>
-                <div class="row">
-                    <div class="col-md-6" style="width:400px;height:300px;border:1px solid #000;">
-                        <signature-field formControlName="signatureField1"></signature-field>
+        <form [formGroup]="digitalForm" (submit)="saveDigitalForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <embed src="./Consent_iCare Clinic.pdf" width="100%" height="500px" />
+                    <!--<object [attr.data]="cosentFormUrl" type="application/pdf" width="100%" height="100%"></object>-->
+                </div>
+                <div class="col-md-6">
+                    <div class="signature-box">
+                        <div class="signature-field-wrapper sig-container" #signatureContainer>
+                            <signature-field formControlName="signatureField"></signature-field>
+                        </div>
+                        <button class="btn-clear-signature btn btn-default" type="button" (click)="sigs.first.clear()" [disabled]="!digitalForm.controls.signatureField.valid">Clear</button>
                     </div>
-                    <div class="col-md-2">
-                        <button type="button" (click)="sigs.first.clear()" [disabled]="!digitalForm.controls.signatureField1.valid">Clear Sig 1</button>
+                    <p class="signature-field-help-text">
+                        <input type="checkbox" formControlName="iAgreeChkBox" id="iAgreeChkBox" value="1">
+                        <label for="iAgreeChkBox"> have read the document &amp; I agree to it </label>
+                    </p>
+                    <div class="actions-container">
+                        <!--<button class="btn btn-primary" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField1.valid && !digitalForm.controls.signatureField2.valid">Clear</button>-->
+                        <button class="btn btn-primary" type="submit" [disabled]="!digitalForm.valid">Submit</button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <!--<button class="btn btn-primary" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField1.valid && !digitalForm.controls.signatureField2.valid">Clear</button>-->
-                <button class="btn btn-primary" type="submit" [disabled]="!digitalForm.valid">Submit</button>
             </div>
         </form>
     </div>

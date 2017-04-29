@@ -145,7 +145,7 @@ export class ConsentListComponent implements OnInit {
         }
     }
 
-    DownloadPdf(documentId) {      
+    DownloadPdf(documentId) {
         this._progressBarService.show();
         //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
 
@@ -172,7 +172,6 @@ export class ConsentListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this._progressBarService.hide();
 
     }
 }

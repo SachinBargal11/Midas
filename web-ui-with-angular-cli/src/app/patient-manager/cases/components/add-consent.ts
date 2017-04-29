@@ -39,6 +39,8 @@ export class AddConsentComponent implements OnInit {
     currentId: number;
     UploadedFileName: string;
     //document: VisitDocument;
+    signedDocumentPostRequestData: any = {};
+    signedDocumentUploadUrl: string = '';
     url;
     doctors: any[];
     isdoctorsLoading = false;
@@ -78,7 +80,7 @@ export class AddConsentComponent implements OnInit {
         private _router: Router,
         public sessionStore: SessionStore,
         public _route: ActivatedRoute,
-        private _AddConsentStore: ConsentStore,
+        private _consentStore: ConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -105,9 +107,14 @@ export class AddConsentComponent implements OnInit {
             }
             // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
-            this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+            this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
+            this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+            this.signedDocumentPostRequestData = {
+                companyId: this.companyId,
+                caseId: this.caseId
+            };
 
-        })
+        });
 
         this.dialogVisible = true;
         let today = new Date();
@@ -202,7 +209,7 @@ export class AddConsentComponent implements OnInit {
                     this.selectedConsentList.forEach(currentCaseDocument => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        let result = this._AddConsentStore.deleteConsent(currentCaseDocument, this.companyId)
+                        let result = this._consentStore.deleteConsent(currentCaseDocument, this.companyId)
                         // let result = this._casesStore.deleteDocument(currentCaseDocument)
                         result.subscribe(
                             (response) => {
@@ -247,9 +254,18 @@ export class AddConsentComponent implements OnInit {
         }
     }
 
+    signedDocumentUploadComplete() {
+
+    }
+
+    signedDocumentUploadError() {
+        this._notificationsService.error('Oh No!', 'Not able to upload signed document(s).');
+    }
+
+
     downloadPdf(documentId) {
         this._progressBarService.show();
-        this._AddConsentStore.downloadConsentForm(this.caseId, documentId)
+        this._consentStore.downloadConsentForm(this.caseId, documentId)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -273,7 +289,7 @@ export class AddConsentComponent implements OnInit {
     }
     downloadTemplate() {
         this._progressBarService.show();
-        this._AddConsentStore.downloadTemplate(this.caseId, this.companyId)
+        this._consentStore.downloadTemplate(this.caseId, this.companyId)
             .subscribe(
             (response) => {
                 // this.document = document
