@@ -101,6 +101,7 @@
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
+    <Compile Include="EntityRepository\MedicalProvider\MedicalProviderRepository.cs" />
     <Compile Include="EntityRepository\Notification\NotificationRepository.cs" />
     <Compile Include="EntityRepository\PatientAccidentInfo\PatientAccidentInfoRepository.cs" />
     <Compile Include="EntityRepository\PatientEmpInfo\PatientEmpInfoRepository.cs" />
@@ -231,6 +232,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MaritalStatu.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MedicalProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MidasDocument.cs">
