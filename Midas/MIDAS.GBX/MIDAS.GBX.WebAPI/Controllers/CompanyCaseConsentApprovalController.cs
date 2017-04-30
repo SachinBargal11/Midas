@@ -94,7 +94,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             //HttpContext.Current.Response.ContentType = "application/octet-stream";
             HttpContext.Current.Response.ContentType = "application/pdf";
 
-            if (download == false)
+            if (download == true)
             {
                 HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
             }
