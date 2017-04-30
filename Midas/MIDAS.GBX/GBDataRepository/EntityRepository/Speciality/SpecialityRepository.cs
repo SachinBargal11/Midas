@@ -39,6 +39,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             specialtyBO.ID = specialty.id;
             specialtyBO.Name = specialty.Name;
             specialtyBO.SpecialityCode = specialty.SpecialityCode;
+            specialtyBO.MandatoryProcCode = specialty.MandatoryProcCode;
+            specialtyBO.SchedulingAvailable = specialty.SchedulingAvailable;
             if (specialty.IsUnitApply.HasValue)
                 specialtyBO.IsDeleted = specialty.IsUnitApply.Value;
             if (specialty.IsDeleted.HasValue)
