@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 namespace MIDAS.GBX.BusinessObjects
 {
     public class UserPersonalSetting : GbObject
-    {
-        
+    {        
         [JsonProperty("userId")]
         public int UserId { get; set; }
+
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
 
         [JsonProperty("isPublic")]
         public bool IsPublic { get; set; }
@@ -26,9 +28,6 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("user")]
         public User User { get; set; }
-
-
-
     }
 
 }
