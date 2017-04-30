@@ -380,6 +380,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                     htmlPDF.SavePDF(@path + "\\Consent_" + acc.Name + ".pdf");
+                    htmlPDF = null;
                 }
                 catch (Exception) { return ""; }
             }
