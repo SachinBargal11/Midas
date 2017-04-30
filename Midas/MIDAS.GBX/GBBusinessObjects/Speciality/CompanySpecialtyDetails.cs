@@ -59,8 +59,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("reEvalCode")]
         public string ReEvalCode { get; set; }
 
-        [JsonProperty("mandatoryProcCode")]
-        public bool MandatoryProcCode { get; set; }
+        //[JsonProperty("mandatoryProcCode")]
+        //public bool MandatoryProcCode { get; set; }
 
         public Company Company { get; set; }
         public Specialty Specialty { get; set; }

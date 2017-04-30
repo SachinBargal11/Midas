@@ -246,7 +246,6 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="InitialCode" Type="nvarchar" MaxLength="250" />
           <Property Name="ReEvalCode" Type="nvarchar" MaxLength="250" />
-          <Property Name="MandatoryProcCode" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyType">
           <Key>
@@ -3622,7 +3621,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="InitialCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ReEvalCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MandatoryProcCode" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="CompanySpecialtyDetails" ToRole="Company" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="CompanySpecialtyDetails" ToRole="Specialty" />
         </EntityType>
@@ -7101,7 +7099,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="InitialCode" ColumnName="InitialCode" />
                 <ScalarProperty Name="ReEvalCode" ColumnName="ReEvalCode" />
-                <ScalarProperty Name="MandatoryProcCode" ColumnName="MandatoryProcCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
