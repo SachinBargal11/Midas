@@ -37,6 +37,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("GetByUserId/{userId}")]
+        public HttpResponseMessage GetUserId(int userId)
+        {
+            return requestHandler.GetUserId(Request, userId);
+        }
+
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]

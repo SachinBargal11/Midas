@@ -208,6 +208,8 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="BlobStorageTypeId" Type="int" />
+          <Property Name="RegistrationComplete" Type="bit" Nullable="false" />
+          <Property Name="RegisteringCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -1141,6 +1143,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="IsPublic" Type="bit" Nullable="false" />
           <Property Name="IsSearchable" Type="bit" Nullable="false" />
           <Property Name="IsCalendarPublic" Type="bit" Nullable="false" />
@@ -1443,6 +1446,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Company">
               <PropertyRef Name="BlobStorageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_Company_RegisteringCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Company1" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Company1">
+              <PropertyRef Name="RegisteringCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2682,6 +2697,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserPersonalSettings_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="UserPersonalSettings" Type="Self.UserPersonalSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserPersonalSettings">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserPersonalSettings_User_UserId">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="UserPersonalSettings" Type="Self.UserPersonalSettings" Multiplicity="*" />
@@ -2883,6 +2910,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Company_BlobStorageType_BlobStorageTypeId" Association="Self.FK_Company_BlobStorageType_BlobStorageTypeId">
             <End Role="BlobStorageType" EntitySet="BlobStorageType" />
             <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_Company_RegisteringCompanyId" Association="Self.FK_Company_Company_RegisteringCompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Company1" EntitySet="Company" />
           </AssociationSet>
           <AssociationSet Name="FK_Company_CompanyType" Association="Self.FK_Company_CompanyType">
             <End Role="CompanyType" EntitySet="CompanyType" />
@@ -3296,6 +3327,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="User" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserPersonalSettings_Company_CompanyId" Association="Self.FK_UserPersonalSettings_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_User_UserId" Association="Self.FK_UserPersonalSettings_User_UserId">
             <End Role="User" EntitySet="User" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
@@ -3559,11 +3594,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="BlobStorageTypeId" Type="Int32" />
+          <Property Name="RegistrationComplete" Type="Boolean" Nullable="false" />
+          <Property Name="RegisteringCompanyId" Type="Int32" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="Company" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
+          <NavigationProperty Name="Company1" Relationship="Self.FK_Company_Company_RegisteringCompanyId" FromRole="Company" ToRole="Company1" />
+          <NavigationProperty Name="Company2" Relationship="Self.FK_Company_Company_RegisteringCompanyId" FromRole="Company1" ToRole="Company" />
           <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
           <NavigationProperty Name="SubscriptionPlan" Relationship="Self.FK_Company_SubscriptionPlan" FromRole="Company" ToRole="SubscriptionPlan" />
@@ -3582,6 +3621,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Company_ReferringCompanyId" FromRole="Company" ToRole="Referral" />
           <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
+          <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="Company" ToRole="UserPersonalSettings" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -4674,6 +4714,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <Property Name="IsSearchable" Type="Boolean" Nullable="false" />
           <Property Name="IsCalendarPublic" Type="Boolean" Nullable="false" />
@@ -4682,6 +4723,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="UserPersonalSettings" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="UserPersonalSettings" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -5187,6 +5229,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Company_Company_RegisteringCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Company1" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Company1">
+              <PropertyRef Name="RegisteringCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Company_CompanyType">
           <End Role="CompanyType" Type="Self.CompanyType" Multiplicity="1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
@@ -5400,6 +5454,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="UserCompany">
               <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPersonalSettings_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="UserPersonalSettings" Type="Self.UserPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UserPersonalSettings">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6484,6 +6550,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfoes" />
             <End Role="CaseInsuranceMapping" EntitySet="CaseInsuranceMappings" />
           </AssociationSet>
+          <AssociationSet Name="FK_Company_Company_RegisteringCompanyId" Association="Self.FK_Company_Company_RegisteringCompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Company1" EntitySet="Companies" />
+          </AssociationSet>
           <AssociationSet Name="FK_Company_CompanyType" Association="Self.FK_Company_CompanyType">
             <End Role="CompanyType" EntitySet="CompanyTypes" />
             <End Role="Company" EntitySet="Companies" />
@@ -6555,6 +6625,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPersonalSettings_Company_CompanyId" Association="Self.FK_UserPersonalSettings_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId" Association="Self.FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId">
             <End Role="ConsentGivenType" EntitySet="ConsentGivenTypes" />
@@ -7063,6 +7137,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="BlobStorageTypeId" ColumnName="BlobStorageTypeId" />
+                <ScalarProperty Name="RegistrationComplete" ColumnName="RegistrationComplete" />
+                <ScalarProperty Name="RegisteringCompanyId" ColumnName="RegisteringCompanyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8030,6 +8106,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="UserPersonalSettings">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="IsSearchable" ColumnName="IsSearchable" />
                 <ScalarProperty Name="IsCalendarPublic" ColumnName="IsCalendarPublic" />

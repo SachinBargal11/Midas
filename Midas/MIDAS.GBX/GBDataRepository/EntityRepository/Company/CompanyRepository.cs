@@ -66,6 +66,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+                boCompany.RegisteringCompanyId = company.RegisteringCompanyId;
+                boCompany.RegistrationComplete = company.RegistrationComplete;
 
                 if (company.Locations != null)
                 {
@@ -103,7 +105,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return companyDB;
         }
         #endregion
-
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
@@ -169,6 +170,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyDB.Status = System.Convert.ToByte(companyBO.Status);
             companyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
             companyDB.SubscriptionPlanType = System.Convert.ToByte(companyBO.SubsCriptionType);
+            companyDB.RegistrationComplete = companyBO.RegistrationComplete;
+            companyDB.RegisteringCompanyId = companyBO.RegisteringCompanyId;
             if (companyDB.IsDeleted.HasValue)
                 companyDB.IsDeleted = companyBO.IsDeleted.Value;
             #endregion
