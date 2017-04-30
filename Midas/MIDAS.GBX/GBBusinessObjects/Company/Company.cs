@@ -32,11 +32,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("location")]
         public List<Location> Locations { get; set; }
 
-        [JsonProperty("registrationComplete")]
-        public bool RegistrationComplete { get; set; }
+        //[JsonProperty("registrationComplete")]
+        //public bool RegistrationComplete { get; set; }
 
-        [JsonProperty("registeringCompanyId")]
-        public int? RegisteringCompanyId { get; set; }
+        //[JsonProperty("registeringCompanyId")]
+        //public int? RegisteringCompanyId { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
