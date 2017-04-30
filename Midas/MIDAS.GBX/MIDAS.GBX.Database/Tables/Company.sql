@@ -8,7 +8,7 @@
 	[AddressId] [int] NOT NULL,
 	[ContactInfoID] [int] NOT NULL,
 	[BlobStorageTypeId] [int] NOT NULL DEFAULT 1,
-	[RegisteredByCompanyId] [INT] NULL,
+	[RegisteringCompanyId] [INT] NULL,
 	[RegistrationComplete] [BIT] NOT NULL CONSTRAINT [DF_Company_RegistrationComplete]  DEFAULT 0,
 	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -65,12 +65,19 @@ ALTER TABLE [dbo].[Company] ALTER COLUMN [BlobStorageTypeId] SET DEFAULT (1)
 GO
 */
 /*
-ALTER TABLE [dbo].[Company] ADD [RegisteredByCompanyId] [INT] NULL
+ALTER TABLE [dbo].[Company] ADD [RegisteringCompanyId] [INT] NULL
 GO
 ALTER TABLE [dbo].[Company] ADD [RegistrationComplete] [BIT] NULL CONSTRAINT [DF_Company_RegistrationComplete]  DEFAULT 0
 GO
 UPDATE [dbo].[Company] SET [RegistrationComplete] = 1
 GO
 ALTER TABLE [dbo].[Company] ALTER COLUMN [RegistrationComplete] [BIT] NOT NULL
+GO
+
+ALTER TABLE [dbo].[Company]  WITH CHECK ADD CONSTRAINT [FK_Company_Company_RegisteringCompanyId] FOREIGN KEY([RegisteringCompanyId])
+	REFERENCES [dbo].[Company] ([Id])
+GO
+
+ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_Company_RegisteringCompanyId]
 GO
 */

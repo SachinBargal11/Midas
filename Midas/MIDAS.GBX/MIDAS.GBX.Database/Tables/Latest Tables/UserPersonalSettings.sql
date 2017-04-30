@@ -2,6 +2,7 @@
 (	
     [Id] INT NOT NULL IDENTITY, 
     [UserId] INT NOT NULL, 
+    [CompanyId] INT NOT NULL,
     [IsPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPublic] DEFAULT 0, 
     [IsSearchable] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsSearchable] DEFAULT 0, 
     [IsCalendarPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsCalendarPublic] DEFAULT 0,
@@ -20,4 +21,11 @@ ALTER TABLE [dbo].[UserPersonalSettings]  WITH CHECK ADD  CONSTRAINT [FK_UserPer
 GO
 
 ALTER TABLE [dbo].[UserPersonalSettings] CHECK CONSTRAINT [FK_UserPersonalSettings_User_UserId]
+GO
+
+ALTER TABLE [dbo].[UserPersonalSettings]  WITH CHECK ADD  CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId] FOREIGN KEY([CompanyId])
+	REFERENCES [dbo].[Company] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserPersonalSettings] CHECK CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId]
 GO
