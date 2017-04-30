@@ -12,27 +12,31 @@ namespace MIDAS.GBX.BusinessObjects
     public class Company:GbObject
     {
         [JsonProperty("status")]
-        
         public GBEnums.AccountStatus Status { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("companyType")]
-        
         public GBEnums.CompanyType CompanyType { get; set; }
 
         [JsonProperty("subscriptionType")]
-        
         public GBEnums.SubsCriptionType SubsCriptionType { get; set; }
 
         [JsonProperty("taxId")]
         public string TaxID { get; set; }
+
         public AddressInfo AddressInfo { get; set; }
         public ContactInfo ContactInfo { get; set; }
 
         [JsonProperty("location")]
         public List<Location> Locations { get; set; }
+
+        [JsonProperty("registrationComplete")]
+        public bool RegistrationComplete { get; set; }
+
+        [JsonProperty("registeringCompanyId")]
+        public int? RegisteringCompanyId { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {

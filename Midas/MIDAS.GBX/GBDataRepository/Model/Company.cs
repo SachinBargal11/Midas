@@ -20,6 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.AdjusterMasters = new HashSet<AdjusterMaster>();
             this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
+            this.Company1 = new HashSet<Company>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
             this.DiagnosisCodes = new HashSet<DiagnosisCode>();
@@ -35,6 +36,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Referrals1 = new HashSet<Referral>();
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
+            this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
         }
     
         public int id { get; set; }
@@ -51,6 +53,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> BlobStorageTypeId { get; set; }
+        public bool RegistrationComplete { get; set; }
+        public Nullable<int> RegisteringCompanyId { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -60,6 +64,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Company> Company1 { get; set; }
+        public virtual Company Company2 { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual SubscriptionPlan SubscriptionPlan { get; set; }
@@ -93,5 +100,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Schedule> Schedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserPersonalSetting> UserPersonalSettings { get; set; }
     }
 }
