@@ -239,18 +239,18 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>MIDASGBXEntities.Context.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Model\Notification.cs">
@@ -377,11 +377,11 @@
     <Compile Include="RepoFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="Model\MIDASGBXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="App.Config" />
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </None>
@@ -407,13 +407,13 @@
   <ItemGroup>
     <Content Include="Model\MIDASGBXEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
       <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </Content>
     <Content Include="Model\MIDASGBXEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
       <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

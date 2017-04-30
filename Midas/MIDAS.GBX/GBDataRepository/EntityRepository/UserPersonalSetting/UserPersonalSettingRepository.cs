@@ -37,6 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userPersonalSettingBO.ID = userPersonalSetting.Id;
             userPersonalSettingBO.UserId = userPersonalSetting.UserId;
+            userPersonalSettingBO.CompanyId = userPersonalSetting.CompanyId;
             userPersonalSettingBO.IsPublic = userPersonalSetting.IsPublic;
             userPersonalSettingBO.IsSearchable = userPersonalSetting.IsSearchable;
             userPersonalSettingBO.IsCalendarPublic = userPersonalSetting.IsCalendarPublic;
@@ -44,9 +45,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userPersonalSettingBO.CreateByUserID = userPersonalSetting.CreateByUserID;
             userPersonalSettingBO.UpdateByUserID = userPersonalSetting.UpdateByUserID;
 
-            if (userPersonalSetting.User.IsDeleted.HasValue == false || (userPersonalSetting.User.IsDeleted.HasValue == true && userPersonalSetting.User.IsDeleted.Value == false))
+            if (userPersonalSetting.User != null)
             {
-                if (userPersonalSetting.User != null)
+                if (userPersonalSetting.User.IsDeleted.HasValue == false || (userPersonalSetting.User.IsDeleted.HasValue == true && userPersonalSetting.User.IsDeleted.Value == false))
                 {
                     BO.User boUser = new BO.User();
                     using (UserRepository cmp = new UserRepository(_context))
@@ -55,7 +56,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         userPersonalSettingBO.User = boUser;
                     }
                 }
-            }
+            }                
 
 
             return (T)(object)userPersonalSettingBO;
@@ -94,46 +95,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.UserPersonalSetting userPersonalSettingBO = (BO.UserPersonalSetting)(object)entity;
-            BO.User userBO = userPersonalSettingBO.User;
-
             UserPersonalSetting userPersonalSettingDB = new UserPersonalSetting();
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+
+
+            if (userPersonalSettingBO != null)
             {
-                User userDB = new User();
-                
-                #region UserPersonalSetting
-                if (userPersonalSettingBO != null)
+                bool Add_userPersonalsetting = false;
+                userPersonalSettingDB = _context.UserPersonalSettings.Where(p => p.UserId == userPersonalSettingBO.ID && p.CompanyId == userPersonalSettingBO.CompanyId
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
+
+                if (userPersonalSettingDB == null)
                 {
-                    bool Add_userPersonalsetting = false;
-                    userPersonalSettingDB = _context.UserPersonalSettings.Where(p => p.Id == userPersonalSettingBO.ID).FirstOrDefault();
-
-                    if (userPersonalSettingDB == null && userPersonalSettingBO.ID <= 0)
-                    {
-                        userPersonalSettingDB = new UserPersonalSetting();
-                        Add_userPersonalsetting = true;
-                    }
-                    else if (userPersonalSettingDB == null && userPersonalSettingBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-
-                    userPersonalSettingDB.UserId = userPersonalSettingBO.UserId;
-                    userPersonalSettingDB.IsPublic = userPersonalSettingBO.IsPublic;
-                    userPersonalSettingDB.IsSearchable = userPersonalSettingBO.IsSearchable;
-                    userPersonalSettingDB.IsCalendarPublic = userPersonalSettingBO.IsCalendarPublic;
-
-                    if (Add_userPersonalsetting == true)
-                    {
-                        userPersonalSettingDB = _context.UserPersonalSettings.Add(userPersonalSettingDB);
-                    }
-                    _context.SaveChanges();
+                    userPersonalSettingDB = new UserPersonalSetting();
+                    Add_userPersonalsetting = true;
                 }
-                #endregion
-                dbContextTransaction.Commit();
-                userPersonalSettingDB = _context.UserPersonalSettings.Include("User")
-                                                                     .Where(p => p.Id == userPersonalSettingDB.Id).FirstOrDefault<UserPersonalSetting>();
+
+                userPersonalSettingDB.UserId = userPersonalSettingBO.UserId;
+                userPersonalSettingDB.CompanyId = userPersonalSettingBO.CompanyId;
+                userPersonalSettingDB.IsPublic = userPersonalSettingBO.IsPublic;
+                userPersonalSettingDB.IsSearchable = userPersonalSettingBO.IsSearchable;
+                userPersonalSettingDB.IsCalendarPublic = userPersonalSettingBO.IsCalendarPublic;
+
+                if (Add_userPersonalsetting == true)
+                {
+                    userPersonalSettingDB = _context.UserPersonalSettings.Add(userPersonalSettingDB);
+                }
+                _context.SaveChanges();
             }
+
+            userPersonalSettingDB = _context.UserPersonalSettings.Include("User")
+                                                                 .Include("Company")
+                                                                 .Where(p => p.Id == userPersonalSettingDB.Id).FirstOrDefault<UserPersonalSetting>();
+
 
             var res = Convert<BO.UserPersonalSetting, UserPersonalSetting>(userPersonalSettingDB);
             return (object)res;
