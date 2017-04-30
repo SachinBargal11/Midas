@@ -11,7 +11,7 @@
 	[Include1500] [bit] NULL,
 	[AssociatedSpecialty] [int] NULL,
 	[AllowMultipleVisit] [bit] NULL,
-	[MandatoryProcCode] [BIT] NULL DEFAULT 0,
+	--[MandatoryProcCode] [BIT] NULL DEFAULT 0,
 	[IsDeleted] [bit] NULL CONSTRAINT [DF_CompanySpecialtyDetails_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NULL,
@@ -52,4 +52,7 @@ UPDATE [dbo].[CompanySpecialtyDetails] SET [MandatoryProcCode] = 0
 GO
 ALTER TABLE [dbo].[CompanySpecialtyDetails] ALTER COLUMN [MandatoryProcCode] [BIT] NOT NULL
 GO
+*/
+/*
+ALTER TABLE [dbo].[CompanySpecialtyDetails] DROP [MandatoryProcCode]
 */

@@ -7,8 +7,10 @@
 	[TaxID] [nvarchar](10) NOT NULL,
 	[AddressId] [int] NOT NULL,
 	[ContactInfoID] [int] NOT NULL,
-	[BlobStorageTypeId] [int] NOT NULL DEFAULT (1),
-	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT ((0)),
+	[BlobStorageTypeId] [int] NOT NULL DEFAULT 1,
+	[RegisteredByCompanyId] [INT] NULL,
+	[RegistrationComplete] [BIT] NOT NULL CONSTRAINT [DF_Company_RegistrationComplete]  DEFAULT 0,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
@@ -60,5 +62,15 @@ GO
 ALTER TABLE [dbo].[Company] ADD [BlobStorageTypeId] [int] NOT NULL DEFAULT (1)
 
 ALTER TABLE [dbo].[Company] ALTER COLUMN [BlobStorageTypeId] SET DEFAULT (1)
+GO
+*/
+/*
+ALTER TABLE [dbo].[Company] ADD [RegisteredByCompanyId] [INT] NULL
+GO
+ALTER TABLE [dbo].[Company] ADD [RegistrationComplete] [BIT] NULL CONSTRAINT [DF_Company_RegistrationComplete]  DEFAULT 0
+GO
+UPDATE [dbo].[Company] SET [RegistrationComplete] = 1
+GO
+ALTER TABLE [dbo].[Company] ALTER COLUMN [RegistrationComplete] [BIT] NOT NULL
 GO
 */

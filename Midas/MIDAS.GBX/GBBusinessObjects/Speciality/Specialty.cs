@@ -28,6 +28,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("colorCode")]
         public string ColorCode { get; set; }
 
+        [Required]
+        [JsonProperty("mandatoryProcCode")]
+        public bool MandatoryProcCode { get; set; }
+
+        [Required]
+        [JsonProperty("schedulingAvailable")]
+        public bool SchedulingAvailable { get; set; }
+
         public List<Company> CompanySpecialtyDetails { get; set; }
         public List<Company> SpecialtyDetails { get; set; }
     }

@@ -523,6 +523,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
+        
+
         #endregion
     }
 }

@@ -59,7 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 companyspecialtyDetailBO.AllowMultipleVisit = companyspecialtydetail.AllowMultipleVisit.Value;
                companyspecialtyDetailBO.InitialCode = companyspecialtydetail.InitialCode;
                companyspecialtyDetailBO.ReEvalCode = companyspecialtydetail.ReEvalCode;
-            companyspecialtyDetailBO.MandatoryProcCode = companyspecialtydetail.MandatoryProcCode;
+            //companyspecialtyDetailBO.MandatoryProcCode = companyspecialtydetail.MandatoryProcCode;
             if (companyspecialtydetail.IsDeleted.HasValue)
                 companyspecialtyDetailBO.IsDeleted = companyspecialtydetail.IsDeleted.Value;
             if (companyspecialtydetail.UpdateByUserID.HasValue)
@@ -130,7 +130,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyspeclityDetailDB.AllowMultipleVisit = companyspecialtyDetailBO.AllowMultipleVisit;
             companyspeclityDetailDB.InitialCode = companyspecialtyDetailBO.InitialCode;
             companyspeclityDetailDB.ReEvalCode = companyspecialtyDetailBO.ReEvalCode;
-            companyspeclityDetailDB.MandatoryProcCode = companyspecialtyDetailBO.MandatoryProcCode;
+            //companyspeclityDetailDB.MandatoryProcCode = companyspecialtyDetailBO.MandatoryProcCode;
             companyspeclityDetailDB.IsDeleted = companyspecialtyDetailBO.IsDeleted;
             #endregion
 
@@ -183,7 +183,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     companyspecialtydetail.AllowMultipleVisit = companyspecialtyDetailBO.AllowMultipleVisit != null ? companyspecialtyDetailBO.AllowMultipleVisit : companyspecialtydetail.AllowMultipleVisit;
                     companyspecialtydetail.InitialCode = companyspecialtyDetailBO.InitialCode != null ? companyspecialtyDetailBO.InitialCode : companyspecialtydetail.InitialCode;
                     companyspecialtydetail.ReEvalCode = companyspecialtyDetailBO.ReEvalCode != null ? companyspecialtyDetailBO.ReEvalCode : companyspecialtydetail.ReEvalCode;
-                    companyspecialtydetail.MandatoryProcCode = companyspecialtyDetailBO.MandatoryProcCode != null ? companyspecialtyDetailBO.MandatoryProcCode : companyspecialtydetail.MandatoryProcCode;
+                    //companyspecialtydetail.MandatoryProcCode = companyspecialtyDetailBO.MandatoryProcCode != null ? companyspecialtyDetailBO.MandatoryProcCode : companyspecialtydetail.MandatoryProcCode;
                     companyspecialtydetail.IsDeleted = companyspecialtyDetailBO.IsDeleted != null ? companyspecialtyDetailBO.IsDeleted : companyspecialtydetail.IsDeleted;
                     companyspecialtydetail.UpdateDate = DateTime.UtcNow;
                     companyspecialtydetail.UpdateByUserID = companyspecialtyDetailBO.UpdateByUserID;
@@ -234,7 +234,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By ID
+        #region GetBySpecialtyAndCompanyId
         public override object GetBySpecialtyAndCompanyId(int specialtyId, int companyId)
         {
             var acc = _context.CompanySpecialtyDetails.Include("Company").Include("Specialty").Where(p => p.SpecialtyId == specialtyId && p.CompanyID == companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();

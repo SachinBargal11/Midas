@@ -376,16 +376,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\" + "blank.png");
                     else pdfText = pdfText.Replace("{{Signature}}", uploadpath);
 
-                    path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
+                    path = ConfigurationManager.AppSettings.Get("LOCAL_PATH").TrimEnd("\\".ToCharArray()) + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                     htmlPDF.SavePDF(@path + "\\Consent_" + acc.Name + ".pdf");
+                    htmlPDF = null;
                 }
                 catch (Exception) { return ""; }
             }
             else return "";
 
-            return path + "\\Consent_" + acc.Name + ".pdf";
+            return path.TrimEnd("\\".ToCharArray()) + "\\Consent_" + acc.Name + ".pdf";
         }
 
         public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath, bool signed)
@@ -453,7 +454,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             try
             {
                 BO.CompanyCaseConsentBase64 CompanyCaseConsentBase64BO = (BO.CompanyCaseConsentBase64)(object)entity;
-                string filepath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "app_data/uploads/sign.jpeg";
+                string fileName = CompanyCaseConsentBase64BO.CaseId + "-" + CompanyCaseConsentBase64BO.CompanyId;
+                string filepath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"app_data\uploads\sign-" + fileName + ".jpeg";
                 byte[] bytes = System.Convert.FromBase64String(CompanyCaseConsentBase64BO.Base64Data.Replace("data:image/jpeg;base64,", string.Empty));
                 using (var imageFile = new FileStream(filepath, FileMode.Create))
                 {
@@ -466,7 +468,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
                 docInfo = (Object)fileUploadManager.UploadSignedConsent(CompanyCaseConsentBase64BO.CaseId, "consent_" + CompanyCaseConsentBase64BO.CompanyId, consentPdf);
             }
-            catch (Exception) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "System Error", ErrorLevel = ErrorLevel.Error }; }
+            catch (Exception) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error while saving consent", ErrorLevel = ErrorLevel.Error }; }
 
             return (object)docInfo;
         }

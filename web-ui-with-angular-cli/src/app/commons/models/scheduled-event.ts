@@ -17,6 +17,8 @@ const ScheduledEventRecord = Record({
     recurrenceException: [],
     isAllDay: false,
     isCancelled: false,
+    transportType: 0,
+    referby: '',
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -37,6 +39,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
     recurrenceException: Array<moment.Moment>;
     isAllDay: boolean;
     isCancelled: boolean;
+    transportType: number;
+    referby: string;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

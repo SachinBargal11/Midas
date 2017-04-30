@@ -11,12 +11,13 @@
                 <div class="form-group">
                     <select type="text" [(ngModel)]="currentAttorneyId" class="form-control" placeholder="" (change)="selectAttorney($event)">
                             <option value="0">-Select Attorney-</option>
-                            <option *ngFor="let attorney of allattorneys" value="{{attorney.id}}">{{attorney.user.firstName}}{{attorney.user.lastName}}</option>
+                            <option *ngFor="let attorney of allAttorneys" value="{{attorney.id}}">{{attorney.user.firstName}} {{attorney.user.lastName}}</option>
                         </select>
                 </div>
             </div>
             <div class="col-lg-4 m-t-lg">
-                <button type="submit" (click)="assignAttorneyToCompany()" class="btn btn-success sign-up">Assign Attorney To Company</button>
+                <a class="btn btn-success btn-sm" (click)="assignAttorneyToCompany()">
+                    <i class="fa fa-plus fa-1x"></i><span class="hidden-md-down"> Assign Attorney To Company</span></a>
             </div>
         </div>
     </div>
@@ -42,6 +43,8 @@
     </a>
             </div>
         </div>
+        <!--<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [lazy]="true" [rows]="10" [paginator]="true"
+[totalRecords]="totalRecords" (onLazyLoad)="loadAttorneysLazy($event)" [globalFilter]="gb" [responsive]="true">-->
         <p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
             <header>Attorney List</header>
             <p-column selectionMode="multiple"></p-column>

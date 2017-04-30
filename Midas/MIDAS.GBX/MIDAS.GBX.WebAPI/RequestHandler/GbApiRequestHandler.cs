@@ -1257,5 +1257,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
         
+        public HttpResponseMessage GetUserId(HttpRequestMessage request, int userId)
+        {
+            var objResult = dataAccessManager.GetUserId(userId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

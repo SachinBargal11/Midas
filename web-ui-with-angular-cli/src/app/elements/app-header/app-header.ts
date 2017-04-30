@@ -7,6 +7,9 @@ import { NotificationsStore } from '../../commons/stores/notifications-store';
 import * as _ from 'underscore';
 import { DialogModule } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { UserSettingStore } from '../../commons/stores/user-setting-store';
+import { UserSetting } from '../../commons/models/user-setting';
+
 @Component({
     selector: 'app-header',
     templateUrl: './app-header.html',
@@ -41,12 +44,14 @@ export class AppHeaderComponent implements OnInit {
         public sessionStore: SessionStore,
         private _router: Router,
         private _fb: FormBuilder,
+        private _userSettingStore: UserSettingStore,
     ) {
         this.addUserSettings = this._fb.group({
             isPublicProfile: [''],
             isPublishCalender: ['']
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
+       // this.isPublicProfile = this.specialityDetail.isPublicProfile;
     }
 
     ngOnInit() {
@@ -128,7 +133,17 @@ export class AppHeaderComponent implements OnInit {
         this.settingsDialogVisible = false;
     }
 
-    saveUserSettings() {
+    saveUserSettings() {       
+        let userSettingsValues = this.addUserSettings.value;
+        let result;
+        let userSetting = new UserSetting(
+            {
+                isPublicProfile: userSettingsValues.isPublicProfile,
+                isPublishCalender: userSettingsValues.isPublishCalender
+            }
+        )
+        //  this._progressBarService.show();
+        result = this._userSettingStore.saveUserSetting();
 
     }
 }

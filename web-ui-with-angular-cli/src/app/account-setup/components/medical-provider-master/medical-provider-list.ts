@@ -60,4 +60,39 @@ export class MedicalProviderListComponent implements OnInit {
             });
     }
 
+    selectProviders(event) {
+        let currentProviderId = parseInt(event.target.value);
+        this.currentProviderId = currentProviderId;
+    }
+
+    assignMedicalProvider() {       
+        if (this.currentProviderId !== 0) {
+
+        } else {
+            let notification = new Notification({
+                'title': 'Select provider to assign to company',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select provider to assign to company');
+        }
+    }
+
+    deleteMedicalProviders() {
+        if (this.selectProviders.length > 0) {
+
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Select medical provider to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Select medical provider to delete');
+        }
+
+    }
+
 }

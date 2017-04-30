@@ -178,7 +178,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                         if (_context.MidasDocuments.Any(cc => cc.ObjectId == id &&
                                                               cc.ObjectType == EN.Constants.ConsentType + "_" + companyid &&
                                                               (cc.IsDeleted.HasValue == false || (cc.IsDeleted.HasValue == true && cc.IsDeleted.Value == false))))
-                            throw new Exception("Company, Case and Consent data already exists.");
+                        {
+                            //throw new Exception("Company, Case and Consent data already exists.");
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                        }
                     }
 
                     MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
@@ -237,7 +241,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 catch (Exception err)
                 {
                     dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "System Error", ErrorLevel = ErrorLevel.Error };                    
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error while saving consent", ErrorLevel = ErrorLevel.Error };
                 }
             }
             
