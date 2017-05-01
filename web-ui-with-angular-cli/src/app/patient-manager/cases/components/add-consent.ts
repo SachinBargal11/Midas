@@ -258,8 +258,15 @@ export class AddConsentComponent implements OnInit {
 
     }
 
-    signedDocumentUploadError() {
-        this._notificationsService.error('Oh No!', 'Not able to upload signed document(s).');
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
     }
 
 

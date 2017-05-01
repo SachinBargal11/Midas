@@ -209,8 +209,8 @@ export class ConsentService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-    getConsentFormDownloadUrl(caseId: Number, companyId: Number): string {
-        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}`;
+    getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
+        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
     }
 
     downloadTemplate(caseId: Number, companyId: Number): Observable<Consent[]> {
