@@ -101,7 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (userPersonalSettingBO != null)
             {
                 bool Add_userPersonalsetting = false;
-                userPersonalSettingDB = _context.UserPersonalSettings.Where(p => p.UserId == userPersonalSettingBO.ID && p.CompanyId == userPersonalSettingBO.CompanyId
+                userPersonalSettingDB = _context.UserPersonalSettings.Where(p => p.UserId == userPersonalSettingBO.UserId && p.CompanyId == userPersonalSettingBO.CompanyId
                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                       .FirstOrDefault();
 
