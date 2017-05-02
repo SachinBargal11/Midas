@@ -22,7 +22,7 @@ const CaseRecord = Record({
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
-    transportation: true,
+    // transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
     isDeleted: false,
@@ -46,7 +46,7 @@ export class Case extends CaseRecord {
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;
-    transportation: boolean;
+    // transportation: boolean;
     caseStatusId: CaseStatus;
     attorneyId: number;
     isDeleted: boolean;

@@ -241,7 +241,6 @@ export class PatientVisitComponent implements OnInit {
                         });
                     });
                     this.doctorLocationSchedules = mappedDoctorLocationSchedules;
-                    console.log(this.doctorLocationSchedules);
 
                 }, error => {
                     this.doctorLocationSchedules = [];

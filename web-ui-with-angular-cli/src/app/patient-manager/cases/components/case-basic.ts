@@ -41,7 +41,7 @@ export class CaseBasicComponent implements OnInit {
     caseStatusId: number;
     patientId: number;
     patientName: string;
-    transportation: any;
+    // transportation: any;
 
     constructor(
         private fb: FormBuilder,
@@ -98,7 +98,7 @@ export class CaseBasicComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
-            transportation: [1, Validators.required],
+            // transportation: [1, Validators.required],
         });
 
         this.caseformControls = this.caseform.controls;
@@ -123,7 +123,7 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
-            transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
+            // transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));

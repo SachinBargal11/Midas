@@ -1256,10 +1256,10 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
-        public HttpResponseMessage GetUserId(HttpRequestMessage request, int userId)
+
+        public HttpResponseMessage GetByUserAndCompanyId(HttpRequestMessage request, int userId, int companyId)
         {
-            var objResult = dataAccessManager.GetUserId(userId);
+            var objResult = dataAccessManager.GetByUserAndCompanyId(userId, companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1269,6 +1269,7 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+        
 
     }
 }

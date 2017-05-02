@@ -141,11 +141,11 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
 
         <div class="col-lg-4">
             <label class="form-label"> Transportation Required
-                        <!--<span class="color-red">*</span>-->
+                        <span class="color-red">*</span>
                     </label>
                 <div class="form-group">
                     <label class="form-check-label">
@@ -155,13 +155,13 @@
                         <input type="radio" value="0" name="transportation" formControlName="transportation"> No
                     </label>
                 </div>
-            <!--<div class="form-group">
+            <div class="form-group">
                 <p-radioButton formControlName="transportation" name="transportation" value="true" label="Yes"></p-radioButton>
                 <p-radioButton formControlName="transportation" name="transportation" value="false" label="No"></p-radioButton>
-            </div>-->
+            </div>
         </div>
 
-    </div>
+    </div>-->
     <button [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
