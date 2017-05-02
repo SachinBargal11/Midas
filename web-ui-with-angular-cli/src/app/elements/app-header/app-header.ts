@@ -1,14 +1,19 @@
 import { UserRole } from '../../commons/models/user-role';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
 import * as _ from 'underscore';
+import * as moment from 'moment';
 import { DialogModule } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { UserSettingStore } from '../../commons/stores/user-setting-store';
 import { UserSetting } from '../../commons/models/user-setting';
+import { ProgressBarService } from '../../commons/services/progress-bar-service';
+import { Notification } from '../../commons/models/notification';
+import { NotificationsService } from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
 
 @Component({
     selector: 'app-header',
@@ -18,6 +23,9 @@ import { UserSetting } from '../../commons/models/user-setting';
 
 export class AppHeaderComponent implements OnInit {
 
+    userId: number = this.sessionStore.session.user.id;
+    companyId: number = this.sessionStore.session.currentCompany.id;
+    userSetting: UserSetting;
     doctorRoleFlag = false;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
@@ -29,8 +37,9 @@ export class AppHeaderComponent implements OnInit {
 
     addUserSettings: FormGroup;
     addUserSettingsControls;
-    isPublicProfile: boolean = false;
-    isPublishCalender: boolean = false;
+    isSearchable: boolean = false;
+    isCalendarPublic: boolean = false;
+    isPublic: boolean = false;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -45,13 +54,19 @@ export class AppHeaderComponent implements OnInit {
         private _router: Router,
         private _fb: FormBuilder,
         private _userSettingStore: UserSettingStore,
+        private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
+        private _elRef: ElementRef
+
     ) {
+
         this.addUserSettings = this._fb.group({
-            isPublicProfile: [''],
-            isPublishCalender: ['']
+            isPublic: [''],
+            isCalendarPublic: [''],
+            isSearchable: ['']
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
-       // this.isPublicProfile = this.specialityDetail.isPublicProfile;
+
     }
 
     ngOnInit() {
@@ -76,6 +91,17 @@ export class AppHeaderComponent implements OnInit {
                 this.doctorRoleFlag = false;
             }
         }
+
+        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
+            .subscribe((userSetting) => {
+                this.userSetting = userSetting;
+                this.isPublic = userSetting.isPublic;
+                this.isCalendarPublic = userSetting.isCalendarPublic;
+                this.isSearchable = userSetting.isSearchable;
+            },
+            (error) => { },
+            () => {
+            });
 
     }
     onLeftBurgerClick() {
@@ -128,22 +154,58 @@ export class AppHeaderComponent implements OnInit {
         // this._cd.detectChanges();
     }
     closeDialog() {
-        this.isPublicProfile = false;
-        this.isPublishCalender = false;
         this.settingsDialogVisible = false;
     }
 
-    saveUserSettings() {       
+    checkUncheck(event) {
+        if (event == false) {
+            this.isCalendarPublic = false;
+            this.isSearchable = false;
+        }
+
+    }
+
+    saveUserSettings() {
         let userSettingsValues = this.addUserSettings.value;
         let result;
         let userSetting = new UserSetting(
             {
-                isPublicProfile: userSettingsValues.isPublicProfile,
-                isPublishCalender: userSettingsValues.isPublishCalender
+                userId: this.userId,
+                companyId: this.companyId,
+                isPublic: this.isPublic,
+                isCalendarPublic: this.isCalendarPublic,
+                isSearchable: this.isSearchable
             }
         )
-        //  this._progressBarService.show();
-        result = this._userSettingStore.saveUserSetting();
+        this._progressBarService.show();
+        result = this._userSettingStore.saveUserSetting(userSetting);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'User Setting added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                // this._router.navigate(['/patient-manager/patients']);
+                this.closeDialog()
+            },
+            (error) => {
+                let errString = 'Unable to add User Setting.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                // this.isSavePatientProgress = false;
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                // this.isSavePatientProgress = false;
+                this._progressBarService.hide();
+            });
 
     }
 }
