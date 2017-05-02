@@ -357,7 +357,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return templateData.TemplateText;
         }
 
-        public string GenerateConsentDocument(int caseid, int companyid, string uploadpath, bool signed)
+        public string GenerateConsentDocument(int caseid, int companyid, string signpath, bool signed)
         {
             HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
@@ -374,7 +374,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         pdfText = pdfText.Replace("{{PatientName}}", cases.Patient2.User.FirstName + " " + cases.Patient2.User.LastName);
 
                     if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\" + "blank.png");
-                    else pdfText = pdfText.Replace("{{Signature}}", uploadpath);
+                    else pdfText = pdfText.Replace("{{Signature}}", signpath);
 
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH").TrimEnd("\\".ToCharArray()) + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
@@ -455,17 +455,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             {
                 BO.CompanyCaseConsentBase64 CompanyCaseConsentBase64BO = (BO.CompanyCaseConsentBase64)(object)entity;
                 string fileName = CompanyCaseConsentBase64BO.CaseId + "-" + CompanyCaseConsentBase64BO.CompanyId;
-                string filepath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"app_data\uploads\sign-" + fileName + ".jpeg";
+                string signpath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"app_data\uploads\sign-" + fileName + "-" + Guid.NewGuid().ToString() + ".jpeg";
                 
-                //if (File.Exists(filepath)) File.Delete(filepath);
-                using (FileStream imageFile = new FileStream(filepath, FileMode.OpenOrCreate))
+                //if (File.Exists(signpath)) File.Delete(signpath);
+                using (FileStream imageFile = new FileStream(signpath, FileMode.Create))
                 {
                     byte[] bytes = System.Convert.FromBase64String(CompanyCaseConsentBase64BO.Base64Data.Replace("data:image/jpeg;base64,", string.Empty));
-                    imageFile.Write(bytes, 0, bytes.Length);                    
-                    string consentPdf = GenerateConsentDocument(CompanyCaseConsentBase64BO.CaseId, CompanyCaseConsentBase64BO.CompanyId, filepath, true);
+                    imageFile.Write(bytes, 0, bytes.Length);
+                    imageFile.Flush();imageFile.Dispose();
+                    string consentPdf = GenerateConsentDocument(CompanyCaseConsentBase64BO.CaseId, CompanyCaseConsentBase64BO.CompanyId, signpath, true);
                     FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
                     docInfo = (Object)fileUploadManager.UploadSignedConsent(CompanyCaseConsentBase64BO.CaseId, "consent_" + CompanyCaseConsentBase64BO.CompanyId, consentPdf);
-                }                
+                }
+                
             }
             catch (Exception err) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error while saving consent", ErrorLevel = ErrorLevel.Error }; }
 
