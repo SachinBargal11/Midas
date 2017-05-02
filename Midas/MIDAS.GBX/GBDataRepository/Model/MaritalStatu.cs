@@ -17,7 +17,6 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MaritalStatu()
         {
-            this.Patients = new HashSet<Patient>();
             this.Patient2 = new HashSet<Patient2>();
         }
     
@@ -25,8 +24,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public string StatusText { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient> Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patient2> Patient2 { get; set; }
     }

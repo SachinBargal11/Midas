@@ -62,7 +62,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
-        public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
         public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }

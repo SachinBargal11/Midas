@@ -101,10 +101,10 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorLocationScheduleRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Patient))
-            {
-                repo = new PatientRepository(context);
-            }
+            //else if (typeof(T) == typeof(BO.Patient))
+            //{
+            //    repo = new PatientRepository(context);
+            //}
             else if (typeof(T) == typeof(BO.Log))
             {
                 repo = new LogRepository(context);
