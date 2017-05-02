@@ -1,37 +1,28 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
-import { RoleType } from './enums/roles';
+import { User } from './user';
 
 const UserSettingRecord = Record({
     id: 0,
-    roleType: RoleType.REGULAR_STAFF,
-    isPublicProfile: false,
-    isPublishCalender: false,
+    user: null,
+    userId:0,
+    companyId:0,
+    isPublic: false,
+    isSearchable:false,
+    isCalendarPublic: false,
 });
 
 export class UserSetting extends UserSettingRecord {
 
     id: number;
-    roleType: RoleType;
-    isPublicProfile: boolean;
-    isPublishCalender: boolean;
+    user: User;
+    userId:number;
+    companyId:number;
+    isPublic: boolean;
+    isSearchable: boolean;
+    isCalendarPublic: boolean;
 
     constructor(props) {
         super(props);
-    }
-
-    static getUserRoleLabel(roleType: RoleType): string {
-        switch (roleType) {
-            case RoleType.REGULAR_STAFF:
-                return 'Regular Staff';
-            case RoleType.DOCTOR:
-                return 'Doctor';
-            case RoleType.OFFICE_MANAGER:
-                return 'Office Manager';
-            case RoleType.BILLING_STAFF:
-                return 'Billing Staff';
-            case RoleType.NURSE:
-                return 'Nurse';
-        }
     }
 }
