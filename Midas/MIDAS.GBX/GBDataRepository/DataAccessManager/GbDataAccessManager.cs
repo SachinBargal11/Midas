@@ -2123,12 +2123,14 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetUserId(int userId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        
+
+        public Object GetByUserAndCompanyId(int userId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetUserId(userId);
+                var gbdata = baseRepo.GetByUserAndCompanyId(userId, companyId);
 
                 return gbdata;
             }
@@ -2145,6 +2147,5 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        
     }
 }

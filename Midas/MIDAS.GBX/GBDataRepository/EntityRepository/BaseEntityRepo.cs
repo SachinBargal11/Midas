@@ -522,12 +522,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-
-        public virtual Object GetUserId(int userId)
+        
+        public virtual Object GetByUserAndCompanyId(int userId, int companyId)
         {
             throw new NotImplementedException();
         }
-        
 
         #endregion
     }

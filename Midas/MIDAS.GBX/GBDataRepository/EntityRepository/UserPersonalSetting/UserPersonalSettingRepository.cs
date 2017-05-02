@@ -134,10 +134,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region GetByUserID
-        public override Object GetUserId(int userId)
+        #region getByuserandcompanyId
+        public override Object GetByUserAndCompanyId(int userId, int companyId)
         {
-            var acc = _context.UserPersonalSettings.Include("User").Where(p => p.UserId == userId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var acc = _context.UserPersonalSettings.Include("User").Include("Company").Where(p => p.UserId == userId && p.CompanyId == companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
             BO.UserPersonalSetting acc_ = Convert<BO.UserPersonalSetting, UserPersonalSetting>(acc);
 

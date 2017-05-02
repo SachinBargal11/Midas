@@ -208,6 +208,7 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="BlobStorageTypeId" Type="int" />
+          <Property Name="RegistrationComplete" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -3576,6 +3577,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="BlobStorageTypeId" Type="Int32" />
+          <Property Name="RegistrationComplete" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
@@ -7099,6 +7101,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="BlobStorageTypeId" ColumnName="BlobStorageTypeId" />
+                <ScalarProperty Name="RegistrationComplete" ColumnName="RegistrationComplete" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
