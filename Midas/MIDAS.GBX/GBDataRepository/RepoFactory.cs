@@ -265,6 +265,10 @@ namespace MIDAS.GBX
             {
                 repo = new UserPersonalSettingRepository(context);
             }
+            else if (typeof(T) == typeof(BO.PendingReferral))
+            {
+                repo = new PendingReferralRepository(context);
+            }
             return repo;
         }
     }

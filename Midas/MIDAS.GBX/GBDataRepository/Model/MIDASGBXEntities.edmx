@@ -775,6 +775,38 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="PendingReferral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientVisitId" Type="int" Nullable="false" />
+          <Property Name="FromCompanyId" Type="int" Nullable="false" />
+          <Property Name="FromLocationId" Type="int" Nullable="false" />
+          <Property Name="FromDoctorId" Type="int" Nullable="false" />
+          <Property Name="ForSpecialtyId" Type="int" />
+          <Property Name="ForRoomId" Type="int" />
+          <Property Name="ForRoomTestId" Type="int" />
+          <Property Name="IsReferralCreated" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="PendingReferralProcedureCodes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PendingReferralId" Type="int" Nullable="false" />
+          <Property Name="ProcedureCodeId" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="PolicyOwner">
           <Key>
             <PropertyRef Name="Id" />
@@ -2199,6 +2231,114 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PendingReferral_Company_FromCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="FromCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Doctor_FromDoctorId">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="FromDoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Location_FromLocationId">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="FromLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_PatientVisit_CaseId">
+          <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientVisit2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="PatientVisitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Room_ForRoomId">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="ForRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_RoomTest_ForRoomTestId">
+          <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="0..1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomTest">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="ForRoomTestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Specialty_ForSpecialtyId">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="ForSpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId">
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="1" />
+          <End Role="PendingReferralProcedureCodes" Type="Self.PendingReferralProcedureCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PendingReferral">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferralProcedureCodes">
+              <PropertyRef Name="PendingReferralId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="1" />
+          <End Role="PendingReferralProcedureCodes" Type="Self.PendingReferralProcedureCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProcedureCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferralProcedureCodes">
+              <PropertyRef Name="ProcedureCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PreferredMedicalProvider_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="PreferredMedicalProvider" Type="Self.PreferredMedicalProvider" Multiplicity="*" />
@@ -2692,6 +2832,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisitDiagnosisCodes" EntityType="Self.PatientVisitDiagnosisCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientVisitEvent" EntityType="Self.PatientVisitEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientVisitProcedureCodes" EntityType="Self.PatientVisitProcedureCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PendingReferral" EntityType="Self.PendingReferral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyOwner" EntityType="Self.PolicyOwner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredMedicalProvider" EntityType="Self.PreferredMedicalProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProcedureCode" EntityType="Self.ProcedureCode" Schema="dbo" store:Type="Tables" />
@@ -3079,6 +3221,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisitProcedureCodes_PatientVisit2_PatientVisitId" Association="Self.FK_PatientVisitProcedureCodes_PatientVisit2_PatientVisitId">
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
             <End Role="PatientVisitProcedureCodes" EntitySet="PatientVisitProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Company_FromCompanyId" Association="Self.FK_PendingReferral_Company_FromCompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Doctor_FromDoctorId" Association="Self.FK_PendingReferral_Doctor_FromDoctorId">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Location_FromLocationId" Association="Self.FK_PendingReferral_Location_FromLocationId">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_PatientVisit_CaseId" Association="Self.FK_PendingReferral_PatientVisit_CaseId">
+            <End Role="PatientVisit2" EntitySet="PatientVisit2" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Room_ForRoomId" Association="Self.FK_PendingReferral_Room_ForRoomId">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_RoomTest_ForRoomTestId" Association="Self.FK_PendingReferral_RoomTest_ForRoomTestId">
+            <End Role="RoomTest" EntitySet="RoomTest" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Specialty_ForSpecialtyId" Association="Self.FK_PendingReferral_Specialty_ForSpecialtyId">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" Association="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId">
+            <End Role="PendingReferral" EntitySet="PendingReferral" />
+            <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
+            <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_PreferredMedicalProvider_Company_CompanyId" Association="Self.FK_PreferredMedicalProvider_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
@@ -3499,6 +3677,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Company_FromCompanyId" FromRole="Company" ToRole="PendingReferral" />
           <NavigationProperty Name="PreferredMedicalProviders" Relationship="Self.FK_PreferredMedicalProvider_Company_CompanyId" FromRole="Company" ToRole="PreferredMedicalProvider" />
           <NavigationProperty Name="PreferredMedicalProviders1" Relationship="Self.FK_PreferredMedicalProvider_Company_PrefMedProviderId" FromRole="Company" ToRole="PreferredMedicalProvider" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Company_CompanyId" FromRole="Company" ToRole="ProcedureCode" />
@@ -3657,6 +3836,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit2" />
           <NavigationProperty Name="PatientVisitEvents" Relationship="Self.FK_PatientVisitEvent_Doctor_ReadingDoctorId" FromRole="Doctor" ToRole="PatientVisitEvent" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Doctor_FromDoctorId" FromRole="Doctor" ToRole="PendingReferral" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Doctor_ReferredToDoctorId" FromRole="Doctor" ToRole="Referral" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
@@ -3784,6 +3964,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Location_LocationId" FromRole="Location" ToRole="Notification" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Location_LocationID" FromRole="Location" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Location_LocationID" FromRole="Location" ToRole="PatientVisit2" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Location_FromLocationId" FromRole="Location" ToRole="PendingReferral" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Location_ReferredToLocationId" FromRole="Location" ToRole="Referral" />
           <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Location_ReferringLocationId" FromRole="Location" ToRole="Referral" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Location" FromRole="Location" ToRole="Room" />
@@ -4099,6 +4280,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Specialty" Relationship="Self.FK_PatientVisit2_Specialty_SpecialtyId" FromRole="PatientVisit2" ToRole="Specialty" />
           <NavigationProperty Name="PatientVisitDiagnosisCodes" Relationship="Self.FK_PatientVisitDiagnosisCodes_PatientVisit2_PatientVisitId" FromRole="PatientVisit2" ToRole="PatientVisitDiagnosisCodes" />
           <NavigationProperty Name="PatientVisitProcedureCodes" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit2_PatientVisitId" FromRole="PatientVisit2" ToRole="PatientVisitProcedureCodes" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_PatientVisit_CaseId" FromRole="PatientVisit2" ToRole="PendingReferral" />
         </EntityType>
         <EntityType Name="PatientVisitDiagnosisCode">
           <Key>
@@ -4158,6 +4340,48 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit2_PatientVisitId" FromRole="PatientVisitProcedureCodes" ToRole="PatientVisit2" />
           <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="PatientVisitProcedureCodes" ToRole="ProcedureCode" />
         </EntityType>
+        <EntityType Name="PendingReferral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientVisitId" Type="Int32" Nullable="false" />
+          <Property Name="FromCompanyId" Type="Int32" Nullable="false" />
+          <Property Name="FromLocationId" Type="Int32" Nullable="false" />
+          <Property Name="FromDoctorId" Type="Int32" Nullable="false" />
+          <Property Name="ForSpecialtyId" Type="Int32" />
+          <Property Name="ForRoomId" Type="Int32" />
+          <Property Name="ForRoomTestId" Type="Int32" />
+          <Property Name="IsReferralCreated" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_PendingReferral_Company_FromCompanyId" FromRole="PendingReferral" ToRole="Company" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_PendingReferral_Doctor_FromDoctorId" FromRole="PendingReferral" ToRole="Doctor" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_PendingReferral_Location_FromLocationId" FromRole="PendingReferral" ToRole="Location" />
+          <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PendingReferral_PatientVisit_CaseId" FromRole="PendingReferral" ToRole="PatientVisit2" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_PendingReferral_Room_ForRoomId" FromRole="PendingReferral" ToRole="Room" />
+          <NavigationProperty Name="RoomTest" Relationship="Self.FK_PendingReferral_RoomTest_ForRoomTestId" FromRole="PendingReferral" ToRole="RoomTest" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_PendingReferral_Specialty_ForSpecialtyId" FromRole="PendingReferral" ToRole="Specialty" />
+          <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
+        </EntityType>
+        <EntityType Name="PendingReferralProcedureCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PendingReferralId" Type="Int32" Nullable="false" />
+          <Property Name="ProcedureCodeId" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PendingReferral" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferralProcedureCodes" ToRole="PendingReferral" />
+          <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" FromRole="PendingReferralProcedureCodes" ToRole="ProcedureCode" />
+        </EntityType>
         <EntityType Name="PolicyOwner">
           <Key>
             <PropertyRef Name="Id" />
@@ -4202,6 +4426,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="RoomTestId" Type="Int32" />
           <NavigationProperty Name="Company" Relationship="Self.FK_ProcedureCode_Company_CompanyId" FromRole="ProcedureCode" ToRole="Company" />
           <NavigationProperty Name="PatientVisitProcedureCodes" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="ProcedureCode" ToRole="PatientVisitProcedureCodes" />
+          <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" FromRole="ProcedureCode" ToRole="PendingReferralProcedureCodes" />
           <NavigationProperty Name="Room" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="ProcedureCode" ToRole="Room" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="ProcedureCode" ToRole="RoomTest" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_ProcedureCode_Speciality_SpecialityId" FromRole="ProcedureCode" ToRole="Specialty" />
@@ -4306,6 +4531,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Room_Location" FromRole="Room" ToRole="Location" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Room_RoomId" FromRole="Room" ToRole="PatientVisit2" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Room_ForRoomId" FromRole="Room" ToRole="PendingReferral" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="Room" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Room_ReferredToRoomId" FromRole="Room" ToRole="Referral" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
@@ -4323,6 +4549,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="ColorCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_RoomTest_ForRoomTestId" FromRole="RoomTest" ToRole="PendingReferral" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="RoomTest" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_RoomTest_ReferredToRoomTestId" FromRole="RoomTest" ToRole="Referral" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
@@ -4408,6 +4635,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Specialty_SpecialtyId" FromRole="Specialty" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Specialty_SpecialtyId" FromRole="Specialty" ToRole="PatientVisit2" />
           <NavigationProperty Name="PatientVisitEvents" Relationship="Self.FK_PatientVisitEvent_Specialty_SpecialtyId" FromRole="Specialty" ToRole="PatientVisitEvent" />
+          <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Specialty_ForSpecialtyId" FromRole="Specialty" ToRole="PendingReferral" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Speciality_SpecialityId" FromRole="Specialty" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Specialty_ReferredToSpecialtyId" FromRole="Specialty" ToRole="Referral" />
           <NavigationProperty Name="SpecialityDetails" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="Specialty" ToRole="SpecialityDetails" />
@@ -5198,6 +5426,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PendingReferral_Company_FromCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="FromCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PreferredMedicalProvider_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="PreferredMedicalProvider" Type="Self.PreferredMedicalProvider" Multiplicity="*" />
@@ -5486,6 +5726,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PendingReferral_Doctor_FromDoctorId">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="FromDoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Referral_Doctor_ReferredToDoctorId">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
           <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
@@ -5627,6 +5879,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientVisit2">
               <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Location_FromLocationId">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="FromLocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5870,6 +6134,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PendingReferral_PatientVisit_CaseId">
+          <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientVisit2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="PatientVisitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisitEvent_Specialty_SpecialtyId">
           <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
           <End Role="PatientVisitEvent" Type="Self.PatientVisitEvent" Multiplicity="*" />
@@ -5890,6 +6166,66 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PatientVisitProcedureCodes">
+              <PropertyRef Name="ProcedureCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Room_ForRoomId">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="ForRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_RoomTest_ForRoomTestId">
+          <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="0..1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomTest">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="ForRoomTestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferral_Specialty_ForSpecialtyId">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PendingReferral">
+              <PropertyRef Name="ForSpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId">
+          <End Role="PendingReferral" Type="Self.PendingReferral" Multiplicity="1" />
+          <End Role="PendingReferralProcedureCodes" Type="Self.PendingReferralProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PendingReferral">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferralProcedureCodes">
+              <PropertyRef Name="PendingReferralId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="1" />
+          <End Role="PendingReferralProcedureCodes" Type="Self.PendingReferralProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProcedureCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PendingReferralProcedureCodes">
               <PropertyRef Name="ProcedureCodeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -6159,6 +6495,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisitDiagnosisCodes" EntityType="Self.PatientVisitDiagnosisCode" />
           <EntitySet Name="PatientVisitEvents" EntityType="Self.PatientVisitEvent" />
           <EntitySet Name="PatientVisitProcedureCodes" EntityType="Self.PatientVisitProcedureCode" />
+          <EntitySet Name="PendingReferrals" EntityType="Self.PendingReferral" />
+          <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCode" />
           <EntitySet Name="PolicyOwners" EntityType="Self.PolicyOwner" />
           <EntitySet Name="PreferredMedicalProviders" EntityType="Self.PreferredMedicalProvider" />
           <EntitySet Name="ProcedureCodes" EntityType="Self.ProcedureCode" />
@@ -6378,6 +6716,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Companies" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Company_FromCompanyId" Association="Self.FK_PendingReferral_Company_FromCompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
           <AssociationSet Name="FK_PreferredMedicalProvider_Company_CompanyId" Association="Self.FK_PreferredMedicalProvider_Company_CompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="PreferredMedicalProvider" EntitySet="PreferredMedicalProviders" />
@@ -6474,6 +6816,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="PatientVisitEvent" EntitySet="PatientVisitEvents" />
           </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Doctor_FromDoctorId" Association="Self.FK_PendingReferral_Doctor_FromDoctorId">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
           <AssociationSet Name="FK_Referral_Doctor_ReferredToDoctorId" Association="Self.FK_Referral_Doctor_ReferredToDoctorId">
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="Referral" EntitySet="Referrals" />
@@ -6521,6 +6867,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisit2_Location_LocationID" Association="Self.FK_PatientVisit2_Location_LocationID">
             <End Role="Location" EntitySet="Locations" />
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Location_FromLocationId" Association="Self.FK_PendingReferral_Location_FromLocationId">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Location_ReferredToLocationId" Association="Self.FK_Referral_Location_ReferredToLocationId">
             <End Role="Location" EntitySet="Locations" />
@@ -6602,6 +6952,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
             <End Role="PatientVisitProcedureCodes" EntitySet="PatientVisitProcedureCodes" />
           </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_PatientVisit_CaseId" Association="Self.FK_PendingReferral_PatientVisit_CaseId">
+            <End Role="PatientVisit2" EntitySet="PatientVisit2" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisitEvent_Specialty_SpecialtyId" Association="Self.FK_PatientVisitEvent_Specialty_SpecialtyId">
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="PatientVisitEvent" EntitySet="PatientVisitEvents" />
@@ -6609,6 +6963,26 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId">
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
             <End Role="PatientVisitProcedureCodes" EntitySet="PatientVisitProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Room_ForRoomId" Association="Self.FK_PendingReferral_Room_ForRoomId">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_RoomTest_ForRoomTestId" Association="Self.FK_PendingReferral_RoomTest_ForRoomTestId">
+            <End Role="RoomTest" EntitySet="RoomTests" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferral_Specialty_ForSpecialtyId" Association="Self.FK_PendingReferral_Specialty_ForSpecialtyId">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" Association="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId">
+            <End Role="PendingReferral" EntitySet="PendingReferrals" />
+            <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
+            <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_ProcedureCode_Room_SpecialityId" Association="Self.FK_ProcedureCode_Room_SpecialityId">
             <End Role="Room" EntitySet="Rooms" />
@@ -7475,6 +7849,40 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="PatientVisitProcedureCodes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
+                <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PendingReferrals">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PendingReferral">
+              <MappingFragment StoreEntitySet="PendingReferral">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
+                <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />
+                <ScalarProperty Name="FromLocationId" ColumnName="FromLocationId" />
+                <ScalarProperty Name="FromDoctorId" ColumnName="FromDoctorId" />
+                <ScalarProperty Name="ForSpecialtyId" ColumnName="ForSpecialtyId" />
+                <ScalarProperty Name="ForRoomId" ColumnName="ForRoomId" />
+                <ScalarProperty Name="ForRoomTestId" ColumnName="ForRoomTestId" />
+                <ScalarProperty Name="IsReferralCreated" ColumnName="IsReferralCreated" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PendingReferralProcedureCodes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PendingReferralProcedureCode">
+              <MappingFragment StoreEntitySet="PendingReferralProcedureCodes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PendingReferralId" ColumnName="PendingReferralId" />
                 <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
