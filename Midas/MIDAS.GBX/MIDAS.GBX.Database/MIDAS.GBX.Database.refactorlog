@@ -245,4 +245,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CompanyId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="ec875943-e3bf-4e42-9587-918a0ecb31fc" ChangeDateTime="05/02/2017 07:41:04">
+    <Property Name="ElementName" Value="[dbo].[PreferredMedicalProvider].[Name]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PreferredMedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PrefMedProviderId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="24f0c63b-4167-4083-8833-8858400ab313" ChangeDateTime="05/02/2017 07:41:18">
+    <Property Name="ElementName" Value="[dbo].[PreferredMedicalProvider].[CompanyEmailId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PreferredMedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompanyId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0a849e88-a3a9-4832-b1c6-5e3a72cf53e4" ChangeDateTime="05/02/2017 07:43:39">
+    <Property Name="ElementName" Value="[dbo].[PreferredMedicalProvider].[FirstName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PreferredMedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsCreated" />
+  </Operation>
 </Operations>

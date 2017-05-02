@@ -216,7 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
                     docInfo.Message = errMessage;
                     docInfo.DocumentId = midasdoc.Id;
-                    docInfo.DocumentPath = errMessage.Equals(string.Empty) ? uploadpath : midasdoc.DocumentName;
+                    docInfo.DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName;
                     docInfo.DocumentName = midasdoc.DocumentName;
                     docInfo.id = id;
 
