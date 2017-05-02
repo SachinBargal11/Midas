@@ -53,7 +53,7 @@ export class CaseAdapter {
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 // transportation: data.transportation ? true : false,
-                transportation: data.transportation == true ? '1' : data.transportation == false ? '0' : null,
+                // transportation: data.transportation == true ? '1' : data.transportation == false ? '0' : null,
                 caseStatusId: data.caseStatusId,
                 attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,

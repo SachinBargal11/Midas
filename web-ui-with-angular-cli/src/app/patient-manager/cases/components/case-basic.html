@@ -137,7 +137,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
 
             <div class="col-lg-4">
                 <label class="form-label"> Transportation Required
@@ -151,13 +151,13 @@
                         <input type="radio" value="0" name="transportation" formControlName="transportation" [ngModel]="caseDetail.transportation"> No
                     </label>
                 </div>
-                <!--<div class="form-group">
+                <div class="form-group">
                     <p-radioButton [ngModel]="transportation" formControlName="transportation" name="transportation" value="1" label="Yes"></p-radioButton>
                     <p-radioButton [ngModel]="transportation" formControlName="transportation" name="transportation" value="0" label="No"></p-radioButton>
-                </div>-->
+                </div>
             </div>
 
-        </div>
+        </div>-->
         <button *ngIf="caseDetail.caseStatusId === 1" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
