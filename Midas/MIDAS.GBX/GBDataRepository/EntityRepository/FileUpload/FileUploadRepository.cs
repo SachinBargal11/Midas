@@ -118,7 +118,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .FirstOrDefault<MidasDocument>();
 
-            return acc.DocumentPath + "/" + acc.DocumentName;
+            if (Path.GetFileName(acc.DocumentPath) == string.Empty) return acc.DocumentPath + "/" + acc.DocumentName;
+            else return acc.DocumentPath;
+
         }
 
         #region Delete By ID
