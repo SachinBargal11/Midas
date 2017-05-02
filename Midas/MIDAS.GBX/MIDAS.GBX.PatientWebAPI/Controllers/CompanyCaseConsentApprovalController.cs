@@ -141,22 +141,22 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             object response = requestHandler1.DownloadSignedConsent(Request, data);
             if (!(typeof(BusinessObjects.ErrorObject) == response.GetType()))
             {
-                if (response != null)
-                {
-                    FileInfo fileInfo = new System.IO.FileInfo(response.ToString());
+                //if (response != null)
+                //{
+                //    FileInfo fileInfo = new System.IO.FileInfo(response.ToString());
 
-                    HttpContext.Current.Response.ContentType = "application/octet-stream";
-                    HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
-                    HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
-                    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-                    HttpContext.Current.Response.WriteFile(response.ToString());
-                    //HttpContext.Current.Response.BinaryWrite(btFile);
-                    HttpContext.Current.Response.End();
+                //    HttpContext.Current.Response.ContentType = "application/octet-stream";
+                //    HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+                //    HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                //    HttpContext.Current.Response.WriteFile(response.ToString());
+                //    //HttpContext.Current.Response.BinaryWrite(btFile);
+                //    HttpContext.Current.Response.End();
 
-                    return Request.CreateResponse(HttpStatusCode.OK, "");
-                }
-                else
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, response);
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+                //}
+                //else
+                //    return Request.CreateResponse(HttpStatusCode.BadRequest, response);
             }
             else
                 return Request.CreateResponse(HttpStatusCode.BadRequest, response);
