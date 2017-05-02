@@ -379,7 +379,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
             <PropertyRef Name="id" />
             <PropertyRef Name="ChildNode" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParentNode" Type="nvarchar" MaxLength="10" />
           <Property Name="ChildNode" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="NodeAbbr" Type="varchar" MaxLength="10" />
@@ -4890,7 +4890,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <PropertyRef Name="id" />
             <PropertyRef Name="ChildNode" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParentNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NodeAbbr" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
