@@ -32,28 +32,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
 
             PreferredMedicalProvider preferredMedicalProvider = entity as PreferredMedicalProvider;
-                if (preferredMedicalProvider == null)
-                    return default(T);
+            if (preferredMedicalProvider == null)
+                return default(T);
 
-                BO.PreferredMedicalProvider boPreferredMedicalProvider = new BO.PreferredMedicalProvider();
+            BO.PreferredMedicalProvider boPreferredMedicalProvider = new BO.PreferredMedicalProvider();
 
             boPreferredMedicalProvider.ID = preferredMedicalProvider.Id;
             boPreferredMedicalProvider.PrefMedProviderId = preferredMedicalProvider.PrefMedProviderId;
             boPreferredMedicalProvider.CompanyId = preferredMedicalProvider.CompanyId;
             boPreferredMedicalProvider.IsCreated = preferredMedicalProvider.IsCreated;
+            boPreferredMedicalProvider.IsDeleted = preferredMedicalProvider.IsDeleted;
 
             if (preferredMedicalProvider.Company != null)
             {
                 BO.Company Company = new BO.Company();
                
-                    if (preferredMedicalProvider.Company.IsDeleted == false)
+                if (preferredMedicalProvider.Company.IsDeleted == false)
+                {
+                    using (CompanyRepository sr = new CompanyRepository(_context))
                     {
-
-                        using (CompanyRepository sr = new CompanyRepository(_context))
-                        {
                         Company = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company);
-                        }
                     }
+                }
 
                 boPreferredMedicalProvider.Company = Company;
             }
@@ -64,7 +64,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (preferredMedicalProvider.Company1.IsDeleted == false)
                 {
-
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
                         Company = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);
@@ -75,9 +74,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             return (T)(object)boPreferredMedicalProvider;
+        }
+        #endregion
+
+        #region Company Conversion
+        public T CompanyConvert<T, U>(U entity)
+        {
+            Company company = entity as Company;
+            if (company == null)
+                return default(T);
+
+            BO.Company boCompany = new BO.Company();
+
+            boCompany.ID = company.id;
+            boCompany.Name = company.Name;
+            boCompany.TaxID = company.TaxID;
+            boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
+            boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+            boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+            boCompany.RegistrationComplete = company.RegistrationComplete;
             
-
-
+            return (T)(object)boCompany;
         }
         #endregion
 
@@ -99,18 +116,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.PreferredMedicalProvider preferredMedicalProviderBO = (BO.PreferredMedicalProvider)(object)entity;
             PreferredMedicalProvider preferredMedicalProviderDB = new PreferredMedicalProvider();
 
-            BO.Signup signUPBO = new BO.Signup();
-
-            bool flagUser = false;
-
             BO.Company companyBO = preferredMedicalProviderBO.Company;
             BO.Signup prefMedProviderBO = preferredMedicalProviderBO.Signup;
 
-            Company companyDB = new Company();
-            AddressInfo addressDB = new AddressInfo();
-            ContactInfo contactinfoDB = new ContactInfo();
-            UserCompany userCompanyDB = new UserCompany();
-            UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
+            PreferredMedicalProvider prefMedProvider = new PreferredMedicalProvider();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -119,56 +128,73 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (companyBO == null || (companyBO != null && companyBO.ID <= 0))
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
                 if (prefMedProviderBO == null)
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
                 if (prefMedProviderBO.company == null)
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
                 if (prefMedProviderBO.user == null)
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
                 if (prefMedProviderBO.contactInfo == null)
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
                 if (_context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
                 if (_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
+                    dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
                 else if (_context.Users.Any(o => o.UserName == prefMedProviderBO.user.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
-                    flagUser = true;
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                BO.Company CompanyBO = prefMedProviderBO.company;
+                BO.Company prefMedProviderCompanyBO = prefMedProviderBO.company;
                 BO.ContactInfo ContactInfoBO = prefMedProviderBO.contactInfo;
                 BO.User userBO = prefMedProviderBO.user;
+                BO.Role roleBO = prefMedProviderBO.role;
 
                 Company prefMedProvider_CompanyDB = new Company();
+                AddressInfo AddressInfo = new AddressInfo();
+                ContactInfo ContactInfo = new ContactInfo() { CellPhone = ContactInfoBO.CellPhone, EmailAddress = ContactInfoBO.EmailAddress };
 
-                prefMedProvider_CompanyDB.Name = CompanyBO.Name;
-                prefMedProvider_CompanyDB.Status = System.Convert.ToByte(companyBO.Status);
-                prefMedProvider_CompanyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
-                prefMedProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(companyBO.SubsCriptionType);
-                prefMedProvider_CompanyDB.TaxID = companyBO.TaxID;
-                prefMedProvider_CompanyDB.AddressInfo = new AddressInfo();
-                prefMedProvider_CompanyDB.ContactInfo = new ContactInfo() { CellPhone = ContactInfoBO.CellPhone, EmailAddress = ContactInfoBO.EmailAddress };
+                _context.AddressInfoes.Add(AddressInfo);
+                _context.SaveChanges();
+
+                _context.ContactInfoes.Add(ContactInfo);
+                _context.SaveChanges();
+
+                prefMedProvider_CompanyDB.Name = prefMedProviderCompanyBO.Name;
+                prefMedProvider_CompanyDB.Status = System.Convert.ToByte(prefMedProviderCompanyBO.Status);
+                prefMedProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefMedProviderCompanyBO.CompanyType);
+                prefMedProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefMedProviderCompanyBO.SubsCriptionType);
+                prefMedProvider_CompanyDB.TaxID = prefMedProviderCompanyBO.TaxID;
+                prefMedProvider_CompanyDB.AddressId = AddressInfo.id;
+                prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefMedProvider_CompanyDB.RegistrationComplete = false;
                 prefMedProvider_CompanyDB.IsDeleted = false;
                 prefMedProvider_CompanyDB.CreateByUserID = 0;
@@ -203,17 +229,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.UserCompanies.Add(UserCompanyDB);
                 _context.SaveChanges();
 
-                BO.Role roleBO = signUPBO.role;
+               
                 UserCompanyRole UserCompanyRoleDB = new UserCompanyRole();
-                UserCompanyRoleDB.User = userCompanyDB.User;
+                UserCompanyRoleDB.UserID = userDB.id;
                 UserCompanyRoleDB.RoleID = (int)roleBO.RoleType;
                 UserCompanyRoleDB.IsDeleted = false;
                 UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
                 UserCompanyRoleDB.CreateByUserID = 0;
                 _context.UserCompanyRoles.Add(UserCompanyRoleDB);
                 _context.SaveChanges();
-
-                PreferredMedicalProvider prefMedProvider = new PreferredMedicalProvider();
+                
                 prefMedProvider.PrefMedProviderId = prefMedProvider_CompanyDB.id;
                 prefMedProvider.CompanyId = companyBO.ID;
                 prefMedProvider.IsCreated = true;
@@ -223,10 +248,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.PreferredMedicalProviders.Add(prefMedProvider);
                 _context.SaveChanges();
+
+                dbContextTransaction.Commit();
             }
 
+            var result = _context.PreferredMedicalProviders.Where(p => p.Id == prefMedProvider.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .FirstOrDefault();
 
-            BO.Company acc_ = Convert<BO.Company, Company>(companyDB);
+            BO.PreferredMedicalProvider acc_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(result);
 
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
@@ -265,7 +294,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object AssociateMedicalProviderWithCompany(int PrefMedProviderId, int CompanyId)
         {
             Company CompanyDB = _context.Companies.Where(p => p.id == CompanyId
-                                                   && p.CompanyType == 1
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                    .FirstOrDefault();
 
@@ -274,11 +302,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
-            var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId 
-                                                                                                     && p.CompanyId == CompanyId 
-                                                                                                     && p.Company.CompanyType == 1
-                                                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                                     .FirstOrDefault();
+            Company PrefMedProviderCompanyDB = _context.Companies.Where(p => p.id == PrefMedProviderId
+                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
+
+            if (PrefMedProviderCompanyDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "PrefMedProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId && p.CompanyId == CompanyId 
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault();
+
+            bool IsAddPreferredMedicalProvider = false;
+            if (preferredMedicalProviderDB == null)
+            {
+                preferredMedicalProviderDB = new PreferredMedicalProvider();
+                IsAddPreferredMedicalProvider = true;
+            }
+
+            preferredMedicalProviderDB.PrefMedProviderId = PrefMedProviderId;
+            preferredMedicalProviderDB.CompanyId = CompanyId;
+            preferredMedicalProviderDB.IsCreated = false;
+            preferredMedicalProviderDB.IsDeleted = false;
+
+            if (IsAddPreferredMedicalProvider == true)
+            {
+                _context.PreferredMedicalProviders.Add(preferredMedicalProviderDB);
+            }
+
+            _context.SaveChanges();
 
             BO.PreferredMedicalProvider acc_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(preferredMedicalProviderDB);
 
@@ -294,18 +348,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get All Medical Provider Exclude Assigned
         public override object GetAllMedicalProviderExcludeAssigned(int CompanyId)
         {
-            var acc = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId && p.Company.CompanyType == 1 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PreferredMedicalProvider>();
+            var AssignedMedicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                            .Select(p => p.PrefMedProviderId);
+
+            var companies = _context.Companies.Where(p => AssignedMedicalProvider.Contains(p.id) == false
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .ToList();
+
+            
                             
-            List<BO.PreferredMedicalProvider> lstProviders = new List<BO.PreferredMedicalProvider>();
+            List<BO.Company> lstCompany = new List<BO.Company>();
 
-            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-
+            if (companies == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
             else
             {
-                acc.ForEach(item => lstProviders.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+                companies.ForEach(item => lstCompany.Add(CompanyConvert<BO.Company, Company>(item)));
             }
 
-            return lstProviders;
+            return lstCompany;
         }
         #endregion
 
