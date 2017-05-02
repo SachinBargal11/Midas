@@ -23,9 +23,61 @@ export class UserSettingService {
         this._headers.append('Content-Type', 'application/json');
     }
 
+    getUserSettingById(id: Number): Observable<UserSetting> {
+        let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/UserPersonalSetting/get/' + id).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    let user = null;
+                    if (data) {
+                        user = UserSettingAdapter.parseResponse(data);
+                        resolve(user);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
 
-   saveUserSettings()
-   {
-       
-   }
+        });
+        return <Observable<UserSetting>>Observable.fromPromise(promise);
+    }
+
+
+    getUserSettingByUserId(userId: Number,companyId:Number): Observable<UserSetting> {
+        let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/UserPersonalSetting/GetByUserAndCompanyId/' + userId + '/' + companyId).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    let user = null;
+                    if (data) {
+                        user = UserSettingAdapter.parseResponse(data);
+                        resolve(user);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UserSetting>>Observable.fromPromise(promise);
+    }
+
+
+    saveUserSettings(userSetting: UserSetting): Observable<UserSetting> {
+        let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/UserPersonalSetting/save', JSON.stringify(userSetting), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((userSettingData: any) => {
+                    let parsedUserSetting: UserSetting = null;
+                    parsedUserSetting = UserSettingAdapter.parseResponse(parsedUserSetting);
+                    resolve(parsedUserSetting);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UserSetting>>Observable.fromPromise(promise);
+
+    }
 }

@@ -10,30 +10,20 @@ namespace MIDAS.GBX.BusinessObjects
     public class PreferredMedicalProvider : GbObject
     {
       
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("prefMedProviderId")]
+        public int PrefMedProviderId { get; set; }
 
-        [JsonProperty("companyEmailId")]
-        public string CompanyEmailId { get; set; }
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
 
-        [JsonProperty("firstName")]
-        public string FirstName { get; set; }
-
-        [JsonProperty("lastName")]
-        public string LastName { get; set; }
-
-        [JsonProperty("preferredCompanyId")]
-        public int? PreferredCompanyId { get; set; }
-
-        [JsonProperty("forCompanyId")]
-        public int ForCompanyId { get; set; }
+        [JsonProperty("IsCreated")]
+        public bool IsCreated { get; set; }
 
         [JsonProperty("company")]
         public Company Company { get; set; }
 
-        [JsonProperty("company1")]
-        public Company Company1 { get; set; }
-
+        [JsonProperty("prefMedProvider")]
+        public Signup Signup { get; set; }
     }
  
 }

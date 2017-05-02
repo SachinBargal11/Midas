@@ -91,6 +91,8 @@
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
+    <Compile Include="PendingReferralProcedureCode\PendingReferralProcedureCode.cs" />
+    <Compile Include="PendingReferral\PendingReferral.cs" />
     <Compile Include="PreferredMedicalProvider\PreferredMedicalProvider.cs" />
     <Compile Include="Notification\Notification.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
@@ -108,7 +110,6 @@
     <Compile Include="PatientVisitProcedureCode\PatientVisitProcedureCode.cs" />
     <Compile Include="PatientVisit\PatientVisit.cs" />
     <Compile Include="PatientVisit\PatientVisit2.cs" />
-    <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Patient\PatientType.cs" />
     <Compile Include="ProcedureCode\ProcedureCode.cs" />

@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Docs.Pdf">
-      <HintPath>..\MIDAS.GBX.WebAPI\bin\Docs.Pdf.dll</HintPath>
+      <HintPath>C:\Users\Vipul.K\Desktop\Docs.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -101,6 +101,7 @@
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
+    <Compile Include="EntityRepository\PendingReferral\PendingReferralRepository.cs" />
     <Compile Include="EntityRepository\PreferredMedicalProvider\PreferredMedicalProviderRepository.cs" />
     <Compile Include="EntityRepository\Notification\NotificationRepository.cs" />
     <Compile Include="EntityRepository\PatientAccidentInfo\PatientAccidentInfoRepository.cs" />
@@ -111,7 +112,6 @@
     <Compile Include="EntityRepository\PatientVisit\PatientVisit2Repository.cs" />
     <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
-    <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCode\ProcedureCodeRepository.cs" />
     <Compile Include="EntityRepository\Referral\ReferralRepository.cs" />
     <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
@@ -262,9 +262,6 @@
     <Compile Include="Model\PasswordToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Patient.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Patient2.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -296,6 +293,12 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientVisitProcedureCode.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PendingReferral.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PendingReferralProcedureCode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">
@@ -340,6 +343,12 @@
     <Compile Include="Model\SpecialtyDetail.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sp_helpdiagrams_Result.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\State.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -377,11 +386,11 @@
     <Compile Include="RepoFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="Model\MIDASGBXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="App.Config" />
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </None>
