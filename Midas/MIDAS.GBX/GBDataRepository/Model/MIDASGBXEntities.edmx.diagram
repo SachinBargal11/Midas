@@ -4,82 +4,80 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d47f5ba0d5014506874407689858c6d7" Name="Diagram1">
-        <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="70.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="71.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="11.25" PointY="67.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.BlobStorage" Width="1.5" PointX="6" PointY="66.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.BlobStorageType" Width="1.5" PointX="3.75" PointY="63.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CalendarEvent" Width="1.5" PointX="22.5" PointY="68.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="19.5" PointY="74.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CaseCompanyConsentDocument" Width="1.5" PointX="11.25" PointY="76.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CaseCompanyMapping" Width="1.5" PointX="8.25" PointY="78" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CaseDocument" Width="1.5" PointX="11.25" PointY="103.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CaseInsuranceMapping" Width="1.5" PointX="13.5" PointY="67.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CaseStatu" Width="1.5" PointX="17.25" PointY="63.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CaseType" Width="1.5" PointX="17.25" PointY="92.375" IsExpanded="true" />
+      <Diagram DiagramId="cb68b50b834848e79f8d4f617cb78231" Name="Diagram1">
+        <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="69.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="70.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="11.25" PointY="66.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.BlobStorage" Width="1.5" PointX="6" PointY="65.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.BlobStorageType" Width="1.5" PointX="3.75" PointY="62.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CalendarEvent" Width="1.5" PointX="22.5" PointY="67.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="19.5" PointY="73.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseCompanyConsentDocument" Width="1.5" PointX="11.25" PointY="75.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseCompanyMapping" Width="1.5" PointX="8.25" PointY="77" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseDocument" Width="1.5" PointX="11.25" PointY="102.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseInsuranceMapping" Width="1.5" PointX="13.5" PointY="66.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseStatu" Width="1.5" PointX="17.25" PointY="62.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseType" Width="1.5" PointX="17.25" PointY="91.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="6" PointY="69.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CompanyCaseConsentApproval" Width="1.5" PointX="14.25" PointY="71.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CompanySpecialtyDetail" Width="1.5" PointX="14.25" PointY="76" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.CompanyType" Width="1.5" PointX="3.75" PointY="82.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.ConsentGivenType" Width="1.5" PointX="12" PointY="57.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.ContactInfo" Width="1.5" PointX="0.75" PointY="63.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.DiagnosisCode" Width="1.5" PointX="13.5" PointY="82.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.DiagnosisType" Width="1.5" PointX="8.25" PointY="90" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Doctor" Width="1.5" PointX="11.25" PointY="70.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.DoctorLocationSchedule" Width="1.5" PointX="13.5" PointY="89.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.DoctorSpeciality" Width="1.5" PointX="18.5" PointY="67.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Gender" Width="1.5" PointX="11.25" PointY="47.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.InsuranceMaster" Width="1.5" PointX="3" PointY="66.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.InsuranceType" Width="1.5" PointX="6" PointY="60.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Invitation" Width="1.5" PointX="16.25" PointY="66.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="6" PointY="68.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CompanyCaseConsentApproval" Width="1.5" PointX="14.25" PointY="70.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CompanySpecialtyDetail" Width="1.5" PointX="14.25" PointY="74.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CompanyType" Width="1.5" PointX="3.75" PointY="81.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ConsentGivenType" Width="1.5" PointX="12" PointY="56.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ContactInfo" Width="1.5" PointX="0.75" PointY="62.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DiagnosisCode" Width="1.5" PointX="13.5" PointY="81.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DiagnosisType" Width="1.5" PointX="8.25" PointY="88.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Doctor" Width="1.5" PointX="11.25" PointY="69.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DoctorLocationSchedule" Width="1.5" PointX="13.5" PointY="88.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DoctorSpeciality" Width="1.5" PointX="18.5" PointY="66.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Gender" Width="1.5" PointX="11.25" PointY="46.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.InsuranceMaster" Width="1.5" PointX="3" PointY="65.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.InsuranceType" Width="1.5" PointX="6" PointY="59.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Invitation" Width="1.5" PointX="16.25" PointY="65.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.InvitationType" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Location" Width="1.5" PointX="10.5" PointY="87.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Location" Width="1.5" PointX="10.5" PointY="86.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Log" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.MaritalStatu" Width="1.5" PointX="9" PointY="59" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.MidasDocument" Width="1.5" PointX="9" PointY="82.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Notification" Width="1.5" PointX="18.75" PointY="82.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.MaritalStatu" Width="1.5" PointX="9" PointY="57.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.MidasDocument" Width="1.5" PointX="9" PointY="81.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Notification" Width="1.5" PointX="18.75" PointY="81.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.OTP" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.PasswordToken" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Patient2" Width="1.5" PointX="11.25" PointY="62.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientAccidentInfo" Width="1.5" PointX="21.75" PointY="73.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientEmpInfo" Width="1.5" PointX="3" PointY="77.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientFamilyMember" Width="1.5" PointX="13.5" PointY="60.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientInsuranceInfo" Width="1.5" PointX="8.25" PointY="62.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientType" Width="1.5" PointX="19.5" PointY="72" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisit" Width="1.5" PointX="21.75" PointY="79.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisit2" Width="1.5" PointX="24.75" PointY="78.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitDiagnosisCode" Width="1.5" PointX="15.75" PointY="82.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitEvent" Width="1.5" PointX="27" PointY="76.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitProcedureCode" Width="1.5" PointX="27" PointY="83.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PendingReferral" Width="1.5" PointX="30" PointY="83.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PendingReferralProcedureCode" Width="1.5" PointX="32.25" PointY="85.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PolicyOwner" Width="1.5" PointX="6" PointY="63" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PreferredMedicalProvider" Width="1.5" PointX="8.25" PointY="104.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.ProcedureCode" Width="1.5" PointX="16" PointY="86.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Referral" Width="1.5" PointX="24.75" PointY="87" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.ReferralDocument" Width="1.5" PointX="27" PointY="89.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.RefferingOffice" Width="1.5" PointX="24.75" PointY="74.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Relation" Width="1.5" PointX="11.25" PointY="43.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Room" Width="1.5" PointX="12.75" PointY="97.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.RoomTest" Width="1.5" PointX="10.5" PointY="98.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Schedule" Width="1.5" PointX="8.25" PointY="108.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.ScheduleDetail" Width="1.5" PointX="10.5" PointY="108.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.SpecialityDetail" Width="1.5" PointX="14.25" PointY="48.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Specialty" Width="1.5" PointX="12" PointY="50.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.SpecialtyDetail" Width="1.5" PointX="14.25" PointY="53.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Patient2" Width="1.5" PointX="11.25" PointY="61.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientAccidentInfo" Width="1.5" PointX="21.75" PointY="72.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientEmpInfo" Width="1.5" PointX="3" PointY="76.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientFamilyMember" Width="1.5" PointX="13.5" PointY="59.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientInsuranceInfo" Width="1.5" PointX="8.25" PointY="61.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientType" Width="1.5" PointX="19.5" PointY="70.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisit" Width="1.5" PointX="21.75" PointY="78.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisit2" Width="1.5" PointX="24.75" PointY="77.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitDiagnosisCode" Width="1.5" PointX="15.75" PointY="81.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitEvent" Width="1.5" PointX="27" PointY="75.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitProcedureCode" Width="1.5" PointX="27" PointY="82.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PolicyOwner" Width="1.5" PointX="6" PointY="61.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PreferredMedicalProvider" Width="1.5" PointX="8.25" PointY="103.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ProcedureCode" Width="1.5" PointX="16" PointY="85.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Referral" Width="1.5" PointX="24.75" PointY="86" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ReferralDocument" Width="1.5" PointX="27" PointY="88.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.RefferingOffice" Width="1.5" PointX="24.75" PointY="73" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Relation" Width="1.5" PointX="11.25" PointY="42.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Room" Width="1.5" PointX="12.75" PointY="96.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.RoomTest" Width="1.5" PointX="10.5" PointY="97.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Schedule" Width="1.5" PointX="8.25" PointY="107.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ScheduleDetail" Width="1.5" PointX="10.5" PointY="107.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.SpecialityDetail" Width="1.5" PointX="14.25" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Specialty" Width="1.5" PointX="12" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.SpecialtyDetail" Width="1.5" PointX="14.25" PointY="52.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.State" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.SubscriptionPlan" Width="1.5" PointX="3.75" PointY="86.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.SubscriptionPlan" Width="1.5" PointX="3.75" PointY="85.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.sysdiagram" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Template" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.User" Width="1.5" PointX="9" PointY="70" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.User" Width="1.5" PointX="9" PointY="69" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserApiRoleMapping" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.UserCompany" Width="1.5" PointX="17.25" PointY="72" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.UserCompanyRole" Width="1.5" PointX="11.25" PointY="81.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.UserPersonalSetting" Width="1.5" PointX="17.25" PointY="75.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.UserType" Width="1.5" PointX="6.75" PointY="82.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.VisitDocument" Width="1.5" PointX="11.25" PointY="113.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserCompany" Width="1.5" PointX="17.25" PointY="71" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserCompanyRole" Width="1.5" PointX="11.25" PointY="80.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserPersonalSetting" Width="1.5" PointX="17.25" PointY="74.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserType" Width="1.5" PointX="6.75" PointY="81.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.VisitDocument" Width="1.5" PointX="11.25" PointY="111.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.DocumentNodeObjectMapping" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.DocumentNode" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />
@@ -130,7 +128,6 @@
         <AssociationConnector Association="MIDASGBXModel.FK_Invitation_Company" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Location_Company" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Notification_Company_CompanyId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_Company_FromCompanyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PreferredMedicalProvider_Company_CompanyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PreferredMedicalProvider_Company_PrefMedProviderId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_Company_CompanyId" ManuallyRouted="false" />
@@ -155,7 +152,6 @@
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit_Doctor_DoctorId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Doctor_DoctorId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitEvent_Doctor_ReadingDoctorId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_Doctor_FromDoctorId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral_Doctor_ReferredToDoctorId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_DoctorLocationSchedule_Location" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule" ManuallyRouted="false" />
@@ -168,7 +164,6 @@
         <AssociationConnector Association="MIDASGBXModel.FK_Notification_Location_LocationId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit_Location_LocationID" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Location_LocationID" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_Location_FromLocationId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral_Location_ReferredToLocationId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral_Location_ReferringLocationId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Room_Location" ManuallyRouted="false" />
@@ -189,14 +184,8 @@
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Specialty_SpecialtyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitDiagnosisCodes_PatientVisit2_PatientVisitId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitProcedureCodes_PatientVisit2_PatientVisitId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_PatientVisit_CaseId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitEvent_Specialty_SpecialtyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_Room_ForRoomId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_RoomTest_ForRoomTestId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferral_Specialty_ForSpecialtyId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_Room_SpecialityId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_RoomTest_RoomTestId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_Speciality_SpecialityId" ManuallyRouted="false" />

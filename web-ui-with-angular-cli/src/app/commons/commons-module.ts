@@ -27,6 +27,7 @@ import { ReferralsComponent } from './components/referrals/referrals.component';
 
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
+import { AddMedicalProviderComponent } from '../account-setup/components/medical-provider-master/add-medical-provider';
 
 import {
   AccordionModule,
@@ -103,7 +104,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     SignatureFieldComponent,
     DignosisComponent,
     ProcedureComponent,
-    ReferralsComponent
+    ReferralsComponent,
+    AddMedicalProviderComponent
   ],
   exports: [
     CommonModule,
@@ -151,7 +153,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     SignatureFieldComponent,
     DignosisComponent,
     ProcedureComponent,
-    ReferralsComponent
+    ReferralsComponent,
+    AddMedicalProviderComponent
   ]
 })
 export class CommonsModule { }
