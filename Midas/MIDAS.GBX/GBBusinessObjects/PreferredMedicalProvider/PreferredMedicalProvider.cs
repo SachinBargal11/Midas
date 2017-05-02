@@ -22,8 +22,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("company")]
         public Company Company { get; set; }
 
-        [JsonProperty("prefMedProvider")]
+        [JsonProperty("Signup")]
         public Signup Signup { get; set; }
+
+        [JsonProperty("prefMedProvider")]
+        public Company PrefMedProvider { get; set; }
     }
  
 }

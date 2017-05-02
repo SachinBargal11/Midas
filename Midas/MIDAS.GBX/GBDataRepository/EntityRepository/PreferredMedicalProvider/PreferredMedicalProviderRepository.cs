@@ -70,7 +70,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                boPreferredMedicalProvider.Company = Company;
+                boPreferredMedicalProvider.PrefMedProvider = Company;
             }
 
             return (T)(object)boPreferredMedicalProvider;
