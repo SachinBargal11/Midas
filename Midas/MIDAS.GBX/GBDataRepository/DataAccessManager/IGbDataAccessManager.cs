@@ -75,6 +75,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByReferringToLocationId(int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         Object GetByDoctorId(int DoctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByPatientVisitId(int patientVisitId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
         Object GetByReferringUserId(int UserId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByReferredToDoctorId(int DoctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetCurrentEmpByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
