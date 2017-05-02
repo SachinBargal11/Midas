@@ -260,7 +260,7 @@
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
 
-                <!--<app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>-->
+                <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
