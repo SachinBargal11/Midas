@@ -102,7 +102,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
            
-            BO.PreferredMedicalProvider medicalProviderBO = (BO.PreferredMedicalProvider)(object)entity;
+            BO.PreferredMedicalProviderSignUp medicalProviderBO = (BO.PreferredMedicalProviderSignUp)(object)entity;
            
             var result = medicalProviderBO.Validate(medicalProviderBO);
             return result;
@@ -113,7 +113,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
 
-            BO.PreferredMedicalProvider preferredMedicalProviderBO = (BO.PreferredMedicalProvider)(object)entity;
+            BO.PreferredMedicalProviderSignUp preferredMedicalProviderBO = (BO.PreferredMedicalProviderSignUp)(object)entity;
             PreferredMedicalProvider preferredMedicalProviderDB = new PreferredMedicalProvider();
 
             BO.Company companyBO = preferredMedicalProviderBO.Company;
@@ -270,8 +270,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //                                                                   .Where(p => p.ForCompanyId==id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))                                                                                                       
             //                                                                   .ToList<PreferredMedicalProvider>();
 
-            BO.PreferredMedicalProvider preferredMedicalProviderBO = new BO.PreferredMedicalProvider();
-            List<BO.PreferredMedicalProvider> boPreferredMedicalProvider = new List<BO.PreferredMedicalProvider>();
+            BO.PreferredMedicalProviderSignUp preferredMedicalProviderBO = new BO.PreferredMedicalProviderSignUp();
+            List<BO.PreferredMedicalProviderSignUp> boPreferredMedicalProvider = new List<BO.PreferredMedicalProviderSignUp>();
             //if (preferredMedicalProviderDB == null)
             //{
             //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -407,10 +407,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            List<BO.PreferredMedicalProvider> lstPreferredMedicalProvider = new List<BO.PreferredMedicalProvider>();
+            List<BO.PreferredMedicalProviderSignUp> lstPreferredMedicalProvider = new List<BO.PreferredMedicalProviderSignUp>();
             foreach (PreferredMedicalProvider item in acc_)
             {
-                lstPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item));
+                lstPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(item));
             }
             return lstPreferredMedicalProvider;
         }
@@ -440,7 +440,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
             }
-            var res = ObjectConvert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(preferredMedicalProviderDB);
+            var res = ObjectConvert<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(preferredMedicalProviderDB);
             return (object)res;
         }
         #endregion

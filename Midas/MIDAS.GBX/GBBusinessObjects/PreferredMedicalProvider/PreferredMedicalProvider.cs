@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class PreferredMedicalProvider : GbObject
+    public class PreferredMedicalProviderSignUp : GbObject
     {
       
         [JsonProperty("prefMedProviderId")]
@@ -24,9 +24,25 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("Signup")]
         public Signup Signup { get; set; }
+    }
+
+    public class PreferredMedicalProvider : GbObject
+    {
+
+        [JsonProperty("prefMedProviderId")]
+        public int PrefMedProviderId { get; set; }
+
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("IsCreated")]
+        public bool IsCreated { get; set; }
+
+        [JsonProperty("company")]
+        public Company Company { get; set; }
 
         [JsonProperty("prefMedProvider")]
         public Company PrefMedProvider { get; set; }
     }
- 
+
 }
