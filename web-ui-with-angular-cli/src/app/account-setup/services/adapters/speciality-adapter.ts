@@ -11,7 +11,8 @@ export class SpecialityAdapter {
                 name: specialityData.name,
                 specialityCode: specialityData.specialityCode,
                 isunitApply: specialityData.isunitApply,
-                color: specialityData.colorCode
+                color: specialityData.colorCode,
+                mandatoryProcCode: specialityData.mandatoryProcCode ? true : false
             });
         }
         return speciality;

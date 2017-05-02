@@ -16,11 +16,11 @@
                         <option value="0"></option>
              <optgroup label="Select Doctor">
                     <!--<option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       -->
-                    <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>                                       
+                     <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
              </optgroup>
              <optgroup label="Select Room">
                     <!--<option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> -->
-                    <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>                                       
+                    <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
              </optgroup>
         </select>
                 </div>
@@ -131,16 +131,17 @@
     <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
         <div *ngIf="selectedVisit">
             <div class="row" *ngIf="!selectedVisit.id">
-                <div class="col-md-2"></div>
                 <div *ngIf="selectedOption == 1" class="col-md-4">
-                    <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true"
-                        label="Going out office"></p-checkbox>
+                    <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true" label="Going out office"></p-checkbox>
                 </div>
                 <div *ngIf="selectedOption == 2" class="col-md-4">
-                    <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true"
-                        label="Room out of service"></p-checkbox>
+                    <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true" label="Room out of service"></p-checkbox>
                 </div>
-            </div> <br>
+            </div> 
+            <br>
+            <div *ngIf="isGoingOutOffice">
+                <leave-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="leaveEventEditorValid = $event"></leave-event-editor>
+            </div>
             <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
                 <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
                 <div class="col-md-4">
@@ -162,12 +163,41 @@
                 </div>
             </div>
             <div *ngIf="!isGoingOutOffice">
-            <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
+                <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
             </div>
-            <div *ngIf="isGoingOutOffice">
-            <leave-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="leaveEventEditorValid = $event"></leave-event-editor>
+            <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
+                <div *ngIf="selectedOption == 1" class="col-md-4">
+                    <p-checkbox [disabled]="selectedSpeciality.mandatoryProcCode" formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Add Procedure codes"></p-checkbox>
+                </div>
+                <div *ngIf="selectedOption == 2" class="col-md-4">
+                    <p-checkbox [disabled]="selectedTestId" formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Add Procedure codes"></p-checkbox>
+                </div>
+            </div> 
+            <br>
+
+            <div *ngIf="!isGoingOutOffice && isProcedureCode">
+                <div class="ui-widget-header row">
+                    <div class="col-lg-4 input-group">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+                    </div>
+                </div>
+                <p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+                    <header>Procedures</header>
+                    <p-headerColumnGroup>
+                    <p-row>
+                    <p-column [style]="{'width':'38px'}"></p-column>
+                    <p-column header="Procedure Code"></p-column>
+                    <p-column header="Description"></p-column>
+                    </p-row>
+                    </p-headerColumnGroup>
+                    <p-column selectionMode="multiple"></p-column>
+                    <p-column field="procedureCodeText"></p-column>
+                    <p-column field="procedureCodeDesc"></p-column>
+                </p-dataTable>
             </div>
         </div>
+        <br>
         <p-footer>
             <div class="row">
                 <div class="col-md-4">
@@ -230,7 +260,7 @@
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
 
-                <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                <!--<app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>-->
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents

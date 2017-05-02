@@ -12,8 +12,8 @@ import * as RRule from 'rrule';
 
 
 export class ScheduledEventEditorComponent implements OnChanges {
-    transportType: number = 0;
-    referby: string = '';
+    transportProviderId: number = 0;
+    referredBy: string = '';
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
@@ -163,8 +163,6 @@ export class ScheduledEventEditorComponent implements OnChanges {
             eventStartTime: [''],
             eventEndDate: ['', Validators.required],
             eventEndTime: [''],
-            transportType: [''],
-            referby: [''],
             isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({
@@ -200,7 +198,9 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 recur_weekday_offset: [],
                 recur_monthday: [],
                 recur_weekday: []
-            })
+            }),
+            transportProviderId: [''],
+            referredBy: ['']
         });
         this.scheduledEventEditorFormControls = this.scheduledEventEditorForm.controls;
         this.scheduledEventEditorForm.valueChanges.subscribe(() => {
@@ -333,8 +333,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventEndAsDate).endOf('day') : moment(this.eventEndAsDate),
             isAllDay: scheduledEventEditorFormValues.isAllDay,
             recurrenceRule: recurrenceRule ? recurrenceRule : null,
-            transportType: scheduledEventEditorFormValues.transportType,
-            referby: scheduledEventEditorFormValues.referby,
+            transportProviderId: parseInt(scheduledEventEditorFormValues.transportProviderId)
         }));
     }
 

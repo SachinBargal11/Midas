@@ -7,6 +7,7 @@ const SpecialityRecord = Record({
     specialityCode: '',
     isunitApply: false,
     color: '',
+    mandatoryProcCode: false,
     isDeleted: false,
     createByUserID: 0,
     updateByUserID: 0,
@@ -20,6 +21,7 @@ export class Speciality extends SpecialityRecord {
     specialityCode: string;
     isunitApply: boolean;
     color: string;
+    mandatoryProcCode: boolean;
     isDeleted: boolean;
     createByUserID: number;
     updateByUserID: number;
