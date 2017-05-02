@@ -19,6 +19,8 @@ import { Consent } from '../../cases/models/consent';
 import { ReferralDocument } from '../../cases/models/referral-document';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
+import { AddMedicalProviderComponent } from '../../../account-setup/components/medical-provider-master/add-medical-provider';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'pending-referrals',
@@ -40,6 +42,9 @@ export class PendingReferralsComponent implements OnInit {
     refferedRooms: Room[];
     filters: SelectItem[];
     doctorRoleOnly = null;
+    eventDialogVisible: boolean = false;
+    selectedCancel: number;
+    currentCancel: string;
   
 
     constructor(
@@ -49,6 +54,7 @@ export class PendingReferralsComponent implements OnInit {
         private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
@@ -179,8 +185,26 @@ export class PendingReferralsComponent implements OnInit {
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
             window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
-        });
+        }); 
     }
+     showDialog(){
+          this.eventDialogVisible = true;
+          this.selectedCancel = 1;
+     }
+     closeDialog(){
+          this.eventDialogVisible = false;
+     }
+     assign(){
+         this.confirmationService.confirm({
+            message: 'Do you want to Appoint Schedule?',
+            header: 'Confirmation',
+            icon: 'fa fa-question-circle',
+            accept: () => {
+                       
+            }
+        });
+
+     }
     consentAvailable(referral: Referral) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {

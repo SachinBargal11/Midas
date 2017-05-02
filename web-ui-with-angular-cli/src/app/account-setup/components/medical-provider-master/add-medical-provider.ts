@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { InputDecorator } from '@angular/core/src/metadata/directives';
+import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -30,8 +31,9 @@ export class AddMedicalProviderComponent implements OnInit {
 
     providerform: FormGroup;
     providerformControls;
- 
-     isSaveProgress = false;
+    @Input() inputCancel: number;
+    @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
+    isSaveProgress = false;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -56,17 +58,18 @@ export class AddMedicalProviderComponent implements OnInit {
         });
 
         this.providerformControls = this.providerform.controls;
-
     }
 
     ngOnInit() {
-
+        console.log(this.inputCancel);
     }
-
+    closeDialog() {
+    this.closeDialogBox.emit();
+    }
     saveMedicalProvider() {
         this.isSaveProgress = true;
         let providerformValues = this.providerform.value;
-        let result;     
+        let result;
 
 
     }
