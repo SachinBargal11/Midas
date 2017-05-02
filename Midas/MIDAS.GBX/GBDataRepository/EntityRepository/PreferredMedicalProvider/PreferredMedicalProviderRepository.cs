@@ -38,12 +38,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.PreferredMedicalProvider boPreferredMedicalProvider = new BO.PreferredMedicalProvider();
 
             boPreferredMedicalProvider.ID = preferredMedicalProvider.Id;
-            boPreferredMedicalProvider.Name = preferredMedicalProvider.Name;
-            boPreferredMedicalProvider.CompanyEmailId = preferredMedicalProvider.CompanyEmailId;
-            boPreferredMedicalProvider.FirstName = preferredMedicalProvider.FirstName;
-            boPreferredMedicalProvider.LastName = preferredMedicalProvider.LastName;
-            boPreferredMedicalProvider.PreferredCompanyId = preferredMedicalProvider.PreferredCompanyId;
-            boPreferredMedicalProvider.ForCompanyId = preferredMedicalProvider.ForCompanyId;
+            //boPreferredMedicalProvider.Name = preferredMedicalProvider.Name;
+            //boPreferredMedicalProvider.CompanyEmailId = preferredMedicalProvider.CompanyEmailId;
+            //boPreferredMedicalProvider.FirstName = preferredMedicalProvider.FirstName;
+            //boPreferredMedicalProvider.LastName = preferredMedicalProvider.LastName;
+            //boPreferredMedicalProvider.PreferredCompanyId = preferredMedicalProvider.PreferredCompanyId;
+            //boPreferredMedicalProvider.ForCompanyId = preferredMedicalProvider.ForCompanyId;
 
             if (preferredMedicalProvider.Company != null)
             {
@@ -128,12 +128,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical Provider information dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
                     
-                    preferredMedicalProviderDB.Name = IsEditMode == true && preferredMedicalProviderBO.Name == null ? preferredMedicalProviderDB.Name : preferredMedicalProviderBO.Name;
-                    preferredMedicalProviderDB.CompanyEmailId = IsEditMode == true && preferredMedicalProviderBO.CompanyEmailId == null ? preferredMedicalProviderDB.CompanyEmailId : preferredMedicalProviderBO.CompanyEmailId;
-                    preferredMedicalProviderDB.FirstName = IsEditMode == true && preferredMedicalProviderBO.FirstName == null ? preferredMedicalProviderDB.FirstName : preferredMedicalProviderBO.FirstName;
-                    preferredMedicalProviderDB.LastName = IsEditMode == true && preferredMedicalProviderBO.LastName == null ? preferredMedicalProviderDB.LastName : preferredMedicalProviderBO.LastName;
-                    preferredMedicalProviderDB.PreferredCompanyId = IsEditMode == true && preferredMedicalProviderBO.PreferredCompanyId == null ? preferredMedicalProviderDB.PreferredCompanyId : preferredMedicalProviderBO.PreferredCompanyId;
-                    preferredMedicalProviderDB.ForCompanyId = IsEditMode == true && preferredMedicalProviderBO.ForCompanyId == null ? preferredMedicalProviderDB.ForCompanyId : preferredMedicalProviderBO.ForCompanyId;
+                    //preferredMedicalProviderDB.Name = IsEditMode == true && preferredMedicalProviderBO.Name == null ? preferredMedicalProviderDB.Name : preferredMedicalProviderBO.Name;
+                    //preferredMedicalProviderDB.CompanyEmailId = IsEditMode == true && preferredMedicalProviderBO.CompanyEmailId == null ? preferredMedicalProviderDB.CompanyEmailId : preferredMedicalProviderBO.CompanyEmailId;
+                    //preferredMedicalProviderDB.FirstName = IsEditMode == true && preferredMedicalProviderBO.FirstName == null ? preferredMedicalProviderDB.FirstName : preferredMedicalProviderBO.FirstName;
+                    //preferredMedicalProviderDB.LastName = IsEditMode == true && preferredMedicalProviderBO.LastName == null ? preferredMedicalProviderDB.LastName : preferredMedicalProviderBO.LastName;
+                    //preferredMedicalProviderDB.PreferredCompanyId = IsEditMode == true && preferredMedicalProviderBO.PreferredCompanyId == null ? preferredMedicalProviderDB.PreferredCompanyId : preferredMedicalProviderBO.PreferredCompanyId;
+                    //preferredMedicalProviderDB.ForCompanyId = IsEditMode == true && preferredMedicalProviderBO.ForCompanyId == null ? preferredMedicalProviderDB.ForCompanyId : preferredMedicalProviderBO.ForCompanyId;
 
                     if (Add_medicalProviderDB == true)
                     {
@@ -170,26 +170,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
-            var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Include("Company")
-                                                                               .Include("Company1")
-                                                                               .Where(p => p.ForCompanyId==id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))                                                                                                       
-                                                                               .ToList<PreferredMedicalProvider>();
+            //var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Include("Company")
+            //                                                                   .Include("Company1")
+            //                                                                   .Where(p => p.ForCompanyId==id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))                                                                                                       
+            //                                                                   .ToList<PreferredMedicalProvider>();
 
             BO.PreferredMedicalProvider preferredMedicalProviderBO = new BO.PreferredMedicalProvider();
             List<BO.PreferredMedicalProvider> boPreferredMedicalProvider = new List<BO.PreferredMedicalProvider>();
-            if (preferredMedicalProviderDB == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
+            //if (preferredMedicalProviderDB == null)
+            //{
+            //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //}
+            //else
+            //{
 
-                foreach (var EachPreferredMedicalProvider in preferredMedicalProviderDB)
-                {
-                    boPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(EachPreferredMedicalProvider));
-                }
+            //    foreach (var EachPreferredMedicalProvider in preferredMedicalProviderDB)
+            //    {
+            //        boPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(EachPreferredMedicalProvider));
+            //    }
 
-            }
+            //}
 
             return (object)boPreferredMedicalProvider;
         }
