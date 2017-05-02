@@ -456,19 +456,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.CompanyCaseConsentBase64 CompanyCaseConsentBase64BO = (BO.CompanyCaseConsentBase64)(object)entity;
                 string fileName = CompanyCaseConsentBase64BO.CaseId + "-" + CompanyCaseConsentBase64BO.CompanyId;
                 string filepath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"app_data\uploads\sign-" + fileName + ".jpeg";
-                byte[] bytes = System.Convert.FromBase64String(CompanyCaseConsentBase64BO.Base64Data.Replace("data:image/jpeg;base64,", string.Empty));
-                using (var imageFile = new FileStream(filepath, FileMode.Create))
+                
+                //if (File.Exists(filepath)) File.Delete(filepath);
+                using (FileStream imageFile = new FileStream(filepath, FileMode.OpenOrCreate))
                 {
-                    imageFile.Write(bytes, 0, bytes.Length);
-                    imageFile.Flush();
-                    imageFile.Close();
-                }
-
-                string consentPdf = GenerateConsentDocument(CompanyCaseConsentBase64BO.CaseId, CompanyCaseConsentBase64BO.CompanyId, filepath, true);
-                FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
-                docInfo = (Object)fileUploadManager.UploadSignedConsent(CompanyCaseConsentBase64BO.CaseId, "consent_" + CompanyCaseConsentBase64BO.CompanyId, consentPdf);
+                    byte[] bytes = System.Convert.FromBase64String(CompanyCaseConsentBase64BO.Base64Data.Replace("data:image/jpeg;base64,", string.Empty));
+                    imageFile.Write(bytes, 0, bytes.Length);                    
+                    string consentPdf = GenerateConsentDocument(CompanyCaseConsentBase64BO.CaseId, CompanyCaseConsentBase64BO.CompanyId, filepath, true);
+                    FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
+                    docInfo = (Object)fileUploadManager.UploadSignedConsent(CompanyCaseConsentBase64BO.CaseId, "consent_" + CompanyCaseConsentBase64BO.CompanyId, consentPdf);
+                }                
             }
-            catch (Exception) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error while saving consent", ErrorLevel = ErrorLevel.Error }; }
+            catch (Exception err) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error while saving consent", ErrorLevel = ErrorLevel.Error }; }
 
             return (object)docInfo;
         }
