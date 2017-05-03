@@ -203,7 +203,7 @@ export class ConsentService {
                 });
         });
         return <Observable<Consent>>Observable.from(promise);
-    }   
+    }
 
     getcompany(CaseId: Number): Observable<ConsentAdapter> {
         let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
@@ -251,6 +251,7 @@ export class ConsentService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
+
     downloadTemplate(CaseId: Number, CompanyId: Number): Observable<Consent[]> {
         let thefile = {};
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
@@ -277,5 +278,9 @@ export class ConsentService {
                 () => console.log('Completed file download.'));
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
+    getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
+        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
     }
 }
