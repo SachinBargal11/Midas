@@ -170,13 +170,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Get(int id)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                               .Include("PatientVisit2.Case")
-                                               .Include("Doctor")
-                                               .Include("Specialty")
-                                               .Include("Room")
-                                               .Include("RoomTest")
-                                               .Include("PendingReferralProcedureCodes")
-                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                              .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("Doctor")
+                                               .Include("Doctor.User")
+                                              .Include("Specialty")
+                                              .Include("Room")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
                                         .Where(p => p.Id == id
                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .FirstOrDefault<PendingReferral>();
@@ -194,7 +196,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
                                               .Include("Doctor")
+                                               .Include("Doctor.User")
                                               .Include("Specialty")
                                               .Include("Room")
                                               .Include("RoomTest")
@@ -223,7 +227,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
                                               .Include("Doctor")
+                                               .Include("Doctor.User")
                                               .Include("Specialty")
                                               .Include("Room")
                                               .Include("RoomTest")
@@ -253,7 +259,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
                                               .Include("Doctor")
+                                               .Include("Doctor.User")
                                               .Include("Specialty")
                                               .Include("Room")
                                               .Include("RoomTest")
@@ -282,7 +290,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
                                               .Include("Doctor")
+                                               .Include("Doctor.User")
                                               .Include("Specialty")
                                               .Include("Room")
                                               .Include("RoomTest")
@@ -311,7 +321,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
                                               .Include("Doctor")
+                                               .Include("Doctor.User")
                                               .Include("Specialty")
                                               .Include("Room")
                                               .Include("RoomTest")
@@ -340,6 +352,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             BO.PendingReferral pendingReferralBO = (BO.PendingReferral)(object)entity;
             PendingReferral pendingReferralDB = new PendingReferral();
+            List<BO.PendingReferralProcedureCode> PendingReferralProcedureCodeBOList = pendingReferralBO.PendingReferralProcedureCodes;
 
             if (pendingReferralBO != null)
             {              
@@ -352,10 +365,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else if (pendingReferralDB == null && pendingReferralBO.ID <= 0)
                 {
-                    pendingReferralDB = new PendingReferral();
-                    add_pendingReferral = true;
+                    pendingReferralDB = _context.PendingReferrals.Where(p => p.FromCompanyId == pendingReferralBO.FromCompanyId
+                                        && p.PatientVisitId == pendingReferralBO.PatientVisitId
+                                        && p.FromDoctorId == pendingReferralBO.FromDoctorId
+                                        && p.FromLocationId == pendingReferralBO.FromLocationId
+                                        && p.ForSpecialtyId == pendingReferralBO.ForSpecialtyId
+                                        && p.ForRoomTestId == pendingReferralBO.ForRoomTestId
+                                        && p.ForRoomId == pendingReferralBO.ForRoomId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if (pendingReferralDB != null)
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral data for procedure codes already exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        pendingReferralDB = new PendingReferral();
+                        add_pendingReferral = true;
+                    }
                 }
-
 
                 pendingReferralDB.PatientVisitId = pendingReferralBO.PatientVisitId;
                 pendingReferralDB.FromCompanyId = pendingReferralBO.FromCompanyId;
@@ -373,6 +400,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 _context.SaveChanges();
 
+
+
+                #region PendingReferralProcedureCode
+                if (PendingReferralProcedureCodeBOList == null || (PendingReferralProcedureCodeBOList != null && PendingReferralProcedureCodeBOList.Count <= 0))
+                {
+                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    int PendingReferralId = pendingReferralDB.Id;
+                    List<int> NewProcedureCodeIds = PendingReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
+
+                    List<PendingReferralProcedureCode> ReomveProcedureCodeDB = new List<PendingReferralProcedureCode>();
+                    ReomveProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
+                                                                                    && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .ToList();
+
+                    ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                    _context.SaveChanges();
+
+                    foreach (BO.PendingReferralProcedureCode eachPendingReferralProcedureCode in PendingReferralProcedureCodeBOList)
+                    {
+                        PendingReferralProcedureCode AddProcedureCodeDB = new PendingReferralProcedureCode();
+                        AddProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
+                                                                                    && p.ProcedureCodeId == eachPendingReferralProcedureCode.ProcedureCodeId
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault();
+
+                        if (AddProcedureCodeDB == null)
+                        {
+                            AddProcedureCodeDB = new PendingReferralProcedureCode();
+
+                            AddProcedureCodeDB.PendingReferralId = PendingReferralId;
+                            AddProcedureCodeDB.ProcedureCodeId = eachPendingReferralProcedureCode.ProcedureCodeId;
+
+                            _context.PendingReferralProcedureCodes.Add(AddProcedureCodeDB);
+                        }
+                    }
+
+                    _context.SaveChanges();
+                }
+                #endregion
+
             }
             else
             {
@@ -382,7 +454,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")
+                                              .Include("PatientVisit2.Patient2.User")
                                               .Include("Doctor")
+                                               .Include("Doctor.User")
                                               .Include("Specialty")
                                               .Include("Room")
                                               .Include("RoomTest")

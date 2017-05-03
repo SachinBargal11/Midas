@@ -24,10 +24,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByObjectType/{objectType}")]
-        public HttpResponseMessage GetByObjectType(string objectType)
+        [Route("getByObjectType/{objectType}/{companyId}")]
+        public HttpResponseMessage GetByObjectType(string objectType,int companyId)
         {
-            return requestHandler.GetObjects(Request, objectType);
+            return requestHandler.GetObject(Request, companyId, objectType);
         }
 
         protected override void Dispose(bool disposing)

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -371,6 +371,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodeObjectMapping' does not h
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ObjectType" Type="nvarchar" MaxLength="10" />
           <Property Name="ChildNode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="companyid" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1655,6 +1656,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DocumentNodeObjectMapping_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="DocumentNodeObjectMapping" Type="Self.DocumentNodeObjectMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DocumentNodeObjectMapping">
+              <PropertyRef Name="companyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InsuranceMaster_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
           <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
@@ -2908,7 +2921,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <DefiningQuery>SELECT 
     [DocumentNodeObjectMapping].[id] AS [id], 
     [DocumentNodeObjectMapping].[ObjectType] AS [ObjectType], 
-    [DocumentNodeObjectMapping].[ChildNode] AS [ChildNode]
+    [DocumentNodeObjectMapping].[ChildNode] AS [ChildNode], 
+    [DocumentNodeObjectMapping].[companyid] AS [companyid]
     FROM [dbo].[DocumentNodeObjectMapping] AS [DocumentNodeObjectMapping]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
@@ -3074,6 +3088,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentNodeObjectMapping_Company" Association="Self.FK_DocumentNodeObjectMapping_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="DocumentNodeObjectMapping" EntitySet="DocumentNodeObjectMapping" />
           </AssociationSet>
           <AssociationSet Name="FK_InsuranceMaster_AddressInfo_AddressInfoId" Association="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
@@ -3452,8 +3470,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3731,6 +3748,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
           <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="Company" ToRole="UserPersonalSettings" />
+          <NavigationProperty Name="DocumentNodeObjectMappings" Relationship="MIDASGBXModel.FK_DocumentNodeObjectMapping_Company" FromRole="Company" ToRole="DocumentNodeObjectMapping" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -4884,6 +4902,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ObjectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="companyid" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_DocumentNodeObjectMapping_Company" FromRole="DocumentNodeObjectMapping" ToRole="Company" />
         </EntityType>
         <EntityType Name="DocumentNode">
           <Key>
@@ -7102,7 +7122,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
@@ -7142,6 +7162,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <Parameter Name="PatientId" Mode="In" Type="Int32" />
             <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <AssociationSet Name="FK_DocumentNodeObjectMapping_Company" Association="MIDASGBXModel.FK_DocumentNodeObjectMapping_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="DocumentNodeObjectMapping" EntitySet="DocumentNodeObjectMappings" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -7154,6 +7178,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <Association Name="FK_DocumentNodeObjectMapping_Company">
+          <End Type="MIDASGBXModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.DocumentNodeObjectMapping" Role="DocumentNodeObjectMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DocumentNodeObjectMapping">
+              <PropertyRef Name="companyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8391,6 +8427,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="DocumentNodeObjectMappings">
             <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNodeObjectMapping">
               <MappingFragment StoreEntitySet="DocumentNodeObjectMapping">
+                <ScalarProperty Name="companyid" ColumnName="companyid" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
                 <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />

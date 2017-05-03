@@ -27,6 +27,8 @@ import { VisitShellComponent } from './components/visit-shell';
 import { PatientVisitListDoctorComponent } from './components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './components/treatingroom-visit';
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
+import { BillingInfoComponent } from './components/billing';
+import { PaymentListComponent } from './components/payment-list';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -292,6 +294,22 @@ export const CasesShellRoutes: Routes = [
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Accident'
+                        }
+                    },
+                     {
+                        path: 'billings',
+                        component: BillingInfoComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Billings'
+                        }
+                    },
+                    {
+                        path: 'payment',
+                        component: PaymentListComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Payment'
                         }
                     },
                     {

@@ -17,7 +17,8 @@ export class ScheduledEventEditorComponent implements OnChanges {
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
-    isAllDay: boolean;
+    duration: number;
+    // isAllDay: boolean;
     repeatType: string = '7';
 
     // Daily 
@@ -64,8 +65,9 @@ export class ScheduledEventEditorComponent implements OnChanges {
         if (value) {
             this._selectedEvent = value;
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
+            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-            this.isAllDay = this._selectedEvent.isAllDay;
+            // this.isAllDay = this._selectedEvent.isAllDay;
 
             if (this._selectedEvent.recurrenceRule) {
                 let options = this._selectedEvent.recurrenceRule.options;
@@ -146,7 +148,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
             this.eventEndAsDate = null;
-            this.isAllDay = false;
+            // this.isAllDay = false;
         }
     }
 
@@ -161,9 +163,10 @@ export class ScheduledEventEditorComponent implements OnChanges {
             name: ['', Validators.required],
             eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            eventEndDate: ['', Validators.required],
-            eventEndTime: [''],
-            isAllDay: [],
+            duration: ['', Validators.required],
+            // eventEndDate: ['', Validators.required],
+            // eventEndTime: [''],
+            // isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({
                 end: [],
@@ -326,12 +329,14 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 break;
 
         }
-
+        debugger;
         return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
             name: scheduledEventEditorFormValues.name,
-            eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
-            eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventEndAsDate).endOf('day') : moment(this.eventEndAsDate),
-            isAllDay: scheduledEventEditorFormValues.isAllDay,
+            eventStart: moment(this.eventStartAsDate),
+            eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+            // eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
+            // eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).endOf('day') : moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+            // isAllDay: scheduledEventEditorFormValues.isAllDay,
             recurrenceRule: recurrenceRule ? recurrenceRule : null,
             transportProviderId: parseInt(scheduledEventEditorFormValues.transportProviderId)
         }));
