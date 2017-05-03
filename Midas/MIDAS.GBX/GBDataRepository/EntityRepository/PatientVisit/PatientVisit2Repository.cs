@@ -493,6 +493,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 bool IsAddModeCalendarEvent = false;
                 IsEditMode = (PatientVisit2BO != null && PatientVisit2BO.ID > 0) ? true : false;
 
+                if (PatientVisit2BO.PatientId == null && PatientVisit2BO.ID > 0)
+                {
+                    var patientvisitData = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).Select(p => new { p.PatientId, p.CaseId }).FirstOrDefault();
+                }
+
                 if (PatientVisit2BO.IsOutOfOffice != true && PatientVisit2BO.PatientId == null)
                 {
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass caseId and PatientId.", ErrorLevel = ErrorLevel.Error };
