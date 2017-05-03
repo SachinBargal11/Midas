@@ -17,8 +17,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2"><label class="form-label">Start<span class="color-red">*</span></label></div>
-        <div class="col-md-4">
+        <div class="col-md-2"><label class="form-label">Start Time<span class="color-red">*</span></label></div>
+        <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventStartDate.touched && !scheduledEventEditorFormControls.eventStartDate.valid">
                 <p-calendar [class.error]="!scheduledEventEditorFormControls.eventStartDate.valid" formControlName="eventStartDate" [(ngModel)]="eventStartAsDate"
                     dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventStartTime.touched && !scheduledEventEditorFormControls.eventStartTime.valid">
                 <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventStartTime.valid" formControlName="eventStartTime"
                     [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
@@ -44,6 +44,20 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-2"><label class="form-label">Duration<span class="color-red">*</span></label></div>
+        <div class="col-md-2">
+            <div class="form-group" [class.error]="scheduledEventEditorFormControls.duration.touched && !scheduledEventEditorFormControls.duration.valid">
+                <input type="number" min="1" formControlName="duration" [(ngModel)]="duration" class="form-control">
+                <div class='error-list' *ngIf="scheduledEventEditorFormControls.duration.touched && !scheduledEventEditorFormControls.duration.valid">
+                    <ul>
+                        <li *ngIf="scheduledEventEditorFormControls.duration.hasError('required')">Duration is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"><label class="form-label">minutes</label></div>
+    </div>
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">End<span class="color-red">*</span></label></div>
         <div class="col-md-4">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndDate.touched && !scheduledEventEditorFormControls.eventEndDate.valid">
@@ -68,15 +82,15 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
+    </div>-->
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">All Day</label></div>
         <div class="col-md-10">
             <div class="form-group">
                 <p-checkbox binary="checkbox" formControlName="isAllDay" [(ngModel)]="isAllDay"></p-checkbox>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="row">
         <div class="col-md-2"><label class="form-label">Transportation Required</label></div>
         <div class="col-md-4">
