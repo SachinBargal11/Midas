@@ -34,10 +34,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("Get/{CompanyId}")]
-        public HttpResponseMessage Get(int CompanyId)
+        [Route("Get/{Id}")]
+        public HttpResponseMessage Get(int Id)
         {
-            return requestHandler.GetObject(Request, CompanyId);
+            return requestHandler.GetObject(Request, Id);
         }
 
 
