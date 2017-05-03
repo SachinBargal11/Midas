@@ -202,14 +202,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
                                        .Where(p => p.FromCompanyId == CompanyId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .FirstOrDefault<PendingReferral>();
+                                       .ToList<PendingReferral>();
 
-            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
-            if (acc_ == null)
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            else
+            {
+                List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+                foreach (PendingReferral item in acc)
+                {
+                    lstPendingReferral.Add(Convert<BO.PendingReferral,PendingReferral>(item));
+                }
+                return lstPendingReferral;
+            }
         }
 
         public override object GetByDoctorId(int DoctorId)
@@ -224,14 +231,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
                                        .Where(p => p.FromDoctorId == DoctorId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .FirstOrDefault<PendingReferral>();
+                                       .ToList<PendingReferral>();
 
-            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
-            if (acc_ == null)
+
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            else
+            {
+                List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+                foreach (PendingReferral item in acc)
+                {
+                    lstPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
+                }
+                return lstPendingReferral;
+            }
         }
 
         public override object GetBySpecialityId(int specialityId)
@@ -246,14 +261,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
                                        .Where(p => p.ForSpecialtyId == specialityId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .FirstOrDefault<PendingReferral>();
+                                       .ToList<PendingReferral>();
 
-            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
-            if (acc_ == null)
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            else
+            {
+                List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+                foreach (PendingReferral item in acc)
+                {
+                    lstPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
+                }
+                return lstPendingReferral;
+            }
         }
 
         public override object GetByRoomId(int RoomId)
@@ -268,14 +290,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
                                        .Where(p => p.ForRoomId == RoomId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .FirstOrDefault<PendingReferral>();
+                                       .ToList<PendingReferral>();
 
-            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
-            if (acc_ == null)
+            
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            {
+                List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+                foreach (PendingReferral item in acc)
+                {
+                    lstPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
+                }
+                return lstPendingReferral;
+            }
         }
 
         public override object GetByPatientVisitId(int patientVisitId)
@@ -290,16 +319,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
                                        .Where(p => p.PatientVisitId == patientVisitId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .FirstOrDefault<PendingReferral>();
+                                       .ToList<PendingReferral>();
 
-            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
-            if (acc_ == null)
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            {
+                List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+                foreach (PendingReferral item in acc)
+                {
+                    lstPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
+                }
+                return lstPendingReferral;
+            }
         }
-
 
         #region save
         public override object Save<T>(T entity)
@@ -345,9 +379,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
             }
             _context.SaveChanges();
-
-            ////METHOD TO GENERATE REFFERAL DOCUMENT AND SAVE IN MIDASDOCUMENTS/CASEDOCUMENTS TABLE
-          //  this.GenerateReferralDocument(pendingReferralDB.Id);
 
             pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case")

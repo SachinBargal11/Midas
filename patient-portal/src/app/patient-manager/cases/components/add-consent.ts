@@ -1,5 +1,5 @@
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validator, Validators, } from '@angular/forms';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -9,7 +9,6 @@ import { Message } from 'primeng/primeng'
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-//import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { ConsentStore } from '../stores/consent-store';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ConsentService } from '../services/consent-service';
@@ -25,6 +24,8 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { Document } from '../../../commons/models/document';
 import { Case } from '../models/case';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Component({
     selector: 'add-consent',
     templateUrl: './add-consent.html',
@@ -68,20 +69,25 @@ export class AddConsentComponent implements OnInit {
     Case: Case;
     datasource: Consent[];
     totalRecords: number;
-
+    signedDocumentPostRequestData: any = {};
+    signedDocumentUploadUrl: string = '';
+    changeCompneyConsenturl: SafeResourceUrl;
+  
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
         private _router: Router,
         private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
-        private _AddConsentStore: ConsentStore,
+        private _consentStore: ConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private http: Http,
         private _scannerService: ScannerService,
         private _casesStore: CasesStore,
+        private _sanitizer: DomSanitizer,
+        private _consentService: ConsentService
 
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -95,24 +101,36 @@ export class AddConsentComponent implements OnInit {
         })
     }
 
+
     ngOnInit() {
-        let today = new Date();
-        let currentDate = today.getDate();
-        this.maxDate = new Date();
-        this.maxDate.setDate(currentDate);
-        this._AddConsentStore.getCompany(this.caseId)
+        this._consentStore.getCompany(this.caseId)
             .subscribe((company) => {
                 this.companies = company,
                     this.selectedCompany = this.companies[0].id,
                     this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
+
+                this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+                this.signedDocumentPostRequestData = {
+                    companyId: this.selectedCompany,
+                    caseId: this.caseId
+                };
             });
         this.loadConsentForm();
     }
 
     selectcompany(event) {
         // this.selectedcompany = 0;
-        this.currentCompany = event.target.value;
+        this.currentCompany =  parseInt( event.target.value);
         this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
+        this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+        this.signedDocumentPostRequestData = {
+            companyId: this.currentCompany,
+            caseId: this.caseId
+        };
+        this.changeCompneyConsenturl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.caseId, this.currentCompany, false));
+
+        //this.documentUploadComponent.ngOnInit();
+        // this.documentUploadComponent.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.caseId, this.currentCompany, false));
 
     }
 
@@ -152,13 +170,29 @@ export class AddConsentComponent implements OnInit {
         this.loadConsentForm();
     }
 
+    signedDocumentUploadComplete() {
+
+    }
+
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    }
+
+
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    downloadPdf(documentId) {      
-        this._progressBarService.show();       
-        this._AddConsentStore.downloadConsentForm(this.caseId, documentId)
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._consentStore.downloadConsentForm(this.caseId, documentId)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -183,8 +217,8 @@ export class AddConsentComponent implements OnInit {
     }
 
     downloadTemplate() {
-        this._progressBarService.show();       
-        this._AddConsentStore.downloadTemplate(this.caseId, this.selectedCompany)
+        this._progressBarService.show();
+        this._consentStore.downloadTemplate(this.caseId, this.selectedCompany)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -208,5 +242,4 @@ export class AddConsentComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-   
 }

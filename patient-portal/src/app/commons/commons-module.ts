@@ -21,6 +21,9 @@ import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
 
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
+
 
 import {
   AccordionModule,
@@ -72,6 +75,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     GrowlModule,
     TabViewModule,
     LightboxModule,ListboxModule
+    ,SignaturePadModule
   ],
   declarations: [
     LimitPipe,
@@ -90,7 +94,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     NotificationComponent,
     ShellComponent,
     ScheduledEventEditorComponent,
-    DocumentUploadComponent
+    DocumentUploadComponent,
+    SignatureFieldComponent
   ],
   exports: [
     CommonModule,
@@ -132,7 +137,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule,ListboxModule
+    LightboxModule,ListboxModule,
+    SignatureFieldComponent
   ]
 })
 export class CommonsModule { }

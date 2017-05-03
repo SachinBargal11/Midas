@@ -37,7 +37,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByDoctorId/{id}")]
+        [Route("getByDoctorId/{doctorId}")]
 
         public HttpResponseMessage GetByDoctorId(int doctorId)
         {
@@ -45,7 +45,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getBySpecialityId/{id}")]
+        [Route("getBySpecialityId/{specialtyId}")]
 
         public HttpResponseMessage GetBySpecialityId(int specialtyId)
         {
@@ -53,7 +53,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByRoomId/{id}")]
+        [Route("getByRoomId/{roomId}")]
 
         public HttpResponseMessage GetByRoomId(int roomId)
         {
@@ -61,7 +61,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByPatientVisitId/{id}")]
+        [Route("getByPatientVisitId/{patientVisitId}")]
 
         public HttpResponseMessage GetByPatientVisitId(int patientVisitId)
         {
