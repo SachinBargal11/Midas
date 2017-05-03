@@ -55,9 +55,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
         #region Get By ObjectType
-        public override object Get(string objectType)
+        public override object Get(int companyId, string objectType)
         {
-            var documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(p => p.ObjectType == objectType).ToList<DocumentNodeObjectMapping>();
+            var documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(p => p.ObjectType == objectType && (p.companyid == 0 || p.companyid == null)).ToList<DocumentNodeObjectMapping>()
+                                                                                 .Union
+                                              (_context.DocumentNodeObjectMappings.Where(p => p.companyid == companyId && p.ObjectType == objectType).ToList<DocumentNodeObjectMapping>());
 
             List<BO.DocumentNodeObjectMapping> boDocumentNodeObjectMapping = new List<BO.DocumentNodeObjectMapping>();
             if (documentNodeObjectMappingDB == null)

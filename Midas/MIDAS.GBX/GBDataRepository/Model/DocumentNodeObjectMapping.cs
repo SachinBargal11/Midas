@@ -17,5 +17,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public int id { get; set; }
         public string ObjectType { get; set; }
         public string ChildNode { get; set; }
+        public Nullable<int> companyid { get; set; }
+    
+        public virtual Company Company { get; set; }
     }
 }

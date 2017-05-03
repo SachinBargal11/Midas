@@ -215,6 +215,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_DocumentNodeObjectMapping_Company" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
