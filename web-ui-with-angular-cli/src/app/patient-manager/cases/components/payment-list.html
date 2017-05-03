@@ -1,0 +1,38 @@
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbb type="text" class="form-control" style="float:left" placeholder="Search By Keywords">
+</div>
+</div>
+
+<p-dataTable [value]="payment" [(selection)]="selectedPayment" [rows]="10" [paginator]="true" [pageLinks]="2"
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true">
+    <header>Payment</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case" header="Case" [sortable]="true">
+         
+    </p-column>
+
+    <p-column field="patientName" header="Patient Name" [sortable]="true">
+    </p-column>
+        
+
+    <p-column field="dateOfAccident" header="Date of Accident" [sortable]="true">
+    </p-column>
+
+    <p-column field="insuranceName" header="Insurance Name" [sortable]="true">
+    </p-column>
+
+    <p-column field="billed" header="Billed ($)" [sortable]="true"></p-column>
+    <p-column field="paid" header="Paid ($)" [sortable]="true"></p-column>
+    <p-column field="outstanding" header="Outstanding ($)" [sortable]="true"></p-column>
+    <p-column field="writOff" header="WriteOff ($)" [sortable]="true"></p-column>
+    <p-column field="companyName" header="Company Name" [sortable]="true"></p-column>
+
+
+    <!--<p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-payment="rowData" pTemplate="body">
+            <a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>
+        </ng-template>
+    </p-column>-->
+</p-dataTable>

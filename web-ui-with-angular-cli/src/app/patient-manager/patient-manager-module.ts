@@ -101,6 +101,8 @@ import { VisitShellComponent } from './cases/components/visit-shell';
 import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
 import { PendingReferralsComponent } from './referals/components/pending-referrals';
+import { BillingInfoComponent } from './cases/components/billing'
+import { PaymentListComponent } from './cases/components/payment-list';
 
 
 @NgModule({
@@ -166,8 +168,9 @@ import { PendingReferralsComponent } from './referals/components/pending-referra
         VisitShellComponent,
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,
-        PendingReferralsComponent
-        
+        PendingReferralsComponent,
+        BillingInfoComponent,
+        PaymentListComponent
 
         
     ],
