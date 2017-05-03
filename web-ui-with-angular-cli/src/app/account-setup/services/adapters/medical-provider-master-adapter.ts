@@ -9,6 +9,8 @@ export class MedicalProviderMasterAdapter {
         if (data) {
             medicalProviderMaster = new MedicalProviderMaster({
                 id: data.id,
+                name: data.name,
+                companyType: data.companyType,
                 companyId: data.companyId,
                 user: UserAdapter.parseResponse(data.user),
 

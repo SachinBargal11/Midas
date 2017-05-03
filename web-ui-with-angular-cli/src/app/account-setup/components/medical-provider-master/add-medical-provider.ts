@@ -19,7 +19,12 @@ import { LocationsStore } from '../../../medical-provider/locations/stores/locat
 import { AppValidators } from '../../../commons/utils/AppValidators';
 // import { AuthenticationService } from '../../../account/services/authentication-service';
 // import { RegistrationService } from '../services/registration-service';
-
+import { Company } from '../../../account/models/company';
+import { Account } from '../../../account/models/account';
+import { User } from '../../../commons/models/user';
+import { UserRole } from '../../../commons/models/user-role';
+import { UserType } from '../../../commons/models/enums/user-type';
+import { Contact } from '../../../commons/models/contact';
 
 @Component({
     selector: 'add-medical-provider',
@@ -44,6 +49,8 @@ export class AddMedicalProviderComponent implements OnInit {
         // private _registrationService: RegistrationService,
         private _elRef: ElementRef,
         private _progressBarService: ProgressBarService,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
+        public _route: ActivatedRoute,
 
     ) {
         this.providerform = this.fb.group({
@@ -64,12 +71,57 @@ export class AddMedicalProviderComponent implements OnInit {
         console.log(this.inputCancel);
     }
     closeDialog() {
-    this.closeDialogBox.emit();
+        this.closeDialogBox.emit();
     }
     saveMedicalProvider() {
         this.isSaveProgress = true;
         let providerformValues = this.providerform.value;
         let result;
+        let provider = {
+            company: {
+                Id: this._sessionStore.session.currentCompany.id
+            },
+            signUp: {
+                user: {
+                    userType: UserType.STAFF,
+                    userName: this.providerform.value.email,
+                    firstName: this.providerform.value.firstName,
+                    lastName: this.providerform.value.lastName
+                },
+                contactInfo: {
+                    cellPhone: this.providerform.value.phoneNo.replace(/\-/g, ''),
+                    emailAddress: this.providerform.value.email,
+                    preferredCommunication: 1
+                },
+                role: {
+                    name: 'Admin',
+                    roleType: 'Admin',
+                    status: 'active'
+                },
+                company: {
+                    name: this.providerform.value.companyName,
+                    taxId: this.providerform.value.taxId,
+                    companyType: this.providerform.value.companyType,
+                    subsCriptionType: this.providerform.value.subscriptionPlan
+                }
+            }
+        };
+        result = this._medicalProviderMasterStore.addMedicalProvider(provider);
+        result.subscribe(
+            (response) => {
+                this._notificationsService.success('Welcome!', 'Your company has been registered successfully!.');
+                setTimeout(() => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                }, 3000);
+            },
+            (error) => {
+                this.isSaveProgress = false;
+                let errString = 'Unable to Register User.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this.isSaveProgress = false;
+            });
 
 
     }
