@@ -214,7 +214,7 @@
 
 <p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <div *ngIf="selectedVisit">
+    <div *ngIf="selectedVisit && visitDialogVisible">
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
