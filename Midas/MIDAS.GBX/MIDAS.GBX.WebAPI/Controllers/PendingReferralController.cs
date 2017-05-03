@@ -36,6 +36,47 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByDoctorId/{id}")]
+
+        public HttpResponseMessage GetByDoctorId(int doctorId)
+        {
+            return requestHandler.GetByDoctorId(Request, doctorId);
+        }
+
+        [HttpGet]
+        [Route("getBySpecialityId/{id}")]
+
+        public HttpResponseMessage GetBySpecialityId(int specialtyId)
+        {
+            return requestHandler.GetBySpecialityId(Request, specialtyId);
+        }
+
+        [HttpGet]
+        [Route("getByRoomId/{id}")]
+
+        public HttpResponseMessage GetByRoomId(int roomId)
+        {
+            return requestHandler.GetByRoomId(Request, roomId);
+        }
+
+        [HttpGet]
+        [Route("getByPatientVisitId/{id}")]
+
+        public HttpResponseMessage GetByPatientVisitId(int patientVisitId)
+        {
+            return requestHandler.GetByPatientVisitId(Request, patientVisitId);
+        }
+
+
+        [HttpPost]
+        [Route("Add")]
+
+        public HttpResponseMessage Post([FromBody]PendingReferral pendingReferral)
+        {
+            return requestHandler.CreateGbObject(Request, pendingReferral);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

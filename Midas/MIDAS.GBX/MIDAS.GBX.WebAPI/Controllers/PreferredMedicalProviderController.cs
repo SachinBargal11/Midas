@@ -12,11 +12,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
     public class PreferredMedicalProviderController : ApiController
     {
-        private IRequestHandler<PreferredMedicalProvider> requestHandler;
+        private IRequestHandler<PreferredMedicalProviderSignUp> requestHandler;
 
         public PreferredMedicalProviderController()
         {
-            requestHandler = new GbApiRequestHandler<PreferredMedicalProvider>();
+            requestHandler = new GbApiRequestHandler<PreferredMedicalProviderSignUp>();
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        public HttpResponseMessage Post([FromBody]PreferredMedicalProvider data)
+        public HttpResponseMessage Post([FromBody]PreferredMedicalProviderSignUp data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }

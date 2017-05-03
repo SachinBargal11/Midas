@@ -46,6 +46,7 @@ import { LeaveEvent } from '../../../commons/models/leave-event';
 import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
+import { ProcedureStore } from '../../../commons/stores/procedure-store';
 
 @Component({
     selector: 'patient-visit',
@@ -117,6 +118,10 @@ export class PatientVisitComponent implements OnInit {
     visitInfo: string = '';
     isAddNewPatient: boolean = false;
     isGoingOutOffice: boolean = false;
+    isProcedureCode: boolean = false;
+    procedures: Procedure[];
+    selectedProcedures: Procedure[];
+    selectedSpeciality: Speciality;
 
 
     eventRenderer: Function = (event, element) => {
@@ -157,12 +162,14 @@ export class PatientVisitComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _roomsService: RoomsService,
         private _specialityService: SpecialityService,
+        private _procedureStore: ProcedureStore,
         private confirmationService: ConfirmationService
     ) {
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required],
             isAddNewPatient: [''],
-            isGoingOutOffice: ['']
+            isGoingOutOffice: [''],
+            isProcedureCode: ['']
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
 
@@ -206,13 +213,93 @@ export class PatientVisitComponent implements OnInit {
     }
 
     isFormValid() {
-        if (this.scheduledEventEditorValid && this.patientScheduleForm.valid && !this.isGoingOutOffice) {
+        let validFormForProcedure: boolean = false;
+        if (this.selectedSpeciality) {
+            if (this.selectedSpeciality.mandatoryProcCode) {
+                if (this.selectedProcedures) {
+                    if (this.selectedProcedures.length > 0) {
+                        validFormForProcedure = true;
+                    }
+                }
+            } else {
+                validFormForProcedure = true;
+            }
+        } else if (this.selectedTestId > 0) {
+            if (this.selectedProcedures) {
+                if (this.selectedProcedures.length > 0) {
+                    validFormForProcedure = true;
+                }
+            }
+        }
+        if (this.scheduledEventEditorValid && this.patientScheduleForm.valid && validFormForProcedure && !this.isGoingOutOffice) {
             return true;
-        } else if ( this.isGoingOutOffice && this.leaveEventEditorValid ) {
+        } else if (this.isGoingOutOffice && this.leaveEventEditorValid) {
             return true;
         } else {
             return false;
         }
+    }
+
+
+    loadProceduresForSpeciality(specialityId: number) {
+        this._progressBarService.show();
+        let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
+        result.subscribe(
+            (procedures: Procedure[]) => {
+                // this.procedures = procedures;
+                let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+                    return currentProcedure.id;
+                });
+                let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+                    return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+                });
+                this.procedures = procedureDetails;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadProceduresForRoomTest(roomTestId: number) {
+        this._progressBarService.show();
+        let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+        result.subscribe(
+            (procedures: Procedure[]) => {
+                // this.procedures = procedures;
+                let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+                    return currentProcedure.id;
+                });
+                let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+                    return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+                });
+                this.procedures = procedureDetails;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+    fetchSelectedSpeciality(specialityId: number) {
+        this._progressBarService.show();
+        let result = this._specialityService.getSpeciality(specialityId);
+        result.subscribe(
+            (speciality: Speciality) => {
+                this.selectedSpeciality = speciality;
+                if (speciality.mandatoryProcCode) {
+                    this.isProcedureCode = true;
+                }
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     selectLocation() {
@@ -241,7 +328,6 @@ export class PatientVisitComponent implements OnInit {
                         });
                     });
                     this.doctorLocationSchedules = mappedDoctorLocationSchedules;
-
                 }, error => {
                     this.doctorLocationSchedules = [];
                 });
@@ -309,15 +395,23 @@ export class PatientVisitComponent implements OnInit {
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
             this.selectedDoctorId = event.target.value;
-            this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
+            this.selectedSpecialityId = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityId'));
             this.loadLocationDoctorVisits();
             this.fetchDoctorSchedule();
+            this.fetchSelectedSpeciality(this.selectedSpecialityId);
+            this.loadProceduresForSpeciality(this.selectedSpecialityId);
+            this.selectedTestId = 0;
+            this.selectedProcedures = null;
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedRoomId = event.target.value;
-            this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
+            this.selectedTestId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
             this.loadLocationRoomVisits();
             this.fetchRoomSchedule();
+            this.loadProceduresForRoomTest(this.selectedTestId);
+            this.isProcedureCode = true;
+            this.selectedSpeciality = null;
+            this.selectedProcedures = null;
         } else {
             this.selectedMode = 0;
             this.selectLocation();
@@ -763,7 +857,7 @@ export class PatientVisitComponent implements OnInit {
         inputProcedureCodes.forEach(currentProcedureCode => {
             procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
         });
-        
+
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitProcedureCodes: procedureCodes
         }));
@@ -886,6 +980,10 @@ export class PatientVisitComponent implements OnInit {
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
+        let procedureCodes = [];
+        this.selectedProcedures.forEach(currentProcedureCode => {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        });
         if (!this.isGoingOutOffice) {
             updatedEvent = this._scheduledEventEditorComponent.getEditedEvent();
         } else {
@@ -897,7 +995,9 @@ export class PatientVisitComponent implements OnInit {
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
             isOutOfOffice: this.isGoingOutOffice,
             leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
-            leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null
+            leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
+            transportProviderId: updatedEvent ? updatedEvent.transportProviderId : null,
+            patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : null
         }));
         if (updatedVisit.id) {
             if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {

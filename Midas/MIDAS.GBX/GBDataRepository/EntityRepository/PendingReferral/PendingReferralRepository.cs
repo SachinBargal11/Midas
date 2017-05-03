@@ -212,6 +212,162 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)acc_;
         }
 
+        public override object GetByDoctorId(int DoctorId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case")
+                                              .Include("Doctor")
+                                              .Include("Specialty")
+                                              .Include("Room")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                       .Where(p => p.FromDoctorId == DoctorId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<PendingReferral>();
+
+            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            return (object)acc_;
+        }
+
+        public override object GetBySpecialityId(int specialityId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case")
+                                              .Include("Doctor")
+                                              .Include("Specialty")
+                                              .Include("Room")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                       .Where(p => p.ForSpecialtyId == specialityId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<PendingReferral>();
+
+            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            return (object)acc_;
+        }
+
+        public override object GetByRoomId(int RoomId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case")
+                                              .Include("Doctor")
+                                              .Include("Specialty")
+                                              .Include("Room")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                       .Where(p => p.ForRoomId == RoomId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<PendingReferral>();
+
+            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            return (object)acc_;
+        }
+
+        public override object GetByPatientVisitId(int patientVisitId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case")
+                                              .Include("Doctor")
+                                              .Include("Specialty")
+                                              .Include("Room")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                       .Where(p => p.PatientVisitId == patientVisitId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<PendingReferral>();
+
+            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(acc);
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            return (object)acc_;
+        }
+
+
+        #region save
+        public override object Save<T>(T entity)
+        {
+            BO.PendingReferral pendingReferralBO = (BO.PendingReferral)(object)entity;
+            PendingReferral pendingReferralDB = new PendingReferral();
+
+            if (pendingReferralBO != null)
+            {              
+                pendingReferralDB = _context.PendingReferrals.Where(p => p.Id == pendingReferralBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                bool add_pendingReferral = false;
+
+                if (pendingReferralDB == null && pendingReferralBO.ID > 0)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Pending Referral data.", ErrorLevel = ErrorLevel.Error };
+                }
+                else if (pendingReferralDB == null && pendingReferralBO.ID <= 0)
+                {
+                    pendingReferralDB = new PendingReferral();
+                    add_pendingReferral = true;
+                }
+
+
+                pendingReferralDB.PatientVisitId = pendingReferralBO.PatientVisitId;
+                pendingReferralDB.FromCompanyId = pendingReferralBO.FromCompanyId;
+                pendingReferralDB.FromLocationId = pendingReferralBO.FromLocationId;
+                pendingReferralDB.FromDoctorId = pendingReferralBO.FromDoctorId;
+                pendingReferralDB.ForSpecialtyId = pendingReferralBO.ForSpecialtyId;
+                pendingReferralDB.ForRoomId = pendingReferralBO.ForRoomId;
+                pendingReferralDB.ForRoomTestId = pendingReferralBO.ForRoomTestId;
+                pendingReferralDB.IsReferralCreated = pendingReferralBO.IsReferralCreated;
+
+               
+                if (add_pendingReferral == true)
+                {
+                    pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
+                }
+                _context.SaveChanges();
+
+            }
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
+            }
+            _context.SaveChanges();
+
+            ////METHOD TO GENERATE REFFERAL DOCUMENT AND SAVE IN MIDASDOCUMENTS/CASEDOCUMENTS TABLE
+          //  this.GenerateReferralDocument(pendingReferralDB.Id);
+
+            pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case")
+                                              .Include("Doctor")
+                                              .Include("Specialty")
+                                              .Include("Room")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                          .Where(p => p.Id == pendingReferralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                              .FirstOrDefault<PendingReferral>();
+
+
+
+            var res = Convert<BO.PendingReferral, PendingReferral>(pendingReferralDB);
+            return (object)res;
+        }
+        #endregion
+
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

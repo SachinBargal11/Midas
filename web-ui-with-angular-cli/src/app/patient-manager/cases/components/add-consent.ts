@@ -254,8 +254,26 @@ export class AddConsentComponent implements OnInit {
         }
     }
 
-    signedDocumentUploadComplete() {
-
+    signedDocumentUploadComplete(document: Document) {
+        if (document.status == 'Failed') {
+            let notification = new Notification({
+                'title': document.message + '  ' + document.documentName,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Consent Uploaded Successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._router.navigate(['../'], { relativeTo: this._route });
+        }
+        this.loadConsentForm();
     }
 
     signedDocumentUploadError(error: Error) {

@@ -28,7 +28,7 @@ export class ReferralsComponent implements OnInit {
   specialities: Speciality[];
   tests: Tests[];
 
-  selectedMode: number;
+  selectedMode: number = 0;
   selectedDoctorId: number;
   selectedRoomId: number;
   selectedOption: number;
@@ -55,8 +55,10 @@ constructor(
 ngOnInit() {
   this.loadAllSpecialitiesAndTests();
   if (this.selectedVisit.specialtyId) {
+    this.selectedMode = this.selectedVisit.specialtyId;
     this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
   } else if (this.selectedVisit.roomId) {
+    this.selectedMode = this.selectedVisit.room.roomTest.id;
     this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
   }
   this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;

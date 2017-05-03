@@ -70,11 +70,19 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-2"><label class="form-label">All Day</label></div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <p-checkbox binary="checkbox" formControlName="isAllDay" [(ngModel)]="isAllDay"></p-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-2"><label class="form-label">Transportation Required</label></div>
         <div class="col-md-4">
             <div class="form-group">
-                <select formControlName="transportType" [(ngModel)]="transportType" class="select2-arrow form-control">
-                  <option value="0">Select</option>
+                <select formControlName="transportProviderId" [(ngModel)]="transportProviderId" class="select2-arrow form-control">
+                  <option value="0">No Transport</option>
                     <option value="1">Ambulance</option>
                     <option value="2">Private Vehicle</option>
                 </select>
@@ -86,19 +94,11 @@
         <div class="col-md-2"><label class="form-label">Referred By</label></div>
         <div class="col-md-4">
             <div class="form-group">
-                <select formControlName="referby" [(ngModel)]="referby" class="select2-arrow form-control">
+                <select formControlName="referredBy" [(ngModel)]="referredBy" class="select2-arrow form-control">
                 <option value=""> Select </option>
                             <option value="1">CodeArrayTech</option>
                             <option value="2">Jio</option>
                 </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">All Day</label></div>
-        <div class="col-md-10">
-            <div class="form-group">
-                <p-checkbox binary="checkbox" formControlName="isAllDay" [(ngModel)]="isAllDay"></p-checkbox>
             </div>
         </div>
     </div>

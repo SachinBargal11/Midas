@@ -235,6 +235,7 @@ export class PatientVisitService {
                     recurrenceException: ''
                 })
             });
+            requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
@@ -263,6 +264,7 @@ export class PatientVisitService {
                     }).join(',')
                 })
             };
+            requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -290,6 +292,7 @@ export class PatientVisitService {
                     }).join(',')
                 })
             });
+            requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
