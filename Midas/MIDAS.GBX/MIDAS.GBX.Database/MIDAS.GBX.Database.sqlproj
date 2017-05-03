@@ -132,6 +132,9 @@
     <Build Include="Tables\Latest Tables\UserPersonalSettings.sql" />
     <Build Include="Tables\Latest Tables\PendingReferral.sql" />
     <Build Include="Tables\Latest Tables\PendingReferralProcedureCodes.sql" />
+    <Build Include="Tables\Latest Tables\DocumentNodes.sql" />
+    <Build Include="Tables\Latest Tables\DocumentNodeObjectMapping.sql" />
+    <Build Include="Tables\VisitDocuments.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
