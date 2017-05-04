@@ -295,11 +295,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (medicalProvider == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
                medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+            }
+
+            return lstprovider;
+        }
+        #endregion
+
+        #region Get By PrefMedProvider Id
+        public override object GetByPrefMedProviderId(int PrefMedProviderId)
+        {
+            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .ToList();
+
+            List<BO.PreferredMedicalProvider> lstprovider = new List<BO.PreferredMedicalProvider>();
+
+            if (medicalProvider == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this preferred Medcial Provider Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
             }
 
             return lstprovider;

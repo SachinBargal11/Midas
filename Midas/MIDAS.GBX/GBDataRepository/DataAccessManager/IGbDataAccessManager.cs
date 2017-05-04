@@ -109,6 +109,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByUserAndCompanyId(int userId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateMedicalProviderWithCompany(int PrefMedProviderId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllMedicalProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByPrefMedProviderId(int PrefMedProviderId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         
     }
 }

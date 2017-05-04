@@ -96,6 +96,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByUserAndCompanyId(HttpRequestMessage request, int userId, int companyId);
         HttpResponseMessage AssociateMedicalProviderWithCompany(HttpRequestMessage request, int PrefMedProviderId, int CompanyId);
         HttpResponseMessage GetAllMedicalProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId);
         
 
     }

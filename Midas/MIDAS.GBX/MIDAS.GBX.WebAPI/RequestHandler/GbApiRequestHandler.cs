@@ -1310,6 +1310,20 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId)
+        {
+            var objResult = dataAccessManager.GetByPrefMedProviderId(PrefMedProviderId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        
 
     }
 }
