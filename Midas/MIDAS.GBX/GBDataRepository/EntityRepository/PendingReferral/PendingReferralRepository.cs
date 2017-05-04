@@ -427,6 +427,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
         }
 
+        public override object GetPendingReferralByCompanyId(int CompanyId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("Doctor")
+                                              .Include("Doctor.User")
+                                              .Include("Specialty")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                       .Where(p => p.FromCompanyId == CompanyId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<PendingReferral>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PendingReferralList> PendingReferralListBO = new List<BO.PendingReferralList>();
+                foreach (PendingReferral item in acc)
+                {
+                    PendingReferralListBO.AddRange(ConvertPendingReferralList<List<BO.PendingReferralList>, PendingReferral>(item));
+                }
+                return PendingReferralListBO;
+            }
+        }
+
         public override object GetByDoctorId(int DoctorId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
