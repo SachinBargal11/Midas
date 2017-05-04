@@ -54,10 +54,10 @@ namespace MIDAS.GBX.BusinessObjects
         public bool RegistrationComplete { get; set; }
 
         [JsonProperty("doctor")]
-        public List<Doctor> Doctor { get; set; }
+        public List<Doctor> Doctors { get; set; }
 
         [JsonProperty("room")]
-        public List<Room> Room { get; set; }
+        public List<Room> Rooms { get; set; }
     }
 
 }
