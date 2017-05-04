@@ -15,7 +15,7 @@ import { MedicalProviderMaster } from '../../models/medical-provider-master';
 import { Location } from '../../../medical-provider/locations/models/location';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
-
+import * as _ from 'underscore';
 @Component({
     selector: 'medical-provider-list',
     templateUrl: './medical-provider-list.html'
@@ -46,17 +46,44 @@ export class MedicalProviderListComponent implements OnInit {
     ) {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadProviders();
+            this.loadAllProviders();
         });
 
     }
     ngOnInit() {
-        this.loadProviders();
+        this.loadAllProviders();
+        // this.loadMedicalProviders();
     }
-    loadProviders() {
-        this.locationsStore.getAllLocationAndTheirCompany()
-            .subscribe((locations) => {
-                this.locations = locations;
+    loadAllProviders() {
+        // this.locationsStore.getAllLocationAndTheirCompany()
+        //     .subscribe((locations) => {
+        //         this.locations = locations;
+        //     });
+
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.getAllProviders()
+            .subscribe((allProviders: MedicalProviderMaster[]) => {
+                this.allProviders = allProviders;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadMedicalProviders() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.getMedicalProviders()
+            .subscribe((providers: MedicalProviderMaster[]) => {
+                this.providers = providers;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
             });
     }
 
@@ -65,8 +92,33 @@ export class MedicalProviderListComponent implements OnInit {
         this.currentProviderId = currentProviderId;
     }
 
-    assignMedicalProvider() {       
+    assignMedicalProvider() {
         if (this.currentProviderId !== 0) {
+            let result;
+            result = this._medicalProviderMasterStore.assignProviders(this.currentProviderId);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Provider assigned successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.loadAllProviders();
+                    this.currentProviderId = 0;
+                },
+                (error) => {
+                    let errString = 'Unable to assign Provider.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                },
+                () => {
+                });
 
         } else {
             let notification = new Notification({

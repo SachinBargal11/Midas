@@ -45,4 +45,19 @@ namespace MIDAS.GBX.BusinessObjects
         public Company PrefMedProvider { get; set; }
     }
 
+    public class PreferredMedicalCompany : GbObject
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("registrationComplete")]
+        public bool RegistrationComplete { get; set; }
+
+        [JsonProperty("doctor")]
+        public List<Doctor> Doctor { get; set; }
+
+        [JsonProperty("room")]
+        public List<Room> Room { get; set; }
+    }
+
 }

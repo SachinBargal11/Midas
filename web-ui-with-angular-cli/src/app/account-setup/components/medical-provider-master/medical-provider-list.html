@@ -11,7 +11,9 @@
                 <div class="form-group">
                     <select type="text" [(ngModel)]="currentProviderId" class="form-control" placeholder="" (change)="selectProviders($event)">
                             <option value="0">-Select Provider-</option>
-                             <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       
+                             <!--<option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       -->
+                              <option *ngFor="let provider of allProviders" value="{{provider.id}}">{{provider.name}} </option>
+                        
                  </select>
                 </div>
             </div>

@@ -42,6 +42,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boPreferredMedicalProvider.CompanyId = preferredMedicalProvider.CompanyId;
             boPreferredMedicalProvider.IsCreated = preferredMedicalProvider.IsCreated;
             boPreferredMedicalProvider.IsDeleted = preferredMedicalProvider.IsDeleted;
+            boPreferredMedicalProvider.CreateByUserID = preferredMedicalProvider.CreateByUserID;
+            boPreferredMedicalProvider.UpdateByUserID = preferredMedicalProvider.UpdateByUserID;
 
             if (preferredMedicalProvider.Company != null)
             {
@@ -77,6 +79,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region New Conversion
+        //public T NewConvert<T, U>(U entity)
+        //{
+        //    //Doctor doctor = entity as Doctor;
+        //    //if (doctor == null)
+        //    //    return default(T);
+
+        //    //BO.Doctor boDoctor = new BO.Doctor();
+
+        //    //boDoctor.ID = doctor.Id;
+
+
+        //    //return (T)(object)boDoctor;
+        //}
+        #endregion
+
         #region Company Conversion
         public T CompanyConvert<T, U>(U entity)
         {
@@ -93,7 +111,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
             boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
             boCompany.RegistrationComplete = company.RegistrationComplete;
-            
+            boCompany.IsDeleted = company.IsDeleted;
+            boCompany.CreateByUserID = company.CreateByUserID;
+            boCompany.UpdateByUserID = company.UpdateByUserID;
+
+
             return (T)(object)boCompany;
         }
         #endregion
@@ -266,28 +288,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
-            //var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Include("Company")
-            //                                                                   .Include("Company1")
-            //                                                                   .Where(p => p.ForCompanyId==id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))                                                                                                       
-            //                                                                   .ToList<PreferredMedicalProvider>();
+            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .ToList();
 
-            BO.PreferredMedicalProviderSignUp preferredMedicalProviderBO = new BO.PreferredMedicalProviderSignUp();
-            List<BO.PreferredMedicalProviderSignUp> boPreferredMedicalProvider = new List<BO.PreferredMedicalProviderSignUp>();
-            //if (preferredMedicalProviderDB == null)
-            //{
-            //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            //}
-            //else
-            //{
+            List<BO.PreferredMedicalProvider> lstprovider = new List<BO.PreferredMedicalProvider>();
 
-            //    foreach (var EachPreferredMedicalProvider in preferredMedicalProviderDB)
-            //    {
-            //        boPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(EachPreferredMedicalProvider));
-            //    }
+            if (medicalProvider == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+               medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+            }
 
-            //}
-
-            return (object)boPreferredMedicalProvider;
+            return lstprovider;
         }
         #endregion
 
@@ -423,25 +438,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             PreferredMedicalProvider preferredMedicalProviderDB = new PreferredMedicalProvider();
 
+            preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
 
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            if (preferredMedicalProviderDB != null)
             {
-                preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
-
-                if (preferredMedicalProviderDB != null)
-                {
-                    preferredMedicalProviderDB.IsDeleted = true;
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                }
-                dbContextTransaction.Commit();
-
+                preferredMedicalProviderDB.IsDeleted = true;
+                _context.SaveChanges();
             }
-            var res = ObjectConvert<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(preferredMedicalProviderDB);
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(preferredMedicalProviderDB);
             return (object)res;
         }
         #endregion

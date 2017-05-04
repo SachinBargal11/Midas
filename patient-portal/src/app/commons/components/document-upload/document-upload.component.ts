@@ -36,16 +36,17 @@ export class DocumentUploadComponent implements OnInit {
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
   @Input() isElectronicSignatureOn: boolean = false;
-  @Output() signedDocumentUploadComplete: EventEmitter<Document[]> = new EventEmitter();
+  @Output() signedDocumentUploadComplete: EventEmitter<Document> = new EventEmitter();
   @Output() signedDocumentUploadError: EventEmitter<Error> = new EventEmitter();
 
   @Input() url: string;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
+
+
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
   @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
-
 
   @Input() changeCompneyConsenturl: string;
 
@@ -63,7 +64,6 @@ export class DocumentUploadComponent implements OnInit {
       signatureField: ['', Validators.required],
       iAgreeChkBox: [false, Validators.pattern('true')]
     });
-
   }
 
   ngOnInit() {
@@ -112,10 +112,10 @@ export class DocumentUploadComponent implements OnInit {
       base64Data: this.sigs.first.signature
     });
     this._documentUploadService.uploadSignedDocument(this.signedDocumentUploadUrl, this.signedDocumentPostRequestData)
-      .then((documents: Document[]) => {
+      .then((document: Document) => {
         this.digitalForm.reset();
         this.clear();
-        this.signedDocumentUploadComplete.emit(documents);
+        this.signedDocumentUploadComplete.emit(document);
       })
       .catch((error) => {
         this.digitalForm.reset();

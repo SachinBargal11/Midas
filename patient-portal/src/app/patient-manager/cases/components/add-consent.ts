@@ -74,8 +74,7 @@ export class AddConsentComponent implements OnInit {
     changeCompneyConsenturl: SafeResourceUrl;
   
     constructor(
-        private fb: FormBuilder,
-        private service: ConsentService,
+        private fb: FormBuilder,       
         private _router: Router,
         private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
