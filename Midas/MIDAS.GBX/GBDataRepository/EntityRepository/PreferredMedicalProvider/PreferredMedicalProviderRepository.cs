@@ -427,30 +427,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            //var Company = _context.Companies.Where(p => medicalProvider.Contains(p.id) && p.RegistrationComplete == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                                           .Select(p => p.id)   
-            //                                                           .ToList();
-
-            //var User = _context.UserCompanies.Where(p => Company.Contains(p.CompanyID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                                     .Select(p => p.UserID)
-            //                                                     .ToList();
-
-            //var doctor = _context.Doctors.Where(p => User.Contains(p.Id) && p.IsCalendarPublic == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                             .ToList();
-
-            //List<BO.Doctor> doctorList = new List<BO.Doctor>();
-
-            //if (doctor == null)
-            //{
-            //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            //}
-            //else
-            //{
-            //    doctor.ForEach(item => doctorList.Add(NewConvert<BO.Doctor, Doctor>(item)));
-            //}
-
-
-
             return PreferredMedicalCompanyBO;
         }
         #endregion
