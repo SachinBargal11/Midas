@@ -547,8 +547,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        
 
+        public virtual Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

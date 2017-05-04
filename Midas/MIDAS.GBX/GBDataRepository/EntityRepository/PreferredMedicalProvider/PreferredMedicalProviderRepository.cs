@@ -49,11 +49,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company Company = new BO.Company();
                
-                if (preferredMedicalProvider.Company.IsDeleted == false)
+                if (preferredMedicalProvider.Company.IsDeleted.HasValue == false 
+                    || (preferredMedicalProvider.Company.IsDeleted.HasValue == true && preferredMedicalProvider.Company.IsDeleted.Value == false))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
                         Company = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company);
+                        Company.Locations = null;
                     }
                 }
 
@@ -64,11 +66,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company Company = new BO.Company();
 
-                if (preferredMedicalProvider.Company1.IsDeleted == false)
+                if (preferredMedicalProvider.Company1.IsDeleted.HasValue == false 
+                    || (preferredMedicalProvider.Company1.IsDeleted.HasValue == true && preferredMedicalProvider.Company1.IsDeleted.Value == false))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
                         Company = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);
+                        Company.Locations = null;
                     }
                 }
 
@@ -80,19 +84,96 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region New Conversion
-        //public T NewConvert<T, U>(U entity)
-        //{
-        //    //Doctor doctor = entity as Doctor;
-        //    //if (doctor == null)
-        //    //    return default(T);
+        public T ConvertPreferredMedicalCompany<T, U>(U entity)
+        {
+            Company company = entity as Company;
+            if (company == null)
+                return default(T);
 
-        //    //BO.Doctor boDoctor = new BO.Doctor();
+            BO.PreferredMedicalCompany PreferredMedicalCompanyBO = new BO.PreferredMedicalCompany();
 
-        //    //boDoctor.ID = doctor.Id;
+            PreferredMedicalCompanyBO.ID = company.id;
+            PreferredMedicalCompanyBO.Name = company.Name;            
+            PreferredMedicalCompanyBO.RegistrationComplete = company.RegistrationComplete;
+            PreferredMedicalCompanyBO.IsDeleted = company.IsDeleted;
+            PreferredMedicalCompanyBO.CreateByUserID = company.CreateByUserID;
+            PreferredMedicalCompanyBO.UpdateByUserID = company.UpdateByUserID;
 
 
-        //    //return (T)(object)boDoctor;
-        //}
+            return (T)(object)PreferredMedicalCompanyBO;
+        }
+        #endregion
+
+        #region Entity Conversion
+        public T ConvertDoctorAndRoom<T, U>(U entity)
+        {
+            if (entity is Doctor)
+            {
+                Doctor doctor = entity as Doctor;
+
+                if (doctor == null)
+                    return default(T);
+
+                BO.Doctor doctorBO = new BO.Doctor();
+
+                doctorBO.ID = doctor.Id;
+                doctorBO.LicenseNumber = doctor.LicenseNumber;
+                doctorBO.WCBAuthorization = doctor.WCBAuthorization;
+                doctorBO.WcbRatingCode = doctor.WcbRatingCode;
+                doctorBO.NPI = doctor.NPI;
+                doctorBO.Title = doctor.Title;
+                doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxType;
+
+                if (doctor.IsDeleted.HasValue)
+                    doctorBO.IsDeleted = doctor.IsDeleted.Value;
+                if (doctor.UpdateByUserID.HasValue)
+                    doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
+
+                doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
+
+                if (doctor.User != null)
+                {
+                    if (doctor.User.IsDeleted.HasValue == false || (doctor.User.IsDeleted.HasValue == true && doctor.User.IsDeleted.Value == false))
+                    {
+                        BO.User boUser = new BO.User();
+                        using (UserRepository sr = new UserRepository(_context))
+                        {
+                            boUser = sr.Convert<BO.User, User>(doctor.User);
+                            boUser.AddressInfo = null;
+                            boUser.ContactInfo = null;
+                            boUser.UserCompanies = null;
+                            boUser.Roles = null;
+                            doctorBO.user = boUser;
+                        }
+                    }
+
+                }
+
+                return (T)(object)doctorBO;
+            }
+            else if (entity is Room)
+            {
+                Room room = entity as Room;
+
+                if (room == null)
+                    return default(T);
+
+                BO.Room roomBO = new BO.Room();
+                roomBO.ID = room.id;
+                roomBO.name = room.Name;
+                roomBO.contactersonName = room.ContactPersonName;
+                roomBO.phone = room.Phone;
+
+                if (room.IsDeleted.HasValue)
+                    roomBO.IsDeleted = room.IsDeleted.Value;
+                if (room.UpdateByUserID.HasValue)
+                    roomBO.UpdateByUserID = room.UpdateByUserID.Value;
+
+                return (T)(object)roomBO;
+            }
+
+            return default(T);
+        }
         #endregion
 
         #region Company Conversion
@@ -299,10 +380,82 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-               medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+                medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
             }
 
             return lstprovider;
+        }
+        #endregion
+
+        #region Get By Company ID
+        public override object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        {
+            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId 
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .Select(p => p.Company1)
+                                                                    .ToList();
+
+            List<BO.PreferredMedicalCompany> PreferredMedicalCompanyBO = new List<BO.PreferredMedicalCompany>();
+            medicalProvider.ForEach(p => PreferredMedicalCompanyBO.Add(ConvertPreferredMedicalCompany<BO.PreferredMedicalCompany, Company>(p)));
+
+            foreach (var eachMedicalProvider in PreferredMedicalCompanyBO)
+            {
+                if (eachMedicalProvider.RegistrationComplete == true)
+                {
+                    var locations = _context.Locations.Where(p => p.CompanyID == eachMedicalProvider.ID
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .Select(p => p.id);
+
+                    var usersPublic = _context.UserPersonalSettings.Where(p => p.CompanyId == eachMedicalProvider.ID && p.IsPublic == true
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                   .Select(p => p.UserId);
+
+                    var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true && usersPublic.Contains(p.DoctorID) == true
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                  .Select(p => p.Doctor)
+                                                                  .ToList();
+
+                    List<BO.Doctor> doctorsBO = new List<BO.Doctor>();
+                    doctors.ForEach(p => doctorsBO.Add(ConvertDoctorAndRoom<BO.Doctor, Doctor>(p)));
+
+                    eachMedicalProvider.Doctors = doctorsBO;
+
+                    var rooms = _context.Rooms.Where(p => locations.Contains(p.LocationID) == true
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .ToList();
+
+                    List<BO.Room> roomsBO = new List<BO.Room>();
+                    rooms.ForEach(p => roomsBO.Add(ConvertDoctorAndRoom<BO.Room, Room>(p)));
+
+                    eachMedicalProvider.Rooms = roomsBO;
+                }                
+            }
+
+            //var Company = _context.Companies.Where(p => medicalProvider.Contains(p.id) && p.RegistrationComplete == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                           .Select(p => p.id)   
+            //                                                           .ToList();
+
+            //var User = _context.UserCompanies.Where(p => Company.Contains(p.CompanyID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                     .Select(p => p.UserID)
+            //                                                     .ToList();
+
+            //var doctor = _context.Doctors.Where(p => User.Contains(p.Id) && p.IsCalendarPublic == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                             .ToList();
+
+            //List<BO.Doctor> doctorList = new List<BO.Doctor>();
+
+            //if (doctor == null)
+            //{
+            //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //}
+            //else
+            //{
+            //    doctor.ForEach(item => doctorList.Add(NewConvert<BO.Doctor, Doctor>(item)));
+            //}
+
+
+
+            return PreferredMedicalCompanyBO;
         }
         #endregion
 
