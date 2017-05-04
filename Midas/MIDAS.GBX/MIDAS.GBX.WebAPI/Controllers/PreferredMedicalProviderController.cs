@@ -48,6 +48,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, CompanyId);
         }
 
+        [HttpGet]
+        [Route("getByPrefMedProviderId/{PrefMedProviderId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByPrefMedProviderId(int PrefMedProviderId)
+        {
+            return requestHandler.GetByPrefMedProviderId(Request, PrefMedProviderId);
+        }
+
         [HttpPost]
         [Route("save")]
         public HttpResponseMessage Post([FromBody]PreferredMedicalProviderSignUp data)

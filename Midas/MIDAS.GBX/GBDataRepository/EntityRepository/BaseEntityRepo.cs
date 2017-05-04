@@ -542,7 +542,13 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByPrefMedProviderId(int PrefMedProviderId)
+        {
+            throw new NotImplementedException();
+        }
         
+
         #endregion
     }
 }
