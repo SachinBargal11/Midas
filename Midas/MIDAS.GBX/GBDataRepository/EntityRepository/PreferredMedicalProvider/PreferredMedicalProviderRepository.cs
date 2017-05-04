@@ -80,19 +80,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region New Conversion
-        //public T NewConvert<T, U>(U entity)
-        //{
-        //    //Doctor doctor = entity as Doctor;
-        //    //if (doctor == null)
-        //    //    return default(T);
+        public T NewConvert<T, U>(U entity)
+        {
+            Doctor doctor = entity as Doctor;
+            if (doctor == null)
+                return default(T);
 
-        //    //BO.Doctor boDoctor = new BO.Doctor();
+            BO.Doctor boDoctor = new BO.Doctor();
 
-        //    //boDoctor.ID = doctor.Id;
+            boDoctor.ID = doctor.Id;
+            boDoctor.LicenseNumber= doctor.LicenseNumber;
+            boDoctor.NPI = doctor.NPI;
+            boDoctor.Title = doctor.Title;
+
+            if (doctor.User != null)
+            {
+                if (doctor.User.IsDeleted.HasValue == false || (doctor.User.IsDeleted.HasValue == true && doctor.User.IsDeleted.Value == false))
+                {
+                    BO.User boUser = new BO.User();
+                    using (UserRepository sr = new UserRepository(_context))
+                    {
+                        boUser = sr.Convert<BO.User, User>(doctor.User);
+                        boDoctor.user = boUser;
+                    }
+
+                    if (doctor.DoctorSpecialities != null)
+                    {
+                        List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+                        foreach (var item in doctor.DoctorSpecialities)
+                        {
+
+                            if (item.IsDeleted == false)
+                            {
+                                using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                                {
+                                    lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                                }
+                            }
+                        }
+                        boDoctor.DoctorSpecialities = lstDoctorSpecility;
+                    }
+                 }
+
+            }
 
 
-        //    //return (T)(object)boDoctor;
-        //}
+            return (T)(object)boDoctor;
+        }
         #endregion
 
         #region Company Conversion
@@ -285,24 +319,57 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        //#region Get By Company ID
+        //public override object GetByCompanyId(int id)
+        //{
+        //    var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                            .ToList();
+
+        //    List<BO.PreferredMedicalProvider> lstprovider = new List<BO.PreferredMedicalProvider>();
+
+        //    if (medicalProvider == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    else
+        //    {
+        //       medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+        //    }
+
+        //    return lstprovider;
+        //}
+        //#endregion
+
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
             var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                    .ToList();
+                                                                   .Select(p => p.PrefMedProviderId)
+                                                                                .ToList();
 
-            List<BO.PreferredMedicalProvider> lstprovider = new List<BO.PreferredMedicalProvider>();
+            var Company = _context.Companies.Where(p => medicalProvider.Contains(p.id) && p.RegistrationComplete == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                       .Select(p => p.id)   
+                                                                       .ToList();
 
-            if (medicalProvider == null)
+            var User = _context.UserCompanies.Where(p => Company.Contains(p.CompanyID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .Select(p => p.UserID)
+                                                                 .ToList();
+
+            var doctor = _context.Doctors.Where(p => User.Contains(p.Id) && p.IsCalendarPublic == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .ToList();
+
+            List<BO.Doctor> doctorList = new List<BO.Doctor>();
+
+            if (doctor == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
-               medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+                doctor.ForEach(item => doctorList.Add(NewConvert<BO.Doctor, Doctor>(item)));
             }
 
-            return lstprovider;
+            return doctorList;
         }
         #endregion
 
