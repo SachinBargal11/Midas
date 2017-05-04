@@ -27,25 +27,39 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllMedicalProviderExcludeAssigned/{CompanyId}")]
+        [Route("getAllMedicalProviderExcludeAssigned/{CompanyId}")]
         public HttpResponseMessage GetAllMedicalProviderExcludeAssigned(int CompanyId)
         {
             return requestHandler.GetAllMedicalProviderExcludeAssigned(Request, CompanyId);
         }
 
         [HttpGet]
-        [Route("Get/{Id}")]
+        [Route("get/{Id}")]
         public HttpResponseMessage Get(int Id)
         {
             return requestHandler.GetObject(Request, Id);
         }
 
+        [HttpGet]
+        [Route("getByCompanyId/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetGbObjects(Request, CompanyId);
+        }
 
         [HttpPost]
-        [Route("Save")]
+        [Route("save")]
         public HttpResponseMessage Post([FromBody]PreferredMedicalProviderSignUp data)
         {
             return requestHandler.CreateGbObject(Request, data);
+        }
+
+        [HttpGet]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
         }
 
         protected override void Dispose(bool disposing)
