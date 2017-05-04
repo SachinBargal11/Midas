@@ -313,6 +313,9 @@
     <Compile Include="Model\Referral.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Referral2.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ReferralDocument.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

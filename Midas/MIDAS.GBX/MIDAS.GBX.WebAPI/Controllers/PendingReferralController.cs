@@ -68,6 +68,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientVisitId(Request, patientVisitId);
         }
 
+        [HttpGet]
+        [Route("dismissPendingReferral/{PendingReferralId}/{userId}")]
+
+        public HttpResponseMessage DismissPendingReferral(int PendingReferralId,int userId)
+        {
+            return requestHandler.DismissPendingReferral(Request, PendingReferralId, userId);
+        }
+        
 
         [HttpPost]
         [Route("Add")]

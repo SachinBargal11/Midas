@@ -20,6 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PatientVisitDiagnosisCodes = new HashSet<PatientVisitDiagnosisCode>();
             this.PatientVisitProcedureCodes = new HashSet<PatientVisitProcedureCode>();
             this.PendingReferrals = new HashSet<PendingReferral>();
+            this.Referral2 = new HashSet<Referral2>();
         }
     
         public int Id { get; set; }
@@ -60,5 +61,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PendingReferral> PendingReferrals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Referral2> Referral2 { get; set; }
     }
 }
