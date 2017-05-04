@@ -24,6 +24,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
             this.DiagnosisCodes = new HashSet<DiagnosisCode>();
             this.DiagnosisTypes = new HashSet<DiagnosisType>();
+            this.DocumentNodeObjectMappings = new HashSet<DocumentNodeObjectMapping>();
             this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
             this.Notifications = new HashSet<Notification>();
@@ -33,10 +34,11 @@ namespace MIDAS.GBX.DataRepository.Model
             this.ProcedureCodes = new HashSet<ProcedureCode>();
             this.Referrals = new HashSet<Referral>();
             this.Referrals1 = new HashSet<Referral>();
+            this.Referral2 = new HashSet<Referral2>();
+            this.Referral21 = new HashSet<Referral2>();
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
             this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
-            this.DocumentNodeObjectMappings = new HashSet<DocumentNodeObjectMapping>();
         }
     
         public int id { get; set; }
@@ -75,6 +77,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiagnosisType> DiagnosisTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Invitation> Invitations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Location> Locations { get; set; }
@@ -93,12 +97,14 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Referral> Referrals1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Referral2> Referral2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Referral2> Referral21 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPersonalSetting> UserPersonalSettings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
     }
 }

@@ -34,6 +34,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }
 
+        [JsonProperty("dismissedBy")]
+        public int? DismissedBy { get; set; }
+
         [JsonProperty("patientVisit")]
         public PatientVisit2 PatientVisit2 { get; set; }
 

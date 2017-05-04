@@ -43,7 +43,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             pendingReferralBO.ForSpecialtyId = pendingReferral.ForSpecialtyId;
             pendingReferralBO.ForRoomId = pendingReferral.ForRoomId;
             pendingReferralBO.ForRoomTestId = pendingReferral.ForRoomTestId;
-            pendingReferralBO.IsReferralCreated = pendingReferral.IsReferralCreated;        
+            pendingReferralBO.IsReferralCreated = pendingReferral.IsReferralCreated;
+            pendingReferralBO.DismissedBy = pendingReferral.DismissedBy;
 
             if (pendingReferral.PatientVisit2 != null)
             {
@@ -419,6 +420,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
         }
 
+        public override object DismissPendingReferral(int PendingReferralId, int userId)
+        {
+            PendingReferral pendingReferral = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("Doctor")
+                                              .Include("Doctor.User")
+                                              .Include("Specialty")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                               .Where(p => p.Id == PendingReferralId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .FirstOrDefault<PendingReferral>();
+
+            if (pendingReferral == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                pendingReferral.DismissedBy = userId;
+            }
+        
+            _context.SaveChanges();
+
+            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(pendingReferral);
+            
+            return (object)acc_;
+        }
+
         #region save
         public override object Save<T>(T entity)
         {
@@ -464,8 +495,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 pendingReferralDB.ForRoomId = pendingReferralBO.ForRoomId;
                 pendingReferralDB.ForRoomTestId = pendingReferralBO.ForRoomTestId;
                 pendingReferralDB.IsReferralCreated = pendingReferralBO.IsReferralCreated;
+                pendingReferralDB.DismissedBy = pendingReferralBO.DismissedBy;
 
-               
+
                 if (add_pendingReferral == true)
                 {
                     pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);

@@ -1051,6 +1051,20 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage DismissPendingReferral(HttpRequestMessage request, int PendingReferralId, int userId)
+        {
+            var objResult = dataAccessManager.DismissPendingReferral(PendingReferralId, userId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+    
         public HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail)
         {
             var objResult = dataAccessManager.AssociateUserToCompany(UserName, CompanyId, sendEmail);
