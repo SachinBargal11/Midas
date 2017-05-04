@@ -17,7 +17,7 @@
                 <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
                     <select [(ngModel)]="selectedCompany" formControlName="company" type="text" (change)="selectcompany($event)" class="form-control"
                         placeholder="" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
-                            <!--<option value="1">-Select company--</option>-->
+                         
                             <!--<option selected="selected" *ngFor="let currentCompany of companies"  value="{{currentCompany.id}}">{{currentCompany.name}}</option>-->
                             <option selected="selected" *ngFor="let currentCompany of companies" [ngValue]="currentCompany" value="{{currentCompany.id}}">{{currentCompany.name}}</option>
                             </select>

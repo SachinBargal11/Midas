@@ -266,4 +266,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="IsCreated" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="52c4e241-0602-4460-9eb9-7771453be19e" ChangeDateTime="05/04/2017 12:33:21">
+    <Property Name="ElementName" Value="[dbo].[Referral].[CaseId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Referral]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PendingReferralId" />
+  </Operation>
 </Operations>

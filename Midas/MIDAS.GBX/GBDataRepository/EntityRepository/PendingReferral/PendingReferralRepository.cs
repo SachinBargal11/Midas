@@ -50,11 +50,95 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (pendingReferral.PatientVisit2.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.IsDeleted.Value == false))
                 {
                     BO.PatientVisit2 boPatientVisit= new BO.PatientVisit2();
-                    using (PatientVisit2Repository cmp = new PatientVisit2Repository(_context))
-                    {
-                        boPatientVisit = cmp.Convert<BO.PatientVisit2, PatientVisit2>(pendingReferral.PatientVisit2);
+                                       
+                        boPatientVisit.ID = pendingReferral.PatientVisit2.Id;
+                        boPatientVisit.CalendarEventId = pendingReferral.PatientVisit2.CalendarEventId;
+                        boPatientVisit.CaseId = pendingReferral.PatientVisit2.CaseId;
+                        boPatientVisit.PatientId = pendingReferral.PatientVisit2.PatientId;
+                        boPatientVisit.LocationId = pendingReferral.PatientVisit2.LocationId;
+                        boPatientVisit.RoomId = pendingReferral.PatientVisit2.RoomId;
+                        boPatientVisit.DoctorId = pendingReferral.PatientVisit2.DoctorId;
+                        boPatientVisit.SpecialtyId = pendingReferral.PatientVisit2.SpecialtyId;
+                        boPatientVisit.EventStart = pendingReferral.PatientVisit2.EventStart;
+                        boPatientVisit.EventEnd = pendingReferral.PatientVisit2.EventEnd;
+                        boPatientVisit.Notes = pendingReferral.PatientVisit2.Notes;
+                        boPatientVisit.VisitStatusId = pendingReferral.PatientVisit2.VisitStatusId;
+                        boPatientVisit.VisitType = pendingReferral.PatientVisit2.VisitType;
+                        boPatientVisit.IsOutOfOffice = pendingReferral.PatientVisit2.IsOutOfOffice;
+                        boPatientVisit.LeaveStartDate = pendingReferral.PatientVisit2.LeaveStartDate;
+                        boPatientVisit.LeaveEndDate = pendingReferral.PatientVisit2.LeaveEndDate;
+                        boPatientVisit.IsTransportationRequired = pendingReferral.PatientVisit2.IsTransportationRequired;
+                        boPatientVisit.TransportProviderId = pendingReferral.PatientVisit2.TransportProviderId;
+                        boPatientVisit.IsCancelled = pendingReferral.PatientVisit2.IsCancelled;
+                        if (pendingReferral.PatientVisit2.Case != null)
+                        {
+                            if (pendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                            {
+                                BO.Case boCase = new BO.Case();
+                                
+                                boCase.ID = pendingReferral.PatientVisit2.Case.Id;
+                                boCase.PatientId = pendingReferral.PatientVisit2.Case.PatientId;
+                                boCase.CaseName = pendingReferral.PatientVisit2.Case.CaseName;
+                                boCase.CaseTypeId = pendingReferral.PatientVisit2.Case.CaseTypeId;
+                                boCase.LocationId = pendingReferral.PatientVisit2.Case.LocationId;
+                                boCase.PatientEmpInfoId = pendingReferral.PatientVisit2.Case.PatientEmpInfoId;
+                                boCase.CarrierCaseNo = pendingReferral.PatientVisit2.Case.CarrierCaseNo;
+                                boCase.CaseStatusId = pendingReferral.PatientVisit2.Case.CaseStatusId;
+                                boCase.AttorneyId = pendingReferral.PatientVisit2.Case.AttorneyId;
+
+                                if (pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.Value == false))
+                                 {
+                                   BO.Patient2 boPatient = new BO.Patient2();
+
+                                    boPatient.ID = pendingReferral.PatientVisit2.Case.Patient2.Id;
+                                    boPatient.SSN = pendingReferral.PatientVisit2.Case.Patient2.SSN;
+                                    boPatient.Weight = pendingReferral.PatientVisit2.Case.Patient2.Weight;
+                                    boPatient.Height = pendingReferral.PatientVisit2.Case.Patient2.Height;
+                                    boPatient.MaritalStatusId = pendingReferral.PatientVisit2.Case.Patient2.MaritalStatusId;
+                                    boPatient.DateOfFirstTreatment = pendingReferral.PatientVisit2.Case.Patient2.DateOfFirstTreatment;
+
+                                   if (pendingReferral.PatientVisit2.Case.Patient2.User.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient2.User.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient2.User.IsDeleted.Value == false))
+                                   {
+                                    BO.User boUser = new BO.User();
+                                    boUser.UserName = pendingReferral.PatientVisit2.Case.Patient2.User.UserName;
+                                    boUser.ID = pendingReferral.PatientVisit2.Case.Patient2.User.id;
+                                    boUser.FirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
+                                    boUser.MiddleName = pendingReferral.PatientVisit2.Case.Patient2.User.MiddleName;
+                                    boUser.LastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+                                    boUser.ImageLink = pendingReferral.PatientVisit2.Case.Patient2.User.ImageLink;
+                                    boUser.UserType = (BO.GBEnums.UserType)pendingReferral.PatientVisit2.Case.Patient2.User.UserType;
+
+                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.Gender.HasValue == true)
+                                        boUser.Gender = (BO.GBEnums.Gender)pendingReferral.PatientVisit2.Case.Patient2.User.Gender;
+
+                                    boUser.CreateByUserID = pendingReferral.PatientVisit2.Case.Patient2.User.CreateByUserID;
+
+                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthEmailEnabled.HasValue)
+                                        boUser.C2FactAuthEmailEnabled = pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthEmailEnabled.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthSMSEnabled.HasValue)
+                                        boUser.C2FactAuthSMSEnabled = pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthSMSEnabled.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.HasValue)
+                                        boUser.DateOfBirth = pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.HasValue)
+                                        boUser.DateOfBirth = pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.Value;
+
+                                    boPatient.User = boUser;
+                                }
+
+                                    boCase.Patient2 = boPatient;
+                                }
+
+                            
+
+                                boPatientVisit.Case = boCase;
+                                
+                            }
+                        }
+                        
+
+                       // boPatientVisit = cmp.Convert<BO.PatientVisit2, PatientVisit2>(pendingReferral.PatientVisit2);
                         pendingReferralBO.PatientVisit2 = boPatientVisit;
-                    }
+                    
                 }
             }
 
@@ -169,13 +253,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+            var acc = _context.PendingReferrals.Include("PatientVisit2")                                              
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
-                                              .Include("Specialty")
-                                              .Include("Room")
+                                              .Include("Doctor.User")
+                                              .Include("Specialty")                                             
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
@@ -195,12 +277,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByCompanyId(int CompanyId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
+                                              .Include("Doctor.User")
                                               .Include("Specialty")
-                                              .Include("Room")
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
@@ -226,12 +306,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByDoctorId(int DoctorId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
+                                              .Include("Doctor.User")
                                               .Include("Specialty")
-                                              .Include("Room")
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
@@ -258,12 +336,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetBySpecialityId(int specialityId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
+                                              .Include("Doctor.User")
                                               .Include("Specialty")
-                                              .Include("Room")
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
@@ -289,12 +365,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByRoomId(int RoomId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
+                                              .Include("Doctor.User")
                                               .Include("Specialty")
-                                              .Include("Room")
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
@@ -320,12 +394,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByPatientVisitId(int patientVisitId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
+                                              .Include("Doctor.User")
                                               .Include("Specialty")
-                                              .Include("Room")
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
@@ -453,12 +525,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             _context.SaveChanges();
 
             pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case")
-                                              .Include("PatientVisit2.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
-                                               .Include("Doctor.User")
+                                              .Include("Doctor.User")
                                               .Include("Specialty")
-                                              .Include("Room")
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")

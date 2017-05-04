@@ -387,7 +387,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Company ID
+        #region Get By GetPreferredCompanyDoctorsAndRoomByCompanyId
         public override object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
         {
             var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId 
@@ -430,30 +430,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     eachMedicalProvider.Rooms = roomsBO;
                 }                
             }
-
-            //var Company = _context.Companies.Where(p => medicalProvider.Contains(p.id) && p.RegistrationComplete == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                                           .Select(p => p.id)   
-            //                                                           .ToList();
-
-            //var User = _context.UserCompanies.Where(p => Company.Contains(p.CompanyID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                                     .Select(p => p.UserID)
-            //                                                     .ToList();
-
-            //var doctor = _context.Doctors.Where(p => User.Contains(p.Id) && p.IsCalendarPublic == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                             .ToList();
-
-            //List<BO.Doctor> doctorList = new List<BO.Doctor>();
-
-            //if (doctor == null)
-            //{
-            //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            //}
-            //else
-            //{
-            //    doctor.ForEach(item => doctorList.Add(NewConvert<BO.Doctor, Doctor>(item)));
-            //}
-
-
 
             return PreferredMedicalCompanyBO;
         }
@@ -585,26 +561,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region GetAll
-        public override object Get()
-        {
-            //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
+        //#region GetAll
+        //public override object Get()
+        //{
+        //    //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
 
-            var acc_ = _context.PreferredMedicalProviders
-                                                         .Include("Company")
-                                                         .Include("Company1").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<PreferredMedicalProvider>();
-            if (acc_ == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            List<BO.PreferredMedicalProviderSignUp> lstPreferredMedicalProvider = new List<BO.PreferredMedicalProviderSignUp>();
-            foreach (PreferredMedicalProvider item in acc_)
-            {
-                lstPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(item));
-            }
-            return lstPreferredMedicalProvider;
-        }
-        #endregion
+        //    var acc_ = _context.PreferredMedicalProviders
+        //                                                 .Include("Company")
+        //                                                 .Include("Company1").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<PreferredMedicalProvider>();
+        //    if (acc_ == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    List<BO.PreferredMedicalProviderSignUp> lstPreferredMedicalProvider = new List<BO.PreferredMedicalProviderSignUp>();
+        //    foreach (PreferredMedicalProvider item in acc_)
+        //    {
+        //        lstPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(item));
+        //    }
+        //    return lstPreferredMedicalProvider;
+        //}
+        //#endregion
 
         #region Delete
         public override object Delete(int id)
