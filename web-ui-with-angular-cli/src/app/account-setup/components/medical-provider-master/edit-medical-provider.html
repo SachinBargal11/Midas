@@ -1,7 +1,7 @@
 <header class="card-header card-header-lg">
     Edit Medical Provider
 </header>
-<div >
+<div *ngIf="medicalProviderMaster">
     <form [formGroup]="providerform" name="providerform" (ngSubmit)="saveMedicalProvider()">
         <section class="card">
             <div class="card-block">
@@ -158,7 +158,7 @@
         <button [disabled]="!providerform.valid || isRegistrationInProgress" type="submit" class="btn btn-success sign-up">Save
                                 <loader [visible]="isRegistrationInProgress"></loader>
                             </button>
-        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+        <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
 
     </form>
 </div>

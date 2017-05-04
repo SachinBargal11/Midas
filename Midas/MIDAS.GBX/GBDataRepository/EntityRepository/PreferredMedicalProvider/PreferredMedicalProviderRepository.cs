@@ -49,11 +49,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company Company = new BO.Company();
                
-                if (preferredMedicalProvider.Company.IsDeleted == false)
+                if (preferredMedicalProvider.Company.IsDeleted.HasValue == false 
+                    || (preferredMedicalProvider.Company.IsDeleted.HasValue == true && preferredMedicalProvider.Company.IsDeleted.Value == false))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
                         Company = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company);
+                        Company.Locations = null;
                     }
                 }
 
@@ -64,11 +66,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company Company = new BO.Company();
 
-                if (preferredMedicalProvider.Company1.IsDeleted == false)
+                if (preferredMedicalProvider.Company1.IsDeleted.HasValue == false 
+                    || (preferredMedicalProvider.Company1.IsDeleted.HasValue == true && preferredMedicalProvider.Company1.IsDeleted.Value == false))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
                         Company = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);
+                        Company.Locations = null;
                     }
                 }
 
