@@ -72,9 +72,9 @@ export class AddConsentComponent implements OnInit {
     signedDocumentPostRequestData: any = {};
     signedDocumentUploadUrl: string = '';
     changeCompneyConsenturl: SafeResourceUrl;
-  
+
     constructor(
-        private fb: FormBuilder,       
+        private fb: FormBuilder,
         private _router: Router,
         private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
@@ -119,7 +119,7 @@ export class AddConsentComponent implements OnInit {
 
     selectcompany(event) {
         // this.selectedcompany = 0;
-        this.currentCompany =  parseInt( event.target.value);
+        this.currentCompany = parseInt(event.target.value);
         this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
         this.signedDocumentPostRequestData = {
@@ -169,8 +169,26 @@ export class AddConsentComponent implements OnInit {
         this.loadConsentForm();
     }
 
-    signedDocumentUploadComplete() {
-
+    signedDocumentUploadComplete(document: Document) {
+        if (document.status == 'Failed') {
+            let notification = new Notification({
+                'title': document.message + '  ' + document.documentName,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Consent Uploaded Successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._router.navigate(['../'], { relativeTo: this._route });
+        }
+        this.loadConsentForm();
     }
 
     signedDocumentUploadError(error: Error) {
@@ -183,7 +201,6 @@ export class AddConsentComponent implements OnInit {
         this._notificationsStore.addNotification(notification);
         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
     }
-
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
