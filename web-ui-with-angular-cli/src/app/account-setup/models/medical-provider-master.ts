@@ -1,26 +1,28 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { User } from '../../commons/models/user';
+import { Company } from '../../account/models/company';
+import { PrefferedProvider } from '../../account-setup/models/preffered-provider';
 
 
 const MedicalProviderMasterRecord = Record({
     id: 0,
     companyId: 0,
-    user: null,
-    name: '',
-    companyType: '',
+    prefMedProviderId: null,
+    company: null,
+    prefferedProvider: null,
+    isCreated: null,
 });
 
 export class MedicalProviderMaster extends MedicalProviderMasterRecord {
 
     id: number;
-    user: User;
     companyId: number;
-    name: string;
-    companyType: string;
-
+    prefMedProviderId: number;
+    company: Company;
+    prefferedProvider: PrefferedProvider;
+    isCreated: boolean;
     constructor(props) {
         super(props);
     }
-
 }
