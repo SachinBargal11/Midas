@@ -43,7 +43,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             pendingReferralBO.ForSpecialtyId = pendingReferral.ForSpecialtyId;
             pendingReferralBO.ForRoomId = pendingReferral.ForRoomId;
             pendingReferralBO.ForRoomTestId = pendingReferral.ForRoomTestId;
-            pendingReferralBO.IsReferralCreated = pendingReferral.IsReferralCreated;        
+            pendingReferralBO.IsReferralCreated = pendingReferral.IsReferralCreated;
+            pendingReferralBO.DismissedBy = pendingReferral.DismissedBy;
 
             if (pendingReferral.PatientVisit2 != null)
             {
@@ -241,6 +242,129 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Entity Conversion
+        public T ConvertPendingReferralList<T, U>(U entity)
+        {
+            PendingReferral pendingReferral = entity as PendingReferral;
+
+            if (pendingReferral == null)
+                return default(T);
+
+            List<BO.PendingReferralList> PendingReferralListBO = new List<BO.PendingReferralList>();
+
+            if (pendingReferral.PendingReferralProcedureCodes != null)
+            {
+                foreach (var eachPendingReferralProcedureCodes in pendingReferral.PendingReferralProcedureCodes)
+                {
+                    if (eachPendingReferralProcedureCodes.IsDeleted.HasValue == false || (eachPendingReferralProcedureCodes.IsDeleted.HasValue == true && eachPendingReferralProcedureCodes.IsDeleted.Value == false))
+                    {
+                        BO.PendingReferralList PendingReferralList = new BO.PendingReferralList();
+
+                        PendingReferralList.ID = pendingReferral.Id;
+                        PendingReferralList.PatientVisitId = pendingReferral.PatientVisitId;
+                        PendingReferralList.FromCompanyId = pendingReferral.FromCompanyId;
+                        PendingReferralList.FromLocationId = pendingReferral.FromLocationId;
+                        PendingReferralList.FromDoctorId = pendingReferral.FromDoctorId;
+                        PendingReferralList.ForSpecialtyId = pendingReferral.ForSpecialtyId;
+                        PendingReferralList.ForRoomId = pendingReferral.ForRoomId;
+                        PendingReferralList.ForRoomTestId = pendingReferral.ForRoomTestId;
+                        PendingReferralList.IsReferralCreated = pendingReferral.IsReferralCreated;
+                        PendingReferralList.DismissedBy = pendingReferral.DismissedBy;
+
+                        if (pendingReferral.Doctor != null)
+                        {
+                            if (pendingReferral.Doctor.IsDeleted.HasValue == false || (pendingReferral.Doctor.IsDeleted.HasValue == true && pendingReferral.Doctor.IsDeleted.Value == false))
+                            {
+                                BO.Doctor boDoctor = new BO.Doctor();
+                                using (DoctorRepository cmp = new DoctorRepository(_context))
+                                {
+                                    boDoctor = cmp.Convert<BO.Doctor, Doctor>(pendingReferral.Doctor);
+                                    PendingReferralList.Doctor = boDoctor;
+                                }
+                            }
+                        }
+
+                        if (pendingReferral.Specialty != null)
+                        {
+                            if (pendingReferral.Specialty.IsDeleted.HasValue == false || (pendingReferral.Specialty.IsDeleted.HasValue == true && pendingReferral.Specialty.IsDeleted.Value == false))
+                            {
+                                BO.Specialty boSpecialty = new BO.Specialty();
+                                using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                                {
+                                    boSpecialty = cmp.Convert<BO.Specialty, Specialty>(pendingReferral.Specialty);
+                                    PendingReferralList.Specialty = boSpecialty;
+                                }
+                            }
+                        }
+
+                        if (pendingReferral.Room != null)
+                        {
+                            if (pendingReferral.Room.IsDeleted.HasValue == false || (pendingReferral.Room.IsDeleted.HasValue == true && pendingReferral.Room.IsDeleted.Value == false))
+                            {
+                                BO.Room boRoom = new BO.Room();
+                                using (RoomRepository cmp = new RoomRepository(_context))
+                                {
+                                    boRoom = cmp.Convert<BO.Room, Room>(pendingReferral.Room);
+                                    PendingReferralList.Room = boRoom;
+                                }
+                            }
+                        }
+
+                        if (pendingReferral.RoomTest != null)
+                        {
+                            if (pendingReferral.RoomTest.IsDeleted.HasValue == false || (pendingReferral.RoomTest.IsDeleted.HasValue == true && pendingReferral.RoomTest.IsDeleted.Value == false))
+                            {
+                                BO.RoomTest boRoomTest = new BO.RoomTest();
+                                using (RoomTestRepository cmp = new RoomTestRepository(_context))
+                                {
+                                    boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(pendingReferral.RoomTest);
+                                    PendingReferralList.RoomTest = boRoomTest;
+                                }
+                            }
+                        }
+
+                        PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
+                        PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
+                        PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
+                        PendingReferralList.FirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
+                        PendingReferralList.LastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+
+                        BO.PendingReferralProcedureCode pendingReferralProcedureCode = new BO.PendingReferralProcedureCode();
+
+                        pendingReferralProcedureCode.ID = eachPendingReferralProcedureCodes.Id;
+                        pendingReferralProcedureCode.PendingReferralId = eachPendingReferralProcedureCodes.PendingReferralId;
+                        pendingReferralProcedureCode.ProcedureCodeId = eachPendingReferralProcedureCodes.ProcedureCodeId;
+
+                        if (eachPendingReferralProcedureCodes.ProcedureCode != null)
+                        {
+                            if (eachPendingReferralProcedureCodes.ProcedureCode.IsDeleted.HasValue == false || (eachPendingReferralProcedureCodes.ProcedureCode.IsDeleted.HasValue == true && eachPendingReferralProcedureCodes.ProcedureCode.IsDeleted.Value == false))
+                            {
+                                BO.ProcedureCode boProcedureCode = new BO.ProcedureCode();
+
+                                boProcedureCode.ID = eachPendingReferralProcedureCodes.ProcedureCode.Id;
+                                boProcedureCode.ProcedureCodeText = eachPendingReferralProcedureCodes.ProcedureCode.ProcedureCodeText;
+                                boProcedureCode.ProcedureCodeDesc = eachPendingReferralProcedureCodes.ProcedureCode.ProcedureCodeDesc;
+                                boProcedureCode.Amount = eachPendingReferralProcedureCodes.ProcedureCode.Amount;
+                                boProcedureCode.CompanyId = eachPendingReferralProcedureCodes.ProcedureCode.CompanyId;
+                                boProcedureCode.SpecialityId = eachPendingReferralProcedureCodes.ProcedureCode.SpecialityId;
+                                boProcedureCode.RoomId = eachPendingReferralProcedureCodes.ProcedureCode.RoomId;
+                                boProcedureCode.RoomTestId = eachPendingReferralProcedureCodes.ProcedureCode.RoomTestId;
+
+                                pendingReferralProcedureCode.ProcedureCode = boProcedureCode;
+                            }
+                        }
+
+                        PendingReferralList.PendingReferralProcedureCode = pendingReferralProcedureCode;
+
+                        PendingReferralListBO.Add(PendingReferralList);
+                    }                    
+                }                
+            }
+            
+            return (T)(object)PendingReferralListBO;
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -300,6 +424,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     lstPendingReferral.Add(Convert<BO.PendingReferral,PendingReferral>(item));
                 }
                 return lstPendingReferral;
+            }
+        }
+
+        public override object GetPendingReferralByCompanyId(int CompanyId)
+        {
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("Doctor")
+                                              .Include("Doctor.User")
+                                              .Include("Specialty")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                       .Where(p => p.FromCompanyId == CompanyId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<PendingReferral>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PendingReferralList> PendingReferralListBO = new List<BO.PendingReferralList>();
+                foreach (PendingReferral item in acc)
+                {
+                    PendingReferralListBO.AddRange(ConvertPendingReferralList<List<BO.PendingReferralList>, PendingReferral>(item));
+                }
+                return PendingReferralListBO;
             }
         }
 
@@ -419,6 +572,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
         }
 
+        public override object DismissPendingReferral(int PendingReferralId, int userId)
+        {
+            PendingReferral pendingReferral = _context.PendingReferrals.Include("PatientVisit2")
+                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("Doctor")
+                                              .Include("Doctor.User")
+                                              .Include("Specialty")
+                                              .Include("RoomTest")
+                                              .Include("PendingReferralProcedureCodes")
+                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
+                                               .Where(p => p.Id == PendingReferralId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .FirstOrDefault<PendingReferral>();
+
+            if (pendingReferral == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                pendingReferral.DismissedBy = userId;
+            }
+        
+            _context.SaveChanges();
+
+            BO.PendingReferral acc_ = Convert<BO.PendingReferral, PendingReferral>(pendingReferral);
+            
+            return (object)acc_;
+        }
+
         #region save
         public override object Save<T>(T entity)
         {
@@ -464,8 +647,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 pendingReferralDB.ForRoomId = pendingReferralBO.ForRoomId;
                 pendingReferralDB.ForRoomTestId = pendingReferralBO.ForRoomTestId;
                 pendingReferralDB.IsReferralCreated = pendingReferralBO.IsReferralCreated;
+                pendingReferralDB.DismissedBy = pendingReferralBO.DismissedBy;
 
-               
+
                 if (add_pendingReferral == true)
                 {
                     pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);

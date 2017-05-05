@@ -136,6 +136,7 @@
     <Build Include="Tables\Latest Tables\DocumentNodeObjectMapping.sql" />
     <Build Include="Tables\VisitDocuments.sql" />
     <Build Include="Tables\Latest Tables\Referral2.sql" />
+    <Build Include="Tables\Latest Tables\ReferralProcedureCodes.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

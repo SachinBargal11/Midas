@@ -92,6 +92,7 @@ namespace MIDAS.GBX.DataAccessManager
         
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object DismissPendingReferral(int PendingReferralId, int userId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object GetByLocationAndPatientId(int LocationId, int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomId(int RoomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -111,5 +112,6 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetAllMedicalProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByPrefMedProviderId(int PrefMedProviderId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetPendingReferralByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

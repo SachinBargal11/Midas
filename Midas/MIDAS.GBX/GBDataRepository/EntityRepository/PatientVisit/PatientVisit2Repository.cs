@@ -7,18 +7,26 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using Twilio;
+using Twilio.Types;
+using Twilio.Rest.Api.V2010.Account;
+using System.Configuration;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class PatientVisit2Repository : BaseEntityRepo, IDisposable
     {
         private DbSet<PatientVisit2> _dbPatientVisit2;
+        private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         public PatientVisit2Repository(MIDASGBXEntities context) : base(context)
         {
             _dbPatientVisit2 = context.Set<PatientVisit2>();
             context.Configuration.ProxyCreationEnabled = false;
-        }
+            dictionary.Add("rageesh.m@greenyourbills.com", "+14252602856");
+            dictionary.Add("slaxman@greenyourbills.com", "+19144004328");
+            dictionary.Add("vgaonkar@greenyourbills.com", "+19147879623");
+       }
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
@@ -484,6 +492,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.CalendarEvent CalendarEventBO = PatientVisit2BO.CalendarEvent;
             List<BO.PatientVisitDiagnosisCode> PatientVisitDiagnosisCodeBOList = PatientVisit2BO.PatientVisitDiagnosisCodes;
             List<BO.PatientVisitProcedureCode> PatientVisitProcedureCodeBOList = PatientVisit2BO.PatientVisitProcedureCodes;
+            string patientUserName = string.Empty;
+            bool sendNotification = false;
 
             PatientVisit2 PatientVisit2DB = new PatientVisit2();
 
@@ -496,7 +506,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (PatientVisit2BO.PatientId == null && PatientVisit2BO.ID > 0)
                 {
                     var patientvisitData = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).Select(p => new { p.PatientId, p.CaseId }).FirstOrDefault();
+                    patientUserName = _context.Users.Where(usr => usr.id == patientvisitData.PatientId).Select(p => p.UserName).FirstOrDefault();
                 }
+
+                if (PatientVisit2BO.PatientId != null && PatientVisit2BO.PatientId > 0)                
+                    patientUserName = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).Select(p => p.UserName).FirstOrDefault();
 
                 if (PatientVisit2BO.IsOutOfOffice != true && PatientVisit2BO.PatientId == null)
                 {
@@ -517,7 +531,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     CalendarEventDB = _context.CalendarEvents.Where(p => p.Id == CalendarEventBO.ID
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                              .FirstOrDefault();
-
+                                        
                     if (CalendarEventDB == null && CalendarEventBO.ID <= 0)
                     {
                         CalendarEventDB = new CalendarEvent();
@@ -527,6 +541,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Calendar Event details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+
+                    if (dictionary.ContainsKey(patientUserName))
+                    {
+                        if (CalendarEventDB.EventStart != CalendarEventBO.EventStart.Value) sendNotification = true;
                     }
 
                     CalendarEventDB.Name = IsEditMode == true && CalendarEventBO.Name == null ? CalendarEventDB.Name : CalendarEventBO.Name;
@@ -555,6 +574,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         CalendarEventDB = _context.CalendarEvents.Add(CalendarEventDB);
                     }
                     _context.SaveChanges();
+
+                    #region send SMS notification 
+                    try
+                    {
+                        if (sendNotification)
+                        {                            
+                            string accountSid = ConfigurationManager.AppSettings.Get("TWILIO_ACCOUNT_ID");      //-- Account SID from twilio.com/console : AC48ba9355b0bae1234caa9e29dc73b407                            
+                            string authToken = ConfigurationManager.AppSettings.Get("TWILIO_AUTH_TOKEN");       //-- bAuth Token from twilio.com/console : 74b9f9f1c60c200d28b8c5b22968e65f
+                            TwilioClient.Init(accountSid, authToken);
+                            var to = new PhoneNumber(dictionary[patientUserName]);
+                            var message = MessageResource.Create(
+                                to,
+                                from: new PhoneNumber(ConfigurationManager.AppSettings.Get("TWILIO_FROM_PHN")), //-- +14252150865
+                                body: "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault()
+                                );
+
+                            string msgid = message.Sid;
+                        }
+                    }
+                    catch (Exception) { }
+                    #endregion
                 }
                 else
                 {
@@ -583,7 +623,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     else if (PatientVisit2DB == null && PatientVisit2BO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Visit dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Visit doesn't exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     //PatientVisit2DB.CalendarEventId = PatientVisit2BO.CalendarEventId.HasValue == false ? PatientVisit2DB.CalendarEventId : PatientVisit2BO.CalendarEventId.Value;
