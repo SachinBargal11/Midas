@@ -6,6 +6,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Rx';
 import { NotificationsService } from 'angular2-notifications';
 import { SelectItem } from 'primeng/primeng';
+import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../services/progress-bar-service';
 import { Procedure } from '../../models/procedure';
 import { ProcedureStore } from '../../stores/procedure-store';
@@ -46,6 +47,7 @@ export class ReferralsComponent implements OnInit {
   constructor(
     private _notificationsService: NotificationsService,
     private fb: FormBuilder,
+    public sessionStore: SessionStore,
     private _progressBarService: ProgressBarService,
     private _procedureStore: ProcedureStore,
     private _specialityStore: SpecialityStore,
@@ -198,7 +200,7 @@ export class ReferralsComponent implements OnInit {
   }
 
   saveReferral() {
-    this.save.emit(this.selectedProcedures);
+    this.save.emit(this.proceduresList);
   }
 
   deleteProcedureCode() {
