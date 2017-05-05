@@ -43,8 +43,11 @@ import { MedicalProviderListComponent } from './components/medical-provider-mast
 // import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
 import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
 
+import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
+import { ProcedureCodeComponent } from './components/account-setting/procedure-code';
 
 
+// AccountSettingShellComponent
 @NgModule({
     imports: [
         CommonModule,
@@ -70,7 +73,9 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
         InsuranceMasterListComponent,
         MedicalProviderListComponent,
         // AddMedicalProviderComponent,
-        EditMedicalProviderComponent
+        EditMedicalProviderComponent,
+        AccountSettingShellComponent,
+        ProcedureCodeComponent
 
     ],
     providers: [
