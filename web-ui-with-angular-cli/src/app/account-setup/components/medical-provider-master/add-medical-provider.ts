@@ -107,10 +107,16 @@ export class AddMedicalProviderComponent implements OnInit {
         result = this._medicalProviderMasterStore.addMedicalProvider(provider);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Your company has been registered successfully!.');
-                setTimeout(() => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                }, 3000);
+                this._notificationsService.success('Welcome!', 'Medical provider has been registered successfully!.');
+                if (!this.inputCancel) {
+                    setTimeout(() => {
+                        this._router.navigate(['../'], { relativeTo: this._route });
+                    }, 3000);
+                }
+                else {
+                    this.closeDialog();
+                    this._router.navigate(['/patient-manager/referrals/pending-referrals'], { relativeTo: this._route });
+                }
             },
             (error) => {
                 this.isSaveProgress = false;

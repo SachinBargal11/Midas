@@ -213,5 +213,8 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select visit to delete');
         }
     }
+       bill(){
+        this._notificationsService.success('Success', 'Bill No AB69852 has been successfully created');
+    }
 
 }

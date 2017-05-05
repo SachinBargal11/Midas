@@ -1,0 +1,43 @@
+<h3> Procedure Codes </h3>
+
+<div>
+    <div class="row">
+        <div class="col-lg-6">
+            <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+        <option value="0">- Select speciality -</option>
+        <optgroup label="Select Specialty">
+           <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        </optgroup>
+        <optgroup label="Select Test">
+           <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+        </optgroup>
+    </select>
+        </div>
+        <div class="col-lg-6">
+            <!--<button type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>-->
+        </div>
+    </div>
+    <label class="warningMsg">{{msg}}</label>
+    <br>
+    <div class="ui-widget-header row">
+        <div class="col-lg-4 input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+</div>
+</div>
+<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+    <header>Procedures</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column header="Procedure Code" field="procedureCodeText" [sortable]="true"></p-column>
+    <p-column header="Description" field="procedureCodeDesc" [sortable]="true"></p-column>
+    <p-column header="Amount" [sortable]="true">
+        <ng-template let-procedure="rowData" pTemplate="body">
+            <input type="number" value={{procedure.amount}} class="form-control" />
+        </ng-template>
+    </p-column>
+</p-dataTable>
+</div>
+<br>
+<button class="btn btn-success sign-up">Save
+    <loader [visible]="isSaveProgress"></loader>
+</button>

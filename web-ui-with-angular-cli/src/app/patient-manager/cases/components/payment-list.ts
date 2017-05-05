@@ -15,13 +15,15 @@ export class PaymentListComponent {
     denialDialogVisible: boolean = false;
     scanUploadDialogVisible: boolean = false;
     verificationDialogVisible: boolean = false;
+    verficationScanUploadDialogVisible: boolean = false;
+    denialScanUploadDialogVisible: boolean = false;
 
 
     constructor(
         private fb: FormBuilder,
         private _elRef: ElementRef
     ) {
-          this.verificationform = this.fb.group({
+        this.verificationform = this.fb.group({
             dov: [''],
             verificationDescription: [''],
         });
@@ -40,24 +42,30 @@ export class PaymentListComponent {
     }
     payment: any[] = [
         {
-            billNumber: "ab69852", checkNumber: "14523", postedDate: "01/05/2017",
+            billNumber: "AB69852", checkNumber: "14523", postedDate: "01/05/2017",
             checkDate: "03/05/2016", checkAmount: "$560", paymentType: "Recieved",
-            interest: "", description: "", checks: "Scan/Upload",
+            interest: "", checks: "Scan/Upload",
             view: "", denials: "Enter Denial", verifications: "Enter Verification", delete: "",
-            bill: "ab69852", type:"Verification Received", notes:"Dummy Text", user:"Citibr",
-            billStatus:"POM Received", documents:"Scan/Upload", date:"16/08/2017",
-            reason:"30 days rule"
+            bill: "AB69852", type: "Verification Received", notes: "Dummy Text", user: "Citibr",
+            billStatus: "POM Received", documents: "Scan/Upload", date: "16/08/2017",
+            reason: "30 days rule"
         }]
 
     showDenialDialog() {
         this.denialDialogVisible = true;
     }
 
-     showDialog() {
+    showDialog() {
         this.scanUploadDialogVisible = true;
     }
 
-     showVerificationDialog() {
+    showVerificationDialog() {
         this.verificationDialogVisible = true;
+    }
+    showVerficationUploadDialog() {
+        this.verficationScanUploadDialogVisible = true;
+    }
+    showDenialUploadDialog() {
+        this.denialScanUploadDialogVisible = true;
     }
 }

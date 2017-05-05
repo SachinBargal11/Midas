@@ -11,8 +11,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.companyName.touched && !providerformControls.companyName.valid">
-                            <input formControlName="companyName" type="text" class="form-control" [class.error]="!providerformControls.companyName.valid"
-                            />
+                            <input formControlName="companyName" [ngModel]="medicalProviderMaster.prefferedProvider.name" type="text" class="form-control"
+                                [class.error]="!providerformControls.companyName.valid" />
                             <div class='error-list' *ngIf="providerformControls.companyName.touched && !providerformControls.companyName.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.companyName.pending">Checking...</li>
@@ -26,8 +26,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.taxId.touched && !providerformControls.taxId.valid">
-                            <input formControlName="taxId" type="text" class="form-control" [class.error]="!providerformControls.taxId.valid" minlength="10"
-                            />
+                            <input formControlName="taxId" [ngModel]="medicalProviderMaster.prefferedProvider.taxId" type="text" class="form-control"
+                                [class.error]="!providerformControls.taxId.valid" minlength="10" />
                             <div class='error-list' *ngIf="providerformControls.taxId.touched && !providerformControls.taxId.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.taxId.hasError('required')">Tax Id is required.</li>
@@ -80,10 +80,11 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
-                            <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                            <select formControlName="companyType" [ngModel]="medicalProviderMaster.prefferedProvider.companyType" class="selectpicker form-control"
+                                title="Select Company Type." [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
                                              <option value="">-Select company type-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="Medical Provider">Medical Provider</option>
+                                             <option value="1">Billing</option>
                                              <!--<option value="Medical Provider">Medical Provider</option>
                                              <option value="PI\BI Firm">PI\BI Firm</option>
                                              <option value="Collection Firm">Collection Firm</option>
@@ -120,10 +121,11 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
-                            <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
+                            <select formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.prefferedProvider.subscriptionType" class="selectpicker form-control"
+                                title="Select subscription plan." [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
                                              <option value="">-Select subscription plan-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="Trial">Trial</option>
+                                             <option value="1">Trial</option>
                                              <!--<option value="30 day Trial">30 day Trial</option>-->
                                          </select>
                             <div class='error-list' *ngIf="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
