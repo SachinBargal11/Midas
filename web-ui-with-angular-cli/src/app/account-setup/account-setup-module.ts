@@ -46,7 +46,8 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
 import { ProcedureCodeComponent } from './components/account-setting/procedure-code';
 import { DocumentTypeComponent } from './components/account-setting/document-type';
-
+import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
+import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
 
 // AccountSettingShellComponent
 @NgModule({
@@ -95,6 +96,7 @@ import { DocumentTypeComponent } from './components/account-setting/document-typ
         InsuranceMasterStore,
         // MedicalProviderMasterService,
         // MedicalProviderMasterStore
+         RoomsStore,RoomsService
     ]
 })
 export class AccountSetupModule { }
