@@ -269,6 +269,10 @@ namespace MIDAS.GBX
             {
                 repo = new PendingReferralRepository(context);
             }
+            else if (typeof(T) == typeof(BO.VisitReports))
+            {
+                repo = new ReportsRepository(context);
+            }
             return repo;
         }
     }
