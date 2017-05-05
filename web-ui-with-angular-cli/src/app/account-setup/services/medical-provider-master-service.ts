@@ -107,7 +107,7 @@ export class MedicalProviderMasterService {
 
     getMedicalProviderById(providerId: Number): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/get/' + providerId).map(res => res.json())
+            return this._http.get(this._url + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
                 .subscribe((data: any) => {
                     let provider = null;
                     provider = MedicalProviderMasterAdapter.parseResponse(data);

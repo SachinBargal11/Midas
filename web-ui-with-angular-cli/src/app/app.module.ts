@@ -61,6 +61,8 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
 import { UserSettingStore } from './commons/stores/user-setting-store';
 import { UserSettingService } from './commons/services/user-setting-service';
 
+import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
+import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
 @NgModule({
   declarations: [
@@ -115,7 +117,9 @@ import { UserSettingService } from './commons/services/user-setting-service';
     ProcedureService,
     ProcedureStore,
     UserSettingStore,
-    UserSettingService
+    UserSettingService,
+    MedicalProviderMasterService,
+    MedicalProviderMasterStore
   ],
   bootstrap: [AppComponent]
 })

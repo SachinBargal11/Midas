@@ -25,7 +25,7 @@ export class BillingInfoComponent implements OnInit {
         private fb: FormBuilder,
         private _elRef: ElementRef
     ) {
-           this.postcheckform = this.fb.group({
+        this.postcheckform = this.fb.group({
             date: [''],
         });
 
@@ -45,29 +45,29 @@ export class BillingInfoComponent implements OnInit {
             denialDescription: [''],
         });
 
-        this.denialformControls = this.denialform.controls;  
-        
+        this.denialformControls = this.denialform.controls;
+
     }
 
     billing: any[] = [
         {
-            bill: "ab69852", speciality: "AC", visitDate: "03/05/2017",
+            bill: "AB69852", speciality: "AC", visitDate: "03/05/2017",
             billDate: "03/05/2017", billAmount: "$560", paid: "$560",
             outstanding: "0", status: "Paid", balance: "0",
             principalAmount: "", paymentType: "", paidBy: "", description: "",
-            type:"Verification Received", notes:"Dummy Text",user:"Citibr",
-            billStatus:"POM Received",documents:"Scan/Upload",date:"14/08/2017",
-            reason:"120 days rule"
+            type: "Verification Received", notes: "Dummy Text", user: "Citibr",
+            billStatus: "POM Received", documents: "Scan/Upload", date: "14/08/2017",
+            reason: "120 days rule"
         },
 
         {
-            bill: "ab69851", speciality: "PT", visitDate: "01/05/2017",
+            bill: "AB69851", speciality: "PT", visitDate: "01/05/2017",
             billDate: "03/05/2017", billAmount: "$560", paid: "$460",
             outstanding: "$100", status: "Litgate", balance: "0",
             principalAmount: "", paymentType: "", paidBy: "", description: "",
-            type:"Verification Received", notes:"Dummy Text",user:"Citibr",
-            billStatus:"POM Received",documents:"Scan/Upload",date:"16/08/2017",
-            reason:"30 days rule"
+            type: "Verification Received", notes: "Dummy Text", user: "Citibr",
+            billStatus: "POM Received", documents: "Scan/Upload", date: "16/08/2017",
+            reason: "30 days rule"
         }];
 
 
@@ -78,7 +78,7 @@ export class BillingInfoComponent implements OnInit {
     postCheck() {
         this.postDialogVisible = true;
     }
-    
+
     showVerificationDialog() {
         this.verificationDialogVisible = true;
     }
@@ -92,5 +92,8 @@ export class BillingInfoComponent implements OnInit {
     }
     showVerficationUploadDialog() {
         this.verficationScanUploadDialogVisible = true;
+    }
+    closePostDialogVisible() {
+        this.postDialogVisible = false;
     }
 }

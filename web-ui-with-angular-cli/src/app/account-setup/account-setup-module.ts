@@ -38,13 +38,18 @@ import { InsuranceStore } from '../patient-manager/patients/stores/insurance-sto
 import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
 import { MedicalProviderListComponent } from './components/medical-provider-master/medical-provider-list';
-import { MedicalProviderMasterService } from './services/medical-provider-master-service';
-import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
+// import { MedicalProviderMasterService } from './services/medical-provider-master-service';
+// import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
 // import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
 import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
 
+import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
+import { ProcedureCodeComponent } from './components/account-setting/procedure-code';
+import { DocumentTypeComponent } from './components/account-setting/document-type';
+import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
+import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
 
-
+// AccountSettingShellComponent
 @NgModule({
     imports: [
         CommonModule,
@@ -70,7 +75,10 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
         InsuranceMasterListComponent,
         MedicalProviderListComponent,
         // AddMedicalProviderComponent,
-        EditMedicalProviderComponent
+        EditMedicalProviderComponent,
+        AccountSettingShellComponent,
+        ProcedureCodeComponent,
+        DocumentTypeComponent
 
     ],
     providers: [
@@ -86,8 +94,9 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
         AttorneyMasterStore,
         InsuranceMasterService,
         InsuranceMasterStore,
-        MedicalProviderMasterService,
-        MedicalProviderMasterStore
+        // MedicalProviderMasterService,
+        // MedicalProviderMasterStore
+         RoomsStore,RoomsService
     ]
 })
 export class AccountSetupModule { }

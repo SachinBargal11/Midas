@@ -260,7 +260,7 @@
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
 
-                <!--<app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>-->
+                <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
@@ -290,9 +290,8 @@
                 </p-dataTable>
             </p-tabPanel>
 
-            <!--<p-tabPanel header="Referrals" *ngIf="selectedVisit.id && sessionStore.isOnlyDoctorRole()">-->
             <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
-                <app-referrals [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-referrals>
+                <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
             </p-tabPanel>
             <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
                 <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>

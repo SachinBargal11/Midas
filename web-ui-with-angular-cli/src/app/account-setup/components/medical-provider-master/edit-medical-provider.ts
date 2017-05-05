@@ -19,8 +19,9 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 // import { AuthenticationService } from '../../../account/services/authentication-service';
 // import { RegistrationService } from '../services/registration-service';
 import { UserType } from '../../../commons/models/enums/user-type';
-
-
+import { PrefferedProvider } from '../../models/preffered-provider';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 @Component({
     selector: 'edit-medical-provider',
     templateUrl: './edit-medical-provider.html'
@@ -30,9 +31,10 @@ export class EditMedicalProviderComponent implements OnInit {
     providerform: FormGroup;
     providerformControls;
     isRegistrationInProgress = false;
-    medicalProviderMaster = MedicalProviderMaster;
+    medicalProviderMaster: MedicalProviderMaster;
     isSaveProgress = false;
     medicalProviderId: number;
+    companyName: string;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -51,14 +53,14 @@ export class EditMedicalProviderComponent implements OnInit {
             this._router.navigate(['/account-setup/medical-provider-master']);
         });
 
-
-        this._route.params.subscribe((routeParams: any) => {
+        this._route.params.subscribe((routeParams: any) => {           
             this.medicalProviderId = parseInt(routeParams.id);
             this._progressBarService.show();
             let result = this._medicalProviderMasterStore.fetchMedicalProviderById(this.medicalProviderId);
             result.subscribe(
-                (medicalProviderMaster: any) => {
-                    this.medicalProviderMaster = medicalProviderMaster.toJS();
+                (medicalProviderMaster: MedicalProviderMaster) => {
+                    this.medicalProviderMaster = medicalProviderMaster;
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -125,7 +127,7 @@ export class EditMedicalProviderComponent implements OnInit {
         result = this._medicalProviderMasterStore.addMedicalProvider(provider);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Your company has been registered successfully!.');
+                this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');
                 setTimeout(() => {
                     this._router.navigate(['../'], { relativeTo: this._route });
                 }, 3000);
@@ -138,7 +140,5 @@ export class EditMedicalProviderComponent implements OnInit {
             () => {
                 this.isSaveProgress = false;
             });
-
-
     }
 }

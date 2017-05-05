@@ -63,6 +63,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object Get(int id, string objectType, string documentType)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetViewStatus(int id, bool status)
         {
             throw new NotImplementedException();
