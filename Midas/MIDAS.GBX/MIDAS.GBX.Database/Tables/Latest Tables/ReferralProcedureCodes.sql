@@ -12,7 +12,7 @@
     CONSTRAINT [PK_ReferralProcedureCodes] PRIMARY KEY ([Id])
 )
 GO
-
+/*
 ALTER TABLE [dbo].[ReferralProcedureCodes]  WITH CHECK ADD  CONSTRAINT [FK_ReferralProcedureCodes_Referral_ReferralId] FOREIGN KEY([ReferralId])
 	REFERENCES [dbo].[Referral] ([Id])
 GO
@@ -26,3 +26,13 @@ GO
 
 ALTER TABLE [dbo].[ReferralProcedureCodes] CHECK CONSTRAINT [FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId]
 GO
+
+
+ALTER TABLE [dbo].[ReferralProcedureCodes]  WITH CHECK ADD  CONSTRAINT [FK_ReferralProcedureCodes_Referral2_ReferralId] FOREIGN KEY([ReferralId])
+REFERENCES [dbo].[Referral2] ([Id])
+GO
+
+ALTER TABLE [dbo].[ReferralProcedureCodes] CHECK CONSTRAINT [FK_ReferralProcedureCodes_Referral2_ReferralId]
+GO
+
+*/
