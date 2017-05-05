@@ -44,7 +44,7 @@ export class PaymentListComponent {
         {
             billNumber: "AB69852", checkNumber: "14523", postedDate: "01/05/2017",
             checkDate: "03/05/2016", checkAmount: "$560", paymentType: "Recieved",
-            interest: "", description: "", checks: "Scan/Upload",
+            interest: "", checks: "Scan/Upload",
             view: "", denials: "Enter Denial", verifications: "Enter Verification", delete: "",
             bill: "AB69852", type: "Verification Received", notes: "Dummy Text", user: "Citibr",
             billStatus: "POM Received", documents: "Scan/Upload", date: "16/08/2017",
