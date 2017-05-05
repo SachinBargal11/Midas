@@ -444,6 +444,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object DismissPendingReferral(int PendingReferralId, int userId)
+        {
+            throw new NotImplementedException();
+        }
+        
+
         public virtual Object GetByLocationAndPatientId(int LocationId, int PatientId)
         {
             throw new NotImplementedException();
@@ -547,8 +553,16 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        
 
+        public virtual Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetPendingReferralByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

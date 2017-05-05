@@ -70,6 +70,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
+        [HttpGet]
+        [Route("getPreferredCompanyDoctorsAndRoomByCompanyId/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetPreferredCompanyDoctorsAndRoomByCompanyId(Request, CompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

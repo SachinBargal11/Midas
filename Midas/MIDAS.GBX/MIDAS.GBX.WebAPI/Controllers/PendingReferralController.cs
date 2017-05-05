@@ -68,6 +68,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientVisitId(Request, patientVisitId);
         }
 
+        [HttpGet]
+        [Route("dismissPendingReferral/{PendingReferralId}/{userId}")]
+
+        public HttpResponseMessage DismissPendingReferral(int PendingReferralId,int userId)
+        {
+            return requestHandler.DismissPendingReferral(Request, PendingReferralId, userId);
+        }
+        
 
         [HttpPost]
         [Route("Add")]
@@ -75,6 +83,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Post([FromBody]PendingReferral pendingReferral)
         {
             return requestHandler.CreateGbObject(Request, pendingReferral);
+        }
+
+        [HttpGet]
+        [Route("getPendingReferralByCompanyId/{CompanyId}")]
+        public HttpResponseMessage GetPendingReferralByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetPendingReferralByCompanyId(Request, CompanyId);
         }
 
         protected override void Dispose(bool disposing)

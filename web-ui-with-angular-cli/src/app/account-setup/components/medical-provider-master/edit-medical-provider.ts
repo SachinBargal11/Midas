@@ -18,6 +18,7 @@ import { LocationsStore } from '../../../medical-provider/locations/stores/locat
 import { AppValidators } from '../../../commons/utils/AppValidators';
 // import { AuthenticationService } from '../../../account/services/authentication-service';
 // import { RegistrationService } from '../services/registration-service';
+import { UserType } from '../../../commons/models/enums/user-type';
 
 
 @Component({
@@ -26,20 +27,48 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 })
 
 export class EditMedicalProviderComponent implements OnInit {
-
     providerform: FormGroup;
     providerformControls;
     isRegistrationInProgress = false;
+    medicalProviderMaster = MedicalProviderMaster;
+    isSaveProgress = false;
+    medicalProviderId: number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
+        public _route: ActivatedRoute,
+        private _progressBarService: ProgressBarService,
         // private _authenticationService: AuthenticationService,
         // private _registrationService: RegistrationService,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
+
     ) {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/account-setup/medical-provider-master']);
+        });
+
+
+        this._route.params.subscribe((routeParams: any) => {
+            this.medicalProviderId = parseInt(routeParams.id);
+            this._progressBarService.show();
+            let result = this._medicalProviderMasterStore.fetchMedicalProviderById(this.medicalProviderId);
+            result.subscribe(
+                (medicalProviderMaster: any) => {
+                    this.medicalProviderMaster = medicalProviderMaster.toJS();
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
+
         this.providerform = this.fb.group({
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
@@ -60,6 +89,56 @@ export class EditMedicalProviderComponent implements OnInit {
     }
 
     saveMedicalProvider() {
+        this.isSaveProgress = true;
+        let providerformValues = this.providerform.value;
+        let result;
+        let provider = {
+            company: {
+                Id: this._sessionStore.session.currentCompany.id
+            },
+            signUp: {
+                user: {
+                    userType: UserType.STAFF,
+                    userName: this.providerform.value.email,
+                    firstName: this.providerform.value.firstName,
+                    lastName: this.providerform.value.lastName
+                },
+                contactInfo: {
+                    cellPhone: this.providerform.value.phoneNo.replace(/\-/g, ''),
+                    emailAddress: this.providerform.value.email,
+                    preferredCommunication: 1
+                },
+                role: {
+                    name: 'Admin',
+                    roleType: 'Admin',
+                    status: 'active'
+                },
+                company: {
+                    name: this.providerform.value.companyName,
+                    taxId: this.providerform.value.taxId,
+                    companyType: this.providerform.value.companyType,
+                    subsCriptionType: this.providerform.value.subscriptionPlan
+                }
+            },
+            id: this.medicalProviderId
+        };
+        result = this._medicalProviderMasterStore.addMedicalProvider(provider);
+        result.subscribe(
+            (response) => {
+                this._notificationsService.success('Welcome!', 'Your company has been registered successfully!.');
+                setTimeout(() => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                }, 3000);
+            },
+            (error) => {
+                this.isSaveProgress = false;
+                let errString = 'Unable to Register User.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this.isSaveProgress = false;
+            });
+
 
     }
 }

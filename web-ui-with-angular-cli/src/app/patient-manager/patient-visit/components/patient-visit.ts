@@ -981,23 +981,25 @@ export class PatientVisitComponent implements OnInit {
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
         let procedureCodes = [];
+        if (this.selectedProcedures) {
         this.selectedProcedures.forEach(currentProcedureCode => {
             procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
         });
+        }
         if (!this.isGoingOutOffice) {
             updatedEvent = this._scheduledEventEditorComponent.getEditedEvent();
         } else {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
         }
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientId: patientScheduleFormValues.patientId,
+            patientId: leaveEvent ? null : patientScheduleFormValues.patientId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
             isOutOfOffice: this.isGoingOutOffice,
             leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
             leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
-            transportProviderId: updatedEvent ? updatedEvent.transportProviderId : null,
-            patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : null
+            transportProviderId: updatedEvent ? updatedEvent.transportProviderId : 0,
+            patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : []
         }));
         if (updatedVisit.id) {
             if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {

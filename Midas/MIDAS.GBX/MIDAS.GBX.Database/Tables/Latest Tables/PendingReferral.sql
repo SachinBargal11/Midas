@@ -9,6 +9,7 @@
     [ForRoomId] INT NULL, 
 	[ForRoomTestId] INT NULL,
 	[IsReferralCreated] [BIT] NULL CONSTRAINT [DF_PendingReferral_IsReferralCreated] DEFAULT 0,
+    [DismissedBy] INT NULL,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -67,3 +68,15 @@ GO
 
 ALTER TABLE [dbo].[PendingReferral] CHECK CONSTRAINT [FK_PendingReferral_RoomTest_ForRoomTestId]
 GO
+
+/*
+ALTER TABLE [dbo].[PendingReferral] ADD [DismissedBy] INT NULL
+GO
+
+ALTER TABLE [dbo].[PendingReferral]  WITH CHECK ADD  CONSTRAINT [FK_PendingReferral_User_DismissedBy] FOREIGN KEY([DismissedBy])
+    REFERENCES [dbo].[User] ([id])
+GO
+
+ALTER TABLE [dbo].[PendingReferral] CHECK CONSTRAINT [FK_PendingReferral_User_DismissedBy]
+GO
+*/

@@ -32,8 +32,6 @@ import { Contact } from '../../../commons/models/contact';
 })
 
 export class AddMedicalProviderComponent implements OnInit {
-
-
     providerform: FormGroup;
     providerformControls;
     @Input() inputCancel: number;
