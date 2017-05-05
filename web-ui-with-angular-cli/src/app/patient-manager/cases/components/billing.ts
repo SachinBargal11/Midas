@@ -51,7 +51,7 @@ export class BillingInfoComponent implements OnInit {
 
     billing: any[] = [
         {
-            bill: "ab69852", speciality: "AC", visitDate: "03/05/2017",
+            bill: "AB69852", speciality: "AC", visitDate: "03/05/2017",
             billDate: "03/05/2017", billAmount: "$560", paid: "$560",
             outstanding: "0", status: "Paid", balance: "0",
             principalAmount: "", paymentType: "", paidBy: "", description: "",
@@ -61,7 +61,7 @@ export class BillingInfoComponent implements OnInit {
         },
 
         {
-            bill: "ab69851", speciality: "PT", visitDate: "01/05/2017",
+            bill: "AB69851", speciality: "PT", visitDate: "01/05/2017",
             billDate: "03/05/2017", billAmount: "$560", paid: "$460",
             outstanding: "$100", status: "Litgate", balance: "0",
             principalAmount: "", paymentType: "", paidBy: "", description: "",

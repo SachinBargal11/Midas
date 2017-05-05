@@ -45,6 +45,7 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
 
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
 import { ProcedureCodeComponent } from './components/account-setting/procedure-code';
+import { DocumentTypeComponent } from './components/account-setting/document-type';
 
 
 // AccountSettingShellComponent
@@ -75,7 +76,8 @@ import { ProcedureCodeComponent } from './components/account-setting/procedure-c
         // AddMedicalProviderComponent,
         EditMedicalProviderComponent,
         AccountSettingShellComponent,
-        ProcedureCodeComponent
+        ProcedureCodeComponent,
+        DocumentTypeComponent
 
     ],
     providers: [

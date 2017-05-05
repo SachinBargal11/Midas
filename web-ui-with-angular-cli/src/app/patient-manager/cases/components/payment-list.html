@@ -56,6 +56,14 @@
         </ng-template>
     </p-column>-->
 </p-dataTable>
+<p-dialog [minWidth]="600" [width]="1200" [(visible)]="scanUploadDialogVisible" [responsive]="true" showEffect="fade" [modal]="false"
+    [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <div>
+        <app-document-upload></app-document-upload>
+    </div>
+</p-dialog>
+
+
 <p-dialog header="Denials" [minWidth]="600" [width]="1200" [(visible)]="denialDialogVisible" [responsive]="true" showEffect="fade"
     [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
 
@@ -131,17 +139,21 @@
         <p-column field="reason" header="Reason" [sortable]="true">
         </p-column>
 
-        <p-column field="document" header="Documents" [sortable]="true">
+        <p-column header="Documents" [sortable]="true">
+            <ng-template let-document="rowData" pTemplate="body">
+                <a (click)="showDenialUploadDialog()">
+                    <u>{{document.documents}}</u>
+                </a>
+            </ng-template>
         </p-column>
 
     </p-dataTable>
-</p-dialog>
-
-<p-dialog [minWidth]="600" [width]="1200" [(visible)]="scanUploadDialogVisible" [responsive]="true" showEffect="fade" [modal]="false"
-    [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <div>
-        <app-document-upload></app-document-upload>
-    </div>
+    <p-dialog [minWidth]="600" [width]="1200" [(visible)]="denialScanUploadDialogVisible" [responsive]="true" showEffect="fade"
+        [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+        <div>
+            <app-document-upload></app-document-upload>
+        </div>
+    </p-dialog>
 </p-dialog>
 
 <p-dialog header="Verification Received" [minWidth]="600" [width]="1200" [(visible)]="verificationDialogVisible" [responsive]="true"
@@ -196,8 +208,21 @@
         <p-column field="billStatus" header="Bill Status" [sortable]="true">
         </p-column>
 
-        <p-column field="documents" header="Documents" [sortable]="true">
+        <!--<p-column field="documents" header="Documents" [sortable]="true">-->
+        <p-column header="Documents" [sortable]="true">
+            <ng-template let-document="rowData" pTemplate="body">
+                <a (click)="showVerficationUploadDialog()">
+                    <u>{{document.documents}}</u>
+                </a>
+            </ng-template>
         </p-column>
-    </p-dataTable>
-</p-dialog>
+        <!--</p-column>-->
 
+    </p-dataTable>
+    <p-dialog [minWidth]="600" [width]="1200" [(visible)]="verficationScanUploadDialogVisible" [responsive]="true" showEffect="fade"
+        [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+        <div>
+            <app-document-upload></app-document-upload>
+        </div>
+    </p-dialog>
+</p-dialog>

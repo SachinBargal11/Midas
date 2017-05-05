@@ -21,7 +21,7 @@ let PatientManagerRoutes: Routes = [
             ...ReferralsShellRoutes
         ],
         data: {
-            breadcrumb: 'Patient Manager'
+            breadcrumb: 'Case Manager'
         }
     },
 ];

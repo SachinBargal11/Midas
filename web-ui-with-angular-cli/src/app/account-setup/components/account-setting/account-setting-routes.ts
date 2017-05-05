@@ -5,7 +5,9 @@ import { ValidateDoctorSession } from '../../../commons/guards/validate-doctor-s
 import { ValidateInActiveDoctorSession } from '../../../commons/guards/validate-inactivedoctor-session';
 import { ShellComponent } from '../../../commons/shell-component';
 import { AccountSettingShellComponent } from './account-setting-shell';
-import { ProcedureCodeComponent } from './procedure-code'
+import { ProcedureCodeComponent } from './procedure-code';
+import { DocumentTypeComponent } from './document-type';
+
 
 export const AccountSettingShellRoutes: Routes = [
     {
@@ -27,6 +29,14 @@ export const AccountSettingShellRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Procedure Codes'
+                }
+            },
+            {
+                path: 'document-types',
+                component: DocumentTypeComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Document Types'
                 }
             }
         ]
