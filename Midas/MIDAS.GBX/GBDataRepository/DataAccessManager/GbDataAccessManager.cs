@@ -2442,12 +2442,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByForRoom(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByForRoomId(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByForRoom(roomId);
+                var gbdata = baseRepo.GetByForRoomId(roomId);
 
                 return gbdata;
             }
@@ -2461,12 +2461,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByToRoom(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByToRoomId(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByToRoom(roomId);
+                var gbdata = baseRepo.GetByToRoomId(roomId);
 
                 return gbdata;
             }
@@ -2480,6 +2480,24 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetByForSpecialtyId(int specialtyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByForSpecialtyId(specialtyId);
 
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        
     }
 }

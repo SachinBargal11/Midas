@@ -210,6 +210,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.PreferredMedicalProviderSignUp PreferredMedicalProviderSignUpBO = new BO.PreferredMedicalProviderSignUp();
 
+            PreferredMedicalProviderSignUpBO.ID = preferredMedicalProvider.Id;
             PreferredMedicalProviderSignUpBO.PrefMedProviderId = preferredMedicalProvider.PrefMedProviderId;
             PreferredMedicalProviderSignUpBO.CompanyId = preferredMedicalProvider.CompanyId;
             PreferredMedicalProviderSignUpBO.IsCreated = preferredMedicalProvider.IsCreated;

@@ -34,6 +34,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             BO.Referral2 referralBO = new BO.Referral2();
 
+            referralBO.ID = referral.Id;
             referralBO.PendingReferralId = referral.PendingReferralId;
             referralBO.FromCompanyId = referral.FromCompanyId;
             referralBO.FromLocationId = referral.FromLocationId;
@@ -678,8 +679,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By For Room
-        public override object GetByForRoom(int roomId)
+        #region Get By For Room Id
+        public override object GetByForRoomId(int roomId)
         {
             var referralDB = _context.Referral2.Include("Company")
                                                 .Include("Company1")
@@ -722,8 +723,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By To Room
-        public override object GetByToRoom(int roomId)
+        #region Get By To Room Id
+        public override object GetByToRoomId(int roomId)
         {
             var referralDB = _context.Referral2.Include("Company")
                                                 .Include("Company1")
@@ -766,7 +767,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Get By For Specialty Id
+        public override object GetByForSpecialtyId(int specialtyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("PatientVisit2")
+                                                .Include("PendingReferral")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
 
+                                               .Where(p => p.ForSpecialtyId == specialtyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            List<BO.Referral2> boReferral = new List<BO.Referral2>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(Convert<BO.Referral2, Referral2>(EachReferral));
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+        
 
 
 
