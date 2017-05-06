@@ -582,8 +582,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             var result = _context.PreferredMedicalProviders.Include("Company").Include("Company1")
-                                                           .Where(p => p.Id == prefMedProvider.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                           .FirstOrDefault();
+                                                            .Where(p => p.PrefMedProviderId == prefMedProviderBO.company.ID
+                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
 
             BO.PreferredMedicalProvider acc_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(result);
 
