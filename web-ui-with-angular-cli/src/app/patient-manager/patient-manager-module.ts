@@ -104,6 +104,8 @@ import { PendingReferralsComponent } from './referals/components/pending-referra
 import { BillingInfoComponent } from './cases/components/billing'
 import { PaymentListComponent } from './cases/components/payment-list';
 
+import { VisitReferralService } from './patient-visit/services/visit-referral-service';
+import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
 
 @NgModule({
     imports: [
@@ -172,7 +174,7 @@ import { PaymentListComponent } from './cases/components/payment-list';
         BillingInfoComponent,
         PaymentListComponent
 
-        
+
     ],
     providers: [
         PatientsService,
@@ -198,11 +200,13 @@ import { PaymentListComponent } from './cases/components/payment-list';
         PatientVisitsStore,
         PatientVisitService,
         ConsentStore,
-        ConsentService,      
+        ConsentService,
         ReferralService,
         ReferralStore,
         AttorneyMasterService,
-        AttorneyMasterStore
+        AttorneyMasterStore,
+        VisitReferralService,
+        VisitReferralStore
     ]
 })
 export class PatientManagerModule { }

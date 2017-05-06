@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="833269287d564ae8b4b8ab71102edeb7" Name="Diagram1">
+      <Diagram DiagramId="75379f2480a84776b5f2b473930e60f8" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="75.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="76.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="11.25" PointY="72.625" IsExpanded="true" />
@@ -59,9 +59,9 @@
         <EntityTypeShape EntityType="MIDASGBXModel.PreferredMedicalProvider" Width="1.5" PointX="8.25" PointY="108.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.ProcedureCode" Width="1.5" PointX="16" PointY="91" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Referral" Width="1.5" PointX="21.75" PointY="92.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Referral2" Width="1.5" PointX="35.25" PointY="85.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Referral2" Width="1.5" PointX="35.25" PointY="85.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.ReferralDocument" Width="1.5" PointX="24" PointY="94.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.ReferralProcedureCode" Width="1.5" PointX="37.5" PointY="89.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ReferralProcedureCode" Width="1.5" PointX="27" PointY="94.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.RefferingOffice" Width="1.5" PointX="24.75" PointY="78.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Relation" Width="1.5" PointX="11.25" PointY="51" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Room" Width="1.5" PointX="12.75" PointY="101.75" IsExpanded="true" />
@@ -218,12 +218,12 @@
         <AssociationConnector Association="MIDASGBXModel.FK_Referral_Specialty_ReferredToSpecialtyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral_User_ReferringUserId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ReferralDocuments_Referral_ReferralId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_ReferralProcedureCodes_Referral_ReferralId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Room_ForRoomId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Room_ToRoomId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_RoomTest_ForRoomTestId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Specialty_ForSpecialtyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_User_DismissedBy" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_ReferralProcedureCodes_Referral2_ReferralId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Room_RoomTest" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Room_Schedule" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ScheduleDetail_Schedule" ManuallyRouted="false" />

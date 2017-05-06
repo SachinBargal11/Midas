@@ -274,13 +274,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         if (pendingReferral.Doctor != null)
                         {
                             if (pendingReferral.Doctor.IsDeleted.HasValue == false || (pendingReferral.Doctor.IsDeleted.HasValue == true && pendingReferral.Doctor.IsDeleted.Value == false))
-                            {
-                                BO.Doctor boDoctor = new BO.Doctor();
-                                using (DoctorRepository cmp = new DoctorRepository(_context))
-                                {
-                                    boDoctor = cmp.Convert<BO.Doctor, Doctor>(pendingReferral.Doctor);
-                                    PendingReferralList.Doctor = boDoctor;
-                                }
+                            {                              
+                                PendingReferralList.DoctorFirstName = pendingReferral.Doctor.User.FirstName;
+                                PendingReferralList.DoctorLastName = pendingReferral.Doctor.User.LastName;
+                              
                             }
                         }
 
@@ -326,8 +323,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
                         PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
                         PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
-                        PendingReferralList.FirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
-                        PendingReferralList.LastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+                        PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
+                        PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
 
                         BO.PendingReferralProcedureCode pendingReferralProcedureCode = new BO.PendingReferralProcedureCode();
 

@@ -87,8 +87,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
 
-        [JsonProperty("doctor")]
-        public Doctor Doctor { get; set; }
+        //[JsonProperty("doctor")]
+        //public Doctor Doctor { get; set; }      
+        [JsonProperty("doctorFirstName")]
+        public string DoctorFirstName { get; set; }
+
+        [JsonProperty("doctorLastName")]
+        public string DoctorLastName { get; set; }
+
 
         [JsonProperty("specialty")]
         public Specialty Specialty { get; set; }
@@ -108,11 +114,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("userId")]
         public int UserId { get; set; }
 
-        [JsonProperty("firstName")]
-        public string FirstName { get; set; }
+        [JsonProperty("patientFirstName")]
+        public string PatientFirstName { get; set; }
 
-        [JsonProperty("lastName")]
-        public string LastName { get; set; }
+        [JsonProperty("patientLastName")]
+        public string PatientLastName { get; set; }
 
         [JsonProperty("pendingReferralProcedureCode")]
         public PendingReferralProcedureCode PendingReferralProcedureCode { get; set; }        

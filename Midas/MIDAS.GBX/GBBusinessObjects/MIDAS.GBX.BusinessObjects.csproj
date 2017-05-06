@@ -120,6 +120,7 @@
     <Compile Include="Referral\ReferralDocument.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
+    <Compile Include="Reports\Reports.cs" />
     <Compile Include="Room\Room.cs" />
     <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />

@@ -27,6 +27,7 @@ namespace MIDAS.GBX.DataAccessManager
         object GetDocumentList(int id);
         Object GetViewStatus(int id, bool status);
         Object Get(int id, string type);
+        Object Get(int id, string objectType, string documentType);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetDiagnosisType(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetCaseCompanies(int caseId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

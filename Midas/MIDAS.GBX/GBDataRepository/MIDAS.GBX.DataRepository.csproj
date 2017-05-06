@@ -124,6 +124,7 @@
     <Compile Include="EntityRepository\Referral\Referral2Repository.cs" />
     <Compile Include="EntityRepository\Referral\ReferralRepository.cs" />
     <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
+    <Compile Include="EntityRepository\Reports\ReportsRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
     <Compile Include="EntityRepository\Schedule\ScheduleDetailRepository.cs" />

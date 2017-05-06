@@ -201,6 +201,91 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region New Conversion
+        public T ConvertPreferredMedicalProviderSignUp<T, U>(U entity)
+        {
+            PreferredMedicalProvider preferredMedicalProvider = entity as PreferredMedicalProvider;
+            if (preferredMedicalProvider == null)
+                return default(T);
+
+            BO.PreferredMedicalProviderSignUp PreferredMedicalProviderSignUpBO = new BO.PreferredMedicalProviderSignUp();
+
+            PreferredMedicalProviderSignUpBO.PrefMedProviderId = preferredMedicalProvider.PrefMedProviderId;
+            PreferredMedicalProviderSignUpBO.CompanyId = preferredMedicalProvider.CompanyId;
+            PreferredMedicalProviderSignUpBO.IsCreated = preferredMedicalProvider.IsCreated;
+
+            //PreferredMedicalProviderSignUpBO.Company = preferredMedicalProvider.PrefMedProviderId;
+            PreferredMedicalProviderSignUpBO.Signup = new BO.Signup();
+            if (preferredMedicalProvider.Company1 != null)
+            {
+                if (preferredMedicalProvider.Company1.IsDeleted.HasValue == false || (preferredMedicalProvider.Company1.IsDeleted.HasValue == true && preferredMedicalProvider.Company1.IsDeleted.Value == false))
+                {
+                    BO.Company boCompany = new BO.Company();
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        boCompany = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);
+
+                        PreferredMedicalProviderSignUpBO.Signup.company = boCompany;
+
+                    }
+                }
+
+            }
+
+            if (preferredMedicalProvider.Company1.UserCompanies != null)
+            {
+                BO.User lstUser = new BO.User();
+                foreach (var item in preferredMedicalProvider.Company1.UserCompanies)
+                {
+                    if ( item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    {
+                        var userDB = _context.Users
+                                                .Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .FirstOrDefault();
+
+                        using (UserRepository sr = new UserRepository(_context))
+                        {
+                            BO.User BOUser = new BO.User();
+                            BOUser = sr.Convert<BO.User, User>(userDB);
+                          
+                            lstUser = BOUser;
+                        }
+                    }
+
+
+                }
+                PreferredMedicalProviderSignUpBO.Signup.user = lstUser;
+            }
+
+            if (preferredMedicalProvider.Company1.ContactInfo != null)
+            {
+                
+                    BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                    boContactInfo.Name = preferredMedicalProvider.Company1.ContactInfo.Name;
+                    boContactInfo.CellPhone = preferredMedicalProvider.Company1.ContactInfo.CellPhone;
+                    boContactInfo.EmailAddress = preferredMedicalProvider.Company1.ContactInfo.EmailAddress;
+                    boContactInfo.HomePhone = preferredMedicalProvider.Company1.ContactInfo.HomePhone;
+                    boContactInfo.WorkPhone = preferredMedicalProvider.Company1.ContactInfo.WorkPhone;
+                    boContactInfo.FaxNo = preferredMedicalProvider.Company1.ContactInfo.FaxNo;
+                    boContactInfo.CreateByUserID = preferredMedicalProvider.Company1.ContactInfo.CreateByUserID;
+                    boContactInfo.ID = preferredMedicalProvider.Company1.ContactInfo.id;
+                    boContactInfo.OfficeExtension = preferredMedicalProvider.Company1.ContactInfo.OfficeExtension;
+                    boContactInfo.AlternateEmail = preferredMedicalProvider.Company1.ContactInfo.AlternateEmail;
+                    boContactInfo.PreferredCommunication = preferredMedicalProvider.Company1.ContactInfo.PreferredCommunication;
+
+
+                PreferredMedicalProviderSignUpBO.Signup.company.ContactInfo = boContactInfo;
+                
+            }
+
+
+
+
+           
+            return (T)(object)PreferredMedicalProviderSignUpBO;
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -436,12 +521,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By PrefMedProvider Id
-        public override object GetByPrefMedProviderId(int PrefMedProviderId)
+        public override object GetByPrefMedProviderId(int Id)
         {
-            var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                    .ToList();
+            var medicalProvider = _context.PreferredMedicalProviders.Include("Company.UserCompanies.User")
+                                                                     .Where(p => p.Id == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .FirstOrDefault();
 
-            List<BO.PreferredMedicalProvider> lstprovider = new List<BO.PreferredMedicalProvider>();
+
+
+            BO.PreferredMedicalProviderSignUp boProviderSignUp = new BO.PreferredMedicalProviderSignUp();
 
             if (medicalProvider == null)
             {
@@ -449,10 +537,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                medicalProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(item)));
+                boProviderSignUp = ConvertPreferredMedicalProviderSignUp<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(medicalProvider);
             }
 
-            return lstprovider;
+            return boProviderSignUp;
         }
         #endregion
 

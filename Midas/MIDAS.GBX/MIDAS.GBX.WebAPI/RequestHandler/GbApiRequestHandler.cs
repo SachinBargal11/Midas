@@ -168,6 +168,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string objectType, string documentType)
+        {
+            var objResult = dataAccessManager.Get(id, objectType, documentType);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.Get(id);

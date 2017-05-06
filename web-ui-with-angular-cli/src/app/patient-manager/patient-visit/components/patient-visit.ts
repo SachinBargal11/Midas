@@ -47,6 +47,8 @@ import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
 import { ProcedureStore } from '../../../commons/stores/procedure-store';
+import { VisitReferralStore } from '../stores/visit-referral-store';
+import { VisitReferral } from '../models/visit-referral';
 
 @Component({
     selector: 'patient-visit',
@@ -163,6 +165,7 @@ export class PatientVisitComponent implements OnInit {
         private _roomsService: RoomsService,
         private _specialityService: SpecialityService,
         private _procedureStore: ProcedureStore,
+        private _visitReferralStore: VisitReferralStore,
         private confirmationService: ConfirmationService
     ) {
         this.patientScheduleForm = this._fb.group({
@@ -887,6 +890,50 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
+    saveReferral(inputProcedureCodes: Procedure[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let procedureCodes = [];
+        inputProcedureCodes.forEach(currentProcedureCode => {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        });
+
+        let visitReferralDetail = new VisitReferral({
+            patientVisitId: this.selectedVisit.id,
+            fromCompanyId: this.sessionStore.session.currentCompany.id,
+            fromLocationId: this.selectedLocationId,
+            fromDoctorId: this.selectedOption === 1 ? this.selectedDoctorId : null,
+            forSpecialtyId: this.selectedOption === 1 ? this.selectedSpecialityId: null,
+            forRoomId: this.selectedOption === 2 ? this.selectedRoomId : null,
+            forRoomTestId: this.selectedOption === 2 ? this.selectedTestId : null,
+            isReferralCreated: true,
+            pendingReferralProcedureCode: procedureCodes
+        });
+        let result = this._visitReferralStore.saveVisitReferral(visitReferralDetail);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Referral saved successfully.',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save Referral.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
 
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
@@ -982,9 +1029,9 @@ export class PatientVisitComponent implements OnInit {
         let leaveEvent: LeaveEvent;
         let procedureCodes = [];
         if (this.selectedProcedures) {
-        this.selectedProcedures.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
+            this.selectedProcedures.forEach(currentProcedureCode => {
+                procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+            });
         }
         if (!this.isGoingOutOffice) {
             updatedEvent = this._scheduledEventEditorComponent.getEditedEvent();
