@@ -105,9 +105,13 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByToCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByFromLocationId(HttpRequestMessage request, int locationId);
         HttpResponseMessage GetByToLocationId(HttpRequestMessage request, int locationId);
-
-
+        HttpResponseMessage GetByFromDoctorId(HttpRequestMessage request, int doctorId);
+        HttpResponseMessage GetByToDoctorId(HttpRequestMessage request, int doctorId);
+        HttpResponseMessage GetByForRoom(HttpRequestMessage request, int roomId);
+        HttpResponseMessage GetByToRoom(HttpRequestMessage request, int roomId);
         
+
+
 
 
 

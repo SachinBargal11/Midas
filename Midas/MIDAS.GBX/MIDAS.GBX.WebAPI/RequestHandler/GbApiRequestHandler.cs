@@ -1428,5 +1428,57 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByFromDoctorId(HttpRequestMessage request, int doctorId)
+        {
+            var objResult = dataAccessManager.GetByFromDoctorId(doctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByToDoctorId(HttpRequestMessage request, int doctorId)
+        {
+            var objResult = dataAccessManager.GetByToDoctorId(doctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByForRoom(HttpRequestMessage request, int roomId)
+        {
+            var objResult = dataAccessManager.GetByForRoom(roomId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByToRoom(HttpRequestMessage request, int roomId)
+        {
+            var objResult = dataAccessManager.GetByToRoom(roomId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }
