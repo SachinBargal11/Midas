@@ -42,7 +42,7 @@ export class PendingReferralsComponent implements OnInit {
     refferedRooms: Room[];
     filters: SelectItem[];
     doctorRoleOnly = null;
-    eventDialogVisible: boolean = false;
+    addMedicalDialogVisible: boolean = false;
     selectedCancel: number;
     currentCancel: string;
   
@@ -188,11 +188,11 @@ export class PendingReferralsComponent implements OnInit {
         }); 
     }
      showDialog(){
-          this.eventDialogVisible = true;
+          this.addMedicalDialogVisible = true;
           this.selectedCancel = 1;
      }
      closeDialog(){
-          this.eventDialogVisible = false;
+          this.addMedicalDialogVisible = false;
      }
      assign(){
          this.confirmationService.confirm({

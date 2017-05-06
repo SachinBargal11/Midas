@@ -50,7 +50,7 @@
         </a>
     </div>
 </div>
-<p-dialog *ngIf="selectedCancel == 1" [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" [(visible)]="eventDialogVisible"
+<p-dialog *ngIf="selectedCancel == 1" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddMedicalDialogHide()" [(visible)]="addMedicalDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <add-medical-provider [inputCancel]="selectedCancel" (closeDialogBox)="closeDialog()"></add-medical-provider>
 </p-dialog>

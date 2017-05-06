@@ -384,6 +384,6 @@
         <button *ngIf="caseStatusId === 1" [disabled]="!accidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
-        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+        <a *ngIf="caseStatusId === 1" [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
