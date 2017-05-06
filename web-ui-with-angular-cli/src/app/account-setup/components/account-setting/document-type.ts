@@ -22,5 +22,9 @@ export class DocumentTypeComponent implements OnInit {
     ngOnInit() {
 
     }
+    
+    deleteDocument(){
+
+    }
 
 }
