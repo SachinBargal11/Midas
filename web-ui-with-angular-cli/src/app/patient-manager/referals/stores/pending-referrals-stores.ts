@@ -4,6 +4,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
 import { PendingReferralService } from '../services/pending-referrals-service';
+import { PendingReferralList } from '../models/pending-referral-list';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
@@ -13,6 +14,7 @@ import * as _ from 'underscore';
 export class PendingReferralStore {
 
     private _pendingReferrals: BehaviorSubject<List<PrefferedMedicalProvider>> = new BehaviorSubject(List([]));
+    private _pendingReferralsList: BehaviorSubject<List<PendingReferralList>> = new BehaviorSubject(List([]));
 
     constructor(
         private _pendingReferralService: PendingReferralService,
@@ -25,11 +27,17 @@ export class PendingReferralStore {
 
     resetStore() {
         this._pendingReferrals.next(this._pendingReferrals.getValue().clear());
+        this._pendingReferralsList.next(this._pendingReferralsList.getValue().clear());
     }
 
     get PendingReferral() {
         return this._pendingReferrals.asObservable();
     }
+
+    get PendingReferralList() {
+        return this._pendingReferralsList.asObservable();
+    }
+
     getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number): Observable<PrefferedMedicalProvider[]> {
         let promise = new Promise((resolve, reject) => {
             this._pendingReferralService.getPreferredCompanyDoctorsAndRoomByCompanyId(companyId)
@@ -40,6 +48,18 @@ export class PendingReferralStore {
                 });
         });
         return <Observable<PrefferedMedicalProvider[]>>Observable.fromPromise(promise);
+    }
+
+    getPendingReferralByCompanyId(companyId: number): Observable<PendingReferralList[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.getPendingReferralByCompanyId(companyId)
+                .subscribe((pendingReferralList: PendingReferralList[]) => {
+                    resolve(pendingReferralList);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<PendingReferralList[]>>Observable.fromPromise(promise);
     }
 
 }
