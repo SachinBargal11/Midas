@@ -1493,7 +1493,20 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId)
+        {
+            var objResult = dataAccessManager.GetByForRoomTestId(roomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
+        
 
     }
 }

@@ -613,14 +613,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByForRoomTestId(int roomTestId)
+        {
+            throw new NotImplementedException();
+        }
         
-
-
-
-
-
-
-
         #endregion
     }
 }
