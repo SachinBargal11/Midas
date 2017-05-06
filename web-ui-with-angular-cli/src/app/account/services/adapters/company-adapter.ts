@@ -9,7 +9,8 @@ export class CompanyAdapter {
                 id: companyData.id,
                 name: companyData.name,
                 taxId: companyData.taxId,
-                companyType: companyData.companyType
+                companyType: companyData.companyType,
+                subscriptionType:companyData.subscriptionType
             });
         }
         return company;

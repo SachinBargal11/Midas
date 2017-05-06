@@ -35,6 +35,7 @@ export class EditMedicalProviderComponent implements OnInit {
     isSaveProgress = false;
     medicalProviderId: number;
     companyName: string;
+   
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -47,20 +48,21 @@ export class EditMedicalProviderComponent implements OnInit {
         // private _registrationService: RegistrationService,
         private _elRef: ElementRef,
         private _medicalProviderMasterStore: MedicalProviderMasterStore,
+        private _phoneFormatPipe: PhoneFormatPipe,
 
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/medical-provider-master']);
         });
 
-        this._route.params.subscribe((routeParams: any) => {           
+        this._route.params.subscribe((routeParams: any) => {
+
             this.medicalProviderId = parseInt(routeParams.id);
             this._progressBarService.show();
             let result = this._medicalProviderMasterStore.fetchMedicalProviderById(this.medicalProviderId);
             result.subscribe(
                 (medicalProviderMaster: MedicalProviderMaster) => {
                     this.medicalProviderMaster = medicalProviderMaster;
-
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -90,7 +92,7 @@ export class EditMedicalProviderComponent implements OnInit {
 
     }
 
-    saveMedicalProvider() {
+    updateMedicalProvider() {
         this.isSaveProgress = true;
         let providerformValues = this.providerform.value;
         let result;
@@ -110,11 +112,6 @@ export class EditMedicalProviderComponent implements OnInit {
                     emailAddress: this.providerform.value.email,
                     preferredCommunication: 1
                 },
-                role: {
-                    name: 'Admin',
-                    roleType: 'Admin',
-                    status: 'active'
-                },
                 company: {
                     name: this.providerform.value.companyName,
                     taxId: this.providerform.value.taxId,
@@ -124,7 +121,7 @@ export class EditMedicalProviderComponent implements OnInit {
             },
             id: this.medicalProviderId
         };
-        result = this._medicalProviderMasterStore.addMedicalProvider(provider);
+        result = this._medicalProviderMasterStore.updateMedicalProvider(provider);
         result.subscribe(
             (response) => {
                 this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');

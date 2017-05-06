@@ -57,9 +57,9 @@ export class MedicalProviderMasterStore {
     getMedicalProviders(): Observable<MedicalProviderMaster[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.getMedicalProviders(companyId).subscribe((Attorneys: MedicalProviderMaster[]) => {
-                this._medicalProviderMaster.next(List(Attorneys));
-                resolve(Attorneys);
+            this._medicalProviderMasterService.getMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+                // this._medicalProviderMaster.next(List(Provider));
+                resolve(Provider);
             }, error => {
                 reject(error);
             });
@@ -101,9 +101,17 @@ export class MedicalProviderMasterStore {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-
-
-
+    updateMedicalProvider(signUp: any): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.updateMedicalProvider(signUp).subscribe((any) => {
+                this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(any));
+                resolve(any);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
 
     // updateMedicalProvider(signUp: any): Observable<any> {
     //     let promise = new Promise((resolve, reject) => {

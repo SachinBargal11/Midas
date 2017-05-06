@@ -3,7 +3,7 @@ import { MedicalProviderMaster } from '../../models/medical-provider-master';
 import { UserAdapter } from '../../../medical-provider/users/services/adapters/user-adapter';
 import { PrefferedProviderAdapter } from '../../../account-setup/services/adapters/preffered-provider-adapter';
 import { CompanyAdapter } from '../../../account/services/adapters/company-adapter';
-
+import { SignupAdapter } from '../../../account-setup/services/adapters/signup-adapter';
 
 export class MedicalProviderMasterAdapter {
     static parseResponse(data: any): MedicalProviderMaster {
@@ -16,7 +16,8 @@ export class MedicalProviderMasterAdapter {
                 prefMedProviderId: data.prefMedProviderId,
                 company: CompanyAdapter.parseResponse(data.company),
                 prefferedProvider: PrefferedProviderAdapter.parseResponse(data.prefMedProvider),
-                isCreated: data.isCreated
+                isCreated: data.isCreated,
+                signup:SignupAdapter.parseResponse(data.signup),
             });
         }
         return medicalProviderMaster;
