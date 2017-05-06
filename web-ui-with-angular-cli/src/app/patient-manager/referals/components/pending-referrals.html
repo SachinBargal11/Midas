@@ -11,7 +11,7 @@
     <p-headerColumnGroup>
         <p-row>
             <p-column selectionMode="multiple" rowspan="2"></p-column>
-            <p-column  header="Patient Name" styleClass="inbound-column"></p-column>
+            <p-column header="Patient Name" styleClass="inbound-column"></p-column>
             <p-column [style]="{'width':'50px'}" header="Case Id" styleClass="inbound-column"></p-column>
             <p-column [style]="{'width':'90px'}" header="Speciality" styleClass="inbound-column"></p-column>
             <p-column header="Doctor" styleClass="inbound-column-span"></p-column>
@@ -25,15 +25,21 @@
     <p-column field="referringUser.displayName"></p-column>
 </p-dataTable><br>
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <label class="form-label">Medical-Office-List
             <span class="color-red">*</span>
         </label>
         <div class="form-group">
-            <!--<select type="text" [(ngModel)]="currentMedicalOfficeId" class="form-control" placeholder="" (change)="selectedMedicalOffice($event)">-->
-        <select type="text" class="form-control" placeholder="">
-        <option value="0">-Select Medical Office-</option>
-        <!--<option *ngFor="let Medical of MedicalOffice" value="{{Medical.id}}">{{Medical.firstName}}</option>-->
+            <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <option value="0">-select-</option>
+             <optgroup label="Select MedicalProvider-Doctor">
+                     <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
+                         {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
+             </optgroup>
+             <optgroup label="Select MedicalProvider-Room">
+                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
+                        {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
+             </optgroup>
         </select>
         </div>
     </div>

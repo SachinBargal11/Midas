@@ -106,6 +106,8 @@ import { PaymentListComponent } from './cases/components/payment-list';
 
 import { VisitReferralService } from './patient-visit/services/visit-referral-service';
 import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
+import { PendingReferralService } from './referals/services/pending-referrals-service';
+import { PendingReferralStore } from './referals/stores/pending-referrals-stores';
 
 @NgModule({
     imports: [
@@ -206,7 +208,9 @@ import { VisitReferralStore } from './patient-visit/stores/visit-referral-store'
         AttorneyMasterService,
         AttorneyMasterStore,
         VisitReferralService,
-        VisitReferralStore
+        VisitReferralStore,
+        PendingReferralService,
+        PendingReferralStore
     ]
 })
 export class PatientManagerModule { }
