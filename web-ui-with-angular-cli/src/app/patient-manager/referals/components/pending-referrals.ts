@@ -11,6 +11,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { PendingReferralStore } from '../stores/pending-referrals-stores';
 import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
+import { PendingReferralList } from '../models/pending-referral-list';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { environment } from '../../../../environments/environment';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
@@ -28,6 +29,7 @@ export class PendingReferralsComponent implements OnInit {
     selectedCancel: number;
     currentCancel: string;
     preferredMedical: PrefferedMedicalProvider[];
+    pendingReferralList:PendingReferralList[];
     medicalProviderDoctor: {
         preferredMedical: PrefferedMedicalProvider,
         doctor: Doctor,
@@ -55,11 +57,28 @@ export class PendingReferralsComponent implements OnInit {
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             // this.loadPendingReferralsForCompany(companyId);
+            // this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
         });
     }
 
     ngOnInit() {
         this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
+        this.loadPendingReferralsForCompany(this.companyId);
+    }
+
+    loadPendingReferralsForCompany(companyId: number){
+        this._progressBarService.show();
+        this._pendingReferralStore.getPendingReferralByCompanyId(this.companyId)
+            .subscribe(pendingReferralList => {
+                this.pendingReferralList = pendingReferralList
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
     }
 
     loadPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number) {
@@ -88,8 +107,8 @@ export class PendingReferralsComponent implements OnInit {
                         });
                     });
                 });
-                this.medicalProviderDoctor =   mappedMedicalProviderDoctor;
-                this.medicalProviderRoom   =   mappedMedicalProviderRoom;
+                this.medicalProviderDoctor = mappedMedicalProviderDoctor;
+                this.medicalProviderRoom = mappedMedicalProviderRoom;
                 // this.preferredMedical = preferredMedical
 
             },
@@ -97,49 +116,49 @@ export class PendingReferralsComponent implements OnInit {
                 this.medicalProviderDoctor = [];
                 this.medicalProviderRoom = [];
                 this._progressBarService.hide();
-            // });
-        () => {
-            this._progressBarService.hide();
-        };
-    });
-}
-
-selectOption(event) {
-    this.selectedDoctorId = 0;
-    this.selectedRoomId = 0;
-    this.selectedOption = 0;
-    // this.events = [];
-    if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
-        this.selectedOption = 1;
-        this.selectedDoctorId = event.target.value;
-        this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
-    } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
-        this.selectedOption = 2;
-        this.selectedRoomId = event.target.value;
-        this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
-    } else {
-        this.selectedMode = 0;
+                // });
+                () => {
+                    this._progressBarService.hide();
+                };
+            });
     }
-}
 
-showDialog() {
-    this.eventDialogVisible = true;
-    this.selectedCancel = 1;
-}
-closeDialog() {
-    this.eventDialogVisible = false;
-}
-assign() {
-    this.confirmationService.confirm({
-        message: 'Do you want to Appoint Schedule?',
-        header: 'Confirmation',
-        icon: 'fa fa-question-circle',
-        accept: () => {
-
+    selectOption(event) {
+        this.selectedDoctorId = 0;
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+        // this.events = [];
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedOption = 1;
+            this.selectedDoctorId = event.target.value;
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedOption = 2;
+            this.selectedRoomId = event.target.value;
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
+        } else {
+            this.selectedMode = 0;
         }
-    });
+    }
 
-}
+    showDialog() {
+        this.eventDialogVisible = true;
+        this.selectedCancel = 1;
+    }
+    closeDialog() {
+        this.eventDialogVisible = false;
+    }
+    assign() {
+        this.confirmationService.confirm({
+            message: 'Do you want to Appoint Schedule?',
+            header: 'Confirmation',
+            icon: 'fa fa-question-circle',
+            accept: () => {
+
+            }
+        });
+
+    }
 
 
 }
