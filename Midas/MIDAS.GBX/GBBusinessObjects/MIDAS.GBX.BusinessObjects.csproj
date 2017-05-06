@@ -113,8 +113,10 @@
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Patient\PatientType.cs" />
     <Compile Include="ProcedureCode\ProcedureCode.cs" />
+    <Compile Include="ReferralProcedureCode\ReferralProcedureCode.cs" />
     <Compile Include="Referral\MidasDocument.cs" />
     <Compile Include="Referral\Referral.cs" />
+    <Compile Include="Referral\Referral2.cs" />
     <Compile Include="Referral\ReferralDocument.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />

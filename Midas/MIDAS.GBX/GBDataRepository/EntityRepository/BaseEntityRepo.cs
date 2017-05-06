@@ -563,6 +563,27 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByFromCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByToCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByFromLocationId(int locationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByToLocationId(int locationId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
