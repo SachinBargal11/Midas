@@ -114,5 +114,17 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByPrefMedProviderId(int PrefMedProviderId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetPendingReferralByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByFromCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByToCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByFromLocationId(int locationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByToLocationId(int locationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByFromDoctorId(int doctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByToDoctorId(int doctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByForRoomId(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByToRoomId(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByForSpecialtyId(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByForRoomTestId(int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        
+
     }
 }
