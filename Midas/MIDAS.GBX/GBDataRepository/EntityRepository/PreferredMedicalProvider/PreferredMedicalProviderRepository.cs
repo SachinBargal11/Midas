@@ -224,64 +224,63 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     BO.Company boCompany = new BO.Company();
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
-                        boCompany = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);
+                        boCompany = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);                        
 
+                        //PreferredMedicalProviderSignUpBO.Signup.contactInfo = boCompany.ContactInfo;
+                        //boCompany.ContactInfo = null;
                         PreferredMedicalProviderSignUpBO.Signup.company = boCompany;
-
                     }
                 }
+            }
 
+            if (preferredMedicalProvider.Company1.ContactInfo != null)
+            {
+
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.Name = preferredMedicalProvider.Company1.ContactInfo.Name;
+                boContactInfo.CellPhone = preferredMedicalProvider.Company1.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = preferredMedicalProvider.Company1.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = preferredMedicalProvider.Company1.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = preferredMedicalProvider.Company1.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = preferredMedicalProvider.Company1.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = preferredMedicalProvider.Company1.ContactInfo.CreateByUserID;
+                boContactInfo.ID = preferredMedicalProvider.Company1.ContactInfo.id;
+                boContactInfo.OfficeExtension = preferredMedicalProvider.Company1.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = preferredMedicalProvider.Company1.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = preferredMedicalProvider.Company1.ContactInfo.PreferredCommunication;
+
+
+                PreferredMedicalProviderSignUpBO.Signup.contactInfo = boContactInfo;
             }
 
             if (preferredMedicalProvider.Company1.UserCompanies != null)
             {
                 BO.User lstUser = new BO.User();
-                foreach (var item in preferredMedicalProvider.Company1.UserCompanies)
+                if (preferredMedicalProvider.Company1.UserCompanies.Count >= 1)
                 {
-                    if ( item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    var item = preferredMedicalProvider.Company1.UserCompanies.FirstOrDefault();
+
+                    if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                     {
-                        var userDB = _context.Users
-                                                .Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                .FirstOrDefault();
+                        var userDB = _context.Users.Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
 
                         using (UserRepository sr = new UserRepository(_context))
                         {
                             BO.User BOUser = new BO.User();
                             BOUser = sr.Convert<BO.User, User>(userDB);
-                          
+                            BOUser.UserCompanies = null;
+                            BOUser.ContactInfo = null;
+                            BOUser.AddressInfo = null;
+                            BOUser.Roles = null;
+
                             lstUser = BOUser;
                         }
                     }
-
-
                 }
+                
                 PreferredMedicalProviderSignUpBO.Signup.user = lstUser;
             }
-
-            if (preferredMedicalProvider.Company1.ContactInfo != null)
-            {
-                
-                    BO.ContactInfo boContactInfo = new BO.ContactInfo();
-                    boContactInfo.Name = preferredMedicalProvider.Company1.ContactInfo.Name;
-                    boContactInfo.CellPhone = preferredMedicalProvider.Company1.ContactInfo.CellPhone;
-                    boContactInfo.EmailAddress = preferredMedicalProvider.Company1.ContactInfo.EmailAddress;
-                    boContactInfo.HomePhone = preferredMedicalProvider.Company1.ContactInfo.HomePhone;
-                    boContactInfo.WorkPhone = preferredMedicalProvider.Company1.ContactInfo.WorkPhone;
-                    boContactInfo.FaxNo = preferredMedicalProvider.Company1.ContactInfo.FaxNo;
-                    boContactInfo.CreateByUserID = preferredMedicalProvider.Company1.ContactInfo.CreateByUserID;
-                    boContactInfo.ID = preferredMedicalProvider.Company1.ContactInfo.id;
-                    boContactInfo.OfficeExtension = preferredMedicalProvider.Company1.ContactInfo.OfficeExtension;
-                    boContactInfo.AlternateEmail = preferredMedicalProvider.Company1.ContactInfo.AlternateEmail;
-                    boContactInfo.PreferredCommunication = preferredMedicalProvider.Company1.ContactInfo.PreferredCommunication;
-
-
-                PreferredMedicalProviderSignUpBO.Signup.company.ContactInfo = boContactInfo;
-                
-            }
-
-
-
-
            
             return (T)(object)PreferredMedicalProviderSignUpBO;
         }
@@ -524,7 +523,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By PrefMedProvider Id
         public override object GetByPrefMedProviderId(int Id)
         {
-            var medicalProvider = _context.PreferredMedicalProviders.Include("Company.UserCompanies.User")
+            var medicalProvider = _context.PreferredMedicalProviders.Include("Company1.UserCompanies.User")
                                                                      .Where(p => p.Id == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                     .FirstOrDefault();
 

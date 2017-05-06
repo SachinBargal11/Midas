@@ -35,7 +35,7 @@ export class CompanyCasesComponent implements OnInit {
     isDeleteProgress:boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
-    eventDialogVisible: boolean = false;
+    addConsentDialogVisible: boolean = false;
     selectedDocumentList = [];
     currentCaseId: number;
     documents: CaseDocument[] = [];
@@ -230,7 +230,7 @@ export class CompanyCasesComponent implements OnInit {
         }
     }
   showDialog(currentCaseId: number){
-          this.eventDialogVisible = true;
+          this.addConsentDialogVisible = true;
           this.selectedCaseId = currentCaseId;
     }
     
