@@ -108,6 +108,9 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
 import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
 import { PendingReferralService } from './referals/services/pending-referrals-service';
 import { PendingReferralStore } from './referals/stores/pending-referrals-stores';
+import { AvailableSlotsService } from './referals/services/available-slots-service';
+import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
+
 
 @NgModule({
     imports: [
@@ -210,7 +213,9 @@ import { PendingReferralStore } from './referals/stores/pending-referrals-stores
         VisitReferralService,
         VisitReferralStore,
         PendingReferralService,
-        PendingReferralStore
+        PendingReferralStore,
+        AvailableSlotsService,
+        AvailableSlotsStore
     ]
 })
 export class PatientManagerModule { }

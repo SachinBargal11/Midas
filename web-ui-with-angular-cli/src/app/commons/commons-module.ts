@@ -48,7 +48,8 @@ import {
   GrowlModule,
   TabViewModule,
   LightboxModule,
-  ListboxModule
+  ListboxModule,
+  CarouselModule
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -80,6 +81,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     TabViewModule,
     LightboxModule,
     ListboxModule,
+    CarouselModule,
     SignaturePadModule
   ],
   declarations: [
@@ -146,6 +148,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     TabViewModule,
     LightboxModule,
     ListboxModule,
+    CarouselModule,
     ShellComponent,
     ScheduledEventEditorComponent,
     LeaveEventEditorComponent,

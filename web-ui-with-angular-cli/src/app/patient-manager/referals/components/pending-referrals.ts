@@ -1,3 +1,5 @@
+import { AvailableSlot } from '../models/available-slots';
+import { AvailableSlotsStore } from '../stores/available-slots-stores';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
@@ -29,7 +31,7 @@ export class PendingReferralsComponent implements OnInit {
     selectedCancel: number;
     currentCancel: string;
     preferredMedical: PrefferedMedicalProvider[];
-    pendingReferralList:PendingReferralList[];
+    pendingReferralList: PendingReferralList[];
     medicalProviderDoctor: {
         preferredMedical: PrefferedMedicalProvider,
         doctor: Doctor,
@@ -44,7 +46,8 @@ export class PendingReferralsComponent implements OnInit {
     selectedRoomId: number = 0;
     selectedOption: number = 0;
     selectedMedicalProviderId: number = 0;
-
+    availableSlotsDialogVisible: boolean = false;
+    availableSlots: AvailableSlot[] = [];
 
     constructor(
         private _router: Router,
@@ -54,11 +57,20 @@ export class PendingReferralsComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
+        private _availableSlotsStore: AvailableSlotsStore
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             // this.loadPendingReferralsForCompany(companyId);
             // this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
         });
+        this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(1, 1, '1', '1')
+            .subscribe((availableSlots: AvailableSlot[]) => {
+                this.availableSlots = availableSlots;
+            },
+            (error) => {
+            },
+            () => {
+            });
     }
 
     ngOnInit() {
@@ -66,7 +78,7 @@ export class PendingReferralsComponent implements OnInit {
         this.loadPendingReferralsForCompany(this.companyId);
     }
 
-    loadPendingReferralsForCompany(companyId: number){
+    loadPendingReferralsForCompany(companyId: number) {
         this._progressBarService.show();
         this._pendingReferralStore.getPendingReferralByCompanyId(this.companyId)
             .subscribe(pendingReferralList => {
@@ -154,12 +166,24 @@ export class PendingReferralsComponent implements OnInit {
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
-
+                this.availableSlotsDialogVisible = true;
             }
         });
 
     }
 
 
+
+
+    // Code for available slots
+
+    handleAvailableSlotsDialogHide() {
+        this.availableSlots = [];
+    }
+
+    closeAvailableSlotsDialog() {
+        this.availableSlotsDialogVisible = false;
+        this.handleAvailableSlotsDialogHide();
+    }
 }
 
