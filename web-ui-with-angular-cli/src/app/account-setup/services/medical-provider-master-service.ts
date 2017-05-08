@@ -90,18 +90,18 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    updateMedicalProvider(requestData: any): Observable<MedicalProviderMaster> {
+    updateMedicalProvider(requestData: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
-            // let headers = new Headers();
-            // headers.append('Content-Type', 'application/json');
-            // return this._http.post(this._url + '/PreferredMedicalProvider/update', JSON.stringify(requestData), {
-            //     headers: this._headers
-            // })
-            //     .map(res => res.json()).subscribe((data) => {
-            //         resolve(data);
-            //     }, (error) => {
-            //         reject(error);
-            //     });
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/PreferredMedicalProvider/updateMedicalProvider', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
