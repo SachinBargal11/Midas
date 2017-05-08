@@ -584,7 +584,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault();
 
-            BO.PreferredMedicalProvider acc_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(result);
+            BO.PreferredMedicalProviderSignUp acc_ = ConvertPreferredMedicalProviderSignUp<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(result);
 
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
