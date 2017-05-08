@@ -143,6 +143,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             boUser.ContactInfo = null;
                             boUser.UserCompanies = null;
                             boUser.Roles = null;
+
+                            boUser.UserPersonalSettings = new List<BO.UserPersonalSetting>();
+                            foreach (var eachUPS in doctor.User.UserPersonalSettings)
+                            {
+                                if (eachUPS.IsDeleted.HasValue == false || (eachUPS.IsDeleted.HasValue == true && eachUPS.IsDeleted.Value == false))
+                                {
+                                    using (UserPersonalSettingRepository upsRepo = new UserPersonalSettingRepository(_context))
+                                    {
+                                        BO.UserPersonalSetting UserPersonalSettingBO = upsRepo.Convert<BO.UserPersonalSetting, UserPersonalSetting>(eachUPS);
+                                        UserPersonalSettingBO.User = null;
+                                        boUser.UserPersonalSettings.Add(UserPersonalSettingBO);
+                                    }
+                                }                                    
+                            }
+                               
                             doctorBO.user = boUser;
                         }
                     }
@@ -631,13 +646,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                       .Select(p => p.id);
 
-                    var usersPublic = _context.UserPersonalSettings.Where(p => p.CompanyId == eachMedicalProvider.ID && p.IsPublic == true
-                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                   .Select(p => p.UserId);
+                    //var usersPublic = _context.UserPersonalSettings.Where(p => p.CompanyId == eachMedicalProvider.ID && p.IsPublic == true
+                    //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    //                                               .Select(p => p.UserId);
 
-                    var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true && usersPublic.Contains(p.DoctorID) == true
+                    var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                  .Select(p => p.Doctor).Include("User")
+                                                                  .Select(p => p.Doctor).Include("User").Include("User.UserPersonalSettings")
                                                                   .ToList();
 
                     List<BO.Doctor> doctorsBO = new List<BO.Doctor>();
