@@ -1,6 +1,6 @@
 import { AvailableSlot } from '../models/available-slots';
 import { AvailableSlotsStore } from '../stores/available-slots-stores';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -8,6 +8,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import * as _ from 'underscore';
+import { Carousel } from 'primeng/primeng';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
@@ -63,14 +64,7 @@ export class PendingReferralsComponent implements OnInit {
             // this.loadPendingReferralsForCompany(companyId);
             // this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
         });
-        this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(1, 1, '1', '1')
-            .subscribe((availableSlots: AvailableSlot[]) => {
-                this.availableSlots = availableSlots;
-            },
-            (error) => {
-            },
-            () => {
-            });
+
     }
 
     ngOnInit() {
@@ -166,16 +160,24 @@ export class PendingReferralsComponent implements OnInit {
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
+                this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(1, 1, '1', '1')
+                    .subscribe((availableSlots: AvailableSlot[]) => {
+                        this.availableSlots = availableSlots;
+                    },
+                    (error) => {
+                    },
+                    () => {
+                    });
                 this.availableSlotsDialogVisible = true;
             }
         });
 
     }
+    // Code for available slots    
 
-
-
-
-    // Code for available slots
+    handleAvailableSlotsDialogShow() {
+        
+    }
 
     handleAvailableSlotsDialogHide() {
         this.availableSlots = [];

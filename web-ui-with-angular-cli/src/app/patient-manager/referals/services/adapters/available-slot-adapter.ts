@@ -10,7 +10,6 @@ export class AvailableSlotAdapter {
         let availableSlot: AvailableSlot = null;
 
         if (data) {
-            debugger;
             availableSlot = new AvailableSlot({
                 forDate: moment(data.forDate),
                 startEndTimes: AvailableSlotAdapter.parseSingleSlot(data.startEndTimes)
@@ -23,7 +22,6 @@ export class AvailableSlotAdapter {
     static parseSingleSlot(data: any): AvailableSingleSlot[] {
         let availableSingleSlots: AvailableSingleSlot[] = [];
         _.forEach(data, (currentSlot: any) => {
-            debugger;
             availableSingleSlots.push(new AvailableSingleSlot({
                 start: moment(currentSlot.start),
                 end: moment(currentSlot.end)

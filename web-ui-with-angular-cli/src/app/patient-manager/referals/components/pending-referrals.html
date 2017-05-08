@@ -62,24 +62,28 @@
 </p-dialog>
 <!--<router-outlet></router-outlet>-->
 
-
-<p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleAvailableSlotsDialogHide()" header="Please select slots" [(visible)]="availableSlotsDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+<p-dialog [minWidth]="500" [width]="1200" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
+    header="Please select slots" [(visible)]="availableSlotsDialogVisible" [responsive]="true" showEffect="fade" [modal]="false"
+    [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <!--<div *ngIf="availableSlots && availableSlotsDialogVisible">
     </div>-->
-    <p-carousel *ngIf="availableSlotsDialogVisible" headerText="" [value]="availableSlots" circular="circular">
+    <p-carousel *ngIf="availableSlots.length > 0" headerText="" [value]="availableSlots" circular="circular">
         <ng-template let-currentAvailableSlot pTemplate="item">
             <div class="ui-grid ui-grid-responsive">
 
                 <div class="ui-grid-row">
-                    <div class="ui-grid-col-6">{{currentAvailableSlot.forDate.local().format('ddd')}}</div>
-                    <div class="ui-grid-col-6">{{currentAvailableSlot.forDate.local().format('MMM DD')}}</div>
+                    <div class="ui-grid-col-6">
+                        {{currentAvailableSlot.forDate.local().format('ddd')}}
+                        {{currentAvailableSlot.forDate.local().format('MMM DD')}}
+                    </div>
                 </div>
                 <div class="ui-grid-row" *ngFor="let currentSingleSlot of currentAvailableSlot.startEndTimes">
-                    <div class="ui-grid-col-6">Start</div>
-                    <div class="ui-grid-col-6">{{currentSingleSlot.start.local().format('hh:mm a')}}</div>
+                    <button class="btn btn-inline btn-warning ladda-button" data-style="slide-up">
+                        <span class="ladda-label">
+                            {{currentSingleSlot.start.local().format('hh:mm a')}}
+                        </span>
+                    </button>
                 </div>
-
             </div>
         </ng-template>
     </p-carousel>
