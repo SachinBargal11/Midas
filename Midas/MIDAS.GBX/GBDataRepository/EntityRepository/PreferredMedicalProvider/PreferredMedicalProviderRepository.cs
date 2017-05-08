@@ -652,7 +652,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                  .Select(p => p.Doctor).Include("User").Include("User.UserPersonalSettings")
+                                                                  .Select(p => p.Doctor).Distinct()
+                                                                  .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                  .Select(p => p).Include("User").Include("User.UserPersonalSettings")
                                                                   .ToList();
 
                     List<BO.Doctor> doctorsBO = new List<BO.Doctor>();
