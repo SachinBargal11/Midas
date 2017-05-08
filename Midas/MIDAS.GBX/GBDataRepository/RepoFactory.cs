@@ -273,6 +273,10 @@ namespace MIDAS.GBX
             {
                 repo = new ReportsRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Referral2))
+            {
+                repo = new Referral2Repository(context);
+            }
             return repo;
         }
     }

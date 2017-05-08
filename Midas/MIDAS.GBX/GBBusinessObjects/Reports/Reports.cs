@@ -31,5 +31,8 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("noshowVisits")]
         public int NoShowVisits { get; set; }
+
+        [JsonProperty("nextVisit")]
+        public string NextVisit { get; set; }
     }
 }

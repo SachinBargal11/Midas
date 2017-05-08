@@ -491,6 +491,53 @@ namespace MIDAS.GBX.DataAccessManager
         }
         #endregion
 
+        #region UpdateMedicalProvider 
+        public Object UpdateMedicalProvider(T data)
+        {
+            try
+            {
+                //var gbObject = (GbObject)(object)entity;
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.UpdateMedicalProvider(data);
+                    return gbdata;
+                }
+            }
+
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        #endregion
+
+
         #region SaveDoctor
         public Object SaveDoctor(T data)
         {
@@ -2319,6 +2366,205 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object GetByFromCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByFromCompanyId(companyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetByToCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByToCompanyId(companyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetByFromLocationId(int locationId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByFromLocationId(locationId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetByToLocationId(int locationId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByToLocationId(locationId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetByFromDoctorId(int doctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByFromDoctorId(doctorId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetByToDoctorId(int doctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByToDoctorId(doctorId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetByForRoomId(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByForRoomId(roomId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetByToRoomId(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByToRoomId(roomId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetByForSpecialtyId(int specialtyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByForSpecialtyId(specialtyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetByForRoomTestId(int roomTestId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByForRoomTestId(roomTestId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        
 
     }
 }

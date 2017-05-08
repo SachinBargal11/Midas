@@ -34,6 +34,13 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        
+        public virtual Object UpdateMedicalProvider<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public virtual Object SaveDoctor<T>(T entity)
         {
             throw new NotImplementedException();
@@ -568,6 +575,57 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByFromCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByToCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByFromLocationId(int locationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByToLocationId(int locationId)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public virtual Object GetByFromDoctorId(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByToDoctorId(int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public virtual Object GetByForRoomId(int roomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByToRoomId(int roomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByForSpecialtyId(int roomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByForRoomTestId(int roomTestId)
+        {
+            throw new NotImplementedException();
+        }
+        
         #endregion
     }
 }

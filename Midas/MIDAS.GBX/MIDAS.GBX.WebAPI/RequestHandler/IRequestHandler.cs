@@ -17,6 +17,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage UpdateMedicalProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
         HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed);
         HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);
@@ -101,5 +102,16 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId);
         HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetPendingReferralByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetByFromCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetByToCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetByFromLocationId(HttpRequestMessage request, int locationId);
+        HttpResponseMessage GetByToLocationId(HttpRequestMessage request, int locationId);
+        HttpResponseMessage GetByFromDoctorId(HttpRequestMessage request, int doctorId);
+        HttpResponseMessage GetByToDoctorId(HttpRequestMessage request, int doctorId);
+        HttpResponseMessage GetByForRoomId(HttpRequestMessage request, int roomId);
+        HttpResponseMessage GetByToRoomId(HttpRequestMessage request, int roomId);
+        HttpResponseMessage GetByForSpecialtyId(HttpRequestMessage request, int specialtyId);
+        HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId);
+        
     }
 }

@@ -2786,11 +2786,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReferralProcedureCodes_Referral_ReferralId">
-          <End Role="Referral" Type="Self.Referral" Multiplicity="1" />
+        <Association Name="FK_ReferralProcedureCodes_Referral2_ReferralId">
+          <End Role="Referral2" Type="Self.Referral2" Multiplicity="1" />
           <End Role="ReferralProcedureCodes" Type="Self.ReferralProcedureCodes" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Referral">
+            <Principal Role="Referral2">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ReferralProcedureCodes">
@@ -3026,50 +3026,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="fn_get_document_path" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar(max)">
           <Parameter Name="document_node" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="midas_sp_get_document_path" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="document_node" Type="nvarchar(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spDeleteCase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CaseId" Type="int" Mode="In" />
-          <Parameter Name="HardDelete" Type="bit" Mode="In" />
-        </Function>
-        <Function Name="spDeletePatient" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="PatientId" Type="int" Mode="In" />
-          <Parameter Name="HardDelete" Type="bit" Mode="In" />
         </Function>
         <EntityContainer Name="MIDASGBXModelStoreContainer">
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
@@ -3685,8 +3646,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
             <End Role="ReferralProcedureCodes" EntitySet="ReferralProcedureCodes" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReferralProcedureCodes_Referral_ReferralId" Association="Self.FK_ReferralProcedureCodes_Referral_ReferralId">
-            <End Role="Referral" EntitySet="Referral" />
+          <AssociationSet Name="FK_ReferralProcedureCodes_Referral2_ReferralId" Association="Self.FK_ReferralProcedureCodes_Referral2_ReferralId">
+            <End Role="Referral2" EntitySet="Referral2" />
             <End Role="ReferralProcedureCodes" EntitySet="ReferralProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_RefferingOffice_AddressInfo_AddressInfoId" Association="Self.FK_RefferingOffice_AddressInfo_AddressInfoId">
@@ -4840,7 +4801,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Specialty" Relationship="Self.FK_Referral_Specialty_ReferredToSpecialtyId" FromRole="Referral" ToRole="Specialty" />
           <NavigationProperty Name="User" Relationship="Self.FK_Referral_User_ReferringUserId" FromRole="Referral" ToRole="User" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_Referral_ReferralId" FromRole="Referral" ToRole="ReferralDocuments" />
-          <NavigationProperty Name="ReferralProcedureCodes" Relationship="Self.FK_ReferralProcedureCodes_Referral_ReferralId" FromRole="Referral" ToRole="ReferralProcedureCodes" />
         </EntityType>
         <EntityType Name="Referral2">
           <Key>
@@ -4878,6 +4838,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Referral2_RoomTest_ForRoomTestId" FromRole="Referral2" ToRole="RoomTest" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_Referral2_Specialty_ForSpecialtyId" FromRole="Referral2" ToRole="Specialty" />
           <NavigationProperty Name="User" Relationship="Self.FK_Referral2_User_DismissedBy" FromRole="Referral2" ToRole="User" />
+          <NavigationProperty Name="ReferralProcedureCodes" Relationship="Self.FK_ReferralProcedureCodes_Referral2_ReferralId" FromRole="Referral2" ToRole="ReferralProcedureCodes" />
         </EntityType>
         <EntityType Name="ReferralDocument">
           <Key>
@@ -4908,7 +4869,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId" FromRole="ReferralProcedureCodes" ToRole="ProcedureCode" />
-          <NavigationProperty Name="Referral" Relationship="Self.FK_ReferralProcedureCodes_Referral_ReferralId" FromRole="ReferralProcedureCodes" ToRole="Referral" />
+          <NavigationProperty Name="Referral2" Relationship="Self.FK_ReferralProcedureCodes_Referral2_ReferralId" FromRole="ReferralProcedureCodes" ToRole="Referral2" />
         </EntityType>
         <EntityType Name="RefferingOffice">
           <Key>
@@ -6890,18 +6851,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReferralProcedureCodes_Referral_ReferralId">
-          <End Role="Referral" Type="Self.Referral" Multiplicity="1" />
-          <End Role="ReferralProcedureCodes" Type="Self.ReferralProcedureCode" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Referral">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ReferralProcedureCodes">
-              <PropertyRef Name="ReferralId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Referral2_Room_ForRoomId">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="Referral2" Type="Self.Referral2" Multiplicity="*" />
@@ -6959,6 +6908,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Referral2">
               <PropertyRef Name="DismissedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReferralProcedureCodes_Referral2_ReferralId">
+          <End Role="Referral2" Type="Self.Referral2" Multiplicity="1" />
+          <End Role="ReferralProcedureCodes" Type="Self.ReferralProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Referral2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReferralProcedureCodes">
+              <PropertyRef Name="ReferralId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7698,10 +7659,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Referral" EntitySet="Referrals" />
             <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReferralProcedureCodes_Referral_ReferralId" Association="Self.FK_ReferralProcedureCodes_Referral_ReferralId">
-            <End Role="Referral" EntitySet="Referrals" />
-            <End Role="ReferralProcedureCodes" EntitySet="ReferralProcedureCodes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Referral2_Room_ForRoomId" Association="Self.FK_Referral2_Room_ForRoomId">
             <End Role="Room" EntitySet="Rooms" />
             <End Role="Referral2" EntitySet="Referral2" />
@@ -7721,6 +7678,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Referral2_User_DismissedBy" Association="Self.FK_Referral2_User_DismissedBy">
             <End Role="User" EntitySet="Users" />
             <End Role="Referral2" EntitySet="Referral2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReferralProcedureCodes_Referral2_ReferralId" Association="Self.FK_ReferralProcedureCodes_Referral2_ReferralId">
+            <End Role="Referral2" EntitySet="Referral2" />
+            <End Role="ReferralProcedureCodes" EntitySet="ReferralProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_Room_RoomTest" Association="Self.FK_Room_RoomTest">
             <End Role="RoomTest" EntitySet="RoomTests" />
@@ -7765,56 +7726,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
             <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(MIDASGBXModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(MIDASGBXModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
-          <FunctionImport Name="spDeleteCase">
-            <Parameter Name="CaseId" Mode="In" Type="Int32" />
-            <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="spDeletePatient">
-            <Parameter Name="PatientId" Mode="In" Type="Int32" />
-            <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
-          </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9110,32 +9022,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="midas_sp_get_document_path" FunctionName="MIDASGBXModel.Store.midas_sp_get_document_path" />
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="MIDASGBXModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="MIDASGBXModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="MIDASGBXModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="MIDASGBXModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MIDASGBXModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="MIDASGBXModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="MIDASGBXModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="MIDASGBXModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="MIDASGBXModel.Store.sp_upgraddiagrams" />
-          <FunctionImportMapping FunctionImportName="spDeleteCase" FunctionName="MIDASGBXModel.Store.spDeleteCase" />
-          <FunctionImportMapping FunctionImportName="spDeletePatient" FunctionName="MIDASGBXModel.Store.spDeletePatient" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

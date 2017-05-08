@@ -11,7 +11,6 @@ using System.Configuration;
 using MIDAS.GBX.EN;
 using Docs.Pdf;
 using System.IO;
-//using Docs.Pdf;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 {

@@ -88,7 +88,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var cases = _context.Cases.Where(cs => cs.PatientId== patientId).Select(cse => cse.Id).ToList();
             var visits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
-            //visits.FirstOrDefault().CreateDate.ToString("Mon-yyyy");
+            
             var scheduledvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 1 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
@@ -101,10 +101,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                              vis.VisitStatusId == 4 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
+            var caldarids = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+                                                             (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false)))
+                                                             .Select(cal=>cal.CalendarEventId).ToList();
+            
+            var nextScheduleVisit = _context.CalendarEvents.Where(calendar => caldarids.Contains(calendar.Id) && calendar.EventStart > DateTime.UtcNow)
+                                                           .OrderByDescending(cl=>cl.EventStart).AsEnumerable()
+                                                           .Reverse()
+                                                           .FirstOrDefault().EventStart.ToString("dd-MMM-yyyy hh:mm tt");
+
             visitreports.TotalVisits = visits.Count;
             visitreports.CompletedVisits = completedvisits.Count;
             visitreports.NoShowVisits = noshowvisits.Count;
             visitreports.ScheduledVisits = scheduledvisits.Count;
+            visitreports.NextVisit = nextScheduleVisit.ToString();
             visitreports.ProviderName = _context.Companies.Where(comp => comp.id == 
                                                                 (_context.UserCompanies.Where(usrcmp=>usrcmp.UserID==patientId).Select(cp=>cp.CompanyID).FirstOrDefault()))
                                                                 .FirstOrDefault().Name.ToString();
