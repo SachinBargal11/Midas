@@ -11,8 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class User:GbObject
     {
-        [Required]
-        
+        [Required]        
         [JsonProperty("userType")]
         public GBEnums.UserType UserType { get; set; }
 
@@ -67,6 +66,8 @@ namespace MIDAS.GBX.BusinessObjects
        // public List<DoctorSpeciality> DoctorSpecialities { get; set; }
 
         public List<Role> Roles { get; set; }
+
+        public List<UserPersonalSetting> UserPersonalSettings { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {

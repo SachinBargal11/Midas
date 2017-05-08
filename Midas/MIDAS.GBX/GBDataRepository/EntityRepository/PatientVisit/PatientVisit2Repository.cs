@@ -23,7 +23,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             _dbPatientVisit2 = context.Set<PatientVisit2>();
             context.Configuration.ProxyCreationEnabled = false;
-            dictionary.Add("rageesh.m@greenyourbills.com", "+14252602856");
+            dictionary.Add("rageesh@hotmail.com", "+14252602856");
             dictionary.Add("slaxman@greenyourbills.com", "+19144004328");
             dictionary.Add("vgaonkar@greenyourbills.com", "+19147879623");
        }

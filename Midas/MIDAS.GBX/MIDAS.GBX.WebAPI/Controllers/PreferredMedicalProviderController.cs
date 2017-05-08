@@ -63,6 +63,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        
+        [HttpPost]
+        [Route("updateMedicalProvider")]
+        public HttpResponseMessage UpdateMedicalProvider([FromBody]PreferredMedicalProviderSignUp data)
+        {
+            return requestHandler.UpdateMedicalProvider(Request, data);
+        }
+
         [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)

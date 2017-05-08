@@ -34,6 +34,17 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        
+        public virtual Object UpdateMedicalProvider<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public virtual Object Save<T>(List<T> entity)
+        {
+            throw new NotImplementedException();
+        }
         public virtual Object SaveDoctor<T>(T entity)
         {
             throw new NotImplementedException();

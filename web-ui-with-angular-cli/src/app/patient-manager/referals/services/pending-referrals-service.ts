@@ -1,14 +1,14 @@
-// import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
-// import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
-import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
 import { SessionStore } from '../../../commons/stores/session-store';
+import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
 import { PrefferedMedicalProviderAdapter } from './adapters/preferred-medical-provider-adapter';
+import { PendingReferralList } from '../models/pending-referral-list';
+import { PendingReferralListAdapter } from './adapters/pending-referral-list-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 
@@ -42,7 +42,7 @@ export class PendingReferralService {
     //     return <Observable<PendingReferral>>Observable.fromPromise(promise);
     // }
 
-     getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number): Observable<PrefferedMedicalProvider[]> {
+    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number): Observable<PrefferedMedicalProvider[]> {
         let promise: Promise<PrefferedMedicalProvider[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId).map(res => res.json())
                 .subscribe((data: any) => {
@@ -60,5 +60,23 @@ export class PendingReferralService {
         });
         return <Observable<PrefferedMedicalProvider[]>>Observable.fromPromise(promise);
     }
-}
 
+    getPendingReferralByCompanyId(companyId: Number): Observable<PendingReferralList[]> {
+        let promise: Promise<PendingReferralList[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/getPendingReferralByCompanyId/' + companyId).map(res => res.json())
+                .subscribe((data: any) => {
+                    let pendingReferralList: PendingReferralList[] = [];
+                    if (_.isArray(data)) {
+                        pendingReferralList = (<Object[]>data).map((data: any) => {
+                            return PendingReferralListAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(pendingReferralList);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PendingReferralList[]>>Observable.fromPromise(promise);
+    }
+}

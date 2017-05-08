@@ -49,6 +49,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByRoomTestId(Request, RoomTestId);
         }
 
+        [HttpPost]
+        [Route("save")]
+        public HttpResponseMessage Post([FromBody]List<ProcedureCode> data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -15,8 +15,10 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetConsentList(HttpRequestMessage request, int id);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbObject(HttpRequestMessage request, List<T> gbObject);
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage UpdateMedicalProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
         HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed);
         HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);

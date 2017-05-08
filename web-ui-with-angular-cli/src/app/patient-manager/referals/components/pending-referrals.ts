@@ -1,3 +1,5 @@
+import { AvailableSlot } from '../models/available-slots';
+import { AvailableSlotsStore } from '../stores/available-slots-stores';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
@@ -9,18 +11,13 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { ReferralStore } from '../../cases/stores/referral-store';
-import { Referral } from '../../cases/models/referral';
-import { Room } from '../../../medical-provider/rooms/models/room';
-import { Doctor } from '../../../medical-provider/users/models/doctor';
-import { Speciality } from '../../../account-setup/models/speciality';
-import { DoctorSpeciality } from '../../../medical-provider/users/models/doctor-speciality';
-import { Consent } from '../../cases/models/consent';
-import { ReferralDocument } from '../../cases/models/referral-document';
+import { PendingReferralStore } from '../stores/pending-referrals-stores';
+import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
+import { PendingReferralList } from '../models/pending-referral-list';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { environment } from '../../../../environments/environment';
-import { CaseDocument } from '../../cases/models/case-document';
-import { AddMedicalProviderComponent } from '../../../account-setup/components/medical-provider-master/add-medical-provider';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { Doctor } from '../../../medical-provider/users/models/doctor';
+import { Room } from '../../../medical-provider/rooms/models/room';
 
 @Component({
     selector: 'pending-referrals',
@@ -29,205 +26,164 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 export class PendingReferralsComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    consentRecived: string = '';
-    consentNotRecived: string = '';
-    searchMode: number = 1;
-    referrals: Referral[];
-    referredUsers: Referral[];
-    referredMedicalOffices: Referral[];
-    referredRooms: Referral[];
-    referralsOutsideMidas: Referral[];
-    selectedReferrals: Referral[] = [];
-    referredDoctors: Doctor[];
-    refferedRooms: Room[];
-    filters: SelectItem[];
-    doctorRoleOnly = null;
-    addMedicalDialogVisible: boolean = false;
+    companyId: number = this.sessionStore.session.currentCompany.id;
+    eventDialogVisible: boolean = false;
     selectedCancel: number;
     currentCancel: string;
-  
+    preferredMedical: PrefferedMedicalProvider[];
+    pendingReferralList: PendingReferralList[];
+    medicalProviderDoctor: {
+        preferredMedical: PrefferedMedicalProvider,
+        doctor: Doctor,
+    }[] = [];
+    medicalProviderRoom: {
+        preferredMedical: PrefferedMedicalProvider,
+        room: Room
+    }[] = [];
+
+    selectedMode = 0;
+    selectedDoctorId: number = 0;
+    selectedRoomId: number = 0;
+    selectedOption: number = 0;
+    selectedMedicalProviderId: number = 0;
+    availableSlotsDialogVisible: boolean = false;
+    availableSlots: AvailableSlot[] = [];
 
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
-        private _referralStore: ReferralStore,
+        private _pendingReferralStore: PendingReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
+        private _availableSlotsStore: AvailableSlotsStore
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadReferralsCheckingDoctor();
+            // this.loadPendingReferralsForCompany(companyId);
+            // this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
         });
+        this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(1, 1, '1', '1')
+            .subscribe((availableSlots: AvailableSlot[]) => {
+                this.availableSlots = availableSlots;
+            },
+            (error) => {
+            },
+            () => {
+            });
     }
 
     ngOnInit() {
-        let roles = this.sessionStore.session.user.roles;
-        if (roles) {
-            if (roles.length === 1) {
-                this.doctorRoleOnly = _.find(roles, (currentRole) => {
-                    return currentRole.roleType === 3;
-                });
-            }
-        }
-        this.loadReferralsCheckingDoctor();
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
+        this.loadPendingReferralsForCompany(this.companyId);
     }
-    loadReferralsCheckingDoctor() {
-        // let doctorRoleOnly = null;        
-        if (this.doctorRoleOnly) {
-            this.loadReferralsForDoctor();
+
+    loadPendingReferralsForCompany(companyId: number) {
+        this._progressBarService.show();
+        this._pendingReferralStore.getPendingReferralByCompanyId(this.companyId)
+            .subscribe(pendingReferralList => {
+                this.pendingReferralList = pendingReferralList
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+    }
+
+    loadPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number) {
+        this._progressBarService.show();
+        this._pendingReferralStore.getPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId)
+            .subscribe(preferredMedical => {
+                let mappedMedicalProviderDoctor: {
+                    preferredMedical: PrefferedMedicalProvider,
+                    doctor: Doctor
+                }[] = [];
+                let mappedMedicalProviderRoom: {
+                    preferredMedical: PrefferedMedicalProvider,
+                    room: Room
+                }[] = [];
+                _.forEach(preferredMedical, (currentPreferredMedicalProvider: PrefferedMedicalProvider) => {
+                    _.forEach(currentPreferredMedicalProvider.doctor, (currentDoctor: Doctor) => {
+                        mappedMedicalProviderDoctor.push({
+                            preferredMedical: currentPreferredMedicalProvider,
+                            doctor: currentDoctor
+                        });
+                    });
+                    _.forEach(currentPreferredMedicalProvider.room, (currentRoom: Room) => {
+                        mappedMedicalProviderRoom.push({
+                            preferredMedical: currentPreferredMedicalProvider,
+                            room: currentRoom
+                        });
+                    });
+                });
+                this.medicalProviderDoctor = mappedMedicalProviderDoctor;
+                this.medicalProviderRoom = mappedMedicalProviderRoom;
+                // this.preferredMedical = preferredMedical
+
+            },
+            (error) => {
+                this.medicalProviderDoctor = [];
+                this.medicalProviderRoom = [];
+                this._progressBarService.hide();
+                // });
+                () => {
+                    this._progressBarService.hide();
+                };
+            });
+    }
+
+    selectOption(event) {
+        this.selectedDoctorId = 0;
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+        // this.events = [];
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedOption = 1;
+            this.selectedDoctorId = event.target.value;
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedOption = 2;
+            this.selectedRoomId = event.target.value;
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
         } else {
-            this.loadReferrals();
+            this.selectedMode = 0;
         }
     }
 
-    loadReferrals() {
-        this._progressBarService.show();
-        // this._referralStore.getReferralsByCaseId(this.caseId)
-        this._referralStore.getReferralsByReferringCompanyId()
-            .subscribe((referrals: Referral[]) => {
-                // this.referrals = referrals.reverse();
-                let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.referredToDoctor ? currentReferral : null;
-                });
-                let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredUsers = matchingUserReferrals.reverse();
-
-                let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.room ? currentReferral : null;
-                });
-                let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredRooms = matchingRoomReferrals.reverse();
-
-                let referralsOutsideMidas: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.firstName && currentReferral.lastName ? currentReferral : null;
-                });
-                let matchingReferralsOutsideMidas = _.reject(referralsOutsideMidas, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referralsOutsideMidas = matchingReferralsOutsideMidas.reverse();
-
-                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals, matchingReferralsOutsideMidas);
-                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
-                    return currentUserAndRoomReferral.id;
-                });
-                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
-                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
-                });
-                this.referredMedicalOffices = matchingMedicalOffices.reverse();
-
-                 
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+    showDialog() {
+        this.eventDialogVisible = true;
+        this.selectedCancel = 1;
     }
-    loadReferralsForDoctor() {
-        this._progressBarService.show();
-        // this._referralStore.getReferralsByCaseId(this.caseId)
-        this._referralStore.getReferralsByReferringUserId()
-            .subscribe((referrals: Referral[]) => {
-                // this.referrals = referrals.reverse();
-                let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.referredToDoctor ? currentReferral : null;
-                });
-                let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredUsers = matchingUserReferrals.reverse();
-
-                let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.room ? currentReferral : null;
-                });
-                let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
-                    return currentReferral == null;
-                });
-                this.referredRooms = matchingRoomReferrals.reverse();
-
-                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
-                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
-                    return currentUserAndRoomReferral.id;
-                });
-                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
-                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
-                });
-                this.referredMedicalOffices = matchingMedicalOffices.reverse();
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+    closeDialog() {
+        this.eventDialogVisible = false;
     }
-    filter(event) {
-        let currentSearchId = parseInt(event.target.value);
-        if (currentSearchId === 1) {
-            this.searchMode = 1;
-        } else if (currentSearchId === 2) {
-            this.searchMode = 2;
-        } else if (currentSearchId === 3) {
-            this.searchMode = 3;
-        } else if (currentSearchId === 4) {
-            this.searchMode = 4;
-        }
-    }
-    DownloadPdf(document: ReferralDocument) {
-        window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
-    }
-    downloadConsent(caseDocuments: CaseDocument[]) {
-        caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
-        }); 
-    }
-     showDialog(){
-          this.addMedicalDialogVisible = true;
-          this.selectedCancel = 1;
-     }
-     closeDialog(){
-          this.addMedicalDialogVisible = false;
-     }
-     assign(){
-         this.confirmationService.confirm({
+    assign() {
+        this.confirmationService.confirm({
             message: 'Do you want to Appoint Schedule?',
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
-                       
+                this.availableSlotsDialogVisible = true;
             }
         });
 
-     }
-    consentAvailable(referral: Referral) {
-        if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
-            });
-            if (consentAvailable) {
-                this.consentRecived = 'Yes';
-            } else {
-                this.consentNotRecived = 'No';
-            }
-        } else {
-            this.consentNotRecived = 'No';
-        }
     }
-    getCurrentDoctorSpeciality(currentReferral): string {
-        let specialityString: string = null;
-        let speciality: any = [];
-        _.forEach(currentReferral.doctorSpecialities, (currentDoctorSpeciality: DoctorSpeciality) => {
-            speciality.push(currentDoctorSpeciality.speciality.specialityCode);
-        });
-        if (speciality.length > 0) {
-            specialityString = speciality.join(', ');
-        }
-        return specialityString;
+
+
+
+
+    // Code for available slots
+
+    handleAvailableSlotsDialogHide() {
+        this.availableSlots = [];
+    }
+
+    closeAvailableSlotsDialog() {
+        this.availableSlotsDialogVisible = false;
+        this.handleAvailableSlotsDialogHide();
     }
 }
+
