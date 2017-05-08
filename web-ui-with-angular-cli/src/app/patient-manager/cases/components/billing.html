@@ -34,7 +34,7 @@
 
     <p-column field="status" header="Status" [sortable]="true"></p-column>
 
-    <p-column styleClass="actions-cell" header="Actions">
+    <p-column header="Actions">
         <ng-template let-billing="rowData" pTemplate="body">
             <a class="btn btn-primary btn-sm" (click)="postCheck()">
                 <span class="hidden-md-down">Post Check</span>

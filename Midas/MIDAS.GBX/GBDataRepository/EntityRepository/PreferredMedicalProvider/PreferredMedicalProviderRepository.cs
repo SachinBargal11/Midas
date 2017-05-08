@@ -210,6 +210,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.PreferredMedicalProviderSignUp PreferredMedicalProviderSignUpBO = new BO.PreferredMedicalProviderSignUp();
 
+            PreferredMedicalProviderSignUpBO.ID = preferredMedicalProvider.Id;
             PreferredMedicalProviderSignUpBO.PrefMedProviderId = preferredMedicalProvider.PrefMedProviderId;
             PreferredMedicalProviderSignUpBO.CompanyId = preferredMedicalProvider.CompanyId;
             PreferredMedicalProviderSignUpBO.IsCreated = preferredMedicalProvider.IsCreated;
@@ -226,62 +227,59 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         boCompany = sr.Convert<BO.Company, Company>(preferredMedicalProvider.Company1);
 
                         PreferredMedicalProviderSignUpBO.Signup.company = boCompany;
-
                     }
                 }
+            }            
+
+            if (preferredMedicalProvider.Company1.ContactInfo != null)
+            {
+                
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.Name = preferredMedicalProvider.Company1.ContactInfo.Name;
+                boContactInfo.CellPhone = preferredMedicalProvider.Company1.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = preferredMedicalProvider.Company1.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = preferredMedicalProvider.Company1.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = preferredMedicalProvider.Company1.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = preferredMedicalProvider.Company1.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = preferredMedicalProvider.Company1.ContactInfo.CreateByUserID;
+                boContactInfo.ID = preferredMedicalProvider.Company1.ContactInfo.id;
+                boContactInfo.OfficeExtension = preferredMedicalProvider.Company1.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = preferredMedicalProvider.Company1.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = preferredMedicalProvider.Company1.ContactInfo.PreferredCommunication;
+
+                PreferredMedicalProviderSignUpBO.Signup.contactInfo = boContactInfo;
 
             }
 
             if (preferredMedicalProvider.Company1.UserCompanies != null)
             {
                 BO.User lstUser = new BO.User();
-                foreach (var item in preferredMedicalProvider.Company1.UserCompanies)
+                if (preferredMedicalProvider.Company1.UserCompanies.Count >= 1)
                 {
-                    if ( item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    var item = preferredMedicalProvider.Company1.UserCompanies.FirstOrDefault();
+
+                    if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                     {
-                        var userDB = _context.Users
-                                                .Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                .FirstOrDefault();
+                        var userDB = _context.Users.Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
 
                         using (UserRepository sr = new UserRepository(_context))
                         {
                             BO.User BOUser = new BO.User();
                             BOUser = sr.Convert<BO.User, User>(userDB);
-                          
+                            BOUser.UserCompanies = null;
+                            BOUser.ContactInfo = null;
+                            BOUser.AddressInfo = null;
+                            BOUser.Roles = null;
+
                             lstUser = BOUser;
                         }
                     }
-
-
                 }
+
                 PreferredMedicalProviderSignUpBO.Signup.user = lstUser;
             }
 
-            if (preferredMedicalProvider.Company1.ContactInfo != null)
-            {
-                
-                    BO.ContactInfo boContactInfo = new BO.ContactInfo();
-                    boContactInfo.Name = preferredMedicalProvider.Company1.ContactInfo.Name;
-                    boContactInfo.CellPhone = preferredMedicalProvider.Company1.ContactInfo.CellPhone;
-                    boContactInfo.EmailAddress = preferredMedicalProvider.Company1.ContactInfo.EmailAddress;
-                    boContactInfo.HomePhone = preferredMedicalProvider.Company1.ContactInfo.HomePhone;
-                    boContactInfo.WorkPhone = preferredMedicalProvider.Company1.ContactInfo.WorkPhone;
-                    boContactInfo.FaxNo = preferredMedicalProvider.Company1.ContactInfo.FaxNo;
-                    boContactInfo.CreateByUserID = preferredMedicalProvider.Company1.ContactInfo.CreateByUserID;
-                    boContactInfo.ID = preferredMedicalProvider.Company1.ContactInfo.id;
-                    boContactInfo.OfficeExtension = preferredMedicalProvider.Company1.ContactInfo.OfficeExtension;
-                    boContactInfo.AlternateEmail = preferredMedicalProvider.Company1.ContactInfo.AlternateEmail;
-                    boContactInfo.PreferredCommunication = preferredMedicalProvider.Company1.ContactInfo.PreferredCommunication;
-
-
-                PreferredMedicalProviderSignUpBO.Signup.company.ContactInfo = boContactInfo;
-                
-            }
-
-
-
-
-           
             return (T)(object)PreferredMedicalProviderSignUpBO;
         }
         #endregion
@@ -451,6 +449,148 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Update Medical Provider
+        public override object UpdateMedicalProvider<T>(T entity)
+        {
+
+            BO.PreferredMedicalProviderSignUp preferredMedicalProviderBO = (BO.PreferredMedicalProviderSignUp)(object)entity;
+            PreferredMedicalProvider preferredMedicalProviderDB = new PreferredMedicalProvider();
+
+            BO.Signup prefMedProviderBO = preferredMedicalProviderBO.Signup;
+
+            PreferredMedicalProvider prefMedProvider = new PreferredMedicalProvider();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                if (prefMedProviderBO == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (prefMedProviderBO.company == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (prefMedProviderBO.user == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (prefMedProviderBO.contactInfo == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (_context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && o.id != prefMedProviderBO.company.ID
+                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && o.id != prefMedProviderBO.company.ID
+                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                else if (_context.Users.Any(o => o.UserName == prefMedProviderBO.user.UserName && o.id != prefMedProviderBO.user.ID
+                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                BO.Company prefMedProviderCompanyBO = prefMedProviderBO.company;
+                BO.ContactInfo ContactInfoBO = prefMedProviderBO.contactInfo;
+                BO.User userBO = prefMedProviderBO.user;
+                BO.Role roleBO = prefMedProviderBO.role;
+
+                Company prefMedProvider_CompanyDB = _context.Companies.Where(p => p.id == prefMedProviderCompanyBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
+
+                if (prefMedProvider_CompanyDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Company Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                prefMedProvider_CompanyDB.Name = prefMedProviderCompanyBO.Name;
+                prefMedProvider_CompanyDB.Status = System.Convert.ToByte(prefMedProviderCompanyBO.Status);
+                prefMedProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefMedProviderCompanyBO.CompanyType);
+                prefMedProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefMedProviderCompanyBO.SubsCriptionType);
+                prefMedProvider_CompanyDB.TaxID = prefMedProviderCompanyBO.TaxID;
+                prefMedProvider_CompanyDB.AddressId = prefMedProvider_CompanyDB.AddressId;
+                prefMedProvider_CompanyDB.ContactInfoID = prefMedProvider_CompanyDB.ContactInfoID;
+                prefMedProvider_CompanyDB.RegistrationComplete = false;
+                prefMedProvider_CompanyDB.IsDeleted = false;
+                prefMedProvider_CompanyDB.UpdateByUserID = 0;
+                prefMedProvider_CompanyDB.UpdateDate = DateTime.UtcNow;
+
+                _context.SaveChanges();
+
+
+                ContactInfo ContactInfo = _context.ContactInfoes.Where(p => p.id == ContactInfoBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
+
+                if (ContactInfo == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Contact Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                ContactInfo.CellPhone = ContactInfoBO.CellPhone;
+                ContactInfo.EmailAddress = ContactInfoBO.EmailAddress;
+
+                _context.SaveChanges();
+
+
+                User userDB = _context.Users.Where(p => p.id == userBO.ID
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault();
+
+                if (userDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "User Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                userDB.FirstName = userBO.FirstName;
+                userDB.LastName = userBO.LastName;
+                userDB.UserName = userBO.UserName;
+                userDB.UserType = 2;
+                userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
+                userDB.AddressId = prefMedProvider_CompanyDB.AddressId;
+                userDB.ContactInfoId = prefMedProvider_CompanyDB.ContactInfoID;
+                userDB.IsDeleted = false;
+                userDB.CreateByUserID = 0;
+                userDB.CreateDate = DateTime.UtcNow;
+
+                _context.SaveChanges();
+
+                dbContextTransaction.Commit();
+            }
+
+            var result = _context.PreferredMedicalProviders.Include("Company").Include("Company1")
+                                                            .Where(p => p.PrefMedProviderId == prefMedProviderBO.company.ID
+                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
+
+            BO.PreferredMedicalProvider acc_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(result);
+
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
+        }
+        #endregion
+
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
@@ -497,7 +637,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true && usersPublic.Contains(p.DoctorID) == true
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                  .Select(p => p.Doctor)
+                                                                  .Select(p => p.Doctor).Include("User")
                                                                   .ToList();
 
                     List<BO.Doctor> doctorsBO = new List<BO.Doctor>();
@@ -523,7 +663,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By PrefMedProvider Id
         public override object GetByPrefMedProviderId(int Id)
         {
-            var medicalProvider = _context.PreferredMedicalProviders.Include("Company.UserCompanies.User")
+            var medicalProvider = _context.PreferredMedicalProviders.Include("Company1.UserCompanies.User")
                                                                      .Where(p => p.Id == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                     .FirstOrDefault();
 

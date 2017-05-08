@@ -2,7 +2,7 @@
     Edit Medical Provider
 </header>
 <div *ngIf="medicalProviderMaster">
-    <form [formGroup]="providerform" name="providerform" (ngSubmit)="saveMedicalProvider()">
+    <form [formGroup]="providerform" name="providerform" (ngSubmit)="updateMedicalProvider()">
         <section class="card">
             <div class="card-block">
                 <div class="row">
@@ -11,7 +11,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.companyName.touched && !providerformControls.companyName.valid">
-                            <input formControlName="companyName" [ngModel]="medicalProviderMaster.prefferedProvider.name" type="text" class="form-control"
+                            <input formControlName="companyName" [ngModel]="medicalProviderMaster.signup.company.name" type="text" class="form-control"
                                 [class.error]="!providerformControls.companyName.valid" />
                             <div class='error-list' *ngIf="providerformControls.companyName.touched && !providerformControls.companyName.valid">
                                 <ul>
@@ -26,8 +26,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.taxId.touched && !providerformControls.taxId.valid">
-                            <input formControlName="taxId" [ngModel]="medicalProviderMaster.prefferedProvider.taxId" type="text" class="form-control"
-                                [class.error]="!providerformControls.taxId.valid" minlength="10" />
+                            <input formControlName="taxId" [ngModel]="medicalProviderMaster.signup.company.taxId" type="text" class="form-control" [class.error]="!providerformControls.taxId.valid"
+                                minlength="10" />
                             <div class='error-list' *ngIf="providerformControls.taxId.touched && !providerformControls.taxId.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.taxId.hasError('required')">Tax Id is required.</li>
@@ -49,8 +49,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.firstName.touched && !providerformControls.firstName.valid">
-                            <input formControlName="firstName" type="text" class="form-control" [class.error]="!providerformControls.firstName.valid"
-                            />
+                            <input formControlName="firstName" [ngModel]="medicalProviderMaster.signup.user.firstName" type="text" class="form-control"
+                                [class.error]="!providerformControls.firstName.valid" />
                             <div class='error-list' *ngIf="providerformControls.firstName.touched && !providerformControls.firstName.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.firstName.hasError('required')">First name is required.</li>
@@ -64,7 +64,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.lastName.touched && !providerformControls.lastName.valid">
-                            <input formControlName="lastName" type="text" class="form-control" [class.error]="!providerformControls.lastName.valid" />
+                            <input formControlName="lastName" [ngModel]="medicalProviderMaster.signup.user.lastName" type="text" class="form-control"
+                                [class.error]="!providerformControls.lastName.valid" />
                             <div class='error-list' *ngIf="providerformControls.lastName.touched && !providerformControls.lastName.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.lastName.hasError('required')">Last name is required.</li>
@@ -80,15 +81,11 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
-                            <select formControlName="companyType" [ngModel]="medicalProviderMaster.prefferedProvider.companyType" class="selectpicker form-control"
+                            <select formControlName="companyType" [ngModel]="medicalProviderMaster.signup.company.companyType" class="selectpicker form-control"
                                 title="Select Company Type." [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
                                              <option value="">-Select company type-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="1">Billing</option>
-                                             <!--<option value="Medical Provider">Medical Provider</option>
-                                             <option value="PI\BI Firm">PI\BI Firm</option>
-                                             <option value="Collection Firm">Collection Firm</option>
-                                             <option value="Transportation">Transportation</option>-->
+                                             <option value="1">Billing</option>                                             
                                          </select>
                             <div class='error-list' *ngIf="providerformControls.companyType.touched && !providerformControls.companyType.valid">
                                 <ul>
@@ -101,10 +98,10 @@
                         <label class="form-label"> Phone number
                                             <span class="color-red">*</span>
                                         </label>
-                        <div class="form-group" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
-                            <p-inputMask mask="999-999-9999" formControlName="phoneNo" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid"
-                                placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
-                            <!--<input formControlName="phoneNo" type="text" class="form-control" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" />-->
+                        <div class="form-group" [class.error]="providerformControls.phoneNo.touched && !providerformControls.attorneyCellPhone.valid">
+                            <p-inputMask mask="999-999-9999" formControlName="phoneNo" [ngModel]="medicalProviderMaster.signup.contactInfo.cellPhone"
+                                [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" placeholder="999-999-9999"
+                                styleClass="form-control"></p-inputMask>
                             <div class='error-list' *ngIf="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.phoneNo.hasError('required')">Phone number is required.</li>
@@ -121,7 +118,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
-                            <select formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.prefferedProvider.subscriptionType" class="selectpicker form-control"
+                            <select formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.signup.company.subscriptionType" class="selectpicker form-control"
                                 title="Select subscription plan." [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
                                              <option value="">-Select subscription plan-</option>
                                              <option disabled>────────────────────</option>
@@ -140,8 +137,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.email.touched && !providerformControls.email.valid">
-                            <input formControlName="email" type="email" [class.error]="!providerformControls.email.valid" class="form-control" placeholder=""
-                                type="text" />
+                            <input formControlName="email" type="email" [ngModel]="medicalProviderMaster.signup.contactInfo.emailAddress" [class.error]="!providerformControls.email.valid"
+                                class="form-control" placeholder="" type="text" />
                             <div class='error-list' *ngIf="providerformControls.email.touched && !providerformControls.email.valid">
                                 <ul>
                                     <li *ngIf="providerformControls.email.hasError('required')">Email is required.</li>
@@ -151,9 +148,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </section>
 
@@ -161,6 +155,5 @@
                                 <loader [visible]="isRegistrationInProgress"></loader>
                             </button>
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
-
     </form>
 </div>

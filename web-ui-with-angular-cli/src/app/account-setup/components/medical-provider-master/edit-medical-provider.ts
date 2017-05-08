@@ -90,7 +90,7 @@ export class EditMedicalProviderComponent implements OnInit {
 
     }
 
-    saveMedicalProvider() {
+    updateMedicalProvider() {
         this.isSaveProgress = true;
         let providerformValues = this.providerform.value;
         let result;
@@ -110,11 +110,6 @@ export class EditMedicalProviderComponent implements OnInit {
                     emailAddress: this.providerform.value.email,
                     preferredCommunication: 1
                 },
-                role: {
-                    name: 'Admin',
-                    roleType: 'Admin',
-                    status: 'active'
-                },
                 company: {
                     name: this.providerform.value.companyName,
                     taxId: this.providerform.value.taxId,
@@ -124,7 +119,7 @@ export class EditMedicalProviderComponent implements OnInit {
             },
             id: this.medicalProviderId
         };
-        result = this._medicalProviderMasterStore.addMedicalProvider(provider);
+        result = this._medicalProviderMasterStore.updateMedicalProvider(provider);
         result.subscribe(
             (response) => {
                 this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');
@@ -141,4 +136,5 @@ export class EditMedicalProviderComponent implements OnInit {
                 this.isSaveProgress = false;
             });
     }
+
 }
