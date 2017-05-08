@@ -649,27 +649,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        //#region GetAll
-        //public override object Get()
-        //{
-        //    //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
-
-        //    var acc_ = _context.PreferredMedicalProviders
-        //                                                 .Include("Company")
-        //                                                 .Include("Company1").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<PreferredMedicalProvider>();
-        //    if (acc_ == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
-        //    List<BO.PreferredMedicalProviderSignUp> lstPreferredMedicalProvider = new List<BO.PreferredMedicalProviderSignUp>();
-        //    foreach (PreferredMedicalProvider item in acc_)
-        //    {
-        //        lstPreferredMedicalProvider.Add(Convert<BO.PreferredMedicalProviderSignUp, PreferredMedicalProvider>(item));
-        //    }
-        //    return lstPreferredMedicalProvider;
-        //}
-        //#endregion
-
         #region Delete
         public override object Delete(int id)
         {
