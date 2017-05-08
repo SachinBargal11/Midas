@@ -44,10 +44,13 @@ import { MedicalProviderListComponent } from './components/medical-provider-mast
 import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
 
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
-import { ProcedureCodeComponent } from './components/account-setting/procedure-code';
+import { ProcedureCodeComponent } from './components/account-setting/procedure-code-master';
 import { DocumentTypeComponent } from './components/account-setting/document-type';
 import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
 import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
+
+import { ProcedureCodeMasterService } from './services/procedure-code-master-service';
+import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
 
 // AccountSettingShellComponent
 @NgModule({
@@ -96,7 +99,7 @@ import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
         InsuranceMasterStore,
         // MedicalProviderMasterService,
         // MedicalProviderMasterStore
-         RoomsStore,RoomsService
+        RoomsStore, RoomsService, ProcedureCodeMasterService, ProcedureCodeMasterStore
     ]
 })
 export class AccountSetupModule { }
