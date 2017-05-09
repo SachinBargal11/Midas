@@ -66,6 +66,14 @@ export class PendingReferralList extends PendingReferralListRecord {
     constructor(props) {
         super(props);
     }
+
+    get displayPatientName(): string {
+        return this.patientFirstName + ' ' + this.patientLastName;
+    }
+
+    get displayDoctorName(): string {
+        return this.doctorFirstName + ' ' + this.doctorLastName;
+    }
 }
 
 
