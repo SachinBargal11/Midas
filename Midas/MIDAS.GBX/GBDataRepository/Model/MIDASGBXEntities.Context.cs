@@ -106,7 +106,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<Case_Demo> Case_Demo { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {
