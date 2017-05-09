@@ -890,43 +890,11 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
-    saveReferral(inputProcedureCodes: Procedure[]) {
+    // saveReferral(inputProcedureCodes: Procedure[]) {
+    saveReferral(inputVisitReferrals: VisitReferral[]) {
         let result;
         let patientVisitFormValues = this.patientVisitForm.value;
-        let procedureCodes = [];
-        let visitReferralDetails: VisitReferral[] = [];
-        let uniqProcedureCodes: Procedure[] = [];
-
-        let uniqSpeciality = _.uniq(inputProcedureCodes, (currentProc: Procedure) => {
-            return currentProc.specialityId
-        })
-        let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
-            return currentProc.specialityId
-        })
-        _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
-            inputProcedureCodes.forEach(currentProcedureCode => {
-                if (currentProcedureCode.specialityId === currentSpecialityId) {
-                    uniqProcedureCodes.push(currentProcedureCode)
-                    procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-                }
-            });
-                    let visitReferral = new VisitReferral({
-                        patientVisitId: this.selectedVisit.id,
-                        fromCompanyId: this.sessionStore.session.currentCompany.id,
-                        fromLocationId: this.selectedLocationId,
-                        fromDoctorId: this.selectedOption === 1 ? this.selectedDoctorId : null,
-                        // forSpecialtyId: currentProcedureCode.speciality ? currentProcedureCode.speciality.id : !currentProcedureCode.speciality ? currentProcedureCode.specialityId : null,
-                        forSpecialtyId: currentSpecialityId,
-                        forRoomId: this.selectedOption === 2 ? this.selectedRoomId : null,
-                        // forRoomTestId: currentProcedureCode.roomTest ? currentProcedureCode.roomTest.id : !currentProcedureCode.roomTest ? currentProcedureCode.roomTestId : null,
-                        forRoomTestId:  null,
-                        isReferralCreated: false,
-                        pendingReferralProcedureCode: procedureCodes
-                    });
-                    visitReferralDetails.push(visitReferral);
-                    procedureCodes = [];
-        })
-        result = this._visitReferralStore.saveVisitReferral(visitReferralDetails);
+        result = this._visitReferralStore.saveVisitReferral(inputVisitReferrals);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

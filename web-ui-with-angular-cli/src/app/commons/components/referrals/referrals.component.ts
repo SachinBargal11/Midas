@@ -16,6 +16,9 @@ import { Speciality } from '../../../account-setup/models/speciality';
 import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
 import { Tests } from '../../../medical-provider/rooms/models/tests';
 import { SpecialityService } from '../../../account-setup/services/speciality-service';
+import { VisitReferral } from '../../../patient-manager/patient-visit/models/visit-referral';
+import { VisitReferralProcedureCode } from '../../../patient-manager/patient-visit/models/visit-referral-procedure-code';
+import { VisitReferralStore } from '../../../patient-manager/patient-visit/stores/visit-referral-store';
 
 @Component({
   selector: 'app-referrals',
@@ -42,7 +45,8 @@ export class ReferralsComponent implements OnInit {
   msg: string;
 
   @Input() selectedVisit: PatientVisit;
-  @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
+  @Output() save: EventEmitter<VisitReferral[]> = new EventEmitter();
+  // @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
 
   constructor(
     private _notificationsService: NotificationsService,
@@ -52,15 +56,14 @@ export class ReferralsComponent implements OnInit {
     private _procedureStore: ProcedureStore,
     private _specialityStore: SpecialityStore,
     private _roomsStore: RoomsStore,
+    private _visitReferralStore: VisitReferralStore,
     private _specialityService: SpecialityService
   ) {
-    // this.procedureForm = this.fb.group({
-    //   dignosisCode: ['', Validators.required]
-    // });
   }
 
   ngOnInit() {
     this.loadAllSpecialitiesAndTests();
+    this.getPendingReferralByPatientVisitId();
     // if (this.selectedVisit.specialtyId) {
     //   this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
     // } else if (this.selectedVisit.roomId) {
@@ -77,6 +80,24 @@ export class ReferralsComponent implements OnInit {
       (results: any) => {
         this.specialities = results[0];
         this.tests = results[1];
+      },
+      (error) => {
+        this._progressBarService.hide();
+      },
+      () => {
+        this._progressBarService.hide();
+      });
+  }
+  getPendingReferralByPatientVisitId() {
+    this._progressBarService.show();
+    this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
+      .subscribe(
+      (visitReferrals: VisitReferral[]) => {
+        _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
+          _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
+            this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+          })
+        });
       },
       (error) => {
         this._progressBarService.hide();
@@ -184,19 +205,20 @@ export class ReferralsComponent implements OnInit {
           // _.forEach(this.proceduresList, (currentListProc: Procedure) => {
           //   if (this.selectedSpeciality.id !== currentListProc.specialityId) {
           if (this.selectedOption === 1) {
-             flag = _.find(this.proceduresList, (currentProcOfList: Procedure) => {
+            flag = _.find(this.proceduresList, (currentProcOfList: Procedure) => {
               return currentProcOfList.specialityId === this.selectedSpeciality.id;
             })
           }
         }
         if (!flag) {
           selectedProcSpec = new Procedure({
+            specialityId: this.selectedSpeciality.id,
             speciality: new Speciality(_.extend(this.selectedSpeciality.toJS()))
           });
           this.proceduresList.push(selectedProcSpec);
         } else if (this.selectedOption === 2) {
           this.msg = 'Please, Select Procedure Codes.';
-        } else if (this.selectedSpeciality == null ) {
+        } else if (this.selectedSpeciality == null) {
           this.msg = 'Please, Select Speciality.';
         } else {
           this.msg = 'Already in the list';
@@ -209,18 +231,6 @@ export class ReferralsComponent implements OnInit {
   }
 
   fetchSelectedSpeciality(specialityId: number) {
-    // this._progressBarService.show();
-    // let result = this._specialityService.getSpeciality(specialityId);
-    // result.subscribe(
-    //   (speciality: Speciality) => {
-    //     this.selectedSpeciality = speciality;
-    //   },
-    //   (error) => {
-    //     this._progressBarService.hide();
-    //   },
-    //   () => {
-    //     this._progressBarService.hide();
-    //   });
     this.selectedSpeciality = _.find(this.specialities, (currentSpeciality: Speciality) => {
       return currentSpeciality.id === specialityId;
     })
@@ -232,7 +242,72 @@ export class ReferralsComponent implements OnInit {
   }
 
   saveReferral() {
-    this.save.emit(this.proceduresList);
+    let procedureCodes = [];
+    let visitReferralDetails: VisitReferral[] = [];
+
+    let uniqSpeciality = _.uniq(this.proceduresList, (currentProc: Procedure) => {
+      return currentProc.specialityId
+    })
+    let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
+      return currentProc.specialityId
+    })
+    _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
+      this.proceduresList.forEach(currentProcedureCode => {
+        if (currentProcedureCode.specialityId !== null && currentProcedureCode.specialityId === currentSpecialityId) {
+          if (currentProcedureCode.id !== 0) {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+          }
+        }
+      });
+      if (currentSpecialityId !== null) {
+        let visitReferral = new VisitReferral({
+          patientVisitId: this.selectedVisit.id,
+          fromCompanyId: this.sessionStore.session.currentCompany.id,
+          fromLocationId: this.selectedVisit.locationId,
+          fromDoctorId: this.selectedVisit.doctorId,
+          forSpecialtyId: currentSpecialityId,
+          forRoomId: null,
+          forRoomTestId: null,
+          isReferralCreated: false,
+          pendingReferralProcedureCode: procedureCodes
+        });
+        visitReferralDetails.push(visitReferral);
+        procedureCodes = [];
+      }
+    })
+
+    let uniqRoomTest = _.uniq(this.proceduresList, (currentProc: Procedure) => {
+      return currentProc.roomTestId
+    })
+    let uniqRoomTestIds = _.map(uniqRoomTest, (currentProc: Procedure) => {
+      return currentProc.roomTestId
+    })
+    _.forEach(uniqRoomTestIds, (currentRoomTestId: number) => {
+      this.proceduresList.forEach(currentProcedureCode => {
+        if (currentProcedureCode.roomTestId !== null && currentProcedureCode.roomTestId === currentRoomTestId) {
+          if (currentProcedureCode.id !== 0) {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+          }
+        }
+      });
+      if (currentRoomTestId !== null) {
+        let visitReferral = new VisitReferral({
+          patientVisitId: this.selectedVisit.id,
+          fromCompanyId: this.sessionStore.session.currentCompany.id,
+          fromLocationId: this.selectedVisit.locationId,
+          fromDoctorId: this.selectedVisit.doctorId,
+          forSpecialtyId: null,
+          forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
+          forRoomTestId: currentRoomTestId,
+          isReferralCreated: false,
+          pendingReferralProcedureCode: procedureCodes
+        });
+        visitReferralDetails.push(visitReferral);
+        procedureCodes = [];
+      }
+    })
+    this.save.emit(visitReferralDetails);
+    // this.save.emit(this.proceduresList);
   }
 
   deleteProcedureCode() {
