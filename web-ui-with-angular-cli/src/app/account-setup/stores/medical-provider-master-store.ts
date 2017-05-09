@@ -101,34 +101,17 @@ export class MedicalProviderMasterStore {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    updateMedicalProvider(signUp: any): Observable<any> {
+    updateMedicalProvider(signUp: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.updateMedicalProvider(signUp).subscribe((any) => {
-                this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(any));
-                resolve(any);
+            this._medicalProviderMasterService.updateMedicalProvider(signUp).subscribe((MedicalProviderMaster) => {
+                this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(MedicalProviderMaster));
+                resolve(MedicalProviderMaster);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<any>>Observable.from(promise);
+        return <Observable<MedicalProviderMaster>>Observable.from(promise);
     }
-
-    // updateMedicalProvider(signUp: any): Observable<any> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._medicalProviderMasterService.updateMedicalProvider(signUp).subscribe((updatedAttorney: any) => {
-    //             let attorney: List<Attorney> = this._attorneyMaster.getValue();
-    //             let index = attorney.findIndex((currentAttorney: Attorney) => currentAttorney.id === updatedAttorney.id);
-    //             attorney = attorney.update(index, function () {
-    //                 return updatedAttorney;
-    //             });
-    //             this._attorneyMaster.next(attorney);
-    //             resolve(attorney);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<Attorney>>Observable.from(promise);
-    // }
 
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
         let providers = this._medicalProviderMaster.getValue();

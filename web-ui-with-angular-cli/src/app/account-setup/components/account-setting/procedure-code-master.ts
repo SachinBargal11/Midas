@@ -22,7 +22,7 @@ import { SpecialityService } from '../../../account-setup/services/speciality-se
 
 @Component({
     selector: 'procedure-code',
-    templateUrl: './procedure-code.html'
+    templateUrl: './procedure-code-master.html'
 })
 
 export class ProcedureCodeComponent implements OnInit {
@@ -43,6 +43,7 @@ export class ProcedureCodeComponent implements OnInit {
     selectedSpecialityId: number;
     selectedTestId: number;
     msg: string;
+    arrAll: Procedure[];
 
     constructor(
         private _notificationsService: NotificationsService,
@@ -53,7 +54,7 @@ export class ProcedureCodeComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private _specialityService: SpecialityService
     ) {
-        
+
     }
     ngOnInit() {
         this.loadAllSpecialitiesAndTests();
@@ -77,7 +78,7 @@ export class ProcedureCodeComponent implements OnInit {
     }
 
     selectOption(event) {
-      
+
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
@@ -146,6 +147,11 @@ export class ProcedureCodeComponent implements OnInit {
     }
 
     saveProcedures() {
+        debugger;
+        //return this.arrAll.filter((selectedProcedures) => selectedProcedures);
+        if (this.selectedProcedures.length > 0) {
+
+        }
 
     }
 }

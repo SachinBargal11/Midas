@@ -5,7 +5,7 @@ import { ValidateDoctorSession } from '../../../commons/guards/validate-doctor-s
 import { ValidateInActiveDoctorSession } from '../../../commons/guards/validate-inactivedoctor-session';
 import { ShellComponent } from '../../../commons/shell-component';
 import { AccountSettingShellComponent } from './account-setting-shell';
-import { ProcedureCodeComponent } from './procedure-code';
+import { ProcedureCodeComponent } from './procedure-code-master';
 import { DocumentTypeComponent } from './document-type';
 
 

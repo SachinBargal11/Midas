@@ -22,6 +22,7 @@ import { UserType } from '../../../commons/models/enums/user-type';
 import { PrefferedProvider } from '../../models/preffered-provider';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Signup } from '../../models/signup';
 @Component({
     selector: 'edit-medical-provider',
     templateUrl: './edit-medical-provider.html'
@@ -53,7 +54,7 @@ export class EditMedicalProviderComponent implements OnInit {
             this._router.navigate(['/account-setup/medical-provider-master']);
         });
 
-        this._route.params.subscribe((routeParams: any) => {           
+        this._route.params.subscribe((routeParams: any) => {
             this.medicalProviderId = parseInt(routeParams.id);
             this._progressBarService.show();
             let result = this._medicalProviderMasterStore.fetchMedicalProviderById(this.medicalProviderId);
@@ -94,38 +95,39 @@ export class EditMedicalProviderComponent implements OnInit {
         this.isSaveProgress = true;
         let providerformValues = this.providerform.value;
         let result;
-        let provider = {
-            company: {
-                Id: this._sessionStore.session.currentCompany.id
-            },
-            signUp: {
+        let provider = new MedicalProviderMaster({
+            id: this.medicalProviderId,
+            prefMedProviderId: this.medicalProviderMaster.prefMedProviderId,
+            companyId: this._sessionStore.session.currentCompany.id,
+            isCreated: this.medicalProviderMaster.isCreated,
+            signup: new Signup({
+                company: {
+                    id: this.medicalProviderMaster.signup.company.id,
+                    name: this.providerform.value.companyName,
+                    taxId: this.providerform.value.taxId,
+                    companyType: this.providerform.value.companyType,
+                    subsCriptionType: this.providerform.value.subscriptionPlan
+                },
                 user: {
+                    id: this.medicalProviderMaster.signup.user.id,
                     userType: UserType.STAFF,
                     userName: this.providerform.value.email,
                     firstName: this.providerform.value.firstName,
                     lastName: this.providerform.value.lastName
                 },
                 contactInfo: {
+                    id: this.medicalProviderMaster.signup.contactInfo.id,
                     cellPhone: this.providerform.value.phoneNo.replace(/\-/g, ''),
                     emailAddress: this.providerform.value.email,
                     preferredCommunication: 1
-                },
-                company: {
-                    name: this.providerform.value.companyName,
-                    taxId: this.providerform.value.taxId,
-                    companyType: this.providerform.value.companyType,
-                    subsCriptionType: this.providerform.value.subscriptionPlan
                 }
-            },
-            id: this.medicalProviderId
-        };
+            })
+        });
         result = this._medicalProviderMasterStore.updateMedicalProvider(provider);
         result.subscribe(
             (response) => {
                 this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');
-                setTimeout(() => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                }, 3000);
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
