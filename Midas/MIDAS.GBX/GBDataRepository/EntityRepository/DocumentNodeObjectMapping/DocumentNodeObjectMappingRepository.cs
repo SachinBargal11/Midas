@@ -91,7 +91,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.DocumentNodeObjectMapping boDocumentNodeObjectMapping = (BO.DocumentNodeObjectMapping)(object)entity;
-            
+
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 if (boDocumentNodeObjectMapping != null)
@@ -106,7 +106,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                                       (docnodes.CompanyId == 0 || docnodes.CompanyId == null) &&
                                                                                                       (docnodes.IsDeleted.HasValue == false || (docnodes.IsDeleted.HasValue == true && docnodes.IsDeleted.Value == false))))
                                                                                                       .FirstOrDefault();
-                                                                                         
+
                     if (documentNodeObjectMappingDB == null)
                     {
                         documentNodeObjectMappingDB = new DocumentNodeObjectMapping();
@@ -118,6 +118,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         _context.SaveChanges();
 
                         dbContextTransaction.Commit();
+
+                        var res = Convert<BO.DocumentNodeObjectMapping, DocumentNodeObjectMapping>(documentNodeObjectMappingDB);
+                        return (object)res;
                     }
                     else
                     {
@@ -132,9 +135,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
-           var res = this.Get((int)boDocumentNodeObjectMapping.ObjectType, (int)boDocumentNodeObjectMapping.CompanyId);           
-
-            return (object)res;
+            //var res = this.Get((int)boDocumentNodeObjectMapping.ObjectType, (int)boDocumentNodeObjectMapping.CompanyId);            
         }
         #endregion
 
