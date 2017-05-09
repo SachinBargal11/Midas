@@ -24,10 +24,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByObjectType/{objectId}/{companyId}")]
-        public HttpResponseMessage GetByObjectType(int objectId,int companyId)
+        [Route("getByObjectType/{objectType}/{companyId}")]
+        public HttpResponseMessage GetByObjectType(int objectType, int companyId)
         {
-            return requestHandler.GetGbObjects(Request, objectId, companyId);
+            return requestHandler.GetGbObjects(Request, objectType, companyId);
         }
 
         [HttpPost]
@@ -37,7 +37,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
-
+        [HttpDelete]
+        [Route("deleteDocumentType")]
+        public HttpResponseMessage DeleteCustomDocumentType([FromBody]DocumentNodeObjectMapping data)
+        {
+            return requestHandler.DeleteObject(Request, data);
+        }
 
         protected override void Dispose(bool disposing)
         {

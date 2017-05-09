@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -108,6 +108,29 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MIDASGBX.dbo.Case_Demo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Case_Demo">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" />
+          <Property Name="PatientId" Type="int" />
+          <Property Name="CaseName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CaseTypeId" Type="tinyint" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="PatientEmpInfoId" Type="int" />
+          <Property Name="CarrierCaseNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="CaseStatusId" Type="tinyint" />
+          <Property Name="AttorneyId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="AuditAction" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="Updatedate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="CaseCompanyConsentDocuments">
           <Key>
@@ -374,6 +397,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ISCUSTOMTYPE" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -3113,6 +3137,26 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocuments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Case_Demo" EntityType="Self.Case_Demo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Case_Demo].[UID] AS [UID], 
+    [Case_Demo].[Id] AS [Id], 
+    [Case_Demo].[PatientId] AS [PatientId], 
+    [Case_Demo].[CaseName] AS [CaseName], 
+    [Case_Demo].[CaseTypeId] AS [CaseTypeId], 
+    [Case_Demo].[LocationId] AS [LocationId], 
+    [Case_Demo].[PatientEmpInfoId] AS [PatientEmpInfoId], 
+    [Case_Demo].[CarrierCaseNo] AS [CarrierCaseNo], 
+    [Case_Demo].[CaseStatusId] AS [CaseStatusId], 
+    [Case_Demo].[AttorneyId] AS [AttorneyId], 
+    [Case_Demo].[IsDeleted] AS [IsDeleted], 
+    [Case_Demo].[CreateByUserID] AS [CreateByUserID], 
+    [Case_Demo].[UpdateByUserID] AS [UpdateByUserID], 
+    [Case_Demo].[AuditAction] AS [AuditAction], 
+    [Case_Demo].[CreateDate] AS [CreateDate], 
+    [Case_Demo].[Updatedate] AS [Updatedate]
+    FROM [dbo].[Case_Demo] AS [Case_Demo]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DocumentNodes].[id] AS [id], 
@@ -3722,8 +3766,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4205,6 +4248,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Company" Relationship="Self.FK_DocumentNodeObjectMapping_Company" FromRole="DocumentNodeObjectMapping" ToRole="Company" />
+          <Property Name="ISCUSTOMTYPE" Type="Boolean" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -7723,9 +7767,31 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="Case_Demo" EntityType="MIDASGBXModel.Case_Demo" />
         </EntityContainer>
+        <EntityType Name="Case_Demo">
+          <Key>
+            <PropertyRef Name="UID" />
+          </Key>
+          <Property Name="UID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" />
+          <Property Name="PatientId" Type="Int32" />
+          <Property Name="CaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CaseTypeId" Type="Byte" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="PatientEmpInfoId" Type="Int32" />
+          <Property Name="CarrierCaseNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CaseStatusId" Type="Byte" />
+          <Property Name="AttorneyId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="AuditAction" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="Updatedate" Type="DateTime" Precision="7" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8116,6 +8182,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="DocumentNodeObjectMappings">
             <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNodeObjectMapping">
               <MappingFragment StoreEntitySet="DocumentNodeObjectMapping">
+                <ScalarProperty Name="ISCUSTOMTYPE" ColumnName="ISCUSTOMTYPE" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
                 <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
@@ -9026,6 +9093,28 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="midas_sp_get_document_path" FunctionName="MIDASGBXModel.Store.midas_sp_get_document_path" />
+          <EntitySetMapping Name="Case_Demo">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Case_Demo">
+              <MappingFragment StoreEntitySet="Case_Demo">
+                <ScalarProperty Name="Updatedate" ColumnName="Updatedate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="AuditAction" ColumnName="AuditAction" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AttorneyId" ColumnName="AttorneyId" />
+                <ScalarProperty Name="CaseStatusId" ColumnName="CaseStatusId" />
+                <ScalarProperty Name="CarrierCaseNo" ColumnName="CarrierCaseNo" />
+                <ScalarProperty Name="PatientEmpInfoId" ColumnName="PatientEmpInfoId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="CaseTypeId" ColumnName="CaseTypeId" />
+                <ScalarProperty Name="CaseName" ColumnName="CaseName" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -38,8 +38,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             //documentNodeObjectMappingBO.ID = documentNodeObjectMapping.id;
             documentNodeObjectMappingBO.ObjectType = (BO.GBEnums.ObjectTypes)documentNodeObjectMapping.ObjectType;
-            documentNodeObjectMappingBO.ChildNode = documentNodeObjectMapping.ChildNode;
+            documentNodeObjectMappingBO.DocumentType = documentNodeObjectMapping.ChildNode;
             documentNodeObjectMappingBO.CompanyId = documentNodeObjectMapping.CompanyId;
+            documentNodeObjectMappingBO.IsCustomType = documentNodeObjectMapping.ISCUSTOMTYPE;
 
             return (T)(object)documentNodeObjectMappingBO;
         }
@@ -96,12 +97,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (boDocumentNodeObjectMapping != null)
                 {
                     var documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(docnodes => docnodes.ObjectType == (int)boDocumentNodeObjectMapping.ObjectType &&
-                                                                                                      docnodes.ChildNode.ToLower() == boDocumentNodeObjectMapping.ChildNode.ToLower() &&
+                                                                                                      docnodes.ChildNode.ToLower() == boDocumentNodeObjectMapping.DocumentType.ToLower() &&
                                                                                                       docnodes.CompanyId == boDocumentNodeObjectMapping.CompanyId &&
                                                                                                       (docnodes.IsDeleted.HasValue == false || (docnodes.IsDeleted.HasValue == true && docnodes.IsDeleted.Value == false)))
                                                                                                       .Union
                                                       (_context.DocumentNodeObjectMappings.Where(docnodes => docnodes.ObjectType == (int)boDocumentNodeObjectMapping.ObjectType &&
-                                                                                                      docnodes.ChildNode.ToLower() == boDocumentNodeObjectMapping.ChildNode.ToLower() &&
+                                                                                                      docnodes.ChildNode.ToLower() == boDocumentNodeObjectMapping.DocumentType.ToLower() &&
                                                                                                       (docnodes.CompanyId == 0 || docnodes.CompanyId == null) &&
                                                                                                       (docnodes.IsDeleted.HasValue == false || (docnodes.IsDeleted.HasValue == true && docnodes.IsDeleted.Value == false))))
                                                                                                       .FirstOrDefault();
@@ -111,12 +112,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         documentNodeObjectMappingDB = new DocumentNodeObjectMapping();
                         documentNodeObjectMappingDB.CompanyId = boDocumentNodeObjectMapping.CompanyId;
                         documentNodeObjectMappingDB.ObjectType = (byte)boDocumentNodeObjectMapping.ObjectType;
-                        documentNodeObjectMappingDB.ChildNode = boDocumentNodeObjectMapping.ChildNode;
-
+                        documentNodeObjectMappingDB.ChildNode = boDocumentNodeObjectMapping.DocumentType;
+                        documentNodeObjectMappingDB.ISCUSTOMTYPE = true;
                         _context.DocumentNodeObjectMappings.Add(documentNodeObjectMappingDB);
                         _context.SaveChanges();
 
-                        var res = Convert<BO.DocumentNodeObjectMapping, DocumentNodeObjectMapping>(documentNodeObjectMappingDB);
                         dbContextTransaction.Commit();
                     }
                     else
@@ -131,8 +131,42 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid document type details.", ErrorLevel = ErrorLevel.Error };
                 }
             }
-            
-            return (object)boDocumentNodeObjectMapping;
+
+           var res = this.Get((int)boDocumentNodeObjectMapping.ObjectType, (int)boDocumentNodeObjectMapping.CompanyId);           
+
+            return (object)res;
+        }
+        #endregion
+
+        #region Get By ObjectType
+        public override object DeleteObject<T>(T entity)
+        {
+            BO.DocumentNodeObjectMapping boDocumentNodeObjectMapping = (BO.DocumentNodeObjectMapping)(object)entity;
+            DocumentNodeObjectMapping documentNodeObjectMappingDB = new DocumentNodeObjectMapping();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                var company = _context.Companies.Where(comp => comp.id == boDocumentNodeObjectMapping.CompanyId).FirstOrDefault();
+                if (company == null) return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                
+                documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(doc => doc.ChildNode.ToLower() == boDocumentNodeObjectMapping.DocumentType.ToLower() &&
+                                                                                             doc.CompanyId == boDocumentNodeObjectMapping.CompanyId).FirstOrDefault();
+
+                if (documentNodeObjectMappingDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Document type dosent exist.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    documentNodeObjectMappingDB.IsDeleted = true;
+                    _context.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+            }
+
+            var res = this.Get((int)boDocumentNodeObjectMapping.ObjectType, (int)boDocumentNodeObjectMapping.CompanyId);            
+            return (object)res;
         }
         #endregion
 
