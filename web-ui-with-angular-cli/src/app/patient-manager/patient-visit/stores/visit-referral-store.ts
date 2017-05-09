@@ -53,16 +53,18 @@ export class VisitReferralStore {
     //     return <Observable<PendingReferral>>Observable.fromPromise(promise);
     // }
 
-    saveVisitReferral(visitReferralDetail: VisitReferral): Observable<VisitReferral> {
+    saveVisitReferral(visitReferralDetail: VisitReferral[]): Observable<VisitReferral[]> {
         let promise = new Promise((resolve, reject) => {
-            this._visitReferralService.saveVisitReferral(visitReferralDetail).subscribe((visitReferralDetail: VisitReferral) => {
-                this._visitReferral.next(this._visitReferral.getValue().push(visitReferralDetail));
-                resolve(visitReferralDetail);
+            this._visitReferralService.saveVisitReferral(visitReferralDetail).subscribe((visitReferralDetails: VisitReferral[]) => {
+                _.forEach(visitReferralDetails, (currentVisitReferral: VisitReferral) => {
+                this._visitReferral.next(this._visitReferral.getValue().push(currentVisitReferral));
+                })
+                resolve(visitReferralDetails);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<VisitReferral>>Observable.from(promise);
+        return <Observable<VisitReferral[]>>Observable.from(promise);
     }
 
     // updatePatientVisit(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {

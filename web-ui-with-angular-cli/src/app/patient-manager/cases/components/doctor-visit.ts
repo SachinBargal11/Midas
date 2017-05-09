@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
 import { PatientVisit } from '../../patient-visit/models/patient-visit';
@@ -16,9 +17,10 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import * as _ from 'underscore';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import {ConfirmDialogModule, ConfirmationService} from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'patient-visit-doctor-list',
@@ -43,11 +45,17 @@ export class PatientVisitListDoctorComponent implements OnInit {
     doctor: Doctor;
     room: Room;
     patientName: string;
-    patient:Patient;
-    isDeleteProgress:boolean = false;
+    patient: Patient;
+    isDeleteProgress = false;
     caseStatusId: number;
 
+    selectedVisitId: number;
+    selectedVisit: PatientVisit;
+    visitInfo = 'Visit Info';
+    visitDialogVisible = false;
+
     constructor(
+        private _fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
         private _patientVisitStore: PatientVisitsStore,
@@ -58,11 +66,12 @@ export class PatientVisitListDoctorComponent implements OnInit {
         private _doctorsStore: DoctorsStore,
         private _roomsStore: RoomsStore,
         private confirmationService: ConfirmationService,
-         private _casesStore: CasesStore,
-
+        private _casesStore: CasesStore,
+        public sessionStore: SessionStore
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+             this._progressBarService.show();
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
@@ -136,28 +145,34 @@ export class PatientVisitListDoctorComponent implements OnInit {
         }, 250);
     }
 
-    // doctorName(doctorId: number) {
+   fetchPatientVisit(visitId: number) {
+        // this._progressBarService.show();
+        this._patientVisitStore.fetchPatientVisitById(visitId)
+            .subscribe((visit: PatientVisit) => {
+                this.selectedVisit = visit;
+            },
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
+    }
 
-    //     this._doctorsStore.fetchDoctorById(doctorId)
-    //         .subscribe(doctor => {
-    //             this.doctor = doctor;
-    //             this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
+    showDialog(visitId: number) {
+        this.fetchPatientVisit(visitId);
+            this.selectedVisitId = visitId;
+            this.visitDialogVisible = true;
+    }
 
-    //         });
+    handleVisitDialogHide() {
+        this.selectedVisitId = null;
+    }
 
-    // }
-    // return this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
-
-    // roomName(roomId: number) {
-
-    //     this._roomsStore.fetchRoomById(roomId)
-    //         .subscribe(room => {
-    //             this.room = room;
-    //             this.currentRoomName = room.roomTest.name;
-    //         });
-
-    // }
-
+    closePatientVisitDialog() {
+        this.visitDialogVisible = false;
+        this.handleVisitDialogHide();
+    }
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
@@ -212,9 +227,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select visit to delete');
         }
     }
-    
-    bill(){
+
+        bill() {
         this._notificationsService.success('Success', 'Bill No AB69852 has been successfully created');
     }
-
 }
