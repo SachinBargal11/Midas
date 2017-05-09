@@ -1542,7 +1542,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        
+        public HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            var objResult = dataAccessManager.GetFreeSlotsForDoctorByLocationId(DoctorId, LocationId, StartDate, EndDate);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
     }
 }
