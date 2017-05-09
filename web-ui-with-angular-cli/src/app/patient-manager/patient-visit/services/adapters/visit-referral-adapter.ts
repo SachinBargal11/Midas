@@ -36,7 +36,7 @@ export class visitReferralAdapter {
                 speciality: SpecialityAdapter.parseResponse(data.specialty),
                 room: RoomsAdapter.parseResponse(data.room),
                 roomTest: TestsAdapter.parseResponse(data.roomTest),
-                visitReferralProcedureCode: visitReferralProcedureCodes,
+                pendingReferralProcedureCode: visitReferralProcedureCodes,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserId: data.createByUserId,
                 updateByUserId: data.updateByUserId,

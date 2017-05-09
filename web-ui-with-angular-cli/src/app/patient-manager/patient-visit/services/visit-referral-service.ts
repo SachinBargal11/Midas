@@ -26,6 +26,82 @@ export class VisitReferralService {
         this._headers.append('Content-Type', 'application/json');
     }
 
+    getPendingReferralById(pendingReferralId: Number): Observable<VisitReferral> {
+        let promise: Promise<VisitReferral> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/get/' + pendingReferralId).map(res => res.json())
+                .subscribe((data: any) => {
+                    let visitReferral = null;
+                    if (data) {
+                        visitReferral = visitReferralAdapter.parseResponse(data);
+                        resolve(visitReferral);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<VisitReferral>>Observable.fromPromise(promise);
+    }
+
+    getPendingReferralByPatientVisitId(patientVisitId: Number): Observable<VisitReferral[]> {
+        let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/getByPatientVisitId/' + patientVisitId ).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let visitReferral = (<Object[]>data).map((data: any) => {
+                        return visitReferralAdapter.parseResponse(data);
+                    });
+                    resolve(visitReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
+    }
+    getPendingReferralByCompanyId(companyId: Number): Observable<VisitReferral[]> {
+        let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/getPendingReferralByCompanyId/' + companyId ).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let visitReferral = (<Object[]>data).map((data: any) => {
+                        return visitReferralAdapter.parseResponse(data);
+                    });
+                    resolve(visitReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
+    }
+
+    getPendingReferralByDoctorId(doctorId: Number): Observable<VisitReferral[]> {
+        let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/getByDoctorId/' + doctorId ).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let visitReferral = (<Object[]>data).map((data: any) => {
+                        return visitReferralAdapter.parseResponse(data);
+                    });
+                    resolve(visitReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
+    }
+    getPendingReferralBySpecialityId(specialityId: Number): Observable<VisitReferral[]> {
+        let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/getBySpecialityId/' + specialityId ).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let visitReferral = (<Object[]>data).map((data: any) => {
+                        return visitReferralAdapter.parseResponse(data);
+                    });
+                    resolve(visitReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
+    }
     saveVisitReferral(visitReferralDetail: VisitReferral[]): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
             // return this._http.post(this._url + '/PendingReferral/Add', JSON.stringify(requestData), {
