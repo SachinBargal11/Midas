@@ -62,6 +62,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public object DeleteObject(T entity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var res = baseRepo.DeleteObject(entity);
+
+                return res;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
         public object Delete(int id)
         {
             try

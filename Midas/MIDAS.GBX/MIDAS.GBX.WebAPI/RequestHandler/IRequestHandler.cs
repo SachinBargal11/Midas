@@ -24,6 +24,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage DeleteObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
