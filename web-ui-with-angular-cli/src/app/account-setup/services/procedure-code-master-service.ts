@@ -22,4 +22,22 @@ export class ProcedureCodeMasterService {
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
+
+
+    updateProcedureAmount(requestData: Procedure[]): Observable<Procedure[]> {
+     
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/ProcedureCode/save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
 }
