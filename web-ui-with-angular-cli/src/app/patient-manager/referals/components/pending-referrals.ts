@@ -19,6 +19,8 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { environment } from '../../../../environments/environment';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Room } from '../../../medical-provider/rooms/models/room';
+import { UserSettingStore } from '../../../commons/stores/user-setting-store';
+import { UserSetting } from '../../../commons/models/user-setting';
 
 @Component({
     selector: 'pending-referrals',
@@ -31,6 +33,7 @@ export class PendingReferralsComponent implements OnInit {
     addMedicalDialogVisible: boolean = false
     selectedCancel: number;
     currentCancel: string;
+    userSetting: UserSetting;
     preferredMedical: PrefferedMedicalProvider[];
     medicalProvider: PrefferedMedicalProvider[];
     pendingReferralList: PendingReferralList[];
@@ -59,7 +62,8 @@ export class PendingReferralsComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
-        private _availableSlotsStore: AvailableSlotsStore
+        private _availableSlotsStore: AvailableSlotsStore,
+        private _userSettingStore: UserSettingStore,
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             // this.loadPendingReferralsForCompany(companyId);
@@ -147,19 +151,31 @@ export class PendingReferralsComponent implements OnInit {
             this.selectedOption = 1;
             this.selectedDoctorId = event.target.value;
             this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
+            this.checkUserSettings(this.selectedMedicalProviderId, this.selectedDoctorId)
+            //   console.log(this.selectedMedicalProviderId)
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedRoomId = event.target.value;
-            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
         }else if (event.target.selectedOptions[0].getAttribute('data-type') == '3') {
             this.selectedOption = 3;
             // this.selectedMedicalProviderId = event.target.value;
-            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id')); 
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-medicalProviderId')); 
+            console.log(this.selectedMedicalProviderId)
         }else {
             this.selectedMode = 0;
         }
     }
+    checkUserSettings(selectedMedicalProviderId,selectedDoctorId){
+        this._userSettingStore.getUserSettingByUserId(this.selectedDoctorId,this.selectedMedicalProviderId)
+            .subscribe((userSetting) => {
+                this.userSetting = userSetting; 
+            },
+            (error) => { },
+            () => {
+            });
 
+    }
     showDialog() {
         this.addMedicalDialogVisible = true;
         this.selectedCancel = 1;
@@ -170,6 +186,8 @@ export class PendingReferralsComponent implements OnInit {
 
     }
     assign() {
+        if(this.selectedOption !== 3){
+          if(this.selectedOption !== 1){
         this.confirmationService.confirm({
             message: 'Do you want to Appoint Schedule?',
             header: 'Confirmation',
@@ -186,7 +204,34 @@ export class PendingReferralsComponent implements OnInit {
                 this.availableSlotsDialogVisible = true;
             }
         });
+    }else{
+    //    this.checkUserSettings(this.selectedMedicalProviderId,this.selectedDoctorId)
+       if(this.userSetting.isCalendarPublic){
+           this.confirmationService.confirm({
+            message: 'Do you want to Appoint Schedule?',
+            header: 'Confirmation',
+            icon: 'fa fa-question-circle',
+            accept: () => {
+                this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(1, 1, '1', '1')
+                    .subscribe((availableSlots: AvailableSlot[]) => {
+                        this.availableSlots = availableSlots;
+                    },
+                    (error) => {
+                    },
+                    () => {
+                    });
+                this.availableSlotsDialogVisible = true;
+            }
+        });
+       }else{
+          // Directly Save Referral 
+       }
 
+    }
+
+    }else{
+        // Directly Save Referral
+         }
     }
     // Code for available slots    
 
