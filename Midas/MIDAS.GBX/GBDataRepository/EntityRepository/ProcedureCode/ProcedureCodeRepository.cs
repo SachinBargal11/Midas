@@ -133,20 +133,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By specialityId ID and companyId
-        public override object GetBySpecialityAndCompanyId(int specialityId,int? companyId,bool showAll)
+        public override object GetBySpecialityAndCompanyId(int specialityId, int companyId, bool showAll)
         {
             var procedureCodeDB = new List<ProcedureCode>();
+            procedureCodeDB = _context.ProcedureCodes.Where(p => p.SpecialityId == specialityId 
+                                                        && (p.CompanyId == companyId || (showAll == true && p.CompanyId.HasValue == false))
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .ToList<ProcedureCode>();
 
-            if (showAll)
-            {
-               procedureCodeDB = _context.ProcedureCodes.Where(p => p.SpecialityId == specialityId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                         .ToList<ProcedureCode>();
-            }
-            else
-            {
-                procedureCodeDB = _context.ProcedureCodes.Where(p => p.SpecialityId == specialityId &&p.CompanyId== companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .ToList<ProcedureCode>();
-            }
+
+            //if (showAll)
+            //{
+            //   procedureCodeDB = _context.ProcedureCodes.Where(p => p.SpecialityId == specialityId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                             .ToList<ProcedureCode>();
+            //}
+            //else
+            //{
+            //    procedureCodeDB = _context.ProcedureCodes.Where(p => p.SpecialityId == specialityId &&p.CompanyId== companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                           .ToList<ProcedureCode>();
+            //}
                      
             List<BO.ProcedureCode> boProcedureCode = new List<BO.ProcedureCode>();
 
