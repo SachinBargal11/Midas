@@ -358,7 +358,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }                
             }
 
-            if (pendingReferral.PendingReferralProcedureCodes == null && pendingReferral.PendingReferralProcedureCodes.Count <= 0)
+            if (pendingReferral.PendingReferralProcedureCodes != null && pendingReferral.PendingReferralProcedureCodes.Count <= 0)
             {
                 foreach (var eachPendingReferralProcedureCodes in pendingReferral.PendingReferralProcedureCodes)
                 {
