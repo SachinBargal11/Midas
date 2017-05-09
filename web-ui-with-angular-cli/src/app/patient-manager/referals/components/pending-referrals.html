@@ -41,15 +41,15 @@
             <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0">-select-</option>
              <optgroup label="Select MedicalProvider-Doctor">
-                     <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
+                     <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
                          {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
              </optgroup>
              <optgroup label="Select MedicalProvider-Room">
-                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
+                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
                         {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
              </optgroup>
               <optgroup label="Select MedicalProvider">
-                     <option data-type="3" [attr.data-id]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
+                     <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
                          {{currentPreferredMedicalProvider.name}}</option>
              </optgroup>
         </select>

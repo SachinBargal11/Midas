@@ -408,6 +408,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual object DeleteObject<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual object Delete(int id)
         {
             throw new NotImplementedException();
@@ -492,6 +498,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object GetBySpecialityId(int specialityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetBySpecialityAndCompanyId(int specialityId,int companyId,bool showAll)
         {
             throw new NotImplementedException();
         }

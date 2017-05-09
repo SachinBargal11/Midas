@@ -13,11 +13,8 @@
         </optgroup>
     </select>
         </div>
-        <div class="col-lg-6">
-            <!--<button type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>-->
-        </div>
     </div>
-    <label class="warningMsg">{{msg}}</label>
+
     <br>
     <div class="ui-widget-header row">
         <div class="col-lg-4 input-group">
@@ -25,14 +22,15 @@
             <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
 </div>
 </div>
-<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="procedures" [editable]="true" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb"
+    [responsive]="true">
     <header>Procedures</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Procedure Code" field="procedureCodeText" [sortable]="true"></p-column>
     <p-column header="Description" field="procedureCodeDesc" [sortable]="true"></p-column>
-    <p-column header="Amount" [sortable]="true">
-        <ng-template let-procedure="rowData" pTemplate="body">
-            <input type="number" value={{procedure.amount}} class="form-control" />
+    <p-column  field="amount" header="Amount" [sortable]="true" [editable]="true">
+        <ng-template let-col let-procedure="rowData" pTemplate="body">
+            {{procedure[col.field]}}
         </ng-template>
     </p-column>
 </p-dataTable>
@@ -41,3 +39,4 @@
 <button class="btn btn-success sign-up" (click)="saveProcedures()">Save
     <loader [visible]="isSaveProgress"></loader>
 </button>
+<a (click)="reset()" class="btn btn-secondary">Cancel</a>

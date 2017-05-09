@@ -21,6 +21,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);
+        Object DeleteObject(T entity);
         object Delete(int id);
         object Delete(int param1, int param2, int param3);        
         object DeleteFile(int caseId, int id);
@@ -101,6 +102,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByRoomId(int RoomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomTestId(int RoomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetBySpecialityId(int specialityId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetBySpecialityAndCompanyId(int specialityId,int companyId,bool showAll, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateReferralDocument(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateAttorneyWithCompany(int AttorneyId,int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

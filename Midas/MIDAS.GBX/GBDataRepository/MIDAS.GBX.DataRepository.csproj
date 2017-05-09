@@ -195,6 +195,9 @@
     <Compile Include="Model\CaseType.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Case_Demo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\City.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

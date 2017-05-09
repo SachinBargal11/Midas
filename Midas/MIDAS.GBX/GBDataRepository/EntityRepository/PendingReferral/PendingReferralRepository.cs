@@ -357,7 +357,87 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }                    
                 }                
             }
-            
+
+            if (pendingReferral.PendingReferralProcedureCodes == null && pendingReferral.PendingReferralProcedureCodes.Count <= 0)
+            {
+                foreach (var eachPendingReferralProcedureCodes in pendingReferral.PendingReferralProcedureCodes)
+                {
+                    if (eachPendingReferralProcedureCodes.IsDeleted.HasValue == false || (eachPendingReferralProcedureCodes.IsDeleted.HasValue == true && eachPendingReferralProcedureCodes.IsDeleted.Value == false))
+                    {
+                        BO.PendingReferralList PendingReferralList = new BO.PendingReferralList();
+
+                        PendingReferralList.ID = pendingReferral.Id;
+                        PendingReferralList.PatientVisitId = pendingReferral.PatientVisitId;
+                        PendingReferralList.FromCompanyId = pendingReferral.FromCompanyId;
+                        PendingReferralList.FromLocationId = pendingReferral.FromLocationId;
+                        PendingReferralList.FromDoctorId = pendingReferral.FromDoctorId;
+                        PendingReferralList.ForSpecialtyId = pendingReferral.ForSpecialtyId;
+                        PendingReferralList.ForRoomId = pendingReferral.ForRoomId;
+                        PendingReferralList.ForRoomTestId = pendingReferral.ForRoomTestId;
+                        PendingReferralList.IsReferralCreated = pendingReferral.IsReferralCreated;
+                        PendingReferralList.DismissedBy = pendingReferral.DismissedBy;
+
+                        if (pendingReferral.Doctor != null)
+                        {
+                            if (pendingReferral.Doctor.IsDeleted.HasValue == false || (pendingReferral.Doctor.IsDeleted.HasValue == true && pendingReferral.Doctor.IsDeleted.Value == false))
+                            {
+                                PendingReferralList.DoctorFirstName = pendingReferral.Doctor.User.FirstName;
+                                PendingReferralList.DoctorLastName = pendingReferral.Doctor.User.LastName;
+
+                            }
+                        }
+
+                        if (pendingReferral.Specialty != null)
+                        {
+                            if (pendingReferral.Specialty.IsDeleted.HasValue == false || (pendingReferral.Specialty.IsDeleted.HasValue == true && pendingReferral.Specialty.IsDeleted.Value == false))
+                            {
+                                BO.Specialty boSpecialty = new BO.Specialty();
+                                using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                                {
+                                    boSpecialty = cmp.Convert<BO.Specialty, Specialty>(pendingReferral.Specialty);
+                                    PendingReferralList.Specialty = boSpecialty;
+                                }
+                            }
+                        }
+
+                        if (pendingReferral.Room != null)
+                        {
+                            if (pendingReferral.Room.IsDeleted.HasValue == false || (pendingReferral.Room.IsDeleted.HasValue == true && pendingReferral.Room.IsDeleted.Value == false))
+                            {
+                                BO.Room boRoom = new BO.Room();
+                                using (RoomRepository cmp = new RoomRepository(_context))
+                                {
+                                    boRoom = cmp.Convert<BO.Room, Room>(pendingReferral.Room);
+                                    PendingReferralList.Room = boRoom;
+                                }
+                            }
+                        }
+
+                        if (pendingReferral.RoomTest != null)
+                        {
+                            if (pendingReferral.RoomTest.IsDeleted.HasValue == false || (pendingReferral.RoomTest.IsDeleted.HasValue == true && pendingReferral.RoomTest.IsDeleted.Value == false))
+                            {
+                                BO.RoomTest boRoomTest = new BO.RoomTest();
+                                using (RoomTestRepository cmp = new RoomTestRepository(_context))
+                                {
+                                    boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(pendingReferral.RoomTest);
+                                    PendingReferralList.RoomTest = boRoomTest;
+                                }
+                            }
+                        }
+
+                        PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
+                        PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
+                        PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
+                        PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
+                        PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+
+                        PendingReferralListBO.Add(PendingReferralList);
+                    }
+                }
+            }
+
+
             return (T)(object)PendingReferralListBO;
         }
         #endregion

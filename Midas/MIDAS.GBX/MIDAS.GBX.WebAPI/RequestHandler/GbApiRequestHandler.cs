@@ -280,6 +280,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage DeleteObject(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.DeleteObject(gbObject);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
             var res = dataAccessManager.Delete(id);
@@ -1192,6 +1210,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int companyId,bool showAll)
+        {
+            var objResult = dataAccessManager.GetBySpecialityAndCompanyId(specialityId, companyId, showAll);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+       
         public HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId)
         {
             var objResult = dataAccessManager.GetByPatientVisitId(patientVisitId);

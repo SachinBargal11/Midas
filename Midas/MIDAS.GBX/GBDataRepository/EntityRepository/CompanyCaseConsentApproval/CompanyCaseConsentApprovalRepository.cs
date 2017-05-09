@@ -454,20 +454,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             try
             {
                 BO.CompanyCaseConsentBase64 CompanyCaseConsentBase64BO = (BO.CompanyCaseConsentBase64)(object)entity;
+                var consentData = _context.CompanyCaseConsentApprovals.Where(compcase => compcase.CompanyId == CompanyCaseConsentBase64BO.CompanyId &&
+                                                                      compcase.CaseId == CompanyCaseConsentBase64BO.CaseId &&
+                                                                      (compcase.IsDeleted.HasValue == false || (compcase.IsDeleted.HasValue == true && compcase.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (consentData != null)
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+
                 string fileName = CompanyCaseConsentBase64BO.CaseId + "-" + CompanyCaseConsentBase64BO.CompanyId;
                 string signpath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + @"app_data\uploads\sign-" + fileName + "-" + Guid.NewGuid().ToString() + ".jpeg";
-                
+
                 //if (File.Exists(signpath)) File.Delete(signpath);
                 using (FileStream imageFile = new FileStream(signpath, FileMode.Create))
                 {
                     byte[] bytes = System.Convert.FromBase64String(CompanyCaseConsentBase64BO.Base64Data.Replace("data:image/jpeg;base64,", string.Empty));
                     imageFile.Write(bytes, 0, bytes.Length);
-                    imageFile.Flush();imageFile.Dispose();
+                    imageFile.Flush(); imageFile.Dispose();
                     string consentPdf = GenerateConsentDocument(CompanyCaseConsentBase64BO.CaseId, CompanyCaseConsentBase64BO.CompanyId, signpath, true);
                     FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
                     docInfo = (Object)fileUploadManager.UploadSignedConsent(CompanyCaseConsentBase64BO.CaseId, "consent_" + CompanyCaseConsentBase64BO.CompanyId, consentPdf);
                 }
-                
+
             }
             catch (Exception err) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error while saving consent", ErrorLevel = ErrorLevel.Error }; }
 
@@ -479,5 +486,3 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public void Dispose() { GC.SuppressFinalize(this); }
     }
 }
-
-

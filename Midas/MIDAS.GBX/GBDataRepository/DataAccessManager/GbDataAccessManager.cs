@@ -62,6 +62,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public object DeleteObject(T entity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var res = baseRepo.DeleteObject(entity);
+
+                return res;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
         public object Delete(int id)
         {
             try
@@ -2038,6 +2060,28 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetBySpecialityId(specialityId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetBySpecialityAndCompanyId(int specialityId,int companyId,bool showAll, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetBySpecialityAndCompanyId(specialityId, companyId, showAll);
 
                 return gbdata;
             }

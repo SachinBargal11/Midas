@@ -16,12 +16,15 @@ namespace MIDAS.GBX.BusinessObjects
         public GBEnums.ObjectTypes ObjectType { get; set; }
 
         [Required]
-        [JsonProperty("childNode")]
-        public string ChildNode { get; set; }
+        [JsonProperty("documentType")]
+        public string DocumentType { get; set; }
 
         [Required]
         [JsonProperty("companyid")]
         public int? CompanyId { get; set; }
+
+        [JsonProperty("isCustomType")]
+        public bool? IsCustomType { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -33,7 +36,7 @@ namespace MIDAS.GBX.BusinessObjects
             else if(!Enum.IsDefined(typeof(GBEnums.ObjectTypes),ObjectType))
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "ObjectType is not defined" });
 
-            if (string.IsNullOrEmpty(ChildNode)) validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "DocumentType is required" });
+            if (string.IsNullOrEmpty(DocumentType)) validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "DocumentType is required" });
             if (CompanyId <= 0) validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyId is required" });
 
             
