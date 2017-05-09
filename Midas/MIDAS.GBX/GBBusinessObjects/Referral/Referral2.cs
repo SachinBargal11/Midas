@@ -84,7 +84,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("forSpecialty")]
         public Specialty Specialty { get; set; }
 
-        [JsonProperty("user")]
+        [JsonProperty("dismissedByUser")]
         public User User { get; set; }
 
         [JsonProperty("referralProcedureCode")]
