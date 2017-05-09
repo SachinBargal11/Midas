@@ -28,10 +28,11 @@ import { Room } from '../../../medical-provider/rooms/models/room';
 export class PendingReferralsComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     companyId: number = this.sessionStore.session.currentCompany.id;
-    eventDialogVisible: boolean = false;
+    addMedicalDialogVisible: boolean = false
     selectedCancel: number;
     currentCancel: string;
     preferredMedical: PrefferedMedicalProvider[];
+    medicalProvider: PrefferedMedicalProvider[];
     pendingReferralList: PendingReferralList[];
     medicalProviderDoctor: {
         preferredMedical: PrefferedMedicalProvider,
@@ -91,6 +92,10 @@ export class PendingReferralsComponent implements OnInit {
         this._progressBarService.show();
         this._pendingReferralStore.getPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId)
             .subscribe(preferredMedical => {
+                 let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {
+                    return currentPreferredMedical.registrationComplete == false;
+                });
+
                 let mappedMedicalProviderDoctor: {
                     preferredMedical: PrefferedMedicalProvider,
                     doctor: Doctor
@@ -115,6 +120,8 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this.medicalProviderDoctor = mappedMedicalProviderDoctor;
                 this.medicalProviderRoom = mappedMedicalProviderRoom;
+                this.medicalProvider = matchingMedicalProvider;
+
                 // this.preferredMedical = preferredMedical
 
             },
@@ -133,6 +140,8 @@ export class PendingReferralsComponent implements OnInit {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
+        this.selectedMedicalProviderId = 0;
+
         // this.events = [];
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
@@ -142,17 +151,23 @@ export class PendingReferralsComponent implements OnInit {
             this.selectedOption = 2;
             this.selectedRoomId = event.target.value;
             this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id'));
-        } else {
+        }else if (event.target.selectedOptions[0].getAttribute('data-type') == '3') {
+            this.selectedOption = 3;
+            // this.selectedMedicalProviderId = event.target.value;
+            this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-id')); 
+        }else {
             this.selectedMode = 0;
         }
     }
 
     showDialog() {
-        this.eventDialogVisible = true;
+        this.addMedicalDialogVisible = true;
         this.selectedCancel = 1;
     }
     closeDialog() {
-        this.eventDialogVisible = false;
+        this.addMedicalDialogVisible = false;
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId);
+
     }
     assign() {
         this.confirmationService.confirm({
