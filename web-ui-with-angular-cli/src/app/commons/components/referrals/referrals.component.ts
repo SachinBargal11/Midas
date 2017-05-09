@@ -33,7 +33,7 @@ export class ReferralsComponent implements OnInit {
   selectedSpeciality: Speciality;
   selectedTestingFacility: Tests;
 
-  selectedMode: number = 0;
+  selectedMode = 0;
   selectedDoctorId: number;
   selectedRoomId: number;
   selectedOption: number;
@@ -90,15 +90,15 @@ export class ReferralsComponent implements OnInit {
     this.selectedDoctorId = 0;
     this.selectedRoomId = 0;
     this.selectedOption = 0;
-    if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+    if (event.target.selectedOptions[0].getAttribute('data-type') === '1') {
       this.selectedOption = 1;
-      this.selectedSpecialityId = parseInt(event.target.value);
+      this.selectedSpecialityId = parseInt(event.target.value, 10);
       this.loadProceduresForSpeciality(this.selectedSpecialityId);
       this.fetchSelectedSpeciality(this.selectedSpecialityId);
       // this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
-    } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+    } else if (event.target.selectedOptions[0].getAttribute('data-type') === '2') {
       this.selectedOption = 2;
-      this.selectedTestId = parseInt(event.target.value);
+      this.selectedTestId = parseInt(event.target.value, 10);
       this.loadProceduresForRoomTest(this.selectedTestId);
       this.fetchSelectedTestingFacility(this.selectedTestId);
       // this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
@@ -154,23 +154,55 @@ export class ReferralsComponent implements OnInit {
   }
 
   addToList() {
-    let flag: boolean = false;
+    let flag: Procedure = null;
     if (this.selectedProcedures) {
       if (this.selectedProcedures.length > 0) {
-        this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
-      }
-      else {
+        _.forEach(this.selectedProcedures, (currentProcedure: Procedure) => {
+          if (this.proceduresList.length > 0) {
+            _.forEach(this.proceduresList, (currentListProc: Procedure) => {
+              let sId = currentListProc.speciality ? currentListProc.speciality.id : currentListProc.specialityId;
+              if (currentProcedure.specialityId === sId) {
+                if (currentListProc.procedureCodeText === '') {
+                  this.proceduresList = _.reject(this.proceduresList, (currentProc: Procedure) => {
+                    return currentProc.id === currentListProc.id;
+                  });
+                  this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                } else {
+                  this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                }
+              } else {
+                this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+              }
+            });
+          } else {
+            this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+          }
+        });
+      } else {
         let selectedProcSpec: Procedure;
-        if (this.selectedOption === 1) {
+        if (this.proceduresList.length > 0) {
+          // _.forEach(this.proceduresList, (currentListProc: Procedure) => {
+          //   if (this.selectedSpeciality.id !== currentListProc.specialityId) {
+          if (this.selectedOption === 1) {
+             flag = _.find(this.proceduresList, (currentProcOfList: Procedure) => {
+              return currentProcOfList.specialityId === this.selectedSpeciality.id;
+            })
+          }
+        }
+        if (!flag) {
           selectedProcSpec = new Procedure({
             speciality: new Speciality(_.extend(this.selectedSpeciality.toJS()))
           });
           this.proceduresList.push(selectedProcSpec);
         } else if (this.selectedOption === 2) {
           this.msg = 'Please, Select Procedure Codes.';
-        } else {
+        } else if (this.selectedSpeciality == null ) {
           this.msg = 'Please, Select Speciality.';
+        } else {
+          this.msg = 'Already in the list';
         }
+        //   }
+        // });
       }
     }
     this.selectedProcedures = [];
