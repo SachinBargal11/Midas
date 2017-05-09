@@ -23,19 +23,22 @@ namespace MIDAS.GBX.DocumentManager
             _context = dbContextProvider.GetGbDBContext();
         }
 
-        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, List<HttpContent> content, UploadInfo uploadObject)
+        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId)
         {
-            var objResult = new object();
+            string objResult = "";
             try
-            {
-                serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(uploadObject.CompanyId, _context);
-                objResult = (object)serviceProvider.Upload(uploadObject, content);
+            {                
+                serviceProvider = BlobStorageFactory.GetBlobServiceProviders(companyId, _context);
+                if (serviceProvider == null)
+                    return request.CreateResponse(HttpStatusCode.NotFound, new BusinessObjects.ErrorObject { ErrorMessage = "No BLOB storage provider found.", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+                objResult = serviceProvider.Upload(blobPath, content, companyId) as string;
                 if (objResult != null)
                     return request.CreateResponse(HttpStatusCode.Created, objResult);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, objResult);
             }
-            catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }
+            catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, ex.Message); }
         }
 
         public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid)

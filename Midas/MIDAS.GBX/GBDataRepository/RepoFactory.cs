@@ -225,7 +225,7 @@ namespace MIDAS.GBX
             {
                 repo = new ReferralRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Document))
+            else if (typeof(T) == typeof(BO.Document) || typeof(T) == typeof(BO.Common.UploadInfo))
             {
                 repo = new FileUploadRepository(context);
             }

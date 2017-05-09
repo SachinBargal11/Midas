@@ -34,40 +34,29 @@ namespace MIDAS.GBX.DocumentManager
             dataAccessManager = new GbDataAccessManager<BO.Document>();
             util.BlobStorageConnectionString = ConfigurationManager.AppSettings["BlobStorageConnectionString"];
         }
-                
-        public override Object Upload(UploadInfo uploadObject, List<HttpContent> content)
+
+        public override Object Upload(string blobPath, HttpContent content, int companyId)
         {
             //container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
             //util.BlobContainer.SetPermissions(new BlobContainerPermissions { PublicAccess=  });
+
+            util.ContainerName = "company-" + companyId;
             
-            util.ContainerName = "company-" + uploadObject.CompanyId;
-            string documentPath = util.getDocumentPath(uploadObject.DocumentType, uploadObject.ObjectType,uploadObject.ObjectId, _context);
-
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    foreach (HttpContent ctnt in content)
-                    {
-                        Cloudblob = util.BlobContainer.GetBlockBlobReference(documentPath + "/" + ctnt.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
+                Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
 
-                        using (Stream stream = ctnt.ReadAsStreamAsync().Result)
-                        {
-                            Cloudblob.UploadFromStream(stream);
-                            BO.Document doc = (BO.Document)dataAccessManager.SaveAsBlob(uploadObject.ObjectId, uploadObject.CompanyId, uploadObject.ObjectType, uploadObject.DocumentType, Cloudblob.Uri.AbsoluteUri);
-                            documents.Add(doc);
-
-                            dbContextTransaction.Commit();
-                        }
-                    }
-                }
-                catch (Exception er)
+                using (Stream stream = content.ReadAsStreamAsync().Result)
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "Unable to upload", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    Cloudblob.UploadFromStream(stream);                                        
                 }
             }
-            return (Object)documents;
+            catch (Exception er)
+            {
+                return (Object)"Unable to upload";
+            }
+
+            return (Object)Cloudblob.Uri.AbsoluteUri;
         }
 
         public override Object Download(int companyId, int documentId)

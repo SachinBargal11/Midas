@@ -329,7 +329,6 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 break;
 
         }
-        debugger;
         return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
             name: scheduledEventEditorFormValues.name,
             eventStart: moment(this.eventStartAsDate),

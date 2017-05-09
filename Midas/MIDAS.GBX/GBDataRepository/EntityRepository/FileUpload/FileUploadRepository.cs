@@ -13,6 +13,7 @@ using System.Web;
 using System.IO;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 {
@@ -33,10 +34,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         #endregion       
 
         #region Validate Entities
-        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate(int id,string type,List<HttpContent> streamContent)
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Document docInfo = new BO.Document();
-            var result = docInfo.Validate(id, type, streamContent);
+            BO.Document docInfo = (BO.Document)(object)entity;
+            var result = docInfo.Validate(docInfo);
             return result;
         }
         #endregion
@@ -57,23 +58,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         }
         #endregion
 
+        public override object Get<T>(T entity)
+        {
+            BO.Common.UploadInfo uploadInfo = (BO.Common.UploadInfo)(object)entity;
+            string path = string.Empty;
+
+            var documentnodeParameter = new SqlParameter("@document_node", uploadInfo.DocumentType);
+            var documentPath = _context.Database.SqlQuery<string>("midas_sp_get_document_path @document_node", documentnodeParameter).ToList();
+
+            switch (uploadInfo.ObjectType.ToUpper())
+            {
+                case EN.Constants.CaseType:
+                    path = documentPath[0].Replace("cmp/", "")
+                                        //.Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                        .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                    break;
+                case EN.Constants.VisitType:
+                    path = documentPath[0].Replace("cmp/", "")
+                                        .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                   .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                        .Replace("cs", "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                    break;
+            }
+            return (object)path;
+        }
+
         #region Save
-        public override object Save(int id,string type,List<HttpContent> streamContent,string uploadpath)
+        public override object Save(int id, string type, List<HttpContent> streamContent, string uploadpath)
         {
             List<BO.Document> docInfo = new List<BO.Document>();
-            StringBuilder storagePath=new StringBuilder();
+            StringBuilder storagePath = new StringBuilder();
             string SPECIALITY = "SPECIALITY_";
             string COMPANY = "/COMPANY_";
-            string CASE= "/CASE_";
+            string CASE = "/CASE_";
             string VISIT = "/VISIT_";
 
             if (type == "case" || type == "consent")
-            {                
+            {
                 storagePath.Append(remotePath)
                            .Append(COMPANY)
                            .Append(_dbSet.Where(xc => xc.UserID == _context.Cases.FirstOrDefault(p => p.Id == id).PatientId).FirstOrDefault().CompanyID)
                            .Append(CASE)
-                           .Append(id);               
+                           .Append(id);
             }
             else if (type == "visit")
             {
@@ -86,7 +112,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                            .Append(id);
             }
 
-            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(),id,type,uploadpath);
+            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), id, type, uploadpath);
 
             return docInfo;
         }
@@ -104,7 +130,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     break;
                 case EN.Constants.VisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
-                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);                    
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
                     break;
             }
             //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
@@ -112,9 +138,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             return docInfo;
         }
 
+        public override object Save<T>(T entity)
+        {
+            BO.Common.UploadInfo uploadInfo = (BO.Common.UploadInfo)(object)entity;
+            BO.Document docInfo = new BO.Document();
+
+            switch (uploadInfo.ObjectType.ToUpper())
+            {
+                case EN.Constants.CaseType:
+                    CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    break;
+                case EN.Constants.VisitType:
+                    VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    break;
+            }
+            //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
+
+            return docInfo;
+        }
+
+
         public override string Download(int caseid, int documentid)
         {
-            var acc = _context.MidasDocuments.Where(p => p.ObjectId == caseid && p.Id==documentid
+            var acc = _context.MidasDocuments.Where(p => p.ObjectId == caseid && p.Id == documentid
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .FirstOrDefault<MidasDocument>();
 

@@ -12,7 +12,7 @@ namespace MIDAS.GBX.DocumentManager
 {
     public interface IBlobService
     {
-        HttpResponseMessage UploadToBlob(HttpRequestMessage request, List<HttpContent> content, UploadInfo uploadData);
+        HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId);
 
         HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid);
 
