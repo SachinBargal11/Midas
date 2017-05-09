@@ -2603,7 +2603,24 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
-        
 
+        public Object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetFreeSlotsForDoctorByLocationId(DoctorId, LocationId, StartDate, EndDate);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
     }
 }
