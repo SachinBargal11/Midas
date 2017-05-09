@@ -30,6 +30,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, objectId, companyId);
         }
 
+        [HttpPost]
+        [Route("saveDocumentType")]
+        public HttpResponseMessage SaveDocumentType([FromBody]DocumentNodeObjectMapping data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

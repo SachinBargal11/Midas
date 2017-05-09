@@ -15,9 +15,14 @@ namespace MIDAS.GBX.DataRepository.Model
     public partial class DocumentNodeObjectMapping
     {
         public int id { get; set; }
-        public string ObjectType { get; set; }
+        public Nullable<byte> ObjectType { get; set; }
         public string ChildNode { get; set; }
-        public Nullable<int> companyid { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Company Company { get; set; }
     }

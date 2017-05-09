@@ -361,17 +361,19 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodeObjectMapping' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DocumentNodeObjectMapping">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="ChildNode" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ObjectType" Type="nvarchar" MaxLength="10" />
+          <Property Name="ObjectType" Type="tinyint" />
           <Property Name="ChildNode" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="companyid" Type="int" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1702,7 +1704,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="DocumentNodeObjectMapping">
-              <PropertyRef Name="companyid" />
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3058,6 +3060,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpecialities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentNodeObjectMapping" EntityType="Self.DocumentNodeObjectMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceMaster" EntityType="Self.InsuranceMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceType" EntityType="Self.InsuranceType" Schema="dbo" store:Type="Tables" />
@@ -3110,14 +3113,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocuments" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DocumentNodeObjectMapping" EntityType="Self.DocumentNodeObjectMapping" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [DocumentNodeObjectMapping].[id] AS [id], 
-    [DocumentNodeObjectMapping].[ObjectType] AS [ObjectType], 
-    [DocumentNodeObjectMapping].[ChildNode] AS [ChildNode], 
-    [DocumentNodeObjectMapping].[companyid] AS [companyid]
-    FROM [dbo].[DocumentNodeObjectMapping] AS [DocumentNodeObjectMapping]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DocumentNodes].[id] AS [id], 
@@ -4196,6 +4191,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorSpecialities_Doctor_DoctorID" FromRole="DoctorSpecialities" ToRole="Doctor" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
         </EntityType>
+        <EntityType Name="DocumentNodeObjectMapping">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ObjectType" Type="Byte" />
+          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_DocumentNodeObjectMapping_Company" FromRole="DocumentNodeObjectMapping" ToRole="Company" />
+        </EntityType>
         <EntityType Name="Gender">
           <Key>
             <PropertyRef Name="Id" />
@@ -5222,17 +5232,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="VisitDocuments" ToRole="MidasDocuments" />
         </EntityType>
-        <EntityType Name="DocumentNodeObjectMapping">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="ChildNode" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ObjectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="companyid" Type="Int32" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_DocumentNodeObjectMapping_Company" FromRole="DocumentNodeObjectMapping" ToRole="Company" />
-        </EntityType>
         <EntityType Name="DocumentNode">
           <Key>
             <PropertyRef Name="id" />
@@ -5791,7 +5790,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="DocumentNodeObjectMapping">
-              <PropertyRef Name="companyid" />
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7069,6 +7068,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
           <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpeciality" />
+          <EntitySet Name="DocumentNodeObjectMappings" EntityType="Self.DocumentNodeObjectMapping" />
           <EntitySet Name="Genders" EntityType="Self.Gender" />
           <EntitySet Name="InsuranceMasters" EntityType="Self.InsuranceMaster" />
           <EntitySet Name="InsuranceTypes" EntityType="Self.InsuranceType" />
@@ -7121,7 +7121,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSetting" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocument" />
-          <EntitySet Name="DocumentNodeObjectMappings" EntityType="Self.DocumentNodeObjectMapping" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
@@ -8114,6 +8113,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DocumentNodeObjectMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNodeObjectMapping">
+              <MappingFragment StoreEntitySet="DocumentNodeObjectMapping">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
+                <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Genders">
             <EntityTypeMapping TypeName="MIDASGBXModel.Gender">
               <MappingFragment StoreEntitySet="Gender">
@@ -8998,16 +9012,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DocumentNodeObjectMappings">
-            <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNodeObjectMapping">
-              <MappingFragment StoreEntitySet="DocumentNodeObjectMapping">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
-                <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
-                <ScalarProperty Name="companyid" ColumnName="companyid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
