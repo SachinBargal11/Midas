@@ -19,7 +19,7 @@ namespace MIDAS.GBX.DocumentManager
             
         }
 
-        public override Object Upload(UploadInfo uploadObject, List<HttpContent> content)
+        public override Object Upload(string blobPath, HttpContent content, int companyId)
         {            
             return new Object();
         }

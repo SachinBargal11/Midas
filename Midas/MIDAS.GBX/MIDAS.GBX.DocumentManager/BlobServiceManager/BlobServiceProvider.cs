@@ -19,12 +19,17 @@ namespace MIDAS.GBX.DocumentManager
         }
 
         #region Virtual Methods
-        public virtual Object Upload(UploadInfo uploadObject, List<HttpContent> content)
+        public virtual Object Upload(string blobPath, HttpContent content, int companyId)
         {
             throw new NotImplementedException();
         }
 
         public virtual Object Download(int companyid,int documentid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Validate(HttpContent ctnt)
         {
             throw new NotImplementedException();
         }

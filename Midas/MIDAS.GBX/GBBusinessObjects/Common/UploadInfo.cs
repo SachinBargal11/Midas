@@ -12,6 +12,7 @@ namespace MIDAS.GBX.BusinessObjects.Common
     {
         public string DocumentType { get; set; }
         public string ObjectType { get; set; }
+        public string BlobPath { get; set; }
         public int ObjectId { get; set; }
         public int CompanyId { get; set; }
         
@@ -21,6 +22,7 @@ namespace MIDAS.GBX.BusinessObjects.Common
             CompanyId = 0;
             DocumentType = "";
             ObjectType = "";
+            BlobPath = "";
         }
     }
 }

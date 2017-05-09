@@ -28,16 +28,16 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("message")]
         public string Message { get; set; }
 
-        public virtual List<BusinessValidation> Validate(int id, string type, List<HttpContent> streamContent)
+        public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
-            //Check for allowed file extensions [per file]
+            /*/Check for allowed file extensions [per file]
             if (!streamContent.ToList().TrueForAll(x => Enum.IsDefined(typeof(GBEnums.FileTypes), x.Headers.ContentDisposition.FileName.Split('.')[1].Replace("\"", string.Empty))))
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Invalid File extension" });
             //Check for allowed file size <= 1MB [per file]
             if (!streamContent.ToList().TrueForAll(x => (Convert.ToDecimal(x.Headers.ContentLength / (1024.0m * 1024.0m)) > 0 && Convert.ToDecimal(x.Headers.ContentLength / (1024.0m * 1024.0m)) <= 1)))
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Filesize exceeded the limit 1MB" });
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Filesize exceeded the limit 1MB" });*/
 
             return validations;
         }
