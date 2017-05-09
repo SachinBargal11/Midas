@@ -1192,7 +1192,7 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int? companyId,bool showAll)
+        public HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int companyId,bool showAll)
         {
             var objResult = dataAccessManager.GetBySpecialityAndCompanyId(specialityId, companyId, showAll);
             try

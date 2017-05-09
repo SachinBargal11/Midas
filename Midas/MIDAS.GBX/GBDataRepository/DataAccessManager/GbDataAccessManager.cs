@@ -2054,7 +2054,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetBySpecialityAndCompanyId(int specialityId,int? companyId,bool showAll, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetBySpecialityAndCompanyId(int specialityId,int companyId,bool showAll, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
