@@ -36,9 +36,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.DocumentNodeObjectMapping documentNodeObjectMappingBO = new BO.DocumentNodeObjectMapping();
 
-            documentNodeObjectMappingBO.ID = documentNodeObjectMapping.id;
-            documentNodeObjectMappingBO.ObjectType = documentNodeObjectMapping.ObjectType;
+            //documentNodeObjectMappingBO.ID = documentNodeObjectMapping.id;
+            documentNodeObjectMappingBO.ObjectType = (BO.GBEnums.ObjectTypes)documentNodeObjectMapping.ObjectType;
             documentNodeObjectMappingBO.ChildNode = documentNodeObjectMapping.ChildNode;
+            documentNodeObjectMappingBO.CompanyId = documentNodeObjectMapping.CompanyId;
 
             return (T)(object)documentNodeObjectMappingBO;
         }
@@ -56,10 +57,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ObjectType
         public override object Get(int objectId, int companyId)
         {
-            string objectType = Enum.GetName(typeof(BO.GBEnums.ObjectTypes), objectId);
-            var documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(p => p.ObjectType == objectType && (p.companyid == 0 || p.companyid == null)).ToList<DocumentNodeObjectMapping>()
+            //string objectType = Enum.GetName(typeof(BO.GBEnums.ObjectTypes), objectId);
+            if (objectId <= 0 || !Enum.IsDefined(typeof(BO.GBEnums.ObjectTypes), objectId))
+                return new BO.ErrorObject { ErrorMessage = "Please pass valid objectType.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+            var documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(p => p.ObjectType == objectId && 
+                                                                                             (p.CompanyId == 0 || p.CompanyId == null) &&
+                                                                                             (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<DocumentNodeObjectMapping>()
                                                                                  .Union
-                                              (_context.DocumentNodeObjectMappings.Where(p => p.companyid == companyId && p.ObjectType == objectType).ToList<DocumentNodeObjectMapping>());
+                                              (_context.DocumentNodeObjectMappings.Where(p => p.CompanyId == companyId && 
+                                                                                              p.ObjectType == objectId &&
+                                                                                              (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<DocumentNodeObjectMapping>());
 
             List<BO.DocumentNodeObjectMapping> boDocumentNodeObjectMapping = new List<BO.DocumentNodeObjectMapping>();
             if (documentNodeObjectMappingDB == null)
@@ -74,6 +82,56 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
+            return (object)boDocumentNodeObjectMapping;
+        }
+        #endregion
+
+        #region save
+        public override object Save<T>(T entity)
+        {
+            BO.DocumentNodeObjectMapping boDocumentNodeObjectMapping = (BO.DocumentNodeObjectMapping)(object)entity;
+            
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                if (boDocumentNodeObjectMapping != null)
+                {
+                    var documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(docnodes => docnodes.ObjectType == (int)boDocumentNodeObjectMapping.ObjectType &&
+                                                                                                      docnodes.ChildNode.ToLower() == boDocumentNodeObjectMapping.ChildNode.ToLower() &&
+                                                                                                      docnodes.CompanyId == boDocumentNodeObjectMapping.CompanyId &&
+                                                                                                      (docnodes.IsDeleted.HasValue == false || (docnodes.IsDeleted.HasValue == true && docnodes.IsDeleted.Value == false)))
+                                                                                                      .Union
+                                                      (_context.DocumentNodeObjectMappings.Where(docnodes => docnodes.ObjectType == (int)boDocumentNodeObjectMapping.ObjectType &&
+                                                                                                      docnodes.ChildNode.ToLower() == boDocumentNodeObjectMapping.ChildNode.ToLower() &&
+                                                                                                      (docnodes.CompanyId == 0 || docnodes.CompanyId == null) &&
+                                                                                                      (docnodes.IsDeleted.HasValue == false || (docnodes.IsDeleted.HasValue == true && docnodes.IsDeleted.Value == false))))
+                                                                                                      .FirstOrDefault();
+                                                                                         
+                    if (documentNodeObjectMappingDB == null)
+                    {
+                        documentNodeObjectMappingDB = new DocumentNodeObjectMapping();
+                        documentNodeObjectMappingDB.CompanyId = boDocumentNodeObjectMapping.CompanyId;
+                        documentNodeObjectMappingDB.ObjectType = (byte)boDocumentNodeObjectMapping.ObjectType;
+                        documentNodeObjectMappingDB.ChildNode = boDocumentNodeObjectMapping.ChildNode;
+
+                        _context.DocumentNodeObjectMappings.Add(documentNodeObjectMappingDB);
+                        _context.SaveChanges();
+
+                        var res = Convert<BO.DocumentNodeObjectMapping, DocumentNodeObjectMapping>(documentNodeObjectMappingDB);
+                        dbContextTransaction.Commit();
+                    }
+                    else
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Document type already exists", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid document type details.", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+            
             return (object)boDocumentNodeObjectMapping;
         }
         #endregion
