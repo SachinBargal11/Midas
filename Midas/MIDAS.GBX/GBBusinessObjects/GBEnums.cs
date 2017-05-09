@@ -117,5 +117,15 @@ namespace MIDAS.GBX.BusinessObjects
         }
         #endregion
 
+        #region Object Types
+        public enum ObjectTypes
+        {
+            PATIENT = 1,
+            CASE = 2,
+            VISIT = 3
+        }
+        #endregion
+
+
     }
 }
