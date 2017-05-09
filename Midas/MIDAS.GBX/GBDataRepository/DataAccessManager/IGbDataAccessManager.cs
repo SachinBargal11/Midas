@@ -127,7 +127,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByToRoomId(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByForSpecialtyId(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByForRoomTestId(int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        
+        Object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
     }
 }

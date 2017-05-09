@@ -397,7 +397,7 @@ export class PatientVisitComponent implements OnInit {
         this.events = [];
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
-            this.selectedDoctorId = event.target.value;
+            this.selectedDoctorId = parseInt(event.target.value);
             this.selectedSpecialityId = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityId'));
             this.loadLocationDoctorVisits();
             this.fetchDoctorSchedule();
@@ -407,7 +407,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedProcedures = null;
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
-            this.selectedRoomId = event.target.value;
+            this.selectedRoomId = parseInt(event.target.value);
             this.selectedTestId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
             this.loadLocationRoomVisits();
             this.fetchRoomSchedule();
@@ -891,24 +891,42 @@ export class PatientVisitComponent implements OnInit {
         this.visitDialogVisible = false;
     }
     saveReferral(inputProcedureCodes: Procedure[]) {
+        let result;
         let patientVisitFormValues = this.patientVisitForm.value;
         let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
+        let visitReferralDetails: VisitReferral[] = [];
+        let uniqProcedureCodes: Procedure[] = [];
 
-        let visitReferralDetail = new VisitReferral({
-            patientVisitId: this.selectedVisit.id,
-            fromCompanyId: this.sessionStore.session.currentCompany.id,
-            fromLocationId: this.selectedLocationId,
-            fromDoctorId: this.selectedOption === 1 ? this.selectedDoctorId : null,
-            forSpecialtyId: this.selectedOption === 1 ? this.selectedSpecialityId: null,
-            forRoomId: this.selectedOption === 2 ? this.selectedRoomId : null,
-            forRoomTestId: this.selectedOption === 2 ? this.selectedTestId : null,
-            isReferralCreated: true,
-            pendingReferralProcedureCode: procedureCodes
-        });
-        let result = this._visitReferralStore.saveVisitReferral(visitReferralDetail);
+        let uniqSpeciality = _.uniq(inputProcedureCodes, (currentProc: Procedure) => {
+            return currentProc.specialityId
+        })
+        let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
+            return currentProc.specialityId
+        })
+        _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
+            inputProcedureCodes.forEach(currentProcedureCode => {
+                if (currentProcedureCode.specialityId === currentSpecialityId) {
+                    uniqProcedureCodes.push(currentProcedureCode)
+                    procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+                }
+            });
+                    let visitReferral = new VisitReferral({
+                        patientVisitId: this.selectedVisit.id,
+                        fromCompanyId: this.sessionStore.session.currentCompany.id,
+                        fromLocationId: this.selectedLocationId,
+                        fromDoctorId: this.selectedOption === 1 ? this.selectedDoctorId : null,
+                        // forSpecialtyId: currentProcedureCode.speciality ? currentProcedureCode.speciality.id : !currentProcedureCode.speciality ? currentProcedureCode.specialityId : null,
+                        forSpecialtyId: currentSpecialityId,
+                        forRoomId: this.selectedOption === 2 ? this.selectedRoomId : null,
+                        // forRoomTestId: currentProcedureCode.roomTest ? currentProcedureCode.roomTest.id : !currentProcedureCode.roomTest ? currentProcedureCode.roomTestId : null,
+                        forRoomTestId:  null,
+                        isReferralCreated: false,
+                        pendingReferralProcedureCode: procedureCodes
+                    });
+                    visitReferralDetails.push(visitReferral);
+                    procedureCodes = [];
+        })
+        result = this._visitReferralStore.saveVisitReferral(visitReferralDetails);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -928,6 +946,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this._progressBarService.hide();

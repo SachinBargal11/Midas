@@ -114,6 +114,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByToRoomId(HttpRequestMessage request, int roomId);
         HttpResponseMessage GetByForSpecialtyId(HttpRequestMessage request, int specialtyId);
         HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId);
-        
+        HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate);
     }
 }

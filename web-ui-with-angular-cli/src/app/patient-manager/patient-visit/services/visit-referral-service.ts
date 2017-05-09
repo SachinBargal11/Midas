@@ -16,7 +16,7 @@ import * as _ from 'underscore';
 @Injectable()
 export class VisitReferralService {
 
-    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    private _url = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
 
     constructor(
@@ -26,20 +26,22 @@ export class VisitReferralService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    saveVisitReferral(visitReferralDetail: VisitReferral): Observable<VisitReferral> {
-        let promise: Promise<VisitReferral> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(visitReferralDetail), {
+    saveVisitReferral(visitReferralDetail: VisitReferral[]): Observable<VisitReferral[]> {
+        let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
+            // return this._http.post(this._url + '/PendingReferral/Add', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/PendingReferral/SaveList', JSON.stringify(visitReferralDetail), {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data: any) => {
-                    let visitReferral: VisitReferral = null;
-                    visitReferral = visitReferralAdapter.parseResponse(data);
+                .subscribe((data: Array<Object>) => {
+                    let visitReferral = (<Object[]>data).map((data: any) => {
+                        return visitReferralAdapter.parseResponse(data);
+                    });
                     resolve(visitReferral);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<VisitReferral>>Observable.fromPromise(promise);
+        return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
     }
 }
 

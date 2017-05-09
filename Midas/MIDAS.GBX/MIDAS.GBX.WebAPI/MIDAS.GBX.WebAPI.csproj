@@ -260,6 +260,7 @@
     <Compile Include="Controllers\AdjusterMasterController.cs" />
     <Compile Include="Controllers\AttorneyInfoController.cs" />
     <Compile Include="Controllers\AttorneyMasterController.cs" />
+    <Compile Include="Controllers\CalendarEventController.cs" />
     <Compile Include="Controllers\CaseCompanyMappingController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
