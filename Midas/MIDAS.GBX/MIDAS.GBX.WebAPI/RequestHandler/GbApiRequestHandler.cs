@@ -1192,6 +1192,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int? companyId,bool showAll)
+        {
+            var objResult = dataAccessManager.GetBySpecialityAndCompanyId(specialityId, companyId, showAll);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+       
         public HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId)
         {
             var objResult = dataAccessManager.GetByPatientVisitId(patientVisitId);
