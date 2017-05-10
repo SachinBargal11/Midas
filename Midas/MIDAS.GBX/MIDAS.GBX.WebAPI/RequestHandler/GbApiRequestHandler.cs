@@ -1222,7 +1222,20 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-       
+
+        public HttpResponseMessage GetByRoomTestAndCompanyId(HttpRequestMessage request, int roomTestId, int companyId, bool showAll)
+        {
+            var objResult = dataAccessManager.GetByRoomTestAndCompanyId(roomTestId, companyId, showAll);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId)
         {
             var objResult = dataAccessManager.GetByPatientVisitId(patientVisitId);

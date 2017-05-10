@@ -161,6 +161,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By roomTestId ID and companyId
+        public override object GetByRoomTestAndCompanyId(int roomTestId, int companyId, bool showAll)
+        {
+
+            var procedureCodeDB = _context.ProcedureCodes.Where(p => p.RoomTestId == roomTestId
+                                                        && (p.CompanyId == companyId || (showAll == true && p.CompanyId.HasValue == false))
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .ToList<ProcedureCode>();
+
+
+            List<BO.ProcedureCode> boProcedureCode = new List<BO.ProcedureCode>();
+
+            if (procedureCodeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Procedure Code.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            else
+            {
+                foreach (var boProcedureCodeList in procedureCodeDB)
+                {
+                    boProcedureCode.Add(Convert<BO.ProcedureCode, ProcedureCode>(boProcedureCodeList));
+                }
+            }
+
+            return (object)boProcedureCode;
+        }
+        #endregion
+
         #region Update
         public override object Save<T>(List<T> entities)
         {

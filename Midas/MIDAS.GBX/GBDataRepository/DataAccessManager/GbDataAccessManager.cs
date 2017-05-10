@@ -2098,6 +2098,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetByRoomTestAndCompanyId(int roomTestId, int companyId, bool showAll, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByRoomTestAndCompanyId(roomTestId, companyId, showAll);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         public Object GenerateReferralDocument(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
