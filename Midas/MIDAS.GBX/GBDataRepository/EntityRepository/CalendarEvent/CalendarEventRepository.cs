@@ -77,8 +77,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
                 {
-                    var recurrenceRules = new RecurrencePattern(eachEvent.RecurrenceRule);
-                    var exceptionRules = new RecurrencePattern(eachEvent.RecurrenceException);
                     var newEvent = new Event()
                     {
                         Name = eachEvent.Name,
@@ -89,13 +87,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         Created = new CalDateTime(eachEvent.CreateDate)
                     };
 
-                    if (eachEvent.RecurrenceRule != null)
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
                     {
-                        newEvent.RecurrenceRules.Add(recurrenceRules);
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(eachEvent.RecurrenceRule));
                     }
-                    if (eachEvent.RecurrenceException != null)
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
                     {
-                        newEvent.ExceptionRules.Add(exceptionRules);
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(eachEvent.RecurrenceException));
                     }
 
                     calendar.Events.Add(newEvent);
