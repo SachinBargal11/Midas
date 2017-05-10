@@ -4,6 +4,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { List } from 'immutable';
 import * as _ from 'underscore';
+import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { AvailableSlotsService } from '../services/available-slots-service';
@@ -31,7 +32,7 @@ export class AvailableSlotsStore {
         return this._availableSlots.asObservable();
     }
 
-    getAvailableSlotsByLocationAndDoctorId(locationId: Number, doctorId: Number, startDate: string, endDate: string): Observable<AvailableSlot[]> {
+    getAvailableSlotsByLocationAndDoctorId(locationId: Number, doctorId: Number, startDate: moment.Moment, endDate: moment.Moment): Observable<AvailableSlot[]> {
         let promise = new Promise((resolve, reject) => {
             this._availableSlotsService.getAvailableSlotsByLocationAndDoctorId(locationId, doctorId, startDate, endDate)
                 .subscribe((availableSlots: AvailableSlot[]) => {

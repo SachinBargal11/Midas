@@ -12,8 +12,7 @@ export class AvailableSlotAdapter {
         if (data) {
             availableSlot = new AvailableSlot({
                 forDate: moment(data.forDate),
-                startEndTimes: AvailableSlotAdapter.parseSingleSlot(data.startEndTimes)
-
+                startAndEndTimes: AvailableSlotAdapter.parseSingleSlot(data.startAndEndTimes)
             });
         }
         return availableSlot;
@@ -23,8 +22,8 @@ export class AvailableSlotAdapter {
         let availableSingleSlots: AvailableSingleSlot[] = [];
         _.forEach(data, (currentSlot: any) => {
             availableSingleSlots.push(new AvailableSingleSlot({
-                start: moment(currentSlot.start),
-                end: moment(currentSlot.end)
+                start: moment(currentSlot.startTime),
+                end: moment(currentSlot.endTime)
             }));
         });
         return availableSingleSlots;
