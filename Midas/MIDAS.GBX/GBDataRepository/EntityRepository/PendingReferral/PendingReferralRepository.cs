@@ -508,8 +508,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
-                                       .Where(p => p.FromCompanyId == CompanyId
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .Where(p => p.FromCompanyId == CompanyId && p.IsReferralCreated == false
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .ToList<PendingReferral>();
 
             if (acc == null)

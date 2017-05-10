@@ -178,14 +178,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (LocationId <= 0)
             {
                 LocationId = _context.Rooms.Where(p => p.id == RoomId
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                             .Select(p => p.LocationID).FirstOrDefault();
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .Select(p => p.LocationID).FirstOrDefault();
             }
 
             var CalendarEvents = _context.PatientVisit2.Where(p => p.LocationId == LocationId && p.RoomId == RoomId
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .Select(p => p.CalendarEvent)
-                                                        .ToList();
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .Select(p => p.CalendarEvent)
+                                         .ToList();
 
             Calendar calendar = new Calendar();
             foreach (var eachEvent in CalendarEvents)
