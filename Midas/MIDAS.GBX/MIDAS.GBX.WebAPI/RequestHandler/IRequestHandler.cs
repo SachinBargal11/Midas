@@ -90,6 +90,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId);
         HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId);
         HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int companyId,bool showAll);
+        HttpResponseMessage GetByRoomTestAndCompanyId(HttpRequestMessage request, int roomTestId, int companyId, bool showAll);
         HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId);
         HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
         HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId);
@@ -116,5 +117,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByForSpecialtyId(HttpRequestMessage request, int specialtyId);
         HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId);
         HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate);
+        HttpResponseMessage GetFreeSlotsForRoomByLocationId(HttpRequestMessage request, int RoomId, int LocationId, DateTime StartDate, DateTime EndDate);
     }
 }

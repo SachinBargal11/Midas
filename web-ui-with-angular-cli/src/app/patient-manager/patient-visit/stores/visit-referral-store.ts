@@ -26,32 +26,76 @@ export class VisitReferralStore {
     resetStore() {
         this._visitReferral.next(this._visitReferral.getValue().clear());
     }
-
     get VisitReferrals() {
         return this._visitReferral.asObservable();
     }
 
-    // findPendingReferralById(id: number): VisitReferral {
-    //     let pendingReferrals = this._visitReferral.getValue();
-    //     let index = pendingReferrals.findIndex((currentPendingReferral: VisitReferral) => currentPendingReferral.id === id);
-    //     return pendingReferrals.get(index);
-    // }
+    getPendingReferralByPatientVisitId(patientVisitId: number): Observable<VisitReferral[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getPendingReferralByPatientVisitId(patientVisitId).subscribe((visitReferralDetails: VisitReferral[]) => {
+                this._visitReferral.next(List(visitReferralDetails));
+                resolve(visitReferralDetails);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitReferral[]>>Observable.from(promise);
+    }
+    getPendingReferralByCompanyId(companyId: number): Observable<VisitReferral[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getPendingReferralByCompanyId(companyId).subscribe((visitReferralDetails: VisitReferral[]) => {
+                this._visitReferral.next(List(visitReferralDetails));
+                resolve(visitReferralDetails);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitReferral[]>>Observable.from(promise);
+    }
+    getPendingReferralByDoctorId(doctorId: number): Observable<VisitReferral[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getPendingReferralByDoctorId(doctorId).subscribe((visitReferralDetails: VisitReferral[]) => {
+                this._visitReferral.next(List(visitReferralDetails));
+                resolve(visitReferralDetails);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitReferral[]>>Observable.from(promise);
+    }
+    getPendingReferralBySpecialityId(specialityId: number): Observable<VisitReferral[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getPendingReferralBySpecialityId(specialityId).subscribe((visitReferralDetails: VisitReferral[]) => {
+                this._visitReferral.next(List(visitReferralDetails));
+                resolve(visitReferralDetails);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitReferral[]>>Observable.from(promise);
+    }
 
-    // fetchPendingReferralById(id: number): Observable<PendingReferral> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         let matchedPendingReferral: PendingReferral = this.findPendingReferralById(id);
-    //         if (matchedPendingReferral) {
-    //             resolve(matchedPendingReferral);
-    //         } else {
-    //             this._visitReferralervice.getPatientVisit(id).subscribe((PendingReferralDetail: VisitReferral) => {
-    //                 resolve(PendingReferralDetail);
-    //             }, error => {
-    //                 reject(error);
-    //             });
-    //         }
-    //     });
-    //     return <Observable<PendingReferral>>Observable.fromPromise(promise);
-    // }
+    findVisitReferralById(id: number): VisitReferral {
+        let visitReferrals = this._visitReferral.getValue();
+        let index = visitReferrals.findIndex((currentVisitReferral: VisitReferral) => currentVisitReferral.id === id);
+        return visitReferrals.get(index);
+    }
+
+    fetchVisitReferralById(id: number): Observable<VisitReferral> {
+        let promise = new Promise((resolve, reject) => {
+            let matchedVisitReferral: VisitReferral = this.findVisitReferralById(id);
+            if (matchedVisitReferral) {
+                resolve(matchedVisitReferral);
+            } else {
+                this._visitReferralService.getPendingReferralById(id).subscribe((visitReferral: VisitReferral) => {
+                    resolve(visitReferral);
+                }, error => {
+                    reject(error);
+                });
+            }
+        });
+        return <Observable<VisitReferral>>Observable.fromPromise(promise);
+    }
 
     saveVisitReferral(visitReferralDetail: VisitReferral[]): Observable<VisitReferral[]> {
         let promise = new Promise((resolve, reject) => {

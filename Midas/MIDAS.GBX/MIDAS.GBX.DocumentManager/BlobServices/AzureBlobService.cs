@@ -83,6 +83,12 @@ namespace MIDAS.GBX.DocumentManager
             return (Object)ms;
         }
 
+        public override Object Merge(int companyId)
+        {
+
+            return new object();
+        }
+
         public bool DeleteBlob(string blobName)
         {
             try

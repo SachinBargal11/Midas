@@ -29,12 +29,24 @@ export class ProcedureCodeMasterStore {
     }
 
 
+    getBySpecialityAndCompanyId(specialityId: number, companyId: number): Observable<Procedure[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.getProceduresBySpecialityAndCompanyId(specialityId,companyId).subscribe((procedures: Procedure[]) => {
+                this._procedure.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
     updateProcedureAmount(selProcedure: Procedure[]): Observable<Procedure[]> {
         let promise = new Promise((resolve, reject) => {
             this._procedureCodeMasterService.updateProcedureAmount(selProcedure).subscribe((selProcedure: Procedure[]) => {
-               _.forEach(selProcedure, (proc:Procedure) => {
-               this._procedure.next(this._procedure.getValue().push(proc));
-               });
+                _.forEach(selProcedure, (proc: Procedure) => {
+                    this._procedure.next(this._procedure.getValue().push(proc));
+                });
                 resolve(selProcedure);
             }, error => {
                 reject(error);
@@ -45,6 +57,6 @@ export class ProcedureCodeMasterStore {
         return <Observable<Procedure[]>>Observable.from(promise);
     }
 
-    
+
 
 }

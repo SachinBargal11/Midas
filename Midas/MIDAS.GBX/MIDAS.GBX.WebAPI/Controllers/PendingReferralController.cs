@@ -77,13 +77,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
         
 
-        [HttpPost]
-        [Route("Add")]
-
-        public HttpResponseMessage Post([FromBody]PendingReferral pendingReferral)
-        {
-            return requestHandler.CreateGbObject(Request, pendingReferral);
-        }
+        //[HttpPost]
+        //[Route("Add")]
+        //public HttpResponseMessage Post([FromBody]PendingReferral pendingReferral)
+        //{
+        //    return requestHandler.CreateGbObject(Request, pendingReferral);
+        //}
 
         [HttpPost]
         [Route("SaveList")]

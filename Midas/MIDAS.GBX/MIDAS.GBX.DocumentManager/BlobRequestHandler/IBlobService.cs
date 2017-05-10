@@ -16,7 +16,7 @@ namespace MIDAS.GBX.DocumentManager
 
         HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid);
 
-        HttpResponseMessage MergeDocuments();
+        HttpResponseMessage MergeDocuments(int companyid);
 
     }
 }

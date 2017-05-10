@@ -507,6 +507,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByRoomTestAndCompanyId(int roomTestId, int companyId, bool showAll)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetBySpecialityInAllApp(int specialityId)
         {
             throw new NotImplementedException();
@@ -642,6 +647,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate)
         {
             throw new NotImplementedException();
         }
