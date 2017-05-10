@@ -680,147 +680,257 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
 
         #region save
-        public override object Save<T>(T entity)
-        {
-            BO.PendingReferral pendingReferralBO = (BO.PendingReferral)(object)entity;
-            PendingReferral pendingReferralDB = new PendingReferral();
-            List<BO.PendingReferralProcedureCode> PendingReferralProcedureCodeBOList = pendingReferralBO.PendingReferralProcedureCodes;
+        //public override object Save<T>(T entity)
+        //{
+        //    BO.PendingReferral pendingReferralBO = (BO.PendingReferral)(object)entity;
+        //    PendingReferral pendingReferralDB = new PendingReferral();
+        //    List<BO.PendingReferralProcedureCode> PendingReferralProcedureCodeBOList = pendingReferralBO.PendingReferralProcedureCodes;
 
-            if (pendingReferralBO != null)
-            {              
-                pendingReferralDB = _context.PendingReferrals.Where(p => p.Id == pendingReferralBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                bool add_pendingReferral = false;
+        //    if (pendingReferralBO != null)
+        //    {              
+        //        pendingReferralDB = _context.PendingReferrals.Where(p => p.Id == pendingReferralBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+        //        bool add_pendingReferral = false;
 
-                if (pendingReferralDB == null && pendingReferralBO.ID > 0)
-                {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Pending Referral data.", ErrorLevel = ErrorLevel.Error };
-                }
-                else if (pendingReferralDB == null && pendingReferralBO.ID <= 0)
-                {
-                    pendingReferralDB = _context.PendingReferrals.Where(p => p.FromCompanyId == pendingReferralBO.FromCompanyId
-                                        && p.PatientVisitId == pendingReferralBO.PatientVisitId
-                                        && p.FromDoctorId == pendingReferralBO.FromDoctorId
-                                        && p.FromLocationId == pendingReferralBO.FromLocationId
-                                        && p.ForSpecialtyId == pendingReferralBO.ForSpecialtyId
-                                        && p.ForRoomTestId == pendingReferralBO.ForRoomTestId
-                                        && p.ForRoomId == pendingReferralBO.ForRoomId
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                    if (pendingReferralDB != null)
-                    {
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral data for procedure codes already exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    else
-                    {
-                        pendingReferralDB = new PendingReferral();
-                        add_pendingReferral = true;
-                    }
-                }
+        //        if (pendingReferralDB == null && pendingReferralBO.ID > 0)
+        //        {
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Pending Referral data.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        else if (pendingReferralDB == null && pendingReferralBO.ID <= 0)
+        //        {
+        //            pendingReferralDB = _context.PendingReferrals.Where(p => p.FromCompanyId == pendingReferralBO.FromCompanyId
+        //                                && p.PatientVisitId == pendingReferralBO.PatientVisitId
+        //                                && p.FromDoctorId == pendingReferralBO.FromDoctorId
+        //                                && p.FromLocationId == pendingReferralBO.FromLocationId
+        //                                && p.ForSpecialtyId == pendingReferralBO.ForSpecialtyId
+        //                                && p.ForRoomTestId == pendingReferralBO.ForRoomTestId
+        //                                && p.ForRoomId == pendingReferralBO.ForRoomId
+        //                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+        //            if (pendingReferralDB != null)
+        //            {
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral data for procedure codes already exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+        //            else
+        //            {
+        //                pendingReferralDB = new PendingReferral();
+        //                add_pendingReferral = true;
+        //            }
+        //        }
 
-                pendingReferralDB.PatientVisitId = pendingReferralBO.PatientVisitId;
-                pendingReferralDB.FromCompanyId = pendingReferralBO.FromCompanyId;
-                pendingReferralDB.FromLocationId = pendingReferralBO.FromLocationId;
-                pendingReferralDB.FromDoctorId = pendingReferralBO.FromDoctorId;
-                pendingReferralDB.ForSpecialtyId = pendingReferralBO.ForSpecialtyId;
-                pendingReferralDB.ForRoomId = pendingReferralBO.ForRoomId;
-                pendingReferralDB.ForRoomTestId = pendingReferralBO.ForRoomTestId;
-                pendingReferralDB.IsReferralCreated = pendingReferralBO.IsReferralCreated;
-                pendingReferralDB.DismissedBy = pendingReferralBO.DismissedBy;
-
-
-                if (add_pendingReferral == true)
-                {
-                    pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
-                }
-                _context.SaveChanges();
+        //        pendingReferralDB.PatientVisitId = pendingReferralBO.PatientVisitId;
+        //        pendingReferralDB.FromCompanyId = pendingReferralBO.FromCompanyId;
+        //        pendingReferralDB.FromLocationId = pendingReferralBO.FromLocationId;
+        //        pendingReferralDB.FromDoctorId = pendingReferralBO.FromDoctorId;
+        //        pendingReferralDB.ForSpecialtyId = pendingReferralBO.ForSpecialtyId;
+        //        pendingReferralDB.ForRoomId = pendingReferralBO.ForRoomId;
+        //        pendingReferralDB.ForRoomTestId = pendingReferralBO.ForRoomTestId;
+        //        pendingReferralDB.IsReferralCreated = pendingReferralBO.IsReferralCreated;
+        //        pendingReferralDB.DismissedBy = pendingReferralBO.DismissedBy;
 
 
+        //        if (add_pendingReferral == true)
+        //        {
+        //            pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
+        //        }
+        //        _context.SaveChanges();
 
-                #region PendingReferralProcedureCode
-                if (PendingReferralProcedureCodeBOList == null || (PendingReferralProcedureCodeBOList != null && PendingReferralProcedureCodeBOList.Count <= 0))
-                {
-                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
-                }
-                else
-                {
-                    int PendingReferralId = pendingReferralDB.Id;
-                    List<int> NewProcedureCodeIds = PendingReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
+        //        #region PendingReferralProcedureCode
+        //        if (PendingReferralProcedureCodeBOList == null || (PendingReferralProcedureCodeBOList != null && PendingReferralProcedureCodeBOList.Count <= 0))
+        //        {
+        //            //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        else
+        //        {
+        //            int PendingReferralId = pendingReferralDB.Id;
+        //            List<int> NewProcedureCodeIds = PendingReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
 
-                    List<PendingReferralProcedureCode> ReomveProcedureCodeDB = new List<PendingReferralProcedureCode>();
-                    ReomveProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
-                                                                                    && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
-                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                               .ToList();
+        //            List<PendingReferralProcedureCode> ReomveProcedureCodeDB = new List<PendingReferralProcedureCode>();
+        //            ReomveProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
+        //                                                                            && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
+        //                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                                       .ToList();
 
-                    ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+        //            ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
 
-                    _context.SaveChanges();
+        //            _context.SaveChanges();
 
-                    foreach (BO.PendingReferralProcedureCode eachPendingReferralProcedureCode in PendingReferralProcedureCodeBOList)
-                    {
-                        PendingReferralProcedureCode AddProcedureCodeDB = new PendingReferralProcedureCode();
-                        AddProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
-                                                                                    && p.ProcedureCodeId == eachPendingReferralProcedureCode.ProcedureCodeId
-                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                               .FirstOrDefault();
+        //            foreach (BO.PendingReferralProcedureCode eachPendingReferralProcedureCode in PendingReferralProcedureCodeBOList)
+        //            {
+        //                PendingReferralProcedureCode AddProcedureCodeDB = new PendingReferralProcedureCode();
+        //                AddProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
+        //                                                                            && p.ProcedureCodeId == eachPendingReferralProcedureCode.ProcedureCodeId
+        //                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                                       .FirstOrDefault();
 
-                        if (AddProcedureCodeDB == null)
-                        {
-                            AddProcedureCodeDB = new PendingReferralProcedureCode();
+        //                if (AddProcedureCodeDB == null)
+        //                {
+        //                    AddProcedureCodeDB = new PendingReferralProcedureCode();
 
-                            AddProcedureCodeDB.PendingReferralId = PendingReferralId;
-                            AddProcedureCodeDB.ProcedureCodeId = eachPendingReferralProcedureCode.ProcedureCodeId;
+        //                    AddProcedureCodeDB.PendingReferralId = PendingReferralId;
+        //                    AddProcedureCodeDB.ProcedureCodeId = eachPendingReferralProcedureCode.ProcedureCodeId;
 
-                            _context.PendingReferralProcedureCodes.Add(AddProcedureCodeDB);
-                        }
-                    }
+        //                    _context.PendingReferralProcedureCodes.Add(AddProcedureCodeDB);
+        //                }
+        //            }
 
-                    _context.SaveChanges();
-                }
-                #endregion
+        //            _context.SaveChanges();
+        //        }
+        //        #endregion
 
-            }
-            else
-            {
-                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
-            }
-            _context.SaveChanges();
+        //    }
+        //    else
+        //    {
+        //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    _context.SaveChanges();
 
-            pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
-                                              .Include("Doctor")
-                                              .Include("Doctor.User")
-                                              .Include("Specialty")
-                                              .Include("RoomTest")
-                                              .Include("PendingReferralProcedureCodes")
-                                              .Include("PendingReferralProcedureCodes.ProcedureCode")
-                                          .Where(p => p.Id == pendingReferralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                              .FirstOrDefault<PendingReferral>();
+        //    pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
+        //                                      .Include("PatientVisit2.Case.Patient2.User")
+        //                                      .Include("Doctor")
+        //                                      .Include("Doctor.User")
+        //                                      .Include("Specialty")
+        //                                      .Include("RoomTest")
+        //                                      .Include("PendingReferralProcedureCodes")
+        //                                      .Include("PendingReferralProcedureCodes.ProcedureCode")
+        //                                  .Where(p => p.Id == pendingReferralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                                      .FirstOrDefault<PendingReferral>();
 
 
 
-            var res = Convert<BO.PendingReferral, PendingReferral>(pendingReferralDB);
-            return (object)res;
-        }
+        //    var res = Convert<BO.PendingReferral, PendingReferral>(pendingReferralDB);
+        //    return (object)res;
+        //}
         #endregion
 
 
         #region save
         public override object Save<T>(List<T> entities)
         {
-            List<BO.PendingReferral> lstPendingReferralBO = (List<BO.PendingReferral>)(object)entities;
-            PendingReferral pendingReferralDB = new PendingReferral();
+            List<BO.PendingReferral> lstPendingReferralBO = (List<BO.PendingReferral>)(object)entities;            
 
             List<PendingReferral> lstPendingReferralDB = new  List<PendingReferral>();
             List<BO.PendingReferral> boListPendingReferral = new List<BO.PendingReferral>();
 
-
+            int patientVisitId = 0;
             if (lstPendingReferralBO != null)
             {
-                foreach(var item in lstPendingReferralBO)
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {
-                    List<BO.PendingReferralProcedureCode> PendingReferralProcedureCodeBOList = item.PendingReferralProcedureCodes;
+                    foreach (var item in lstPendingReferralBO)
+                    {
+                        if (item.IsReferralCreated == false)
+                        {
+                            patientVisitId = item.PatientVisitId;
 
-                    pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
+                            PendingReferral pendingReferralDB = new PendingReferral();
+                            pendingReferralDB = _context.PendingReferrals
+                                                        .Where(p => p.Id == item.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                            bool add_pendingReferral = false;
+
+                            if (pendingReferralDB == null && item.ID > 0)
+                            {
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Pending Referral data.", ErrorLevel = ErrorLevel.Error };
+                            }
+                            else if (pendingReferralDB == null && item.ID <= 0)
+                            {
+                                pendingReferralDB = new PendingReferral();
+                                add_pendingReferral = true;
+
+                                //pendingReferralDB = _context.PendingReferrals.Where(p => p.FromCompanyId == item.FromCompanyId
+                                //                    && p.PatientVisitId == item.PatientVisitId
+                                //                    && p.FromDoctorId == item.FromDoctorId
+                                //                    && p.FromLocationId == item.FromLocationId
+                                //                    && p.ForSpecialtyId == item.ForSpecialtyId
+                                //                    && p.ForRoomTestId == item.ForRoomTestId
+                                //                    && p.ForRoomId == item.ForRoomId
+                                //                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                //if (pendingReferralDB != null)
+                                //{
+                                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral data for procedure codes already exists.", ErrorLevel = ErrorLevel.Error };
+                                //}
+                                //else
+                                //{
+                                //    pendingReferralDB = new PendingReferral();
+                                //    add_pendingReferral = true;
+                                //}
+                            }
+
+                            pendingReferralDB.PatientVisitId = item.PatientVisitId;
+                            pendingReferralDB.FromCompanyId = item.FromCompanyId;
+                            pendingReferralDB.FromLocationId = item.FromLocationId;
+                            pendingReferralDB.FromDoctorId = item.FromDoctorId;
+                            pendingReferralDB.ForSpecialtyId = item.ForSpecialtyId;
+                            pendingReferralDB.ForRoomId = item.ForRoomId;
+                            pendingReferralDB.ForRoomTestId = item.ForRoomTestId;
+                            pendingReferralDB.IsReferralCreated = item.IsReferralCreated;
+                            pendingReferralDB.DismissedBy = item.DismissedBy;
+
+                            if (add_pendingReferral == true)
+                            {
+                                pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
+                            }
+                            _context.SaveChanges();
+
+                            lstPendingReferralDB.Add(pendingReferralDB);
+
+                            #region PendingReferralProcedureCode
+                            List<BO.PendingReferralProcedureCode> PendingReferralProcedureCodeBOList = item.PendingReferralProcedureCodes;
+                            if (PendingReferralProcedureCodeBOList == null || (PendingReferralProcedureCodeBOList != null && PendingReferralProcedureCodeBOList.Count <= 0))
+                            {
+                                //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+                            }
+                            else
+                            {
+                                int PendingReferralId = pendingReferralDB.Id;
+                                List<int> NewProcedureCodeIds = PendingReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
+
+                                List<PendingReferralProcedureCode> ReomveProcedureCodeDB = new List<PendingReferralProcedureCode>();
+                                ReomveProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
+                                                                                                && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
+                                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                           .ToList();
+
+                                ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                                _context.SaveChanges();
+
+                                foreach (BO.PendingReferralProcedureCode eachPendingReferralProcedureCode in PendingReferralProcedureCodeBOList)
+                                {
+                                    PendingReferralProcedureCode AddProcedureCodeDB = new PendingReferralProcedureCode();
+                                    AddProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
+                                                                                                && p.ProcedureCodeId == eachPendingReferralProcedureCode.ProcedureCodeId
+                                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                           .FirstOrDefault();
+
+                                    if (AddProcedureCodeDB == null)
+                                    {
+                                        AddProcedureCodeDB = new PendingReferralProcedureCode();
+
+                                        AddProcedureCodeDB.PendingReferralId = PendingReferralId;
+                                        AddProcedureCodeDB.ProcedureCodeId = eachPendingReferralProcedureCode.ProcedureCodeId;
+
+                                        _context.PendingReferralProcedureCodes.Add(AddProcedureCodeDB);
+                                    }
+                                }
+
+
+                            }
+                            #endregion
+
+                            _context.SaveChanges();
+                        }                        
+                    }
+
+                    dbContextTransaction.Commit();
+                }                    
+            }
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var acc = _context.PendingReferrals.Include("PatientVisit2")
                                               .Include("PatientVisit2.Case.Patient2.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
@@ -828,118 +938,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
-                                              .Where(p => p.Id == item.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                    bool add_pendingReferral = false;
+                                       .Where(p => p.PatientVisitId == patientVisitId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<PendingReferral>();
 
-                    if (pendingReferralDB == null && item.ID > 0)
-                    {
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Pending Referral data.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    else if (pendingReferralDB == null && item.ID <= 0)
-                    {
-                        pendingReferralDB = _context.PendingReferrals.Where(p => p.FromCompanyId == item.FromCompanyId
-                                            && p.PatientVisitId == item.PatientVisitId
-                                            && p.FromDoctorId == item.FromDoctorId
-                                            && p.FromLocationId == item.FromLocationId
-                                            && p.ForSpecialtyId == item.ForSpecialtyId
-                                            && p.ForRoomTestId == item.ForRoomTestId
-                                            && p.ForRoomId == item.ForRoomId
-                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                        if (pendingReferralDB != null)
-                        {
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral data for procedure codes already exists.", ErrorLevel = ErrorLevel.Error };
-                        }
-                        else
-                        {
-                            pendingReferralDB = new PendingReferral();
-                            add_pendingReferral = true;
-                        }
-                    }
-
-                    pendingReferralDB.PatientVisitId = item.PatientVisitId;
-                    pendingReferralDB.FromCompanyId = item.FromCompanyId;
-                    pendingReferralDB.FromLocationId = item.FromLocationId;
-                    pendingReferralDB.FromDoctorId = item.FromDoctorId;
-                    pendingReferralDB.ForSpecialtyId = item.ForSpecialtyId;
-                    pendingReferralDB.ForRoomId = item.ForRoomId;
-                    pendingReferralDB.ForRoomTestId = item.ForRoomTestId;
-                    pendingReferralDB.IsReferralCreated = item.IsReferralCreated;
-                    pendingReferralDB.DismissedBy = item.DismissedBy;
-
-
-                    if (add_pendingReferral == true)
-                    {
-                        pendingReferralDB = _context.PendingReferrals.Add(pendingReferralDB);
-                    }
-                    _context.SaveChanges();
-
-                    lstPendingReferralDB.Add(pendingReferralDB);
-
-
-                    #region PendingReferralProcedureCode
-                    if (PendingReferralProcedureCodeBOList == null || (PendingReferralProcedureCodeBOList != null && PendingReferralProcedureCodeBOList.Count <= 0))
-                    {
-                        //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    else
-                    {
-                        int PendingReferralId = pendingReferralDB.Id;
-                        List<int> NewProcedureCodeIds = PendingReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
-
-                        List<PendingReferralProcedureCode> ReomveProcedureCodeDB = new List<PendingReferralProcedureCode>();
-                        ReomveProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
-                                                                                        && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
-                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                   .ToList();
-
-                        ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
-
-                        _context.SaveChanges();
-
-                        foreach (BO.PendingReferralProcedureCode eachPendingReferralProcedureCode in PendingReferralProcedureCodeBOList)
-                        {
-                            PendingReferralProcedureCode AddProcedureCodeDB = new PendingReferralProcedureCode();
-                            AddProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferralId == PendingReferralId
-                                                                                        && p.ProcedureCodeId == eachPendingReferralProcedureCode.ProcedureCodeId
-                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                   .FirstOrDefault();
-
-                            if (AddProcedureCodeDB == null)
-                            {
-                                AddProcedureCodeDB = new PendingReferralProcedureCode();
-
-                                AddProcedureCodeDB.PendingReferralId = PendingReferralId;
-                                AddProcedureCodeDB.ProcedureCodeId = eachPendingReferralProcedureCode.ProcedureCodeId;
-
-                                _context.PendingReferralProcedureCodes.Add(AddProcedureCodeDB);
-                            }
-                        }
-
-                        _context.SaveChanges();
-                    }
-                    #endregion
-                }
-
-
-            }
-            else
+            List<BO.PendingReferral> lstPendingReferral = new List<BO.PendingReferral>();
+            foreach (PendingReferral item in acc)
             {
-                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
-            }
-            _context.SaveChanges();
-
-            foreach (var item in lstPendingReferralDB)
-            {
-                if (item != null)
-                {
-                    boListPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
-                }
-
+                lstPendingReferral.Add(Convert<BO.PendingReferral, PendingReferral>(item));
             }
 
-            return (object)boListPendingReferral;
-
-            
+            return (object)lstPendingReferral;            
         }
         #endregion
 
