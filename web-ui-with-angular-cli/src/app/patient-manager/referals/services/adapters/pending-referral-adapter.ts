@@ -26,7 +26,7 @@ export class PendingReferralAdapter {
             pendingReferral = new PendingReferral({
                 id: data.id,
                 pendingReferralId: data.pendingReferralId,
-                fromCompanyId: data.data.fromCompanyId,
+                fromCompanyId: data.fromCompanyId,
                 fromLocationId: data.fromLocationId,
                 fromDoctorId: data.fromDoctorId,
                 forSpecialtyId: data.forSpecialtyId,

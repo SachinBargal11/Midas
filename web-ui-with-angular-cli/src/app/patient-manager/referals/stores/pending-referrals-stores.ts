@@ -67,9 +67,9 @@ export class PendingReferralStore {
 
     savePendingReferral(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {
         let promise = new Promise((resolve, reject) => {
-            this._pendingReferralService.savePendingReferral(pendingReferralDetail).subscribe((pendingReferralDetail: PendingReferral) => { 
+            this._pendingReferralService.savePendingReferral(pendingReferralDetail).subscribe((pendingReferralDetail: PendingReferral) => {
                 {
-                this._pendingReferral.next(this._pendingReferral.getValue().push(pendingReferralDetail));
+                    this._pendingReferral.next(this._pendingReferral.getValue().push(pendingReferralDetail));
                 }
                 resolve(pendingReferralDetail);
             }, error => {
@@ -77,6 +77,20 @@ export class PendingReferralStore {
             });
         });
         return <Observable<PendingReferral>>Observable.from(promise);
+    }
+
+    //Outbound
+    getReferralsByReferringCompanyId(): Observable<PendingReferral[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.getReferralsByReferringCompanyId(companyId).subscribe((referrals: PendingReferral[]) => {
+                this._pendingReferral.next(List(referrals));
+                resolve(referrals);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
     }
 
 }
