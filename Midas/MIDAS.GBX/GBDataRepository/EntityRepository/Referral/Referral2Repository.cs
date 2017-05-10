@@ -624,7 +624,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By From Doctor Id
+        #region Get By From Doctor And Company Id
         public override object GetByFromDoctorAndCompanyId(int doctorId, int companyId)
         {
             var referralDB = _context.Referral2.Include("Company")
@@ -667,7 +667,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By To Doctor Id
+        #region Get By To Doctor And Company Id
         public override object GetByToDoctorAndCompanyId(int doctorId, int companyId)
         {
             var referralDB = _context.Referral2.Include("Company")
