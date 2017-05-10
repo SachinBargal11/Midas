@@ -67,6 +67,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         public override object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate)
         {
+            if (LocationId <= 0)
+            {
+                LocationId = _context.DoctorLocationSchedules.Where(p => p.DoctorID == DoctorId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                             .Select(p => p.LocationID).FirstOrDefault();
+            }
+
             var CalendarEvents = _context.PatientVisit2.Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .Select(p => p.CalendarEvent)
