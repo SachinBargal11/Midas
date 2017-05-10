@@ -24,8 +24,24 @@ export class ProcedureCodeMasterService {
     }
 
 
+    getProceduresBySpecialityAndCompanyId(specialityId: number, companyId: number): Observable<Procedure[]> {
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/ProcedureCode/getBySpecialityAndCompanyId/' + specialityId + '/' + companyId + '/' + true)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let procedures = (<Object[]>data).map((data: any) => {
+                        return ProcedureAdapter.parseResponse(data);
+                    });
+                    resolve(procedures);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+
     updateProcedureAmount(requestData: Procedure[]): Observable<Procedure[]> {
-     
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');

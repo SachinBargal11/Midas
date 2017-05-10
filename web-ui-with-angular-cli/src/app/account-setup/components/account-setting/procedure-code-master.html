@@ -28,7 +28,7 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Procedure Code" field="procedureCodeText" [sortable]="true"></p-column>
     <p-column header="Description" field="procedureCodeDesc" [sortable]="true"></p-column>
-    <p-column  field="amount" header="Amount" [sortable]="true" [editable]="true">
+    <p-column [style]="{'color':'blue'}" field="amount" header="Amount" [sortable]="true" [editable]="true">
         <ng-template let-col let-procedure="rowData" pTemplate="body">
             {{procedure[col.field]}}
         </ng-template>
