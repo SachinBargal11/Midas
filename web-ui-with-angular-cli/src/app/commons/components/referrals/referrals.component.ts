@@ -44,6 +44,7 @@ export class ReferralsComponent implements OnInit {
   selectedTestId: number;
   msg: string;
 
+  @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<VisitReferral[]> = new EventEmitter();
   // @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
@@ -210,12 +211,13 @@ export class ReferralsComponent implements OnInit {
             })
           }
         }
-        if (!flag) {
+        if (!flag && this.selectedOption === 1) {
           selectedProcSpec = new Procedure({
             specialityId: this.selectedSpeciality.id,
             speciality: new Speciality(_.extend(this.selectedSpeciality.toJS()))
           });
           this.proceduresList.push(selectedProcSpec);
+          this.proceduresList = _.union(this.proceduresList);
         } else if (this.selectedOption === 2) {
           this.msg = 'Please, Select Procedure Codes.';
         } else if (this.selectedSpeciality == null) {
@@ -227,6 +229,7 @@ export class ReferralsComponent implements OnInit {
         // });
       }
     }
+    this.proceduresList;
     this.selectedProcedures = [];
   }
 
