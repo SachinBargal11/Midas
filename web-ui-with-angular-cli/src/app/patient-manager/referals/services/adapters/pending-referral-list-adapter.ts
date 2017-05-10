@@ -16,7 +16,7 @@ export class PendingReferralListAdapter {
         let pendingReferralList: PendingReferralList = null;
         if (data) {
             pendingReferralList = new PendingReferralList({
-                id: 0,
+                id: data.id,
                 patientVisitId: data.patientVisitId,
                 fromCompanyId: data.fromCompanyId,
                 fromLocationId: data.fromLocationId,

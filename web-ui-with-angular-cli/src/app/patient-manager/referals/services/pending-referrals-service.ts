@@ -9,6 +9,8 @@ import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
 import { PrefferedMedicalProviderAdapter } from './adapters/preferred-medical-provider-adapter';
 import { PendingReferralList } from '../models/pending-referral-list';
 import { PendingReferralListAdapter } from './adapters/pending-referral-list-adapter';
+import { PendingReferral } from '../models/pending-referral';
+import { PendingReferralAdapter } from './adapters/pending-referral-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 
@@ -78,5 +80,22 @@ export class PendingReferralService {
 
         });
         return <Observable<PendingReferralList[]>>Observable.fromPromise(promise);
+    }
+
+    savePendingReferral(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {
+        let promise: Promise<PendingReferral> = new Promise((resolve, reject) => {
+            // return this._http.post(this._url + '/PendingReferral/Add', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/Referral2/save', JSON.stringify(pendingReferralDetail), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data:any) => {
+                    let parsedReferral:PendingReferral = null;
+                     parsedReferral = PendingReferralAdapter.parseResponse(data);
+                    resolve(parsedReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PendingReferral>>Observable.fromPromise(promise);
     }
 }

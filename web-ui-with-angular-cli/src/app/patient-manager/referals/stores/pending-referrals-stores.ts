@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { PrefferedMedicalProvider } from '../models/preferred-medical-provider';
+import { PendingReferral } from '../models/pending-referral';
 import { PendingReferralService } from '../services/pending-referrals-service';
 import { PendingReferralList } from '../models/pending-referral-list';
 import { List } from 'immutable';
@@ -15,6 +16,7 @@ export class PendingReferralStore {
 
     private _pendingReferrals: BehaviorSubject<List<PrefferedMedicalProvider>> = new BehaviorSubject(List([]));
     private _pendingReferralsList: BehaviorSubject<List<PendingReferralList>> = new BehaviorSubject(List([]));
+    private _pendingReferral: BehaviorSubject<List<PendingReferral>> = new BehaviorSubject(List([]));
 
     constructor(
         private _pendingReferralService: PendingReferralService,
@@ -60,6 +62,21 @@ export class PendingReferralStore {
                 });
         });
         return <Observable<PendingReferralList[]>>Observable.fromPromise(promise);
+    }
+
+
+    savePendingReferral(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.savePendingReferral(pendingReferralDetail).subscribe((pendingReferralDetail: PendingReferral) => { 
+                {
+                this._pendingReferral.next(this._pendingReferral.getValue().push(pendingReferralDetail));
+                }
+                resolve(pendingReferralDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PendingReferral>>Observable.from(promise);
     }
 
 }
