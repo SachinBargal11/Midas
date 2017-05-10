@@ -251,6 +251,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />

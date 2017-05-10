@@ -59,7 +59,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
                 HttpResponseMessage resDocumentPath = requestHandler.GetGbObjects(Request, uploadObject);
                 if (!resDocumentPath.StatusCode.Equals(HttpStatusCode.Created))
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "System error.", errorObject = "", ErrorLevel = ErrorLevel.Error });
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Path not found", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
                 foreach (HttpContent ctnt in streamContent)
                 {

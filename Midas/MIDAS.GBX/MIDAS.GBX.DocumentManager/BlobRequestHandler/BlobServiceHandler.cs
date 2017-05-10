@@ -50,8 +50,11 @@ namespace MIDAS.GBX.DocumentManager
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }
         }
 
-        public HttpResponseMessage MergeDocuments()
+        public HttpResponseMessage MergeDocuments(int companyid)
         {
+            var objResult = new Object();
+            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(companyid, _context);
+
             return new HttpResponseMessage();
         }
     }
