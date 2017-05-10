@@ -97,6 +97,7 @@ export class ReferralsComponent implements OnInit {
         _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
           _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
             this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+            this.proceduresList = _.union(this.proceduresList);
           })
         });
       },
@@ -252,7 +253,7 @@ export class ReferralsComponent implements OnInit {
       return currentProc.specialityId
     })
     let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
-      return currentProc.specialityId
+      return currentProc.specialityId !== 0 ? currentProc.specialityId: null;
     })
     _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
@@ -283,7 +284,7 @@ export class ReferralsComponent implements OnInit {
       return currentProc.roomTestId
     })
     let uniqRoomTestIds = _.map(uniqRoomTest, (currentProc: Procedure) => {
-      return currentProc.roomTestId
+      return currentProc.roomTestId !== 0 ? currentProc.roomTestId : null;
     })
     _.forEach(uniqRoomTestIds, (currentRoomTestId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
