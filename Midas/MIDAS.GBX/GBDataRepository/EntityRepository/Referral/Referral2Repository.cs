@@ -328,7 +328,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }
                     _context.SaveChanges();
 
-                    #region PendingReferralProcedureCode
+                    #region ReferralProcedureCode
                     if (ReferralProcedureCodeBOList == null || (ReferralProcedureCodeBOList != null && ReferralProcedureCodeBOList.Count <= 0))
                     {
                         //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
@@ -625,7 +625,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Get By From Doctor Id
-        public override object GetByFromDoctorId(int doctorId)
+        public override object GetByFromDoctorAndCompanyId(int doctorId, int companyId)
         {
             var referralDB = _context.Referral2.Include("Company")
                                                 .Include("Company1")
@@ -644,15 +644,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("User")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
-
-                                               .Where(p => p.FromDoctorId == doctorId
+                                                .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                                .ToList<Referral2>();
 
             List<BO.Referral2> boReferral = new List<BO.Referral2>();
             if (referralDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
@@ -669,7 +668,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Get By To Doctor Id
-        public override object GetByToDoctorId(int doctorId)
+        public override object GetByToDoctorAndCompanyId(int doctorId, int companyId)
         {
             var referralDB = _context.Referral2.Include("Company")
                                                 .Include("Company1")
@@ -688,15 +687,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("User")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
-
-                                               .Where(p => p.ToDoctorId == doctorId
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                                .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Referral2>();
 
             List<BO.Referral2> boReferral = new List<BO.Referral2>();
             if (referralDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {

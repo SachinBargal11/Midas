@@ -616,12 +616,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
         
-        public virtual Object GetByFromDoctorId(int doctorId)
+        public virtual Object GetByFromDoctorAndCompanyId(int doctorId, int companyId)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByToDoctorId(int doctorId)
+        public virtual Object GetByToDoctorAndCompanyId(int doctorId, int companyId)
         {
             throw new NotImplementedException();
         }

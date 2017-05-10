@@ -65,17 +65,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByFromDoctorId/{doctorId}")]
-        public HttpResponseMessage GetByFromDoctorId(int doctorId)
+        [Route("getByFromDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByFromDoctorAndCompanyId(int doctorId, int companyId)
         {
-            return requestHandler.GetByFromDoctorId(Request, doctorId);
+            return requestHandler.GetByFromDoctorAndCompanyId(Request, doctorId, companyId);
         }
 
         [HttpGet]
-        [Route("getByToDoctorId/{doctorId}")]
-        public HttpResponseMessage GetByToDoctorId(int doctorId)
+        [Route("getByToDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByToDoctorAndCompanyId(int doctorId, int companyId)
         {
-            return requestHandler.GetByToDoctorId(Request, doctorId);
+            return requestHandler.GetByToDoctorAndCompanyId(Request, doctorId, companyId);
         }
 
         [HttpGet]
