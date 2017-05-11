@@ -31,7 +31,19 @@ export class ProcedureCodeMasterStore {
 
     getBySpecialityAndCompanyId(specialityId: number, companyId: number): Observable<Procedure[]> {
         let promise = new Promise((resolve, reject) => {
-            this._procedureCodeMasterService.getProceduresBySpecialityAndCompanyId(specialityId,companyId).subscribe((procedures: Procedure[]) => {
+            this._procedureCodeMasterService.getProceduresBySpecialityAndCompanyId(specialityId, companyId).subscribe((procedures: Procedure[]) => {
+                this._procedure.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+    getByRoomTestAndCompanyId(roomTestId: number, companyId: number): Observable<Procedure[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.getProceduresByRoomTestAndCompanyId(roomTestId, companyId).subscribe((procedures: Procedure[]) => {
                 this._procedure.next(List(procedures));
                 resolve(procedures);
             }, error => {
