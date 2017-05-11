@@ -207,7 +207,38 @@ export class PendingReferralsComponent implements OnInit {
 
     }
     assign() {
-        if (this.selectedReferrals.length > 0) {
+        let shouldAppointVisit: boolean = true;
+        if (this.selectedReferrals.length === 0) {
+            this._notificationsService.alert('Oh No!', 'Please Select Referral!');
+            shouldAppointVisit = false;
+        } else if (this.selectedOption === 0) {
+            this._notificationsService.alert('Oh No!', 'Please Select Medical Office!');
+            shouldAppointVisit = false;
+        } else if (this.selectedOption === 3) {
+            shouldAppointVisit = false;
+            // saveReferralForMedicalOnlyProvider()
+        }
+
+        if (shouldAppointVisit) {
+            this.confirmationService.confirm({
+                message: 'Do you want to Appoint Schedule?',
+                header: 'Confirmation',
+                icon: 'fa fa-question-circle',
+                accept: () => {
+                    this.availableSlotsDialogVisible = true;
+                },
+                reject: () => {
+                    //call save referral for medical provider & room
+                    if (this.selectedOption === 1) {
+                        this.saveReferralForMedicalProviderDoctor();
+                    }
+                    if (this.selectedOption === 2) {
+                        this.saveReferralForMedicalProviderRoom();
+                    }
+                }
+            });
+        }
+        /*if (this.selectedReferrals.length > 0) {
             if (this.selectedOption !== 3) {
                 if (this.selectedOption !== 1) {
                     this.confirmationService.confirm({
@@ -250,7 +281,7 @@ export class PendingReferralsComponent implements OnInit {
             }
         } else {
             this._notificationsService.alert('Oh No!', 'Please Select Referral!');
-        }
+        }*/
 
     }
     // Code for available slots    
@@ -282,6 +313,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     setVisit(slotDetail: AvailableSingleSlot) {
+
         let selectedReffral: PendingReferralList = this.selectedReferrals[0];
         let patientVisit: PatientVisit = new PatientVisit({
             caseId: selectedReffral.caseId,
@@ -296,13 +328,33 @@ export class PendingReferralsComponent implements OnInit {
         let result = this._patientVisitsStore.addPatientVisit(patientVisit);
         result.subscribe(
             (response) => {
-
+                let notification = new Notification({
+                    'title': 'Visit Scheduled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this.availableSlotsDialogVisible = false;
             },
             (error) => {
-
+                let errString = 'Unable to schedule visit!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this.availableSlotsDialogVisible = false;
             },
             () => {
+                this.availableSlotsDialogVisible = false;
             });
+        if (this.selectedOption === 1) {
+            this.saveReferralForMedicalProviderDoctor();
+        }
+        if (this.selectedOption === 2) {
+            this.saveReferralForMedicalProviderRoom();
+        }
     }
 
     handleAvailableSlotsDialogShow() {
@@ -335,7 +387,9 @@ export class PendingReferralsComponent implements OnInit {
         if (uniqSpeciality) {
             if (uniqSpeciality.length == 1) {
                 this.selectedReferrals.forEach(currentPendingReferralList => {
-                    procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
+                    if (currentPendingReferralList.pendingReferralProcedureCode) {
+                        procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
+                    }
                 });
                 let pendingReferral = new PendingReferral({
                     pendingReferralId: this.selectedReferrals[0].id,
@@ -403,7 +457,9 @@ export class PendingReferralsComponent implements OnInit {
         if (uniqRoomTest) {
             if (uniqRoomTest.length == 1) {
                 this.selectedReferrals.forEach(currentPendingReferralList => {
-                    procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
+                    if (currentPendingReferralList.pendingReferralProcedureCode) {
+                        procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
+                    }
                 });
                 let pendingReferral = new PendingReferral({
                     pendingReferralId: this.selectedReferrals[0].id,
@@ -459,7 +515,7 @@ export class PendingReferralsComponent implements OnInit {
         }
     }
 
-       saveReferralForMedicalOnlyProvider() {
+    saveReferralForMedicalOnlyProvider() {
         let result;
         let procedureCodes = [];
         let pendingReferralDetails: PendingReferral;
