@@ -80,7 +80,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
             docInfo.Message = errMessage;
             docInfo.DocumentId = midasdoc.Id;
-            docInfo.DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath + "/" + midasdoc.DocumentName : midasdoc.DocumentName;
+            docInfo.DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName;
             docInfo.DocumentName = midasdoc.DocumentName;
             docInfo.id = objectId;
 

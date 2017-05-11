@@ -277,6 +277,10 @@ namespace MIDAS.GBX
             {
                 repo = new Referral2Repository(context);
             }
+            else if (typeof(T) == typeof(BO.MergePDF))
+            {
+                repo = new DocumentManagerRepository(context);
+            }
             return repo;
         }
     }

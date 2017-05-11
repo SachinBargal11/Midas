@@ -27,12 +27,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
         internal UploadInfo uploadObject = null;
         private IRequestHandler<UploadInfo> requestHandler;
+        private IRequestHandler<MergePDF> requestHandler1;
         private IBlobService blobhandler;
         private List<Document> documentList = new List<Document>();
 
         public DocumentManagerController()
         {
             requestHandler = new GbApiRequestHandler<UploadInfo>();
+            requestHandler1 = new GbApiRequestHandler<MergePDF>();
             blobhandler = new BlobServiceHandler();
         }
 
@@ -67,7 +69,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                     HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId);
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {
-                        uploadObject.BlobPath = blobPath;
+                        uploadObject.BlobPath = ((ObjectContent)resBlob.Content).Value.ToString();
                         documentList.Add((Document)((ObjectContent)requestHandler.CreateGbObject(Request, uploadObject).Content).Value);
                     }
                     else if (resBlob.StatusCode.Equals(HttpStatusCode.NotFound))
@@ -90,5 +92,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return blobhandler.DownloadFromBlob(Request, companyid, documentid);
         }
 
+        [HttpPost]
+        [Route("mergePDFs")]
+        public HttpResponseMessage MergeDocuments([FromBody]MergePDF data)
+        {            
+            HttpResponseMessage res = new HttpResponseMessage();
+            res = requestHandler1.GetGbObjects(Request, data);
+
+            string blobPath = ((ObjectContent)requestHandler1.GetObject(Request, data.CaseId).Content).Value.ToString();
+
+            if (res == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound, res);
+            else
+            {                
+                return blobhandler.MergeDocuments(data.CompanyId, ((ObjectContent)res.Content).Value, blobPath + data.MergedDocumentName);
+            }
+        }
     }
 }
