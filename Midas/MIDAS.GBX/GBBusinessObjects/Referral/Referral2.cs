@@ -132,6 +132,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
 
+        [JsonProperty("patientId")]
+        public int? PatientId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int? CaseId { get; set; }
+
+        [JsonProperty("patientVisitId")]
+        public int? PatientVisitId { get; set; }
+
         //[JsonProperty("fromCompany")]
         //public Company Company { get; set; }
         [JsonProperty("fromCompanyName")]
