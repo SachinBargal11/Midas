@@ -27,7 +27,14 @@
 
     <p-column field="case.patient.user.displayName "></p-column>
     <p-column field=""></p-column>
-    <p-column field="forSpecialty.name"></p-column>
+    <!--<p-column field="forSpecialty.name"></p-column>-->
+    <p-column rowspan="2">
+        <ng-template let-pReferral="rowData" pTemplate="body">
+            <div *ngIf="pReferral.forSpecialty">{{pReferral.forSpecialty.name}}</div>
+            <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
+        </ng-template>
+    </p-column>
+
     <p-column field="toCompany.name"></p-column>
     <p-column field="toLocation.name "></p-column>
     <p-column></p-column>
@@ -82,7 +89,13 @@
 
     <p-column field="case.patient.user.displayName"></p-column>
     <p-column field="case.id"></p-column>
-    <p-column field="forSpecialty.name"></p-column>
+    <!--<p-column field="forSpecialty.name"></p-column>-->
+    <p-column rowspan="2">
+        <ng-template let-pReferral="rowData" pTemplate="body">
+            <div *ngIf="pReferral.forSpecialty">{{pReferral.forSpecialty.name}}</div>
+            <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
+        </ng-template>
+    </p-column>
     <p-column field="toCompany.name"></p-column>
     <p-column field="toLocation.location.name"></p-column>
     <p-column></p-column>
