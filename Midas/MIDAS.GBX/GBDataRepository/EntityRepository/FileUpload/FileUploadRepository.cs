@@ -36,8 +36,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Document docInfo = (BO.Document)(object)entity;
-            var result = docInfo.Validate(docInfo);
+            var result = new List<BO.BusinessValidation>();
+            if (typeof(T) == typeof(BO.Document))
+            {
+                BO.Document docInfo = (BO.Document)(object)entity;
+                result = docInfo.Validate(docInfo);
+            }
+            else if (typeof(T) == typeof(BO.Common.UploadInfo))
+            {
+                List<BO.BusinessValidation> validations = new List<BO.BusinessValidation>();
+                result = validations;                
+            }
             return result;
         }
         #endregion

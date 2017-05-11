@@ -1,21 +1,18 @@
-﻿using entityRepo = MIDAS.GBX.EntityRepository;
-using MIDAS.GBX.DataRepository;
-using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MIDAS.GBX.DataRepository.Model;
-//using MIDAS.GBX.DocumentManager.Utility;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web;
 using MIDAS.GBX.DataAccessManager;
 using BO = MIDAS.GBX.BusinessObjects;
-using System.Data.SqlClient;
-using MIDAS.GBX.BusinessObjects.Common;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System.Text.RegularExpressions;
+using System.Net;
 
 namespace MIDAS.GBX.DocumentManager
 {
@@ -24,7 +21,7 @@ namespace MIDAS.GBX.DocumentManager
         #region private members
         private CloudBlockBlob Cloudblob;
         private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];
-        private List<BO.Document> documents = new List<BO.Document>();        
+        private List<BO.Document> documents = new List<BO.Document>();
         private IGbDataAccessManager<BO.Document> dataAccessManager;
         private Utility util = new Utility();
         #endregion
@@ -41,14 +38,14 @@ namespace MIDAS.GBX.DocumentManager
             //util.BlobContainer.SetPermissions(new BlobContainerPermissions { PublicAccess=  });
 
             util.ContainerName = "company-" + companyId;
-            
+
             try
             {
                 Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
 
                 using (Stream stream = content.ReadAsStreamAsync().Result)
                 {
-                    Cloudblob.UploadFromStream(stream);                                        
+                    Cloudblob.UploadFromStream(stream);
                 }
             }
             catch (Exception er)
@@ -83,10 +80,58 @@ namespace MIDAS.GBX.DocumentManager
             return (Object)ms;
         }
 
-        public override Object Merge(int companyId)
+        public override Object Merge(int companyId, object pdfFiles, string blobPath)
         {
+            PdfReader reader = null;
+            Document sourceDocument = new Document();               
+            sourceDocument.Open();
+            List<string> lstfiles = pdfFiles as List<string>;
+            util.ContainerName = "company-" + companyId;
+            Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
+
+            //using (FileStream stream = new FileStream(Cloudblob.Uri.AbsolutePath, FileMode.Create))
+            using (FileStream stream = new FileStream(HttpContext.Current.Server.MapPath("~/App_data/uploads/"+Path.GetFileName(blobPath)), FileMode.Create)) 
+            {
+                PdfSmartCopy copy = new PdfSmartCopy(sourceDocument, stream);
+                PdfWriter writer = PdfWriter.GetInstance(sourceDocument, stream);
+                PdfImportedPage page = null;
+                
+                lstfiles.ForEach(file =>
+                                {
+                                    util.ContainerName = "company-" + companyId;
+                                    string path = util.getBlob(file, _context);
+                                    CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(path);
+                                    var ms = new MemoryStream();
+                                    _cblob.DownloadToStream(ms);
+                                    long fileByteLength = _cblob.Properties.Length;
+                                    byte[] fileContents = new byte[fileByteLength];
+                                    _cblob.DownloadToByteArray(fileContents, 0);
+
+                                    reader = new PdfReader(fileContents);
+                                    for (int i = 0; i < reader.NumberOfPages; i++)
+                                    {
+                                        page = writer.GetImportedPage(reader, i + 1);
+                                        copy.AddPage(page);
+                                    }
+                                    reader.Close();
+                                }
+                            );
+                copy.Close();
+                writer.Close();
+            }
 
             return new object();
+        }
+
+        private int get_pageCcount(string file)
+        {
+            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+            {
+                Regex regex = new Regex(@"/Type\s*/Page[^s]");
+                MatchCollection matches = regex.Matches(sr.ReadToEnd());
+
+                return matches.Count;
+            }
         }
 
         public bool DeleteBlob(string blobName)
@@ -107,7 +152,6 @@ namespace MIDAS.GBX.DocumentManager
                 throw;
             }
         }
-
 
         public void Dispose()
         {

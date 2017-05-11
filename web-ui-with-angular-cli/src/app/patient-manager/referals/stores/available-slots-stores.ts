@@ -44,5 +44,17 @@ export class AvailableSlotsStore {
         return <Observable<AvailableSlot[]>>Observable.fromPromise(promise);
     }
 
+    getAvailableSlotsByLocationAndRoomId(locationId: Number, roomId: Number, startDate: moment.Moment, endDate: moment.Moment): Observable<AvailableSlot[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._availableSlotsService.getAvailableSlotsByLocationAndRoomId(locationId, roomId, startDate, endDate)
+                .subscribe((availableSlots: AvailableSlot[]) => {
+                    resolve(availableSlots);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<AvailableSlot[]>>Observable.fromPromise(promise);
+    }
+
 }
 

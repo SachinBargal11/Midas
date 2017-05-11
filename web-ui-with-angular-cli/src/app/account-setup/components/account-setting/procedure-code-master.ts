@@ -138,7 +138,7 @@ export class ProcedureCodeComponent implements OnInit {
 
     loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+        let result = this._procedureCodeMasterStore.getByRoomTestAndCompanyId(roomTestId, this._sessionStore.session.currentCompany.id);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;

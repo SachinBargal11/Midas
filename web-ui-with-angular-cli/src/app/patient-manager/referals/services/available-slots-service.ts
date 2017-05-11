@@ -46,5 +46,26 @@ export class AvailableSlotsService {
         return <Observable<AvailableSlot[]>>Observable.fromPromise(promise);
     }
 
+    getAvailableSlotsByLocationAndRoomId(locationId: Number, roomId: Number, startDate: moment.Moment, endDate: moment.Moment): Observable<AvailableSlot[]> {
+        let formattedStartDate: string = startDate.format('YYYY-MM-DD');
+        let formattedEndDate: string = endDate.format('YYYY-MM-DD');
+        let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
+            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForRoomByLocationId/${roomId}/${locationId}/${formattedStartDate}/${formattedEndDate}`).map(res => res.json())
+                .subscribe((data: any) => {
+                    let availableSlots: AvailableSlot[] = [];
+                    if (_.isArray(data)) {
+                        availableSlots = (<Object[]>data).map((data: any) => {
+                            return AvailableSlotAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(availableSlots);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<AvailableSlot[]>>Observable.fromPromise(promise);
+    }
+
 
 }
