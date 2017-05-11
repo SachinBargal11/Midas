@@ -1,0 +1,22 @@
+<h3 class="with-border">Assign Insurance</h3>
+<form [formGroup]="assignInsuranceForm" (ngSubmit)="save()">
+    <div class="row">
+    <!--<p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [lazy]="true" [rows]="10" [paginator]="true" 
+    [totalRecords]="totalRecords" (onLazyLoad)="loadInsurancesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
+    <p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [rows]="10" [paginator]="true" [responsive]="true">
+    <header>Insurances</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="policyHoldersName" header="Policy Holder" [sortable]="true">
+       <ng-template let-insurance="rowData" pTemplate="body">
+        {{insurance.policyHoldersName}}  
+        </ng-template>
+    </p-column>
+    <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>
+    <p-column field="insuranceMaster.companyName" header="Insurance Company Name" [sortable]="true"></p-column>
+</p-dataTable>
+    </div><br>
+    <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,210 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<div class="input-group" *ngIf="caseStatusId === 1">
+    <h3 class="with-border">Referrals
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteReferral()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Referral</span>
+            <loader [visible]="isDeleteProgress"></loader>
+        </a>
+        <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add Referral</span>
+    </a>
+    </h3>
+</div>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Referral">
+    </div>
+    <div class="col-lg-3" style="text-align: right">
+        <label class="form-label">Filter By </label>
+    </div>
+    <div class="col-lg-4">
+        <select type="text" [(ngModel)]="searchMode" (change)="filter($event)" class="form-control">
+                <option value="1">Medical Office</option>
+                <option value="2">User Name</option>
+                <option value="3">Testing Room</option>
+                <option value="4">Referral Outside Midas</option>
+        </select>
+    </div>
+</div>
+
+<p-dataTable *ngIf="searchMode == 1" [value]="referredMedicalOffices" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred Document" rowspan="2"></p-column>
+        </p-row>
+        <p-row>
+            <!--<p-column header="Company"></p-column>-->
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName"></p-column>
+    <p-column field="case.id"></p-column>
+    <!--<p-column field="referringCompany.name"></p-column>-->
+    <p-column field="referringLocation.location.name"></p-column>
+    <p-column field="referringUser.displayName"></p-column>
+    <p-column field="referredToCompany.name"></p-column>
+    <p-column field="referredToLocation.location.name"></p-column>
+    <p-column>
+        <ng-template let-referral="rowData" pTemplate="body">
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
+        </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+
+<p-dataTable *ngIf="searchMode == 2" [value]="referredUsers" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Referred To" colspan="3" styleClass="inbound-column-span"></p-column>
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred Document" rowspan="2"></p-column>
+        </p-row>
+        <p-row>
+            <!--<p-column header="Company"></p-column>-->
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName"></p-column>
+    <p-column field="case.id"></p-column>
+    <!--<p-column field="referringCompany.name"></p-column>-->
+    <p-column field="referringLocation.location.name"></p-column>
+    <p-column field="referringUser.displayName"></p-column>
+    <p-column field="referredToCompany.name"></p-column>
+    <p-column field="referredToLocation.location.name"></p-column>
+    <p-column field="referredToDoctor.user.displayName"></p-column>
+    <p-column>
+        <ng-template let-referral="rowData" pTemplate="body">
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
+        </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+
+<p-dataTable *ngIf="searchMode == 3" [value]="referredRooms" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Referred To" colspan="3" styleClass="inbound-column-span"></p-column>
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred Document" rowspan="2"></p-column>
+        </p-row>
+        <p-row>
+            <!--<p-column header="Company"></p-column>-->
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="Testing Room" styleClass="inbound-column"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName"></p-column>
+    <p-column field="case.id"></p-column>
+    <!--<p-column field="referringCompany.name"></p-column>-->
+    <p-column field="referringLocation.location.name"></p-column>
+    <p-column field="referringUser.displayName"></p-column>
+    <p-column field="referredToCompany.name"></p-column>
+    <p-column field="referredToLocation.location.name"></p-column>
+    <p-column field="room.name"></p-column>
+    <p-column>
+        <ng-template let-referral="rowData" pTemplate="body">
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
+        </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+
+<p-dataTable *ngIf="searchMode == 4" [value]="referralsOutsideMidas" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred Document" rowspan="2"></p-column>
+        </p-row>
+        <p-row>
+            <!--<p-column header="Company"></p-column>-->
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Referred To Email" styleClass="inbound-column"></p-column>
+            <!--<p-column header="Location" styleClass="inbound-column"></p-column>-->
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName"></p-column>
+    <p-column field="case.id"></p-column>
+    <!--<p-column field="referringCompany.name"></p-column>-->
+    <p-column field="referringLocation.location.name"></p-column>
+    <p-column field="referringUser.displayName"></p-column>
+    <p-column field="referredToCompany.name"></p-column>
+    <p-column field="referredToEmail"></p-column>
+    <p-column>
+        <ng-template let-referral="rowData" pTemplate="body">
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
+        </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>

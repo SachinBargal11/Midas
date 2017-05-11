@@ -99,7 +99,7 @@ export class PendingReferralService {
         return <Observable<PendingReferral>>Observable.fromPromise(promise);
     }
 
-    //Outbound
+    //Outbound Start
     getReferralsByReferringCompanyId(companyId: Number): Observable<PendingReferral[]> {
         let promise: Promise<PendingReferral[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Referral2/getByFromCompanyId/' + companyId)
@@ -116,4 +116,22 @@ export class PendingReferralService {
         });
         return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
     }
+
+    getReferralsByReferringUserId(userId: Number, companyId: Number): Observable<PendingReferral[]> {
+        let promise: Promise<PendingReferral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Referral2/getByFromDoctorAndCompanyId/' + userId + '/' + companyId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let referrals = (<Object[]>data).map((data: any) => {
+                        return PendingReferralAdapter.parseResponse(data);
+                    });
+                    resolve(referrals);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
+    }
+    //Outbound end
 }

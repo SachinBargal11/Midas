@@ -132,6 +132,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
 
+        [JsonProperty("patientId")]
+        public int? PatientId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int? CaseId { get; set; }
+
+        [JsonProperty("patientVisitId")]
+        public int? PatientVisitId { get; set; }
+
         //[JsonProperty("fromCompany")]
         //public Company Company { get; set; }
         [JsonProperty("fromCompanyName")]
@@ -171,8 +180,8 @@ namespace MIDAS.GBX.BusinessObjects
         //[JsonProperty("scheduledPatientVisit")]
         //public PatientVisit2 PatientVisit2 { get; set; }
 
-        //[JsonProperty("pendingReferral")]
-        //public PendingReferral PendingReferral { get; set; }
+        [JsonProperty("pendingReferral")]
+        public PendingReferral PendingReferral { get; set; }
 
         [JsonProperty("forRoom")]
         public Room Room { get; set; }
@@ -186,8 +195,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("forSpecialty")]
         public Specialty Specialty { get; set; }
 
-        [JsonProperty("dismissedByUser")]
-        public User User { get; set; }
+        //[JsonProperty("dismissedByUser")]
+        //public User User { get; set; }
 
         [JsonProperty("referralProcedureCode")]
         public List<ReferralProcedureCode> ReferralProcedureCode { get; set; }

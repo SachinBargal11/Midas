@@ -106,6 +106,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByForRoomTestId(Request, roomTestId);
         }
 
+        [HttpGet]
+        [Route("getReferralByFromCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralByFromCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralByFromCompanyId(Request, companyId);
+        }
+
+        [HttpGet]
+        [Route("getReferralByToCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralByToCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralByToCompanyId(Request, companyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -34,7 +34,7 @@ namespace MIDAS.GBX.DocumentManager
             throw new NotImplementedException();
         }
 
-        public virtual Object Merge(int companyid)
+        public virtual Object Merge(int companyid, object pdfFiles,string blobPath)
         {
             throw new NotImplementedException();
         }

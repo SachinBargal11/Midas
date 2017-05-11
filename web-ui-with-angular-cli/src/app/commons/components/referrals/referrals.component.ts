@@ -138,7 +138,7 @@ export class ReferralsComponent implements OnInit {
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
-        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+        let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
           return currentProcedure.id;
         });
         let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
@@ -160,7 +160,7 @@ export class ReferralsComponent implements OnInit {
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
-        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+        let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
           return currentProcedure.id;
         });
         let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
@@ -212,14 +212,14 @@ export class ReferralsComponent implements OnInit {
             })
           }
         }
-        if (!flag && this.selectedOption === 1) {
+        if (!flag && this.selectedOption === 1 && !this.selectedSpeciality.mandatoryProcCode) {
           selectedProcSpec = new Procedure({
             specialityId: this.selectedSpeciality.id,
             speciality: new Speciality(_.extend(this.selectedSpeciality.toJS()))
           });
           this.proceduresList.push(selectedProcSpec);
           this.proceduresList = _.union(this.proceduresList);
-        } else if (this.selectedOption === 2) {
+        } else if (this.selectedOption === 2 || this.selectedSpeciality.mandatoryProcCode) {
           this.msg = 'Please, Select Procedure Codes.';
         } else if (this.selectedSpeciality == null) {
           this.msg = 'Please, Select Speciality.';
@@ -301,7 +301,7 @@ export class ReferralsComponent implements OnInit {
           fromLocationId: this.selectedVisit.locationId,
           fromDoctorId: this.selectedVisit.doctorId,
           forSpecialtyId: null,
-          forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
+          forRoomId: null,
           forRoomTestId: currentRoomTestId,
           isReferralCreated: false,
           pendingReferralProcedureCode: procedureCodes
