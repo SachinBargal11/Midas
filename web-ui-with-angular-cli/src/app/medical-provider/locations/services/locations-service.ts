@@ -39,6 +39,32 @@ export class LocationsService {
         return <Observable<LocationDetails>>Observable.fromPromise(promise);
     }
 
+    getLocationsByCompanyId(companyId: number): Observable<LocationDetails[]> {
+        let requestData = {
+            company: {
+                id: companyId
+            }
+        };
+        let promise: Promise<LocationDetails[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/Location/getall', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: LocationDetails[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+    }
+
     getLocations(): Observable<any[]> {
         let requestData = {
             company: {

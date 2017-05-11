@@ -197,14 +197,14 @@ namespace MIDAS.GBX
             {
                 repo = new InsuranceMasterRepository(context);
             }
-            else if (typeof(T) == typeof(BO.PatientVisit))
-            {
-                repo = new PatientVisitRepository(context);
-            }
-            else if (typeof(T) == typeof(BO.PatientVisitEvent))
-            {
-                repo = new PatientVisitEventRepository(context);
-            }
+            //else if (typeof(T) == typeof(BO.PatientVisit))
+            //{
+            //    repo = new PatientVisitRepository(context);
+            //}
+            //else if (typeof(T) == typeof(BO.PatientVisitEvent))
+            //{
+            //    repo = new PatientVisitEventRepository(context);
+            //}
             else if (typeof(T) == typeof(BO.PatientVisit2))
             {
                 repo = new PatientVisit2Repository(context);

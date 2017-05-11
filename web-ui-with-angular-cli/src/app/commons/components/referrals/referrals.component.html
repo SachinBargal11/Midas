@@ -44,7 +44,7 @@
 <div class="col-lg-6">
   <h3 class="with-border">Selected Procedure codes</h3>
   <div class="ui-widget-header row">
-    <div class="col-lg-12 input-group">
+    <div class="col-lg-12 input-group" *ngIf="sessionStore.isOnlyDoctorRole() && routeFrom !== 2">
     <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
       <loader [visible]="isDeleteProgress"></loader>
@@ -76,16 +76,13 @@
             </div>
           </div>
         </div>
-          <!--<div *ngIf="procedure.roomTest != null">
-            {{procedure.roomTest.name}}
-          </div>-->
       </ng-template>
     </p-column>
     <p-column field="procedureCodeText" header="Procedure Code"></p-column>
     <p-column field="procedureCodeDesc" header="Description"></p-column>
   </p-dataTable>
   <br>
-  <button *ngIf="sessionStore.isOnlyDoctorRole()" class="btn btn-success sign-up" (click)="saveReferral()">Save
+  <button *ngIf="sessionStore.isOnlyDoctorRole() && routeFrom !== 2" class="btn btn-success sign-up" (click)="saveReferral()">Save
     <loader [visible]="isSaveProgress"></loader>
 </button>
 </div>

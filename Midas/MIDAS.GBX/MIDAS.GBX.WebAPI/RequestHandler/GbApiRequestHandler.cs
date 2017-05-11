@@ -1508,9 +1508,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByFromDoctorId(HttpRequestMessage request, int doctorId)
+        public HttpResponseMessage GetByFromDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
         {
-            var objResult = dataAccessManager.GetByFromDoctorId(doctorId);
+            var objResult = dataAccessManager.GetByFromDoctorAndCompanyId(doctorId, companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1521,9 +1521,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByToDoctorId(HttpRequestMessage request, int doctorId)
+        public HttpResponseMessage GetByToDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
         {
-            var objResult = dataAccessManager.GetByToDoctorId(doctorId);
+            var objResult = dataAccessManager.GetByToDoctorAndCompanyId(doctorId, companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

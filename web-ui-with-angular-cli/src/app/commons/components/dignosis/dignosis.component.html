@@ -18,7 +18,7 @@
       <span class="input-group-addon"><i class="fa fa-search"></i></span>
       <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6" *ngIf="routeFrom !== 2">
       <a class="pull-right btn btn-danger btn-sm" (click)="deleteDiagnosis()">
         <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Diagnosis </span>
         <loader [visible]="isDeleteProgress"></loader>
@@ -32,7 +32,7 @@
     <p-column field="diagnosisCodeDesc" header="Description" [sortable]="true"></p-column>
   </p-dataTable>
   <br>
-  <button class="btn btn-success sign-up" (click)="saveDiagnosisCodes()">Save
+  <button *ngIf="routeFrom !== 2" class="btn btn-success sign-up" (click)="saveDiagnosisCodes()">Save
         <loader [visible]="isSaveProgress"></loader>
     </button>
 

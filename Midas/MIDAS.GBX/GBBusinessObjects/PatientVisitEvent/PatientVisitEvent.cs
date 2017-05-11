@@ -9,76 +9,76 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class PatientVisitEvent : GbObject
-    {
-        [JsonProperty("patientVisitId")]
-        public int PatientVisitId { get; set; }
+    //public class PatientVisitEvent : GbObject
+    //{
+    //    [JsonProperty("patientVisitId")]
+    //    public int PatientVisitId { get; set; }
 
-        [JsonProperty("specialtyId")]
-        public int? SpecialtyId { get; set; }
+    //    [JsonProperty("specialtyId")]
+    //    public int? SpecialtyId { get; set; }
 
-        [JsonProperty("procedureCodeId")]
-        public byte ProcedureCodeId { get; set; }
+    //    [JsonProperty("procedureCodeId")]
+    //    public byte ProcedureCodeId { get; set; }
 
-        [JsonProperty("eventStatusId")]
-        public byte? EventStatusId { get; set; }
+    //    [JsonProperty("eventStatusId")]
+    //    public byte? EventStatusId { get; set; }
 
-        [JsonProperty("reportReceived")]
-        public bool? ReportReceived { get; set; }
+    //    [JsonProperty("reportReceived")]
+    //    public bool? ReportReceived { get; set; }
 
-        [JsonProperty("studyNumber")]
-        public string StudyNumber { get; set; }
+    //    [JsonProperty("studyNumber")]
+    //    public string StudyNumber { get; set; }
 
-        [JsonProperty("note")]
-        public string Note { get; set; }
+    //    [JsonProperty("note")]
+    //    public string Note { get; set; }
 
-        [JsonProperty("reportPath")]
-        public string ReportPath { get; set; }
+    //    [JsonProperty("reportPath")]
+    //    public string ReportPath { get; set; }
 
-        [JsonProperty("readingDoctorId")]
-        public int? ReadingDoctorId { get; set; }
+    //    [JsonProperty("readingDoctorId")]
+    //    public int? ReadingDoctorId { get; set; }
 
-        [JsonProperty("billStatus")]
-        public bool? BillStatus { get; set; }
+    //    [JsonProperty("billStatus")]
+    //    public bool? BillStatus { get; set; }
 
-        [JsonProperty("billDate")]
-        public DateTime? BillDate { get; set; }
+    //    [JsonProperty("billDate")]
+    //    public DateTime? BillDate { get; set; }
 
-        [JsonProperty("billNumber")]
-        public string BillNumber { get; set; }
+    //    [JsonProperty("billNumber")]
+    //    public string BillNumber { get; set; }
 
-        [JsonProperty("imageId")]
-        public int? ImageId { get; set; }
+    //    [JsonProperty("imageId")]
+    //    public int? ImageId { get; set; }
 
-        [JsonProperty("modifier")]
-        public string Modifier { get; set; }
+    //    [JsonProperty("modifier")]
+    //    public string Modifier { get; set; }
 
-    }
+    //}
 
-    public class mPatientVisitEvent : GbObject
-    {
-        [JsonProperty("patientVisitId")]
-        public int PatientVisitId { get; set; }
+    //public class mPatientVisitEvent : GbObject
+    //{
+    //    [JsonProperty("patientVisitId")]
+    //    public int PatientVisitId { get; set; }
 
-        [JsonProperty("specialtyId")]
-        public int? SpecialtyId { get; set; }
+    //    [JsonProperty("specialtyId")]
+    //    public int? SpecialtyId { get; set; }
 
-        [JsonProperty("procedureCodeId")]
-        public byte ProcedureCodeId { get; set; }
+    //    [JsonProperty("procedureCodeId")]
+    //    public byte ProcedureCodeId { get; set; }
 
-        [JsonProperty("reportPath")]
-        public string ReportPath { get; set; }
+    //    [JsonProperty("reportPath")]
+    //    public string ReportPath { get; set; }
 
-        [JsonProperty("readingDoctorId")]
-        public int? ReadingDoctorId { get; set; }
+    //    [JsonProperty("readingDoctorId")]
+    //    public int? ReadingDoctorId { get; set; }
 
-        [JsonProperty("billNumber")]
-        public string BillNumber { get; set; }
+    //    [JsonProperty("billNumber")]
+    //    public string BillNumber { get; set; }
 
-        [JsonProperty("imageId")]
-        public int? ImageId { get; set; }
+    //    [JsonProperty("imageId")]
+    //    public int? ImageId { get; set; }
 
-    }
+    //}
 }
 
 

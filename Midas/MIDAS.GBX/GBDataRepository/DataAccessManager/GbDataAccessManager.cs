@@ -2556,12 +2556,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByFromDoctorId(int doctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByFromDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByFromDoctorId(doctorId);
+                var gbdata = baseRepo.GetByFromDoctorAndCompanyId(doctorId, companyId);
 
                 return gbdata;
             }
@@ -2575,12 +2575,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByToDoctorId(int doctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByToDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByToDoctorId(doctorId);
+                var gbdata = baseRepo.GetByToDoctorAndCompanyId(doctorId, companyId);
 
                 return gbdata;
             }

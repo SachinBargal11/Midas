@@ -38,7 +38,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("deleteDocumentType")]
         public HttpResponseMessage DeleteCustomDocumentType([FromBody]DocumentNodeObjectMapping data)
         {

@@ -123,8 +123,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByToCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByFromLocationId(int locationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByToLocationId(int locationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        Object GetByFromDoctorId(int doctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        Object GetByToDoctorId(int doctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByFromDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByToDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByForRoomId(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByToRoomId(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByForSpecialtyId(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
