@@ -180,8 +180,8 @@ namespace MIDAS.GBX.BusinessObjects
         //[JsonProperty("scheduledPatientVisit")]
         //public PatientVisit2 PatientVisit2 { get; set; }
 
-        //[JsonProperty("pendingReferral")]
-        //public PendingReferral PendingReferral { get; set; }
+        [JsonProperty("pendingReferral")]
+        public PendingReferral PendingReferral { get; set; }
 
         [JsonProperty("forRoom")]
         public Room Room { get; set; }
