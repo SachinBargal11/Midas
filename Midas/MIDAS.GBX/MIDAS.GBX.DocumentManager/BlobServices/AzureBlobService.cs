@@ -90,17 +90,19 @@ namespace MIDAS.GBX.DocumentManager
             List<string> lstfiles = pdfFiles as List<string>;
             util.ContainerName = "company-" + companyId;
             Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
-            
-            using (FileStream stream = new FileStream(Cloudblob.Uri.AbsolutePath, FileMode.Create))
+
+            //using (FileStream stream = new FileStream(Cloudblob.Uri.AbsolutePath, FileMode.Create))
+            using (FileStream stream = new FileStream(HttpContext.Current.Server.MapPath("~/App_data/uploads/"+Path.GetFileName(blobPath)), FileMode.Create)) 
             {
-                PdfSmartCopy copy = new PdfSmartCopy(sourceDocument, stream);                
+                PdfSmartCopy copy = new PdfSmartCopy(sourceDocument, stream);
                 PdfWriter writer = PdfWriter.GetInstance(sourceDocument, stream);
                 PdfImportedPage page = null;
-
+                
                 lstfiles.ForEach(file =>
                                 {
-                                    util.ContainerName = "company-" + companyId;                                    
-                                    CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference((new Uri(file).AbsolutePath).Remove(0, blobPath.IndexOf('/', blobPath.IndexOf('/') + 1)).TrimStart('/'));
+                                    util.ContainerName = "company-" + companyId;
+                                    string path = util.getBlob(file, _context);
+                                    CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(path);
                                     var ms = new MemoryStream();
                                     _cblob.DownloadToStream(ms);
                                     long fileByteLength = _cblob.Properties.Length;
@@ -110,14 +112,14 @@ namespace MIDAS.GBX.DocumentManager
                                     reader = new PdfReader(fileContents);
                                     for (int i = 0; i < reader.NumberOfPages; i++)
                                     {
-                                        page = writer.GetImportedPage(reader, i + 1);                                        
+                                        page = writer.GetImportedPage(reader, i + 1);
                                         copy.AddPage(page);
-                                    }                                    
+                                    }
                                     reader.Close();
                                 }
                             );
                 copy.Close();
-                writer.Close();                
+                writer.Close();
             }
 
             return new object();

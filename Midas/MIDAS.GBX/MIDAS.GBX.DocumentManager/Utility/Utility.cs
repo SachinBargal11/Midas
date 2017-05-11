@@ -25,6 +25,14 @@ namespace MIDAS.GBX.DocumentManager
             return blobPath.Remove(0, blobPath.IndexOf('/', blobPath.IndexOf('/') + 1)).TrimStart('/');
         }
 
+        public string getBlob(string relativePath, MIDASGBXEntities context)
+        {
+            string blobPath = string.Empty;
+            blobPath = new Uri(relativePath).AbsolutePath;
+
+            return blobPath.Remove(0, blobPath.IndexOf('/', blobPath.IndexOf('/') + 1)).TrimStart('/');
+        }
+
         public string getDocumentPath(string documentNode,string objectType,int objectId, MIDASGBXEntities context)
         {
             string path=string.Empty;
