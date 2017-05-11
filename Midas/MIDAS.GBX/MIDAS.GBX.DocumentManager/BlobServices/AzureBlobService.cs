@@ -1,7 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MIDAS.GBX.DataRepository.Model;
-using Aquaforest.PDF;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -83,7 +82,6 @@ namespace MIDAS.GBX.DocumentManager
 
         public override Object Merge(int companyId, object pdfFiles, string blobPath)
         {
-            PDFMerger pdfmerger = new PDFMerger();
             PdfReader reader = null;
             Document sourceDocument = new Document();               
             sourceDocument.Open();
