@@ -71,7 +71,7 @@ export class OutboundReferralsComponent implements OnInit {
     loadReferralsCheckingDoctor() {
         // let doctorRoleOnly = null;        
         if (this.doctorRoleOnly) {
-            //  this.loadReferralsForDoctor();
+            this.loadReferralsForDoctor();
         } else {
             this.loadReferrals();
         }
@@ -79,46 +79,9 @@ export class OutboundReferralsComponent implements OnInit {
 
     loadReferrals() {
         this._progressBarService.show();
-        // this._referralStore.getReferralsByCaseId(this.caseId)
         this._pendingReferralStore.getReferralsByReferringCompanyId()
             .subscribe((referrals: PendingReferral[]) => {
-                // this.referrals = referrals.reverse();
-                // let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                //     return currentReferral.referredToDoctor ? currentReferral : null;
-                // });
-                // let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
-                //     return currentReferral == null;
-                // });
-                // this.referredUsers = matchingUserReferrals.reverse();
-
-                // let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                //     return currentReferral.room ? currentReferral : null;
-                // });
-                // let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
-                //     return currentReferral == null;
-                // });
-                // this.referredRooms = matchingRoomReferrals.reverse();
-
-                // let referralsOutsideMidas: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-                //     return currentReferral.firstName && currentReferral.lastName ? currentReferral : null;
-                // });
-                // let matchingReferralsOutsideMidas = _.reject(referralsOutsideMidas, (currentReferral: Referral) => {
-                //     return currentReferral == null;
-                // });
-                // this.referralsOutsideMidas = matchingReferralsOutsideMidas.reverse();
-
-                // let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals, matchingReferralsOutsideMidas);
-                // let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
-                //     return currentUserAndRoomReferral.id;
-                // });
-                // let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
-                //     return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
-                // });
-                // this.referredMedicalOffices = matchingMedicalOffices.reverse();
-
-                debugger;
-                this.referredMedicalOffices = referrals.reverse();
-
+                this.referredMedicalOffices = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -127,56 +90,21 @@ export class OutboundReferralsComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-    // loadReferralsForDoctor() {
-    //     this._progressBarService.show();
-    //     // this._referralStore.getReferralsByCaseId(this.caseId)
-    //     this._referralStore.getReferralsByReferringUserId()
-    //         .subscribe((referrals: Referral[]) => {
-    //             // this.referrals = referrals.reverse();
-    //             let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-    //                 return currentReferral.referredToDoctor ? currentReferral : null;
-    //             });
-    //             let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
-    //                 return currentReferral == null;
-    //             });
-    //             this.referredUsers = matchingUserReferrals.reverse();
 
-    //             let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
-    //                 return currentReferral.room ? currentReferral : null;
-    //             });
-    //             let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
-    //                 return currentReferral == null;
-    //             });
-    //             this.referredRooms = matchingRoomReferrals.reverse();
-
-    //             let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
-    //             let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
-    //                 return currentUserAndRoomReferral.id;
-    //             });
-    //             let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
-    //                 return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
-    //             });
-    //             this.referredMedicalOffices = matchingMedicalOffices.reverse();
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    // }
-    filter(event) {
-        let currentSearchId = parseInt(event.target.value);
-        if (currentSearchId === 1) {
-            this.searchMode = 1;
-        } else if (currentSearchId === 2) {
-            this.searchMode = 2;
-        } else if (currentSearchId === 3) {
-            this.searchMode = 3;
-        } else if (currentSearchId === 4) {
-            this.searchMode = 4;
-        }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        this._pendingReferralStore.getReferralsByReferringUserId()
+            .subscribe((referrals: PendingReferral[]) => {
+                this.referredMedicalOffices = referrals.reverse();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
+
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
     }
