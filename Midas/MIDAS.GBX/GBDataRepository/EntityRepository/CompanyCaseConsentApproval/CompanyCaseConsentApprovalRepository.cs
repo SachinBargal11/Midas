@@ -90,7 +90,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             if (companyCaseConsentApprovalBO != null)
             {
                 int patient = _context.Cases.Where(p => p.Id == companyCaseConsentApprovalBO.CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.PatientId).FirstOrDefault();
-                UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId).FirstOrDefault();
+                UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                 if (userCompany == null)
                 {
                     userCompany = new UserCompany();

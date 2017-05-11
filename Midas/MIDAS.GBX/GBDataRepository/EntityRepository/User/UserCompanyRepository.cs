@@ -44,6 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 usercompanyBO.ID = usercompany.id;
                 usercompanyBO.UserId = usercompany.UserID;
                 usercompanyBO.CompanyId = usercompany.CompanyID;
+                usercompanyBO.IsAccepted = usercompany.IsAccepted;
 
                 if (usercompany.IsDeleted.HasValue)
                     usercompanyBO.IsDeleted = usercompany.IsDeleted.Value;
@@ -129,7 +130,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Delete
         public override Object Delete(int id)
         {
-            var acc = _context.UserCompanies.Where(p => p.id == id
+            var acc = _context.UserCompanies.Where(p => p.id == id && p.IsAccepted == true
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<UserCompany>();
             if (acc != null)
@@ -190,7 +191,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
-            UserCompany UserCompanyDB1 = _context.UserCompanies.Where(p => (p.UserID == UserDB.id && p.CompanyID== CompanyId)
+            UserCompany UserCompanyDB1 = _context.UserCompanies.Where(p => (p.UserID == UserDB.id && p.CompanyID== CompanyId && p.IsAccepted == true)
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .FirstOrDefault();
             if (UserCompanyDB1==null)
@@ -205,6 +206,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     UserCompanyDB.UserID = UserDB.id;
                     UserCompanyDB.CompanyID = CompanyDB.id;
+                    UserCompanyDB.IsAccepted = false;
                     UserCompanyDB.IsDeleted = false;
                     UserCompanyDB.CreateByUserID = 0;
                     UserCompanyDB.CreateDate = DateTime.UtcNow;
@@ -279,7 +281,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get User Company By ID
         public override Object Get(int id)
         {
-            BO.UserCompany acc_ = Convert<BO.UserCompany, UserCompany>(_context.UserCompanies.Include("User").Include("Company").Where(p => p.id == id).FirstOrDefault<UserCompany>());
+            BO.UserCompany acc_ = Convert<BO.UserCompany, UserCompany>(_context.UserCompanies.Include("User").Include("Company").Where(p => p.id == id && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<UserCompany>());
             if (acc_ == null)
             {
                 return acc_;
@@ -312,7 +314,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.UserCompany usercompanyBO = (BO.UserCompany)(object)entity;
             List<BO.UserCompany> lstUserCompanies = new List<BO.UserCompany>();
             dynamic result = null;
-            var acc_ = _context.UserCompanies.Include("User").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null) as IQueryable<UserCompany>;
+            var acc_ = _context.UserCompanies.Include("User").Include("Company").Where(p=> p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) as IQueryable<UserCompany>;
             if (acc_ == null || acc_.Count() == 0)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
