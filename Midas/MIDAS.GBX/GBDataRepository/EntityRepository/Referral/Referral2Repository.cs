@@ -274,6 +274,206 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region ReferralList Conversion
+        //public T ConvertReferralList<T, U>(U entity)
+        //{
+        //    Referral2 Referral = entity as Referral2;
+
+        //    if (Referral == null)
+        //        return default(T);
+
+        //    List<BO.PendingReferralList> PendingReferralListBO = new List<BO.PendingReferralList>();
+
+        //    if (Referral.ReferralProcedureCodes != null)
+        //    {
+        //        foreach (var eachPendingReferralProcedureCodes in Referral.ReferralProcedureCodes)
+        //        {
+        //            if (eachPendingReferralProcedureCodes.IsDeleted.HasValue == false || (eachPendingReferralProcedureCodes.IsDeleted.HasValue == true && eachPendingReferralProcedureCodes.IsDeleted.Value == false))
+        //            {
+        //                BO.PendingReferralList PendingReferralList = new BO.PendingReferralList();
+
+        //                PendingReferralList.ID = Referral.Id;
+        //                PendingReferralList.PendingReferralId = Referral.PendingReferralId;
+        //                PendingReferralList.FromCompanyId = Referral.FromCompanyId;
+        //                PendingReferralList.FromLocationId = Referral.FromLocationId;
+        //                PendingReferralList.ForSpecialtyId = Referral.ForSpecialtyId;
+        //                PendingReferralList.ForRoomId = Referral.ForRoomId;
+        //                PendingReferralList.ForRoomTestId = Referral.ForRoomTestId;
+        //                PendingReferralList.ToCompanyId = Referral.ToCompanyId;
+        //                PendingReferralList.ToLocationId = Referral.ToLocationId;
+        //                PendingReferralList.ToDoctorId = Referral.ToDoctorId;
+        //                PendingReferralList.ToRoomId = Referral.ToRoomId;
+        //                PendingReferralList.ScheduledPatientVisitId = Referral.ScheduledPatientVisitId;
+        //                PendingReferralList.DismissedBy = Referral.DismissedBy;
+        //                PendingReferralList.IsDeleted = Referral.IsDeleted;
+        //                PendingReferralList.CreateByUserID = Referral.CreateByUserID;
+        //                PendingReferralList.UpdateByUserID = Referral.UpdateByUserID;
+
+        //                if (pendingReferral.Doctor != null)
+        //                {
+        //                    if (pendingReferral.Doctor.IsDeleted.HasValue == false || (pendingReferral.Doctor.IsDeleted.HasValue == true && pendingReferral.Doctor.IsDeleted.Value == false))
+        //                    {
+        //                        PendingReferralList.DoctorFirstName = pendingReferral.Doctor.User.FirstName;
+        //                        PendingReferralList.DoctorLastName = pendingReferral.Doctor.User.LastName;
+
+        //                    }
+        //                }
+
+        //                if (pendingReferral.Specialty != null)
+        //                {
+        //                    if (pendingReferral.Specialty.IsDeleted.HasValue == false || (pendingReferral.Specialty.IsDeleted.HasValue == true && pendingReferral.Specialty.IsDeleted.Value == false))
+        //                    {
+        //                        BO.Specialty boSpecialty = new BO.Specialty();
+        //                        using (SpecialityRepository cmp = new SpecialityRepository(_context))
+        //                        {
+        //                            boSpecialty = cmp.Convert<BO.Specialty, Specialty>(pendingReferral.Specialty);
+        //                            PendingReferralList.Specialty = boSpecialty;
+        //                        }
+        //                    }
+        //                }
+
+        //                if (pendingReferral.Room != null)
+        //                {
+        //                    if (pendingReferral.Room.IsDeleted.HasValue == false || (pendingReferral.Room.IsDeleted.HasValue == true && pendingReferral.Room.IsDeleted.Value == false))
+        //                    {
+        //                        BO.Room boRoom = new BO.Room();
+        //                        using (RoomRepository cmp = new RoomRepository(_context))
+        //                        {
+        //                            boRoom = cmp.Convert<BO.Room, Room>(pendingReferral.Room);
+        //                            PendingReferralList.Room = boRoom;
+        //                        }
+        //                    }
+        //                }
+
+        //                if (pendingReferral.RoomTest != null)
+        //                {
+        //                    if (pendingReferral.RoomTest.IsDeleted.HasValue == false || (pendingReferral.RoomTest.IsDeleted.HasValue == true && pendingReferral.RoomTest.IsDeleted.Value == false))
+        //                    {
+        //                        BO.RoomTest boRoomTest = new BO.RoomTest();
+        //                        using (RoomTestRepository cmp = new RoomTestRepository(_context))
+        //                        {
+        //                            boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(pendingReferral.RoomTest);
+        //                            PendingReferralList.RoomTest = boRoomTest;
+        //                        }
+        //                    }
+        //                }
+
+        //                PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
+        //                PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
+        //                PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
+        //                PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
+        //                PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+
+        //                BO.PendingReferralProcedureCode pendingReferralProcedureCode = new BO.PendingReferralProcedureCode();
+
+        //                pendingReferralProcedureCode.ID = eachPendingReferralProcedureCodes.Id;
+        //                pendingReferralProcedureCode.PendingReferralId = eachPendingReferralProcedureCodes.PendingReferralId;
+        //                pendingReferralProcedureCode.ProcedureCodeId = eachPendingReferralProcedureCodes.ProcedureCodeId;
+
+        //                if (eachPendingReferralProcedureCodes.ProcedureCode != null)
+        //                {
+        //                    if (eachPendingReferralProcedureCodes.ProcedureCode.IsDeleted.HasValue == false || (eachPendingReferralProcedureCodes.ProcedureCode.IsDeleted.HasValue == true && eachPendingReferralProcedureCodes.ProcedureCode.IsDeleted.Value == false))
+        //                    {
+        //                        BO.ProcedureCode boProcedureCode = new BO.ProcedureCode();
+
+        //                        boProcedureCode.ID = eachPendingReferralProcedureCodes.ProcedureCode.Id;
+        //                        boProcedureCode.ProcedureCodeText = eachPendingReferralProcedureCodes.ProcedureCode.ProcedureCodeText;
+        //                        boProcedureCode.ProcedureCodeDesc = eachPendingReferralProcedureCodes.ProcedureCode.ProcedureCodeDesc;
+        //                        boProcedureCode.Amount = eachPendingReferralProcedureCodes.ProcedureCode.Amount;
+        //                        boProcedureCode.CompanyId = eachPendingReferralProcedureCodes.ProcedureCode.CompanyId;
+        //                        boProcedureCode.SpecialityId = eachPendingReferralProcedureCodes.ProcedureCode.SpecialityId;
+        //                        boProcedureCode.RoomId = eachPendingReferralProcedureCodes.ProcedureCode.RoomId;
+        //                        boProcedureCode.RoomTestId = eachPendingReferralProcedureCodes.ProcedureCode.RoomTestId;
+
+        //                        pendingReferralProcedureCode.ProcedureCode = boProcedureCode;
+        //                    }
+        //                }
+
+        //                PendingReferralList.PendingReferralProcedureCode = pendingReferralProcedureCode;
+
+        //                PendingReferralListBO.Add(PendingReferralList);
+        //            }
+        //        }
+        //    }
+
+        //    if (pendingReferral.PendingReferralProcedureCodes == null || (pendingReferral.PendingReferralProcedureCodes != null && pendingReferral.PendingReferralProcedureCodes.Count <= 0))
+        //    {
+        //        BO.PendingReferralList PendingReferralList = new BO.PendingReferralList();
+
+        //        PendingReferralList.ID = pendingReferral.Id;
+        //        PendingReferralList.PatientVisitId = pendingReferral.PatientVisitId;
+        //        PendingReferralList.FromCompanyId = pendingReferral.FromCompanyId;
+        //        PendingReferralList.FromLocationId = pendingReferral.FromLocationId;
+        //        PendingReferralList.FromDoctorId = pendingReferral.FromDoctorId;
+        //        PendingReferralList.ForSpecialtyId = pendingReferral.ForSpecialtyId;
+        //        PendingReferralList.ForRoomId = pendingReferral.ForRoomId;
+        //        PendingReferralList.ForRoomTestId = pendingReferral.ForRoomTestId;
+        //        PendingReferralList.IsReferralCreated = pendingReferral.IsReferralCreated;
+        //        PendingReferralList.DismissedBy = pendingReferral.DismissedBy;
+
+        //        if (pendingReferral.Doctor != null)
+        //        {
+        //            if (pendingReferral.Doctor.IsDeleted.HasValue == false || (pendingReferral.Doctor.IsDeleted.HasValue == true && pendingReferral.Doctor.IsDeleted.Value == false))
+        //            {
+        //                PendingReferralList.DoctorFirstName = pendingReferral.Doctor.User.FirstName;
+        //                PendingReferralList.DoctorLastName = pendingReferral.Doctor.User.LastName;
+
+        //            }
+        //        }
+
+        //        if (pendingReferral.Specialty != null)
+        //        {
+        //            if (pendingReferral.Specialty.IsDeleted.HasValue == false || (pendingReferral.Specialty.IsDeleted.HasValue == true && pendingReferral.Specialty.IsDeleted.Value == false))
+        //            {
+        //                BO.Specialty boSpecialty = new BO.Specialty();
+        //                using (SpecialityRepository cmp = new SpecialityRepository(_context))
+        //                {
+        //                    boSpecialty = cmp.Convert<BO.Specialty, Specialty>(pendingReferral.Specialty);
+        //                    PendingReferralList.Specialty = boSpecialty;
+        //                }
+        //            }
+        //        }
+
+        //        if (pendingReferral.Room != null)
+        //        {
+        //            if (pendingReferral.Room.IsDeleted.HasValue == false || (pendingReferral.Room.IsDeleted.HasValue == true && pendingReferral.Room.IsDeleted.Value == false))
+        //            {
+        //                BO.Room boRoom = new BO.Room();
+        //                using (RoomRepository cmp = new RoomRepository(_context))
+        //                {
+        //                    boRoom = cmp.Convert<BO.Room, Room>(pendingReferral.Room);
+        //                    PendingReferralList.Room = boRoom;
+        //                }
+        //            }
+        //        }
+
+        //        if (pendingReferral.RoomTest != null)
+        //        {
+        //            if (pendingReferral.RoomTest.IsDeleted.HasValue == false || (pendingReferral.RoomTest.IsDeleted.HasValue == true && pendingReferral.RoomTest.IsDeleted.Value == false))
+        //            {
+        //                BO.RoomTest boRoomTest = new BO.RoomTest();
+        //                using (RoomTestRepository cmp = new RoomTestRepository(_context))
+        //                {
+        //                    boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(pendingReferral.RoomTest);
+        //                    PendingReferralList.RoomTest = boRoomTest;
+        //                }
+        //            }
+        //        }
+
+        //        PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
+        //        PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
+        //        PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
+        //        PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
+        //        PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+
+        //        PendingReferralListBO.Add(PendingReferralList);
+        //    }
+
+
+        //    return (T)(object)PendingReferralListBO;
+        //}
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -514,6 +714,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
                                                .Where(p => p.ToCompanyId == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            List<BO.Referral2> boReferral = new List<BO.Referral2>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(Convert<BO.Referral2, Referral2>(EachReferral));
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+        #region Get Referral By From CompanyId
+        public override object GetReferralByFromCompanyId(int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+
+                                               .Where(p => p.FromCompanyId == companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .ToList<Referral2>();
 
