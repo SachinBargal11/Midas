@@ -770,6 +770,50 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+
+
+        #region Get Referral By To Company Id
+        public override object GetReferralByToCompanyId(int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+
+                                               .Where(p => p.ToCompanyId == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.Referral2List, Referral2>(EachReferral));
+                }
+
+            }
+
+            return boReferral;
+        }
+        #endregion
+
         #region Get By From LocationId
         public override object GetByFromLocationId(int locationId)
         {

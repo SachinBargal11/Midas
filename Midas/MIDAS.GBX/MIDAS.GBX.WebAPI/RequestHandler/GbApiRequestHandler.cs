@@ -1494,7 +1494,19 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
+
+        public HttpResponseMessage GetReferralByToCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByToCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
         public HttpResponseMessage GetByFromLocationId(HttpRequestMessage request, int locationId)
         {
