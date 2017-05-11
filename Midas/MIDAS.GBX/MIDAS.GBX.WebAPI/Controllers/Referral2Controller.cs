@@ -65,17 +65,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByFromDoctorId/{doctorId}")]
-        public HttpResponseMessage GetByFromDoctorId(int doctorId)
+        [Route("getByFromDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByFromDoctorAndCompanyId(int doctorId, int companyId)
         {
-            return requestHandler.GetByFromDoctorId(Request, doctorId);
+            return requestHandler.GetByFromDoctorAndCompanyId(Request, doctorId, companyId);
         }
 
         [HttpGet]
-        [Route("getByToDoctorId/{doctorId}")]
-        public HttpResponseMessage GetByToDoctorId(int doctorId)
+        [Route("getByToDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByToDoctorAndCompanyId(int doctorId, int companyId)
         {
-            return requestHandler.GetByToDoctorId(Request, doctorId);
+            return requestHandler.GetByToDoctorAndCompanyId(Request, doctorId, companyId);
         }
 
         [HttpGet]
@@ -104,6 +104,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetByForRoomTestId(int roomTestId)
         {
             return requestHandler.GetByForRoomTestId(Request, roomTestId);
+        }
+
+        [HttpGet]
+        [Route("getReferralByFromCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralByFromCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralByFromCompanyId(Request, companyId);
         }
 
         protected override void Dispose(bool disposing)

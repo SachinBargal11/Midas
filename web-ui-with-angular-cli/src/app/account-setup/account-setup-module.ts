@@ -51,6 +51,8 @@ import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
 
 import { ProcedureCodeMasterService } from './services/procedure-code-master-service';
 import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
+import { DocumentTypeStore } from './stores/document-type-store';
+import { DocumentTypeService } from './services/document-type-service';
 
 // AccountSettingShellComponent
 @NgModule({
@@ -99,7 +101,12 @@ import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
         InsuranceMasterStore,
         // MedicalProviderMasterService,
         // MedicalProviderMasterStore
-        RoomsStore, RoomsService, ProcedureCodeMasterService, ProcedureCodeMasterStore
+        RoomsStore, 
+        RoomsService, 
+        ProcedureCodeMasterService, 
+        ProcedureCodeMasterStore,
+        DocumentTypeStore,
+        DocumentTypeService
     ]
 })
 export class AccountSetupModule { }

@@ -508,8 +508,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
-                                       .Where(p => p.FromCompanyId == CompanyId
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .Where(p => p.FromCompanyId == CompanyId && p.IsReferralCreated == false
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .ToList<PendingReferral>();
 
             if (acc == null)
@@ -816,8 +816,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             patientVisitId = item.PatientVisitId;
 
                             PendingReferral pendingReferralDB = new PendingReferral();
-                            pendingReferralDB = _context.PendingReferrals
-                                                        .Where(p => p.Id == item.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                            pendingReferralDB = _context.PendingReferrals.Where(p => p.Id == item.ID 
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                         .FirstOrDefault();
 
                             bool add_pendingReferral = false;
 
@@ -827,27 +828,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             }
                             else if (pendingReferralDB == null && item.ID <= 0)
                             {
-                                pendingReferralDB = new PendingReferral();
-                                add_pendingReferral = true;
-
-                                //pendingReferralDB = _context.PendingReferrals.Where(p => p.FromCompanyId == item.FromCompanyId
-                                //                    && p.PatientVisitId == item.PatientVisitId
-                                //                    && p.FromDoctorId == item.FromDoctorId
-                                //                    && p.FromLocationId == item.FromLocationId
-                                //                    && p.ForSpecialtyId == item.ForSpecialtyId
-                                //                    && p.ForRoomTestId == item.ForRoomTestId
-                                //                    && p.ForRoomId == item.ForRoomId
-                                //                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                                //if (pendingReferralDB != null)
-                                //{
-                                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral data for procedure codes already exists.", ErrorLevel = ErrorLevel.Error };
-                                //}
-                                //else
-                                //{
-                                //    pendingReferralDB = new PendingReferral();
-                                //    add_pendingReferral = true;
-                                //}
+                                pendingReferralDB = _context.PendingReferrals.Where(p => p.PatientVisitId == item.PatientVisitId && p.ForSpecialtyId == item.ForSpecialtyId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                             .FirstOrDefault();
+                                if (pendingReferralDB == null)
+                                {
+                                    pendingReferralDB = new PendingReferral();
+                                    add_pendingReferral = true;
+                                }
                             }
 
                             pendingReferralDB.PatientVisitId = item.PatientVisitId;
