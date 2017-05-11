@@ -302,6 +302,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.CreateByUserID = Referral.CreateByUserID;
             ReferralListBO.UpdateByUserID = Referral.UpdateByUserID;
 
+            if (Referral.PendingReferral != null)
+            {
+                if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
+                {
+                    if (Referral.PendingReferral.PatientVisit2 != null)
+                    {
+                        if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
+                        {
+                            ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                        }
+                    }
+                    if (Referral.PendingReferral.PatientVisit2.Case != null)
+                    {
+                        if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                        {
+                            ReferralListBO.CaseId = Referral.PendingReferral.PatientVisit2.CaseId;
+                        }
+                    }
+                    if (Referral.PendingReferral.PatientVisit2.Patient2 != null)
+                    {
+                        if (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.Value == false))
+                        {
+                            ReferralListBO.PatientId = Referral.PendingReferral.PatientVisit2.PatientId;
+                        }
+
+                    }
+                }
+            }
+
             if (Referral.Company != null)
             {
                 if (Referral.Company.IsDeleted.HasValue == false || (Referral.Company.IsDeleted.HasValue == true && Referral.Company.IsDeleted.Value == false))
@@ -739,6 +768,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
+                                                .Include("PendingReferral")
+                                                .Include("PendingReferral.PatientVisit2")
+                                                .Include("PendingReferral.PatientVisit2.Case")
+                                                .Include("PendingReferral.PatientVisit2.Patient2")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
@@ -770,8 +803,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
-
         #region Get Referral By To Company Id
         public override object GetReferralByToCompanyId(int companyId)
         {
@@ -783,6 +814,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
+                                                .Include("PendingReferral")
+                                                .Include("PendingReferral.PatientVisit2")
+                                                .Include("PendingReferral.PatientVisit2.Case")
+                                                .Include("PendingReferral.PatientVisit2.Patient2")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
