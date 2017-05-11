@@ -204,19 +204,9 @@ export class PendingReferralsComponent implements OnInit {
 
     }
     assign() {
-        if (this.selectedOption !== 3) {
-            if (this.selectedOption !== 1) {
-                this.confirmationService.confirm({
-                    message: 'Do you want to Appoint Schedule?',
-                    header: 'Confirmation',
-                    icon: 'fa fa-question-circle',
-                    accept: () => {
-                        this.availableSlotsDialogVisible = true;
-                    }
-                });
-            } else {
-                //    this.checkUserSettings(this.selectedMedicalProviderId,this.selectedDoctorId)
-                if (this.userSetting.isCalendarPublic) {
+        if (this.selectedReferrals.length > 0) {
+            if (this.selectedOption !== 3) {
+                if (this.selectedOption !== 1) {
                     this.confirmationService.confirm({
                         message: 'Do you want to Appoint Schedule?',
                         header: 'Confirmation',
@@ -226,14 +216,29 @@ export class PendingReferralsComponent implements OnInit {
                         }
                     });
                 } else {
-                    // Directly Save Referral 
+                    //    this.checkUserSettings(this.selectedMedicalProviderId,this.selectedDoctorId)
+                    if (this.userSetting.isCalendarPublic) {
+                        this.confirmationService.confirm({
+                            message: 'Do you want to Appoint Schedule?',
+                            header: 'Confirmation',
+                            icon: 'fa fa-question-circle',
+                            accept: () => {
+                                this.availableSlotsDialogVisible = true;
+                            }
+                        });
+                    } else {
+                        // Directly Save Referral 
+                    }
+
                 }
 
+            } else {
+                // Directly Save Referral
             }
-
         } else {
-            // Directly Save Referral
+            this._notificationsService.alert('Oh No!', 'Please Select Referral!');
         }
+
     }
     // Code for available slots    
 
@@ -241,42 +246,50 @@ export class PendingReferralsComponent implements OnInit {
         this.selectedLocationId = event.target.value;
         let startDate: moment.Moment = moment();
         let endDate: moment.Moment = moment().add(7, 'days');
-        this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId, startDate, endDate)
-            .subscribe((availableSlots: AvailableSlot[]) => {
-                this.availableSlots = availableSlots;
-            },
-            (error) => {
-            },
-            () => {
-            });
+        if (this.selectedOption === 1) {
+            this._availableSlotsStore.getAvailableSlotsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId, startDate, endDate)
+                .subscribe((availableSlots: AvailableSlot[]) => {
+                    this.availableSlots = availableSlots;
+                },
+                (error) => {
+                },
+                () => {
+                });
+        } else if (this.selectedOption === 2) {
+            this._availableSlotsStore.getAvailableSlotsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId, startDate, endDate)
+                .subscribe((availableSlots: AvailableSlot[]) => {
+                    this.availableSlots = availableSlots;
+                },
+                (error) => {
+                },
+                () => {
+                });
+        }
+
     }
 
     setVisit(slotDetail: AvailableSingleSlot) {
-        if (this.selectedReferrals.length > 0) {
-            let selectedReffral: PendingReferralList = this.selectedReferrals[0];
-            let patientVisit: PatientVisit = new PatientVisit({
-                caseId: selectedReffral.caseId,
-                patientId: selectedReffral.patientId,
-                doctorId: this.selectedDoctorId,
-                locationId: this.selectedLocationId,
-                calendarEvent: new ScheduledEvent({
-                    eventStart: slotDetail.start,
-                    eventEnd: slotDetail.end
-                })
+        let selectedReffral: PendingReferralList = this.selectedReferrals[0];
+        let patientVisit: PatientVisit = new PatientVisit({
+            caseId: selectedReffral.caseId,
+            patientId: selectedReffral.patientId,
+            doctorId: this.selectedDoctorId,
+            locationId: this.selectedLocationId,
+            calendarEvent: new ScheduledEvent({
+                eventStart: slotDetail.start,
+                eventEnd: slotDetail.end
+            })
+        });
+        let result = this._patientVisitsStore.addPatientVisit(patientVisit);
+        result.subscribe(
+            (response) => {
+
+            },
+            (error) => {
+
+            },
+            () => {
             });
-            let result = this._patientVisitsStore.addPatientVisit(patientVisit);
-                result.subscribe(
-                    (response) => {
-                        
-                    },
-                    (error) => {
-                        
-                    },
-                    () => {
-                    });
-        } else {
-            this._notificationsService.alert('Oh No!', 'Please Select Referral!');
-        }
     }
 
     handleAvailableSlotsDialogShow() {
