@@ -2098,6 +2098,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetByRoomTestAndCompanyId(int roomTestId, int companyId, bool showAll, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByRoomTestAndCompanyId(roomTestId, companyId, showAll);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         public Object GenerateReferralDocument(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
@@ -2492,6 +2514,48 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetReferralByFromCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetReferralByFromCompanyId(companyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetReferralByToCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetReferralByToCompanyId(companyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         public Object GetByFromLocationId(int locationId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
@@ -2534,12 +2598,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByFromDoctorId(int doctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByFromDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByFromDoctorId(doctorId);
+                var gbdata = baseRepo.GetByFromDoctorAndCompanyId(doctorId, companyId);
 
                 return gbdata;
             }
@@ -2553,12 +2617,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByToDoctorId(int doctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByToDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByToDoctorId(doctorId);
+                var gbdata = baseRepo.GetByToDoctorAndCompanyId(doctorId, companyId);
 
                 return gbdata;
             }
@@ -2654,6 +2718,25 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetFreeSlotsForDoctorByLocationId(DoctorId, LocationId, StartDate, EndDate);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetFreeSlotsForRoomByLocationId(RoomId, LocationId, StartDate, EndDate);
 
                 return gbdata;
             }

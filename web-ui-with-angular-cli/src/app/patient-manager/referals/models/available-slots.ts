@@ -6,13 +6,13 @@ import { AvailableSingleSlot } from './available-single-slot';
 
 const AvailableSlotRecord = Record({
     forDate: null,
-    startEndTimes: []
+    startAndEndTimes: []
 });
 
 export class AvailableSlot extends AvailableSlotRecord {
 
     forDate: moment.Moment;
-    startEndTimes: AvailableSingleSlot[]
+    startAndEndTimes: AvailableSingleSlot[]
 
     constructor(props) {
         super(props);

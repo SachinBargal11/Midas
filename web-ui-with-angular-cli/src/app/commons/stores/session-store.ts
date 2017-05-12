@@ -138,7 +138,7 @@ export class SessionStore {
     }
     isOnlyDoctorRole() {
         let isOnlyDoctorRole: boolean = false;
-        let roles = this.session.user.roles;
+        let roles = this.session ? this.session.user.roles : null;
         if (roles) {
             if (roles.length === 1) {
                 let doctorRoleOnly = _.find(roles, (currentRole) => {

@@ -90,6 +90,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId);
         HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId);
         HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int companyId,bool showAll);
+        HttpResponseMessage GetByRoomTestAndCompanyId(HttpRequestMessage request, int roomTestId, int companyId, bool showAll);
         HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId);
         HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
         HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId);
@@ -107,14 +108,17 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetPendingReferralByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByFromCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByToCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetReferralByFromCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetReferralByToCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByFromLocationId(HttpRequestMessage request, int locationId);
         HttpResponseMessage GetByToLocationId(HttpRequestMessage request, int locationId);
-        HttpResponseMessage GetByFromDoctorId(HttpRequestMessage request, int doctorId);
-        HttpResponseMessage GetByToDoctorId(HttpRequestMessage request, int doctorId);
+        HttpResponseMessage GetByFromDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId);
+        HttpResponseMessage GetByToDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId);
         HttpResponseMessage GetByForRoomId(HttpRequestMessage request, int roomId);
         HttpResponseMessage GetByToRoomId(HttpRequestMessage request, int roomId);
         HttpResponseMessage GetByForSpecialtyId(HttpRequestMessage request, int specialtyId);
         HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId);
         HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate);
+        HttpResponseMessage GetFreeSlotsForRoomByLocationId(HttpRequestMessage request, int RoomId, int LocationId, DateTime StartDate, DateTime EndDate);
     }
 }

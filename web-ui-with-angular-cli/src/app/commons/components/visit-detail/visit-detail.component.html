@@ -28,6 +28,18 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <select formControlName="readingDoctor" class="select2-arrow form-control">
+                <option value="">-Select Reading Doctor-</option>
+                <option value="1">Dr.1</option>
+                <option value="2">Dr.2</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-4">
           <button [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
@@ -69,11 +81,11 @@
   </p-tabPanel>
 
   <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
-    <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
+    <app-referrals [selectedVisit]="selectedVisit" [routeFrom]="2" (save)="saveReferral($event)"></app-referrals>
   </p-tabPanel>
 
   <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
-    <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
+    <app-dignosis [selectedVisit]="selectedVisit" [routeFrom]="2" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
   </p-tabPanel>
 
   <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">

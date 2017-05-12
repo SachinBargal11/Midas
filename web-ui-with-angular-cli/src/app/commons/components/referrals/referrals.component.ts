@@ -44,6 +44,7 @@ export class ReferralsComponent implements OnInit {
   selectedTestId: number;
   msg: string;
 
+  @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<VisitReferral[]> = new EventEmitter();
   // @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
@@ -96,6 +97,7 @@ export class ReferralsComponent implements OnInit {
         _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
           _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
             this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+            this.proceduresList = _.union(this.proceduresList);
           })
         });
       },
@@ -136,7 +138,7 @@ export class ReferralsComponent implements OnInit {
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
-        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+        let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
           return currentProcedure.id;
         });
         let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
@@ -158,7 +160,7 @@ export class ReferralsComponent implements OnInit {
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
-        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+        let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
           return currentProcedure.id;
         });
         let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
@@ -210,13 +212,14 @@ export class ReferralsComponent implements OnInit {
             })
           }
         }
-        if (!flag) {
+        if (!flag && this.selectedOption === 1 && !this.selectedSpeciality.mandatoryProcCode) {
           selectedProcSpec = new Procedure({
             specialityId: this.selectedSpeciality.id,
             speciality: new Speciality(_.extend(this.selectedSpeciality.toJS()))
           });
           this.proceduresList.push(selectedProcSpec);
-        } else if (this.selectedOption === 2) {
+          this.proceduresList = _.union(this.proceduresList);
+        } else if (this.selectedOption === 2 || this.selectedSpeciality.mandatoryProcCode) {
           this.msg = 'Please, Select Procedure Codes.';
         } else if (this.selectedSpeciality == null) {
           this.msg = 'Please, Select Speciality.';
@@ -227,6 +230,7 @@ export class ReferralsComponent implements OnInit {
         // });
       }
     }
+    this.proceduresList;
     this.selectedProcedures = [];
   }
 
@@ -249,7 +253,7 @@ export class ReferralsComponent implements OnInit {
       return currentProc.specialityId
     })
     let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
-      return currentProc.specialityId
+      return currentProc.specialityId !== 0 ? currentProc.specialityId: null;
     })
     _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
@@ -280,7 +284,7 @@ export class ReferralsComponent implements OnInit {
       return currentProc.roomTestId
     })
     let uniqRoomTestIds = _.map(uniqRoomTest, (currentProc: Procedure) => {
-      return currentProc.roomTestId
+      return currentProc.roomTestId !== 0 ? currentProc.roomTestId : null;
     })
     _.forEach(uniqRoomTestIds, (currentRoomTestId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
@@ -297,7 +301,7 @@ export class ReferralsComponent implements OnInit {
           fromLocationId: this.selectedVisit.locationId,
           fromDoctorId: this.selectedVisit.doctorId,
           forSpecialtyId: null,
-          forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
+          forRoomId: null,
           forRoomTestId: currentRoomTestId,
           isReferralCreated: false,
           pendingReferralProcedureCode: procedureCodes

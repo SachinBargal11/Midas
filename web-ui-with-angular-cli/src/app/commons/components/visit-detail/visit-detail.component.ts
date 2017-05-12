@@ -69,6 +69,7 @@ export class VisitDetailComponent implements OnInit {
   private _url = `${environment.SERVICE_BASE_URL}`;
 
   @Input() selectedVisit: PatientVisit;
+  @Input() routeFrom: number;
 //   @Input() selectedVisitId: number;
   @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
   constructor(
@@ -89,7 +90,8 @@ export class VisitDetailComponent implements OnInit {
   ) {
     this.visitDetailForm = this._fb.group({
       notes: ['', Validators.required],
-      visitStatusId: ['']
+      visitStatusId: [''],
+      readingDoctor: ['']
     });
     this.visitDetailFormControls = this.visitDetailForm.controls;
   }

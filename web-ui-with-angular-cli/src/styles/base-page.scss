@@ -53,6 +53,14 @@ h6 {
 }
 
 body {
+    .ui-dialog {
+        .ui-dialog-titlebar {
+            .ui-dialog-title {
+                font-weight: bold;
+                font-size: 1em;
+            }
+        }
+    }
     .ui-widget-header {
         padding: 0;
         border: none;
@@ -70,13 +78,11 @@ body {
                         width: 100px;
                     }
                     &.inbound-column {
-                        border-right: 1px solid #c7c7c7 !important;
-                        // width: 38px;
+                        border-right: 1px solid #c7c7c7 !important; // width: 38px;
                     }
                     &.inbound-column-span {
                         border-right: 1px solid #c7c7c7 !important;
-                        text-align: center; 
-                        // width: 38px;
+                        text-align: center; // width: 38px;
                     }
                     &.ui-selection-column {
                         width: 38px;
@@ -160,9 +166,11 @@ body {
         font-weight: bold;
     }
 }
+
 .warningMsg {
     color: red;
 }
+
 .site-header {
     background-color: darkolivegreen;
 }

@@ -62,6 +62,7 @@ export class ProcedureCodeComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
+
     ) {
 
     }
@@ -88,7 +89,6 @@ export class ProcedureCodeComponent implements OnInit {
     }
 
     selectOption(event) {
-
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
@@ -111,10 +111,9 @@ export class ProcedureCodeComponent implements OnInit {
         this.msg = '';
     }
 
-
     loadProceduresForSpeciality(specialityId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
+        let result = this._procedureCodeMasterStore.getBySpecialityAndCompanyId(specialityId, this._sessionStore.session.currentCompany.id);
         result.subscribe(
             (procedures: Procedure[]) => {
 
@@ -139,7 +138,7 @@ export class ProcedureCodeComponent implements OnInit {
 
     loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+        let result = this._procedureCodeMasterStore.getByRoomTestAndCompanyId(roomTestId, this._sessionStore.session.currentCompany.id);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -169,9 +168,7 @@ export class ProcedureCodeComponent implements OnInit {
             this.selectedProcedures.forEach(currentId => {
                 this.selProcedureCodes.push({ 'id': currentId.id, 'amount': currentId.amount });
             });
-
             result = this._procedureCodeMasterStore.updateProcedureAmount(this.selProcedureCodes);
-
             result.subscribe(
                 (response) => {
 

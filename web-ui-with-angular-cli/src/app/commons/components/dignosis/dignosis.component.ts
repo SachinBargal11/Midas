@@ -27,6 +27,7 @@ export class DignosisComponent implements OnInit {
   selectedDiagnosis: DiagnosisCode[];
 
   @Input() selectedVisit: PatientVisit;
+  @Input() routeFrom: number;
   @Output() save: EventEmitter<DiagnosisCode[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
@@ -44,6 +45,7 @@ export class DignosisComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.routeFrom;
     this.loadAllDiagnosisTypes();
     this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
   }

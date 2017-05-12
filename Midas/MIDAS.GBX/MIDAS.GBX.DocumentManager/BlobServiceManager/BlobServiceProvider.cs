@@ -24,7 +24,17 @@ namespace MIDAS.GBX.DocumentManager
             throw new NotImplementedException();
         }
 
-        public virtual Object Download(int companyid,int documentid)
+        public virtual Object Upload(string blobPath, string file, int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Download(int companyid, int documentid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Merge(int companyid, object pdfFiles,string blobPath)
         {
             throw new NotImplementedException();
         }

@@ -1,0 +1,54 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form [formGroup]="settingsform" (ngSubmit)="save()">
+                <section class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-1">
+                                <label class="form-label"> Services
+                                        </label>                                
+                            </div> 
+                            <div class="col-lg-4">
+                                 <input type="checkbox" formControlName="services" name="services" value="Chiro"> Chiro <br>
+                                 <input type="checkbox" formControlName="services" name="services" value="PT"> PT <br>
+                                 <input type="checkbox" formControlName="services" name="services" value="Neuro"> Neuro <br>
+                                 <input type="checkbox" formControlName="services" name="services" value="Accupuncture"> Accupuncture <br>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">                           
+                            <div class="col-lg-2">
+                                <label class="form-label"> Primary Provider
+                                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="settingsformControls.primaryProvider.touched && !settingsformControls.primaryProvider.valid">
+                                    <select formControlName="primaryProvider" type="text" class="form-control" placeholder="" [class.error]="settingsformControls.primaryProvider.touched && !settingsformControls.primaryProvider.valid">
+                                        <option value="">-Select Primary Provider-</option>
+                                        <option disabled>────────────────────</option>
+                                        <option>Regina Moshe</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="settingsformControls.primaryProvider.touched && !settingsformControls.primaryProvider.valid">
+                                        <ul>
+                                            <li *ngIf="settingsformControls.primaryProvider.hasError('required')">Primary Provider is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">                  
+                            <div class="col-lg-4">
+                                <input type="checkbox" formControlName="primaryOffice" name="primaryOffice"> Is primary office for medical provider <br> 
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <button [disabled]="!settingsform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSaveProgress"></loader>
+                </button>
+                <!--<a [routerLink]="['/users']" class="btn btn-secondary">Cancel</a>-->
+            </form>
+        </div>
+    </div>
+</div>

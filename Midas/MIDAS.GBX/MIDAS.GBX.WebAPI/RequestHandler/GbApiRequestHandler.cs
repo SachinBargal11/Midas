@@ -1222,7 +1222,20 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-       
+
+        public HttpResponseMessage GetByRoomTestAndCompanyId(HttpRequestMessage request, int roomTestId, int companyId, bool showAll)
+        {
+            var objResult = dataAccessManager.GetByRoomTestAndCompanyId(roomTestId, companyId, showAll);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId)
         {
             var objResult = dataAccessManager.GetByPatientVisitId(patientVisitId);
@@ -1469,6 +1482,32 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetReferralByFromCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByFromCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetReferralByToCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByToCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByFromLocationId(HttpRequestMessage request, int locationId)
         {
             var objResult = dataAccessManager.GetByFromLocationId(locationId);
@@ -1495,9 +1534,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByFromDoctorId(HttpRequestMessage request, int doctorId)
+        public HttpResponseMessage GetByFromDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
         {
-            var objResult = dataAccessManager.GetByFromDoctorId(doctorId);
+            var objResult = dataAccessManager.GetByFromDoctorAndCompanyId(doctorId, companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1508,9 +1547,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByToDoctorId(HttpRequestMessage request, int doctorId)
+        public HttpResponseMessage GetByToDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
         {
-            var objResult = dataAccessManager.GetByToDoctorId(doctorId);
+            var objResult = dataAccessManager.GetByToDoctorAndCompanyId(doctorId, companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1586,5 +1625,17 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetFreeSlotsForRoomByLocationId(HttpRequestMessage request, int RoomId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            var objResult = dataAccessManager.GetFreeSlotsForRoomByLocationId(RoomId, LocationId, StartDate, EndDate);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

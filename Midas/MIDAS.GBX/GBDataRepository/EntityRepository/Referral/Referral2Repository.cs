@@ -274,6 +274,227 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region ReferralList Conversion
+        public T ConvertReferralList<T, U>(U entity)
+        {
+            Referral2 Referral = entity as Referral2;
+
+            if (Referral == null)
+                return default(T);
+
+            BO.Referral2List ReferralListBO = new BO.Referral2List();
+
+            ReferralListBO.ID = Referral.Id;
+            ReferralListBO.PendingReferralId = Referral.PendingReferralId;
+            ReferralListBO.FromCompanyId = Referral.FromCompanyId;
+            ReferralListBO.FromLocationId = Referral.FromLocationId;
+            ReferralListBO.FromDoctorId = Referral.FromDoctorId;
+            ReferralListBO.ForSpecialtyId = Referral.ForSpecialtyId;
+            ReferralListBO.ForRoomId = Referral.ForRoomId;
+            ReferralListBO.ForRoomTestId = Referral.ForRoomTestId;
+            ReferralListBO.ToCompanyId = Referral.ToCompanyId;
+            ReferralListBO.ToLocationId = Referral.ToLocationId;
+            ReferralListBO.ToDoctorId = Referral.ToDoctorId;
+            ReferralListBO.ToRoomId = Referral.ToRoomId;
+            ReferralListBO.ScheduledPatientVisitId = Referral.ScheduledPatientVisitId;
+            ReferralListBO.DismissedBy = Referral.DismissedBy;
+            ReferralListBO.IsDeleted = Referral.IsDeleted;
+            ReferralListBO.CreateByUserID = Referral.CreateByUserID;
+            ReferralListBO.UpdateByUserID = Referral.UpdateByUserID;
+
+            if (Referral.PendingReferral != null)
+            {
+                if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
+                {
+                    if (Referral.PendingReferral.PatientVisit2 != null)
+                    {
+                        if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
+                        {
+                            ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                        }
+                    }
+                    if (Referral.PendingReferral.PatientVisit2.Case != null)
+                    {
+                        if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                        {
+                            ReferralListBO.CaseId = Referral.PendingReferral.PatientVisit2.CaseId;
+                        }
+                    }
+                    if (Referral.PendingReferral.PatientVisit2.Patient2 != null)
+                    {
+                        if (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.Value == false))
+                        {
+                            ReferralListBO.PatientId = Referral.PendingReferral.PatientVisit2.PatientId;
+                        }
+
+                    }
+                }
+            }
+
+            if (Referral.Company != null)
+            {
+                if (Referral.Company.IsDeleted.HasValue == false || (Referral.Company.IsDeleted.HasValue == true && Referral.Company.IsDeleted.Value == false))
+                {
+                    ReferralListBO.FromCompanyName = Referral.Company.Name;
+                }
+            }
+
+            if (Referral.Company1 != null)
+            {
+                if (Referral.Company1.IsDeleted.HasValue == false || (Referral.Company1.IsDeleted.HasValue == true && Referral.Company1.IsDeleted.Value == false))
+                {
+                    ReferralListBO.ToCompanyName = Referral.Company1.Name;
+                }
+            }
+
+            if (Referral.Doctor != null)
+            {
+                if (Referral.Doctor.IsDeleted.HasValue == false || (Referral.Doctor.IsDeleted.HasValue == true && Referral.Doctor.IsDeleted.Value == false))
+                {
+                    ReferralListBO.FromDoctorFirstName = Referral.Doctor.User.FirstName;
+                    ReferralListBO.FromDoctorLastName = Referral.Doctor.User.LastName;
+                }
+            }
+
+            if (Referral.Doctor1 != null)
+            {
+                if (Referral.Doctor1.IsDeleted.HasValue == false || (Referral.Doctor1.IsDeleted.HasValue == true && Referral.Doctor1.IsDeleted.Value == false))
+                {
+                    ReferralListBO.ToDoctorFirstName = Referral.Doctor1.User.FirstName;
+                    ReferralListBO.ToDoctorLastName = Referral.Doctor1.User.LastName;
+                }
+            }
+
+            if (Referral.Location != null)
+            {
+                if (Referral.Location.IsDeleted.HasValue == false || (Referral.Location.IsDeleted.HasValue == true && Referral.Location.IsDeleted.Value == false))
+                {
+                    ReferralListBO.FromLocationName = Referral.Location.Name;
+                }
+            }
+
+            if (Referral.Location1 != null)
+            {
+                if (Referral.Location1.IsDeleted.HasValue == false || (Referral.Location1.IsDeleted.HasValue == true && Referral.Location1.IsDeleted.Value == false))
+                {
+                    ReferralListBO.ToLocationName = Referral.Location1.Name;
+                }
+            }
+
+            if (Referral.Room != null)
+            {
+                if (Referral.Room.IsDeleted.HasValue == false || (Referral.Room.IsDeleted.HasValue == true && Referral.Room.IsDeleted.Value == false))
+                {
+                    BO.Room boRoom = new BO.Room();
+                    using (RoomRepository cmp = new RoomRepository(_context))
+                    {
+                        boRoom = cmp.Convert<BO.Room, Room>(Referral.Room);
+                        boRoom.location = null;
+                        boRoom.schedule = null;
+                        ReferralListBO.Room = boRoom;
+                    }
+                }
+            }
+
+            if (Referral.Room1 != null)
+            {
+                if (Referral.Room1.IsDeleted.HasValue == false || (Referral.Room1.IsDeleted.HasValue == true && Referral.Room1.IsDeleted.Value == false))
+                {
+                    BO.Room boRoom = new BO.Room();
+                    using (RoomRepository cmp = new RoomRepository(_context))
+                    {
+                        boRoom = cmp.Convert<BO.Room, Room>(Referral.Room1);
+                        boRoom.location = null;
+                        boRoom.schedule = null;
+                        ReferralListBO.Room1 = boRoom;
+                    }
+                }
+            }
+
+            if (Referral.RoomTest != null)
+            {
+                if (Referral.RoomTest.IsDeleted.HasValue == false || (Referral.RoomTest.IsDeleted.HasValue == true && Referral.RoomTest.IsDeleted.Value == false))
+                {
+                    BO.RoomTest boRoomTest = new BO.RoomTest();
+                    using (RoomTestRepository cmp = new RoomTestRepository(_context))
+                    {
+                        boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(Referral.RoomTest);
+                        boRoomTest.rooms = null;
+                        ReferralListBO.RoomTest = boRoomTest;
+                    }
+                }
+            }
+
+            if (Referral.Specialty != null)
+            {
+                if (Referral.Specialty.IsDeleted.HasValue == false || (Referral.Specialty.IsDeleted.HasValue == true && Referral.Specialty.IsDeleted.Value == false))
+                {
+                    BO.Specialty boSpecialty = new BO.Specialty();
+                    using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                    {
+                        boSpecialty = cmp.Convert<BO.Specialty, Specialty>(Referral.Specialty);
+                        boSpecialty.SpecialtyDetails = null;
+                        ReferralListBO.Specialty = boSpecialty;
+                    }
+                }
+            }
+
+            //if (Referral.User != null)
+            //{
+            //    if (Referral.User.IsDeleted.HasValue == false || (Referral.User.IsDeleted.HasValue == true && Referral.User.IsDeleted.Value == false))
+            //    {
+            //        BO.User boUser = new BO.User();
+            //        using (UserRepository cmp = new UserRepository(_context))
+            //        {
+            //            boUser = cmp.Convert<BO.User, User>(Referral.User);
+            //            ReferralListBO.User = boUser;
+            //        }
+            //    }
+            //}
+
+            ReferralListBO.ReferralProcedureCode = new List<BO.ReferralProcedureCode>();
+
+            if (Referral.ReferralProcedureCodes != null)
+            {
+                foreach (var eachReferralProcedureCodes in Referral.ReferralProcedureCodes)
+                {
+                    if (eachReferralProcedureCodes.IsDeleted.HasValue == false || (eachReferralProcedureCodes.IsDeleted.HasValue == true && eachReferralProcedureCodes.IsDeleted.Value == false))
+                    {
+                        BO.ReferralProcedureCode referralProcedureCode = new BO.ReferralProcedureCode();
+
+                        referralProcedureCode.ID = eachReferralProcedureCodes.Id;
+                        referralProcedureCode.ReferralId = eachReferralProcedureCodes.ReferralId;
+                        referralProcedureCode.ProcedureCodeId = eachReferralProcedureCodes.ProcedureCodeId;
+
+                        
+                        if (eachReferralProcedureCodes.ProcedureCode != null)
+                        {
+                            if (eachReferralProcedureCodes.ProcedureCode.IsDeleted.HasValue == false || (eachReferralProcedureCodes.ProcedureCode.IsDeleted.HasValue == true && eachReferralProcedureCodes.ProcedureCode.IsDeleted.Value == false))
+                            {
+                                BO.ProcedureCode boProcedureCode = new BO.ProcedureCode();
+
+                                boProcedureCode.ID = eachReferralProcedureCodes.ProcedureCode.Id;
+                                boProcedureCode.ProcedureCodeText = eachReferralProcedureCodes.ProcedureCode.ProcedureCodeText;
+                                boProcedureCode.ProcedureCodeDesc = eachReferralProcedureCodes.ProcedureCode.ProcedureCodeDesc;
+                                boProcedureCode.Amount = eachReferralProcedureCodes.ProcedureCode.Amount;
+                                boProcedureCode.CompanyId = eachReferralProcedureCodes.ProcedureCode.CompanyId;
+                                boProcedureCode.SpecialityId = eachReferralProcedureCodes.ProcedureCode.SpecialityId;
+                                boProcedureCode.RoomId = eachReferralProcedureCodes.ProcedureCode.RoomId;
+                                boProcedureCode.RoomTestId = eachReferralProcedureCodes.ProcedureCode.RoomTestId;
+
+                                referralProcedureCode.ProcedureCode = boProcedureCode;
+                            }
+                        }
+
+                        ReferralListBO.ReferralProcedureCode.Add(referralProcedureCode);
+                    }
+                }
+            }
+
+            return (T)(object)ReferralListBO;
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -292,85 +513,95 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (referralBO != null)
             {
-                referralDB = _context.Referral2.Where(p => p.Id == referralBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                bool add_referral = false;
-
-                if (referralDB == null && referralBO.ID > 0)
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Referral data.", ErrorLevel = ErrorLevel.Error };
-                }
-                else if (referralDB == null && referralBO.ID <= 0)
-                {
-                    referralDB = new Referral2();
-                    add_referral = true;
-                }
+                    referralDB = _context.Referral2.Where(p => p.Id == referralBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                referralDB.PendingReferralId = referralBO.PendingReferralId;
-                referralDB.FromCompanyId = referralBO.FromCompanyId;
-                referralDB.FromLocationId = referralBO.FromLocationId;
-                referralDB.FromDoctorId = referralBO.FromDoctorId;
-                referralDB.ForSpecialtyId = referralBO.ForSpecialtyId;
-                referralDB.ForRoomId = referralBO.ForRoomId;
-                referralDB.ForRoomTestId = referralBO.ForRoomTestId;
-                referralDB.ToCompanyId = referralBO.ToCompanyId;
-                referralDB.ToLocationId = referralBO.ToLocationId;
-                referralDB.ToDoctorId = referralBO.ToDoctorId;
-                referralDB.ToRoomId = referralBO.ToRoomId;
-                //referralDB.ScheduledPatientVisitId = referralBO.ScheduledPatientVisitId;
-                referralDB.DismissedBy = referralBO.DismissedBy;
+                    bool add_referral = false;
 
-                if (add_referral == true)
-                {
-                    referralDB = _context.Referral2.Add(referralDB);
-                }
-                _context.SaveChanges();
-
-
-                #region PendingReferralProcedureCode
-
-                if (ReferralProcedureCodeBOList == null || (ReferralProcedureCodeBOList != null && ReferralProcedureCodeBOList.Count <= 0))
-                {
-                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
-                }
-                else
-                {
-                    int ReferralId = referralDB.Id;
-                    List<int> NewProcedureCodeIds = ReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
-
-                    List<ReferralProcedureCode> ReomveProcedureCodeDB = new List<ReferralProcedureCode>();
-                    ReomveProcedureCodeDB = _context.ReferralProcedureCodes.Where(p => p.ReferralId == ReferralId
-                                                                                    && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
-                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                               .ToList();
-
-                    ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
-
-                    _context.SaveChanges();
-
-                    foreach (BO.ReferralProcedureCode eachReferralProcedureCode in ReferralProcedureCodeBOList)
+                    if (referralDB == null && referralBO.ID > 0)
                     {
-                        ReferralProcedureCode AddProcedureCodeDB = new ReferralProcedureCode();
-                        AddProcedureCodeDB = _context.ReferralProcedureCodes.Where(p => p.ReferralId == ReferralId
-                                                                                    && p.ProcedureCodeId == eachReferralProcedureCode.ProcedureCodeId
-                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                               .FirstOrDefault();
-
-                        if (AddProcedureCodeDB == null)
-                        {
-                            AddProcedureCodeDB = new ReferralProcedureCode();
-
-                            AddProcedureCodeDB.ReferralId = ReferralId;
-                            AddProcedureCodeDB.ProcedureCodeId = eachReferralProcedureCode.ProcedureCodeId;
-
-                            _context.ReferralProcedureCodes.Add(AddProcedureCodeDB);
-                        }
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Referral data.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else if (referralDB == null && referralBO.ID <= 0)
+                    {
+                        referralDB = new Referral2();
+                        add_referral = true;
                     }
 
-                    _context.SaveChanges();
-                }
-                #endregion
+                    referralDB.PendingReferralId = referralBO.PendingReferralId;
+                    referralDB.FromCompanyId = referralBO.FromCompanyId;
+                    referralDB.FromLocationId = referralBO.FromLocationId;
+                    referralDB.FromDoctorId = referralBO.FromDoctorId;
+                    referralDB.ForSpecialtyId = referralBO.ForSpecialtyId;
+                    referralDB.ForRoomId = referralBO.ForRoomId;
+                    referralDB.ForRoomTestId = referralBO.ForRoomTestId;
+                    referralDB.ToCompanyId = referralBO.ToCompanyId;
+                    referralDB.ToLocationId = referralBO.ToLocationId;
+                    referralDB.ToDoctorId = referralBO.ToDoctorId;
+                    referralDB.ToRoomId = referralBO.ToRoomId;
+                    //referralDB.ScheduledPatientVisitId = referralBO.ScheduledPatientVisitId;
+                    referralDB.DismissedBy = referralBO.DismissedBy;
 
+                    if (add_referral == true)
+                    {
+                        referralDB = _context.Referral2.Add(referralDB);
+                    }
+                    _context.SaveChanges();
+
+                    #region ReferralProcedureCode
+                    if (ReferralProcedureCodeBOList == null || (ReferralProcedureCodeBOList != null && ReferralProcedureCodeBOList.Count <= 0))
+                    {
+                        //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        int ReferralId = referralDB.Id;
+                        List<int> NewProcedureCodeIds = ReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
+
+                        List<ReferralProcedureCode> ReomveProcedureCodeDB = new List<ReferralProcedureCode>();
+                        ReomveProcedureCodeDB = _context.ReferralProcedureCodes.Where(p => p.ReferralId == ReferralId
+                                                                                        && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                   .ToList();
+
+                        ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                        _context.SaveChanges();
+
+                        foreach (BO.ReferralProcedureCode eachReferralProcedureCode in ReferralProcedureCodeBOList)
+                        {
+                            ReferralProcedureCode AddProcedureCodeDB = new ReferralProcedureCode();
+                            AddProcedureCodeDB = _context.ReferralProcedureCodes.Where(p => p.ReferralId == ReferralId
+                                                                                        && p.ProcedureCodeId == eachReferralProcedureCode.ProcedureCodeId
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                   .FirstOrDefault();
+
+                            if (AddProcedureCodeDB == null)
+                            {
+                                AddProcedureCodeDB = new ReferralProcedureCode();
+
+                                AddProcedureCodeDB.ReferralId = ReferralId;
+                                AddProcedureCodeDB.ProcedureCodeId = eachReferralProcedureCode.ProcedureCodeId;
+
+                                _context.ReferralProcedureCodes.Add(AddProcedureCodeDB);
+                            }
+                        }
+
+                        _context.SaveChanges();
+                    }
+                    #endregion
+
+                    //Set Pending Referral IsReferralCreated = true
+                    var PendingReferral = _context.PendingReferrals.Where(p => p.Id == referralDB.PendingReferralId).FirstOrDefault();
+                    if (PendingReferral != null)
+                    {
+                        PendingReferral.IsReferralCreated = true;
+                        _context.SaveChanges();
+                    }
+
+                    dbContextTransaction.Commit();
+                }
             }
             else
             {
@@ -526,6 +757,98 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Get Referral By From CompanyId
+        public override object GetReferralByFromCompanyId(int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("PendingReferral")
+                                                .Include("PendingReferral.PatientVisit2")
+                                                .Include("PendingReferral.PatientVisit2.Case")
+                                                .Include("PendingReferral.PatientVisit2.Patient2")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+
+                                               .Where(p => p.FromCompanyId == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.Referral2List, Referral2>(EachReferral));
+                }
+
+            }
+
+            return boReferral;
+        }
+        #endregion
+
+        #region Get Referral By To Company Id
+        public override object GetReferralByToCompanyId(int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("PendingReferral")
+                                                .Include("PendingReferral.PatientVisit2")
+                                                .Include("PendingReferral.PatientVisit2.Case")
+                                                .Include("PendingReferral.PatientVisit2.Patient2")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+
+                                               .Where(p => p.ToCompanyId == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.Referral2List, Referral2>(EachReferral));
+                }
+
+            }
+
+            return boReferral;
+        }
+        #endregion
+
         #region Get By From LocationId
         public override object GetByFromLocationId(int locationId)
         {
@@ -614,8 +937,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By From Doctor Id
-        public override object GetByFromDoctorId(int doctorId)
+        #region Get By From Doctor And Company Id
+        public override object GetByFromDoctorAndCompanyId(int doctorId, int companyId)
         {
             var referralDB = _context.Referral2.Include("Company")
                                                 .Include("Company1")
@@ -634,15 +957,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("User")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
-
-                                               .Where(p => p.FromDoctorId == doctorId
+                                                .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                                .ToList<Referral2>();
 
             List<BO.Referral2> boReferral = new List<BO.Referral2>();
             if (referralDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
@@ -658,8 +980,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By To Doctor Id
-        public override object GetByToDoctorId(int doctorId)
+        #region Get By To Doctor And Company Id
+        public override object GetByToDoctorAndCompanyId(int doctorId, int companyId)
         {
             var referralDB = _context.Referral2.Include("Company")
                                                 .Include("Company1")
@@ -678,15 +1000,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("User")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
-
-                                               .Where(p => p.ToDoctorId == doctorId
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                                .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Referral2>();
 
             List<BO.Referral2> boReferral = new List<BO.Referral2>();
             if (referralDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {

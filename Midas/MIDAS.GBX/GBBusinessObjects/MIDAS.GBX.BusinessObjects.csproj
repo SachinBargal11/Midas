@@ -84,6 +84,7 @@
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
     <Compile Include="DocumentInfo\Document.cs" />
+    <Compile Include="DocumentManager\DocumentManager.cs" />
     <Compile Include="DocumentNodeObjectMapping\DocumentNodeObjectMapping.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="ErrorObject.cs" />
