@@ -40,9 +40,9 @@ export class PendingReferralStore {
         return this._pendingReferralsList.asObservable();
     }
 
-    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number): Observable<PrefferedMedicalProvider[]> {
+    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number, specialityId:number, roomTestId:number): Observable<PrefferedMedicalProvider[]> {
         let promise = new Promise((resolve, reject) => {
-            this._pendingReferralService.getPreferredCompanyDoctorsAndRoomByCompanyId(companyId)
+            this._pendingReferralService.getPreferredCompanyDoctorsAndRoomByCompanyId(companyId,specialityId,roomTestId)
                 .subscribe((prefferedMedicalProvider: PrefferedMedicalProvider[]) => {
                     resolve(prefferedMedicalProvider);
                 }, error => {
@@ -107,6 +107,21 @@ export class PendingReferralStore {
         return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
     }
     //Outbound end
+
+
+      deletePendingReferral(pendingReferralList: PendingReferralList): Observable<PendingReferralList> {
+        let pendingReferral = this._pendingReferralsList.getValue();
+        let index = pendingReferral.findIndex((currentPendingReferral: PendingReferralList) => currentPendingReferral.id === pendingReferralList.id);
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.deletePendingReferral(pendingReferralList).subscribe((pendingReferralList: PendingReferralList) => {
+                this._pendingReferralsList.next(pendingReferral.delete(index));
+                resolve(pendingReferralList);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PendingReferralList>>Observable.from(promise);
+    }
 
 }
 

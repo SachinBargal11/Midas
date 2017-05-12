@@ -44,9 +44,9 @@ export class PendingReferralService {
     //     return <Observable<PendingReferral>>Observable.fromPromise(promise);
     // }
 
-    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number): Observable<PrefferedMedicalProvider[]> {
+    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number,specialityId:Number, roomTestId:Number): Observable<PrefferedMedicalProvider[]> {
         let promise: Promise<PrefferedMedicalProvider[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId).map(res => res.json())
+            return this._http.get(this._url + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId + '/' + specialityId + '/' + roomTestId).map(res => res.json())
                 .subscribe((data: any) => {
                     let prefferedMedicalProvider: PrefferedMedicalProvider[] = [];
                     if (_.isArray(data)) {
@@ -134,4 +134,21 @@ export class PendingReferralService {
         return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
     }
     //Outbound end
+
+    deletePendingReferral(pendingReferralList: PendingReferralList): Observable<PendingReferralList> {
+        let userId = this._sessionStore.session.user.id;
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PendingReferral/dismissPendingReferral/' + pendingReferralList.id + '/' + userId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedPendingReferral: PendingReferralList = null;
+                    parsedPendingReferral = PendingReferralListAdapter.parseResponse(data);
+                    resolve(parsedPendingReferral);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PendingReferralList>>Observable.from(promise);
+    }
 }
