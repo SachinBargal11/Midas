@@ -45,7 +45,7 @@ export class PendingReferralService {
     //     return <Observable<PendingReferral>>Observable.fromPromise(promise);
     // }
 
-    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number,specialityId:Number, roomTestId:Number): Observable<PrefferedMedicalProvider[]> {
+    getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number, specialityId: Number, roomTestId: Number): Observable<PrefferedMedicalProvider[]> {
         let promise: Promise<PrefferedMedicalProvider[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId + '/' + specialityId + '/' + roomTestId).map(res => res.json())
                 .subscribe((data: any) => {
@@ -121,7 +121,7 @@ export class PendingReferralService {
 
     getReferralsByReferringUserId(userId: Number, companyId: Number): Observable<PendingReferral[]> {
         let promise: Promise<PendingReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Referral2/getByFromDoctorAndCompanyId/' + userId + '/' + companyId)
+            return this._http.get(this._url + '/Referral2/getReferralByFromDoctorAndCompanyId/' + userId + '/' + companyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
@@ -140,11 +140,11 @@ export class PendingReferralService {
     //inbound
     getReferralsByReferredToCompanyId(comapanyId: Number): Observable<InboundOutboundList[]> {
         let promise: Promise<InboundOutboundList[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Referral2/getByReferredToCompanyId/' + comapanyId)
+            return this._http.get(this._url + '/Referral2/getReferralByToCompanyId/' + comapanyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
-                        return PendingReferralAdapter.parseResponse(data);
+                        return InboundOutboundReferralAdapter.parseResponse(data);
                     });
                     resolve(referrals);
                 }, (error) => {
@@ -156,7 +156,7 @@ export class PendingReferralService {
 
     getReferralsByReferredToDoctorId(doctorId: Number): Observable<PendingReferral[]> {
         let promise: Promise<PendingReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Referral2/getByReferredToDoctorId/' + doctorId)
+            return this._http.get(this._url + '/Referral2/getReferralByToDoctorAndCompanyId/' + doctorId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
