@@ -666,6 +666,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AssociateVisitWithReferral(int ReferralId, int PatientVisitId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

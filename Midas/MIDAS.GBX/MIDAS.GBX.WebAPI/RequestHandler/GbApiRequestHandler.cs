@@ -1637,5 +1637,18 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage AssociateVisitWithReferral(HttpRequestMessage request, int ReferralId, int PatientVisitId)
+        {
+            var objResult = dataAccessManager.AssociateVisitWithReferral(ReferralId, PatientVisitId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }
