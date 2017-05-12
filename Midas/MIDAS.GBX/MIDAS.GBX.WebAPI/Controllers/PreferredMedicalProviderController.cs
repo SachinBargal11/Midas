@@ -79,11 +79,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getPreferredCompanyDoctorsAndRoomByCompanyId/{CompanyId}")]
+        [Route("getPreferredCompanyDoctorsAndRoomByCompanyId/{CompanyId}/{SpecialityId}/{RoomTestId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId)
         {
-            return requestHandler.GetPreferredCompanyDoctorsAndRoomByCompanyId(Request, CompanyId);
+            return requestHandler.GetPreferredCompanyDoctorsAndRoomByCompanyId(Request, CompanyId, SpecialityId, RoomTestId);
         }
 
         protected override void Dispose(bool disposing)

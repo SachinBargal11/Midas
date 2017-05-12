@@ -586,7 +586,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        public virtual Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId)
         {
             throw new NotImplementedException();
         }
