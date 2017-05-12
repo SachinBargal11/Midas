@@ -528,6 +528,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
+            if (Referral.PendingReferral.PatientVisit2.Case != null)
+            {
+                if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                {
+                    BO.Case boCase = new BO.Case();
+                    using (CaseRepository cmp = new CaseRepository(_context))
+                    {
+                        boCase = cmp.Convert<BO.Case, Case>(Referral.PendingReferral.PatientVisit2.Case);
+                        boCase.PatientEmpInfo = null;
+                        boCase.Patient2 = null;
+                        boCase.Referrals = null;
+                        ReferralListBO.Case = boCase;
+                    }
+                }
+            }
+
             return (T)(object)ReferralListBO;
         }
         #endregion

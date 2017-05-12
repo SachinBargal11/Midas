@@ -209,5 +209,8 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("referralDocument")]
         public List<ReferralDocument> ReferralDocument { get; set; }
+
+        [JsonProperty("case")]
+        public Case Case { get; set; }
     }
 }
