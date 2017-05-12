@@ -528,21 +528,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
-            if (Referral.PendingReferral.PatientVisit2.Case != null)
+            if(Referral.PendingReferral!=null)
             {
-                if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                if (Referral.PendingReferral.PatientVisit2.Case != null)
                 {
-                    BO.Case boCase = new BO.Case();
-                    using (CaseRepository cmp = new CaseRepository(_context))
+                    if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
                     {
-                        boCase = cmp.Convert<BO.Case, Case>(Referral.PendingReferral.PatientVisit2.Case);
-                        boCase.PatientEmpInfo = null;
-                        boCase.Patient2 = null;
-                        boCase.Referrals = null;
-                        ReferralListBO.Case = boCase;
+                        BO.Case boCase = new BO.Case();
+                        using (CaseRepository cmp = new CaseRepository(_context))
+                        {
+                            boCase = cmp.Convert<BO.Case, Case>(Referral.PendingReferral.PatientVisit2.Case);
+                            boCase.PatientEmpInfo = null;
+                            boCase.Patient2 = null;
+                            boCase.Referrals = null;
+                            ReferralListBO.Case = boCase;
+                        }
                     }
                 }
             }
+            
 
             return (T)(object)ReferralListBO;
         }
@@ -1070,6 +1074,99 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 foreach (var EachReferral in referralDB)
                 {
                     boReferral.Add(Convert<BO.Referral2, Referral2>(EachReferral));
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+        #region Get Referral By From Doctor And Company Id
+        public override object GetReferralByFromDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("PendingReferral")
+                                                .Include("PendingReferral.PatientVisit2")
+                                                .Include("PendingReferral.PatientVisit2.Case")
+                                                .Include("PendingReferral.PatientVisit2.Patient2")
+                                                .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+                                                .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Referral2>();
+
+            List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.Referral2List, Referral2>(EachReferral));
+                   
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+        #region Get Referral By To Doctor And Company Id
+        public override object GetReferralByToDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                                .Include("Company1")
+                                                .Include("Location")
+                                                .Include("Location1")
+                                                .Include("Doctor")
+                                                .Include("Doctor.User")
+                                                .Include("Doctor1")
+                                                .Include("Doctor1.User")
+                                                .Include("PendingReferral")
+                                                .Include("PendingReferral.PatientVisit2")
+                                                .Include("PendingReferral.PatientVisit2.Case")
+                                                .Include("PendingReferral.PatientVisit2.Patient2")
+                                                .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                                .Include("Room")
+                                                .Include("Room1")
+                                                .Include("RoomTest")
+                                                .Include("Specialty")
+                                                .Include("User")
+                                                .Include("ReferralProcedureCodes")
+                                                .Include("ReferralProcedureCodes.ProcedureCode")
+                                                .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Referral2>();
+
+            List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.Referral2List, Referral2>(EachReferral));
                 }
 
             }
