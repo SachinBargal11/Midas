@@ -50,12 +50,15 @@ namespace MIDAS.GBX.DocumentManager
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }
         }
 
-        public HttpResponseMessage MergeDocuments(int companyid, object pdfFiles, string blobPath)
+        public HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles, string blobPath)
         {
             var objResult = new Object();
             serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(companyid, _context);
-            serviceProvider.Merge(companyid, pdfFiles, blobPath);
-            return new HttpResponseMessage();
+            objResult = serviceProvider.Merge(companyid, pdfFiles, blobPath);
+            if (objResult != null)
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            else
+                return request.CreateResponse(HttpStatusCode.NotFound, objResult);
         }
     }
 }

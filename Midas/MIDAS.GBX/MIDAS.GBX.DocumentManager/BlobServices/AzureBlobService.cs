@@ -81,8 +81,9 @@ namespace MIDAS.GBX.DocumentManager
         }
 
         public override Object Merge(int companyId, object pdfFiles, string blobPath)
-        {            
-            using (FileStream stream = new FileStream(HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath)), FileMode.Create))
+        {
+            string tempUploadPath = HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath));
+            using (FileStream stream = new FileStream(tempUploadPath, FileMode.Create))
             {
                 PdfReader reader = null;
                 Document sourceDocument = new Document();
@@ -97,7 +98,7 @@ namespace MIDAS.GBX.DocumentManager
                 lstfiles.ForEach(file =>
                                 {
                                     util.ContainerName = "company-" + companyId;
-                                    string path = util.getBlob(file, _context);
+                                    string path = util.getBlob(file);
                                     CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(path);
                                     var ms = new MemoryStream();
                                     _cblob.DownloadToStream(ms);
@@ -111,11 +112,28 @@ namespace MIDAS.GBX.DocumentManager
                             );
                 copy.Close();            
             }
+            var blobURL = this.Upload(blobPath, tempUploadPath, companyId);
+            return (object)blobURL;
+        }
 
-            return new object();
-        }        
+        public override Object Upload(string blobPath, string serverPath, int companyId)
+        {
+            util.ContainerName = "company-" + companyId;
 
-        // public 
+            try
+            {
+                Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
+
+                Cloudblob.UploadFromFile(serverPath);                    
+                
+            }
+            catch (Exception er)
+            {
+                return (Object)"Unable to upload";
+            }
+
+            return (Object)Cloudblob.Uri.AbsoluteUri;
+        }
 
         public bool DeleteBlob(string blobName)
         {
