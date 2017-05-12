@@ -81,21 +81,19 @@ namespace MIDAS.GBX.DocumentManager
         }
 
         public override Object Merge(int companyId, object pdfFiles, string blobPath)
-        {
-            PdfReader reader = null;
-            Document sourceDocument = new Document();               
-            sourceDocument.Open();
-            List<string> lstfiles = pdfFiles as List<string>;
-            util.ContainerName = "company-" + companyId;
-            Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
-
-            //using (FileStream stream = new FileStream(Cloudblob.Uri.AbsolutePath, FileMode.Create))
-            using (FileStream stream = new FileStream(HttpContext.Current.Server.MapPath("~/App_data/uploads/"+Path.GetFileName(blobPath)), FileMode.Create)) 
+        {            
+            using (FileStream stream = new FileStream(HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath)), FileMode.Create))
             {
+                PdfReader reader = null;
+                Document sourceDocument = new Document();
+                List<string> lstfiles = pdfFiles as List<string>;
+                util.ContainerName = "company-" + companyId;
+                Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
+
+                PdfWriter writer = PdfWriter.GetInstance(sourceDocument, stream);                
                 PdfSmartCopy copy = new PdfSmartCopy(sourceDocument, stream);
-                PdfWriter writer = PdfWriter.GetInstance(sourceDocument, stream);
-                PdfImportedPage page = null;
-                
+                sourceDocument.Open();
+
                 lstfiles.ForEach(file =>
                                 {
                                     util.ContainerName = "company-" + companyId;
@@ -106,33 +104,18 @@ namespace MIDAS.GBX.DocumentManager
                                     long fileByteLength = _cblob.Properties.Length;
                                     byte[] fileContents = new byte[fileByteLength];
                                     _cblob.DownloadToByteArray(fileContents, 0);
-
                                     reader = new PdfReader(fileContents);
-                                    for (int i = 0; i < reader.NumberOfPages; i++)
-                                    {
-                                        page = writer.GetImportedPage(reader, i + 1);
-                                        copy.AddPage(page);
-                                    }
+                                    copy.AddDocument(reader);
                                     reader.Close();
                                 }
                             );
-                copy.Close();
-                writer.Close();
+                copy.Close();            
             }
 
             return new object();
-        }
+        }        
 
-        private int get_pageCcount(string file)
-        {
-            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
-            {
-                Regex regex = new Regex(@"/Type\s*/Page[^s]");
-                MatchCollection matches = regex.Matches(sr.ReadToEnd());
-
-                return matches.Count;
-            }
-        }
+        // public 
 
         public bool DeleteBlob(string blobName)
         {
