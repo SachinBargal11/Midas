@@ -2624,11 +2624,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReferralDocuments_Referral_ReferralId">
-          <End Role="Referral" Type="Self.Referral" Multiplicity="1" />
+        <Association Name="FK_ReferralDocuments_Referral2_ReferralId">
+          <End Role="Referral2" Type="Self.Referral2" Multiplicity="1" />
           <End Role="ReferralDocuments" Type="Self.ReferralDocuments" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Referral">
+            <Principal Role="Referral2">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ReferralDocuments">
@@ -3463,8 +3463,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
             <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReferralDocuments_Referral_ReferralId" Association="Self.FK_ReferralDocuments_Referral_ReferralId">
-            <End Role="Referral" EntitySet="Referral" />
+          <AssociationSet Name="FK_ReferralDocuments_Referral2_ReferralId" Association="Self.FK_ReferralDocuments_Referral2_ReferralId">
+            <End Role="Referral2" EntitySet="Referral2" />
             <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
@@ -4571,7 +4571,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Referral_RoomTest_ReferredToRoomTestId" FromRole="Referral" ToRole="RoomTest" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_Referral_Specialty_ReferredToSpecialtyId" FromRole="Referral" ToRole="Specialty" />
           <NavigationProperty Name="User" Relationship="Self.FK_Referral_User_ReferringUserId" FromRole="Referral" ToRole="User" />
-          <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_Referral_ReferralId" FromRole="Referral" ToRole="ReferralDocuments" />
         </EntityType>
         <EntityType Name="Referral2">
           <Key>
@@ -4609,6 +4608,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Referral2_RoomTest_ForRoomTestId" FromRole="Referral2" ToRole="RoomTest" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_Referral2_Specialty_ForSpecialtyId" FromRole="Referral2" ToRole="Specialty" />
           <NavigationProperty Name="User" Relationship="Self.FK_Referral2_User_DismissedBy" FromRole="Referral2" ToRole="User" />
+          <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_Referral2_ReferralId" FromRole="Referral2" ToRole="ReferralDocuments" />
           <NavigationProperty Name="ReferralProcedureCodes" Relationship="Self.FK_ReferralProcedureCodes_Referral2_ReferralId" FromRole="Referral2" ToRole="ReferralProcedureCodes" />
         </EntityType>
         <EntityType Name="ReferralDocument">
@@ -4625,7 +4625,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="ReferralDocuments" ToRole="MidasDocuments" />
-          <NavigationProperty Name="Referral" Relationship="Self.FK_ReferralDocuments_Referral_ReferralId" FromRole="ReferralDocuments" ToRole="Referral" />
+          <NavigationProperty Name="Referral2" Relationship="Self.FK_ReferralDocuments_Referral2_ReferralId" FromRole="ReferralDocuments" ToRole="Referral2" />
         </EntityType>
         <EntityType Name="ReferralProcedureCode">
           <Key>
@@ -6514,18 +6514,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ReferralDocuments_Referral_ReferralId">
-          <End Role="Referral" Type="Self.Referral" Multiplicity="1" />
-          <End Role="ReferralDocuments" Type="Self.ReferralDocument" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Referral">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ReferralDocuments">
-              <PropertyRef Name="ReferralId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Referral2_Room_ForRoomId">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="Referral2" Type="Self.Referral2" Multiplicity="*" />
@@ -6583,6 +6571,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Referral2">
               <PropertyRef Name="DismissedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReferralDocuments_Referral2_ReferralId">
+          <End Role="Referral2" Type="Self.Referral2" Multiplicity="1" />
+          <End Role="ReferralDocuments" Type="Self.ReferralDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Referral2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReferralDocuments">
+              <PropertyRef Name="ReferralId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7300,10 +7300,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="Referral" EntitySet="Referrals" />
           </AssociationSet>
-          <AssociationSet Name="FK_ReferralDocuments_Referral_ReferralId" Association="Self.FK_ReferralDocuments_Referral_ReferralId">
-            <End Role="Referral" EntitySet="Referrals" />
-            <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
-          </AssociationSet>
           <AssociationSet Name="FK_Referral2_Room_ForRoomId" Association="Self.FK_Referral2_Room_ForRoomId">
             <End Role="Room" EntitySet="Rooms" />
             <End Role="Referral2" EntitySet="Referral2" />
@@ -7323,6 +7319,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Referral2_User_DismissedBy" Association="Self.FK_Referral2_User_DismissedBy">
             <End Role="User" EntitySet="Users" />
             <End Role="Referral2" EntitySet="Referral2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReferralDocuments_Referral2_ReferralId" Association="Self.FK_ReferralDocuments_Referral2_ReferralId">
+            <End Role="Referral2" EntitySet="Referral2" />
+            <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_ReferralProcedureCodes_Referral2_ReferralId" Association="Self.FK_ReferralProcedureCodes_Referral2_ReferralId">
             <End Role="Referral2" EntitySet="Referral2" />

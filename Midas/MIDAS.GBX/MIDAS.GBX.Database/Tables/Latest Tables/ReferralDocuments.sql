@@ -30,4 +30,14 @@ GO
 ALTER TABLE [dbo].[ReferralDocuments] CHECK CONSTRAINT [FK_ReferralDocuments_Referral_ReferralId]
 GO
 
+/*
+ALTER TABLE [dbo].[ReferralDocuments] DROP CONSTRAINT [FK_ReferralDocuments_Referral_ReferralId]
+GO
 
+ALTER TABLE [dbo].[ReferralDocuments]  WITH CHECK ADD  CONSTRAINT [FK_ReferralDocuments_Referral2_ReferralId] FOREIGN KEY([ReferralId])
+	REFERENCES [dbo].[Referral2] ([Id])
+GO
+
+ALTER TABLE [dbo].[ReferralDocuments] CHECK CONSTRAINT [FK_ReferralDocuments_Referral2_ReferralId]
+GO
+*/

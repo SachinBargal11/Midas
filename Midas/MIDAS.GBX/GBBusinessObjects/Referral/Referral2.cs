@@ -141,6 +141,12 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("patientVisitId")]
         public int? PatientVisitId { get; set; }
 
+        [JsonProperty("patientFirstName")]
+        public string PatientFirstName { get; set; }
+
+        [JsonProperty("patientLastName")]
+        public string PatientLastName { get; set; }
+
         //[JsonProperty("fromCompany")]
         //public Company Company { get; set; }
         [JsonProperty("fromCompanyName")]
@@ -200,5 +206,8 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("referralProcedureCode")]
         public List<ReferralProcedureCode> ReferralProcedureCode { get; set; }
+
+        [JsonProperty("referralDocument")]
+        public List<ReferralDocument> ReferralDocument { get; set; }
     }
 }
