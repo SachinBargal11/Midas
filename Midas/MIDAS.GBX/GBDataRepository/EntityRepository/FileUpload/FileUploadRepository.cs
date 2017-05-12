@@ -155,6 +155,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             switch (uploadInfo.ObjectType.ToUpper())
             {
                 case EN.Constants.CaseType:
+                case EN.Constants.ConsentType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
                     docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
                     break;

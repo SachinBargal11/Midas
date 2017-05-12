@@ -19,7 +19,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 {
     internal class DocumentManagerRepository : BaseEntityRepo, IDisposable
     {
-
         internal string sourcePath = string.Empty;
         internal string remotePath = string.Empty;
         private DbSet<UserCompany> _dbSet;
@@ -36,18 +35,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Document docInfo = (BO.Document)(object)entity;
-            var result = docInfo.Validate(docInfo);
+            var result = new List<BO.BusinessValidation>();
+            if (typeof(T) == typeof(BO.Document))
+            {
+                BO.Document docInfo = (BO.Document)(object)entity;
+                result = docInfo.Validate(docInfo);
+            }
+            else if (typeof(T) == typeof(BO.Common.UploadInfo))
+            {
+                List<BO.BusinessValidation> validations = new List<BO.BusinessValidation>();
+                result = validations;
+            }
             return result;
         }
         #endregion
 
-        public override object Get(int documentId)
+        public override object Get(int caseId, string docuemntNode)
         {
-            var documentnodeParameter = new SqlParameter("@document_node", "mergepdfs");
+            var documentnodeParameter = new SqlParameter("@document_node", docuemntNode);
             var documentPath = _context.Database.SqlQuery<string>("midas_sp_get_document_path @document_node", documentnodeParameter).ToList();
-
-            return documentPath[0] + "/";
+            var a =_context.Cases.Where(csid => csid.Id == caseId).ToList();
+            return documentPath[0].Replace("cmp/", "")
+                                            .Replace("cstype", _context.Cases.Where(csid => csid.Id == caseId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                            .Replace("cs", "cs-" + caseId);
         }
 
         public override object Get<T>(T entity)
@@ -63,8 +73,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 switch (uploadInfo.ObjectType.ToUpper())
                 {
                     case EN.Constants.CaseType:
+                    case EN.Constants.ConsentType:
                         path = documentPath[0].Replace("cmp/", "")
-                                            //.Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                            .Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
                                             .Replace("cs", "cs-" + uploadInfo.ObjectId);
                         break;
                     case EN.Constants.VisitType:
@@ -83,11 +94,57 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 _context.MidasDocuments.Where(midasdoc => mergePDF.DocumentIds.Contains(midasdoc.Id)).ToList()
                                        .ForEach(x => pdffiles.Add(x.DocumentPath));
 
+                if(!pdffiles.TrueForAll(file=>Path.GetExtension(file)==".pdf"))
+                    return new BO.ErrorObject { ErrorMessage = "Please select only PDF files to merge", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
                 return pdffiles;
             }
             else
                 return new BO.ErrorObject { ErrorMessage = "Invalid object type", errorObject = "", ErrorLevel = ErrorLevel.Error };
         }
+
+        public override object SaveAsBlob(int ObjectId, int CompanyId, string DocumentObject, string DocumentType, string uploadpath)
+        {
+            BO.Document docInfo = new BO.Document();
+
+            switch (DocumentObject.ToUpper())
+            {
+                case EN.Constants.CaseType:
+                    CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    break;
+                case EN.Constants.VisitType:
+                    VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    break;
+            }
+            //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
+
+            return docInfo;
+        }
+
+        public override object Save<T>(T entity)
+        {
+            BO.Common.UploadInfo uploadInfo = (BO.Common.UploadInfo)(object)entity;
+            BO.Document docInfo = new BO.Document();
+
+            switch (uploadInfo.ObjectType.ToUpper())
+            {
+                case EN.Constants.CaseType:
+                case EN.Constants.ConsentType:
+                    CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    break;
+                case EN.Constants.VisitType:
+                    VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    break;
+            }
+            //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
+
+            return docInfo;
+        }
+
 
         public void Dispose() { GC.SuppressFinalize(this); }
     }
