@@ -5,7 +5,7 @@
         <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Referral">
     </div>
 </div>
-<p-dataTable [value]="pendingReferralList" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3"
+<p-dataTable [value]="pendingReferralList" [(selection)]="selectedReferrals" (onRowSelect)="getMedicalProviderDoctorRoom($event)" [rows]="10" [paginator]="true" [pageLinks]="3"
     [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
     <header>Pending Referrals List</header>
     <p-headerColumnGroup>
@@ -41,16 +41,16 @@
         </label>
         <div class="form-group">
             <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0">-select-</option>
-             <optgroup label="Select MedicalProvider-Doctor">
+                        <option value="0">-Select-</option>
+             <optgroup *ngIf="specialityId != 0" label="Select MedicalProvider-Doctor">
                      <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
                          {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
              </optgroup>
-             <optgroup label="Select MedicalProvider-Room">
+             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
                     <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
                         {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
              </optgroup>
-              <optgroup label="Select MedicalProvider">
+              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
                      <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
                          {{currentPreferredMedicalProvider.name}}</option>
              </optgroup>

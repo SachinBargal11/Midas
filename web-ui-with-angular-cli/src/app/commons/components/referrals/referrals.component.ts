@@ -28,7 +28,7 @@ import { VisitReferralStore } from '../../../patient-manager/patient-visit/store
 export class ReferralsComponent implements OnInit {
   procedureForm: FormGroup;
   procedures: Procedure[];
-  selectedProcedures: Procedure[];
+  selectedProcedures: Procedure[] = [];
   proceduresList: Procedure[] = [];
   selectedProceduresToDelete: Procedure[];
   specialities: Speciality[];
@@ -39,10 +39,11 @@ export class ReferralsComponent implements OnInit {
   selectedMode = 0;
   selectedDoctorId: number;
   selectedRoomId: number;
-  selectedOption: number;
+  selectedOption = 0;
   selectedSpecialityId: number;
   selectedTestId: number;
   msg: string;
+  selectedEvent;
 
   @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
@@ -94,11 +95,20 @@ export class ReferralsComponent implements OnInit {
     this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
       .subscribe(
       (visitReferrals: VisitReferral[]) => {
+        let selectedProcSpec: Procedure;
         _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
-          _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
-            this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
-            this.proceduresList = _.union(this.proceduresList);
-          })
+          if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
+            selectedProcSpec = new Procedure({
+              specialityId: currentVisitReferral.forSpecialtyId,
+              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
+            });
+            this.proceduresList.push(selectedProcSpec);
+          } else {
+            _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
+              this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+              this.proceduresList = _.union(this.proceduresList);
+            })
+          }
         });
       },
       (error) => {
@@ -110,6 +120,7 @@ export class ReferralsComponent implements OnInit {
   }
 
   selectOption(event) {
+    this.selectedEvent = event;
     this.selectedDoctorId = 0;
     this.selectedRoomId = 0;
     this.selectedOption = 0;
@@ -190,15 +201,39 @@ export class ReferralsComponent implements OnInit {
                     return currentProc.id === currentListProc.id;
                   });
                   this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                  let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
+                    return currentProcedure.id;
+                  });
+                  this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
+                    return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+                  });
                 } else {
                   this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                  let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
+                    return currentProcedure.id;
+                  });
+                  this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
+                    return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+                  });
                 }
               } else {
                 this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+                let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
+                  return currentProcedure.id;
+                });
+                this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
+                  return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+                });
               }
             });
           } else {
             this.proceduresList = _.union(this.selectedProcedures, this.proceduresList);
+            let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
+              return currentProcedure.id;
+            });
+            this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
+              return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+            });
           }
         });
       } else {
@@ -219,6 +254,14 @@ export class ReferralsComponent implements OnInit {
           });
           this.proceduresList.push(selectedProcSpec);
           this.proceduresList = _.union(this.proceduresList);
+          let procedureCodeIds: number[] = _.map(this.proceduresList, (currentProcedure: Procedure) => {
+            return currentProcedure.id;
+          });
+          this.procedures = _.filter(this.procedures, (currentProcedure: Procedure) => {
+            return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+          });
+        } else if (this.selectedOption === 0) {
+          this.msg = 'Please, Select Speciality.';
         } else if (this.selectedOption === 2 || this.selectedSpeciality.mandatoryProcCode) {
           this.msg = 'Please, Select Procedure Codes.';
         } else if (this.selectedSpeciality == null) {
@@ -253,7 +296,7 @@ export class ReferralsComponent implements OnInit {
       return currentProc.specialityId
     })
     let uniqSpecialityIds = _.map(uniqSpeciality, (currentProc: Procedure) => {
-      return currentProc.specialityId !== 0 ? currentProc.specialityId: null;
+      return currentProc.specialityId !== 0 ? currentProc.specialityId : null;
     })
     _.forEach(uniqSpecialityIds, (currentSpecialityId: number) => {
       this.proceduresList.forEach(currentProcedureCode => {
@@ -323,6 +366,7 @@ export class ReferralsComponent implements OnInit {
     });
 
     this.proceduresList = procedureCodeDetails;
+    this.selectOption(this.selectedEvent);
     this.selectedProceduresToDelete = null;
   }
 }

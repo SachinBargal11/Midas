@@ -172,7 +172,8 @@ export class PatientVisitComponent implements OnInit {
             patientId: ['', Validators.required],
             isAddNewPatient: [''],
             isGoingOutOffice: [''],
-            isProcedureCode: ['']
+            isProcedureCode: [''],
+            notes: ['']
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
 
