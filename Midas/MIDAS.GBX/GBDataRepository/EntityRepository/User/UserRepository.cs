@@ -122,7 +122,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (user.UserCompanies != null && user.UserCompanies.Count > 0)
             {
                 List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
-                user.UserCompanies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                user.UserCompanies.Where(p => p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                   .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, UserId = x.UserID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
                 boUser.UserCompanies = boUserCompany;
             }

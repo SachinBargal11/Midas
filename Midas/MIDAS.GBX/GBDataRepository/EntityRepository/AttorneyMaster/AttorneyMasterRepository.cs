@@ -364,7 +364,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     foreach (var userCompany in addAttorneyBO.User.UserCompanies)
                     {
                         userCompany.UserId = userDB.id;
-                        UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                        UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && p.IsAccepted==true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                .FirstOrDefault<UserCompany>();
 
                         if (UserCompanyDB == null)
@@ -374,8 +374,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         }
 
                         UserCompanyDB.CompanyID = userCompany.Company.ID;
-                        UserCompanyDB.UserID = userCompany.UserId;
-
+                        UserCompanyDB.UserID = userCompany.UserId;                                            
                         if (add_UserCompany)
                         {
                             _context.UserCompanies.Add(UserCompanyDB);
@@ -455,7 +454,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var userCompany = _context.UserCompanies.Where( p => p.UserID == AttorneyId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var userCompany = _context.UserCompanies.Where( p => p.UserID == AttorneyId && p.CompanyID == CompanyId && p.IsAccepted ==true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
             if (userCompany == null)
             {

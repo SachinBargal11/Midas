@@ -703,7 +703,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     foreach (var userCompany in patient2BO.User.UserCompanies)
                     {
                         userCompany.UserId = userDB.id;
-                        UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                        UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                .FirstOrDefault<UserCompany>();
 
                         if (UserCompanyDB == null)

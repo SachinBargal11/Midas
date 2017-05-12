@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, AppValidators.emailValidator]],
             password: ['', Validators.required],
-            chkOTP: ['']
+            chkOTP: ['true']
         });
         this.loginFormControls = this.loginForm.controls;
     }
