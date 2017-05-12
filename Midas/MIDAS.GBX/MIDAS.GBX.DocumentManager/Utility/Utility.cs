@@ -20,12 +20,12 @@ namespace MIDAS.GBX.DocumentManager
         public string getBlob(int documentId, MIDASGBXEntities context)
         {
             string blobPath = string.Empty;
-            blobPath = new Uri(context.MidasDocuments.Where(doc => doc.Id == documentId).FirstOrDefault().DocumentPath).AbsolutePath;
+            blobPath = HttpUtility.UrlDecode(new Uri(context.MidasDocuments.Where(doc => doc.Id == documentId).FirstOrDefault().DocumentPath).AbsolutePath);
 
             return blobPath.Remove(0, blobPath.IndexOf('/', blobPath.IndexOf('/') + 1)).TrimStart('/');
         }
 
-        public string getBlob(string relativePath, MIDASGBXEntities context)
+        public string getBlob(string relativePath)
         {
             string blobPath = string.Empty;
             blobPath = new Uri(relativePath).AbsolutePath;

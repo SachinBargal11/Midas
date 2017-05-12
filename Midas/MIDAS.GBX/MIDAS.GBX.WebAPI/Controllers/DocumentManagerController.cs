@@ -67,6 +67,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 {
                     string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
                     HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId);
+
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {
                         uploadObject.BlobPath = ((ObjectContent)resBlob.Content).Value.ToString();
@@ -99,14 +100,31 @@ namespace MIDAS.GBX.WebAPI.Controllers
             HttpResponseMessage res = new HttpResponseMessage();
             res = requestHandler1.GetGbObjects(Request, data);
 
-            string blobPath = ((ObjectContent)requestHandler1.GetObject(Request, data.CaseId).Content).Value.ToString();
+            string blobPath = ((ObjectContent)requestHandler1.GetObject(Request, data.CaseId, "mergepdfs").Content).Value.ToString();
 
             if (res == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound, res);
             else
-            {                
-                return blobhandler.MergeDocuments(data.CompanyId, ((ObjectContent)res.Content).Value, blobPath + data.MergedDocumentName);
+            {
+                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, data.CompanyId, ((ObjectContent)res.Content).Value, blobPath+"/" + data.MergedDocumentName);
+                if (res1.StatusCode.Equals(HttpStatusCode.Created) || res1.StatusCode.Equals(HttpStatusCode.OK))
+                {
+                    uploadObject = new UploadInfo();
+                    uploadObject.BlobPath = ((ObjectContent)res1.Content).Value.ToString();
+                    uploadObject.ObjectId = data.CaseId;
+                    uploadObject.ObjectType = EN.Constants.CaseType;
+                    documentList.Add((Document)((ObjectContent)requestHandler.CreateGbObject(Request, uploadObject).Content).Value);
+                }
+                else if (res1.StatusCode.Equals(HttpStatusCode.NotFound))
+                    return res1;
+                else
+                    documentList.Add(new Document { Status = "Failed", DocumentName = data.MergedDocumentName });
             }
+
+            var restest = (object)documentList;
+            if (restest != null) return Request.CreateResponse(HttpStatusCode.Created, restest);
+            else return Request.CreateResponse(HttpStatusCode.NotFound, restest);
         }
     }
 }
+ 

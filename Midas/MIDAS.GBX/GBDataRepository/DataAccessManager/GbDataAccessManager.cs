@@ -2636,6 +2636,44 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetReferralByFromDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetReferralByFromDoctorAndCompanyId(doctorId, companyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetReferralByToDoctorAndCompanyId(int doctorId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetReferralByToDoctorAndCompanyId(doctorId, companyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         public Object GetByForRoomId(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try

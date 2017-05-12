@@ -1560,6 +1560,32 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetReferralByFromDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByFromDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetReferralByToDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByToDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByForRoomId(HttpRequestMessage request, int roomId)
         {
             var objResult = dataAccessManager.GetByForRoomId(roomId);
