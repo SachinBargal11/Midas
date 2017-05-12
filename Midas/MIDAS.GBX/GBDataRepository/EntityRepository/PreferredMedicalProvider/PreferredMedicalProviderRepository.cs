@@ -628,7 +628,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By GetPreferredCompanyDoctorsAndRoomByCompanyId
-        public override object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId)
+        public override object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId)
         {
             var medicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CompanyId 
                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -646,11 +646,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                       .Select(p => p.id);
 
-                    //var usersPublic = _context.UserPersonalSettings.Where(p => p.CompanyId == eachMedicalProvider.ID && p.IsPublic == true
-                    //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                    //                                               .Select(p => p.UserId);
+                    var doctorsWithSpeciality = _context.DoctorSpecialities.Where(p => p.SpecialityID == SpecialityId
+                                                                && (p.IsDeleted == false))
+                                                      .Select(p => p.DoctorID);
 
-                    var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true
+                    var doctors = _context.DoctorLocationSchedules.Where(p => locations.Contains(p.LocationID) == true && doctorsWithSpeciality.Contains(p.DoctorID) == true
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                   .Select(p => p.Doctor).Distinct()
                                                                   .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
@@ -662,7 +662,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     eachMedicalProvider.Doctors = doctorsBO;
 
-                    var rooms = _context.Rooms.Where(p => locations.Contains(p.LocationID) == true
+                    var rooms = _context.Rooms.Where(p => locations.Contains(p.LocationID) == true && p.RoomTestID == RoomTestId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                               .ToList();
 

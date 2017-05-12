@@ -14,12 +14,6 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class Referral
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Referral()
-        {
-            this.ReferralDocuments = new HashSet<ReferralDocument>();
-        }
-    
         public int Id { get; set; }
         public int CaseId { get; set; }
         public int ReferringCompanyId { get; set; }
@@ -54,7 +48,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual RoomTest RoomTest { get; set; }
         public virtual Specialty Specialty { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReferralDocument> ReferralDocuments { get; set; }
     }
 }

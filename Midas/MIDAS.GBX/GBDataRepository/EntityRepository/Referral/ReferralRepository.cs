@@ -178,47 +178,47 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
             }
 
-            if (referral.ReferralDocuments != null)
-            {
-                List<BO.ReferralDocument> boReferralDocument = new List<BO.ReferralDocument>();
+            //if (referral.ReferralDocuments != null)
+            //{
+            //    List<BO.ReferralDocument> boReferralDocument = new List<BO.ReferralDocument>();
                 
-                foreach (var eachReferralDocument in referral.ReferralDocuments)
-                {
-                    if (eachReferralDocument.IsDeleted.HasValue == false || (eachReferralDocument.IsDeleted.HasValue == true && eachReferralDocument.IsDeleted.Value == false))
-                    {
-                        BO.ReferralDocument referralDocument = new BO.ReferralDocument();
+            //    foreach (var eachReferralDocument in referral.ReferralDocuments)
+            //    {
+            //        if (eachReferralDocument.IsDeleted.HasValue == false || (eachReferralDocument.IsDeleted.HasValue == true && eachReferralDocument.IsDeleted.Value == false))
+            //        {
+            //            BO.ReferralDocument referralDocument = new BO.ReferralDocument();
 
-                        referralDocument.ID = eachReferralDocument.Id;
-                        referralDocument.ReferralId = eachReferralDocument.ReferralId;
-                        referralDocument.DocumentName = eachReferralDocument.DocumentName;
-                        referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
-                        referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
-                        referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
-                        referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
+            //            referralDocument.ID = eachReferralDocument.Id;
+            //            referralDocument.ReferralId = eachReferralDocument.ReferralId;
+            //            referralDocument.DocumentName = eachReferralDocument.DocumentName;
+            //            referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
+            //            referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
+            //            referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
+            //            referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
 
-                        if (eachReferralDocument.MidasDocument != null)
-                        {
-                            BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+            //            if (eachReferralDocument.MidasDocument != null)
+            //            {
+            //                BO.MidasDocument boMidasDocument = new BO.MidasDocument();
 
-                            boMidasDocument.ID = eachReferralDocument.Id;
-                            boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
-                            boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
-                            boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
-                            boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
-                            boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
-                            boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
-                            boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
+            //                boMidasDocument.ID = eachReferralDocument.Id;
+            //                boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
+            //                boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
+            //                boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
+            //                boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
+            //                boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
+            //                boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
+            //                boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
 
-                            referralDocument.MidasDocument = boMidasDocument;
-                        }
+            //                referralDocument.MidasDocument = boMidasDocument;
+            //            }
 
 
-                        boReferralDocument.Add(referralDocument);
-                    }
-                }
+            //            boReferralDocument.Add(referralDocument);
+            //        }
+            //    }
 
-                referralBO.ReferralDocument = boReferralDocument;                
-            }
+            //    referralBO.ReferralDocument = boReferralDocument;                
+            //}
             return (T)(object)referralBO;
         }
         #endregion

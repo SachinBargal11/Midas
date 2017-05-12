@@ -104,7 +104,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage AssociateMedicalProviderWithCompany(HttpRequestMessage request, int PrefMedProviderId, int CompanyId);
         HttpResponseMessage GetAllMedicalProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId);
-        HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId, int SpecialityId, int RoomTestId);
         HttpResponseMessage GetPendingReferralByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByFromCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByToCompanyId(HttpRequestMessage request, int companyId);

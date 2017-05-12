@@ -2430,12 +2430,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetPreferredCompanyDoctorsAndRoomByCompanyId(CompanyId);
+                var gbdata = baseRepo.GetPreferredCompanyDoctorsAndRoomByCompanyId(CompanyId, SpecialityId, RoomTestId);
 
                 return gbdata;
             }

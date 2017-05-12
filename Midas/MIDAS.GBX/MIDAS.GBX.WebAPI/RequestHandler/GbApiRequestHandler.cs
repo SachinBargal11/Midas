@@ -1430,9 +1430,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId)
+        public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId, int SpecialityId, int RoomTestId)
         {
-            var objResult = dataAccessManager.GetPreferredCompanyDoctorsAndRoomByCompanyId(CompanyId);
+            var objResult = dataAccessManager.GetPreferredCompanyDoctorsAndRoomByCompanyId(CompanyId, SpecialityId, RoomTestId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

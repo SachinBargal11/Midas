@@ -325,8 +325,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         if (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.Value == false))
                         {
                             ReferralListBO.PatientId = Referral.PendingReferral.PatientVisit2.PatientId;
-                        }
 
+                            if (Referral.PendingReferral.PatientVisit2.Patient2.User != null)
+                            {
+                                if (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.Value == false))
+                                {
+                                    ReferralListBO.PatientFirstName = Referral.PendingReferral.PatientVisit2.Patient2.User.FirstName;
+                                    ReferralListBO.PatientLastName = Referral.PendingReferral.PatientVisit2.Patient2.User.LastName;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -439,19 +447,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
             }
 
-            //if (Referral.User != null)
-            //{
-            //    if (Referral.User.IsDeleted.HasValue == false || (Referral.User.IsDeleted.HasValue == true && Referral.User.IsDeleted.Value == false))
-            //    {
-            //        BO.User boUser = new BO.User();
-            //        using (UserRepository cmp = new UserRepository(_context))
-            //        {
-            //            boUser = cmp.Convert<BO.User, User>(Referral.User);
-            //            ReferralListBO.User = boUser;
-            //        }
-            //    }
-            //}
-
             ReferralListBO.ReferralProcedureCode = new List<BO.ReferralProcedureCode>();
 
             if (Referral.ReferralProcedureCodes != null)
@@ -489,6 +484,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         ReferralListBO.ReferralProcedureCode.Add(referralProcedureCode);
                     }
                 }
+            }
+
+            if (Referral.ReferralDocuments != null)
+            {
+                List<BO.ReferralDocument> boReferralDocument = new List<BO.ReferralDocument>();
+
+                foreach (var eachReferralDocument in Referral.ReferralDocuments)
+                {
+                    if (eachReferralDocument.IsDeleted.HasValue == false || (eachReferralDocument.IsDeleted.HasValue == true && eachReferralDocument.IsDeleted.Value == false))
+                    {
+                        BO.ReferralDocument referralDocument = new BO.ReferralDocument();
+
+                        referralDocument.ID = eachReferralDocument.Id;
+                        referralDocument.ReferralId = eachReferralDocument.ReferralId;
+                        referralDocument.DocumentName = eachReferralDocument.DocumentName;
+                        referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
+                        referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
+                        referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
+                        referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
+
+                        if (eachReferralDocument.MidasDocument != null)
+                        {
+                            BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+                            boMidasDocument.ID = eachReferralDocument.Id;
+                            boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
+                            boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
+                            boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
+                            boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
+                            boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
+                            boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
+                            boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
+
+                            referralDocument.MidasDocument = boMidasDocument;
+                        }
+
+
+                        boReferralDocument.Add(referralDocument);
+                    }
+                }
+
+                ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
             return (T)(object)ReferralListBO;

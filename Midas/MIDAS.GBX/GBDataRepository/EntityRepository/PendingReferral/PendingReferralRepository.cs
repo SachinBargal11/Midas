@@ -479,7 +479,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
-                                       .Where(p => p.FromCompanyId == CompanyId
+                                       .Where(p => p.FromCompanyId == CompanyId && (p.IsReferralCreated.HasValue == false || (p.IsReferralCreated.HasValue == true && p.IsReferralCreated.Value == false))
+                                            && (p.DismissedBy.HasValue == false)
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .ToList<PendingReferral>();
 
@@ -508,7 +509,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                               .Include("RoomTest")
                                               .Include("PendingReferralProcedureCodes")
                                               .Include("PendingReferralProcedureCodes.ProcedureCode")
-                                       .Where(p => p.FromCompanyId == CompanyId && p.IsReferralCreated == false
+                                       .Where(p => p.FromCompanyId == CompanyId && (p.IsReferralCreated.HasValue == false || (p.IsReferralCreated.HasValue == true && p.IsReferralCreated.Value == false))
+                                            && (p.DismissedBy.HasValue == false)
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .ToList<PendingReferral>();
 
