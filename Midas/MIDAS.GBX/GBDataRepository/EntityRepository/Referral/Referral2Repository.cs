@@ -528,6 +528,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
+            if (Referral.PendingReferral.PatientVisit2.Case != null)
+            {
+                if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                {
+                    BO.Case boCase = new BO.Case();
+                    using (CaseRepository cmp = new CaseRepository(_context))
+                    {
+                        boCase = cmp.Convert<BO.Case, Case>(Referral.PendingReferral.PatientVisit2.Case);
+                        boCase.PatientEmpInfo = null;
+                        boCase.Patient2 = null;
+                        boCase.Referrals = null;
+                        ReferralListBO.Case = boCase;
+                    }
+                }
+            }
+
             return (T)(object)ReferralListBO;
         }
         #endregion
@@ -809,6 +825,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("PendingReferral.PatientVisit2")
                                                 .Include("PendingReferral.PatientVisit2.Case")
                                                 .Include("PendingReferral.PatientVisit2.Patient2")
+                                                .Include("PendingReferral.PatientVisit2.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
@@ -855,6 +872,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("PendingReferral.PatientVisit2")
                                                 .Include("PendingReferral.PatientVisit2.Case")
                                                 .Include("PendingReferral.PatientVisit2.Patient2")
+                                                .Include("PendingReferral.PatientVisit2.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
@@ -1308,6 +1326,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             return acc;
         }
+
+        #region Associate Visit With Referral
+        public override object AssociateVisitWithReferral(int ReferralId, int PatientVisitId)
+        {
+            var referralDB = _context.Referral2.Where(p => p.Id == ReferralId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .FirstOrDefault();
+
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Room ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                referralDB.ScheduledPatientVisitId = PatientVisitId;
+                _context.SaveChanges();
+
+                var acc = _context.Referral2.Include("Company")
+                                        .Include("Company1")
+                                        .Include("Location")
+                                        .Include("Location1")
+                                        .Include("Doctor")
+                                        .Include("Doctor.User")
+                                        .Include("Doctor1")
+                                        .Include("Doctor1.User")
+                                        //.Include("PatientVisit2")
+                                        //.Include("PendingReferral")
+                                        .Include("Room")
+                                        .Include("Room1")
+                                        .Include("RoomTest")
+                                        .Include("Specialty")
+                                        .Include("User")
+                                        .Include("ReferralProcedureCodes")
+                                        .Include("ReferralProcedureCodes.ProcedureCode")
+                                        .Where(p => p.Id == referralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (acc == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                BO.Referral2 acc_ = Convert<BO.Referral2, Referral2>(acc);
+
+                return (object)acc_;
+            }            
+        }
+        #endregion
 
 
         public void Dispose()

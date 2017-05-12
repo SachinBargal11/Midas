@@ -120,5 +120,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId);
         HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate);
         HttpResponseMessage GetFreeSlotsForRoomByLocationId(HttpRequestMessage request, int RoomId, int LocationId, DateTime StartDate, DateTime EndDate);
+        HttpResponseMessage AssociateVisitWithReferral(HttpRequestMessage request, int ReferralId, int PatientVisitId);
     }
 }

@@ -2749,5 +2749,24 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object AssociateVisitWithReferral(int ReferralId, int PatientVisitId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociateVisitWithReferral(ReferralId, PatientVisitId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
     }
 }
