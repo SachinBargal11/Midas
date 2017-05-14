@@ -1,3 +1,4 @@
+import { PendingReferralService } from '../services/pending-referrals-service';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { PatientVisit } from '../../patient-visit/models/patient-visit';
@@ -74,6 +75,7 @@ export class PendingReferralsComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
         private _pendingReferralStore: PendingReferralStore,
+        private _pendingReferralService: PendingReferralService,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
@@ -330,8 +332,7 @@ export class PendingReferralsComponent implements OnInit {
 
     }
 
-    setVisit(slotDetail: AvailableSingleSlot) {
-
+    private _populatePatientVisitData(slotDetail: AvailableSingleSlot): PatientVisit {
         let selectedReffral: PendingReferralList = this.selectedReferrals[0];
         let patientVisit: PatientVisit = new PatientVisit({
             caseId: selectedReffral.caseId,
@@ -343,19 +344,43 @@ export class PendingReferralsComponent implements OnInit {
                 eventEnd: slotDetail.end
             })
         });
-        let result = this._patientVisitsStore.addPatientVisit(patientVisit);
-        result.subscribe(
-            (response) => {
+        return patientVisit;
+    }
+
+    setVisit(slotDetail: AvailableSingleSlot) {
+        let pendingReferral: PendingReferral = null;
+        if (this.selectedOption === 1) {
+            pendingReferral = this._populateReferralForMedicalProviderDoctor();
+        }
+        if (this.selectedOption === 2) {
+            pendingReferral = this._populateReferralForMedicalProviderRoom();
+        }
+        if (!pendingReferral) {
+            this._notificationsService.error('Two different speciality cannot be saved simultaneously');
+            return;
+        }
+
+
+        let patientVisit: PatientVisit = this._populatePatientVisitData(slotDetail);
+        let visitResult: Promise<PatientVisit> = this._patientVisitsStore.addPatientVisit(patientVisit).toPromise();
+
+        let referralSaveResult: Promise<PendingReferral> = this._pendingReferralStore.savePendingReferral(pendingReferral).toPromise();
+
+        Promise.all([visitResult, referralSaveResult])
+            .then((results) => {
+                let patientVisit: PatientVisit = results[0];
+                let referral: PendingReferral = results[1];
+                return this._pendingReferralService.associateReferralWithVisit(patientVisit, referral).toPromise();
+            }).then((associationResponse: any) => {
                 let notification = new Notification({
-                    'title': 'Visit Scheduled successfully!',
+                    'title': 'Referral with Visit created successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
                 this.availableSlotsDialogVisible = false;
-            },
-            (error) => {
-                let errString = 'Unable to schedule visit!';
+            }).catch((error) => {
+                let errString = 'Unable to create referral visit!';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -363,16 +388,7 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.availableSlotsDialogVisible = false;
-            },
-            () => {
-                this.availableSlotsDialogVisible = false;
             });
-        if (this.selectedOption === 1) {
-            this.saveReferralForMedicalProviderDoctor();
-        }
-        if (this.selectedOption === 2) {
-            this.saveReferralForMedicalProviderRoom();
-        }
     }
 
     handleAvailableSlotsDialogShow() {
@@ -389,27 +405,22 @@ export class PendingReferralsComponent implements OnInit {
         this.handleAvailableSlotsDialogHide();
     }
 
-    saveReferralForMedicalProviderDoctor() {
-        let result;
+    private _populateReferralForMedicalProviderDoctor(): PendingReferral {
         let procedureCodes = [];
-        let pendingReferralDetails: PendingReferral;
-        let uniqProcedureCodes: Procedure[] = [];
+        let pendingReferralDetails: PendingReferral = null;
 
         let uniqSpeciality = _.uniq(this.selectedReferrals, (currentPendingReferralList: PendingReferralList) => {
             return currentPendingReferralList.forSpecialtyId;
-        })
-        // let uniqRoomTest = _.uniq(this.selectedReferrals, (currentPendingReferralList: PendingReferralList) => {
-        //     return currentPendingReferralList.forRoomTestId;
-        // })
-        // if(uniqSpeciality && !uniqRoomTest){
+        });
+
         if (uniqSpeciality) {
-            if (uniqSpeciality.length == 1) {
+            if (uniqSpeciality.length === 1) {
                 this.selectedReferrals.forEach(currentPendingReferralList => {
                     if (currentPendingReferralList.pendingReferralProcedureCode) {
                         procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
                     }
                 });
-                let pendingReferral = new PendingReferral({
+                pendingReferralDetails = new PendingReferral({
                     pendingReferralId: this.selectedReferrals[0].id,
                     fromCompanyId: this.sessionStore.session.currentCompany.id,
                     fromLocationId: null,
@@ -424,61 +435,62 @@ export class PendingReferralsComponent implements OnInit {
                     dismissedBy: null,
                     referralProcedureCode: procedureCodes
                 });
-                pendingReferralDetails = pendingReferral;
-                procedureCodes = [];
-
-                result = this._pendingReferralStore.savePendingReferral(pendingReferralDetails);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Referral saved successfully.',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                        this.loadPendingReferralsForCompany(this.companyId);
-                    },
-                    (error) => {
-                        let errString = 'Unable to save Referral.';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-                // this.visitDialogVisible = false;
-            } else {
-                // Error Message 2 different specialities save not allowed.
-                this._notificationsService.error('Two different speciality cannot be saved simultaneously');
             }
-        } else {
-            // this._notificationsService.error('Two different speciality cannot be saved simultaneously');
         }
+        return pendingReferralDetails;
     }
 
-    saveReferralForMedicalProviderRoom() {
+    saveReferralForMedicalProviderDoctor() {
         let result;
+        let pendingReferralDetails: PendingReferral = this._populateReferralForMedicalProviderDoctor();
+        if (!pendingReferralDetails) {
+            this._notificationsService.error('Two different speciality cannot be saved simultaneously');
+
+        } else {
+            result = this._pendingReferralStore.savePendingReferral(pendingReferralDetails);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Referral saved successfully.',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.loadPendingReferralsForCompany(this.companyId);
+                },
+                (error) => {
+                    let errString = 'Unable to save Referral.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._progressBarService.hide();
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
+
+    }
+
+    private _populateReferralForMedicalProviderRoom(): PendingReferral {
         let procedureCodes = [];
-        let pendingReferralDetails: PendingReferral;
-        let uniqProcedureCodes: Procedure[] = [];
+        let pendingReferralDetails: PendingReferral = null;
 
         let uniqRoomTest = _.uniq(this.selectedReferrals, (currentPendingReferralList: PendingReferralList) => {
             return currentPendingReferralList.forRoomTestId;
         })
         if (uniqRoomTest) {
-            if (uniqRoomTest.length == 1) {
+            if (uniqRoomTest.length === 1) {
                 this.selectedReferrals.forEach(currentPendingReferralList => {
                     if (currentPendingReferralList.pendingReferralProcedureCode) {
                         procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
                     }
                 });
-                let pendingReferral = new PendingReferral({
+                pendingReferralDetails = new PendingReferral({
                     pendingReferralId: this.selectedReferrals[0].id,
                     fromCompanyId: this.sessionStore.session.currentCompany.id,
                     fromLocationId: null,
@@ -493,42 +505,44 @@ export class PendingReferralsComponent implements OnInit {
                     dismissedBy: null,
                     referralProcedureCode: procedureCodes
                 });
-                pendingReferralDetails = pendingReferral;
-                procedureCodes = [];
-
-                result = this._pendingReferralStore.savePendingReferral(pendingReferralDetails);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Referral saved successfully.',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                        this.loadPendingReferralsForCompany(this.companyId);
-                    },
-                    (error) => {
-                        let errString = 'Unable to save Referral.';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-                // this.visitDialogVisible = false;
-            } else {
-                // Error Message 2 different specialities save not allowed.
-                this._notificationsService.error('Two different speciality cannot be saved simultaneously');
             }
-        } else {
-            // this._notificationsService.error('Two different speciality cannot be saved simultaneously');
         }
+        return pendingReferralDetails;
+    }
+
+    saveReferralForMedicalProviderRoom() {
+        let result;
+        let pendingReferralDetails: PendingReferral = this._populateReferralForMedicalProviderRoom();
+        if (!pendingReferralDetails) {
+            this._notificationsService.error('Two different speciality cannot be saved simultaneously');
+        } else {
+            result = this._pendingReferralStore.savePendingReferral(pendingReferralDetails);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Referral saved successfully.',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.loadPendingReferralsForCompany(this.companyId);
+                },
+                (error) => {
+                    let errString = 'Unable to save Referral.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._progressBarService.hide();
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
+
     }
 
     saveReferralForMedicalOnlyProvider() {

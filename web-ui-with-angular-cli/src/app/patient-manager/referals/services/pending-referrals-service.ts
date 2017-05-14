@@ -1,3 +1,4 @@
+import { PatientVisit } from '../../patient-visit/models/patient-visit';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -187,5 +188,19 @@ export class PendingReferralService {
                 });
         });
         return <Observable<PendingReferralList>>Observable.from(promise);
+    }
+
+    associateReferralWithVisit(patientVisit: PatientVisit, pendingReferral: PendingReferral): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(`${this._url}/Referral2/associateVisitWithReferral/${pendingReferral.id}/${patientVisit.id}`, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.from(promise);
     }
 }
