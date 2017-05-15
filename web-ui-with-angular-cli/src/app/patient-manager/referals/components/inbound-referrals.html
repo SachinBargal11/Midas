@@ -75,11 +75,10 @@
     <header>Referrals List</header>
     <p-headerColumnGroup>
         <p-row>
-            <!--<p-column selectionMode="multiple" rowspan="2"></p-column>-->
             <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred From" colspan="3" styleClass="inbound-column-span"></p-column>
-            <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Procedure" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred Document" rowspan="2"></p-column>
         </p-row>
@@ -87,20 +86,21 @@
             <p-column header="Company" styleClass="inbound-column"></p-column>
             <p-column header="Location" styleClass="inbound-column"></p-column>
             <p-column header="User Name" styleClass="inbound-column"></p-column>
-            <!--<p-column header="Company" styleClass="inbound-column"></p-column>-->
-            <p-column header="Location" styleClass="inbound-column"></p-column>
-            <p-column header="Doctor Name" styleClass="inbound-column"></p-column>
         </p-row>
     </p-headerColumnGroup>
-    <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="case.patient.user.displayName"></p-column>
-    <p-column field="case.id"></p-column>
-    <p-column field="referringCompany.name"></p-column>
-    <p-column field="referringLocation.location.name"></p-column>
-    <p-column field="referringUser.displayName"></p-column>
-    <!--<p-column field="referredToCompany.name"></p-column>-->
-    <p-column field="referredToLocation.location.name"></p-column>
-    <p-column field="referredToDoctor.user.displayName"></p-column>
+
+    <p-column field="displayPatientName"></p-column>
+    <p-column field="caseId"></p-column>
+
+    <p-column field="fromCompanyName"></p-column>
+    <p-column field="fromLocationName"></p-column>
+    <p-column field="displayDoctorName"></p-column>
+    <p-column rowspan="2">
+        <ng-template let-pReferral="rowData" pTemplate="body">
+            <div *ngIf="pReferral.forSpecialty">{{pReferral.forSpecialty.name}}</div>
+            <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
+        </ng-template>
+    </p-column>
     <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)">

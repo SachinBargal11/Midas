@@ -9,8 +9,6 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { ReferralStore } from '../../cases/stores/referral-store';
-import { Referral } from '../../cases/models/referral';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Consent } from '../../cases/models/consent';
@@ -44,7 +42,6 @@ export class InboundReferralsComponent implements OnInit {
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
-        private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _pendingReferralStore: PendingReferralStore,
@@ -69,24 +66,24 @@ export class InboundReferralsComponent implements OnInit {
     }
     loadReferralsCheckingDoctor() {
         if (this.doctorRoleOnly) {
-            // this.loadReferralsForDoctor();
+            this.loadReferralsForDoctor();
         } else {
             this.loadReferrals();
         }
     }
-    // loadReferralsForDoctor() {
-    //     this._progressBarService.show();
-    //     this._referralStore.getReferralsByReferredToDoctorId()
-    //         .subscribe((referrals: Referral[]) => {
-    //             this.referrals = referrals.reverse();
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });        
-    // }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        this._pendingReferralStore.getReferralsByReferredToDoctorId()
+            .subscribe((referrals: InboundOutboundList[]) => {
+                this.referrals = referrals.reverse();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
     loadReferrals() {
         this._progressBarService.show();
@@ -111,7 +108,6 @@ export class InboundReferralsComponent implements OnInit {
     //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
     //     });
     // }
-
 
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
@@ -143,21 +139,7 @@ export class InboundReferralsComponent implements OnInit {
         });
     }
 
-    // consentAvailable(referral: Referral) {
-    //     if (referral.case.companyCaseConsentApproval.length > 0) {
-    //         let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-    //             return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
-    //         });
-    //         if (consentAvailable) {
-    //             return this.consentRecived = 'Yes';
-    //         } else {
-    //             return this.consentRecived = 'No';
-    //         }
-    //     } else {
-    //         return this.consentRecived = 'No';
-    //     }
-    // }
-    consentAvailable(referral: Referral) {
+    consentAvailable(referral: InboundOutboundList) {
         this.consentNotRecived = false;
         this.consentRecived = false;
         let consentAvailable = null;

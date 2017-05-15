@@ -102,9 +102,9 @@ export class InboundOutboundList extends InboundOutboundReferralRecord {
         return this.patientFirstName + ' ' + this.patientLastName;
     }
 
-    // get displayDoctorName(): string {
-    //     return this.doctorFirstName + ' ' + this.doctorLastName;
-    // }
+    get displayDoctorName(): string {
+        return this.fromDoctorFirstName + ' ' + this.fromDoctorLastName;
+    }
 }
 
 

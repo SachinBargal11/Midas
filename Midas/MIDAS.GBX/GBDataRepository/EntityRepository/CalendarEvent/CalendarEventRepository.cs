@@ -96,11 +96,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
                     {
-                        newEvent.RecurrenceRules.Add(new RecurrencePattern(eachEvent.RecurrenceRule));
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(eachEvent.RecurrenceRule.ToUpper().Replace("COUNT=0", "COUNT=500")));
                     }
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
                     {
-                        newEvent.ExceptionRules.Add(new RecurrencePattern(eachEvent.RecurrenceException));
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(eachEvent.RecurrenceException.ToUpper().Replace("COUNT=0", "COUNT=500")));
                     }
 
                     calendar.Events.Add(newEvent);

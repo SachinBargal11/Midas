@@ -9,8 +9,6 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { ReferralStore } from '../../cases/stores/referral-store';
-import { Referral } from '../../cases/models/referral';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Speciality } from '../../../account-setup/models/speciality';
@@ -48,7 +46,6 @@ export class OutboundReferralsComponent implements OnInit {
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
-        private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _pendingReferralStore: PendingReferralStore,
@@ -74,17 +71,12 @@ export class OutboundReferralsComponent implements OnInit {
     testData: any[] = [
         {
             displayName: "AB69852", caseId: "50", toCompanyname: "citimall", toLocationname: "",
-            forSpecialty: "AC",
-
-
+            forSpecialty: "AC"
         }];
 
-
-
     loadReferralsCheckingDoctor() {
-        // let doctorRoleOnly = null;        
         if (this.doctorRoleOnly) {
-            // this.loadReferralsForDoctor();
+            this.loadReferralsForDoctor();
         } else {
             this.loadReferrals();
         }
@@ -104,19 +96,19 @@ export class OutboundReferralsComponent implements OnInit {
             });
     }
 
-    // loadReferralsForDoctor() {
-    //     this._progressBarService.show();
-    //     this._pendingReferralStore.getReferralsByReferringUserId()
-    //         .subscribe((referrals: PendingReferral[]) => {
-    //             this.referredMedicalOffices = referrals.reverse();
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    // }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        this._pendingReferralStore.getReferralsByReferringUserId()
+            .subscribe((referrals: InboundOutboundList[]) => {
+                this.referredMedicalOffices = referrals.reverse();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
@@ -127,26 +119,26 @@ export class OutboundReferralsComponent implements OnInit {
             // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
             this._progressBarService.show();
             if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
-            this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
-                .subscribe(
-                (response) => {
-                    // this.document = document
-                    // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-                },
-                (error) => {
-                    let errString = 'Unable to download';
-                    let notification = new Notification({
-                        'messages': 'Unable to download',
-                        'type': 'ERROR',
-                        'createdAt': moment()
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this._progressBarService.hide();
-                    //  this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', 'Unable to download');
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
             }
             this._progressBarService.hide();
         });
