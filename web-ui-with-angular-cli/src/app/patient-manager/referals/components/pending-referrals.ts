@@ -69,6 +69,7 @@ export class PendingReferralsComponent implements OnInit {
     isDeleteProgress: boolean = false;
     specialityId = 0;
     roomTestId = 0;
+    specialityIdArray = [];
 
     constructor(
         private _router: Router,
@@ -111,9 +112,15 @@ export class PendingReferralsComponent implements OnInit {
 
     getMedicalProviderDoctorRoom(event) {
         let pendingReferralListRow: PendingReferralList = event.data;
-        this.specialityId = pendingReferralListRow.forSpecialtyId ? pendingReferralListRow.forSpecialtyId : 0;
-        this.roomTestId = pendingReferralListRow.forRoomTestId ? pendingReferralListRow.forRoomTestId : 0;
-        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.specialityId, this.roomTestId)
+        this.specialityIdArray.push(pendingReferralListRow);
+        if (this.specialityIdArray.length >= 1 && this.specialityIdArray[0].forSpecialtyId == pendingReferralListRow.forSpecialtyId) {
+            this.specialityId = pendingReferralListRow.forSpecialtyId ? pendingReferralListRow.forSpecialtyId : 0;
+            this.roomTestId = pendingReferralListRow.forRoomTestId ? pendingReferralListRow.forRoomTestId : 0;
+            this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.specialityId, this.roomTestId)
+        } else {
+            this._notificationsService.error('Please select same speciality');
+            return;
+        }
     }
 
     loadPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number, specialityId: number, roomTestId: number) {
@@ -292,9 +299,9 @@ export class PendingReferralsComponent implements OnInit {
                       //call save referral for medical provider & doctor
                       this.saveReferralForMedicalProviderDoctor()
                   }
-
+    
               }
-
+    
           } else {
               // call save referral only for medical provider
               // saveReferralForMedicalOnlyProvider()
@@ -456,6 +463,7 @@ export class PendingReferralsComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
+                    this._notificationsService.success('Referral saved successfully');
                     this.loadPendingReferralsForCompany(this.companyId);
                 },
                 (error) => {
@@ -525,6 +533,7 @@ export class PendingReferralsComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
+                    this._notificationsService.success('Referral saved successfully');
                     this.loadPendingReferralsForCompany(this.companyId);
                 },
                 (error) => {
@@ -584,6 +593,7 @@ export class PendingReferralsComponent implements OnInit {
                 });
 
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Referral saved successfully');
                 this.loadPendingReferralsForCompany(this.companyId);
             },
             (error) => {
