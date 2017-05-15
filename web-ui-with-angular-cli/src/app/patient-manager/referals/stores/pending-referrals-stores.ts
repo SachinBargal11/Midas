@@ -95,18 +95,18 @@ export class PendingReferralStore {
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
 
-    getReferralsByReferringUserId(): Observable<PendingReferral[]> {
+    getReferralsByReferringUserId(): Observable<InboundOutboundList[]> {
         let userId: number = this._sessionStore.session.user.id;
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._pendingReferralService.getReferralsByReferringUserId(userId, companyId).subscribe((referrals: PendingReferral[]) => {
-                this._pendingReferral.next(List(referrals));
+            this._pendingReferralService.getReferralsByReferringUserId(userId, companyId).subscribe((referrals: InboundOutboundList[]) => {
+                this._inboundOutboundList.next(List(referrals));
                 resolve(referrals);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
     //Outbound end
     deletePendingReferral(pendingReferralList: PendingReferralList): Observable<PendingReferralList> {
@@ -122,6 +122,7 @@ export class PendingReferralStore {
         });
         return <Observable<PendingReferralList>>Observable.from(promise);
     }
+    //inbound Start
     getReferralsByReferredToCompanyId(): Observable<InboundOutboundList[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
@@ -134,19 +135,19 @@ export class PendingReferralStore {
         });
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
-    getReferralsByReferredToDoctorId(): Observable<PendingReferral[]> {
+    getReferralsByReferredToDoctorId(): Observable<InboundOutboundList[]> {
         let doctorId: number = this._sessionStore.session.user.id;
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._pendingReferralService.getReferralsByReferredToDoctorId(doctorId).subscribe((referrals: PendingReferral[]) => {
-                this._pendingReferral.next(List(referrals));
+            this._pendingReferralService.getReferralsByReferredToDoctorId(doctorId, companyId).subscribe((referrals: InboundOutboundList[]) => {
+                this._inboundOutboundList.next(List(referrals));
                 resolve(referrals);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<PendingReferral[]>>Observable.fromPromise(promise);
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
-
     //inbound end
 }
 

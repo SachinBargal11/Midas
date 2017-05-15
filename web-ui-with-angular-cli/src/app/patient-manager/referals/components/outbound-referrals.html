@@ -6,9 +6,10 @@
 </div>
 </div>
 
-<p-dataTable [value]="referredMedicalOffices" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+<p-dataTable expandableRows="true" [value]="referredMedicalOffices" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
     <header>Referrals List</header>
+
     <p-headerColumnGroup>
         <p-row>
             <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
@@ -95,19 +96,26 @@
         </p-row>
     </p-headerColumnGroup>
 
-    <p-column field="case.patient.user.displayName"></p-column>
-    <p-column field="case.id"></p-column>
-    <!--<p-column field="forSpecialty.name"></p-column>-->
+    <p-column field="displayPatientName"></p-column>
+    <p-column field="caseId"></p-column>
     <p-column rowspan="2">
         <ng-template let-pReferral="rowData" pTemplate="body">
             <div *ngIf="pReferral.forSpecialty">{{pReferral.forSpecialty.name}}</div>
             <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
         </ng-template>
     </p-column>
-    <p-column field="toCompany.name"></p-column>
-    <p-column field="toLocation.location.name"></p-column>
-    <p-column></p-column>
-    <!--<p-column>
+    <p-column field="toCompanyName"></p-column>
+    <p-column field="toLocationName"></p-column>
+
+    <p-column>
+        <ng-template let-referralProcedure="rowData " pTemplate="body">
+            <div *ngFor="let currentReferralProc of referralProcedure.referralProcedureCode ">
+                {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}
+            </div>
+        </ng-template>
+
+    </p-column>
+    <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)">
                 <u>Yes</u>
@@ -123,6 +131,6 @@
                 <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
             </span>
         </ng-template>
-    </p-column>-->
+    </p-column>
 </p-dataTable>
 </div>
