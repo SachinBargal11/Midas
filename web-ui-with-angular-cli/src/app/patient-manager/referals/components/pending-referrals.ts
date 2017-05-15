@@ -183,6 +183,21 @@ export class PendingReferralsComponent implements OnInit {
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedRoomId = event.target.value;
+            this.medicalProviderRoom.forEach(currentMedicalProvider => {
+                if (currentMedicalProvider.room.id === this.selectedRoomId) {
+                    this.selectedLocationId = currentMedicalProvider.room.location.location.id;
+                }
+            });
+            let startDate: moment.Moment = moment();
+            let endDate: moment.Moment = moment().add(7, 'days');
+            this._availableSlotsStore.getAvailableSlotsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId, startDate, endDate)
+                .subscribe((availableSlots: AvailableSlot[]) => {
+                    this.availableSlots = availableSlots;
+                },
+                (error) => {
+                },
+                () => {
+                });
             this.selectedMedicalProviderId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '3') {
             this.selectedOption = 3;
@@ -190,7 +205,7 @@ export class PendingReferralsComponent implements OnInit {
         } else {
             this.selectedMode = 0;
         }
-        if (this.selectedMedicalProviderId) {
+        if (this.selectedMedicalProviderId && this.selectedOption === 1) {
             this.locationsStore.getLocationsByCompanyId(this.selectedMedicalProviderId)
                 .subscribe((locations: LocationDetails[]) => {
                     this.locations = locations;
@@ -326,25 +341,19 @@ export class PendingReferralsComponent implements OnInit {
                 },
                 () => {
                 });
-        } else if (this.selectedOption === 2) {
-            this._availableSlotsStore.getAvailableSlotsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId, startDate, endDate)
-                .subscribe((availableSlots: AvailableSlot[]) => {
-                    this.availableSlots = availableSlots;
-                },
-                (error) => {
-                },
-                () => {
-                });
         }
 
     }
 
     private _populatePatientVisitData(slotDetail: AvailableSingleSlot): PatientVisit {
+        debugger;
         let selectedReffral: PendingReferralList = this.selectedReferrals[0];
         let patientVisit: PatientVisit = new PatientVisit({
             caseId: selectedReffral.caseId,
             patientId: selectedReffral.patientId,
-            doctorId: this.selectedDoctorId,
+            specialtyId: this.selectedOption === 1 ? selectedReffral.speciality.id : null,
+            doctorId: this.selectedOption === 1 ? this.selectedDoctorId : null,
+            roomId: this.selectedOption === 2 ? this.selectedRoomId : null,
             locationId: this.selectedLocationId,
             calendarEvent: new ScheduledEvent({
                 eventStart: slotDetail.start,
@@ -405,6 +414,10 @@ export class PendingReferralsComponent implements OnInit {
     handleAvailableSlotsDialogHide() {
         this.availableSlots = [];
         this.locations = [];
+        // this.selectedReferrals = [];
+        this.medicalProviderDoctor = [];
+        this.medicalProviderRoom = [];
+        this.medicalProvider = [];
     }
 
     closeAvailableSlotsDialog() {
