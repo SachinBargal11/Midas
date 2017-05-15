@@ -346,7 +346,6 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     private _populatePatientVisitData(slotDetail: AvailableSingleSlot): PatientVisit {
-        debugger;
         let selectedReffral: PendingReferralList = this.selectedReferrals[0];
         let patientVisit: PatientVisit = new PatientVisit({
             caseId: selectedReffral.caseId,
