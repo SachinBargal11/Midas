@@ -179,13 +179,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 roomBO.contactersonName = room.ContactPersonName;
                 roomBO.phone = room.Phone;
 
-                BO.Location boLocation = new BO.Location();
-                using (LocationRepository sr = new LocationRepository(_context))
+                if (room.Location != null)
                 {
-                    boLocation = sr.Convert<BO.Location, Location>(room.Location);
-                    boLocation.Company = null;
-                    roomBO.location = boLocation;
+                    if (room.Location.IsDeleted.HasValue == false || (room.Location.IsDeleted.HasValue == true && room.Location.IsDeleted.Value == false))
+                    {
+                        BO.Location boLocation = new BO.Location();
+                        using (LocationRepository sr = new LocationRepository(_context))
+                        {
+                            boLocation = sr.Convert<BO.Location, Location>(room.Location);
+                            if (boLocation != null)
+                            {
+                                boLocation.Company = null;
+                                boLocation.AddressInfo = null;
+                                boLocation.ContactInfo = null;
+                                boLocation.Schedule = null;
+                            }
+                            
+                            roomBO.location = boLocation;
+                        }
+                    }
                 }
+                
 
                 if (room.IsDeleted.HasValue)
                     roomBO.IsDeleted = room.IsDeleted.Value;
