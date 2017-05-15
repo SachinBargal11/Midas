@@ -96,11 +96,74 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
                     {
-                        newEvent.RecurrenceRules.Add(new RecurrencePattern(eachEvent.RecurrenceRule.ToUpper().Replace("COUNT=0", "COUNT=500")));
+                        var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceRule = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceRule += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
                     }
+
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
                     {
-                        newEvent.ExceptionRules.Add(new RecurrencePattern(eachEvent.RecurrenceException.ToUpper().Replace("COUNT=0", "COUNT=500")));
+                        var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceException = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceException += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
                     }
 
                     calendar.Events.Add(newEvent);
@@ -118,7 +181,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                            .Select(p => p).Include("ScheduleDetails")
                                                            .FirstOrDefault();
 
-            var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
+            //var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
+            List<DateTime> EventDays = new List<DateTime>();
+            for (DateTime eachDate = StartDate; eachDate <= EndDate; eachDate = eachDate.Date.AddDays(1))
+            {
+                EventDays.Add(eachDate);
+            }
 
             foreach (var eachEventDay in EventDays)
             {
@@ -160,7 +228,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         eachEventTime.EndTime = eachEventTime.EndTime.Add(new TimeSpan(0, 60 - eachEventTime.EndTime.Minute, 0));
                     }
 
-                    var removeStartAndEndTime = StartAndEndTimeSlots.Where(p => p.StartTime >= eachEventTime.StartTime.TimeOfDay && p.EndTime < eachEventTime.EndTime.TimeOfDay).ToList();
+                    var removeStartAndEndTime = StartAndEndTimeSlots.Where(p => p.StartTime >= eachEventTime.StartTime.TimeOfDay && p.EndTime <= eachEventTime.EndTime.TimeOfDay).ToList();
                     removeStartAndEndTime.ForEach(p => StartAndEndTimeSlots.Remove(p));
                 }
 
@@ -204,11 +272,74 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
                     {
-                        newEvent.RecurrenceRules.Add(new RecurrencePattern(eachEvent.RecurrenceRule));
+                        var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceRule = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceRule += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
                     }
+
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
                     {
-                        newEvent.ExceptionRules.Add(new RecurrencePattern(eachEvent.RecurrenceException));
+                        var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceException = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceException += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
                     }
 
                     calendar.Events.Add(newEvent);
@@ -226,7 +357,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                            .Select(p => p).Include("ScheduleDetails")
                                                            .FirstOrDefault();
 
-            var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
+            //var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
+            List<DateTime> EventDays = new List<DateTime>();
+            for (DateTime eachDate = StartDate; eachDate <= EndDate; eachDate = eachDate.Date.AddDays(1))
+            {
+                EventDays.Add(eachDate);
+            }
 
             foreach (var eachEventDay in EventDays)
             {
@@ -268,7 +404,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         eachEventTime.EndTime = eachEventTime.EndTime.Add(new TimeSpan(0, 60 - eachEventTime.EndTime.Minute, 0));
                     }
 
-                    var removeStartAndEndTime = StartAndEndTimeSlots.Where(p => p.StartTime >= eachEventTime.StartTime.TimeOfDay && p.EndTime < eachEventTime.EndTime.TimeOfDay).ToList();
+                    var removeStartAndEndTime = StartAndEndTimeSlots.Where(p => p.StartTime >= eachEventTime.StartTime.TimeOfDay && p.EndTime <= eachEventTime.EndTime.TimeOfDay).ToList();
                     removeStartAndEndTime.ForEach(p => StartAndEndTimeSlots.Remove(p));
                 }
 
