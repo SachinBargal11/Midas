@@ -674,12 +674,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
             else
             {
-                List<BO.PendingReferralList> PendingReferralListBO = new List<BO.PendingReferralList>();
+                List<BO.PendingReferralList2> PendingReferralList2BO = new List<BO.PendingReferralList2>();
                 foreach (PendingReferral item in acc)
                 {
-                    PendingReferralListBO.Add(ConvertPendingReferralList2<BO.PendingReferralList, PendingReferral>(item));
+                    PendingReferralList2BO.Add(ConvertPendingReferralList2<BO.PendingReferralList2, PendingReferral>(item));
                 }
-                return PendingReferralListBO;
+                return PendingReferralList2BO;
             }
         }
 
