@@ -596,6 +596,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetPendingReferralByCompanyId2(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetByFromCompanyId(int companyId)
         {
             throw new NotImplementedException();

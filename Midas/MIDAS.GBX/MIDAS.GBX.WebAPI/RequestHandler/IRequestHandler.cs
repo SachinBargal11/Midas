@@ -106,6 +106,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId);
         HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId, int SpecialityId, int RoomTestId);
         HttpResponseMessage GetPendingReferralByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetPendingReferralByCompanyId2(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByFromCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByToCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetReferralByFromCompanyId(HttpRequestMessage request, int companyId);

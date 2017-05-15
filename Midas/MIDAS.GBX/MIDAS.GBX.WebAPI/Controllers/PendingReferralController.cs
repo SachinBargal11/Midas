@@ -99,6 +99,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetPendingReferralByCompanyId(Request, CompanyId);
         }
 
+        [HttpGet]
+        [Route("getPendingReferralByCompanyId2/{CompanyId}")]
+        public HttpResponseMessage GetPendingReferralByCompanyId2(int CompanyId)
+        {
+            return requestHandler.GetPendingReferralByCompanyId2(Request, CompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

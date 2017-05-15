@@ -2472,6 +2472,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetPendingReferralByCompanyId2(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetPendingReferralByCompanyId2(CompanyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         public Object GetByFromCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
