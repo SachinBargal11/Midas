@@ -39,13 +39,13 @@ export class ProcedureComponent implements OnInit {
     if (this.selectedVisit.specialtyId) {
       this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
     } else if (this.selectedVisit.roomId) {
-      this.loadProceduresForRoomTest(this.selectedVisit.roomId);
+      this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
     }
     this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
   }
 
   loadProceduresForSpeciality(specialityId: number) {
-    this._progressBarService.show();
+    // this._progressBarService.show();
     let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
     result.subscribe(
       (procedures: Procedure[]) => {
@@ -59,15 +59,15 @@ export class ProcedureComponent implements OnInit {
         this.procedures = procedureDetails;
       },
       (error) => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       },
       () => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       });
   }
 
   loadProceduresForRoomTest(roomTestId: number) {
-    this._progressBarService.show();
+    // this._progressBarService.show();
     let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
     result.subscribe(
       (procedures: Procedure[]) => {
@@ -81,10 +81,10 @@ export class ProcedureComponent implements OnInit {
         this.procedures = procedureDetails;
       },
       (error) => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       },
       () => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       });
   }
 

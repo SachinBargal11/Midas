@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="!selectedVisit.specialtyId">
         <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
         <div class="col-md-6">
           <div class="form-group">
@@ -81,11 +81,11 @@
   </p-tabPanel>
 
   <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
-    <app-referrals [selectedVisit]="selectedVisit" [routeFrom]="2" (save)="saveReferral($event)"></app-referrals>
+    <app-referrals [selectedVisit]="selectedVisit" [routeFrom]="routeFrom" (save)="saveReferral($event)"></app-referrals>
   </p-tabPanel>
 
   <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
-    <app-dignosis [selectedVisit]="selectedVisit" [routeFrom]="2" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
+    <app-dignosis [selectedVisit]="selectedVisit" [routeFrom]="routeFrom" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
   </p-tabPanel>
 
   <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">

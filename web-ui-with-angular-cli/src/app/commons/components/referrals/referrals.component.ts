@@ -74,7 +74,7 @@ export class ReferralsComponent implements OnInit {
     // this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
   }
   loadAllSpecialitiesAndTests() {
-    this._progressBarService.show();
+    // this._progressBarService.show();
     let fetchAllSpecialities = this._specialityStore.getSpecialities();
     let fetchAllTestFacilties = this._roomsStore.getTests();
     Observable.forkJoin([fetchAllSpecialities, fetchAllTestFacilties])
@@ -84,14 +84,14 @@ export class ReferralsComponent implements OnInit {
         this.tests = results[1];
       },
       (error) => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       },
       () => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       });
   }
   getPendingReferralByPatientVisitId() {
-    this._progressBarService.show();
+    // this._progressBarService.show();
     this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
       .subscribe(
       (visitReferrals: VisitReferral[]) => {
@@ -112,10 +112,10 @@ export class ReferralsComponent implements OnInit {
         });
       },
       (error) => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       },
       () => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       });
   }
 
