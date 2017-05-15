@@ -47,6 +47,10 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     isDeleteProgress:boolean = false;
     caseStatusId: number;
 
+    selectedVisitId: number;
+    selectedVisit: PatientVisit;
+    visitInfo = 'Visit Info';
+    visitDialogVisible = false;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -64,6 +68,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+             this._progressBarService.show();
                let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
@@ -158,6 +163,35 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     //         });
 
     // }
+
+    fetchPatientVisit(visitId: number) {
+        this._progressBarService.show();
+        this._patientVisitStore.fetchPatientVisitById(visitId)
+            .subscribe((visit: PatientVisit) => {
+                this.selectedVisit = visit;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    showDialog(visitId: number) {
+        this.fetchPatientVisit(visitId);
+            this.selectedVisitId = visitId;
+            this.visitDialogVisible = true;
+    }
+
+    handleVisitDialogHide() {
+        this.selectedVisitId = null;
+    }
+
+    closePatientVisitDialog() {
+        this.visitDialogVisible = false;
+        this.handleVisitDialogHide();
+    }
 
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);

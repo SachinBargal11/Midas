@@ -21,6 +21,7 @@ export class PatientsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', 'sssssssssssyyyyeuuiii');
     }
 
     getPatient(patientId: Number): Observable<Patient> {
@@ -63,7 +64,9 @@ export class PatientsService {
     getPatients(): Observable<Patient[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/getPatientsByCompanyId/' + companyId)
+            return this._http.get(this._url + '/Patient/getPatientsByCompanyId/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {

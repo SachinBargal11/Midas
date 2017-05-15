@@ -34,88 +34,72 @@ import { ProcedureComponent } from '../procedure/procedure.component';
 import { ReferralsComponent } from '../referrals/referrals.component';
 
 @Component({
-  selector: 'app-visit-detail',
-  templateUrl: './visit-detail.component.html',
-  styleUrls: ['./visit-detail.component.scss']
+    selector: 'app-visit-detail',
+    templateUrl: './visit-detail.component.html',
+    styleUrls: ['./visit-detail.component.scss']
 })
 export class VisitDetailComponent implements OnInit {
-  selectedVisits: PatientVisit[] = [];
-  selectedDoctorsVisits: PatientVisit[] = [];
-  selectedRoomsVisits: PatientVisit[] = [];
-  visits: PatientVisit[];
-  caseId: number;
-  patientId: number;
-  datasource: PatientVisit[];
-  totalRecords: number;
-  currentDoctorName: string;
-  currentRoomName: string;
-  doctorsVisits: PatientVisit[];
-  roomsVisits: PatientVisit[];
-  doctor: Doctor;
-  room: Room;
-  patientName: string;
-  patient: Patient;
-  isDeleteProgress = false;
-  caseStatusId: number;
+    selectedVisits: PatientVisit[] = [];
+    selectedDoctorsVisits: PatientVisit[] = [];
+    selectedRoomsVisits: PatientVisit[] = [];
+    visits: PatientVisit[];
+    caseId: number;
+    patientId: number;
+    datasource: PatientVisit[];
+    totalRecords: number;
+    currentDoctorName: string;
+    currentRoomName: string;
+    doctorsVisits: PatientVisit[];
+    roomsVisits: PatientVisit[];
+    doctor: Doctor;
+    room: Room;
+    patientName: string;
+    patient: Patient;
+    isDeleteProgress = false;
+    caseStatusId: number;
 
-  visitDetailForm: FormGroup;
-  visitDetailFormControls;
-  visitInfo = 'Visit Info';
-//   selectedVisit: PatientVisit;
-  visitUploadDocumentUrl: string;
-  documents: VisitDocument[] = [];
-  selectedDocumentList = [];
+    visitDetailForm: FormGroup;
+    visitDetailFormControls;
+    visitInfo = 'Visit Info';
+    //   selectedVisit: PatientVisit;
+    visitUploadDocumentUrl: string;
+    documents: VisitDocument[] = [];
+    selectedDocumentList = [];
 
-  private _url = `${environment.SERVICE_BASE_URL}`;
+    private _url = `${environment.SERVICE_BASE_URL}`;
 
-  @Input() selectedVisit: PatientVisit;
-  @Input() routeFrom: number;
-//   @Input() selectedVisitId: number;
-  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
-  constructor(
-    private _fb: FormBuilder,
-    private _router: Router,
-    public _route: ActivatedRoute,
-    private _patientVisitStore: PatientVisitsStore,
-    private _notificationsStore: NotificationsStore,
-    private _progressBarService: ProgressBarService,
-    private _patientStore: PatientsStore,
-    private _notificationsService: NotificationsService,
-    private _doctorsStore: DoctorsStore,
-    private _roomsStore: RoomsStore,
-    private confirmationService: ConfirmationService,
-    private _casesStore: CasesStore,
-    private _visitReferralStore: VisitReferralStore,
-    public sessionStore: SessionStore
-  ) {
-    this.visitDetailForm = this._fb.group({
-      notes: ['', Validators.required],
-      visitStatusId: [''],
-      readingDoctor: ['']
-    });
-    this.visitDetailFormControls = this.visitDetailForm.controls;
-  }
+    @Input() selectedVisit: PatientVisit;
+    @Input() routeFrom: number;
+    //   @Input() selectedVisitId: number;
+    @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
+    constructor(
+        private _fb: FormBuilder,
+        private _router: Router,
+        public _route: ActivatedRoute,
+        private _patientVisitStore: PatientVisitsStore,
+        private _notificationsStore: NotificationsStore,
+        private _progressBarService: ProgressBarService,
+        private _patientStore: PatientsStore,
+        private _notificationsService: NotificationsService,
+        private _doctorsStore: DoctorsStore,
+        private _roomsStore: RoomsStore,
+        private confirmationService: ConfirmationService,
+        private _casesStore: CasesStore,
+        private _visitReferralStore: VisitReferralStore,
+        public sessionStore: SessionStore
+    ) {
+        this.visitDetailForm = this._fb.group({
+            notes: ['', Validators.required],
+            visitStatusId: [''],
+            readingDoctor: ['']
+        });
+        this.visitDetailFormControls = this.visitDetailForm.controls;
+    }
 
-  ngOnInit() {
-    // this.fetchPatientVisit(this.selectedVisitId);
+    ngOnInit() {
         this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisitId + '/visit';
         this.getDocuments();
-  }
-
-//    fetchPatientVisit(visitId: number) {
-//         // this._progressBarService.show();
-//         this._patientVisitStore.fetchPatientVisitById(visitId)
-//             .subscribe((visit: PatientVisit) => {
-//                 this.selectedVisit = visit;
-//             },
-//             (error) => {
-//                 // this._progressBarService.hide();
-//             },
-//             () => {
-//                 // this._progressBarService.hide();
-//             });
-//     }
+    }
 
     handleVisitDialogHide() {
         this.selectedVisit = null;
@@ -169,6 +153,7 @@ export class VisitDetailComponent implements OnInit {
             notes: visitDetailFormValues.notes,
             visitStatusId: visitDetailFormValues.visitStatusId
         }));
+        this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
@@ -206,6 +191,7 @@ export class VisitDetailComponent implements OnInit {
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitDiagnosisCodes: diagnosisCodes
         }));
+        this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
@@ -243,6 +229,7 @@ export class VisitDetailComponent implements OnInit {
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitProcedureCodes: procedureCodes
         }));
+        this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
@@ -269,26 +256,10 @@ export class VisitDetailComponent implements OnInit {
         this.closePatientVisitDialog();
     }
 
-    saveReferral(inputProcedureCodes: Procedure[]) {
+    saveReferral(inputVisitReferrals: VisitReferral[]) {
         let result;
         let visitDetailFormValues = this.visitDetailForm.value;
-        let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
-
-        let visitReferralDetail = new VisitReferral({
-            patientVisitId: this.selectedVisit.id,
-            fromCompanyId: this.sessionStore.session.currentCompany.id,
-            fromLocationId: this.selectedVisit.locationId,
-            fromDoctorId: this.selectedVisit.doctorId ? this.selectedVisit.doctorId : null,
-            forSpecialtyId: this.selectedVisit.specialtyId ? this.selectedVisit.specialtyId : null,
-            forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
-            forRoomTestId: this.selectedVisit.room ? this.selectedVisit.room.roomTest.id : null,
-            isReferralCreated: true,
-            pendingReferralProcedureCode: procedureCodes
-        });
-        // result = this._visitReferralStore.saveVisitReferral(visitReferralDetail);
+        result = this._visitReferralStore.saveVisitReferral(inputVisitReferrals);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -311,7 +282,7 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.closePatientVisitDialog();
+        // this.closePatientVisitDialog();
     }
 
     deleteDocument() {
