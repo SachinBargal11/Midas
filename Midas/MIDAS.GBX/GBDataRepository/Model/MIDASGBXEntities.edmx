@@ -8521,7 +8521,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="Templates">
             <EntityTypeMapping TypeName="MIDASGBXModel.Template">
               <MappingFragment StoreEntitySet="Templates">
-                <ScalarProperty Name="templatepath" ColumnName="templatepath" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TemplateType" ColumnName="TemplateType" />
                 <ScalarProperty Name="FileData" ColumnName="FileData" />
