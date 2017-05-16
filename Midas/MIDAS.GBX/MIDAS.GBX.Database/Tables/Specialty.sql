@@ -34,3 +34,21 @@ GO
 ALTER TABLE [dbo].[Specialty] ALTER COLUMN [SchedulingAvailable] [BIT] NOT NULL
 GO
 */
+
+/*
+SET IDENTITY_INSERT [dbo].[Specialty] ON
+
+INSERT [dbo].[Specialty]([id], [Name], [SpecialityCode], [IsUnitApply], [IsDeleted], [CreateByUserID], [CreateDate], [ColorCode], [MandatoryProcCode], [SchedulingAvailable])
+VALUES (4, 'MRI', 'MRI', 0, 0, 1, GETDATE(), NULL, 1, 0)
+
+INSERT [dbo].[Specialty]([id], [Name], [SpecialityCode], [IsUnitApply], [IsDeleted], [CreateByUserID], [CreateDate], [ColorCode], [MandatoryProcCode], [SchedulingAvailable])
+VALUES (5, 'CT-Scan', 'CT-Scan', 0, 0, 1, GETDATE(), NULL, 1, 0)
+
+INSERT [dbo].[Specialty]([id], [Name], [SpecialityCode], [IsUnitApply], [IsDeleted], [CreateByUserID], [CreateDate], [ColorCode], [MandatoryProcCode], [SchedulingAvailable])
+VALUES (6, 'X-RAY', 'X-RAY', 0, 0, 1, GETDATE(), NULL, 1, 0)
+
+INSERT [dbo].[Specialty]([id], [Name], [SpecialityCode], [IsUnitApply], [IsDeleted], [CreateByUserID], [CreateDate], [ColorCode], [MandatoryProcCode], [SchedulingAvailable])
+VALUES (7, 'ECG', 'ECG', 0, 0, 1, GETDATE(), NULL, 1, 0)
+
+SET IDENTITY_INSERT [dbo].[Specialty] OFF
+*/
