@@ -281,6 +281,10 @@ namespace MIDAS.GBX
             {
                 repo = new DocumentManagerRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Common.TemplateType))
+            {
+                repo = new TemplateTypeRepository(context);
+            }
             return repo;
         }
     }

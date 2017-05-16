@@ -39,6 +39,11 @@ namespace MIDAS.GBX.DocumentManager
             throw new NotImplementedException();
         }
 
+        public virtual Object Template(string templateBlobPath, IDictionary<string, string> templateKeywords)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Validate(HttpContent ctnt)
         {
             throw new NotImplementedException();
