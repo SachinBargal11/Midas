@@ -48,6 +48,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.ToRoomId = referral.ToRoomId;
             referralBO.ScheduledPatientVisitId = referral.ScheduledPatientVisitId;
             referralBO.DismissedBy = referral.DismissedBy;
+            referralBO.CaseId = referral.CaseId;
             referralBO.IsDeleted = referral.IsDeleted;
             referralBO.CreateByUserID = referral.CreateByUserID;
             referralBO.UpdateByUserID = referral.UpdateByUserID;
@@ -298,6 +299,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.ToRoomId = Referral.ToRoomId;
             ReferralListBO.ScheduledPatientVisitId = Referral.ScheduledPatientVisitId;
             ReferralListBO.DismissedBy = Referral.DismissedBy;
+            ReferralListBO.CaseId = Referral.CaseId;
             ReferralListBO.IsDeleted = Referral.IsDeleted;
             ReferralListBO.CreateByUserID = Referral.CreateByUserID;
             ReferralListBO.UpdateByUserID = Referral.UpdateByUserID;
@@ -599,6 +601,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralDB.ToRoomId = referralBO.ToRoomId;
                     //referralDB.ScheduledPatientVisitId = referralBO.ScheduledPatientVisitId;
                     referralDB.DismissedBy = referralBO.DismissedBy;
+                    referralDB.CaseId = referralBO.CaseId;
 
                     if (add_referral == true)
                     {
