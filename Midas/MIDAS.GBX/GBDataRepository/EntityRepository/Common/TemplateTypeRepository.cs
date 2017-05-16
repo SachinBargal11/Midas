@@ -55,6 +55,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             if (templateType == null) return default(T);
             BO.Common.TemplateType boTemplateType = new BO.Common.TemplateType();
             boTemplateType.TemplateText = templateType.FileData;
+            boTemplateType.TemplatePath = templateType.templatepath;
 
             return (T)(object)boTemplateType;
         }

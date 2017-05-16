@@ -12,16 +12,19 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Template
+    public partial class PreferredMedicalProvider
     {
         public int Id { get; set; }
-        public string TemplateType { get; set; }
-        public string FileData { get; set; }
+        public int PrefMedProviderId { get; set; }
+        public int CompanyId { get; set; }
+        public bool IsCreated { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string templatepath { get; set; }
+    
+        public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
     }
 }

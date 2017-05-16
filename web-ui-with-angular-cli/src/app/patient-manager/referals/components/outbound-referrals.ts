@@ -20,6 +20,7 @@ import { CaseDocument } from '../../cases/models/case-document';
 import { InboundOutboundList } from '../models/inbound-outbound-referral';
 import { PendingReferralStore } from '../stores/pending-referrals-stores';
 import { ConsentStore } from '../../cases/stores/consent-store';
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'outbound-referrals',
@@ -41,6 +42,14 @@ export class OutboundReferralsComponent implements OnInit {
     refferedRooms: Room[];
     filters: SelectItem[];
     doctorRoleOnly = null;
+    selectedCaseId: number;
+    companyId: number;
+    url;
+    addConsentDialogVisible: boolean = false;
+    currentCaseId: number;
+    signedDocumentUploadUrl: string;
+    signedDocumentPostRequestData: any;
+    isElectronicSignatureOn: boolean = false;
 
     constructor(
         private _router: Router,
@@ -51,12 +60,15 @@ export class OutboundReferralsComponent implements OnInit {
         private _pendingReferralStore: PendingReferralStore,
         private _consentStore: ConsentStore,
     ) {
+        this.companyId = this.sessionStore.session.currentCompany.id;
+        this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
         });
     }
 
-    ngOnInit() {
+    checkSessions() {
         let roles = this.sessionStore.session.user.roles;
         if (roles) {
             if (roles.length === 1) {
@@ -66,6 +78,10 @@ export class OutboundReferralsComponent implements OnInit {
             }
         }
         this.loadReferralsCheckingDoctor();
+    }
+
+    ngOnInit() {
+        this.checkSessions();
     }
 
     testData: any[] = [
@@ -167,5 +183,77 @@ export class OutboundReferralsComponent implements OnInit {
             specialityString = speciality.join(', ');
         }
         return specialityString;
+    }
+    showDialog(currentCaseId) {
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+        this.signedDocumentPostRequestData = {
+            companyId: this.companyId,
+            caseId: this.selectedCaseId
+        };
+    }
+
+    documentUploadComplete(documents: Document[]) {       
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+            }
+            else {
+                let notification = new Notification({
+                    'title': 'Consent Uploaded Successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+
+            }
+            this.addConsentDialogVisible = false;
+            this.checkSessions();
+        });
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    signedDocumentUploadComplete(document: Document) {
+        if (document.status == 'Failed') {
+            let notification = new Notification({
+                'title': document.message + '  ' + document.documentName,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Consent Uploaded Successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+
+        }
+        this.addConsentDialogVisible = false;
+        this.checkSessions();
+    }
+
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
     }
 }

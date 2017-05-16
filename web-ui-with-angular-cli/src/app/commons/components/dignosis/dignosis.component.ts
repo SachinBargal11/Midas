@@ -51,17 +51,17 @@ export class DignosisComponent implements OnInit {
   }
 
   loadAllDiagnosisTypes() {
-    this._progressBarService.show();
+    // this._progressBarService.show();
     let result = this._diagnosisStore.getAllDiagnosisTypes();
     result.subscribe(
       (diagnosisTypes: DiagnosisType[]) => {
         this.diagnosisTypes = diagnosisTypes;
       },
       (error) => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       },
       () => {
-        this._progressBarService.hide();
+        // this._progressBarService.hide();
       });
   }
 

@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[Referral2]
 (
 	[Id] INT NOT NULL IDENTITY(1, 1),
+    [CaseId] INT NULL,
     [PendingReferralId] INT NOT NULL, 
 	[FromCompanyId] INT NOT NULL, 
     [FromLocationId] INT NOT NULL, 
@@ -115,3 +116,24 @@ GO
 ALTER TABLE [dbo].[Referral2] CHECK CONSTRAINT [FK_Referral2_User_DismissedBy]
 GO
 
+/*
+ALTER TABLE [dbo].[Referral2] ALTER COLUMN [PendingReferralId] INT NULL
+GO
+
+ALTER TABLE [dbo].[Referral2] ADD [CaseId] INT NULL
+GO
+
+UPDATE [dbo].[Referral2] 
+    SET [CaseId] = (SELECT TOP 1 [CaseId] FROM [dbo].[PatientVisit2] 
+        WHERE [Id] = (SELECT TOP 1 [PatientVisitId] FROM [dbo].[PendingReferral] WHERE [Id] = PendingReferralId))
+GO
+ALTER TABLE [dbo].[Referral2] ALTER COLUMN [CaseId] INT NOT NULL
+GO
+
+ALTER TABLE [dbo].[Referral2]  WITH CHECK ADD  CONSTRAINT [FK_Referral2_Case_CaseId] FOREIGN KEY([CaseId])
+    REFERENCES [dbo].[Case] ([id])
+GO
+
+ALTER TABLE [dbo].[Referral2] CHECK CONSTRAINT [FK_Referral2_Case_CaseId]
+GO
+*/

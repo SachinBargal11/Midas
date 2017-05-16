@@ -18,120 +18,120 @@ export class ReferralService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getReferralsByCaseId(caseId: Number): Observable<Referral[]> {
-        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByCaseId/' + caseId)
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
-                        return ReferralAdapter.parseResponse(data);
-                    });
-                    resolve(referrals);
-                }, (error) => {
-                    reject(error);
-                });
+    // getReferralsByCaseId(caseId: Number): Observable<Referral[]> {
+    //     let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/referral/getByCaseId/' + caseId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let referrals = (<Object[]>data).map((data: any) => {
+    //                     return ReferralAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(referrals);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Referral[]>>Observable.fromPromise(promise);
-    }
-    getReferralsByReferringCompanyId(comapanyId: Number): Observable<Referral[]> {
-        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferringCompanyId/' + comapanyId)
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
-                        return ReferralAdapter.parseResponse(data);
-                    });
-                    resolve(referrals);
-                }, (error) => {
-                    reject(error);
-                });
+    //     });
+    //     return <Observable<Referral[]>>Observable.fromPromise(promise);
+    // }
+    // getReferralsByReferringCompanyId(comapanyId: Number): Observable<Referral[]> {
+    //     let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/referral/getByReferringCompanyId/' + comapanyId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let referrals = (<Object[]>data).map((data: any) => {
+    //                     return ReferralAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(referrals);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Referral[]>>Observable.fromPromise(promise);
-    }
-    getReferralsByReferredToCompanyId(comapanyId: Number): Observable<Referral[]> {
-        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferredToCompanyId/' + comapanyId)
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
-                        return ReferralAdapter.parseResponse(data);
-                    });
-                    resolve(referrals);
-                }, (error) => {
-                    reject(error);
-                });
+    //     });
+    //     return <Observable<Referral[]>>Observable.fromPromise(promise);
+    // }
+    // getReferralsByReferredToCompanyId(comapanyId: Number): Observable<Referral[]> {
+    //     let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/referral/getByReferredToCompanyId/' + comapanyId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let referrals = (<Object[]>data).map((data: any) => {
+    //                     return ReferralAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(referrals);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Referral[]>>Observable.fromPromise(promise);
-    }
-    getReferralsByReferringUserId(userId: Number): Observable<Referral[]> {
-        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferringUserId/' + userId)
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
-                        return ReferralAdapter.parseResponse(data);
-                    });
-                    resolve(referrals);
-                }, (error) => {
-                    reject(error);
-                });
+    //     });
+    //     return <Observable<Referral[]>>Observable.fromPromise(promise);
+    // }
+    // getReferralsByReferringUserId(userId: Number): Observable<Referral[]> {
+    //     let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/referral/getByReferringUserId/' + userId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let referrals = (<Object[]>data).map((data: any) => {
+    //                     return ReferralAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(referrals);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Referral[]>>Observable.fromPromise(promise);
-    }
-    getReferralsByReferredToDoctorId(doctorId: Number): Observable<Referral[]> {
-        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferredToDoctorId/' + doctorId)
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let referrals = (<Object[]>data).map((data: any) => {
-                        return ReferralAdapter.parseResponse(data);
-                    });
-                    resolve(referrals);
-                }, (error) => {
-                    reject(error);
-                });
+    //     });
+    //     return <Observable<Referral[]>>Observable.fromPromise(promise);
+    // }
+    // getReferralsByReferredToDoctorId(doctorId: Number): Observable<Referral[]> {
+    //     let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/referral/getByReferredToDoctorId/' + doctorId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let referrals = (<Object[]>data).map((data: any) => {
+    //                     return ReferralAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(referrals);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Referral[]>>Observable.fromPromise(promise);
-    }
-    addReferral(referral: Referral): Observable<Referral> {
-        let promise: Promise<Referral> = new Promise((resolve, reject) => {
-            let requestData: any = referral.toJS();
-            requestData = _.omit(requestData, 'room', 'case', 'referringUser', 'referringLocation', 'referringCompany', 'referredToDoctor', 
-                                'referredToLocation', 'referredToCompany', 'referralDocument', 'referredToSpecialty', 'referredToRoomTest');
-            return this._http.post(this._url + '/Referral/save', JSON.stringify(requestData), {
-                headers: this._headers
-            })
-                .map(res => res.json())
-                .subscribe((data: any) => {
-                    let parsedReferral: Referral = null;
-                    parsedReferral = ReferralAdapter.parseResponse(data);
-                    resolve(parsedReferral);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Referral>>Observable.fromPromise(promise);
-    }
-    deleteReferral(referral: Referral): Observable<Referral> {
-        let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Referral/Delete/' + referral.id, {
-                headers: this._headers
-            }).map(res => res.json())
-                .subscribe((data) => {
-                    if (data) {
-                        let parsedReferral: Referral = null;
-                        parsedReferral = ReferralAdapter.parseResponse(data);
-                        resolve(parsedReferral);
-                    }
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Referral>>Observable.from(promise);
-    }
+    //     });
+    //     return <Observable<Referral[]>>Observable.fromPromise(promise);
+    // }
+    // addReferral(referral: Referral): Observable<Referral> {
+    //     let promise: Promise<Referral> = new Promise((resolve, reject) => {
+    //         let requestData: any = referral.toJS();
+    //         requestData = _.omit(requestData, 'room', 'case', 'referringUser', 'referringLocation', 'referringCompany', 'referredToDoctor', 
+    //                             'referredToLocation', 'referredToCompany', 'referralDocument', 'referredToSpecialty', 'referredToRoomTest');
+    //         return this._http.post(this._url + '/Referral/save', JSON.stringify(requestData), {
+    //             headers: this._headers
+    //         })
+    //             .map(res => res.json())
+    //             .subscribe((data: any) => {
+    //                 let parsedReferral: Referral = null;
+    //                 parsedReferral = ReferralAdapter.parseResponse(data);
+    //                 resolve(parsedReferral);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<Referral>>Observable.fromPromise(promise);
+    // }
+    // deleteReferral(referral: Referral): Observable<Referral> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/Referral/Delete/' + referral.id, {
+    //             headers: this._headers
+    //         }).map(res => res.json())
+    //             .subscribe((data) => {
+    //                 if (data) {
+    //                     let parsedReferral: Referral = null;
+    //                     parsedReferral = ReferralAdapter.parseResponse(data);
+    //                     resolve(parsedReferral);
+    //                 }
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<Referral>>Observable.from(promise);
+    // }
 }

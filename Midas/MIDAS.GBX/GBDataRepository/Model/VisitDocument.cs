@@ -12,16 +12,18 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Template
+    public partial class VisitDocument
     {
         public int Id { get; set; }
-        public string TemplateType { get; set; }
-        public string FileData { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
+        public int PatientVisitId { get; set; }
+        public int MidasDocumentId { get; set; }
+        public string DocumentName { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string templatepath { get; set; }
+        public Nullable<int> CreateUserId { get; set; }
+        public Nullable<int> UpdateUserId { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+    
+        public virtual MidasDocument MidasDocument { get; set; }
     }
 }

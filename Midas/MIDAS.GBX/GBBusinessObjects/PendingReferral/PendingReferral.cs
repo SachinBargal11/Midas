@@ -58,7 +58,7 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
-    public class PendingReferralList : GbObject
+    public class PendingReferralList2 : GbObject
     {
         [JsonProperty("patientVisitId")]
         public int PatientVisitId { get; set; }
@@ -124,7 +124,7 @@ namespace MIDAS.GBX.BusinessObjects
         public PendingReferralProcedureCode PendingReferralProcedureCode { get; set; }        
     }
 
-    public class PendingReferralList2 : GbObject
+    public class PendingReferralList : GbObject
     {
         [JsonProperty("patientVisitId")]
         public int PatientVisitId { get; set; }

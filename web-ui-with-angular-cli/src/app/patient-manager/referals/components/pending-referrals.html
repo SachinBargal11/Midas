@@ -82,7 +82,7 @@
 <p-dialog [minWidth]="500" [width]="800" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
     header="Please select slots" [(visible)]="availableSlotsDialogVisible" [responsive]="true" showEffect="fade" [modal]="true"
     [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation($event)">
+    <select *ngIf="selectedOption === 1" [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation($event)">
             <option value="0"> -- Select Location -- </option>
             <option *ngFor="let location of locations" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>

@@ -10,7 +10,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class Referral2 : GbObject
     {
         [JsonProperty("pendingReferralId")]
-        public int PendingReferralId { get; set; }
+        public int? PendingReferralId { get; set; }
 
         [JsonProperty("fromCompanyId")]
         public int FromCompanyId { get; set; }
@@ -47,6 +47,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("dismissedBy")]
         public int? DismissedBy { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
         [JsonProperty("fromCompany")]
         public Company Company { get; set; }
@@ -94,7 +97,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class Referral2List : GbObject
     {
         [JsonProperty("pendingReferralId")]
-        public int PendingReferralId { get; set; }
+        public int? PendingReferralId { get; set; }
 
         [JsonProperty("fromCompanyId")]
         public int FromCompanyId { get; set; }
