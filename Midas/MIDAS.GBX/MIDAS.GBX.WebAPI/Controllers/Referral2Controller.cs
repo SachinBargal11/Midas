@@ -141,6 +141,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.AssociateVisitWithReferral(Request, referralId, patientVisitId);
         }
 
+        [HttpGet]
+        [Route("getByCaseAndCompanyId/{caseId}/{companyId}")]
+        public HttpResponseMessage GetByCaseAndCompanyId(int caseId, int companyId)
+        {
+            return requestHandler.GetByCaseAndCompanyId(Request, caseId, companyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
