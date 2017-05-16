@@ -203,4 +203,22 @@ export class PendingReferralService {
         });
         return <Observable<any>>Observable.from(promise);
     }
+   
+    getReferralsByCaseId(caseId: Number, companyId: Number): Observable<InboundOutboundList[]> {
+        let promise: Promise<InboundOutboundList[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Referral2/getByCaseAndCompanyId/' + caseId + '/' + companyId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let referrals = (<Object[]>data).map((data: any) => {
+                        return InboundOutboundReferralAdapter.parseResponse(data);
+                    });
+                    resolve(referrals);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
+    }
+
 }
