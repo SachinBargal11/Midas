@@ -1906,6 +1906,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetByCaseAndCompanyId(int caseId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByCaseAndCompanyId(caseId, companyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         public Object Get2(int param1, int param2, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
