@@ -39,6 +39,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.FromCompanyId = referral.FromCompanyId;
             referralBO.FromLocationId = referral.FromLocationId;
             referralBO.FromDoctorId = referral.FromDoctorId;
+            referralBO.FromUserId = referral.FromUserId;
             referralBO.ForSpecialtyId = referral.ForSpecialtyId;
             referralBO.ForRoomId = referral.ForRoomId;
             referralBO.ForRoomTestId = referral.ForRoomTestId;
@@ -290,6 +291,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.FromCompanyId = Referral.FromCompanyId;
             ReferralListBO.FromLocationId = Referral.FromLocationId;
             ReferralListBO.FromDoctorId = Referral.FromDoctorId;
+            ReferralListBO.FromUserId = Referral.FromUserId;
             ReferralListBO.ForSpecialtyId = Referral.ForSpecialtyId;
             ReferralListBO.ForRoomId = Referral.ForRoomId;
             ReferralListBO.ForRoomTestId = Referral.ForRoomTestId;
@@ -592,6 +594,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralDB.FromCompanyId = referralBO.FromCompanyId;
                     referralDB.FromLocationId = referralBO.FromLocationId;
                     referralDB.FromDoctorId = referralBO.FromDoctorId;
+                    referralDB.FromUserId = referralBO.FromUserId;
                     referralDB.ForSpecialtyId = referralBO.ForSpecialtyId;
                     referralDB.ForRoomId = referralBO.ForRoomId;
                     referralDB.ForRoomTestId = referralBO.ForRoomTestId;

@@ -24,8 +24,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public int Id { get; set; }
         public Nullable<int> PendingReferralId { get; set; }
         public int FromCompanyId { get; set; }
-        public int FromLocationId { get; set; }
-        public int FromDoctorId { get; set; }
+        public Nullable<int> FromLocationId { get; set; }
+        public Nullable<int> FromDoctorId { get; set; }
         public Nullable<int> ForSpecialtyId { get; set; }
         public Nullable<int> ForRoomId { get; set; }
         public Nullable<int> ForRoomTestId { get; set; }
@@ -41,6 +41,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public int CaseId { get; set; }
+        public Nullable<int> FromUserId { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }
@@ -56,6 +57,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual RoomTest RoomTest { get; set; }
         public virtual Specialty Specialty { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReferralDocument> ReferralDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
