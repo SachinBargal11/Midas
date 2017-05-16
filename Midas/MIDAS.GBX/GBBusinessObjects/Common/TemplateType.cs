@@ -14,5 +14,8 @@ namespace MIDAS.GBX.BusinessObjects.Common
 
         [JsonProperty("templateText")]
         public string TemplateText { get; set; }
+
+        [JsonProperty("templatePath")]
+        public string TemplatePath { get; set; }
     }
 }
