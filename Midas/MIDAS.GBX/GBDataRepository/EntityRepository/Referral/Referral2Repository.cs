@@ -601,7 +601,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralDB.ToRoomId = referralBO.ToRoomId;
                     //referralDB.ScheduledPatientVisitId = referralBO.ScheduledPatientVisitId;
                     referralDB.DismissedBy = referralBO.DismissedBy;
-                    referralDB.CaseId = referralBO.CaseId;
+
+                    if (referralBO.PendingReferralId.HasValue == true && referralBO.CaseId <= 0)
+                    {
+                        int? CaseId = _context.PendingReferrals.Include("PatientVisit2")
+                                                              .Where(p => p.Id == referralBO.PendingReferralId)
+                                                              .Select(p => p.PatientVisit2.CaseId)
+                                                              .FirstOrDefault();
+                        if (CaseId.HasValue == true)
+                        {
+                            referralDB.CaseId = CaseId.Value;
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid CaseId.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                    else
+                    {
+                        referralDB.CaseId = referralBO.CaseId;
+                    }                    
 
                     if (add_referral == true)
                     {
