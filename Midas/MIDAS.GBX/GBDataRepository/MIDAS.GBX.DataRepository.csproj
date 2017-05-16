@@ -331,9 +331,6 @@
     <Compile Include="Model\ProcedureCode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Referral.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Referral2.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

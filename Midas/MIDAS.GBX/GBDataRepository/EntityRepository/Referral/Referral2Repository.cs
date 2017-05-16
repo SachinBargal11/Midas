@@ -1449,7 +1449,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         public override object GenerateReferralDocument(int id)
         {
-            HtmlToPdf htmlPDF = new HtmlToPdf();
+            /*HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
             string pdfText = GetTemplateDocument(Constants.ReferralType);
             var acc = _context.Referrals.Include("Case")
@@ -1459,6 +1459,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                              .Include("Doctor.User")
                                              .Include("Company")
                                              .Where(p => p.Id == id).FirstOrDefault();
+
             if (acc != null)
             {
                 using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -1509,7 +1510,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             else
                 return new BO.ErrorObject { ErrorMessage = "No record found for referral id", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
-            return acc;
+            return acc;*/
+            return new object();
         }
 
         #region Associate Visit With Referral
