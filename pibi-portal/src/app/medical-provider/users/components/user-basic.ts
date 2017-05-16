@@ -50,6 +50,7 @@ export class UserBasicComponent implements OnInit {
     doctor: Doctor;
     doctorDetail: Doctor;
     doctorRole = false;
+    attorneyRole = false;
     address = new Address({});
     contact = new Contact({});
     options = {
@@ -171,7 +172,7 @@ export class UserBasicComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', [AppValidators.emailValidator]],
+                alternateEmail: ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
@@ -260,7 +261,7 @@ export class UserBasicComponent implements OnInit {
                     officeExtension: userFormValues.contact.officeExtension,
                     alternateEmail: userFormValues.contact.alternateEmail,
                     preferredCommunication: userFormValues.contact.preferredCommunication,
-                   
+
 
                 }),
                 address: new Address({

@@ -48,7 +48,7 @@ export class AddUserComponent implements OnInit {
     isCitiesLoading = false;
     doctorRole = false;
     doctorFlag: boolean = false;
-
+    attorneyRole = false;
     constructor(
         private _statesStore: StatesStore,
         private _userService: UsersService,
@@ -90,14 +90,14 @@ export class AddUserComponent implements OnInit {
                 lastname: ['', Validators.required],
                 role: ['', [Validators.required]]
             }),
-            doctor: this._fb.group(this.initDoctorModel()),
+            //doctor: this._fb.group(this.initDoctorModel()),
             contact: this._fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', [AppValidators.emailValidator]],
+                alternateEmail: ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
@@ -166,7 +166,9 @@ export class AddUserComponent implements OnInit {
                 this.doctorRole = true;
             }
         });
+
         if (!this.doctorRole) {
+            debugger;
             let userDetail = new User({
                 firstName: userFormValues.userInfo.firstname,
                 lastName: userFormValues.userInfo.lastname,
