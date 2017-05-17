@@ -41,7 +41,9 @@ const PendingReferralRecord = Record({
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, // Moment
-    updateDate: null // Moment
+    updateDate: null,// Moment
+    caseId: null,
+    fromUserId: null
 });
 export class PendingReferral extends PendingReferralRecord {
     id: number;
@@ -75,6 +77,8 @@ export class PendingReferral extends PendingReferralRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    caseId: number;
+    fromUserId: number;
 
     constructor(props) {
         super(props);

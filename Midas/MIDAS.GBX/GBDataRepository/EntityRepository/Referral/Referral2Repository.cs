@@ -624,9 +624,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (referralBO.PendingReferralId.HasValue == true && referralBO.CaseId <= 0)
                     {
                         int? CaseId = _context.PendingReferrals.Include("PatientVisit2")
-                                                              .Where(p => p.Id == referralBO.PendingReferralId)
-                                                              .Select(p => p.PatientVisit2.CaseId)
-                                                              .FirstOrDefault();
+                                                               .Where(p => p.Id == referralBO.PendingReferralId)
+                                                               .Select(p => p.PatientVisit2.CaseId)
+                                                               .FirstOrDefault();
                         if (CaseId.HasValue == true)
                         {
                             referralDB.CaseId = CaseId.Value;
@@ -635,6 +635,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         {
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid CaseId.", ErrorLevel = ErrorLevel.Error };
                         }
+                    }
+                    else if (referralBO.PendingReferralId.HasValue == false && referralBO.CaseId <= 0)
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid PendingReferralId, CaseId.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
                     {

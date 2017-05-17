@@ -502,7 +502,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Login
-
         public override Object Login<T>(T entity)
         {
             BO.User userBO = (BO.User)(object)entity;
@@ -642,6 +641,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             boOTP_.User.Roles = RoleBO;
             return boOTP_;
+        }
+
+        public override Object Login2<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            string Pass = userBO.Password;
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            bool isPasswordCorrect = false;
+            try
+            {
+                isPasswordCorrect = PasswordHash.ValidatePassword(userBO.Password, ((User)data_).Password);
+
+                if (!isPasswordCorrect)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //Check if the User even if valid is logging as invalid User Type
+            BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
+           
+            return acc_;
         }
         #endregion
 

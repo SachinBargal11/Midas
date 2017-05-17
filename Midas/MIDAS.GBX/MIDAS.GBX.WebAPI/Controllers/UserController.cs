@@ -82,9 +82,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.Delete(Request, id);
         }
-
-
-        [AllowAnonymous]
+        
         [HttpPost]
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
@@ -98,6 +96,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             return requestHandler.Login(Request, user);
         }
+        
+        /*[HttpPost]
+        [Route("Signin2")]
+        public HttpResponseMessage Signin2([FromBody]User user)
+        {
+            if (user != null)
+            {
+                //Since the API should only validate for Staff Users.
+                //Rest all other even if valid are not Authorised.
+                user.UserType = GBEnums.UserType.Staff;
+            }
+
+            return requestHandler.Login(Request, user);
+        }*/
 
         // Unique Name Validation
         [HttpGet]

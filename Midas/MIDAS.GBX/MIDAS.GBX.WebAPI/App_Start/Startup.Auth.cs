@@ -37,12 +37,14 @@ namespace MIDAS.GBX.WebAPI
             PublicClientId = "self";
 
 
-            var authProvider =new ApplicationOAuthProvider("");
+            var authProvider =new ApplicationOAuthProvider(PublicClientId);
             OAuthAuthorizationServerOptions options = new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/midasapi/token"),
+                //AuthorizeEndpointPath= new PathString("/midasapi/User/Signin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                RefreshTokenProvider = new ApplicationRefreshTokenProvider(),
                 Provider = authProvider
             };
             app.UseOAuthAuthorizationServer(options);

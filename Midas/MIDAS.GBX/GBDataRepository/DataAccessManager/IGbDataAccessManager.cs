@@ -38,6 +38,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(T gbObject, int? nestingLevels = null);
         Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Login2(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object ValidateInvitation(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         
         Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

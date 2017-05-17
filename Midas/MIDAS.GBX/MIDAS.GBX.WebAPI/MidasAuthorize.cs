@@ -9,7 +9,7 @@ namespace MIDAS.GBX.WebAPI
     {
         protected override void HandleUnauthorizedRequest(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            if (!actionContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
                 base.HandleUnauthorizedRequest(actionContext);
             }

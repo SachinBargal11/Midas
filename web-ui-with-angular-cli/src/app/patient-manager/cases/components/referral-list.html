@@ -1,13 +1,13 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group" *ngIf="caseStatusId === 1">
     <h3 class="with-border">Referrals
-        <!--<a class="pull-right btn btn-danger btn-sm" (click)="deleteReferral()">
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteReferral()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Referral</span>
             <loader [visible]="isDeleteProgress"></loader>
         </a>
         <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Referral</span>
-    </a>-->
+    </a>
     </h3>
 </div>
 <div class="ui-widget-header row">
@@ -23,24 +23,22 @@
     <p-headerColumnGroup>
         <p-row>
             <!--<p-column selectionMode="multiple" rowspan="2"></p-column>-->
-            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
-            <p-column header="Case Id" [style]="{'width':'5%'}" rowspan="2" styleClass="inbound-column"></p-column>
-            <p-column header="Specialty" [style]="{'width':'7%'}" rowspan="2" styleClass=" inbound-column "></p-column>
-            <p-column header="Referred From" colspan="2" styleClass="inbound-column-span"></p-column>
+
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Specialty" rowspan="2" styleClass=" inbound-column "></p-column>
             <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
-            <p-column header="Procedure" rowspan="2" styleClass="inbound-column"></p-column>
-            <p-column header="Consent Recieved" [style]="{'width':'7%'}" rowspan="2" styleClass="inbound-column"></p-column>
+
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred Document" rowspan="2"></p-column>
         </p-row>
         <p-row>
-            <p-column header="User Id" styleClass="inbound-column"></p-column>
-            <p-column header="Location" styleClass="inbound-column"></p-column>
+
             <p-column header="Company" styleClass="inbound-column"></p-column>
             <p-column header="Location" styleClass="inbound-column"></p-column>
         </p-row>
     </p-headerColumnGroup>
     <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="displayPatientName"></p-column>
+
     <p-column field="caseId"></p-column>
     <p-column rowspan="2">
         <ng-template let-pReferral="rowData" pTemplate="body">
@@ -48,18 +46,10 @@
             <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
         </ng-template>
     </p-column>
-    <p-column field="fromDoctorId"></p-column>
-    <p-column field="fromLocationName"></p-column>
+
     <p-column field="toCompanyName"></p-column>
     <p-column field="toLocationName"></p-column>
-    <p-column>
-        <ng-template let-referralProcedure="rowData " pTemplate="body">
-            <div *ngFor="let currentReferralProc of referralProcedure.referralProcedureCode ">
-                {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}
-            </div>
-        </ng-template>
 
-    </p-column>
     <p-column>
         <ng-template let-referral="rowData " pTemplate="body ">
             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id) " (click)="downloadConsent(referral.case.caseCompanyConsentDocument) ">
@@ -79,6 +69,99 @@
         </ng-template>
     </p-column>
 </p-dataTable>
+<br>
+<!--<div class="row">
+    <div class="col-lg-3">
+        <label class="form-label">Select speciality
+            <span class="color-red">*</span>
+        </label>
+        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+        <option value="0">- Select speciality -</option>
+        <optgroup label="Select Specialty">
+           <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        </optgroup>
+        <optgroup label="Select Test">
+           <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+        </optgroup>
+    </select>
+    </div>
+
+    <div class="col-lg-3 m-t-lg">
+        <label class="form-label">Medical-Office-List
+            <span class="color-red">*</span>
+        </label>
+        <div class="form-group">
+            <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <option value="0">-Select-</option>
+             <optgroup *ngIf="specialityId != 0" label="Select MedicalProvider-Doctor">
+                     <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
+                         {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
+             </optgroup>
+             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
+                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
+                        {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
+             </optgroup>
+              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
+                     <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
+                         {{currentPreferredMedicalProvider.name}}</option>
+             </optgroup>
+        </select>
+        </div>
+    </div>
+</div>-->
+
+<div class="row">
+
+    <div class="col-lg-3">
+        <label class="form-label">Select speciality
+            <span class="color-red">*</span>
+        </label>
+        <select [(ngModel)]="selectedSpMode" class="select2-arrow form-control" (change)="selectOption($event)">
+        <option value="0">- Select speciality -</option>
+        <optgroup label="Select Specialty">
+           <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        </optgroup>
+        <optgroup label="Select Test">
+           <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+        </optgroup>
+    </select>
+    </div>
+    <div class="col-lg-3">
+        <label class="form-label">Medical-Office-List
+            <span class="color-red">*</span>
+        </label>
+        <div class="form-group">
+            <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOptionMedicalOffice($event)">
+                        <option value="0">-Select-</option>
+             <optgroup *ngIf="specialityId != 0" label="Select MedicalProvider-Doctor">
+                     <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
+                         {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
+             </optgroup>
+             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
+                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
+                        {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
+             </optgroup>
+              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
+                     <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
+                         {{currentPreferredMedicalProvider.name}}</option>
+             </optgroup>
+        </select>
+        </div>
+    </div>
+
+    <div class="col-lg-6 m-t-lg">
+        <p-confirmDialog width="425"></p-confirmDialog>
+        <button [disabled]="selectedOption == 0" class="btn btn-success btn-sm" (click)="assign()"><i class="fa fa-plus" aria-hidden="true"></i>
+            <span  class="hidden-md-down">Assign To Medical Office</span>       
+       </button>
+
+        <a class="btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add Medical Provider</span>
+        </a>
+    </div>
+</div>
+
+
 <p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
 

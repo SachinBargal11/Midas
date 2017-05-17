@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI
         public static void Register(HttpConfiguration config)
         {
             if(Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
-            config.Filters.Add(new AuthorizeAttribute());
+            config.Filters.Add(new MidasAuthorize());
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
