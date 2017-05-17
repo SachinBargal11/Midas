@@ -37,6 +37,12 @@ import { PrefferedMedicalProvider } from '../../../patient-manager/referals/mode
 import { PendingReferral } from '../../../patient-manager/referals/models/pending-referral';
 import { UserSettingStore } from '../../../commons/stores/user-setting-store';
 import { UserSetting } from '../../../commons/models/user-setting';
+import { AvailableSingleSlot } from '../../../patient-manager/referals/models/available-single-slot';
+import { AvailableSlot } from '../../../patient-manager/referals/models/available-slots';
+import { AvailableSlotsStore } from '../../../patient-manager/referals/stores/available-slots-stores';
+import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
+import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
+
 @Component({
     selector: 'referral-list',
     templateUrl: './referral-list.html'
@@ -94,7 +100,11 @@ export class ReferralListComponent implements OnInit {
     selectedMedicalProviderId: number = 0;
     selectedLocationId: number = 0;
     userSetting: UserSetting;
-
+    addMedicalDialogVisible: boolean = false
+    selectedCancel: number;
+    availableSlotsDialogVisible: boolean = false;
+    availableSlots: AvailableSlot[] = [];
+    locations: LocationDetails[] = [];
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -109,7 +119,9 @@ export class ReferralListComponent implements OnInit {
         private _consentStore: ConsentStore,
         private _specialityStore: SpecialityStore,
         private _roomsStore: RoomsStore,
-        private _userSettingStore: UserSettingStore
+        private _userSettingStore: UserSettingStore,
+        private _availableSlotsStore: AvailableSlotsStore,
+        public locationsStore: LocationsStore
     ) {
         this.companyId = this.sessionStore.session.currentCompany.id;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
@@ -347,12 +359,10 @@ export class ReferralListComponent implements OnInit {
     }
 
     selectOptionMedicalOffice(event) {
-
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
         this.selectedMedicalProviderId = 0;
-
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
             this.selectedDoctorId = event.target.value;
@@ -383,13 +393,13 @@ export class ReferralListComponent implements OnInit {
         } else {
             this.selectedMode = 0;
         }
-        // if (this.selectedMedicalProviderId && this.selectedOption === 1) {
-        //     this.locationsStore.getLocationsByCompanyId(this.selectedMedicalProviderId)
-        //         .subscribe((locations: LocationDetails[]) => {
-        //             this.locations = locations;
-        //         },
-        //         (error) => { });
-        // }
+        if (this.selectedMedicalProviderId && this.selectedOption === 1) {
+            this.locationsStore.getLocationsByCompanyId(this.selectedMedicalProviderId)
+                .subscribe((locations: LocationDetails[]) => {
+                    this.locations = locations;
+                },
+                (error) => { });
+        }
     }
 
     checkUserSettings(selectedMedicalProviderId, selectedDoctorId) {
@@ -403,6 +413,35 @@ export class ReferralListComponent implements OnInit {
     }
 
     assign() {
+        let shouldAppointVisit: boolean = true;
+        if (this.selectedOption === 3) {
+            shouldAppointVisit = false;
+            this.saveReferral();
+        } else if (this.selectedOption === 1) {
+            this.checkUserSettings(this.selectedMedicalProviderId, this.selectedDoctorId)
+            if (!this.userSetting.isCalendarPublic) {
+                shouldAppointVisit = false;
+                this.saveReferral();
+            }
+        }
+        if (shouldAppointVisit) {
+            this.confirmationService.confirm({
+                message: 'Do you want to Appoint Schedule?',
+                header: 'Confirmation',
+                icon: 'fa fa-question-circle',
+                accept: () => {
+                    // this.availableSlotsDialogVisible = true;
+                },
+                reject: () => {
+                    //call save referral for medical provider & room
+                    this.saveReferral();
+                }
+            });
+        }
+    }
+
+    saveReferral() {
+
         let result;
         let pendingReferralDetails: PendingReferral = null;
         let forSpecialtyId = null;
@@ -466,17 +505,17 @@ export class ReferralListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-
     }
 
 
-
-    saveReferralForMedicalProvider() {
-        debugger;
-
+    showDialogMedical() {
+        this.addMedicalDialogVisible = true;
+        this.selectedCancel = 1;
     }
-
-
+    closeDialog() {
+        this.addMedicalDialogVisible = false;
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.selectedSpecialityId, this.selectedTestId);
+    }
 
     // // getReferralDocumentName(currentReferral: Referral) {
     // //     _.forEach(currentReferral.referralDocument, (currentDocument: ReferralDocument) =>{

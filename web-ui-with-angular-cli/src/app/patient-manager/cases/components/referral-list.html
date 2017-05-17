@@ -1,13 +1,6 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group" *ngIf="caseStatusId === 1">
     <h3 class="with-border">Referrals
-        <a class="pull-right btn btn-danger btn-sm" (click)="deleteReferral()">
-            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Referral</span>
-            <loader [visible]="isDeleteProgress"></loader>
-        </a>
-        <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Add Referral</span>
-    </a>
     </h3>
 </div>
 <div class="ui-widget-header row">
@@ -23,7 +16,6 @@
     <p-headerColumnGroup>
         <p-row>
             <!--<p-column selectionMode="multiple" rowspan="2"></p-column>-->
-
             <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Specialty" rowspan="2" styleClass=" inbound-column "></p-column>
             <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
@@ -155,7 +147,7 @@
             <span  class="hidden-md-down">Assign To Medical Office</span>       
        </button>
 
-        <a class="btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+        <a class="btn btn-primary btn-sm" (click)="showDialogMedical()"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Medical Provider</span>
         </a>
     </div>
@@ -172,5 +164,45 @@
             [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
 
     </div>
+</p-dialog>
+<p-dialog *ngIf="selectedCancel == 1" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddMedicalDialogHide()" [(visible)]="addMedicalDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <add-medical-provider [inputCancel]="selectedCancel" (closeDialogBox)="closeDialog()"></add-medical-provider>
+</p-dialog>
+
+<p-dialog [minWidth]="500" [width]="800" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
+    header="Available Slots" [(visible)]="availableSlotsDialogVisible" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <loader [visible]="isAvailableSlotsSavingInProgress"></loader>
+    <select *ngIf="!isAvailableSlotsSavingInProgress && selectedOption === 1" [(ngModel)]="selectedLocationId" class="select2-arrow form-control"
+        (change)="selectLocation($event)">
+            <option value="0"> -- Select Location -- </option>
+            <option *ngFor="let location of locations" [value]="location.location.id">{{location.location.name}}</option>                                       
+        </select>
+    <!--<div *ngIf="availableSlots.length > 0">
+        <pre>
+        {{availableSlots[0] | json}}
+            </pre>
+    </div>-->
+    <p-carousel numVisible="4" *ngIf="!isAvailableSlotsSavingInProgress && availableSlots.length > 0" headerText="" [value]="availableSlots"
+        circular="circular">
+        <ng-template let-currentAvailableSlot pTemplate="item">
+            <div class="ui-grid ui-grid-responsive">
+
+                <div class="ui-grid-row m-l">
+                    <div class="ui-grid-col-6">
+                        {{currentAvailableSlot.forDate.local().format('ddd')}} {{currentAvailableSlot.forDate.local().format('MMM DD')}}
+                    </div>
+                </div>
+                <div class="ui-grid-row m-l" *ngFor="let currentSingleSlot of currentAvailableSlot.startAndEndTimes">
+                    <button class="btn btn-inline btn-warning ladda-button" (click)="setVisit(currentSingleSlot)">
+                        <span class="ladda-label">
+                            {{currentSingleSlot.start.local().format('hh:mm a')}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
 </p-dialog>
 <router-outlet></router-outlet>
