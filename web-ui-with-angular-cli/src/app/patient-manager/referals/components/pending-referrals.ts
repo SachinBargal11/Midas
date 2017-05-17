@@ -225,6 +225,7 @@ export class PendingReferralsComponent implements OnInit {
     }
     closeDialog() {
         this.addMedicalDialogVisible = false;
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId,this.specialityId,this.roomTestId);
     }
 
     assign() {
