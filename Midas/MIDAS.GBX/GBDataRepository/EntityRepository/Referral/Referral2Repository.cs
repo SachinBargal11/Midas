@@ -1428,7 +1428,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Case.CaseCompanyMappings")
                                                .Include("Case.CompanyCaseConsentApprovals")
                                                .Include("Case.CaseCompanyConsentDocuments")
-                                               .Include("PendingReferral.PatientVisit2.Patient2")                                               
+                                               .Include("PendingReferral.PatientVisit2.Patient2.User")                                               
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
