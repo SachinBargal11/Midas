@@ -47,7 +47,7 @@
 <p-dataTable [value]="documentType" [(selection)]="selectedDocuments" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header>Document</header>
-    <p-column selectionMode="multiple"></p-column>
+    <p-column selectionMode="single"></p-column>
     <p-column header="Document Type" field="documentType" [sortable]="true"></p-column>
 </p-dataTable><br>
 </form>
