@@ -309,34 +309,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (Referral!= null)
             {
-                if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
+                if (Referral.PendingReferral != null)
                 {
-                    if (Referral.PendingReferral.PatientVisit2 != null)
+                    if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
                     {
-                        if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
+                        if (Referral.PendingReferral.PatientVisit2 != null)
                         {
-                            ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
-                        }
-                    }
-                    if (Referral.Case != null)
-                    {
-                        if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
-                        {
-                            ReferralListBO.CaseId = Referral.CaseId;
-                        }
-                    }
-                    if (Referral.PendingReferral.PatientVisit2.Patient2 != null)
-                    {
-                        if (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.Value == false))
-                        {
-                            ReferralListBO.PatientId = Referral.PendingReferral.PatientVisit2.PatientId;
-
-                            if (Referral.PendingReferral.PatientVisit2.Patient2.User != null)
+                            if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
                             {
-                                if (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.Value == false))
+                                ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                            }
+                        }
+                        if (Referral.Case != null)
+                        {
+                            if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
+                            {
+                                ReferralListBO.CaseId = Referral.CaseId;
+                            }
+                        }
+                        if (Referral.PendingReferral.PatientVisit2.Patient2 != null)
+                        {
+                            if (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.Value == false))
+                            {
+                                ReferralListBO.PatientId = Referral.PendingReferral.PatientVisit2.PatientId;
+
+                                if (Referral.PendingReferral.PatientVisit2.Patient2.User != null)
                                 {
-                                    ReferralListBO.PatientFirstName = Referral.PendingReferral.PatientVisit2.Patient2.User.FirstName;
-                                    ReferralListBO.PatientLastName = Referral.PendingReferral.PatientVisit2.Patient2.User.LastName;
+                                    if (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.Value == false))
+                                    {
+                                        ReferralListBO.PatientFirstName = Referral.PendingReferral.PatientVisit2.Patient2.User.FirstName;
+                                        ReferralListBO.PatientLastName = Referral.PendingReferral.PatientVisit2.Patient2.User.LastName;
+                                    }
                                 }
                             }
                         }
