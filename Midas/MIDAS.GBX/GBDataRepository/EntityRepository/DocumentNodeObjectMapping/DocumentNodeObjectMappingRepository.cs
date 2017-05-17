@@ -151,7 +151,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (company == null) return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
                 
                 documentNodeObjectMappingDB = _context.DocumentNodeObjectMappings.Where(doc => doc.ChildNode.ToLower() == boDocumentNodeObjectMapping.DocumentType.ToLower() &&
-                                                                                             doc.CompanyId == boDocumentNodeObjectMapping.CompanyId).FirstOrDefault();
+                                                                                             doc.CompanyId == boDocumentNodeObjectMapping.CompanyId &&
+                                                                                             (doc.IsDeleted.HasValue == false || (doc.IsDeleted.HasValue == true && doc.IsDeleted.Value == false))).FirstOrDefault();
 
                 if (documentNodeObjectMappingDB == null)
                 {

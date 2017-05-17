@@ -43,7 +43,7 @@ namespace MIDAS.GBX.WebAPI.Providers
             }
             User user = new User { UserName = context.UserName, Password = context.Password,forceLogin=true };
 
-            var res = dataAccessManager.Login(user);
+            var res = dataAccessManager.Login2(user);
             if (res == null)
             {
                 context.SetError("invalid_grant", "Provided username and password is incorrect");
@@ -51,9 +51,12 @@ namespace MIDAS.GBX.WebAPI.Providers
             }
             try
             {
-                var res_ = (OTP)(object)res;
-                identity.AddClaim(new Claim("username", context.UserName));
-                identity.AddClaim(new Claim(ClaimTypes.Name, res_.User.FirstName));
+                var res_ = (User)(object)res;
+                identity.AddClaim(new Claim("userName", context.UserName));
+                identity.AddClaim(new Claim(ClaimTypes.Name, res_.FirstName));
+                identity.AddClaim(new Claim("userId", res_.ID.ToString()));
+                identity.AddClaim(new Claim("creationDate", DateTime.UtcNow.ToString()));
+
                 context.Validated(identity);
             }
             catch
