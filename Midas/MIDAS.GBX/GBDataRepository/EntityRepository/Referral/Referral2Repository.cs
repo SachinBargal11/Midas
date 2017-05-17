@@ -1456,10 +1456,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         public override object GenerateReferralDocument(int id)
         {
-            /*HtmlToPdf htmlPDF = new HtmlToPdf();
+            HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
             string pdfText = GetTemplateDocument(Constants.ReferralType);
-            var acc = _context.Referrals.Include("Case")
+            var acc = _context.Referral2.Include("Case")
                                              .Include("Case.Patient2")
                                              .Include("Case.Patient2.User")
                                              .Include("Doctor")
@@ -1476,7 +1476,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
                                          .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
                                          .Replace("{{ReferredToDoctor}}", acc.Doctor != null ? (acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName) : "")
-                                         .Replace("{{Note}}", acc.Note)
+                                         //.Replace("{{Note}}", acc.Note)
                                          .Replace("{{CompanyName}}", acc.Company.Name);
 
                         path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
@@ -1517,8 +1517,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             else
                 return new BO.ErrorObject { ErrorMessage = "No record found for referral id", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
-            return acc;*/
-            return new object();
+            return acc;           
         }
 
         #region Associate Visit With Referral

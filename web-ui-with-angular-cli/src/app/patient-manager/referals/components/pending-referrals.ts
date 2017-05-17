@@ -70,6 +70,7 @@ export class PendingReferralsComponent implements OnInit {
     specialityId = 0;
     roomTestId = 0;
     specialityIdArray = [];
+    isAvailableSlotsSavingInProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -363,6 +364,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     setVisit(slotDetail: AvailableSingleSlot) {
+        
         let pendingReferral: PendingReferral = null;
         if (this.selectedOption === 1) {
             pendingReferral = this._populateReferralForMedicalProviderDoctor();
@@ -374,7 +376,7 @@ export class PendingReferralsComponent implements OnInit {
             this._notificationsService.error('Two different speciality cannot be saved simultaneously');
             return;
         }
-
+        this.isAvailableSlotsSavingInProgress = true;
 
         let patientVisit: PatientVisit = this._populatePatientVisitData(slotDetail);
         let visitResult: Promise<PatientVisit> = this._patientVisitsStore.addPatientVisit(patientVisit).toPromise();
@@ -394,6 +396,8 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.availableSlotsDialogVisible = false;
+                this.loadPendingReferralsForCompany(this.companyId);
+                this.isAvailableSlotsSavingInProgress = false;
             }).catch((error) => {
                 let errString = 'Unable to create referral visit!';
                 let notification = new Notification({
@@ -403,6 +407,8 @@ export class PendingReferralsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.availableSlotsDialogVisible = false;
+                this.loadPendingReferralsForCompany(this.companyId);
+                this.isAvailableSlotsSavingInProgress = false;
             });
     }
 
@@ -413,7 +419,7 @@ export class PendingReferralsComponent implements OnInit {
     handleAvailableSlotsDialogHide() {
         this.availableSlots = [];
         this.locations = [];
-        // this.selectedReferrals = [];
+        this.selectedReferrals = [];
         this.medicalProviderDoctor = [];
         this.medicalProviderRoom = [];
         this.medicalProvider = [];
