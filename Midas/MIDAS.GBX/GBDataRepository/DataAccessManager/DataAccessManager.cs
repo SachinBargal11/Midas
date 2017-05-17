@@ -37,5 +37,27 @@ namespace MIDAS.GBX.DataRepository
                 throw;
             }
         }
+
+        public Object Login2(BO.User user)
+        {
+            try
+            {
+                EntityRepository.UserRepository userRepo = new EntityRepository.UserRepository(dbContextProvider.GetGbDBContext());
+
+                var gbdata = userRepo.Login2(user);
+                return gbdata;
+
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
