@@ -65,7 +65,7 @@ export class PendingReferralsComponent implements OnInit {
     selectedMedicalProviderId: number = 0;
     availableSlotsDialogVisible: boolean = false;
     availableSlots: AvailableSlot[] = [];
-    selectedReferrals: PendingReferralList[] = [];
+    selectedReferrals: PendingReferralList;
     isDeleteProgress: boolean = false;
     specialityId = 0;
     roomTestId = 0;
@@ -100,7 +100,7 @@ export class PendingReferralsComponent implements OnInit {
         this._progressBarService.show();
         this._pendingReferralStore.getPendingReferralByCompanyId(this.companyId)
             .subscribe(pendingReferralList => {
-                this.pendingReferralList = pendingReferralList
+                this.pendingReferralList = pendingReferralList.reverse();
             },
             (error) => {
                 this._progressBarService.hide();
@@ -113,15 +113,10 @@ export class PendingReferralsComponent implements OnInit {
 
     getMedicalProviderDoctorRoom(event) {
         let pendingReferralListRow: PendingReferralList = event.data;
-        this.specialityIdArray.push(pendingReferralListRow);
-        if (this.specialityIdArray.length >= 1 && this.specialityIdArray[0].forSpecialtyId == pendingReferralListRow.forSpecialtyId) {
-            this.specialityId = pendingReferralListRow.forSpecialtyId ? pendingReferralListRow.forSpecialtyId : 0;
-            this.roomTestId = pendingReferralListRow.forRoomTestId ? pendingReferralListRow.forRoomTestId : 0;
-            this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.specialityId, this.roomTestId)
-        } else {
-            this._notificationsService.error('Please select same speciality');
-            return;
-        }
+        this.specialityId = pendingReferralListRow.forSpecialtyId ? pendingReferralListRow.forSpecialtyId : 0;
+        this.roomTestId = pendingReferralListRow.forRoomTestId ? pendingReferralListRow.forRoomTestId : 0;
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.specialityId, this.roomTestId)
+
     }
 
     loadPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number, specialityId: number, roomTestId: number) {
@@ -230,14 +225,15 @@ export class PendingReferralsComponent implements OnInit {
     }
     closeDialog() {
         this.addMedicalDialogVisible = false;
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId,this.specialityId,this.roomTestId);
     }
 
     assign() {
         let shouldAppointVisit: boolean = true;
-        if (this.selectedReferrals.length === 0) {
+        if (this.selectedReferrals === null) {
             this._notificationsService.alert('Oh No!', 'Please Select Referral!');
             shouldAppointVisit = false;
-        } else if (this.selectedOption === 0) {
+        } else if (this.selectedReferrals === null) {
             this._notificationsService.alert('Oh No!', 'Please Select Medical Office!');
             shouldAppointVisit = false;
         } else if (this.selectedOption === 3) {
@@ -347,7 +343,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     private _populatePatientVisitData(slotDetail: AvailableSingleSlot): PatientVisit {
-        let selectedReffral: PendingReferralList = this.selectedReferrals[0];
+        let selectedReffral: PendingReferralList = this.selectedReferrals;
         let patientVisit: PatientVisit = new PatientVisit({
             caseId: selectedReffral.caseId,
             patientId: selectedReffral.patientId,
@@ -364,7 +360,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     setVisit(slotDetail: AvailableSingleSlot) {
-        
+
         let pendingReferral: PendingReferral = null;
         if (this.selectedOption === 1) {
             pendingReferral = this._populateReferralForMedicalProviderDoctor();
@@ -419,7 +415,7 @@ export class PendingReferralsComponent implements OnInit {
     handleAvailableSlotsDialogHide() {
         this.availableSlots = [];
         this.locations = [];
-        this.selectedReferrals = [];
+        // this.selectedReferrals = [];
         this.medicalProviderDoctor = [];
         this.medicalProviderRoom = [];
         this.medicalProvider = [];
@@ -434,23 +430,16 @@ export class PendingReferralsComponent implements OnInit {
         let procedureCodes = [];
         let pendingReferralDetails: PendingReferral = null;
 
-        let uniqSpeciality = _.uniq(this.selectedReferrals, (currentPendingReferralList: PendingReferralList) => {
-            return currentPendingReferralList.forSpecialtyId;
-        });
+        if (this.selectedReferrals.pendingReferralProcedureCode.length > 0) {
+            this.selectedReferrals.pendingReferralProcedureCode.forEach(element => {
+                procedureCodes.push({ 'procedureCodeId': element.procedureCodeId });
 
-        if (uniqSpeciality) {
-            if (uniqSpeciality.length === 1) {
-                this.selectedReferrals.forEach(currentPendingReferralList => {
-                    if (currentPendingReferralList.pendingReferralProcedureCode) {
-                        procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
-                    }
-                });
                 pendingReferralDetails = new PendingReferral({
-                    pendingReferralId: this.selectedReferrals[0].id,
+                    pendingReferralId: this.selectedReferrals.id,
                     fromCompanyId: this.sessionStore.session.currentCompany.id,
                     fromLocationId: null,
-                    fromDoctorId: this.selectedReferrals[0].fromDoctorId,
-                    forSpecialtyId: this.selectedReferrals[0].forSpecialtyId,
+                    fromDoctorId: this.selectedReferrals.fromDoctorId,
+                    forSpecialtyId: this.selectedReferrals.forSpecialtyId,
                     forRoomId: null,
                     forRoomTestId: null,
                     toCompanyId: this.selectedMedicalProviderId,
@@ -460,7 +449,7 @@ export class PendingReferralsComponent implements OnInit {
                     dismissedBy: null,
                     referralProcedureCode: procedureCodes
                 });
-            }
+            });
         }
         return pendingReferralDetails;
     }
@@ -506,33 +495,29 @@ export class PendingReferralsComponent implements OnInit {
         let procedureCodes = [];
         let pendingReferralDetails: PendingReferral = null;
 
-        let uniqRoomTest = _.uniq(this.selectedReferrals, (currentPendingReferralList: PendingReferralList) => {
-            return currentPendingReferralList.forRoomTestId;
-        })
-        if (uniqRoomTest) {
-            if (uniqRoomTest.length === 1) {
-                this.selectedReferrals.forEach(currentPendingReferralList => {
-                    if (currentPendingReferralList.pendingReferralProcedureCode) {
-                        procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
-                    }
-                });
-                pendingReferralDetails = new PendingReferral({
-                    pendingReferralId: this.selectedReferrals[0].id,
-                    fromCompanyId: this.sessionStore.session.currentCompany.id,
-                    fromLocationId: null,
-                    fromDoctorId: this.selectedReferrals[0].fromDoctorId,
-                    forSpecialtyId: null,
-                    forRoomId: null,
-                    forRoomTestId: this.selectedReferrals[0].forRoomTestId,
-                    toCompanyId: this.selectedMedicalProviderId,
-                    toLocationId: null,
-                    toDoctorId: null,
-                    toRoomId: this.selectedRoomId,
-                    dismissedBy: null,
-                    referralProcedureCode: procedureCodes
-                });
-            }
+        if (this.selectedReferrals.pendingReferralProcedureCode.length > 0) {
+            this.selectedReferrals.pendingReferralProcedureCode.forEach(element => {
+                procedureCodes.push({ 'procedureCodeId': element.procedureCodeId });
+            });
+
         }
+
+        pendingReferralDetails = new PendingReferral({
+            pendingReferralId: this.selectedReferrals.id,
+            fromCompanyId: this.sessionStore.session.currentCompany.id,
+            fromLocationId: null,
+            fromDoctorId: this.selectedReferrals.fromDoctorId,
+            forSpecialtyId: null,
+            forRoomId: null,
+            forRoomTestId: this.selectedReferrals.forRoomTestId,
+            toCompanyId: this.selectedMedicalProviderId,
+            toLocationId: null,
+            toDoctorId: null,
+            toRoomId: this.selectedRoomId,
+            dismissedBy: null,
+            referralProcedureCode: procedureCodes
+        });
+
         return pendingReferralDetails;
     }
 
@@ -578,19 +563,21 @@ export class PendingReferralsComponent implements OnInit {
         let pendingReferralDetails: PendingReferral;
         let uniqProcedureCodes: Procedure[] = [];
 
-        this.selectedReferrals.forEach(currentPendingReferralList => {
-            if (currentPendingReferralList.pendingReferralProcedureCode) {
-                procedureCodes.push({ 'procedureCodeId': currentPendingReferralList.pendingReferralProcedureCode.procedureCodeId });
-            }
-        });
+        if (this.selectedReferrals.pendingReferralProcedureCode.length > 0) {
+            this.selectedReferrals.pendingReferralProcedureCode.forEach(element => {
+                procedureCodes.push({ 'procedureCodeId': element.procedureCodeId });
+            });
+        }
+
+
         let pendingReferral = new PendingReferral({
-            pendingReferralId: this.selectedReferrals[0].id,
+            pendingReferralId: this.selectedReferrals.id,
             fromCompanyId: this.sessionStore.session.currentCompany.id,
             fromLocationId: null,
-            fromDoctorId: this.selectedReferrals[0].fromDoctorId,
-            forSpecialtyId: this.selectedReferrals[0].forSpecialtyId ? this.selectedReferrals[0].forSpecialtyId : null,
+            fromDoctorId: this.selectedReferrals.fromDoctorId,
+            forSpecialtyId: this.selectedReferrals.forSpecialtyId ? this.selectedReferrals.forSpecialtyId : null,
             forRoomId: null,
-            forRoomTestId: this.selectedReferrals[0].forRoomTestId ? this.selectedReferrals[0].forRoomTestId : null,
+            forRoomTestId: this.selectedReferrals.forRoomTestId ? this.selectedReferrals.forRoomTestId : null,
             toCompanyId: this.selectedMedicalProviderId,
             toLocationId: null,
             toDoctorId: null,
@@ -631,7 +618,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     dismiss() {
-        if (this.selectedReferrals.length > 0) {
+        if (this.selectedReferrals != null) {
             this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
                 header: 'Delete Confirmation',
@@ -651,7 +638,7 @@ export class PendingReferralsComponent implements OnInit {
                                 });
                                 this.loadPendingReferralsForCompany(this.companyId);
                                 this._notificationsStore.addNotification(notification);
-                                this.selectedReferrals = [];
+                                this.selectedReferrals = null;
                             },
                             (error) => {
                                 let errString = 'Unable to delete Pending Referrals';
@@ -660,7 +647,7 @@ export class PendingReferralsComponent implements OnInit {
                                     'type': 'ERROR',
                                     'createdAt': moment()
                                 });
-                                this.selectedReferrals = [];
+                                this.selectedReferrals = null;
                                 this._progressBarService.hide();
                                 this.isDeleteProgress = false;
                                 this._notificationsStore.addNotification(notification);

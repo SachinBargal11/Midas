@@ -27,7 +27,7 @@ export class DocumentTypeComponent implements OnInit {
     documentType: DocumentType[];
     currentId: number = 0;
     companyId: number = this._sessionStore.session.currentCompany.id;
-    selectedDocuments: DocumentType[] = [];
+    selectedDocuments: DocumentType;
     isSaveProgress = false;
     documentform: FormGroup;
     documentformControls;
@@ -129,18 +129,18 @@ export class DocumentTypeComponent implements OnInit {
 
 
     deleteDocument() {
-        if (this.selectedDocuments.length > 0) {
+        if (this.selectedDocuments != null) {
             this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
                 header: 'Delete Confirmation',
                 icon: 'fa fa-trash',
                 accept: () => {
-                    this.selectedDocuments.forEach(currentDocumentType => {
+                    // this.selectedDocuments.forEach(currentDocumentType => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        let result;
-                        result = this._documentTypeStore.deleteDocument(currentDocumentType);
-                        result.subscribe(
+                        // let result;
+                         this._documentTypeStore.deleteDocument(this.selectedDocuments)
+                        .subscribe(
                             (response) => {
                                 let notification = new Notification({
                                     'title': 'Document Type deleted successfully!',
@@ -149,7 +149,7 @@ export class DocumentTypeComponent implements OnInit {
                                 });
                                 this.loadDocumentForObjectType(this.companyId, this.currentId);
                                 this._notificationsStore.addNotification(notification);
-                                this.selectedDocuments = [];
+                                this.selectedDocuments;
                             },
                             (error) => {
                                 let errString = 'Unable to delete Document Type';
@@ -158,7 +158,7 @@ export class DocumentTypeComponent implements OnInit {
                                     'type': 'ERROR',
                                     'createdAt': moment()
                                 });
-                                this.selectedDocuments = [];
+                                this.selectedDocuments ;
                                 this._progressBarService.hide();
                                 this._notificationsStore.addNotification(notification);
                                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
@@ -167,7 +167,6 @@ export class DocumentTypeComponent implements OnInit {
                                 this._progressBarService.hide();
                                 this.isDeleteProgress = false;
                             });
-                    });
                 }
             });
         } else {

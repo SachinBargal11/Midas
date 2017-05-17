@@ -8,12 +8,12 @@ export class DocumentTypeAdapter {
         let documentType: DocumentType = null;
         if (data) {
             documentType = new DocumentType({
-                id: 0,
+                id: data.id,
                 objectType: data.objectType,
                 documentType: data.documentType,
                 companyId: data.companyid,
                 isCustomType: data.isCustomType,
-                invitationID: 0,
+                invitationID: data.invitationID,
                 isDeleted: data.isDeleted ? true : false,
                 updateByUserID: data.updateByUserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,

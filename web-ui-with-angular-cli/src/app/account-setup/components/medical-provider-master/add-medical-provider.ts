@@ -115,7 +115,6 @@ export class AddMedicalProviderComponent implements OnInit {
                 }
                 else {
                     this.closeDialog();
-                    this._router.navigate(['/patient-manager/referrals/pending-referrals'], { relativeTo: this._route });
                 }
             },
             (error) => {

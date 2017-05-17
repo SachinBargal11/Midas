@@ -13,6 +13,8 @@ import { ConsentService } from '../../../patient-manager/cases/services/consent-
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { DocumentType } from '../../../account-setup/models/document-type';
 
 @Component({
   selector: 'app-document-upload',
@@ -32,6 +34,10 @@ export class DocumentUploadComponent implements OnInit {
   scannedFileName: string = '';
   digitalForm: FormGroup;
   cosentFormUrl: SafeResourceUrl;
+  // currentId: number = 0;
+  documentTypes: DocumentType[];
+  companyId: number = this._sessionStore.session.currentCompany.id;
+  documentType: string;
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -42,7 +48,7 @@ export class DocumentUploadComponent implements OnInit {
   @Input() url: string;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
-
+  @Input() currentId: number;
 
 
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
@@ -55,7 +61,8 @@ export class DocumentUploadComponent implements OnInit {
     private _notificationsService: NotificationsService,
     private _documentUploadService: DocumentUploadService,
     private _progressBarService: ProgressBarService,
-    private _consentService: ConsentService
+    private _consentService: ConsentService,
+    private _sessionStore: SessionStore,
   ) {
     this._updateScannerContainerId();
     this.digitalForm = this._fb.group({
@@ -65,6 +72,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
       this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
     }
@@ -201,6 +209,24 @@ export class DocumentUploadComponent implements OnInit {
     }
   }
 
+  selectDocument(event) {
+    let documentType = event.target.value;
+    this.documentType = documentType;
+  }
+
+  loadDocumentForObjectType(companyId: number, currentId: number) {
+    this._progressBarService.show();
+    let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
+      .subscribe(documentType => {
+        this.documentTypes = documentType;
+      },
+      (error) => {
+        this._progressBarService.hide();
+      },
+      () => {
+        this._progressBarService.hide();
+      });
+  }
 }
 export interface TwainSource {
   idx: number;

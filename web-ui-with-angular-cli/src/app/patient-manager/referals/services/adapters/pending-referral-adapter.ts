@@ -48,13 +48,15 @@ export class PendingReferralAdapter {
                 toRoom: RoomsAdapter.parseResponse(data.toRoom),
                 forRoomTest: TestsAdapter.parseResponse(data.forRoomTest),
                 forSpecialty: SpecialityAdapter.parseResponse(data.forSpecialty),
-                dismissedByUser:UserAdapter.parseResponse(data.dismissedByUser),
+                dismissedByUser: UserAdapter.parseResponse(data.dismissedByUser),
                 referralProcedureCode: visitReferralProcedureCodes,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserId: data.createByUserId,
                 updateByUserId: data.updateByUserId,
                 createDate: moment(data.createDate), // Moment
                 updateDate: moment(data.updateDate), // Moment
+                caseId: data.caseId,
+                fromUserId: data.fromUserId
 
             });
         }
