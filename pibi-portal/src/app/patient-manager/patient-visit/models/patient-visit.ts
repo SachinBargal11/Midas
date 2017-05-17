@@ -130,7 +130,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
             visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
         }
         if (this.doctorId && this.doctor) {
-            visitInfo = `${visitInfo}Doctor Name: ${this.doctor.user.displayName}`;
+            visitInfo = `${visitInfo}Attorney Name: ${this.doctor.user.displayName}`;
             if (this.specialtyId && this.specialty) {
                 visitInfo = `${visitInfo} - Speciality: ${this.specialty.name}`;
             }

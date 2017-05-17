@@ -195,7 +195,6 @@ export class InboundReferralsComponent implements OnInit {
     }
     
     documentUploadComplete(documents: Document[]) {
-        debugger;
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({

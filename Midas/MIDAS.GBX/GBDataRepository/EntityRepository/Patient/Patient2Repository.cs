@@ -86,33 +86,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.CreateByUserID = casemap.CreateByUserID;
                             caseBO.UpdateByUserID = casemap.UpdateByUserID;
 
-                            if (casemap.Referrals != null)
+                            if (casemap.Referral2 != null)
                             {
-                                List<BO.Referral> BOListReferral = new List<BO.Referral>();
-                                foreach (var eachRefrral in casemap.Referrals)
+                                List<BO.Referral2> BOListReferral = new List<BO.Referral2>();
+                                foreach (var eachRefrral in casemap.Referral2)
                                 {
                                     if (eachRefrral != null)
                                     {
                                         if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
                                         {
-                                            BO.Referral referralBO = new BO.Referral();
+                                            BO.Referral2 referralBO = new BO.Referral2();
 
                                             referralBO.ID = eachRefrral.Id;
                                             referralBO.CaseId = eachRefrral.CaseId;
-                                            referralBO.ReferringCompanyId = eachRefrral.ReferringCompanyId;
-                                            referralBO.ReferringLocationId = eachRefrral.ReferringLocationId;
-                                            referralBO.ReferringUserId = eachRefrral.ReferringUserId;
-                                            referralBO.ReferredToCompanyId = eachRefrral.ReferredToCompanyId;
-                                            referralBO.ReferredToLocationId = eachRefrral.ReferredToLocationId;
-                                            referralBO.ReferredToDoctorId = eachRefrral.ReferredToDoctorId;
-                                            referralBO.ReferredToRoomId = eachRefrral.ReferredToRoomId;
-                                            referralBO.Note = eachRefrral.Note;
-                                            referralBO.ReferredByEmail = eachRefrral.ReferredByEmail;
-                                            referralBO.ReferredToEmail = eachRefrral.ReferredToEmail;
-                                            referralBO.ReferralAccepted = eachRefrral.ReferralAccepted;
-                                            referralBO.FirstName = eachRefrral.FirstName;
-                                            referralBO.LastName = eachRefrral.LastName;
-                                            referralBO.CellPhone = eachRefrral.CellPhone;
+                                            referralBO.PendingReferralId = eachRefrral.PendingReferralId;
+                                            referralBO.FromCompanyId = eachRefrral.FromCompanyId;
+                                            referralBO.FromLocationId = eachRefrral.FromLocationId;
+                                            referralBO.FromDoctorId = eachRefrral.FromDoctorId;
+                                            referralBO.FromUserId = eachRefrral.FromUserId;
+                                            referralBO.ForSpecialtyId = eachRefrral.ForSpecialtyId;
+                                            referralBO.ForRoomId = eachRefrral.ForRoomId;
+                                            referralBO.ForRoomTestId = eachRefrral.ForRoomTestId;
+                                            referralBO.ToCompanyId = eachRefrral.ToCompanyId;
+                                            referralBO.ToLocationId = eachRefrral.ToLocationId;
+                                            referralBO.ToDoctorId = eachRefrral.ToDoctorId;
+                                            referralBO.ToRoomId = eachRefrral.ToRoomId;
+                                            referralBO.ScheduledPatientVisitId = eachRefrral.ScheduledPatientVisitId;
+                                            referralBO.DismissedBy = eachRefrral.DismissedBy;
                                             referralBO.IsDeleted = eachRefrral.IsDeleted;
                                             referralBO.CreateByUserID = eachRefrral.CreateByUserID;
                                             referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
@@ -223,25 +223,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 .Include("User.AddressInfo")
                                                 .Include("User.ContactInfo")
                                                 .Include("Cases")
-                                                .Include("Cases.Referrals")
+                                                .Include("Cases.Referral2")
                                                 .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
                                                 .Any(p3=> p3.CompanyID== CompanyId)                                                                        
-                                                &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                 .ToList<Patient2>();
 
-            var referralList = _context.Referrals.Include("Case")
+            var referralList = _context.Referral2.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
                                                  .Include("Case.Patient2.User")
                                                  .Include("Case.Patient2.User.UserCompanies")
                                                  .Include("Case.Patient2.User.AddressInfo")
                                                  .Include("Case.Patient2.User.ContactInfo")
                                                  .Include("Case.Patient2.Cases")
-                                                 .Include("Case.Patient2.Cases.Referrals")
-                                                 .Where(p => p.ReferredToCompanyId == CompanyId 
+                                                 .Include("Case.Patient2.Cases.Referral2")
+                                                 .Where(p => p.FromCompanyId == CompanyId
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                         && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
                                                         && (p.Case.Patient2.IsDeleted.HasValue == false || (p.Case.Patient2.IsDeleted.HasValue == true && p.Case.Patient2.IsDeleted.Value == false)))
-                                                 .ToList<Referral>();
+                                                 .ToList<Referral2>();
 
             var patientList2 = referralList.Select(p => p.Case.Patient2);
 
@@ -276,19 +276,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
                                        .Include("Cases")
-                                       .Include("Cases.Referrals")
+                                       .Include("Cases.Referral2")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
-            var referralList = _context.Referrals.Include("Case")
+            var referralList = _context.Referral2.Include("Case")
                                                .Include("Case.CompanyCaseConsentApprovals")
                                                .Include("Case.Patient2.User")
                                                .Include("Case.Patient2.User.UserCompanies")
                                                .Include("Case.Patient2.User.AddressInfo")
                                                .Include("Case.Patient2.User.ContactInfo")
                                                .Include("Case.Patient2.Cases")
-                                               .Include("Case.Patient2.Cases.Referrals")
-                                               .Where(p => p.ReferredToCompanyId == CompanyId && p.ReferredToDoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral>();
+                                               .Include("Case.Patient2.Cases.Referral2")
+                                               .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId 
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
 
             var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
 

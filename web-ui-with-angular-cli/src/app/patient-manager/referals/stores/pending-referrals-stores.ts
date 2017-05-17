@@ -149,5 +149,18 @@ export class PendingReferralStore {
         return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
     }
     //inbound end
+
+    getReferralsByCaseAndCompanyId(caseId: number, companyId: number): Observable<InboundOutboundList[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._pendingReferralService.getReferralsByCaseId(caseId, companyId).subscribe((referrals: InboundOutboundList[]) => {
+                this._inboundOutboundList.next(List(referrals));
+                resolve(referrals);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<InboundOutboundList[]>>Observable.fromPromise(promise);
+    }
+
 }
 

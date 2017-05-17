@@ -12,7 +12,7 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Referral
+    public partial class Referral_OLD
     {
         public int Id { get; set; }
         public int CaseId { get; set; }
@@ -37,16 +37,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string CellPhone { get; set; }
-    
-        public virtual Case Case { get; set; }
-        public virtual Company Company { get; set; }
-        public virtual Company Company1 { get; set; }
-        public virtual Doctor Doctor { get; set; }
-        public virtual Location Location { get; set; }
-        public virtual Location Location1 { get; set; }
-        public virtual Room Room { get; set; }
-        public virtual RoomTest RoomTest { get; set; }
-        public virtual Specialty Specialty { get; set; }
-        public virtual User User { get; set; }
     }
 }

@@ -221,10 +221,10 @@ namespace MIDAS.GBX
             {
                 repo = new CompanyCaseConsentApprovalRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Referral))
-            {
-                repo = new ReferralRepository(context);
-            }
+            //else if (typeof(T) == typeof(BO.Referral))
+            //{
+            //    repo = new ReferralRepository(context);
+            //}
             else if (typeof(T) == typeof(BO.Document))
             {
                 repo = new FileUploadRepository(context);
