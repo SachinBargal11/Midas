@@ -138,7 +138,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = signUPBO.addressInfo;
             BO.ContactInfo contactinfoBO = signUPBO.contactInfo;
             BO.Role roleBO = signUPBO.role;
-            BO.Referral referralBO = new BO.Referral();
+            //BO.Referral referralBO = new BO.Referral();
 
             Company companyDB = new Company();
             User userDB = new User();
@@ -294,13 +294,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             #region Update referral
-            var referral = _context.Referrals.Where(p => p.ReferredToEmail == userDB.UserName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Referral>();
+            //var referral = _context.Referrals.Where(p => p.ReferredToEmail == userDB.UserName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Referral>();
 
-            foreach (var eachReferral in referral)
-            {
-                eachReferral.ReferredToCompanyId = companyDB.id;
-                eachReferral.ReferralAccepted = true;
-            }
+            //foreach (var eachReferral in referral)
+            //{
+            //    eachReferral.ReferredToCompanyId = companyDB.id;
+            //    eachReferral.ReferralAccepted = true;
+            //}
 
             _context.SaveChanges();
             #endregion

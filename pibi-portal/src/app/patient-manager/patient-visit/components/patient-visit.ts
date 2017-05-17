@@ -612,6 +612,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+      
         let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
         if (canScheduleAppointement) {
@@ -650,6 +651,7 @@ export class PatientVisitComponent implements OnInit {
                     isAllDay: false
                 })
             });
+            
             this.visitInfo = this.selectedVisit.visitDisplayString;
             this.eventDialogVisible = true;
             this._cd.detectChanges();
@@ -725,6 +727,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleEventClick(event) {
+      
         let clickedEventInstance: ScheduledEventInstance = event.calEvent;
         let scheduledEventForInstance: ScheduledEvent = clickedEventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(clickedEventInstance.eventWrapper);

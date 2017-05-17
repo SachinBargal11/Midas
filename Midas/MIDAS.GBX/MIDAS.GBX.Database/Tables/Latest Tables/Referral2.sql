@@ -4,8 +4,9 @@
     [CaseId] INT NULL,
     [PendingReferralId] INT NOT NULL, 
 	[FromCompanyId] INT NOT NULL, 
-    [FromLocationId] INT NOT NULL, 
-	[FromDoctorId] INT NOT NULL,
+    [FromLocationId] INT NULL, 
+	[FromDoctorId] INT NULL,
+    [FromUserId] INT NOT NULL,
     [ForSpecialtyId] INT NULL,
     [ForRoomId] INT NULL, 
     [ForRoomTestId] INT NULL,
@@ -135,5 +136,22 @@ ALTER TABLE [dbo].[Referral2]  WITH CHECK ADD  CONSTRAINT [FK_Referral2_Case_Cas
 GO
 
 ALTER TABLE [dbo].[Referral2] CHECK CONSTRAINT [FK_Referral2_Case_CaseId]
+GO
+*/
+/*
+ALTER TABLE [dbo].[Referral2] ALTER COLUMN [FromDoctorId] INT NULL
+GO
+
+ALTER TABLE [dbo].[Referral2] ADD [FromUserId] INT NULL
+GO
+
+ALTER TABLE [dbo].[Referral2]  WITH CHECK ADD  CONSTRAINT [FK_Referral2_User_FromUserId] FOREIGN KEY([FromUserId])
+    REFERENCES [dbo].[User] ([id])
+GO
+
+ALTER TABLE [dbo].[Referral2] CHECK CONSTRAINT [FK_Referral2_User_FromUserId]
+GO
+
+ALTER TABLE [dbo].[Referral2] ALTER COLUMN [FromLocationId] INT NULL
 GO
 */

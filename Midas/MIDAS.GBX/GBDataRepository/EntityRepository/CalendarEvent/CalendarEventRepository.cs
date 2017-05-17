@@ -87,8 +87,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     var newEvent = new Event()
                     {
                         Name = eachEvent.Name,
-                        Start = new CalDateTime(eachEvent.EventStart),
-                        End = new CalDateTime(eachEvent.EventEnd),
+                        Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                        End = new CalDateTime(eachEvent.EventEnd, "UTC"),
                         Description = eachEvent.Description,
                         IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
                         Created = new CalDateTime(eachEvent.CreateDate)
@@ -204,8 +204,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, 30, 0)) });
                 }
 
-                var EventTimes = Occurrences.Where(p => p.Period.StartTime.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.Value, EndTime = p.Period.EndTime.Value })
+                var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal, EndTime = p.Period.EndTime.AsSystemLocal })
                                                     .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
 
                 foreach (var eachEventTime in EventTimes)
@@ -263,8 +263,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     var newEvent = new Event()
                     {
                         Name = eachEvent.Name,
-                        Start = new CalDateTime(eachEvent.EventStart),
-                        End = new CalDateTime(eachEvent.EventEnd),
+                        Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                        End = new CalDateTime(eachEvent.EventEnd, "UTC"),
                         Description = eachEvent.Description,
                         IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
                         Created = new CalDateTime(eachEvent.CreateDate)
@@ -380,8 +380,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, 30, 0)) });
                 }
 
-                var EventTimes = Occurrences.Where(p => p.Period.StartTime.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.Value, EndTime = p.Period.EndTime.Value })
+                var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal, EndTime = p.Period.EndTime.AsSystemLocal })
                                                     .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
 
                 foreach (var eachEventTime in EventTimes)

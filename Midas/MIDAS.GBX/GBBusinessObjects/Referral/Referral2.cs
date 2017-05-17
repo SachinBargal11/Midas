@@ -16,10 +16,13 @@ namespace MIDAS.GBX.BusinessObjects
         public int FromCompanyId { get; set; }
 
         [JsonProperty("fromLocationId")]
-        public int FromLocationId { get; set; }
+        public int? FromLocationId { get; set; }
 
         [JsonProperty("fromDoctorId")]
-        public int FromDoctorId { get; set; }
+        public int? FromDoctorId { get; set; }
+
+        [JsonProperty("fromUserId")]
+        public int? FromUserId { get; set; }
 
         [JsonProperty("forSpecialtyId")]
         public int? ForSpecialtyId { get; set; }
@@ -103,10 +106,13 @@ namespace MIDAS.GBX.BusinessObjects
         public int FromCompanyId { get; set; }
 
         [JsonProperty("fromLocationId")]
-        public int FromLocationId { get; set; }
+        public int? FromLocationId { get; set; }
 
         [JsonProperty("fromDoctorId")]
-        public int FromDoctorId { get; set; }
+        public int? FromDoctorId { get; set; }
+
+        [JsonProperty("fromUserId")]
+        public int? FromUserId { get; set; }
 
         [JsonProperty("forSpecialtyId")]
         public int? ForSpecialtyId { get; set; }

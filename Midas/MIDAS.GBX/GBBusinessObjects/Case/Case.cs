@@ -39,8 +39,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("companyCaseConsentApproval")]
         public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
 
+        //[JsonProperty("referral")]
+        //public List<Referral> Referrals { get; set; }
+
         [JsonProperty("referral")]
-        public List<Referral> Referrals { get; set; }
+        public List<Referral2> Referrals { get; set; }
 
         [JsonProperty("patientAccidentInfo")]
         public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
@@ -81,8 +84,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("mCompanyCaseConsentApproval")]
         public List<mCompanyCaseConsentApproval> mCompanyCaseConsentApprovals { get; set; }
 
-        [JsonProperty("mreferral")]
-        public List<mReferral> mReferrals { get; set; }
+        //[JsonProperty("mreferral")]
+        //public List<mReferral> mReferrals { get; set; }        
 
         [JsonProperty("mPatientAccidentInfo")]
         public List<mPatientAccidentInfo> mPatientAccidentInfoes { get; set; }
@@ -153,8 +156,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("companyCaseConsentApproval")]
         public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
 
+        //[JsonProperty("referral")]
+        //public List<Referral> Referrals { get; set; }
+
         [JsonProperty("referral")]
-        public List<Referral> Referrals { get; set; }
+        public List<Referral2> Referrals { get; set; }
 
         [JsonProperty("patientAccidentInfo")]
         public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
@@ -207,8 +213,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("mCompanyCaseConsentApproval")]
         public List<mCompanyCaseConsentApproval> mCompanyCaseConsentApprovals { get; set; }
 
-        [JsonProperty("mReferral")]
-        public List<mReferral> mReferrals { get; set; }
+        //[JsonProperty("mReferral")]
+        //public List<mReferral> mReferrals { get; set; }
 
         [JsonProperty("mPatientAccidentInfo")]
         public List<mPatientAccidentInfo> mPatientAccidentInfoes { get; set; }

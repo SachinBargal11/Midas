@@ -39,6 +39,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.FromCompanyId = referral.FromCompanyId;
             referralBO.FromLocationId = referral.FromLocationId;
             referralBO.FromDoctorId = referral.FromDoctorId;
+            referralBO.FromUserId = referral.FromUserId;
             referralBO.ForSpecialtyId = referral.ForSpecialtyId;
             referralBO.ForRoomId = referral.ForRoomId;
             referralBO.ForRoomTestId = referral.ForRoomTestId;
@@ -290,6 +291,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.FromCompanyId = Referral.FromCompanyId;
             ReferralListBO.FromLocationId = Referral.FromLocationId;
             ReferralListBO.FromDoctorId = Referral.FromDoctorId;
+            ReferralListBO.FromUserId = Referral.FromUserId;
             ReferralListBO.ForSpecialtyId = Referral.ForSpecialtyId;
             ReferralListBO.ForRoomId = Referral.ForRoomId;
             ReferralListBO.ForRoomTestId = Referral.ForRoomTestId;
@@ -592,6 +594,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralDB.FromCompanyId = referralBO.FromCompanyId;
                     referralDB.FromLocationId = referralBO.FromLocationId;
                     referralDB.FromDoctorId = referralBO.FromDoctorId;
+                    referralDB.FromUserId = referralBO.FromUserId;
                     referralDB.ForSpecialtyId = referralBO.ForSpecialtyId;
                     referralDB.ForRoomId = referralBO.ForRoomId;
                     referralDB.ForRoomTestId = referralBO.ForRoomTestId;
@@ -601,7 +604,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralDB.ToRoomId = referralBO.ToRoomId;
                     //referralDB.ScheduledPatientVisitId = referralBO.ScheduledPatientVisitId;
                     referralDB.DismissedBy = referralBO.DismissedBy;
-                    referralDB.CaseId = referralBO.CaseId;
+
+                    if (referralBO.PendingReferralId.HasValue == true && referralBO.CaseId <= 0)
+                    {
+                        int? CaseId = _context.PendingReferrals.Include("PatientVisit2")
+                                                               .Where(p => p.Id == referralBO.PendingReferralId)
+                                                               .Select(p => p.PatientVisit2.CaseId)
+                                                               .FirstOrDefault();
+                        if (CaseId.HasValue == true)
+                        {
+                            referralDB.CaseId = CaseId.Value;
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid CaseId.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                    else if (referralBO.PendingReferralId.HasValue == false && referralBO.CaseId <= 0)
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid PendingReferralId, CaseId.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        referralDB.CaseId = referralBO.CaseId;
+                    }                    
 
                     if (add_referral == true)
                     {
@@ -1368,6 +1394,58 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+
+        #region Get By Case and CompanyId
+        public override object GetByCaseAndCompanyId(int caseId,int companyId)
+        {
+            var referralDB = _context.Referral2.Include("Company")
+                                               .Include("Company1")
+                                               .Include("Location")
+                                               .Include("Location1")
+                                               .Include("Doctor")
+                                               .Include("Doctor.User")
+                                               .Include("Doctor1")
+                                               .Include("Doctor1.User")
+                                               .Include("PendingReferral")
+                                               .Include("PendingReferral.PatientVisit2")
+                                               .Include("PendingReferral.PatientVisit2.Case")
+                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
+                                               .Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
+                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
+                                               .Include("PendingReferral.PatientVisit2.Patient2")
+                                               .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               .Include("Room")
+                                               .Include("Room1")
+                                               .Include("RoomTest")
+                                               .Include("Specialty")
+                                               .Include("User")
+                                               .Include("ReferralProcedureCodes")
+                                               .Include("ReferralProcedureCodes.ProcedureCode")
+
+                                               .Where(p => p.CaseId == caseId && p.FromCompanyId == companyId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case ID and Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachReferral in referralDB)
+                {
+                    boReferral.Add(ConvertReferralList<BO.Referral2List, Referral2>(EachReferral));
+
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
         public string GetTemplateDocument(string templateType)
         {
             TemplateTypeRepository templateTypeRepo = new TemplateTypeRepository(_context);
@@ -1381,13 +1459,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
             string pdfText = GetTemplateDocument(Constants.ReferralType);
-            var acc = _context.Referrals.Include("Case")
+            var acc = _context.Referral2.Include("Case")
                                              .Include("Case.Patient2")
                                              .Include("Case.Patient2.User")
                                              .Include("Doctor")
                                              .Include("Doctor.User")
                                              .Include("Company")
                                              .Where(p => p.Id == id).FirstOrDefault();
+
             if (acc != null)
             {
                 using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -1397,7 +1476,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
                                          .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
                                          .Replace("{{ReferredToDoctor}}", acc.Doctor != null ? (acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName) : "")
-                                         .Replace("{{Note}}", acc.Note)
+                                         //.Replace("{{Note}}", acc.Note)
                                          .Replace("{{CompanyName}}", acc.Company.Name);
 
                         path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
@@ -1438,7 +1517,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             else
                 return new BO.ErrorObject { ErrorMessage = "No record found for referral id", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
-            return acc;
+            return acc;           
         }
 
         #region Associate Visit With Referral
