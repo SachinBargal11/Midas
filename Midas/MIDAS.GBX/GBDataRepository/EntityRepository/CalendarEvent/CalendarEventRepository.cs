@@ -205,7 +205,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal, EndTime = p.Period.EndTime.AsSystemLocal })
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(210), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(210) })
                                                     .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
 
                 foreach (var eachEventTime in EventTimes)
@@ -381,7 +381,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal, EndTime = p.Period.EndTime.AsSystemLocal })
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(210), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(210) })
                                                     .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
 
                 foreach (var eachEventTime in EventTimes)
