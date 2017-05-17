@@ -302,11 +302,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.ScheduledPatientVisitId = Referral.ScheduledPatientVisitId;
             ReferralListBO.DismissedBy = Referral.DismissedBy;
             ReferralListBO.CaseId = Referral.CaseId;
+            ReferralListBO.FromUserId = Referral.FromUserId;
             ReferralListBO.IsDeleted = Referral.IsDeleted;
             ReferralListBO.CreateByUserID = Referral.CreateByUserID;
             ReferralListBO.UpdateByUserID = Referral.UpdateByUserID;
 
-            if (Referral.PendingReferral != null)
+            if (Referral!= null)
             {
                 if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
                 {
@@ -317,11 +318,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
                         }
                     }
-                    if (Referral.PendingReferral.PatientVisit2.Case != null)
+                    if (Referral.Case != null)
                     {
-                        if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                        if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
                         {
-                            ReferralListBO.CaseId = Referral.PendingReferral.PatientVisit2.CaseId;
+                            ReferralListBO.CaseId = Referral.CaseId;
                         }
                     }
                     if (Referral.PendingReferral.PatientVisit2.Patient2 != null)
@@ -451,6 +452,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
             }
 
+            if (Referral.User1 != null)
+            {
+                if (Referral.User1.IsDeleted.HasValue == false || (Referral.User1.IsDeleted.HasValue == true && Referral.User1.IsDeleted.Value == false))
+                {
+                   
+                    BO.User boUser = new BO.User();
+                    using (UserRepository cmp = new UserRepository(_context))
+                    {
+                        boUser = cmp.Convert<BO.User, User>(Referral.User1);
+                    
+                        ReferralListBO.User1 = boUser;
+                    }
+                }
+            }
+
             ReferralListBO.ReferralProcedureCode = new List<BO.ReferralProcedureCode>();
 
             if (Referral.ReferralProcedureCodes != null)
@@ -532,16 +548,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
-            if(Referral.PendingReferral!=null)
+            if(Referral!=null)
             {
-                if (Referral.PendingReferral.PatientVisit2.Case != null)
+                if (Referral.Case != null)
                 {
-                    if (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Case.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Case.IsDeleted.Value == false))
+                    if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
                     {
                         BO.Case boCase = new BO.Case();
                         using (CaseRepository cmp = new CaseRepository(_context))
                         {
-                            boCase = cmp.Convert<BO.Case, Case>(Referral.PendingReferral.PatientVisit2.Case);
+                            boCase = cmp.Convert<BO.Case, Case>(Referral.Case);
                             boCase.PatientEmpInfo = null;
                             boCase.Patient2 = null;
                             boCase.Referrals = null;
@@ -1408,17 +1424,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor1.User")
                                                .Include("PendingReferral")
                                                .Include("PendingReferral.PatientVisit2")
-                                               .Include("PendingReferral.PatientVisit2.Case")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               .Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               .Include("PendingReferral.PatientVisit2.Patient2")
-                                               .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               .Include("Case")
+                                               .Include("Case.CaseCompanyMappings")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("PendingReferral.PatientVisit2.Patient2.User")                                               
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
                                                .Include("Specialty")
                                                .Include("User")
+                                               .Include("User1")                                               
                                                .Include("ReferralProcedureCodes")
                                                .Include("ReferralProcedureCodes.ProcedureCode")
 

@@ -225,6 +225,7 @@ export class PendingReferralsComponent implements OnInit {
     }
     closeDialog() {
         this.addMedicalDialogVisible = false;
+        this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId,this.specialityId,this.roomTestId);
     }
 
     assign() {
@@ -342,7 +343,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     private _populatePatientVisitData(slotDetail: AvailableSingleSlot): PatientVisit {
-        let selectedReffral: PendingReferralList = this.selectedReferrals[0];
+        let selectedReffral: PendingReferralList = this.selectedReferrals;
         let patientVisit: PatientVisit = new PatientVisit({
             caseId: selectedReffral.caseId,
             patientId: selectedReffral.patientId,
