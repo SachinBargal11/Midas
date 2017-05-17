@@ -413,42 +413,42 @@ export class ReferralListComponent implements OnInit {
     }
 
     assign() {
-        let shouldAppointVisit: boolean = true;
-        if (this.selectedOption === 3) {
-            shouldAppointVisit = false;
-            this.saveReferral();
-        } else if (this.selectedOption === 1) {
-            this.checkUserSettings(this.selectedMedicalProviderId, this.selectedDoctorId)
-            if (!this.userSetting.isCalendarPublic) {
-                shouldAppointVisit = false;
-                this.saveReferral();
-            }
-        }
-        if (shouldAppointVisit) {
-            this.confirmationService.confirm({
-                message: 'Do you want to Appoint Schedule?',
-                header: 'Confirmation',
-                icon: 'fa fa-question-circle',
-                accept: () => {
-                    // this.availableSlotsDialogVisible = true;
-                },
-                reject: () => {
-                    //call save referral for medical provider & room
-                    this.saveReferral();
-                }
-            });
-        }
+        // let shouldAppointVisit: boolean = true;
+        // if (this.selectedOption === 3) {
+        //     shouldAppointVisit = false;
+        //     this.saveReferral();
+        // } else if (this.selectedOption === 1) {
+        //     this.checkUserSettings(this.selectedMedicalProviderId, this.selectedDoctorId)
+        //     if (!this.userSetting.isCalendarPublic) {
+        //         shouldAppointVisit = false;
+        //         this.saveReferral();
+        //     }
+        // }
+        // if (shouldAppointVisit) {
+        //     this.confirmationService.confirm({
+        //         message: 'Do you want to Appoint Schedule?',
+        //         header: 'Confirmation',
+        //         icon: 'fa fa-question-circle',
+        //         accept: () => {
+        //             // this.availableSlotsDialogVisible = true;
+        //         },
+        //         reject: () => {
+        //             //call save referral for medical provider & room
+        //             this.saveReferral();
+        //         }
+        //     });
+        // }
+        this.saveReferral();
     }
 
     saveReferral() {
-
         let result;
         let pendingReferralDetails: PendingReferral = null;
         let forSpecialtyId = null;
         let forRoomId = null;
         let toRoomId = null;
         let toDoctorId = null;
-        debugger;
+
         if (this.selectedOptionSpeciality == 1) {
             forSpecialtyId = this.selectedSpecialityId;
             toRoomId = null;
@@ -457,6 +457,10 @@ export class ReferralListComponent implements OnInit {
         else if (this.selectedOptionSpeciality == 2) {
             forRoomId = this.selectedTestId;
             toRoomId = this.selectedRoomId;
+            toDoctorId = null;
+        }
+
+        if (this.selectedOption == 3) {
             toDoctorId = null;
         }
 
@@ -489,7 +493,7 @@ export class ReferralListComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Referral saved successfully');
                 this.loadAllSpecialitiesAndTests();
-                this.loadReferrals(this.caseId, this.companyId);
+                //this.loadReferrals(this.caseId, this.companyId);
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
@@ -515,6 +519,24 @@ export class ReferralListComponent implements OnInit {
     closeDialog() {
         this.addMedicalDialogVisible = false;
         this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.selectedSpecialityId, this.selectedTestId);
+    }
+
+    handleAvailableSlotsDialogShow() {
+
+    }
+
+    handleAvailableSlotsDialogHide() {
+        this.availableSlots = [];
+        this.locations = [];
+        // this.selectedReferrals = [];
+        this.medicalProviderDoctor = [];
+        this.medicalProviderRoom = [];
+        this.medicalProvider = [];
+    }
+
+    closeAvailableSlotsDialog() {
+        this.availableSlotsDialogVisible = false;
+        this.handleAvailableSlotsDialogHide();
     }
 
     // // getReferralDocumentName(currentReferral: Referral) {
