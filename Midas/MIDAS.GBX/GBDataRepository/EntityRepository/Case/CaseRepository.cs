@@ -452,32 +452,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referrals")
+                                    .Include("Referral2")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
 
             caseList1 = caseList1.Where(p => p.CaseCompanyMappings.Any(p2 => p2.CompanyId == CompanyId) == true).ToList();
 
-            //var referralList = _context.Referrals.Include("Case")
-            //                                    .Include("Case.CompanyCaseConsentApprovals")
-            //                                    .Include("Case.CaseCompanyMappings")
-            //                                    .Include("Case.Patient2.User")                                               
-            //                                    .Include("Case.Patient2.User.UserCompanies")
-            //                                    .Include("Case.Patient2.User.AddressInfo")
-            //                                    .Include("Case.Patient2.User.ContactInfo")
-            //                                    .Where(p => p.ReferredToCompanyId == CompanyId && p.Case.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))                                                 )
-            //                                    .ToList<Referral>();
+            var referralList = _context.Referral2.Include("Case")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.Patient2.User")
+                                                .Include("Case.Patient2.User.UserCompanies")
+                                                .Include("Case.Patient2.User.AddressInfo")
+                                                .Include("Case.Patient2.User.ContactInfo")
+                                                .Where(p => p.FromCompanyId == CompanyId && p.Case.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Referral2>();
 
-            //var caseList2 = referralList.Select(p => p.Case).ToList();
+            var caseList2 = referralList.Select(p => p.Case).ToList();
 
-            if (caseList1 == null /*&& caseList2 == null*/)
+
+            if (caseList1 == null && caseList2 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
             List<BO.Case> lstcase = new List<BO.Case>();
-            foreach (Case item in caseList1 /*caseList1.Union(caseList2)*/)
+            foreach (Case item in caseList1.Union(caseList2))
             {
                 lstcase.Add(Convert<BO.Case, Case>(item));
             }
