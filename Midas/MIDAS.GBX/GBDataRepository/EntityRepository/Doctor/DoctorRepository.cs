@@ -602,6 +602,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetAllReadingDoctorsForCompany
+        public override object Get(int companyId, string type)
+        {
+            //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
+
+            var acc_ = _context.Doctors.Include("User")
+                                       .Include("User.UserCompanyRoles")
+                                       .Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.DoctorSpecialities).ToList<Doctor>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Doctor> lstDoctors = new List<BO.Doctor>();
+            foreach (Doctor item in acc_)
+            {
+                lstDoctors.Add(Convert<BO.Doctor, Doctor>(item));
+            }
+            return lstDoctors;
+        }
+        #endregion
+
         #region DisassociateDoctorWithCompany
         public override object DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
         {

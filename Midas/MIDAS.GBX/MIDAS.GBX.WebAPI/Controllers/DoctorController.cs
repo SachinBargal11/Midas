@@ -119,6 +119,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, doctor);
         }
 
+        [HttpGet]
+        [Route("getReadingDoctors/{companyId}")]
+        public HttpResponseMessage GetReadingDoctors(int companyId)
+        {
+            return requestHandler.GetObject(Request, companyId, string.Empty);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
