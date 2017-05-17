@@ -1,0 +1,151 @@
+<div *ngIf="!doctorRoleOnly">
+    <div class="ui-widget-header row">
+        <div class="col-lg-4 input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Referral">
+</div>
+</div>
+
+<p-dataTable expandableRows="true" [value]="referredMedicalOffices" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" [style]="{'width':'50px'}" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Specialty" [style]="{'width':'100px'}" rowspan="2" styleClass=" inbound-column "></p-column>
+            <p-column header="Referred To " colspan="2 " styleClass="inbound-column-span "></p-column>
+            <p-column header="Procedure" aria-multiline="true" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Consent Recieved " [style]="{'width':'10%'}" rowspan="2 " styleClass="inbound-column "></p-column>
+            <p-column header="Referred Document " [style]="{'width':'10%'}" rowspan="2 "></p-column>
+        </p-row>
+        <p-row>
+            <p-column header="Company " styleClass="inbound-column "></p-column>
+            <p-column header="Location " styleClass="inbound-column "></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+
+    <p-column field="displayPatientName"></p-column>
+    <p-column field="caseId"></p-column>
+    <p-column rowspan="2">
+        <ng-template let-pReferral="rowData" pTemplate="body">
+            <div *ngIf="pReferral.forSpecialty">{{pReferral.forSpecialty.name}}</div>
+            <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
+        </ng-template>
+    </p-column>
+    <p-column field="toCompanyName"></p-column>
+    <p-column field="toLocationName"></p-column>
+    <p-column>
+        <ng-template let-referralProcedure="rowData " pTemplate="body">
+            <div *ngFor="let currentReferralProc of referralProcedure.referralProcedureCode ">
+                {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}
+            </div>
+            <!--<span *ngFor="#let currentReferralProc of referralProcedure.referralProcedureCode, #i=index">
+             {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}{{i === referralProcedure.referralProcedureCode.length - 1 ? '' : ', '}}
+            </span>-->
+        </ng-template>
+
+    </p-column>
+    <p-column>
+        <ng-template let-referral="rowData " pTemplate="body ">
+            <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id) " (click)="downloadConsent(referral.case.caseCompanyConsentDocument) ">
+                <u>Yes</u>
+            </a>
+            <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id) " (click)="showDialog(referral.caseId)">
+
+                <u>No</u>
+            </a>
+        </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData " pTemplate="body ">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document) "><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+</div>
+
+<!--For Doctor-->
+<div *ngIf="doctorRoleOnly ">
+    <div class="ui-widget-header row ">
+        <div class="col-lg-4 input-group ">
+            <span class="input-group-addon "><i class="fa fa-search "></i></span>
+            <input #gbReferrals type="text " class="form-control " style="float:left" placeholder="Search Referral">
+</div>
+</div>
+
+<p-dataTable [value]="referredMedicalOffices" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3"
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Specialty" rowspan="2" styleClass=" inbound-column "></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Procedure" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Consent Recieved" [style]="{'width':'10%'}" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred Document" [style]="{'width':'10%'}" rowspan="2"></p-column>
+        </p-row>
+        <p-row>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+
+    <p-column field="displayPatientName"></p-column>
+    <p-column field="caseId"></p-column>
+    <p-column rowspan="2">
+        <ng-template let-pReferral="rowData" pTemplate="body">
+            <div *ngIf="pReferral.forSpecialty">{{pReferral.forSpecialty.name}}</div>
+            <div *ngIf="pReferral.forRoomTest">{{pReferral.forRoomTest.name}}</div>
+        </ng-template>
+    </p-column>
+    <p-column field="toCompanyName"></p-column>
+    <p-column field="toLocationName"></p-column>
+
+    <p-column>
+        <ng-template let-referralProcedure="rowData " pTemplate="body">
+            <div *ngFor="let currentReferralProc of referralProcedure.referralProcedureCode ">
+                {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}
+            </div>
+        </ng-template>
+
+    </p-column>
+    <p-column>
+        <ng-template let-referral="rowData" pTemplate="body">
+            <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)">
+                <u>Yes</u>
+            </a>
+            <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="showDialog(referral.caseId)">
+                <u>No</u>
+            </a>
+        </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+</div>
+<p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+
+    <div *ngIf="selectedCaseId">
+        <!--<add-consent [inputCaseId]="selectedCaseId"></add-consent>-->
+        <app-document-upload [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+            (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
+            [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+
+    </div>
+</p-dialog>
+<router-outlet></router-outlet>
+
+<!--routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"-->
