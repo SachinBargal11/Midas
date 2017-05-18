@@ -963,7 +963,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                                                .Where(p => p.FromCompanyId == companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                               .OrderByDescending(p => p.Id).ToList<Referral2>();
 
             List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
             if (referralDB == null)
@@ -1013,7 +1013,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                                                .Where(p => p.ToCompanyId == companyId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                               .OrderByDescending(p => p.Id).ToList<Referral2>();
 
             List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
             if (referralDB == null)
@@ -1263,7 +1263,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                                                .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                               .OrderByDescending(p => p.Id).ToList<Referral2>();
 
             List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
             if (referralDB == null)
@@ -1314,7 +1314,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                                                .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                               .OrderByDescending(p => p.Id).ToList<Referral2>();
 
             List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
             if (referralDB == null)
@@ -1565,7 +1565,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                                                .Where(p => p.CaseId == caseId && p.FromCompanyId == companyId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                               .OrderByDescending(p => p.Id).ToList<Referral2>();
 
             List<BO.Referral2List> boReferral = new List<BO.Referral2List>();
             if (referralDB == null)
