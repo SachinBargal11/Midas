@@ -105,6 +105,8 @@ export class ReferralListComponent implements OnInit {
     availableSlotsDialogVisible: boolean = false;
     availableSlots: AvailableSlot[] = [];
     locations: LocationDetails[] = [];
+    // specialityId = 0;
+    // roomTestId = 0;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -146,14 +148,14 @@ export class ReferralListComponent implements OnInit {
 
     ngOnInit() {
         this.loadAllSpecialitiesAndTests();
-        // this.loadReferrals(this.caseId, this.companyId);
+        this.loadReferrals(this.caseId, this.companyId);
     }
 
     loadReferrals(caseId, companyId) {
         this._progressBarService.show();
         this._pendingReferralStore.getReferralsByCaseAndCompanyId(caseId, companyId)
             .subscribe((referrals: InboundOutboundList[]) => {
-                this.referredMedicalOffices = referrals.reverse();
+                this.referredMedicalOffices = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -267,14 +269,7 @@ export class ReferralListComponent implements OnInit {
         });
     }
 
-
     loadAllSpecialitiesAndTests() {
-        this.selectedSpMode = 0;
-        this.selectedOption = 0;
-        this.specialities = []; this.tests = [];
-        this.medicalProviderDoctor = [];
-        this.medicalProviderRoom = [];
-        this.medicalProvider = [];
         this._progressBarService.show();
         let fetchAllSpecialities = this._specialityStore.getSpecialities();
         let fetchAllTestFacilties = this._roomsStore.getTests();
@@ -300,6 +295,7 @@ export class ReferralListComponent implements OnInit {
             this.selectedOptionSpeciality = 1;
             this.selectedSpecialityId = parseInt(event.target.value);
             this.selectedTestId = 0;
+
         }
         else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOptionSpeciality = 2;
@@ -462,6 +458,7 @@ export class ReferralListComponent implements OnInit {
 
         if (this.selectedOption == 3) {
             toDoctorId = null;
+            toRoomId = null;
         }
 
         pendingReferralDetails = new PendingReferral({
@@ -492,8 +489,7 @@ export class ReferralListComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Referral saved successfully');
-                this.loadAllSpecialitiesAndTests();
-                //this.loadReferrals(this.caseId, this.companyId);
+                this.clear();
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
@@ -537,6 +533,22 @@ export class ReferralListComponent implements OnInit {
     closeAvailableSlotsDialog() {
         this.availableSlotsDialogVisible = false;
         this.handleAvailableSlotsDialogHide();
+    }
+
+    clear() {
+        this.specialities = []; this.tests = [];
+        this.selectedSpMode = 0;
+        this.selectedMode = 0;
+        this.selectedOption = 0;
+        this.medicalProviderDoctor = [];
+        this.medicalProviderRoom = [];
+        this.medicalProvider = [];
+        this.loadAllSpecialitiesAndTests();
+        this.loadReferrals(this.caseId, this.companyId);
+    }
+
+    DownloadPdf(document: ReferralDocument) {
+        window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
     }
 
     // // getReferralDocumentName(currentReferral: Referral) {
