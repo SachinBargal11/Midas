@@ -96,6 +96,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("fromUser")]
         public User User1 { get; set; }
 
+        [JsonProperty("case")]
+        public Case Case { get; set; }
+
         [JsonProperty("referralProcedureCode")]
         public List<ReferralProcedureCode> ReferralProcedureCode { get; set; }
     }

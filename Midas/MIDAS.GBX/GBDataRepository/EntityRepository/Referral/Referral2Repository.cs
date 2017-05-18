@@ -213,21 +213,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
             }
 
+            //if (referral.User != null)
+            //{
+            //    if (referral.User.IsDeleted.HasValue == false || (referral.User.IsDeleted.HasValue == true && referral.User.IsDeleted.Value == false))
+            //    {
+            //        BO.User boUser = new BO.User();
+            //        using (UserRepository cmp = new UserRepository(_context))
+            //        {
+            //            boUser = cmp.Convert<BO.User, User>(referral.User);
+            //            boUser.AddressInfo = null;
+            //            boUser.ContactInfo = null;
+            //            boUser.UserCompanies = null;
+            //            boUser.Roles = null;
 
-            if (referral.User != null)
+            //            referralBO.User = boUser;
+            //        }
+            //    }
+            //}
+
+            if (referral.User1 != null)
             {
-                if (referral.User.IsDeleted.HasValue == false || (referral.User.IsDeleted.HasValue == true && referral.User.IsDeleted.Value == false))
+                if (referral.User1.IsDeleted.HasValue == false || (referral.User1.IsDeleted.HasValue == true && referral.User1.IsDeleted.Value == false))
                 {
-                    BO.User boUser = new BO.User();
+
+                    BO.User boUser1 = new BO.User();
                     using (UserRepository cmp = new UserRepository(_context))
                     {
-                        boUser = cmp.Convert<BO.User, User>(referral.User);
-                        boUser.AddressInfo = null;
-                        boUser.ContactInfo = null;
-                        boUser.UserCompanies = null;
-                        boUser.Roles = null;
+                        boUser1 = cmp.Convert<BO.User, User>(referral.User1);
 
-                        referralBO.User = boUser;
+                        referralBO.User1 = boUser1;
                     }
                 }
             }
@@ -272,6 +286,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 referralBO.ReferralProcedureCode = boReferralProcedureCode;
             }
 
+            if (referral.Case != null)
+            {
+                if (referral.Case.IsDeleted.HasValue == false || (referral.Case.IsDeleted.HasValue == true && referral.Case.IsDeleted.Value == false))
+                {
+                    BO.Case boCase = new BO.Case();
+                    using (CaseRepository cmp = new CaseRepository(_context))
+                    {
+                        boCase = cmp.Convert<BO.Case, Case>(referral.Case);
+                        boCase.PatientEmpInfo = null;
+                        boCase.Referrals = null;
+                        referralBO.Case = boCase;
+                    }
+                }
+            }                
+
             return (T)(object)referralBO;
         }
         #endregion
@@ -307,41 +336,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             ReferralListBO.CreateByUserID = Referral.CreateByUserID;
             ReferralListBO.UpdateByUserID = Referral.UpdateByUserID;
 
-            if (Referral!= null)
+            if (Referral.PendingReferral != null)
             {
-                if (Referral.PendingReferral != null)
+                if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
                 {
-                    if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
+                    //if (Referral.PendingReferral.PatientVisit2 != null)
+                    //{
+                    //    if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
+                    //    {
+                    //        ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                    //    }
+                    //}
+                    ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                }
+            }
+
+            ReferralListBO.CaseId = Referral.CaseId;
+
+            if (Referral.Case != null)
+            {
+                if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
+                {
+                    BO.Case boCase = new BO.Case();
+                    using (CaseRepository cmp = new CaseRepository(_context))
                     {
-                        //if (Referral.PendingReferral.PatientVisit2 != null)
-                        //{
-                        //    if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
-                        //    {
-                        //        ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
-                        //    }
-                        //}
-                        ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                        boCase = cmp.Convert<BO.Case, Case>(Referral.Case);
+                        boCase.PatientEmpInfo = null;
+                        boCase.Patient2 = null;
+                        boCase.Referrals = null;
+                        ReferralListBO.Case = boCase;
+                    }
+                }
 
-                        if (Referral.Case != null)
+                if (Referral.Case.Patient2 != null)
+                {
+                    if (Referral.Case.Patient2.IsDeleted.HasValue == false || (Referral.Case.Patient2.IsDeleted.HasValue == true && Referral.Case.Patient2.IsDeleted.Value == false))
+                    {
+                        if (Referral.Case.Patient2.User != null)
                         {
-                            if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
+                            if (Referral.Case.Patient2.User.IsDeleted.HasValue == false || (Referral.Case.Patient2.User.IsDeleted.HasValue == true && Referral.Case.Patient2.User.IsDeleted.Value == false))
                             {
-                                ReferralListBO.CaseId = Referral.CaseId;
-                            }
-
-                            if (Referral.Case.Patient2 != null)
-                            {
-                                if (Referral.Case.Patient2.IsDeleted.HasValue == false || (Referral.Case.Patient2.IsDeleted.HasValue == true && Referral.Case.Patient2.IsDeleted.Value == false))
-                                {
-                                    if (Referral.Case.Patient2.User != null)
-                                    {
-                                        if (Referral.Case.Patient2.User.IsDeleted.HasValue == false || (Referral.Case.Patient2.User.IsDeleted.HasValue == true && Referral.Case.Patient2.User.IsDeleted.Value == false))
-                                        {
-                                            ReferralListBO.PatientFirstName = Referral.Case.Patient2.User.FirstName;
-                                            ReferralListBO.PatientLastName = Referral.Case.Patient2.User.LastName;
-                                        }
-                                    }
-                                }
+                                ReferralListBO.PatientFirstName = Referral.Case.Patient2.User.FirstName;
+                                ReferralListBO.PatientLastName = Referral.Case.Patient2.User.LastName;
                             }
                         }
                     }
@@ -552,24 +588,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
-            if(Referral != null)
-            {
-                if (Referral.Case != null)
-                {
-                    if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
-                    {
-                        BO.Case boCase = new BO.Case();
-                        using (CaseRepository cmp = new CaseRepository(_context))
-                        {
-                            boCase = cmp.Convert<BO.Case, Case>(Referral.Case);
-                            boCase.PatientEmpInfo = null;
-                            boCase.Patient2 = null;
-                            boCase.Referrals = null;
-                            ReferralListBO.Case = boCase;
-                        }
-                    }
-                }
-            }
+            //if(Referral != null)
+            //{
+            //    if (Referral.Case != null)
+            //    {
+            //        if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
+            //        {
+            //            BO.Case boCase = new BO.Case();
+            //            using (CaseRepository cmp = new CaseRepository(_context))
+            //            {
+            //                boCase = cmp.Convert<BO.Case, Case>(Referral.Case);
+            //                boCase.PatientEmpInfo = null;
+            //                boCase.Patient2 = null;
+            //                boCase.Referrals = null;
+            //                ReferralListBO.Case = boCase;
+            //            }
+            //        }
+            //    }
+            //}
             
 
             return (T)(object)ReferralListBO;
@@ -726,13 +762,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                           .Include("Doctor.User")
                                           .Include("Doctor1")
                                           .Include("Doctor1.User")
-                                          //.Include("PatientVisit2")
-                                          //.Include("PendingReferral")
+                                          .Include("Case")
+                                          .Include("Case.CaseCompanyMappings")
+                                          .Include("Case.CompanyCaseConsentApprovals")
+                                          .Include("Case.CaseCompanyConsentDocuments")
+                                          .Include("Case.Patient2")
+                                          .Include("Case.Patient2.User")
                                           .Include("Room")
                                           .Include("Room1")
                                           .Include("RoomTest")
                                           .Include("Specialty")
-                                          .Include("User")
+                                          .Include("User1")
                                           .Include("ReferralProcedureCodes")
                                           .Include("ReferralProcedureCodes.ProcedureCode")
                                           .Where(p => p.Id == referralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -754,13 +794,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Doctor.User")
                                         .Include("Doctor1")
                                         .Include("Doctor1.User")
-                                        //.Include("PatientVisit2")
-                                        //.Include("PendingReferral")
+                                        .Include("Case")
+                                        .Include("Case.CaseCompanyMappings")
+                                        .Include("Case.CompanyCaseConsentApprovals")
+                                        .Include("Case.CaseCompanyConsentDocuments")
+                                        .Include("Case.Patient2")
+                                        .Include("Case.Patient2.User")
                                         .Include("Room")
                                         .Include("Room1")
                                         .Include("RoomTest")
                                         .Include("Specialty")
-                                        .Include("User")
+                                        .Include("User1")
                                         .Include("ReferralProcedureCodes")
                                         .Include("ReferralProcedureCodes.ProcedureCode")
                                         .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
@@ -787,13 +831,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -831,13 +879,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
                                                .Where(p => p.ToCompanyId == companyId
@@ -874,19 +926,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               //.Include("PendingReferral")
-                                               //.Include("PendingReferral.PatientVisit2")
-                                               //.Include("PendingReferral.PatientVisit2.Case")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               //.Include("PendingReferral.PatientVisit2.Patient2")
-                                               //.Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               .Include("Case")
+                                               .Include("Case.CaseCompanyMappings")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("Case.Patient2")
+                                               .Include("Case.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
                                                .Include("Specialty")
-                                               .Include("User")
+                                               .Include("User1")
                                                .Include("ReferralProcedureCodes")
                                                .Include("ReferralProcedureCodes.ProcedureCode")
                                                 
@@ -924,19 +974,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PendingReferral")
-                                                //.Include("PendingReferral.PatientVisit2")
-                                                //.Include("PendingReferral.PatientVisit2.Case")
-                                                //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                                //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                                //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                                //.Include("PendingReferral.PatientVisit2.Patient2")
-                                                //.Include("PendingReferral.PatientVisit2.Patient2.User")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -974,13 +1022,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1018,13 +1070,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1062,13 +1118,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
                                                 .Where(p => p.FromDoctorId == doctorId && p.FromCompanyId == companyId
@@ -1105,13 +1165,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
                                                 .Where(p => p.ToDoctorId == doctorId && p.ToCompanyId == companyId
@@ -1148,19 +1212,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               //.Include("PendingReferral")
-                                               //.Include("PendingReferral.PatientVisit2")
-                                               //.Include("PendingReferral.PatientVisit2.Case")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               //.Include("PendingReferral.PatientVisit2.Patient2")
-                                               //.Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               .Include("Case")
+                                               .Include("Case.CaseCompanyMappings")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("Case.Patient2")
+                                               .Include("Case.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
                                                .Include("Specialty")
-                                               .Include("User")
+                                               .Include("User1")
                                                .Include("ReferralProcedureCodes")
                                                .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1199,19 +1261,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               //.Include("PendingReferral")
-                                               //.Include("PendingReferral.PatientVisit2")
-                                               //.Include("PendingReferral.PatientVisit2.Case")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               //.Include("PendingReferral.PatientVisit2.Patient2")
-                                               //.Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               .Include("Case")
+                                               .Include("Case.CaseCompanyMappings")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("Case.Patient2")
+                                               .Include("Case.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
                                                .Include("Specialty")
-                                               .Include("User")
+                                               .Include("User1")
                                                .Include("ReferralProcedureCodes")
                                                .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1249,13 +1309,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1293,13 +1357,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1337,13 +1405,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1381,13 +1453,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                //.Include("PatientVisit2")
-                                                //.Include("PendingReferral")
+                                                .Include("Case")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyConsentDocuments")
+                                                .Include("Case.Patient2")
+                                                .Include("Case.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
                                                 .Include("Specialty")
-                                                .Include("User")
+                                                .Include("User1")
                                                 .Include("ReferralProcedureCodes")
                                                 .Include("ReferralProcedureCodes.ProcedureCode")
 
@@ -1426,18 +1502,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               .Include("PendingReferral")
-                                               .Include("PendingReferral.PatientVisit2")
                                                .Include("Case")
                                                .Include("Case.CaseCompanyMappings")
                                                .Include("Case.CompanyCaseConsentApprovals")
                                                .Include("Case.CaseCompanyConsentDocuments")
-                                               .Include("PendingReferral.PatientVisit2.Patient2.User")                                               
+                                               .Include("Case.Patient2")
+                                               .Include("Case.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
                                                .Include("Specialty")
-                                               .Include("User")
                                                .Include("User1")                                               
                                                .Include("ReferralProcedureCodes")
                                                .Include("ReferralProcedureCodes.ProcedureCode")
@@ -1570,7 +1644,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Room1")
                                         .Include("RoomTest")
                                         .Include("Specialty")
-                                        .Include("User")
+                                        .Include("User1")
                                         .Include("ReferralProcedureCodes")
                                         .Include("ReferralProcedureCodes.ProcedureCode")
                                         .Where(p => p.Id == referralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
