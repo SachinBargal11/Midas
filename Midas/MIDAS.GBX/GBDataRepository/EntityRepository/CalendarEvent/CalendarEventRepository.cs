@@ -181,6 +181,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                            .Select(p => p).Include("ScheduleDetails")
                                                            .FirstOrDefault();
 
+            if (schedule == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Doctor is not available in this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
             //var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
             List<DateTime> EventDays = new List<DateTime>();
             for (DateTime eachDate = StartDate; eachDate <= EndDate; eachDate = eachDate.Date.AddDays(1))
@@ -356,6 +361,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                            .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                            .Select(p => p).Include("ScheduleDetails")
                                                            .FirstOrDefault();
+
+            if (schedule == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Room is not available in this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
             //var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
             List<DateTime> EventDays = new List<DateTime>();
