@@ -13,6 +13,7 @@ import { DoctorAdapter } from '../../../../medical-provider/users/services/adapt
 import { VisitReferralProcedureCodeAdapter } from '../../../patient-visit/services/adapters/visit-referral-procedure-code-adapter';
 import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import { ReferralDocumentAdapter } from '../../../cases/services/adapters/referral-document-adapters';
+import { ReferralDocument } from '../../../cases/models/referral-document';
 
 
 export class InboundOutboundReferralAdapter {
@@ -20,12 +21,19 @@ export class InboundOutboundReferralAdapter {
 
         let inboundOutboundList = null;
         let visitReferralProcedureCodes: VisitReferralProcedureCode[] = [];
+        let caseReferralDocument: ReferralDocument[] = [];
         if (data) {
             if (data.referralProcedureCode) {
                 for (let referralProcedureCode of data.referralProcedureCode) {
                     visitReferralProcedureCodes.push(VisitReferralProcedureCodeAdapter.parseResponseReferral(referralProcedureCode));
                 }
             }
+            if (data.referralDocument) {
+                for (let referralDocument of data.referralDocument) {
+                    caseReferralDocument.push(ReferralDocumentAdapter.parseResponse(referralDocument));
+                }
+            }
+
             inboundOutboundList = new InboundOutboundList({
                 id: data.id,
                 pendingReferralId: data.pendingReferralId,
@@ -55,7 +63,7 @@ export class InboundOutboundReferralAdapter {
                 forSpecialty: SpecialityAdapter.parseResponse(data.forSpecialty),
                 dismissedByUser: UserAdapter.parseResponse(data.dismissedByUser),
                 referralProcedureCode: visitReferralProcedureCodes,
-                referralDocument: ReferralDocumentAdapter.parseResponse(data.referralDocument),
+                referralDocument: caseReferralDocument,
                 patientFirstName: data.patientFirstName,
                 patientLastName: data.patientLastName,
                 case: CaseAdapter.parseResponse(data.case),
