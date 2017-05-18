@@ -309,34 +309,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (Referral!= null)
             {
-                if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
+                if (Referral.PendingReferral != null)
                 {
-                    if (Referral.PendingReferral.PatientVisit2 != null)
+                    if (Referral.PendingReferral.IsDeleted.HasValue == false || (Referral.PendingReferral.IsDeleted.HasValue == true && Referral.PendingReferral.IsDeleted.Value == false))
                     {
-                        if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
-                        {
-                            ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
-                        }
-                    }
-                    if (Referral.Case != null)
-                    {
-                        if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
-                        {
-                            ReferralListBO.CaseId = Referral.CaseId;
-                        }
-                    }
-                    if (Referral.PendingReferral.PatientVisit2.Patient2 != null)
-                    {
-                        if (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.IsDeleted.Value == false))
-                        {
-                            ReferralListBO.PatientId = Referral.PendingReferral.PatientVisit2.PatientId;
+                        //if (Referral.PendingReferral.PatientVisit2 != null)
+                        //{
+                        //    if (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.IsDeleted.Value == false))
+                        //    {
+                        //        ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
+                        //    }
+                        //}
+                        ReferralListBO.PatientVisitId = Referral.PendingReferral.PatientVisitId;
 
-                            if (Referral.PendingReferral.PatientVisit2.Patient2.User != null)
+                        if (Referral.Case != null)
+                        {
+                            if (Referral.Case.IsDeleted.HasValue == false || (Referral.Case.IsDeleted.HasValue == true && Referral.Case.IsDeleted.Value == false))
                             {
-                                if (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == false || (Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.HasValue == true && Referral.PendingReferral.PatientVisit2.Patient2.User.IsDeleted.Value == false))
+                                ReferralListBO.CaseId = Referral.CaseId;
+                            }
+
+                            if (Referral.Case.Patient2 != null)
+                            {
+                                if (Referral.Case.Patient2.IsDeleted.HasValue == false || (Referral.Case.Patient2.IsDeleted.HasValue == true && Referral.Case.Patient2.IsDeleted.Value == false))
                                 {
-                                    ReferralListBO.PatientFirstName = Referral.PendingReferral.PatientVisit2.Patient2.User.FirstName;
-                                    ReferralListBO.PatientLastName = Referral.PendingReferral.PatientVisit2.Patient2.User.LastName;
+                                    if (Referral.Case.Patient2.User != null)
+                                    {
+                                        if (Referral.Case.Patient2.User.IsDeleted.HasValue == false || (Referral.Case.Patient2.User.IsDeleted.HasValue == true && Referral.Case.Patient2.User.IsDeleted.Value == false))
+                                        {
+                                            ReferralListBO.PatientFirstName = Referral.Case.Patient2.User.FirstName;
+                                            ReferralListBO.PatientLastName = Referral.Case.Patient2.User.LastName;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -548,7 +552,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 ReferralListBO.ReferralDocument = boReferralDocument;
             }
 
-            if(Referral!=null)
+            if(Referral != null)
             {
                 if (Referral.Case != null)
                 {
@@ -870,14 +874,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               .Include("PendingReferral")
-                                               .Include("PendingReferral.PatientVisit2")
-                                               .Include("PendingReferral.PatientVisit2.Case")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               .Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               .Include("PendingReferral.PatientVisit2.Patient2")
-                                               .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               //.Include("PendingReferral")
+                                               //.Include("PendingReferral.PatientVisit2")
+                                               //.Include("PendingReferral.PatientVisit2.Case")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
+                                               //.Include("PendingReferral.PatientVisit2.Patient2")
+                                               //.Include("PendingReferral.PatientVisit2.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
@@ -920,14 +924,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                 .Include("Doctor.User")
                                                 .Include("Doctor1")
                                                 .Include("Doctor1.User")
-                                                .Include("PendingReferral")
-                                                .Include("PendingReferral.PatientVisit2")
-                                                .Include("PendingReferral.PatientVisit2.Case")
-                                                .Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                                .Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                                .Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                                .Include("PendingReferral.PatientVisit2.Patient2")
-                                                .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                                //.Include("PendingReferral")
+                                                //.Include("PendingReferral.PatientVisit2")
+                                                //.Include("PendingReferral.PatientVisit2.Case")
+                                                //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
+                                                //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
+                                                //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
+                                                //.Include("PendingReferral.PatientVisit2.Patient2")
+                                                //.Include("PendingReferral.PatientVisit2.Patient2.User")
                                                 .Include("Room")
                                                 .Include("Room1")
                                                 .Include("RoomTest")
@@ -1144,14 +1148,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               .Include("PendingReferral")
-                                               .Include("PendingReferral.PatientVisit2")
-                                               .Include("PendingReferral.PatientVisit2.Case")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               .Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               .Include("PendingReferral.PatientVisit2.Patient2")
-                                               .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               //.Include("PendingReferral")
+                                               //.Include("PendingReferral.PatientVisit2")
+                                               //.Include("PendingReferral.PatientVisit2.Case")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
+                                               //.Include("PendingReferral.PatientVisit2.Patient2")
+                                               //.Include("PendingReferral.PatientVisit2.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")
@@ -1195,14 +1199,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.User")
                                                .Include("Doctor1")
                                                .Include("Doctor1.User")
-                                               .Include("PendingReferral")
-                                               .Include("PendingReferral.PatientVisit2")
-                                               .Include("PendingReferral.PatientVisit2.Case")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
-                                               .Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
-                                               .Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
-                                               .Include("PendingReferral.PatientVisit2.Patient2")
-                                               .Include("PendingReferral.PatientVisit2.Patient2.User")
+                                               //.Include("PendingReferral")
+                                               //.Include("PendingReferral.PatientVisit2")
+                                               //.Include("PendingReferral.PatientVisit2.Case")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyMappings")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CompanyCaseConsentApprovals")
+                                               //.Include("PendingReferral.PatientVisit2.Case.CaseCompanyConsentDocuments")
+                                               //.Include("PendingReferral.PatientVisit2.Patient2")
+                                               //.Include("PendingReferral.PatientVisit2.Patient2.User")
                                                .Include("Room")
                                                .Include("Room1")
                                                .Include("RoomTest")

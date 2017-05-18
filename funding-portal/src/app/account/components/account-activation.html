@@ -1,0 +1,77 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="!isTokenValidated">
+			Validating Registration...<i class="fa fa-circle-o-notch fa-spin"></i>
+		</div>
+		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="isTokenValidated && !isTokenValid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger">
+						Not able to verify your registration. Make sure you have opened the link you have received in your email.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="isTokenValidated && isTokenValid">
+			<form [formGroup]="changePassForm" (ngSubmit)="updatePassword()" class="">
+				<section class="box-typical">
+					<div class="card-block">
+						<header class="box-typical-header-sm text-center">Please set your password for company login </header>
+						<div class="row">
+							<div class="col-lg-6">
+								<label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
+								<div class="form-group" [class.error]="changePassFormControls.password.touched && !changePassFormControls.password.valid">
+									<input formControlName="password" type="password" minlength='8' class="form-control" [class.error]="!changePassFormControls.password.valid"
+									/>
+									<div class='error-list' *ngIf="changePassFormControls.password.touched && !changePassFormControls.password.valid">
+										<ul>
+											<li *ngIf="changePassFormControls.password.hasError('required')">Password is required.</li>
+											<li *ngIf="changePassFormControls.password.hasError('minlength')">Password should be minimum {{changePassFormControls.password.errors.minlength.requiredLength}} characters.</li>
+											<li *ngIf="changePassFormControls.password.hasError('maxlength')">Password should be maximum {{changePassFormControls.password.errors.maxlength.requiredLength}} characters.</li>
+											<li *ngIf="changePassFormControls.password.hasError('passwordValidator')">Please enter a valid password</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-lg-6">
+								<label class="form-label"> Confirm Password
+                                            <span class="color-red">*</span>
+                                        </label>
+								<div class="form-group" [class.error]="changePassFormControls.confirmPassword.touched && changePassForm.hasError('mismatchedPasswords')">
+									<input formControlName="confirmPassword" type="password" class="form-control" [class.error]="changePassForm.hasError('mismatchedPasswords')"
+									/>
+									<div class='error-list' *ngIf="changePassFormControls.confirmPassword.touched && changePassForm.hasError('mismatchedPasswords')">
+										<ul>
+											<li *ngIf="changePassForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<small class="text-muted help-block">
+										Password must be minimum 8 characters & maximum 20 characters long. It should contain combination of uppercase (A through Z) & lowercase (a through z) letters, 0 to 9 digits & special characters. 
+								</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<button [disabled]="!changePassForm.valid || isPassChangeInProgress" type="submit" class="btn btn-success sign-up">Set Password
+                    <loader [visible]="isPassChangeInProgress"></loader>
+                </button>
+								<button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
+                </button>
+
+							</div>
+						</div>
+					</div>
+				</section>
+			</form>
+		</div>
+	</div>
+</div>
+<!--.page-center-->

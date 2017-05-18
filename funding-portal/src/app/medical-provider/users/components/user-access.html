@@ -1,0 +1,20 @@
+
+<form [formGroup]="accessform" (ngSubmit)="save()">
+            <div class="row">
+                <div class="col-lg-1">
+                    <label class="form-label"> Role
+                            </label>                                
+                </div> 
+                <div class="col-lg-4">
+                     <input type="checkbox" formControlName="role" name="role" value="Regular Staff"> Regular Staff <br>
+                     <input type="checkbox" formControlName="role" name="role" value="Doctor"> Doctor <br>
+                     <input type="checkbox" formControlName="role" name="role" value="Office Manager"> Office Manager <br>
+                     <input type="checkbox" formControlName="role" name="role" value="Billing Staff"> Billing Staff <br>
+                     <input type="checkbox" formControlName="role" name="role" value="Nurse"> Nurse <br>
+                </div>
+            </div>
+    <button [disabled]="!accessform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <!--<a [routerLink]="['/users']" class="btn btn-secondary">Cancel</a>-->
+</form>
