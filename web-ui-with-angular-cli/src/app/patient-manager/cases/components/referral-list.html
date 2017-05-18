@@ -62,54 +62,14 @@
     </p-column>
 </p-dataTable>
 <br>
-<!--<div class="row">
-    <div class="col-lg-3">
-        <label class="form-label">Select speciality
-            <span class="color-red">*</span>
-        </label>
-        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-        <option value="0">- Select speciality -</option>
-        <optgroup label="Select Specialty">
-           <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
-        </optgroup>
-        <optgroup label="Select Test">
-           <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
-        </optgroup>
-    </select>
-    </div>
-
-    <div class="col-lg-3 m-t-lg">
-        <label class="form-label">Medical-Office-List
-            <span class="color-red">*</span>
-        </label>
-        <div class="form-group">
-            <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0">-Select-</option>
-             <optgroup *ngIf="specialityId != 0" label="Select MedicalProvider-Doctor">
-                     <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
-                         {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
-             </optgroup>
-             <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
-                    <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">
-                        {{currentPreferredMedicalProviderRoom.preferredMedical.name}} - {{currentPreferredMedicalProviderRoom.room.name}}</option>
-             </optgroup>
-              <optgroup  *ngIf="specialityId != 0 || roomTestId != 0 " label="Select MedicalProvider">
-                     <option data-type="3" [attr.data-medicalProviderId]="currentPreferredMedicalProvider.id" *ngFor="let currentPreferredMedicalProvider of medicalProvider">
-                         {{currentPreferredMedicalProvider.name}}</option>
-             </optgroup>
-        </select>
-        </div>
-    </div>
-</div>-->
-
 <div class="row">
 
     <div class="col-lg-3">
         <label class="form-label">Select speciality
             <span class="color-red">*</span>
         </label>
-        <select [(ngModel)]="selectedSpMode" class="select2-arrow form-control" (change)="selectOption($event)">
-        <option value="0">- Select speciality -</option>
+        <select class="select2-arrow form-control" (change)="selectOption($event)">
+        <option value="0">- Select specialty -</option>
         <optgroup label="Select Specialty">
            <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
         </optgroup>
@@ -150,6 +110,7 @@
         <a class="btn btn-primary btn-sm" (click)="showDialogMedical()"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Medical Provider</span>
         </a>
+        <!--<a (click)="clear()" class="btn btn-secondary">Cancel</a>-->
     </div>
 </div>
 
