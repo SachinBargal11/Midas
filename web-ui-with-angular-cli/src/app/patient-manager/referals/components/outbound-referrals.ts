@@ -116,7 +116,7 @@ export class OutboundReferralsComponent implements OnInit {
         this._progressBarService.show();
         this._pendingReferralStore.getReferralsByReferringUserId()
             .subscribe((referrals: InboundOutboundList[]) => {
-                this.referredMedicalOffices = referrals.reverse();
+                this.referredMedicalOffices = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
