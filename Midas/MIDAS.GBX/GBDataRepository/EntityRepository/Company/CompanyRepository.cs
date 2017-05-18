@@ -226,12 +226,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userDB.AddressInfo = addressDB;
                 userDB.ContactInfo = contactinfoDB;
                 userCompanyDB.User = userDB;
+                userCompanyDB.IsAccepted = true;
             }
             else
             {
                 ////Find Record By Name
                 User user_ = _context.Users.Where(p => p.UserName == userBO.UserName).FirstOrDefault<User>();
                 userCompanyDB.User = user_;
+                userCompanyDB.IsAccepted = true;
                 _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
             }
 
