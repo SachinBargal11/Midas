@@ -134,7 +134,7 @@
 
     <div *ngIf="selectedCaseId">
         <!--<add-consent [inputCaseId]="selectedCaseId" (uploadComplete)="documentUploadComplete($event)"></add-consent>-->
-        <app-document-upload [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+        <app-document-upload  [currentId]="2" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
             (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
             [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
     </div>
