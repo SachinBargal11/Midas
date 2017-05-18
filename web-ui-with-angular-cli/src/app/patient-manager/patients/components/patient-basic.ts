@@ -1,3 +1,4 @@
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Patient } from '../models/patient';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
@@ -24,7 +25,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class PatientBasicComponent implements OnInit {
     caseDetail: Case[];
-    referredToMe:boolean = false;
+    referredToMe: boolean = false;
     patientId: number;
     patientInfo: Patient;
     dateOfBirth: Date;
@@ -54,20 +55,22 @@ export class PatientBasicComponent implements OnInit {
             this._progressBarService.show();
             let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             let result = this._patientsStore.fetchPatientById(this.patientId);
-             Observable.forkJoin([caseResult, result])
+            Observable.forkJoin([caseResult, result])
                 .subscribe(
                 (results) => {
                     this.caseDetail = results[0];
-                     if (this.caseDetail.length > 0) {
-                        this.caseDetail[0].referral.forEach(element => {
-                          if(element.referredToCompanyId == _sessionStore.session.currentCompany.id){
-                            this.referredToMe = true;
-                          }else{
-                             this.referredToMe = false;
-                          }
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
                         })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
                     } else {
-                      this.referredToMe = false;
+                        this.referredToMe = false;
                     }
                     this.patientInfo = results[1];
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth

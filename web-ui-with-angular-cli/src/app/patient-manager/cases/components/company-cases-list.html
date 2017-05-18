@@ -29,7 +29,7 @@
             <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}--></a>
              </div>
              <div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
-             <a (click)="showDialog(case.id)">{{currentUser.patient.user.displayName}}</a>
+             <a (click)="showDialog(currentUser.id)">{{currentUser.patient.user.displayName}}</a>
              </div>    
         </ng-template>
     </p-column>
