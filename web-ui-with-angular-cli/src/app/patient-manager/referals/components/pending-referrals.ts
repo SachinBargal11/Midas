@@ -120,7 +120,7 @@ export class PendingReferralsComponent implements OnInit {
     }
 
     loadPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number, specialityId: number, roomTestId: number) {
-        this._progressBarService.show();
+        // this._progressBarService.show();
         this._pendingReferralStore.getPreferredCompanyDoctorsAndRoomByCompanyId(companyId, specialityId, roomTestId)
             .subscribe(preferredMedical => {
                 let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {
@@ -157,11 +157,10 @@ export class PendingReferralsComponent implements OnInit {
             (error) => {
                 this.medicalProviderDoctor = [];
                 this.medicalProviderRoom = [];
-                this._progressBarService.hide();
-                // });
-                () => {
-                    this._progressBarService.hide();
-                };
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
             });
     }
 
@@ -445,12 +444,11 @@ export class PendingReferralsComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
-                this._progressBarService.hide();
+                
             });
 
 
@@ -514,12 +512,11 @@ export class PendingReferralsComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
-                this._progressBarService.hide();
+              
             });
 
 
@@ -581,12 +578,11 @@ export class PendingReferralsComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
-                this._progressBarService.hide();
+                
             });
     }
 
@@ -599,7 +595,7 @@ export class PendingReferralsComponent implements OnInit {
                 accept: () => {
                     this.selectedReferrals.forEach(currentPendingReferrals => {
                         this.isDeleteProgress = true;
-                        this._progressBarService.show();
+                        // this._progressBarService.show();
                         this._pendingReferralStore.deletePendingReferral(currentPendingReferrals)
                             .subscribe(
                             (response) => {
@@ -621,14 +617,14 @@ export class PendingReferralsComponent implements OnInit {
                                     'createdAt': moment()
                                 });
                                 this.selectedReferrals = null;
-                                this._progressBarService.hide();
+                                // this._progressBarService.hide();
                                 this.isDeleteProgress = false;
                                 this._notificationsStore.addNotification(notification);
                                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                             },
                             () => {
                                 this.isDeleteProgress = false;
-                                this._progressBarService.hide();
+                                // this._progressBarService.hide();
                             });
                     });
                 }

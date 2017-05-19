@@ -109,9 +109,15 @@ export class InboundOutboundList extends InboundOutboundReferralRecord {
         if(this.toDoctorFirstName != null && this.toDoctorLastName != null ){
         return this.toDoctorFirstName + ' ' + this.toDoctorLastName;
         }else{
-            return '';
-        }
-        
+            return 'NA';
+        }    
+    }
+    get displayLocationName(): string {
+        if(this.toLocationName != null){
+        return this.toLocationName;
+        }else{
+            return 'NA';
+        }    
     }
 }
 
