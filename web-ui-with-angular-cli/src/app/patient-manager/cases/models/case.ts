@@ -6,6 +6,7 @@ import { CaseStatus } from './enums/case-status';
 import { Company } from '../../../account/models/company';
 import { Consent } from './consent';
 import { Referral } from './referral';
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Patient } from '../../patients/models/patient';
 import { CaseDocument } from './case-document';
 
@@ -42,7 +43,7 @@ export class Case extends CaseRecord {
     companies: Company[];
     caseCompanyConsentDocument: CaseDocument[];
     companyCaseConsentApproval: Consent[];
-    referral: Referral[];
+    referral: PendingReferral[];
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;
@@ -102,8 +103,8 @@ export class Case extends CaseRecord {
     
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
-        _.forEach(this.referral, (currentReferral: Referral) => {
-            if (currentReferral.referredToCompanyId === companyId) {
+        _.forEach(this.referral, (currentReferral: PendingReferral) => {
+            if (currentReferral.toCompanyId === companyId) {
                 isInboundReferral = true;
             } 
         });
@@ -111,8 +112,8 @@ export class Case extends CaseRecord {
     }
     getOutboundReferral(companyId): boolean {
         let isOutboundReferral: boolean = false;
-        _.forEach(this.referral, (currentReferral: Referral) => {
-            if (currentReferral.referringCompanyId === companyId) {
+        _.forEach(this.referral, (currentReferral: PendingReferral) => {
+            if (currentReferral.fromCompanyId === companyId) {
                 isOutboundReferral = true;
             }
         });

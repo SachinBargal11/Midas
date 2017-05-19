@@ -90,7 +90,7 @@ export class InboundReferralsComponent implements OnInit {
         this._progressBarService.show();
         this._pendingReferralStore.getReferralsByReferredToDoctorId()
             .subscribe((referrals: InboundOutboundList[]) => {
-                this.referrals = referrals.reverse();
+                this.referrals = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -104,7 +104,7 @@ export class InboundReferralsComponent implements OnInit {
         this._progressBarService.show();
         this._pendingReferralStore.getReferralsByReferredToCompanyId()
             .subscribe((referrals: InboundOutboundList[]) => {
-                this.referredMedicalOffices = referrals.reverse();
+                this.referredMedicalOffices = referrals;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -193,7 +193,7 @@ export class InboundReferralsComponent implements OnInit {
             caseId: this.selectedCaseId
         };
     }
-    
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {

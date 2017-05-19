@@ -31,10 +31,9 @@
         <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
         <div class="col-md-6">
           <div class="form-group">
-            <select formControlName="readingDoctor" class="select2-arrow form-control">
-                <option value="">-Select Reading Doctor-</option>
-                <option value="1">Dr.1</option>
-                <option value="2">Dr.2</option>
+            <select formControlName="readingDoctor" [(ngModel)]="readingDoctor" class="select2-arrow form-control">
+                <option value="0">-Select Reading Doctor-</option>
+                <option *ngFor="let doctor of readingDoctors" [value]="doctor.id">{{doctor.user.displayName}}</option>
             </select>
           </div>
         </div>

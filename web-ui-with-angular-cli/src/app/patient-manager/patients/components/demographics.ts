@@ -22,6 +22,7 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Observable } from 'rxjs/Rx';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'demographics',
@@ -75,13 +76,15 @@ export class DemographicsComponent implements OnInit {
                 (results) => {
                     this.caseDetail = results[0];
                     if (this.caseDetail.length > 0) {
-                        this.caseDetail[0].referral.forEach(element => {
-                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
-                                this.referredToMe = true;
-                            } else {
-                                this.referredToMe = false;
-                            }
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
                         })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
                     } else {
                         this.referredToMe = false;
                     }

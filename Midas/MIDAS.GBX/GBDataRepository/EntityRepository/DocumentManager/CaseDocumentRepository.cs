@@ -41,7 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
             _context.SaveChanges();
 
-            if (documentType.ToUpper().Equals(EN.Constants.CaseType))
+            if (documentType.ToUpper().Equals(EN.Constants.ConsentType))
             {
                 CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
                 {
@@ -51,19 +51,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     CreateDate = DateTime.UtcNow
                 });
                 _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
-                _context.SaveChanges();
-            }
-            else if (documentType.ToUpper().Equals(EN.Constants.ConsentType))
-            {
-                CaseCompanyConsentDocument caseCompConsentDoc = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
-                {
-                    MidasDocumentId = midasdoc.Id,
-                    CaseId = objectId,
-                    CompanyId = companyId,
-                    DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
-                    CreateDate = DateTime.UtcNow
-                });
-                _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
                 _context.SaveChanges();
 
                 BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
@@ -75,6 +62,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     return result;
                 }
+            }
+            else
+            {
+                CaseCompanyConsentDocument caseCompConsentDoc = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
+                {
+                    MidasDocumentId = midasdoc.Id,
+                    CaseId = objectId,
+                    CompanyId = companyId,
+                    DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                    CreateDate = DateTime.UtcNow
+                });
+                _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
+                _context.SaveChanges();
             }
 
             docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";

@@ -1,3 +1,4 @@
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
@@ -13,6 +14,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
+import * as _ from "underscore";
 
 @Component({
     selector: 'family-member-list',
@@ -49,13 +51,15 @@ export class FamilyMemberListComponent implements OnInit {
                 (cases: Case[]) => {
                     this.caseDetail = cases;
                     if (this.caseDetail.length > 0) {
-                        this.caseDetail[0].referral.forEach(element => {
-                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
-                                this.referredToMe = true;
-                            } else {
-                                this.referredToMe = false;
-                            }
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
                         })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
                     } else {
                         this.referredToMe = false;
                     }

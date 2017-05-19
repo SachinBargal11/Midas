@@ -11,7 +11,7 @@ import * as _ from 'underscore';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import { Referral } from '../models/referral';
@@ -32,7 +32,7 @@ export class CompanyCasesComponent implements OnInit {
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
-    isDeleteProgress:boolean = false;
+    isDeleteProgress: boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
     addConsentDialogVisible: boolean = false;
@@ -55,7 +55,7 @@ export class CompanyCasesComponent implements OnInit {
         private confirmationService: ConfirmationService,
 
     ) {
-        
+
         this.companyId = this.sessionStore.session.currentCompany.id;
         this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
@@ -101,12 +101,14 @@ export class CompanyCasesComponent implements OnInit {
     }
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
+                window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            }
         });
     }
 
 
-       consentAvailable(case1: Case) {
+    consentAvailable(case1: Case) {
         if (case1.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
@@ -122,7 +124,7 @@ export class CompanyCasesComponent implements OnInit {
     }
 
 
-        referralAvailable(case1: any) {
+    referralAvailable(case1: any) {
         let referralOutBound;
         let referralInBound;
         let referralInBoundOutBound;
@@ -180,45 +182,45 @@ export class CompanyCasesComponent implements OnInit {
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-            this.selectedCases.forEach(currentCase => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                this._casesStore.deleteCase(currentCase)
-                    .subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Case deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadCases();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedCases = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete case';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedCases = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedCases.forEach(currentCase => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        this._casesStore.deleteCase(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Case deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadCases();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedCases = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete case';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedCases = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
+                }
             });
-            }
-             });
         } else {
             let notification = new Notification({
                 'title': 'select case to delete',
@@ -229,11 +231,11 @@ export class CompanyCasesComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
-  showDialog(currentCaseId: number){
-          this.addConsentDialogVisible = true;
-          this.selectedCaseId = currentCaseId;
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
     }
-    
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {

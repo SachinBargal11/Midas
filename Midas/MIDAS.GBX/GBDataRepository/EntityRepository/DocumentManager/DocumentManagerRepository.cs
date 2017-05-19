@@ -73,11 +73,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 switch (uploadInfo.ObjectType.ToUpper())
                 {
                     case EN.Constants.CaseType:
-                    case EN.Constants.ConsentType:
                         path = documentPath[0].Replace("cmp/", "")
                                             .Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
                                             .Replace("cs", "cs-" + uploadInfo.ObjectId);
                         break;
+                    /*case EN.Constants.ConsentType:
+                        path = documentPath[0].Replace("cmp/", "")                              
+                                            .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                        break;*/
                     case EN.Constants.VisitType:
                         path = documentPath[0].Replace("cmp/", "")
                                             .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
@@ -131,7 +134,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             switch (uploadInfo.ObjectType.ToUpper())
             {
                 case EN.Constants.CaseType:
-                case EN.Constants.ConsentType:
+                //case EN.Constants.ConsentType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
                     docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
                     break;

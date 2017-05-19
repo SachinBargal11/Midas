@@ -58,6 +58,8 @@ export class VisitDetailComponent implements OnInit {
     isDeleteProgress = false;
     caseStatusId: number;
 
+    readingDoctors: Doctor[];
+    readingDoctor: number;
     visitDetailForm: FormGroup;
     visitDetailFormControls;
     visitInfo = 'Visit Info';
@@ -72,6 +74,7 @@ export class VisitDetailComponent implements OnInit {
     @Input() routeFrom: number;
     //   @Input() selectedVisitId: number;
     @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
+    // @Output() saveComplete: EventEmitter<PatientVisit> = new EventEmitter();
     constructor(
         private _fb: FormBuilder,
         private _router: Router,
@@ -97,6 +100,8 @@ export class VisitDetailComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.readingDoctor = this.selectedVisit.doctorId != null ? this.selectedVisit.doctorId : 0;
+        this.getReadingDoctorsByCompanyId();
         this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
         this.getDocuments();
     }
@@ -117,6 +122,23 @@ export class VisitDetailComponent implements OnInit {
         this._patientVisitStore.getDocumentsForVisitId(this.selectedVisit.id)
             .subscribe(document => {
                 this.documents = document;
+            },
+
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
+    }
+    getReadingDoctorsByCompanyId() {
+        // this._progressBarService.show();
+        this._doctorsStore.getReadingDoctorsByCompanyId()
+            .subscribe((readingDoctors: Doctor[]) => {
+                let doctorDetails = _.reject(readingDoctors, (currentDoctor: Doctor) => {
+                    return currentDoctor.user == null;
+                })
+                this.readingDoctors = doctorDetails;
             },
 
             (error) => {
@@ -151,7 +173,8 @@ export class VisitDetailComponent implements OnInit {
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: visitDetailFormValues.notes,
-            visitStatusId: visitDetailFormValues.visitStatusId
+            visitStatusId: parseInt(visitDetailFormValues.visitStatusId),
+            doctorId: parseInt(visitDetailFormValues.readingDoctor)
         }));
         this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
@@ -163,6 +186,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                // this.uploadComplete.emit(documents);
             },
             (error) => {
                 let errString = 'Unable to update event!';
