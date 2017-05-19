@@ -22,7 +22,7 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
-
+import { Account } from '../../../account/models/account';
 @Component({
     selector: 'case-basic',
     templateUrl: './case-basic.html'
@@ -42,7 +42,7 @@ export class CaseBasicComponent implements OnInit {
     patientId: number;
     patientName: string;
     // transportation: any;
-
+    allProviders: Account[];
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -68,7 +68,8 @@ export class CaseBasicComponent implements OnInit {
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
-            let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
+            let fetchAttorneys = this._attorneyMasterStore.getAllProviders();
+
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
             Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
@@ -77,7 +78,7 @@ export class CaseBasicComponent implements OnInit {
                     this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
                     this.locations = results[1];
                     this.employer = results[2];
-                    this.attorneys = results[3];
+                    this.allProviders = results[3];
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
                 },
@@ -97,7 +98,7 @@ export class CaseBasicComponent implements OnInit {
             locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
-            attorneyId: [''],
+            providerId: [''],
             // transportation: [1, Validators.required],
         });
 
@@ -121,7 +122,7 @@ export class CaseBasicComponent implements OnInit {
             locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.attorneyId,
+            attorneyId: caseFormValues.providerId,
             caseStatus: caseFormValues.caseStatusId,
             // transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             updateByUserID: this.sessionStore.session.account.user.id,

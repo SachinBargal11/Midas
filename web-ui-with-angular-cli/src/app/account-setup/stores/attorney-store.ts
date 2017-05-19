@@ -43,7 +43,7 @@ export class AttorneyMasterStore {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
-     getAllAttorney(): Observable<Attorney[]> {
+    getAllAttorney(): Observable<Attorney[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._attorneyMasterService.getAllAttorney(companyId).subscribe((allAttorney: Attorney[]) => {
@@ -56,10 +56,10 @@ export class AttorneyMasterStore {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
-     assignAttorney(id: number): Observable<Attorney> {
+    assignAttorney(id: number): Observable<Attorney> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.assignAttorney(id,companyId).subscribe((attorney: Attorney) => {
+            this._attorneyMasterService.assignAttorney(id, companyId).subscribe((attorney: Attorney) => {
                 // this._attorneyMaster.next(List(allattorney));
                 resolve(attorney);
             }, error => {
@@ -132,7 +132,17 @@ export class AttorneyMasterStore {
         });
         return <Observable<Attorney>>Observable.from(promise);
     }
-
+    getAll(): Observable<Attorney[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._attorneyMasterService.getAll().subscribe((attorney: Attorney[]) => {
+                this._allAttorneyInMidas.next(List(attorney));
+                resolve(attorney);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Attorney[]>>Observable.fromPromise(promise);
+    }
     resetStore() {
         this._attorneyMaster.next(this._attorneyMaster.getValue().clear());
         this._allAttorneyInMidas.next(this._allAttorneyInMidas.getValue().clear());

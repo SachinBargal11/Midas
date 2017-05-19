@@ -20,7 +20,7 @@ import { PatientsStore } from '../../patients/stores/patients-store';
 import { Patient } from '../../patients/models/patient';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
-
+import { Account } from '../../../account/models/account';
 @Component({
     selector: 'add-case',
     templateUrl: './add-case.html'
@@ -39,7 +39,8 @@ export class AddCaseComponent implements OnInit {
     patientName: string;
     patients: Patient[];
     patientsWithoutCase: Patient[];
-
+    allProviders: Account[];
+    currentProviderId: number = 0;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -90,7 +91,7 @@ export class AddCaseComponent implements OnInit {
             locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
-            attorneyId: [''],
+            providerId: [''],
             // caseStatus: [''],
             //transportation: ['0'],
         });
@@ -102,8 +103,19 @@ export class AddCaseComponent implements OnInit {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
 
-        this._attorneyMasterStore.getAttorneyMasters()
-            .subscribe(attorneys => this.attorneys = attorneys);
+        //  this._attorneyMasterStore.getAttorneyMasters()
+        //  .subscribe(attorneys => this.attorneys = attorneys);
+        this._attorneyMasterStore.getAllProviders()
+            .subscribe((allProviders: Account[]) => {
+                this.allProviders = allProviders;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
 
 
         // this.loadPatients();
@@ -133,8 +145,6 @@ export class AddCaseComponent implements OnInit {
     //         });
     // }
 
-
-
     loadPatientsWithoutCase() {
         this._progressBarService.show();
         this._patientsStore.getPatientsWithNoCase()
@@ -163,7 +173,7 @@ export class AddCaseComponent implements OnInit {
             locationId: caseFormValues.locationId,
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.attorneyId,
+            attorneyId: caseFormValues.providerId,
             // caseStatus: caseFormValues.caseStatus,
             // transportation: caseFormValues.transportation,
             //transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
