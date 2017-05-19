@@ -607,6 +607,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
 
+            var docspec = _context.DoctorSpecialities.Where(x => x.Specialty.SchedulingAvailable == false).ToList();
+
             var acc_ = _context.Doctors.Include("User")
                                        .Include("User.UserCompanyRoles")
                                        .Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.DoctorSpecialities).ToList<Doctor>();
