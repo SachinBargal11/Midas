@@ -43,14 +43,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (documentType.ToUpper().Equals(EN.Constants.ConsentType))
             {
-                CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
+                CaseCompanyConsentDocument caseCompConsentDoc = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
                 {
                     MidasDocumentId = midasdoc.Id,
                     CaseId = objectId,
+                    CompanyId = companyId,
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                     CreateDate = DateTime.UtcNow
                 });
-                _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
+                _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
                 _context.SaveChanges();
 
                 BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
@@ -65,16 +66,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                CaseCompanyConsentDocument caseCompConsentDoc = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
+                CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
                 {
                     MidasDocumentId = midasdoc.Id,
                     CaseId = objectId,
-                    CompanyId = companyId,
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                     CreateDate = DateTime.UtcNow
                 });
-                _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
-                _context.SaveChanges();
+                _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
+                _context.SaveChanges();                
             }
 
             docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
