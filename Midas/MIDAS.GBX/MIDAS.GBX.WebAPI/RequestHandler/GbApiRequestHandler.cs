@@ -355,7 +355,11 @@ namespace MIDAS.GBX.WebAPI
             var objResult = dataAccessManager.Get(gbObject);
             try
             {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);                
             }
             catch (Exception ex)
             {

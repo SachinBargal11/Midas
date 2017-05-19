@@ -8,6 +8,7 @@ using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.DataRepository.EntityRepository.Common;
+using MIDAS.GBX.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -523,7 +524,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Case caseBO = (BO.Case)(object)entity;
             BO.Location locationBO = new BO.Location();
             List<BO.CaseCompanyMapping> lstCaseCompanyMapping = caseBO.CaseCompanyMappings;
-            BO.CaseCompanyMapping caseCompanyMappingBO = new BO.CaseCompanyMapping();
+            BO.CaseCompanyMapping caseCompanyMappingBO = new BO.CaseCompanyMapping();          
 
             Case caseDB = new Case();
             using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -656,6 +657,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("CaseCompanyConsentDocuments.MidasDocument")
                                        .Include("Referral2")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
+
+                try
+                {
+                    #region Send Email
+
+                    var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    if (userBO != null)
+                    {
+                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "CaseCreated".ToUpper()).FirstOrDefault();
+                        if (mailTemplateDB == null)
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else
+                        {
+                            string msg = mailTemplateDB.EmailBody;
+                            string subject = mailTemplateDB.EmailSubject;
+
+                            string message = string.Format(msg, userBO.FirstName, caseDB.PatientId);
+
+                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                            objEmail.SendMail();
+                        }
+                    }                                   
+
+                    #endregion
+                }
+                catch (Exception ex) { }
+
             }
 
             var res = Convert<BO.Case, Case>(caseDB);

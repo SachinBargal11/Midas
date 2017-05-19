@@ -30,6 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
+        public virtual DbSet<AuditTableMapping> AuditTableMappings { get; set; }
         public virtual DbSet<BlobStorage> BlobStorages { get; set; }
         public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
@@ -60,6 +61,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<InvitationType> InvitationTypes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<MailTemplate> MailTemplates { get; set; }
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
         public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
@@ -103,7 +105,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<Referral_OLD> Referral_OLD { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

@@ -53,6 +53,21 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="AuditTableMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="250" />
+          <Property Name="AuditInsert" Type="bit" Nullable="false" />
+          <Property Name="AuditUpdate" Type="bit" Nullable="false" />
+          <Property Name="AuditDelete" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="BlobStorage">
           <Key>
             <PropertyRef Name="Id" />
@@ -483,6 +498,15 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="MailTemplates">
+          <Key>
+            <PropertyRef Name="TemplateID" />
+          </Key>
+          <Property Name="TemplateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TemplateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailSubject" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailBody" Type="nvarchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="MaritalStatus">
           <Key>
             <PropertyRef Name="Id" />
@@ -793,42 +817,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="SpecialityId" Type="int" />
           <Property Name="RoomId" Type="int" />
           <Property Name="RoomTestId" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASGBX.dbo.Referral_OLD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Referral_OLD">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CaseId" />
-            <PropertyRef Name="ReferringCompanyId" />
-            <PropertyRef Name="ReferringLocationId" />
-            <PropertyRef Name="CreateByUserID" />
-            <PropertyRef Name="CreateDate" />
-            <PropertyRef Name="ReferringUserId" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CaseId" Type="int" Nullable="false" />
-          <Property Name="ReferringCompanyId" Type="int" Nullable="false" />
-          <Property Name="ReferringLocationId" Type="int" Nullable="false" />
-          <Property Name="ReferredToCompanyId" Type="int" />
-          <Property Name="ReferredToLocationId" Type="int" />
-          <Property Name="ReferredToDoctorId" Type="int" />
-          <Property Name="ReferredToRoomId" Type="int" />
-          <Property Name="Note" Type="nvarchar" MaxLength="250" />
-          <Property Name="ReferredByEmail" Type="nvarchar" MaxLength="50" />
-          <Property Name="ReferredToEmail" Type="nvarchar" MaxLength="50" />
-          <Property Name="ReferralAccepted" Type="bit" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="ReferringUserId" Type="int" Nullable="false" />
-          <Property Name="ReferredToSpecialtyId" Type="int" />
-          <Property Name="ReferredToRoomTestId" Type="int" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="CellPhone" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Referral2">
           <Key>
@@ -2813,6 +2801,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attorney" EntityType="Self.Attorney" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuditTableMapping" EntityType="Self.AuditTableMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BlobStorage" EntityType="Self.BlobStorage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BlobStorageType" EntityType="Self.BlobStorageType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalendarEvent" EntityType="Self.CalendarEvent" Schema="dbo" store:Type="Tables" />
@@ -2843,6 +2832,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="InvitationType" EntityType="Self.InvitationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MailTemplates" EntityType="Self.MailTemplates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MidasDocuments" EntityType="Self.MidasDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
@@ -2892,33 +2882,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     [DocumentNodes].[ChildNode] AS [ChildNode], 
     [DocumentNodes].[NodeAbbr] AS [NodeAbbr]
     FROM [dbo].[DocumentNodes] AS [DocumentNodes]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Referral_OLD" EntityType="Self.Referral_OLD" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Referral_OLD].[Id] AS [Id], 
-    [Referral_OLD].[CaseId] AS [CaseId], 
-    [Referral_OLD].[ReferringCompanyId] AS [ReferringCompanyId], 
-    [Referral_OLD].[ReferringLocationId] AS [ReferringLocationId], 
-    [Referral_OLD].[ReferredToCompanyId] AS [ReferredToCompanyId], 
-    [Referral_OLD].[ReferredToLocationId] AS [ReferredToLocationId], 
-    [Referral_OLD].[ReferredToDoctorId] AS [ReferredToDoctorId], 
-    [Referral_OLD].[ReferredToRoomId] AS [ReferredToRoomId], 
-    [Referral_OLD].[Note] AS [Note], 
-    [Referral_OLD].[ReferredByEmail] AS [ReferredByEmail], 
-    [Referral_OLD].[ReferredToEmail] AS [ReferredToEmail], 
-    [Referral_OLD].[ReferralAccepted] AS [ReferralAccepted], 
-    [Referral_OLD].[IsDeleted] AS [IsDeleted], 
-    [Referral_OLD].[CreateByUserID] AS [CreateByUserID], 
-    [Referral_OLD].[CreateDate] AS [CreateDate], 
-    [Referral_OLD].[UpdateByUserID] AS [UpdateByUserID], 
-    [Referral_OLD].[UpdateDate] AS [UpdateDate], 
-    [Referral_OLD].[ReferringUserId] AS [ReferringUserId], 
-    [Referral_OLD].[ReferredToSpecialtyId] AS [ReferredToSpecialtyId], 
-    [Referral_OLD].[ReferredToRoomTestId] AS [ReferredToRoomTestId], 
-    [Referral_OLD].[FirstName] AS [FirstName], 
-    [Referral_OLD].[LastName] AS [LastName], 
-    [Referral_OLD].[CellPhone] AS [CellPhone]
-    FROM [dbo].[Referral_OLD] AS [Referral_OLD]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
@@ -3531,6 +3494,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="User" Relationship="Self.FK_Attorney_User_id" FromRole="Attorney" ToRole="User" />
         </EntityType>
+        <EntityType Name="AuditTableMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TableName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="AuditInsert" Type="Boolean" Nullable="false" />
+          <Property Name="AuditUpdate" Type="Boolean" Nullable="false" />
+          <Property Name="AuditDelete" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+        </EntityType>
         <EntityType Name="BlobStorage">
           <Key>
             <PropertyRef Name="Id" />
@@ -4054,6 +4032,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="MailTemplate">
+          <Key>
+            <PropertyRef Name="TemplateID" />
+          </Key>
+          <Property Name="TemplateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TemplateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailSubject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailBody" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MaritalStatu">
           <Key>
@@ -4869,40 +4856,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="ParentNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NodeAbbr" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Referral_OLD">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CaseId" />
-            <PropertyRef Name="ReferringCompanyId" />
-            <PropertyRef Name="ReferringLocationId" />
-            <PropertyRef Name="CreateByUserID" />
-            <PropertyRef Name="CreateDate" />
-            <PropertyRef Name="ReferringUserId" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CaseId" Type="Int32" Nullable="false" />
-          <Property Name="ReferringCompanyId" Type="Int32" Nullable="false" />
-          <Property Name="ReferringLocationId" Type="Int32" Nullable="false" />
-          <Property Name="ReferredToCompanyId" Type="Int32" />
-          <Property Name="ReferredToLocationId" Type="Int32" />
-          <Property Name="ReferredToDoctorId" Type="Int32" />
-          <Property Name="ReferredToRoomId" Type="Int32" />
-          <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ReferredByEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReferredToEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReferralAccepted" Type="Boolean" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="ReferringUserId" Type="Int32" Nullable="false" />
-          <Property Name="ReferredToSpecialtyId" Type="Int32" />
-          <Property Name="ReferredToRoomTestId" Type="Int32" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CellPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
@@ -6528,6 +6481,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="AdjusterMasters" EntityType="Self.AdjusterMaster" />
           <EntitySet Name="Attorneys" EntityType="Self.Attorney" />
+          <EntitySet Name="AuditTableMappings" EntityType="Self.AuditTableMapping" />
           <EntitySet Name="BlobStorages" EntityType="Self.BlobStorage" />
           <EntitySet Name="BlobStorageTypes" EntityType="Self.BlobStorageType" />
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvent" />
@@ -6558,6 +6512,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="InvitationTypes" EntityType="Self.InvitationType" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
+          <EntitySet Name="MailTemplates" EntityType="Self.MailTemplate" />
           <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatu" />
           <EntitySet Name="MidasDocuments" EntityType="Self.MidasDocument" />
           <EntitySet Name="Notifications" EntityType="Self.Notification" />
@@ -6601,7 +6556,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocument" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
-          <EntitySet Name="Referral_OLD" EntityType="Self.Referral_OLD" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
@@ -7203,6 +7157,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AuditTableMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AuditTableMapping">
+              <MappingFragment StoreEntitySet="AuditTableMapping">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="AuditInsert" ColumnName="AuditInsert" />
+                <ScalarProperty Name="AuditUpdate" ColumnName="AuditUpdate" />
+                <ScalarProperty Name="AuditDelete" ColumnName="AuditDelete" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BlobStorages">
             <EntityTypeMapping TypeName="MIDASGBXModel.BlobStorage">
               <MappingFragment StoreEntitySet="BlobStorage">
@@ -7648,6 +7618,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MailTemplates">
+            <EntityTypeMapping TypeName="MIDASGBXModel.MailTemplate">
+              <MappingFragment StoreEntitySet="MailTemplates">
+                <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="EmailSubject" ColumnName="EmailSubject" />
+                <ScalarProperty Name="EmailBody" ColumnName="EmailBody" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8358,35 +8338,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="ParentNode" ColumnName="ParentNode" />
                 <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
                 <ScalarProperty Name="NodeAbbr" ColumnName="NodeAbbr" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Referral_OLD">
-            <EntityTypeMapping TypeName="MIDASGBXModel.Referral_OLD">
-              <MappingFragment StoreEntitySet="Referral_OLD">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
-                <ScalarProperty Name="ReferringCompanyId" ColumnName="ReferringCompanyId" />
-                <ScalarProperty Name="ReferringLocationId" ColumnName="ReferringLocationId" />
-                <ScalarProperty Name="ReferredToCompanyId" ColumnName="ReferredToCompanyId" />
-                <ScalarProperty Name="ReferredToLocationId" ColumnName="ReferredToLocationId" />
-                <ScalarProperty Name="ReferredToDoctorId" ColumnName="ReferredToDoctorId" />
-                <ScalarProperty Name="ReferredToRoomId" ColumnName="ReferredToRoomId" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="ReferredByEmail" ColumnName="ReferredByEmail" />
-                <ScalarProperty Name="ReferredToEmail" ColumnName="ReferredToEmail" />
-                <ScalarProperty Name="ReferralAccepted" ColumnName="ReferralAccepted" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="ReferringUserId" ColumnName="ReferringUserId" />
-                <ScalarProperty Name="ReferredToSpecialtyId" ColumnName="ReferredToSpecialtyId" />
-                <ScalarProperty Name="ReferredToRoomTestId" ColumnName="ReferredToRoomTestId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="CellPhone" ColumnName="CellPhone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
