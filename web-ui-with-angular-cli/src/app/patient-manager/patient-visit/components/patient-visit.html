@@ -215,9 +215,9 @@
 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
-        <app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="1" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>
+        <!--<app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="1" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>-->
         
-        <!--<p-tabView>
+        <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
 
@@ -262,7 +262,7 @@
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
 
-                <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                <app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
@@ -302,7 +302,7 @@
                 <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
             </p-tabPanel>
 
-        </p-tabView>-->
+        </p-tabView>
     </div>
 
 </p-dialog>

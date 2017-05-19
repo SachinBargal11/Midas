@@ -107,8 +107,10 @@ export class AddConsentComponent implements OnInit {
             }
             // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
-            this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
+            // this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
             this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+            this.url = `${this._url}/documentmanager/uploadtoblob`;
+            // this.signedDocumentUploadUrl = `${this._url}/documentmanager/uploadtoblob`;
             this.signedDocumentPostRequestData = {
                 companyId: this.companyId,
                 caseId: this.caseId

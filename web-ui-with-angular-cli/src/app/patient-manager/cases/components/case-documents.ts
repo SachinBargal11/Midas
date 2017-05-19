@@ -54,7 +54,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
-            this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
+            // this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
+            this.url = `${this._url}/documentmanager/uploadtoblob`;
+            // documentmanager/uploadtoblob?inputjson={"ObjectType":"visit","DocumentType":"reval","CompanyId":"16",%20"ObjectId":"60"}
         });
          this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -87,6 +89,14 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', 'DuplicateFileName');
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();

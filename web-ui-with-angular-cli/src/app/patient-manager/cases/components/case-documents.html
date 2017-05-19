@@ -1,4 +1,4 @@
-<app-document-upload [url]="url" [currentId]="2" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+<app-document-upload [url]="url" [currentId]="2" [objectId]="caseId" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group" *ngIf="caseStatusId === 1">
     <h3 class="with-border">Uploaded Documents
