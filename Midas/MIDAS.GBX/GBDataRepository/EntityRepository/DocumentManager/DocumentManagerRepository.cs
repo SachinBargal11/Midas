@@ -70,23 +70,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 var documentnodeParameter = new SqlParameter("@document_node", uploadInfo.DocumentType);
                 var documentPath = _context.Database.SqlQuery<string>("midas_sp_get_document_path @document_node", documentnodeParameter).ToList();
 
-                switch (uploadInfo.ObjectType.ToUpper())
+                if (documentPath[0] != null)
                 {
-                    case EN.Constants.CaseType:
-                        path = documentPath[0].Replace("cmp/", "")
-                                            .Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                            .Replace("cs", "cs-" + uploadInfo.ObjectId);
-                        break;
-                    /*case EN.Constants.ConsentType:
-                        path = documentPath[0].Replace("cmp/", "")                              
-                                            .Replace("cs", "cs-" + uploadInfo.ObjectId);
-                        break;*/
-                    case EN.Constants.VisitType:
-                        path = documentPath[0].Replace("cmp/", "")
-                                            .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
-                                                                                                       .FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                            .Replace("cs", "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
-                        break;
+                    switch (uploadInfo.ObjectType.ToUpper())
+                    {
+                        case EN.Constants.CaseType:
+                            path = documentPath[0].Replace("cmp/", "")
+                                                .Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                            break;
+                        /*case EN.Constants.ConsentType:
+                            path = documentPath[0].Replace("cmp/", "")                              
+                                                .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                            break;*/
+                        case EN.Constants.VisitType:
+                            path = documentPath[0].Replace("cmp/", "")
+                                                .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                           .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                .Replace("cs", "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                            break;
+                    }
                 }
                 return path;
             }
