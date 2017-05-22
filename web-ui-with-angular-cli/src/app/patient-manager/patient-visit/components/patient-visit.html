@@ -137,7 +137,7 @@
                 <div *ngIf="selectedOption == 2" class="col-md-4">
                     <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true" label="Room out of service"></p-checkbox>
                 </div>
-            </div> 
+            </div>
             <br>
             <div *ngIf="isGoingOutOffice">
                 <leave-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="leaveEventEditorValid = $event"></leave-event-editor>
@@ -167,12 +167,13 @@
             </div>
             <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
                 <div *ngIf="selectedOption == 1" class="col-md-4">
-                    <p-checkbox [disabled]="selectedSpeciality.mandatoryProcCode" formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Add Procedure codes"></p-checkbox>
+                    <p-checkbox [disabled]="selectedSpeciality.mandatoryProcCode" formControlName="isProcedureCode" [(ngModel)]="isProcedureCode"
+                        binary="true" label="Add Procedure codes"></p-checkbox>
                 </div>
                 <div *ngIf="selectedOption == 2" class="col-md-4">
                     <p-checkbox [disabled]="selectedTestId" formControlName="isProcedureCode" [(ngModel)]="isProcedureCode" binary="true" label="Add Procedure codes"></p-checkbox>
                 </div>
-            </div> 
+            </div>
             <br>
 
             <div *ngIf="!isGoingOutOffice && isProcedureCode">
@@ -180,43 +181,43 @@
                     <div class="col-lg-4 input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
-                    </div>
-                </div>
-                <p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
-                    <header>Procedures</header>
-                    <p-headerColumnGroup>
-                    <p-row>
-                    <p-column [style]="{'width':'38px'}"></p-column>
-                    <p-column header="Procedure Code"></p-column>
-                    <p-column header="Description"></p-column>
-                    </p-row>
-                    </p-headerColumnGroup>
-                    <p-column selectionMode="multiple"></p-column>
-                    <p-column field="procedureCodeText"></p-column>
-                    <p-column field="procedureCodeDesc"></p-column>
-                </p-dataTable>
-            </div>
-        </div>
-        <br>
-        <p-footer>
-            <div class="row">
-                <div class="col-md-4">
-                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
+</div>
+</div>
+<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+    <header>Procedures</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column [style]="{'width':'38px'}"></p-column>
+            <p-column header="Procedure Code"></p-column>
+            <p-column header="Description"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="procedureCodeText"></p-column>
+    <p-column field="procedureCodeDesc"></p-column>
+</p-dataTable>
+</div>
+</div>
+<br>
+<p-footer>
+    <div class="row">
+        <div class="col-md-4">
+            <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
                         Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-                    <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
-                </div>
-            </div>
-        </p-footer>
-    </form>
+            <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
+        </div>
+    </div>
+</p-footer>
+</form>
 </p-dialog>
 
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+<p-dialog [minWidth]="600" [width]="1200"  [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <!--<app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="1" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>-->
-        
+
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
@@ -262,7 +263,8 @@
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
 
-                <app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                <app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)"
+                    (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
@@ -276,33 +278,33 @@
                     <div class="col-lg-4 input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
-                    </div>
-                </div>
-                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-                    [globalFilter]="gb" [responsive]="true">
-                    <header> List</header>
-                    <p-column selectionMode="multiple"></p-column>
-                    <p-column field="document.documentName" header="Document Name" [sortable]="true"></p-column>
-                    <p-column field="createDate" header="Created Date" [sortable]="true">
-                        <ng-template let-document="rowData.document" pTemplate="body">
-                            {{ document.createDate | dateTimeFormat }}
-                        </ng-template>
-                    </p-column>
+</div>
+</div>
+<p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true">
+    <header> List</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="document.documentName" header="Document Name" [sortable]="true"></p-column>
+    <p-column field="createDate" header="Created Date" [sortable]="true">
+        <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.createDate | dateTimeFormat }}
+        </ng-template>
+    </p-column>
 
-                </p-dataTable>
-            </p-tabPanel>
+</p-dataTable>
+</p-tabPanel>
 
-            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
-                <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
-            </p-tabPanel>
-            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
-                <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
-            </p-tabPanel>
-            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
-                <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
-            </p-tabPanel>
+<p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
+    <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
+</p-tabPanel>
+<p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
+    <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
+</p-tabPanel>
+<p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+    <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
+</p-tabPanel>
 
-        </p-tabView>
-    </div>
+</p-tabView>
+</div>
 
 </p-dialog>

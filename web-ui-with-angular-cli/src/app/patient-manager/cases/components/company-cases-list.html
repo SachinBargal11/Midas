@@ -25,12 +25,12 @@
     <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
         <ng-template let-currentUser="rowData" pTemplate="body">
             <div *ngIf="currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
-            <a title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
+                <a title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
             <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}--></a>
-             </div>
-             <div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
-             <a (click)="showDialog(currentUser.id)">{{currentUser.patient.user.displayName}}</a>
-             </div>    
+            </div>
+            <div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
+                <a (click)="showDialog(currentUser.id)">{{currentUser.patient.user.displayName}}</a>
+            </div>
         </ng-template>
     </p-column>
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
@@ -46,7 +46,9 @@
             </a>
         </ng-template>
     </p-column>
-    <p-column header="Referral Status">
+    <p-column header="Case Source">
+    </p-column>
+    <!--<p-column header="Referral Status">
         <ng-template let-case="rowData" pTemplate="body">
             <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals">
                 <u>Inbound</u>
@@ -58,11 +60,10 @@
             <a *ngIf="!case.getInboundReferral(sessionStore.session.currentCompany.id)">
                 <u></u>
             </a>
-            <!--<a routerLink="/patient-manager/referrals/inbound-referrals">
-                <u>{{referralAvailable(case)}}</u>
-            </a>-->
+          
         </ng-template>
-    </p-column>
+    </p-column>-->
+
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
@@ -81,9 +82,9 @@
 
 <p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-  <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
-  <div *ngIf="selectedCaseId">
-  <add-consent [inputCaseId]="selectedCaseId"></add-consent>
-  </div>
+    <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
+    <div *ngIf="selectedCaseId">
+        <add-consent [inputCaseId]="selectedCaseId"></add-consent>
+    </div>
 </p-dialog>
 <router-outlet></router-outlet>

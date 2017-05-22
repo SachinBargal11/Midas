@@ -1,6 +1,6 @@
 <p-confirmDialog width="425"></p-confirmDialog>
-<div class="input-group"  *ngIf="caseStatusId === 1">
-    <h3 class="with-border">{{patientName}} visits 
+<div class="input-group" *ngIf="caseStatusId === 1">
+    <h3 class="with-border">{{patientName}} visits
         <a class="pull-right btn btn-danger btn-sm" (click)="deletePatientVisits()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Visits</span>
             <loader [visible]="isDeleteProgress"></loader>
@@ -11,7 +11,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
-    </div>
+</div>
 </div>
 
 <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
@@ -56,8 +56,7 @@
 </p-dataTable><br>
 <button type="submit" class="btn btn-success sign-up btn-sm" (click)="bill()">Create Bill</button>
 
-
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>
