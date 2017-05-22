@@ -33,7 +33,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             CSDetails.Company.Name = "bond018";
             CSDetails.Company.ID = 101;
             CSDetails.Company.Status = GBEnums.AccountStatus.Active;
-            CSDetails.Company.CompanyType = GBEnums.CompanyType.Testing;
+            CSDetails.Company.CompanyType = GBEnums.CompanyType.Attorney;
             CSDetails.Company.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
             CSDetails.Company.TaxID = "4488116600";
             CSDetails.Company.IsDeleted = false;

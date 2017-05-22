@@ -50,7 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         }
         #endregion
 
-        public override object Get(int caseId, string docuemntNode)
+        /*public override object Get(int caseId, string docuemntNode)
         {
             var documentnodeParameter = new SqlParameter("@document_node", docuemntNode);
             var documentPath = _context.Database.SqlQuery<string>("midas_sp_get_document_path @document_node", documentnodeParameter).ToList();
@@ -58,7 +58,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             return documentPath[0].Replace("cmp/", "")
                                             .Replace("cstype", _context.Cases.Where(csid => csid.Id == caseId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
                                             .Replace("cs", "cs-" + caseId);
+        }*/
+
+        public override object Get(int companyId)
+        {            
+            BlobStorage serviceProvider = _context.BlobStorages.Where(blob =>
+                                                   blob.BlobStorageTypeId == (_context.Companies.Where(comp => comp.id == companyId))
+                                                   .FirstOrDefault().BlobStorageTypeId)
+                                                   .FirstOrDefault<BlobStorage>();
+            /*if (serviceProvider != null)
+            {
+                switch (serviceProvider.BlobStorageType.BlobStorageType1.ToString().ToUpper())
+                {
+                    case "AZURE":
+                        serviceprovider = new AzureBlobService(_context);
+                        break;
+                    case "AMAZONS3":
+                        serviceprovider = new AmazonS3BlobService(_context);
+                        break;
+                    default: throw new Exception("No BLOB storage provider found for this company.");
+                }
+            }*/
+            return serviceProvider.BlobStorageType.BlobStorageType1.ToString().ToUpper();
         }
+
+        #region Get
+        public override object Get(int id, string type)
+        {
+            List<BO.Document> docInfo = new List<BO.Document>();
+            _context.MidasDocuments.Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList().ForEach(x => docInfo.Add(new BO.Document()
+            {
+                id = id,
+                DocumentId = x.Id,
+                DocumentName = x.DocumentName,
+                DocumentPath = x.DocumentPath + "/" + x.DocumentName
+            }));
+
+            return (object)docInfo;
+        }
+        #endregion
 
         public override object Get<T>(T entity)
         {
@@ -150,7 +188,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 
             return docInfo;
         }
-
 
         public void Dispose() { GC.SuppressFinalize(this); }
     }

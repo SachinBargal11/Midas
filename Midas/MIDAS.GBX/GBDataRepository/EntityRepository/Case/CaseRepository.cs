@@ -912,7 +912,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = _context.Patient2.Include("User").Include("Cases")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
-
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
