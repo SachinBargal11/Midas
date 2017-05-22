@@ -54,6 +54,8 @@ import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
 import { DocumentTypeStore } from './stores/document-type-store';
 import { DocumentTypeService } from './services/document-type-service';
 
+import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
+
 // AccountSettingShellComponent
 @NgModule({
     imports: [
@@ -83,7 +85,8 @@ import { DocumentTypeService } from './services/document-type-service';
         EditMedicalProviderComponent,
         AccountSettingShellComponent,
         ProcedureCodeComponent,
-        DocumentTypeComponent
+        DocumentTypeComponent,
+        AccountGeneralSettingComponent
 
     ],
     providers: [
@@ -101,9 +104,9 @@ import { DocumentTypeService } from './services/document-type-service';
         InsuranceMasterStore,
         // MedicalProviderMasterService,
         // MedicalProviderMasterStore
-        RoomsStore, 
-        RoomsService, 
-        ProcedureCodeMasterService, 
+        RoomsStore,
+        RoomsService,
+        ProcedureCodeMasterService,
         ProcedureCodeMasterStore,
         DocumentTypeStore,
         DocumentTypeService
