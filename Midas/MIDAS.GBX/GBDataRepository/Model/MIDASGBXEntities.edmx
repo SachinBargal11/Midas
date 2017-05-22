@@ -53,6 +53,19 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="AttorneyProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttorneyProviderId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="AuditTableMapping">
           <Key>
             <PropertyRef Name="Id" />
@@ -1227,6 +1240,30 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="Attorney">
               <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttorneyProvider_Company_AttorneyProviderId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AttorneyProvider" Type="Self.AttorneyProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AttorneyProvider">
+              <PropertyRef Name="AttorneyProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttorneyProvider_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AttorneyProvider" Type="Self.AttorneyProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AttorneyProvider">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2803,6 +2840,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attorney" EntityType="Self.Attorney" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttorneyProvider" EntityType="Self.AttorneyProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AuditTableMapping" EntityType="Self.AuditTableMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BlobStorage" EntityType="Self.BlobStorage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BlobStorageType" EntityType="Self.BlobStorageType" Schema="dbo" store:Type="Tables" />
@@ -2904,6 +2942,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Attorney_User_id" Association="Self.FK_Attorney_User_id">
             <End Role="User" EntitySet="User" />
             <End Role="Attorney" EntitySet="Attorney" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttorneyProvider_Company_AttorneyProviderId" Association="Self.FK_AttorneyProvider_Company_AttorneyProviderId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="AttorneyProvider" EntitySet="AttorneyProvider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttorneyProvider_Company_CompanyId" Association="Self.FK_AttorneyProvider_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="AttorneyProvider" EntitySet="AttorneyProvider" />
           </AssociationSet>
           <AssociationSet Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId" Association="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
             <End Role="BlobStorageType" EntitySet="BlobStorageType" />
@@ -3496,6 +3542,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="User" Relationship="Self.FK_Attorney_User_id" FromRole="Attorney" ToRole="User" />
         </EntityType>
+        <EntityType Name="AttorneyProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttorneyProviderId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_AttorneyProvider_Company_AttorneyProviderId" FromRole="AttorneyProvider" ToRole="Company" />
+          <NavigationProperty Name="Company1" Relationship="Self.FK_AttorneyProvider_Company_CompanyId" FromRole="AttorneyProvider" ToRole="Company" />
+        </EntityType>
         <EntityType Name="AuditTableMapping">
           <Key>
             <PropertyRef Name="Id" />
@@ -3698,6 +3759,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="RegistrationComplete" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
+          <NavigationProperty Name="AttorneyProviders" Relationship="Self.FK_AttorneyProvider_Company_AttorneyProviderId" FromRole="Company" ToRole="AttorneyProvider" />
+          <NavigationProperty Name="AttorneyProviders1" Relationship="Self.FK_AttorneyProvider_Company_CompanyId" FromRole="Company" ToRole="AttorneyProvider" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="Company" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
@@ -5050,6 +5113,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Attorney">
               <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttorneyProvider_Company_AttorneyProviderId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AttorneyProvider" Type="Self.AttorneyProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AttorneyProvider">
+              <PropertyRef Name="AttorneyProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttorneyProvider_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AttorneyProvider" Type="Self.AttorneyProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AttorneyProvider">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6485,6 +6572,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="AdjusterMasters" EntityType="Self.AdjusterMaster" />
           <EntitySet Name="Attorneys" EntityType="Self.Attorney" />
+          <EntitySet Name="AttorneyProviders" EntityType="Self.AttorneyProvider" />
           <EntitySet Name="AuditTableMappings" EntityType="Self.AuditTableMapping" />
           <EntitySet Name="BlobStorages" EntityType="Self.BlobStorage" />
           <EntitySet Name="BlobStorageTypes" EntityType="Self.BlobStorageType" />
@@ -6623,6 +6711,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Attorney_User_id" Association="Self.FK_Attorney_User_id">
             <End Role="User" EntitySet="Users" />
             <End Role="Attorney" EntitySet="Attorneys" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttorneyProvider_Company_AttorneyProviderId" Association="Self.FK_AttorneyProvider_Company_AttorneyProviderId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="AttorneyProvider" EntitySet="AttorneyProviders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttorneyProvider_Company_CompanyId" Association="Self.FK_AttorneyProvider_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="AttorneyProvider" EntitySet="AttorneyProviders" />
           </AssociationSet>
           <AssociationSet Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId" Association="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
             <End Role="BlobStorageType" EntitySet="BlobStorageTypes" />
@@ -7153,6 +7249,20 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <EntityTypeMapping TypeName="MIDASGBXModel.Attorney">
               <MappingFragment StoreEntitySet="Attorney">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttorneyProviders">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AttorneyProvider">
+              <MappingFragment StoreEntitySet="AttorneyProvider">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AttorneyProviderId" ColumnName="AttorneyProviderId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

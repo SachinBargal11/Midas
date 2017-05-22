@@ -1707,5 +1707,20 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage AssociateAttorneyProviderWithCompany(HttpRequestMessage request, int AttorneyProviderId, int CompanyId)
+        {
+            var objResult = dataAccessManager.AssociateAttorneyProviderWithCompany(AttorneyProviderId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+
     }
 }

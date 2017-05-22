@@ -166,6 +166,9 @@
     <Compile Include="Model\Attorney.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AttorneyProvider.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\AuditTableMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

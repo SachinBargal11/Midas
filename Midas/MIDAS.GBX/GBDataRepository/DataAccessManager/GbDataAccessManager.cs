@@ -2883,5 +2883,28 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociateAttorneyProviderWithCompany(AttorneyProviderId, CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        
+
     }
 }

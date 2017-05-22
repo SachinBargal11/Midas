@@ -89,6 +89,61 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Entity Conversion
+        public  T AttorneyProviderConvert<T, U>(U entity)
+        {
+
+            AttorneyProvider attorneyProvider = entity as AttorneyProvider;
+            if (attorneyProvider == null)
+                return default(T);
+
+            BO.AttorneyProvider boAttorneyProvider = new BO.AttorneyProvider();
+
+            boAttorneyProvider.ID = attorneyProvider.Id;
+            boAttorneyProvider.AttorneyProviderId = attorneyProvider.AttorneyProviderId;
+            boAttorneyProvider.CompanyId = attorneyProvider.CompanyId;
+            boAttorneyProvider.IsDeleted = attorneyProvider.IsDeleted;
+            boAttorneyProvider.CreateByUserID = attorneyProvider.CreateByUserID;
+            boAttorneyProvider.UpdateByUserID = attorneyProvider.UpdateByUserID;
+
+            if (attorneyProvider.Company != null)
+            {
+                BO.Company Company = new BO.Company();
+
+                if (attorneyProvider.Company.IsDeleted.HasValue == false
+                    || (attorneyProvider.Company.IsDeleted.HasValue == true && attorneyProvider.Company.IsDeleted.Value == false))
+                {
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        Company = sr.Convert<BO.Company, Company>(attorneyProvider.Company);
+                        Company.Locations = null;
+                    }
+                }
+
+                boAttorneyProvider.Company = Company;
+            }
+
+            if (attorneyProvider.Company1 != null)
+            {
+                BO.Company Company = new BO.Company();
+
+                if (attorneyProvider.Company1.IsDeleted.HasValue == false
+                    || (attorneyProvider.Company1.IsDeleted.HasValue == true && attorneyProvider.Company1.IsDeleted.Value == false))
+                {
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        Company = sr.Convert<BO.Company, Company>(attorneyProvider.Company1);
+                        Company.Locations = null;
+                    }
+                }
+
+                boAttorneyProvider.AtorneyProvider = Company;
+            }
+
+            return (T)(object)boAttorneyProvider;
+        }
+        #endregion
+
         #region Get All attornies
         public override object Get()
         {
@@ -178,6 +233,60 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
             return lstattornies;
+        }
+        #endregion
+
+        #region Associate Attorney Provider With Company
+        public override object AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
+        {
+            Company CompanyDB = _context.Companies.Where(p => p.id == CompanyId
+                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
+
+            if (CompanyDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            Company AttorneyProviderCompanyDB = _context.Companies.Where(p => p.id == AttorneyProviderId
+                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
+            if (AttorneyProviderCompanyDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "AttorneyProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            var AttorneyProviderDB = _context.AttorneyProviders.Where(p => p.AttorneyProviderId == AttorneyProviderId && p.CompanyId == CompanyId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                               .FirstOrDefault();
+
+            bool AttorneyProvider = false;
+            if (AttorneyProviderDB == null)
+            {
+                AttorneyProviderDB = new AttorneyProvider();
+                AttorneyProvider = true;
+            }
+
+            AttorneyProviderDB.AttorneyProviderId = AttorneyProviderId;
+            AttorneyProviderDB.CompanyId = CompanyId;
+            AttorneyProviderDB.IsDeleted = false;
+
+            if (AttorneyProvider == true)
+            {
+                _context.AttorneyProviders.Add(AttorneyProviderDB);
+            }
+
+            _context.SaveChanges();
+
+            BO.AttorneyProvider acc_ = AttorneyProviderConvert<BO.AttorneyProvider, AttorneyProvider>(AttorneyProviderDB);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
         }
         #endregion
 

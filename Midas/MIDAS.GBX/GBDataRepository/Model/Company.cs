@@ -18,6 +18,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Company()
         {
             this.AdjusterMasters = new HashSet<AdjusterMaster>();
+            this.AttorneyProviders = new HashSet<AttorneyProvider>();
+            this.AttorneyProviders1 = new HashSet<AttorneyProvider>();
             this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
@@ -58,6 +60,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdjusterMaster> AdjusterMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AttorneyProvider> AttorneyProviders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AttorneyProvider> AttorneyProviders1 { get; set; }
         public virtual BlobStorageType BlobStorageType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
