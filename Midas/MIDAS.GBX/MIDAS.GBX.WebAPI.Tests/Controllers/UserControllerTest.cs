@@ -78,7 +78,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             adduser.company.Name = "bond002";
             adduser.company.ID = 101;
             adduser.company.Status = GBEnums.AccountStatus.Active;
-            adduser.company.CompanyType = GBEnums.CompanyType.Testing;
+            adduser.company.CompanyType = GBEnums.CompanyType.Attorney;
             adduser.company.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
             adduser.company.TaxID = "7715008900";
             adduser.company.IsDeleted = false;

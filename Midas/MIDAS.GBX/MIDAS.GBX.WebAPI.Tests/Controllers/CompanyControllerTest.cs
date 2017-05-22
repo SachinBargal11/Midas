@@ -36,7 +36,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.Name = "bond019";
            companyBO.ID = 101;
            companyBO.Status = GBEnums.AccountStatus.Active;
-           companyBO.CompanyType = GBEnums.CompanyType.Testing;
+           companyBO.CompanyType = GBEnums.CompanyType.Attorney;
            companyBO.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            companyBO.TaxID = "4488116500";
            companyBO.IsDeleted = false;
@@ -82,7 +82,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            
            roleBO.Company = new Company();
            roleBO.Company.Status = GBEnums.AccountStatus.Limited;
-           roleBO.Company.CompanyType = GBEnums.CompanyType.Testing;
+           roleBO.Company.CompanyType = GBEnums.CompanyType.Attorney;
            roleBO.Company.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            roleBO.Company.IsDeleted = false;
 
@@ -118,7 +118,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.Name = "abd44";
            companyBO.ID = 101;
            companyBO.Status = GBEnums.AccountStatus.Active;
-           companyBO.CompanyType = GBEnums.CompanyType.Testing;
+           companyBO.CompanyType = GBEnums.CompanyType.Attorney;
            companyBO.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            companyBO.TaxID = "1199998977";
            companyBO.IsDeleted = false;
@@ -154,7 +154,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.Name = "ab3";
            companyBO.ID = 101;
            companyBO.Status = GBEnums.AccountStatus.Active;
-           companyBO.CompanyType = GBEnums.CompanyType.Testing;
+           companyBO.CompanyType = GBEnums.CompanyType.Attorney;
            companyBO.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            companyBO.TaxID = "8875998955";
            companyBO.IsDeleted = false;
@@ -186,7 +186,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.Name = "abo8";
            companyBO.ID = 101;
            companyBO.Status = GBEnums.AccountStatus.Active;
-           companyBO.CompanyType = GBEnums.CompanyType.Testing;
+           companyBO.CompanyType = GBEnums.CompanyType.Attorney;
            companyBO.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            companyBO.TaxID = "9115668900";
            companyBO.IsDeleted = false;
@@ -217,7 +217,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.Name = "abu11";
            companyBO.ID = 101;
            companyBO.Status = GBEnums.AccountStatus.Active;
-           companyBO.CompanyType = GBEnums.CompanyType.Testing;
+           companyBO.CompanyType = GBEnums.CompanyType.Attorney;
            companyBO.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            companyBO.TaxID = "0217722900";
            companyBO.IsDeleted = false;
@@ -248,7 +248,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.Name = "abk7";
            companyBO.ID = 101;
            companyBO.Status = GBEnums.AccountStatus.Active;
-           companyBO.CompanyType = GBEnums.CompanyType.Testing;
+           companyBO.CompanyType = GBEnums.CompanyType.Attorney;
            companyBO.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            companyBO.TaxID = "5545998900";
            companyBO.IsDeleted = false;
@@ -281,7 +281,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            invitation.Company.Name = "age3";
            invitation.Company.ID = 101;
            invitation.Company.Status = GBEnums.AccountStatus.Active;
-           invitation.Company.CompanyType = GBEnums.CompanyType.Testing;
+           invitation.Company.CompanyType = GBEnums.CompanyType.Attorney;
            invitation.Company.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
            invitation.Company.TaxID = "9178338900";
            invitation.Company.IsDeleted = false;
