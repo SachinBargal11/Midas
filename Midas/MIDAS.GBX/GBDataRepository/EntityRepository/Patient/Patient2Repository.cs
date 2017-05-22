@@ -711,6 +711,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         {
                             UserCompanyDB = new UserCompany();
                             add_UserCompany = true;
+                            UserCompanyDB.IsAccepted = true;
                         }
                         
                         UserCompanyDB.CompanyID = userCompany.Company.ID;

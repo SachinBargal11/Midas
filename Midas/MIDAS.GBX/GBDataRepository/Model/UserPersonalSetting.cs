@@ -25,6 +25,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int SlotDuration { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual User User { get; set; }

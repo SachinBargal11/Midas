@@ -68,16 +68,20 @@ export class CaseBasicComponent implements OnInit {
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
-            let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
+            let fetchAttorneys = this._attorneyMasterStore.getAll();
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
             Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
                 (results) => {
+                    let matchingAttorneys: Attorney[] = _.filter(results[3], (currentAttorney: Attorney) => {
+                        return currentAttorney.user != null;
+                    });
                     this.patient = results[0];
                     this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
                     this.locations = results[1];
                     this.employer = results[2];
-                    this.attorneys = results[3];
+                    this.attorneys = matchingAttorneys;
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
                 },

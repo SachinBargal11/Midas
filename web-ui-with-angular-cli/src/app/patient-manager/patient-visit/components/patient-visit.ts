@@ -736,7 +736,8 @@ export class PatientVisitComponent implements OnInit {
         });
         this.visitInfo = this.selectedVisit.visitDisplayString;
         if (clickedEventInstance.isInPast) {
-            this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+            // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this.getDocuments();
             this.visitDialogVisible = true;
         } else {

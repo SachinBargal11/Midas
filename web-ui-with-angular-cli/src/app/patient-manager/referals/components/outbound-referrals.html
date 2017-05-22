@@ -37,11 +37,16 @@
         </p-column>
         <p-column field="toCompanyName"></p-column>
         <p-column field="displayToDoctorName"></p-column>
-        <p-column field="toLocationName"></p-column>
+        <p-column field="displayLocationName"></p-column>
         <p-column>
             <ng-template let-referralProcedure="rowData " pTemplate="body">
+                <div *ngIf="referralProcedure.referralProcedureCode.length != 0">
                 <div *ngFor="let currentReferralProc of referralProcedure.referralProcedureCode ">
                     {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}
+                </div>
+                </div>
+                <div *ngIf="referralProcedure.referralProcedureCode.length == 0 ">
+                  Not Specified
                 </div>
                 <!--<span *ngFor="#let currentReferralProc of referralProcedure.referralProcedureCode, #i=index">
              {{currentReferralProc.procedureCode.procedureCodeText}} - {{currentReferralProc.procedureCode.procedureCodeDesc}}{{i === referralProcedure.referralProcedureCode.length - 1 ? '' : ', '}}

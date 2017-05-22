@@ -21,10 +21,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // GET: api/getAttornyById/
         [HttpGet]
-        [Route("getAll/")]
+        [Route("getAll")]
         [AllowAnonymous]
         public HttpResponseMessage GetAllAttornies()
-        { return requestHandler.GetObjects(Request); }
+        {
+            return requestHandler.GetObjects(Request);
+        }
 
         // GET: api/getAttornyById/
         [HttpGet]

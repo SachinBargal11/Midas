@@ -14,9 +14,9 @@
             <input type="radio" value="3" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Electronic Signature Form
         </label>
     </div>
-    <div class="form-check  form-check-inline">
+    <div class="form-check  form-check-inline" *ngIf="!isConsentDocumentOn">
         <select class="select2-arrow form-control" (change)="selectDocument($event)">
-        <option value="">- Select -</option>
+        <option value="">-Select document type-</option>
         <option *ngFor="let currentDocumentType of documentTypes" value="{{currentDocumentType.documentType}}">{{currentDocumentType.documentType}}</option>
         </select>  
     </div>
@@ -66,7 +66,7 @@
         Upload Documents for Case
     </header>
     <div class="card-block">
-        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onError)="onFilesUploadError($event)" (onUpload)="onFilesUploadComplete($event)"
+        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onBeforeSend)="onBeforeSendEvent($event)" (onError)="onFilesUploadError($event)" (onUpload)="onFilesUploadComplete($event)"
             maxFileSize="1000000">
             <ng-template pTemplate type="content">
                 <!--<ul *ngIf="uploadedFiles.length">

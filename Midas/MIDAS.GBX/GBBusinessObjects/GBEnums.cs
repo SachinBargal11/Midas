@@ -47,8 +47,12 @@ namespace MIDAS.GBX.BusinessObjects
         #region Company Type 
         public enum CompanyType
         {
-            Billing = 1,
-            Testing = 2
+            MedicalProvider = 1,
+            Attorney = 2,
+            Billing = 3,
+            Funding = 4,
+            Collection = 5,
+            Anicliary = 6
         }
         #endregion
 

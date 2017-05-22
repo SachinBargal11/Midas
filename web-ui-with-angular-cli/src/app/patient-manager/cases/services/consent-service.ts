@@ -182,9 +182,10 @@ export class ConsentService {
 
     downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
         let thefile = {};
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/fileupload/download/' + CaseId + '/' + documentId)
+                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId)
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -193,7 +194,7 @@ export class ConsentService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+                        window.location.assign(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
                         // return res.arrayBuffer();
                     }
                 })

@@ -49,6 +49,8 @@ export class DocumentUploadComponent implements OnInit {
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
   @Input() currentId: number;
+  @Input() objectId: number;
+  @Input() isConsentDocumentOn: boolean = false;
 
 
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
@@ -136,6 +138,20 @@ export class DocumentUploadComponent implements OnInit {
 
   private _updateScannerContainerId() {
     this.scannerContainerId = `scanner_${moment().valueOf()}`;
+  }
+
+  onBeforeSendEvent(event) {
+    let param: string;
+    if (this.currentId == 2) {
+      if(this.isConsentDocumentOn) {
+      param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"'+ this.objectId +'"}';
+      } else {
+      param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"'+ this.objectId +'"}';
+      }
+    } else if(this.currentId == 3) {
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"'+ this.objectId +'"}';
+    }
+    event.xhr.setRequestHeader("inputjson", param);
   }
 
   onFilesUploadComplete(event) {

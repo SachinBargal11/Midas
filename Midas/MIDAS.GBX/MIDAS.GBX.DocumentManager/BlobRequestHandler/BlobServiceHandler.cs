@@ -23,12 +23,12 @@ namespace MIDAS.GBX.DocumentManager
             _context = dbContextProvider.GetGbDBContext();
         }
 
-        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId)
+        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId, string servicepProvider)
         {
             string objResult = "";
             try
-            {                
-                serviceProvider = BlobStorageFactory.GetBlobServiceProviders(companyId, _context);
+            {
+                serviceProvider = BlobStorageFactory.GetBlobServiceProviders(servicepProvider, _context);
                 if (serviceProvider == null)
                     return request.CreateResponse(HttpStatusCode.NotFound, new BusinessObjects.ErrorObject { ErrorMessage = "No BLOB storage provider found.", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
@@ -41,19 +41,19 @@ namespace MIDAS.GBX.DocumentManager
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, ex.Message); }
         }
 
-        public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid)
+        public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid, string servicepProvider)
         {
             var objResult = new Object();
-            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(companyid, _context);
+            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider, _context);
             serviceProvider.Download(companyid, documentid);
             try { return request.CreateResponse(HttpStatusCode.Created, objResult); }
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }
         }
 
-        public HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles, string blobPath)
+        public HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles, string blobPath, string servicepProvider)
         {
             var objResult = new Object();
-            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(companyid, _context);
+            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider, _context);
             objResult = serviceProvider.Merge(companyid, pdfFiles, blobPath);
             if (objResult != null)
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

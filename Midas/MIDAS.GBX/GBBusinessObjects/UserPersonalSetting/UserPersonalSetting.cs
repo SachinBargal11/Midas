@@ -26,6 +26,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isCalendarPublic")]
         public bool IsCalendarPublic { get; set; }
 
+        [JsonProperty("slotDuration")]
+        public int SlotDuration { get; set; }
+
         [JsonProperty("user")]
         public User User { get; set; }
     }

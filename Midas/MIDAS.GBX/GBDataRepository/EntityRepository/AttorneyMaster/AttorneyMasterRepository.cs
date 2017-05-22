@@ -64,16 +64,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Company Conversion
+        public T CompanyConvert<T, U>(U entity)
+        {
+            Company company = entity as Company;
+            if (company == null)
+                return default(T);
+
+            BO.Company boCompany = new BO.Company();
+
+            boCompany.ID = company.id;
+            boCompany.Name = company.Name;
+            boCompany.TaxID = company.TaxID;
+            boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
+            boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+            boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+            boCompany.RegistrationComplete = company.RegistrationComplete;
+            boCompany.IsDeleted = company.IsDeleted;
+            boCompany.CreateByUserID = company.CreateByUserID;
+            boCompany.UpdateByUserID = company.UpdateByUserID;
+
+
+            return (T)(object)boCompany;
+        }
+        #endregion
+
         #region Get All attornies
         public override object Get()
         {
-            var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Include("User.UserCompanies").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
-            if (acc_ == null) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Include("User.UserCompanies").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
+            //if (acc_ == null) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
-            List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
-            acc_.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
+            var User = _context.Users.Where(p => p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.id);
 
-            return lstattornies;
+            var UserCompany = _context.UserCompanies.Where(p => User.Contains(p.UserID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.CompanyID);
+
+            var company = _context.Companies.Where(p => UserCompany.Contains(p.id) && p.CompanyType == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+
+            List<BO.Company> lstCompany = new List<BO.Company>();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Attorny.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                company.ForEach(item => lstCompany.Add(CompanyConvert<BO.Company, Company>(item)));
+            }
+
+            return lstCompany;
         }
         #endregion
     

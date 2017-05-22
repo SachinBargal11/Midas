@@ -41,6 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userPersonalSettingBO.IsPublic = userPersonalSetting.IsPublic;
             userPersonalSettingBO.IsSearchable = userPersonalSetting.IsSearchable;
             userPersonalSettingBO.IsCalendarPublic = userPersonalSetting.IsCalendarPublic;
+            userPersonalSettingBO.SlotDuration = userPersonalSetting.SlotDuration;
             userPersonalSettingBO.IsDeleted = userPersonalSetting.IsDeleted;
             userPersonalSettingBO.CreateByUserID = userPersonalSetting.CreateByUserID;
             userPersonalSettingBO.UpdateByUserID = userPersonalSetting.UpdateByUserID;
@@ -116,6 +117,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userPersonalSettingDB.IsPublic = userPersonalSettingBO.IsPublic;
                 userPersonalSettingDB.IsSearchable = userPersonalSettingBO.IsSearchable;
                 userPersonalSettingDB.IsCalendarPublic = userPersonalSettingBO.IsCalendarPublic;
+                userPersonalSettingDB.SlotDuration = userPersonalSettingBO.SlotDuration;
 
                 if (Add_userPersonalsetting == true)
                 {

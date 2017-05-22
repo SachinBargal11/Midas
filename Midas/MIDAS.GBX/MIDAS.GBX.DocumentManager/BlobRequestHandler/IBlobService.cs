@@ -12,11 +12,11 @@ namespace MIDAS.GBX.DocumentManager
 {
     public interface IBlobService
     {
-        HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId);
+        HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId, string servicepProvider);
 
-        HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid);
+        HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid, string servicepProvider);
 
-        HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles,string blobPath);
+        HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles,string blobPath, string servicepProvider);
 
         HttpResponseMessage CreateTemplate(HttpRequestMessage request, string templateBlobPath, IDictionary<string, string> templateKeywords);
     }

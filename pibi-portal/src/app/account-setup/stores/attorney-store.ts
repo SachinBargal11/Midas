@@ -7,12 +7,14 @@ import { AttorneyMasterService } from '../services/attorney-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../commons/stores/session-store';
+import { Account } from '../../account/models/account';
 
 @Injectable()
 export class AttorneyMasterStore {
 
     private _attorneyMaster: BehaviorSubject<List<Attorney>> = new BehaviorSubject(List([]));
     private _allAttorneyInMidas: BehaviorSubject<List<Attorney>> = new BehaviorSubject(List([]));
+    private _allProvidersInMidas: BehaviorSubject<List<Account>> = new BehaviorSubject(List([]));
 
     constructor(
         private _attorneyMasterService: AttorneyMasterService,
@@ -43,7 +45,7 @@ export class AttorneyMasterStore {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
-     getAllAttorney(): Observable<Attorney[]> {
+    getAllAttorney(): Observable<Attorney[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._attorneyMasterService.getAllAttorney(companyId).subscribe((allAttorney: Attorney[]) => {
@@ -56,10 +58,10 @@ export class AttorneyMasterStore {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
-     assignAttorney(id: number): Observable<Attorney> {
+    assignAttorney(id: number): Observable<Attorney> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.assignAttorney(id,companyId).subscribe((attorney: Attorney) => {
+            this._attorneyMasterService.assignAttorney(id, companyId).subscribe((attorney: Attorney) => {
                 // this._attorneyMaster.next(List(allattorney));
                 resolve(attorney);
             }, error => {
@@ -131,6 +133,19 @@ export class AttorneyMasterStore {
                 });
         });
         return <Observable<Attorney>>Observable.from(promise);
+    }
+
+
+    getAllProviders(): Observable<Account[]> {      
+        let promise = new Promise((resolve, reject) => {
+            this._attorneyMasterService.getAllProviders().subscribe((allProvider: Account[]) => {
+                this._allProvidersInMidas.next(List(allProvider));
+                resolve(allProvider);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Account[]>>Observable.fromPromise(promise);
     }
 
     resetStore() {

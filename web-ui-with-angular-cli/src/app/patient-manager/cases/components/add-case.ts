@@ -20,7 +20,7 @@ import { PatientsStore } from '../../patients/stores/patients-store';
 import { Patient } from '../../patients/models/patient';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
-
+import * as _ from 'underscore';
 @Component({
     selector: 'add-case',
     templateUrl: './add-case.html'
@@ -102,10 +102,14 @@ export class AddCaseComponent implements OnInit {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
 
-        this._attorneyMasterStore.getAttorneyMasters()
-            .subscribe(attorneys => this.attorneys = attorneys);
-
-
+        this._attorneyMasterStore.getAll()
+            // .subscribe(attorneys => this.attorneys = attorneys);
+            .subscribe((attorneys: Attorney[]) => {
+                let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
+                    return currentAttorney.user != null;
+                });
+                this.attorneys = matchingAttorneys;
+            });
         // this.loadPatients();
         this.loadPatientsWithoutCase();
     }

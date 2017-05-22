@@ -115,7 +115,7 @@ export class PatientsListComponent implements OnInit {
             accept: () => {
             this.selectedPatients.forEach(currentPatient => {
                 this.isDeleteProgress = true;
-                this._progressBarService.show();
+                // this._progressBarService.show();
                 let result;
                 result = this._patientsStore.deletePatient(currentPatient);
                 result.subscribe(
@@ -137,13 +137,13 @@ export class PatientsListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedPatients = [];
-                        this._progressBarService.hide();
+                        // this._progressBarService.hide();
                         this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        // this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
             });

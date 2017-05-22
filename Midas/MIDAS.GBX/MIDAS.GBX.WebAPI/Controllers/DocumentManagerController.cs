@@ -59,14 +59,18 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
                 List<HttpContent> streamContent = streamProvider.Contents.ToList();
 
+                HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, uploadObject.CompanyId);
+                if(serviceProvider == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
                 HttpResponseMessage resDocumentPath = requestHandler.GetGbObjects(Request, uploadObject);
-                if (!resDocumentPath.StatusCode.Equals(HttpStatusCode.Created))
+                if (!resDocumentPath.StatusCode.Equals(HttpStatusCode.Created) || ((ObjectContent)resDocumentPath.Content).Value.ToString().Equals(""))
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Path not found", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
                 foreach (HttpContent ctnt in streamContent)
                 {
                     string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
-                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId);
+                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {
@@ -90,7 +94,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("downloadfromblob/{companyid}/{documentid}")]
         public HttpResponseMessage DownlodFromBlob(int companyid, int documentid)
         {
-            return blobhandler.DownloadFromBlob(Request, companyid, documentid);
+            HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, uploadObject.CompanyId);
+            if (serviceProvider == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            return blobhandler.DownloadFromBlob(Request, companyid, documentid, ((ObjectContent)serviceProvider.Content).Value.ToString());
         }
 
         [HttpPost]
@@ -102,11 +110,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             string blobPath = ((ObjectContent)requestHandler1.GetObject(Request, data.CaseId, "mergepdfs").Content).Value.ToString();
 
+            HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, data.CompanyId);
+            if (serviceProvider == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
             if (res == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound, res);
             else
             {
-                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, data.CompanyId, ((ObjectContent)res.Content).Value, blobPath+"/" + data.MergedDocumentName);
+                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, data.CompanyId, ((ObjectContent)res.Content).Value, blobPath+"/" + data.MergedDocumentName, ((ObjectContent)serviceProvider.Content).Value.ToString());
                 if (res1.StatusCode.Equals(HttpStatusCode.Created) || res1.StatusCode.Equals(HttpStatusCode.OK))
                 {
                     uploadObject = new UploadInfo();
@@ -124,6 +136,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             var restest = (object)documentList;
             if (restest != null) return Request.CreateResponse(HttpStatusCode.Created, restest);
             else return Request.CreateResponse(HttpStatusCode.NotFound, restest);
+        }
+
+        [HttpGet]
+        [Route("get/{id}/{type}")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id, string type)
+        {
+            return requestHandler.GetObject(Request, id, type);
         }
     }
 }

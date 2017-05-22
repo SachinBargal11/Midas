@@ -603,15 +603,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region GetAllReadingDoctorsForCompany
-        public override object Get(int companyId, string type)
+        public override object Get(int companyId, string emptystring)
         {
             //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
+            var userstocompany = _context.UserCompanies.Where(x => x.CompanyID == companyId).ToList();
 
             var docspec = _context.DoctorSpecialities.Where(x => x.Specialty.SchedulingAvailable == false).ToList();
 
             var acc_ = _context.Doctors.Include("User")
                                        .Include("User.UserCompanyRoles")
-                                       .Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.DoctorSpecialities).ToList<Doctor>();
+                                       .Where(p => p.IsDeleted == false || p.IsDeleted == null 
+                                       //&& p.User.UserCompanies.Contains(companyId)
+                                       ).ToList<Doctor>();
+
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

@@ -87,7 +87,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             savelocation.location.Company.Name = "ab";
             savelocation.location.Company.ID = 101;
             savelocation.location.Company.Status = GBEnums.AccountStatus.Active;
-            savelocation.location.Company.CompanyType = GBEnums.CompanyType.Testing;
+            savelocation.location.Company.CompanyType = GBEnums.CompanyType.Attorney;
             savelocation.location.Company.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
             savelocation.location.Company.TaxID = "9885998900";
             savelocation.location.Company.IsDeleted = false;
@@ -110,7 +110,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             savelocation.company.Name = "ab";
             savelocation.company.ID = 101;
             savelocation.company.Status = GBEnums.AccountStatus.Active;
-            savelocation.company.CompanyType = GBEnums.CompanyType.Testing;
+            savelocation.company.CompanyType = GBEnums.CompanyType.Attorney;
             savelocation.company.SubsCriptionType = GBEnums.SubsCriptionType.Pro;
             savelocation.company.TaxID = "9885998900";
             savelocation.company.IsDeleted = false;

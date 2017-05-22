@@ -10,18 +10,18 @@ namespace MIDAS.GBX
 {
     public class BlobStorageFactory
     {
-        public static BlobServiceProvider GetBlobServiceProviders(int companyId, MIDASGBXEntities _context)
+        public static BlobServiceProvider GetBlobServiceProviders(string serviceProvider, MIDASGBXEntities _context)
         {            
             BlobServiceProvider serviceprovider = null;
 
-            BlobStorage serviceProvider = _context.BlobStorages.Where(blob =>
+            /*BlobStorage serviceProvider = _context.BlobStorages.Where(blob =>
                                                    blob.BlobStorageTypeId == (_context.Companies.Where(comp => comp.id == companyId))
                                                    .FirstOrDefault().BlobStorageTypeId)
                                                    .FirstOrDefault<BlobStorage>();
-
-            if (serviceProvider != null)
+                                                   */
+            if (!string.IsNullOrEmpty(serviceProvider))
             {
-                switch (serviceProvider.BlobStorageType.BlobStorageType1.ToString().ToUpper())
+                switch (serviceProvider.ToUpper())
                 {
                     case "AZURE":
                         serviceprovider = new AzureBlobService(_context);
