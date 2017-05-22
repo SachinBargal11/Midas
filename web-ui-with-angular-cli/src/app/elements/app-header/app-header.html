@@ -11,14 +11,14 @@
 				<div class="site-header-shown" *ngIf="sessionStore.session.user">
 					<div class="dropdown dropdown-notification notif">
 						<a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded" [class.swing]="_notificationsStore.highlightAddition"
-							[class.animated]="_notificationsStore.highlightAddition">
+						 [class.animated]="_notificationsStore.highlightAddition">
 							<i class="font-icon-alarm"></i>
 						</a>
 					</div>
 
 					<div class="dropdown user-menu" dropdown>
 						<button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">
+						 aria-expanded="false">
 							  <img src="assets/theme/img/avatar.png" alt="">
                             <!--Welcome ,<b> {{ sessionStore.session.user.displayName }} </b>-->
                         </button>
@@ -71,7 +71,7 @@
 						</div>
 						<div class="dropdown" dropdown>
 							<button dropdownToggle class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false">
+							 aria-expanded="false">
 							{{sessionStore.session.currentCompany.name}}
 						</button>
 							<div class="dropdown-menu" aria-labelledby="dd-header-add">
@@ -88,7 +88,7 @@
 </header>
 
 <p-dialog header="User Settings" [width]="600" [height]="300" [responsive]="true" showEffect="fade" modal="modal" [style]="{'overflow':'visible'}"
-	[(visible)]="settingsDialogVisible">
+ [(visible)]="settingsDialogVisible">
 	<div *ngIf="doctorRoleFlag">
 		<form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
 			<div class="row">
@@ -96,7 +96,6 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<p-checkbox formControlName="isPublic" binary="true" label="Public" (onChange)="checkUncheck($event)" [(ngModel)]="isPublic"></p-checkbox>
-						<!--<p-checkbox binary="true" label="Private"></p-checkbox>-->
 					</div>
 				</div>
 			</div>
@@ -113,6 +112,21 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<p-checkbox [disabled]="!isPublic" formControlName="isSearchable" binary="true" label="" [(ngModel)]="isSearchable"></p-checkbox>
+					</div>
+				</div>
+			</div>
+			<div class="row" *ngIf="isCalendarPublic">
+				<div class="col-md-4"> Preferred Time Slot</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<!--<select formControlName="timeSlot" type="text" class="form-control" [(ngModel)]="isTimeSlot">-->
+						<select [disabled]="!isCalendarPublic" formControlName="timeSlot" [(ngModel)]="isTimeSlot" type="text" class="form-control">
+                            <option value="">-Select -</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
+                            <option value="120">120 minutes</option>
+                        </select>
 					</div>
 				</div>
 			</div>
