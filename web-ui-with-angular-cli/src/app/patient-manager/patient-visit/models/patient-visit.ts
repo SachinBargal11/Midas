@@ -27,7 +27,7 @@ const PatientVisitRecord = Record({
     room: null,
     roomId: null,
     doctor: null,
-    doctorId: null,
+    doctorId: 0,
     specialty: null,
     specialtyId: null,
     eventStart: null,

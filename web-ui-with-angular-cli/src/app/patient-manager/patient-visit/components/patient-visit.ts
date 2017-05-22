@@ -124,6 +124,8 @@ export class PatientVisitComponent implements OnInit {
     procedures: Procedure[];
     selectedProcedures: Procedure[];
     selectedSpeciality: Speciality;
+    readingDoctors: Doctor[];
+    readingDoctor = 0;
 
 
     eventRenderer: Function = (event, element) => {
@@ -172,7 +174,8 @@ export class PatientVisitComponent implements OnInit {
             patientId: ['', Validators.required],
             isAddNewPatient: [''],
             isGoingOutOffice: [''],
-            isProcedureCode: ['']
+            isProcedureCode: [''],
+            notes: ['', Validators.required]
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
 
@@ -182,7 +185,8 @@ export class PatientVisitComponent implements OnInit {
 
         this.patientVisitForm = this._fb.group({
             notes: ['', Validators.required],
-            visitStatusId: ['']
+            visitStatusId: [''],
+            readingDoctor: ['']
         });
         this.patientVisitFormControls = this.patientVisitForm.controls;
     }
@@ -198,6 +202,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getReadingDoctorsByCompanyId();
         this.header = {
             left: 'prev,next today',
             center: 'title',
@@ -241,6 +246,23 @@ export class PatientVisitComponent implements OnInit {
         } else {
             return false;
         }
+    }
+    getReadingDoctorsByCompanyId() {
+        // this._progressBarService.show();
+        this._doctorsStore.getReadingDoctorsByCompanyId()
+            .subscribe((readingDoctors: Doctor[]) => {
+                let doctorDetails = _.reject(readingDoctors, (currentDoctor: Doctor) => {
+                    return currentDoctor.user == null;
+                })
+                this.readingDoctors = doctorDetails;
+            },
+
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
     }
 
 
@@ -789,7 +811,8 @@ export class PatientVisitComponent implements OnInit {
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: patientVisitFormValues.notes,
-            visitStatusId: patientVisitFormValues.visitStatusId
+            visitStatusId: patientVisitFormValues.visitStatusId,
+            doctorId: this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
         }));
         let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
@@ -1034,6 +1057,7 @@ export class PatientVisitComponent implements OnInit {
             leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
             leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
             transportProviderId: updatedEvent ? updatedEvent.transportProviderId : 0,
+            notes: patientScheduleFormValues.notes,
             patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : []
         }));
         if (updatedVisit.id) {
