@@ -1708,9 +1708,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage AssociateAttorneyProviderWithCompany(HttpRequestMessage request, int AttorneyProviderId, int CompanyId)
+        public HttpResponseMessage AssociatePrefAttorneyProviderWithCompany(HttpRequestMessage request, int PrefAttorneyProviderId, int CompanyId)
         {
-            var objResult = dataAccessManager.AssociateAttorneyProviderWithCompany(AttorneyProviderId, CompanyId);
+            var objResult = dataAccessManager.AssociatePrefAttorneyProviderWithCompany(PrefAttorneyProviderId, CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1721,9 +1721,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
+        public HttpResponseMessage GetAllPrefAttorneyProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
         {
-            var objResult = dataAccessManager.GetAllAttorneyProviderExcludeAssigned(CompanyId);
+            var objResult = dataAccessManager.GetAllPrefAttorneyProviderExcludeAssigned(CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1734,9 +1734,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId)
+        public HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId)
         {
-            var objResult = dataAccessManager.GetAttorneyProviderByCompanyId(companyId);
+            var objResult = dataAccessManager.GetPrefAttorneyProviderByCompanyId(companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

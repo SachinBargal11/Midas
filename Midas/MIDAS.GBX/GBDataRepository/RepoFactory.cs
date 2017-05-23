@@ -261,6 +261,10 @@ namespace MIDAS.GBX
             {
                 repo = new PreferredMedicalProviderRepository(context);
             }
+            else if (typeof(T) == typeof(BO.PreferredAttorneyProviderSignUp))
+            {
+                repo = new PreferredAttorneyProviderRepository(context);
+            }
             else if (typeof(T) == typeof(BO.UserPersonalSetting))
             {
                 repo = new UserPersonalSettingRepository(context);

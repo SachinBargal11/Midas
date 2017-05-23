@@ -656,6 +656,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             {
                 return new BO.ErrorObject { ErrorMessage = "AttorneyProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
+            else if (AttorneyProviderCompanyDB != null && AttorneyProviderCompanyDB.CompanyType != (int)BO.GBEnums.CompanyType.Attorney)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Preferred AttorneyProviderId is not of company type Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
 
             var AttorneyProviderDB = _context.AttorneyProviders.Where(p => p.AttorneyProviderId == AttorneyProviderId && p.CompanyId == CompanyId
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -697,8 +701,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                       .Select(p => p.AttorneyProviderId);
 
-            var companies = _context.Companies.Where(p => AssignedAttorneyProvider.Contains(p.id) == false
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            var companies = _context.Companies.Where(p => AssignedAttorneyProvider.Contains(p.id) == false 
+                                               && p.CompanyType == 2
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                               .ToList();
 
 
@@ -718,7 +723,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By Company ID For Attorney Provider
+        #region Get Attorney Provider By Company ID 
         public override object GetAttorneyProviderByCompanyId(int CompanyId)
         {
             var AttorenyProvider = _context.AttorneyProviders.Include("Company")

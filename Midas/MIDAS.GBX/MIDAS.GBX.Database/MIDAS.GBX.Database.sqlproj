@@ -138,6 +138,8 @@
     <Build Include="Tables\Latest Tables\Referral2.sql" />
     <Build Include="Tables\Latest Tables\ReferralProcedureCodes.sql" />
     <Build Include="Tables\Latest Tables\MailTemplates.sql" />
+    <Build Include="Tables\Latest Tables\GeneralSettings.sql" />
+    <Build Include="Tables\Latest Tables\PreferredAttorneyProvider.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

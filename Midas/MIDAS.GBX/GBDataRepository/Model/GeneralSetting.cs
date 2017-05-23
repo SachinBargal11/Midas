@@ -12,11 +12,11 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class AttorneyProvider
+    public partial class GeneralSetting
     {
         public int Id { get; set; }
-        public int AttorneyProviderId { get; set; }
         public int CompanyId { get; set; }
+        public int SlotDuration { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
@@ -24,6 +24,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Company Company { get; set; }
-        public virtual Company Company1 { get; set; }
     }
 }
