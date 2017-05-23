@@ -5,33 +5,33 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using MIDAS.GBX.DataAccessManager;
-using BO = MIDAS.GBX.BusinessObjects;
 using Novacode;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.Office.Interop.Word;
 
 namespace MIDAS.GBX.DocumentManager
 {
     public class TemplateManager : BlobServiceProvider, IDisposable
     {
         #region private members
-        private CloudBlockBlob Cloudblob;
-        private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];
-        private List<BO.Document> documents = new List<BO.Document>();
-        private IGbDataAccessManager<BO.Document> dataAccessManager;
+        private CloudBlockBlob _cblob;
+        private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];              
         private Utility util = new Utility();
+        string tempDOCpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/tempUpload.docx");
+        string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/test.pdf");
         #endregion
 
         public TemplateManager(MIDASGBXEntities context) : base(context)
-        {
-            dataAccessManager = new GbDataAccessManager<BO.Document>();
+        {            
             util.BlobStorageConnectionString = ConfigurationManager.AppSettings["BlobStorageConnectionString"];
         }
 
-        public override object Template(string templateBlobPath, IDictionary<string, string> templateKeywords)
+        public override object Template(string templateBlobPath, Dictionary<string, string> templateKeywords)
         {
             util.ContainerName = "company-95";
             string blobName = util.getBlob(templateBlobPath);
-            CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
+            _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
             //_cblob.FetchAttributes();
 
             var ms = new MemoryStream();
@@ -41,11 +41,23 @@ namespace MIDAS.GBX.DocumentManager
             byte[] fileContents = new byte[fileByteLength];
             _cblob.DownloadToByteArray(fileContents, 0);
 
-            DocX letter = DocX.Load(ms);
-            letter.ReplaceText("{company}", "TestCompany");
-            letter.SaveAs(@"C:\Users\Sonali.A\Midas_DevelopBranch\test.docx");
+            DocX _template = DocX.Load(ms);
+            foreach (string key in templateKeywords.Keys)
+            {
+                _template.ReplaceText(key, templateKeywords[key]);
+            }
+            _template.SaveAs(tempDOCpath);
+            
+            Microsoft.Office.Interop.Word.Document wordDocument;
+            Application appWord = new Application();
+            wordDocument = appWord.Documents.Open(tempDOCpath);
+            wordDocument.ExportAsFixedFormat(tempPDFpath, WdExportFormat.wdExportFormatPDF);
 
-            return "";
+            wordDocument.Close();
+            ms.Flush();
+            ms.Close();
+
+            return tempPDFpath;
         }
 
         public void Dispose()
