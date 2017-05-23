@@ -289,6 +289,7 @@
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
+    <Compile Include="Controllers\PreferredAttorneyProviderController.cs" />
     <Compile Include="Controllers\Referral2Controller.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\PatientVisit2Controller.cs" />
@@ -307,6 +308,7 @@
     <Compile Include="Controllers\TemplateManagerController.cs" />
     <Compile Include="Controllers\UserCompanyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\GeneralSettingController.cs" />
     <Compile Include="Controllers\UserPersonalSettingController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="ErrorHelper\ApiBusinessException.cs" />

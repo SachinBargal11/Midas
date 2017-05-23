@@ -6,6 +6,8 @@
     [IsPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPublic] DEFAULT 0, 
     [IsSearchable] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsSearchable] DEFAULT 0, 
     [IsCalendarPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsCalendarPublic] DEFAULT 0,
+    [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30, 
+
 
     [IsDeleted] [bit] NULL DEFAULT 0,
     [CreateByUserID] [int] NOT NULL,
@@ -29,3 +31,7 @@ GO
 
 ALTER TABLE [dbo].[UserPersonalSettings] CHECK CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId]
 GO
+
+/*
+ALTER TABLE [dbo].[UserPersonalSettings] ADD [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30
+*/

@@ -33,6 +33,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aceoffix, Version=5.0.0.1, Culture=neutral, PublicKeyToken=e6a26169e940f541, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Aceoffix.dll</HintPath>
+    </Reference>
     <Reference Include="antlr.runtime, Version=2.7.6.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ical.Net.2.3.0\lib\net45\antlr.runtime.dll</HintPath>
       <Private>True</Private>
@@ -53,6 +57,10 @@
     <Reference Include="Ical.Net.Collections, Version=2.1.0.30341, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ical.Net.2.3.0\lib\net45\Ical.Net.Collections.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="JWT, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JWT.1.3.4\lib\3.5\JWT.dll</HintPath>
@@ -123,10 +131,12 @@
     <Compile Include="EntityRepository\DocumentNodeObjectMapping\DocumentNodeObjectMappingRepository.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadManager.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadRepository.cs" />
+    <Compile Include="EntityRepository\GeneralSetting\GeneralSettingRepository.cs" />
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
     <Compile Include="EntityRepository\PendingReferral\PendingReferralRepository.cs" />
+    <Compile Include="EntityRepository\PreferredAttorneyProvider\PreferredAttorneyProviderRepository.cs" />
     <Compile Include="EntityRepository\PreferredMedicalProvider\PreferredMedicalProviderRepository.cs" />
     <Compile Include="EntityRepository\Notification\NotificationRepository.cs" />
     <Compile Include="EntityRepository\PatientAccidentInfo\PatientAccidentInfoRepository.cs" />
@@ -244,6 +254,9 @@
     <Compile Include="Model\Gender.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\GeneralSetting.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\InsuranceMaster.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -329,6 +342,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PreferredAttorneyProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PreferredMedicalProvider.cs">

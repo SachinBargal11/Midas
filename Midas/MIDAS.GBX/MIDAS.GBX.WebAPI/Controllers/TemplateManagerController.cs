@@ -33,19 +33,57 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<TemplateType>();
             blobhandler = new BlobServiceHandler();
         }
-
+            
         [HttpPost]
         [Route("generatetemplate/{templateName}")]
-        public HttpResponseMessage GenerateTemplate(string templateName, [FromBody]IDictionary<string, string> templateReplaceText)
+        public void GenerateTemplate(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
         {
             var res = requestHandler.GetObjects(Request, templateName);
             if (res != null)
             {
-                string abc = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                blobhandler.CreateTemplate(Request, abc, templateReplaceText);
+                string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
+                var tempPath = blobhandler.CreateTemplate(Request, templatePath, templateReplaceText);
+
+                FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
+                                
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+                HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                HttpContext.Current.Response.WriteFile(tempPath.ToString());
+                //HttpContext.Current.Response.BinaryWrite(btFile);
+                HttpContext.Current.Response.End();
+
+                if (File.Exists(tempPath.ToString())) File.Delete(tempPath.ToString());
             }
             
-            return new HttpResponseMessage();
+            //return new HttpResponseMessage();
+        }
+
+        [HttpPost]
+        [Route("generateSignedTemplate/{templateName}")]
+        public void GetElectronicSignedConsent(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
+        {
+            var res = requestHandler.GetObjects(Request, templateName);
+            if (res != null)
+            {
+                string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
+                var tempPath = blobhandler.CreateTemplate(Request, templatePath, templateReplaceText);
+
+                FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
+
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+                HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                HttpContext.Current.Response.WriteFile(tempPath.ToString());
+                //HttpContext.Current.Response.BinaryWrite(btFile);
+                HttpContext.Current.Response.End();
+
+                if (File.Exists(tempPath.ToString())) File.Delete(tempPath.ToString());
+            }
+
+            //return new HttpResponseMessage();
         }
     }
 }

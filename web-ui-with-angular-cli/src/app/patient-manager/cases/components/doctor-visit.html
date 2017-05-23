@@ -32,9 +32,9 @@
         </ng-template>
     </p-column>
 
-    <p-column field="doctor.user.displayName" header="Speciality" [sortable]="true">
+    <p-column field="specialty.displayName" header="Speciality" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-
+         {{visit.specialty.displayName}}
         </ng-template>
     </p-column>
 
