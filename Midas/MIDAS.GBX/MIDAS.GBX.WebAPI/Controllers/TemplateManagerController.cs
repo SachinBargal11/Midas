@@ -62,7 +62,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("generateSignedTemplate/{templateName}")]
-        public HttpResponseMessage GetElectronicSignedConsent([FromBody]CompanyCaseConsentBase64 data)
+        public void GetElectronicSignedConsent(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
         {
             var res = requestHandler.GetObjects(Request, templateName);
             if (res != null)
