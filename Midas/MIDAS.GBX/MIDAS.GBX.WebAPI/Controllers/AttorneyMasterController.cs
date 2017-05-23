@@ -84,6 +84,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getAllAttorneyProviderExcludeAssigned/{CompanyId}")]
+        public HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(int CompanyId)
+        {
+            return requestHandler.GetAllAttorneyProviderExcludeAssigned(Request, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("getAttorneyProviderByCompanyId/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetAttorneyProviderByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetAttorneyProviderByCompanyId(Request, CompanyId);
+        }
+
+        [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {

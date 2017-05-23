@@ -701,7 +701,15 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-
+        public virtual Object GetAllAttorneyProviderExcludeAssigned(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public virtual Object GetAttorneyProviderByCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

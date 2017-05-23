@@ -140,7 +140,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateVisitWithReferral(int ReferralId, int PatientVisitId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        
-
+        Object GetAllAttorneyProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetAttorneyProviderByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }
