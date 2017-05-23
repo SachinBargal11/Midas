@@ -102,7 +102,8 @@ export class VisitDetailComponent implements OnInit {
     ngOnInit() {
         this.readingDoctor = this.selectedVisit.doctorId != null ? this.selectedVisit.doctorId : 0;
         this.getReadingDoctorsByCompanyId();
-        this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+        this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
         this.getDocuments();
     }
 

@@ -40,6 +40,7 @@ export class AppHeaderComponent implements OnInit {
     isSearchable: boolean = false;
     isCalendarPublic: boolean = false;
     isPublic: boolean = false;
+    isTimeSlot = 30;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -63,7 +64,8 @@ export class AppHeaderComponent implements OnInit {
         this.addUserSettings = this._fb.group({
             isPublic: [''],
             isCalendarPublic: [''],
-            isSearchable: ['']
+            isSearchable: [''],
+            timeSlot: ['']
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
@@ -98,6 +100,8 @@ export class AppHeaderComponent implements OnInit {
                 this.isPublic = userSetting.isPublic;
                 this.isCalendarPublic = userSetting.isCalendarPublic;
                 this.isSearchable = userSetting.isSearchable;
+                this.isTimeSlot = userSetting.SlotDuration;
+                
             },
             (error) => { },
             () => {
@@ -174,7 +178,8 @@ export class AppHeaderComponent implements OnInit {
                 companyId: this.companyId,
                 isPublic: this.isPublic,
                 isCalendarPublic: this.isCalendarPublic,
-                isSearchable: this.isSearchable
+                isSearchable: this.isSearchable,
+                SlotDuration:this.isTimeSlot
             }
         )
         this._progressBarService.show();

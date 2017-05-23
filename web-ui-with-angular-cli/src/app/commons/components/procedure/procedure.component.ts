@@ -19,6 +19,7 @@ export class ProcedureComponent implements OnInit {
   procedures: Procedure[];
   selectedProcedures: Procedure[];
   selectedProceduresToDelete: Procedure[];
+  selectedValue = 1;
 
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
@@ -102,5 +103,9 @@ export class ProcedureComponent implements OnInit {
 
     this.selectedProcedures = procedureCodeDetails;
   }
+
+  // calculate(value, procedureAmt) {
+  //   this.total = value * procedureAmt;
+  // }
 
 }
