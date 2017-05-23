@@ -123,6 +123,7 @@
     <Compile Include="EntityRepository\DocumentNodeObjectMapping\DocumentNodeObjectMappingRepository.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadManager.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadRepository.cs" />
+    <Compile Include="EntityRepository\GeneralSetting\GeneralSettingRepository.cs" />
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
@@ -164,9 +165,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Attorney.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\AttorneyProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AuditTableMapping.cs">
@@ -245,6 +243,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Gender.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GeneralSetting.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\InsuranceMaster.cs">
@@ -332,6 +333,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PreferredAttorneyProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PreferredMedicalProvider.cs">

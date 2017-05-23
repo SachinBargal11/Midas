@@ -92,6 +92,7 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="GeneralSetting\GeneralSetting.cs" />
     <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
     <Compile Include="PendingReferralProcedureCode\PendingReferralProcedureCode.cs" />
     <Compile Include="PendingReferral\PendingReferral.cs" />

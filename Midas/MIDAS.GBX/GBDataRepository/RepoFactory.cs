@@ -285,6 +285,10 @@ namespace MIDAS.GBX
             {
                 repo = new TemplateTypeRepository(context);
             }
+            else if (typeof(T) == typeof(BO.GeneralSetting))
+            {
+                repo = new GeneralSettingRepository(context);
+            }
             return repo;
         }
     }

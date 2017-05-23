@@ -270,6 +270,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                          .Select(p => p.CalendarEvent)
                                          .ToList();
 
+            var CompanyId = _context.Locations.Where(p => p.id == LocationId
+                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Select(p => p.CompanyID)
+                                                     .FirstOrDefault();
+
+            var SlotDuration = _context.GeneralSettings.Where(p => p.CompanyId == CompanyId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .Select(p => p.SlotDuration)
+                                                        .FirstOrDefault();
+
             Calendar calendar = new Calendar();
             foreach (var eachEvent in CalendarEvents)
             {
@@ -395,9 +405,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 TimeSpan EndOfDay = StartEndOfDay.SlotEnd;
 
 
-                for (TimeSpan i = StartOfDay; i < EndOfDay; i = i.Add(new TimeSpan(0, 30, 0)))
+                for (TimeSpan i = StartOfDay; i < EndOfDay; i = i.Add(new TimeSpan(0, SlotDuration, 0)))
                 {
-                    StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, 30, 0)) });
+                    StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, SlotDuration, 0)) });
                 }
 
                 var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
