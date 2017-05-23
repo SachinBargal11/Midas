@@ -786,7 +786,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                             .Select(p => p.PrefMedProviderId);
 
             var companies = _context.Companies.Where(p => AssignedMedicalProvider.Contains(p.id) == false
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               && p.CompanyType == 1 
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                               .ToList();
 
             

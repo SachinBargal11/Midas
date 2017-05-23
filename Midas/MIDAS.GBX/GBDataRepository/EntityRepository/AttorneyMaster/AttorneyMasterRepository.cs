@@ -697,8 +697,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                       .Select(p => p.AttorneyProviderId);
 
-            var companies = _context.Companies.Where(p => AssignedAttorneyProvider.Contains(p.id) == false
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            var companies = _context.Companies.Where(p => AssignedAttorneyProvider.Contains(p.id) == false 
+                                               && p.CompanyType == 2
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                               .ToList();
 
 
@@ -718,7 +719,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By Company ID For Attorney Provider
+        #region Get Attorney Provider By Company ID 
         public override object GetAttorneyProviderByCompanyId(int CompanyId)
         {
             var AttorenyProvider = _context.AttorneyProviders.Include("Company")
