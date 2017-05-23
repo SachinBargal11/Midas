@@ -125,9 +125,9 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate);
         HttpResponseMessage GetFreeSlotsForRoomByLocationId(HttpRequestMessage request, int RoomId, int LocationId, DateTime StartDate, DateTime EndDate);
         HttpResponseMessage AssociateVisitWithReferral(HttpRequestMessage request, int ReferralId, int PatientVisitId);
-        HttpResponseMessage AssociateAttorneyProviderWithCompany(HttpRequestMessage request, int AttorneyProviderId, int CompanyId);
-        HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
-        HttpResponseMessage GetAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage AssociatePrefAttorneyProviderWithCompany(HttpRequestMessage request, int PrefAttorneyProviderId, int CompanyId);
+        HttpResponseMessage GetAllPrefAttorneyProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId);
 
     }
 }

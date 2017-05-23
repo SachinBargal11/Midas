@@ -53,7 +53,7 @@
     <Compile Include="Address\AddressInfo.cs" />
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
-    <Compile Include="AttorneyProvider\AttorneyProvider.cs" />
+    <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />

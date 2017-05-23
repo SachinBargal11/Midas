@@ -76,27 +76,27 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Post([FromBody]AttorneyMaster data)
         { return requestHandler.CreateGbObject(Request, data); }
 
-        [HttpGet]
-        [Route("associateAttorneyProviderWithCompany/{AttorneyProviderId}/{CompanyId}")]
-        public HttpResponseMessage AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
-        {
-            return requestHandler.AssociateAttorneyProviderWithCompany(Request, AttorneyProviderId, CompanyId);
-        }
+        //[HttpGet]
+        //[Route("associateAttorneyProviderWithCompany/{AttorneyProviderId}/{CompanyId}")]
+        //public HttpResponseMessage AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
+        //{
+        //    return requestHandler.AssociateAttorneyProviderWithCompany(Request, AttorneyProviderId, CompanyId);
+        //}
 
-        [HttpGet]
-        [Route("getAllAttorneyProviderExcludeAssigned/{CompanyId}")]
-        public HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(int CompanyId)
-        {
-            return requestHandler.GetAllAttorneyProviderExcludeAssigned(Request, CompanyId);
-        }
+        //[HttpGet]
+        //[Route("getAllAttorneyProviderExcludeAssigned/{CompanyId}")]
+        //public HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(int CompanyId)
+        //{
+        //    return requestHandler.GetAllAttorneyProviderExcludeAssigned(Request, CompanyId);
+        //}
 
-        [HttpGet]
-        [Route("getAttorneyProviderByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
-        public HttpResponseMessage GetAttorneyProviderByCompanyId(int CompanyId)
-        {
-            return requestHandler.GetAttorneyProviderByCompanyId(Request, CompanyId);
-        }
+        //[HttpGet]
+        //[Route("getAttorneyProviderByCompanyId/{CompanyId}")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage GetAttorneyProviderByCompanyId(int CompanyId)
+        //{
+        //    return requestHandler.GetAttorneyProviderByCompanyId(Request, CompanyId);
+        //}
 
         [HttpGet]
         [Route("Delete/{id}")]
