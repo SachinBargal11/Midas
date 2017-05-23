@@ -10,6 +10,7 @@ import { SecurityCheckComponent } from './components/security-check';
 import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { ChangePasswordComponent } from './components/change-password';
+import { UserSettingsComponent } from './components/user-settings';
 
 // import { SessionStore } from '../commons/stores/session-store';
 // import { AuthenticationService } from '../services/authentication-service';
@@ -32,7 +33,8 @@ import { AccountRoutingModule } from './account-routes';
             LoginComponent,
             ForgotPasswordComponent,
             ResetPasswordComponent,
-            ChangePasswordComponent
+            ChangePasswordComponent,
+            UserSettingsComponent
       ]
 })
 export class AccountModule { }

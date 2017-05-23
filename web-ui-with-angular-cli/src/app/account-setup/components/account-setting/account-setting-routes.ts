@@ -7,13 +7,13 @@ import { ShellComponent } from '../../../commons/shell-component';
 import { AccountSettingShellComponent } from './account-setting-shell';
 import { ProcedureCodeComponent } from './procedure-code-master';
 import { DocumentTypeComponent } from './document-type';
-
+import { AccountGeneralSettingComponent } from './account-general-settings'
 
 export const AccountSettingShellRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'account-setting/procedure-codes'
+        redirectTo: 'account-setting/general-settings'
     },
     {
         path: 'account-setting',
@@ -23,6 +23,14 @@ export const AccountSettingShellRoutes: Routes = [
             breadcrumb: 'Account Setting'
         },
         children: [
+            {
+                path: 'general-settings',
+                component: AccountGeneralSettingComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'General Settings'
+                }
+            },
             {
                 path: 'procedure-codes',
                 component: ProcedureCodeComponent,
@@ -39,6 +47,7 @@ export const AccountSettingShellRoutes: Routes = [
                     breadcrumb: 'Document Types'
                 }
             }
+
         ]
     }
 ];

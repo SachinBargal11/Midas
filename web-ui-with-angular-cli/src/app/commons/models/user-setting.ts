@@ -10,6 +10,7 @@ const UserSettingRecord = Record({
     isPublic: false,
     isSearchable:false,
     isCalendarPublic: false,
+    SlotDuration:0
 });
 
 export class UserSetting extends UserSettingRecord {
@@ -21,6 +22,7 @@ export class UserSetting extends UserSettingRecord {
     isPublic: boolean;
     isSearchable: boolean;
     isCalendarPublic: boolean;
+    SlotDuration: number;
 
     constructor(props) {
         super(props);
