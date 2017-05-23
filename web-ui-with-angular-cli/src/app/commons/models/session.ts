@@ -5,7 +5,8 @@ import { User } from './user';
 
 const SessionRecord = Record({
     account: null,
-    isSecurityCheckVerified: false
+    isSecurityCheckVerified: false,
+    access_token: ''
 });
 
 export class Session extends SessionRecord {
@@ -13,6 +14,7 @@ export class Session extends SessionRecord {
     // private _user: User = null;
     private _account: Account = null;
     private _currentCompany: Company = null;
+    private _access_token: string = '';
 
     public get user(): User {
         return this._account ? this._account.user : null;
@@ -40,6 +42,14 @@ export class Session extends SessionRecord {
 
     get isAuthenticated() {
         return this.account ? true : false;
+    }
+
+    public get access_token(): string {
+        return this._access_token;
+    }
+
+    public set access_token(value: string) {
+        this._access_token = value;
     }
 
 

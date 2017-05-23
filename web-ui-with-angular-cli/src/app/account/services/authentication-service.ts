@@ -1,9 +1,10 @@
+import { Params } from '@angular/router/router';
 import { AccountAdapter } from './adapters/account-adapter';
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { User } from '../../commons/models/user';
 import { UserAdapter } from '../../medical-provider/users/services/adapters/user-adapter';
 import * as _ from 'underscore';
@@ -106,6 +107,39 @@ export class AuthenticationService {
 
     }
 
+    authToken(email: string, password: string, forceLogin: boolean): Observable<any> {
+        let headers = new Headers();
+        // let params = new URLSearchParams();
+        let params = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        /*params.append('grant_type', 'password');
+        params.append('userName', email);
+        params.append('password', password);*/
+        // let params = {
+        //     'grant_type': 'password',
+        //     'userName': email,
+        //     'password': password            
+        // }
+
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/token', "grant_type=password&username="+encodeURIComponent(email)+"&password="+encodeURIComponent(password), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        // window.localStorage.setItem('access_token', 'bearer ' + data.access_token);
+                        resolve(data);
+                    }
+                    else {
+                        reject(new Error('INVALID_CREDENTIALS'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
     authenticate(email: string, password: string, forceLogin: boolean): Observable<Account> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');

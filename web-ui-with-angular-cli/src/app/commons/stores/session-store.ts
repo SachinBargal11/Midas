@@ -20,6 +20,7 @@ export class SessionStore {
 
     private __ACCOUNT_STORAGE_KEY__ = 'logged_account';
     private __CURRENT_COMPANY__ = 'current_company';
+    private __ACCESS_TOKEN__ = 'access_token';
 
     public get session(): Session {
         return this._session;
@@ -74,6 +75,9 @@ export class SessionStore {
 
     login(userId, password, forceLogin) {
         let promise = new Promise((resolve, reject) => {
+            this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
+                window.localStorage.setItem(this.__ACCESS_TOKEN__, 'bearer ' + data.access_token);
+                this._session.access_token = 'bearer ' + data.access_token;
             this._authenticationService.authenticate(userId, password, forceLogin).subscribe((account: Account) => {
                 if (!forceLogin) {
                     window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
@@ -84,6 +88,11 @@ export class SessionStore {
             }, (error) => {
                 reject(error);
             });
+                resolve(this._session);
+        }, (error) => {
+                reject(error);
+            });
+
         });
         return Observable.from(promise);
     }
@@ -92,6 +101,7 @@ export class SessionStore {
         this._resetSession();
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
         window.localStorage.removeItem(this.__CURRENT_COMPANY__);
+        window.localStorage.removeItem(this.__ACCESS_TOKEN__);
     }
 
     authenticatePassword(userName, oldpassword) {
