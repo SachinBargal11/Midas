@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login';
 import { ValidateActiveSession } from '../commons/guards/validate-active-session';
 import { ValidateInActiveSession } from '../commons/guards/validate-inactive-session';
 import { ChangePasswordComponent } from './components/change-password';
+import { UserSettingsComponent } from './components/user-settings';
 import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { RegisterCompanyComponent } from './components/register-company';
@@ -77,6 +78,14 @@ let accountRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Change Password'
+                }
+            },
+            {
+                path: 'user-settings',
+                component: UserSettingsComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'User Settings'
                 }
             }
         ]
