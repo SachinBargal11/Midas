@@ -53,7 +53,7 @@
     <Compile Include="Address\AddressInfo.cs" />
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
-    <Compile Include="AttorneyProvider\AttorneyProvider.cs" />
+    <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
@@ -92,6 +92,7 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="GeneralSetting\GeneralSetting.cs" />
     <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
     <Compile Include="PendingReferralProcedureCode\PendingReferralProcedureCode.cs" />
     <Compile Include="PendingReferral\PendingReferral.cs" />

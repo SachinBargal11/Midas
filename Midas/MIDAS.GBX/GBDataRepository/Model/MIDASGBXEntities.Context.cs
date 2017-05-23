@@ -30,7 +30,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
-        public virtual DbSet<AttorneyProvider> AttorneyProviders { get; set; }
         public virtual DbSet<AuditTableMapping> AuditTableMappings { get; set; }
         public virtual DbSet<BlobStorage> BlobStorages { get; set; }
         public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
@@ -56,6 +55,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
+        public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
@@ -80,6 +80,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
         public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
         public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
         public virtual DbSet<Referral2> Referral2 { get; set; }

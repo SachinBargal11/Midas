@@ -2884,12 +2884,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object AssociatePrefAttorneyProviderWithCompany(int PrefAttorneyProviderId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.AssociateAttorneyProviderWithCompany(AttorneyProviderId, CompanyId);
+                var gbdata = baseRepo.AssociatePrefAttorneyProviderWithCompany(PrefAttorneyProviderId, CompanyId);
 
                 return gbdata;
             }
@@ -2904,12 +2904,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetAllAttorneyProviderExcludeAssigned(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetAllPrefAttorneyProviderExcludeAssigned(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetAllAttorneyProviderExcludeAssigned(CompanyId);
+                var gbdata = baseRepo.GetAllPrefAttorneyProviderExcludeAssigned(CompanyId);
 
                 return gbdata;
             }
@@ -2926,12 +2926,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
         
-         public Object GetAttorneyProviderByCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+         public Object GetPrefAttorneyProviderByCompanyId(int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetAttorneyProviderByCompanyId(companyId);
+                var gbdata = baseRepo.GetPrefAttorneyProviderByCompanyId(companyId);
 
                 return gbdata;
             }

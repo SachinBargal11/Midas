@@ -696,17 +696,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
+        public virtual Object AssociatePrefAttorneyProviderWithCompany(int PrefAttorneyProviderId, int CompanyId)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object GetAllAttorneyProviderExcludeAssigned(int CompanyId)
+        public virtual Object GetAllPrefAttorneyProviderExcludeAssigned(int CompanyId)
         {
             throw new NotImplementedException();
         }
         
-        public virtual Object GetAttorneyProviderByCompanyId(int companyId)
+        public virtual Object GetPrefAttorneyProviderByCompanyId(int companyId)
         {
             throw new NotImplementedException();
         }
