@@ -84,7 +84,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
             else
             {
-                //company.ForEach(item => lstCompany.Add(CompanyConvert<BO.Company, Company>(item)));
+                company.ForEach(item => lstCompany.Add(CompanyConvert<BO.Company, Company>(item)));
             }
 
             return lstCompany;
@@ -553,6 +553,199 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         }
         #endregion
+
+        //AttorneyProvider
+
+        #region Company Conversion
+        public T CompanyConvert<T, U>(U entity)
+        {
+            Company company = entity as Company;
+            if (company == null)
+                return default(T);
+
+            BO.Company boCompany = new BO.Company();
+
+            boCompany.ID = company.id;
+            boCompany.Name = company.Name;
+            boCompany.TaxID = company.TaxID;
+            boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
+            boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+            boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+            boCompany.RegistrationComplete = company.RegistrationComplete;
+            boCompany.IsDeleted = company.IsDeleted;
+            boCompany.CreateByUserID = company.CreateByUserID;
+            boCompany.UpdateByUserID = company.UpdateByUserID;
+
+
+            return (T)(object)boCompany;
+        }
+        #endregion
+
+        #region AttorneyProviderConvert
+        public T AttorneyProviderConvert<T, U>(U entity)
+        {
+
+            AttorneyProvider attorneyProvider = entity as AttorneyProvider;
+            if (attorneyProvider == null)
+                return default(T);
+
+            BO.AttorneyProvider boAttorneyProvider = new BO.AttorneyProvider();
+
+            boAttorneyProvider.ID = attorneyProvider.Id;
+            boAttorneyProvider.AttorneyProviderId = attorneyProvider.AttorneyProviderId;
+            boAttorneyProvider.CompanyId = attorneyProvider.CompanyId;
+            boAttorneyProvider.IsDeleted = attorneyProvider.IsDeleted;
+            boAttorneyProvider.CreateByUserID = attorneyProvider.CreateByUserID;
+            boAttorneyProvider.UpdateByUserID = attorneyProvider.UpdateByUserID;
+
+            if (attorneyProvider.Company != null)
+            {
+                BO.Company Company = new BO.Company();
+
+                if (attorneyProvider.Company.IsDeleted.HasValue == false
+                    || (attorneyProvider.Company.IsDeleted.HasValue == true && attorneyProvider.Company.IsDeleted.Value == false))
+                {
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        Company = sr.Convert<BO.Company, Company>(attorneyProvider.Company);
+                        Company.Locations = null;
+                    }
+                }
+
+                boAttorneyProvider.Company = Company;
+            }
+
+            if (attorneyProvider.Company1 != null)
+            {
+                BO.Company Company = new BO.Company();
+
+                if (attorneyProvider.Company1.IsDeleted.HasValue == false
+                    || (attorneyProvider.Company1.IsDeleted.HasValue == true && attorneyProvider.Company1.IsDeleted.Value == false))
+                {
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        Company = sr.Convert<BO.Company, Company>(attorneyProvider.Company1);
+                        Company.Locations = null;
+                    }
+                }
+
+                boAttorneyProvider.AtorneyProvider = Company;
+            }
+
+            return (T)(object)boAttorneyProvider;
+        }
+        #endregion
+
+        #region Associate Attorney Provider With Company
+        public override object AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
+        {
+            Company CompanyDB = _context.Companies.Where(p => p.id == CompanyId
+                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
+
+            if (CompanyDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            Company AttorneyProviderCompanyDB = _context.Companies.Where(p => p.id == AttorneyProviderId
+                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
+            if (AttorneyProviderCompanyDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "AttorneyProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+            else if (AttorneyProviderCompanyDB != null && AttorneyProviderCompanyDB.CompanyType != (int)BO.GBEnums.CompanyType.Attorney)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Preferred AttorneyProviderId is not of company type Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            var AttorneyProviderDB = _context.AttorneyProviders.Where(p => p.AttorneyProviderId == AttorneyProviderId && p.CompanyId == CompanyId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                               .FirstOrDefault();
+
+            bool AttorneyProvider = false;
+            if (AttorneyProviderDB == null)
+            {
+                AttorneyProviderDB = new AttorneyProvider();
+                AttorneyProvider = true;
+            }
+
+            AttorneyProviderDB.AttorneyProviderId = AttorneyProviderId;
+            AttorneyProviderDB.CompanyId = CompanyId;
+            AttorneyProviderDB.IsDeleted = false;
+
+            if (AttorneyProvider == true)
+            {
+                _context.AttorneyProviders.Add(AttorneyProviderDB);
+            }
+
+            _context.SaveChanges();
+
+            BO.AttorneyProvider acc_ = AttorneyProviderConvert<BO.AttorneyProvider, AttorneyProvider>(AttorneyProviderDB);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
+
+        #region Get All Attorney Provider Exclude Assigned
+        public override object GetAllAttorneyProviderExcludeAssigned(int CompanyId)
+        {
+            var AssignedAttorneyProvider = _context.AttorneyProviders.Where(p => p.CompanyId == CompanyId
+                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .Select(p => p.AttorneyProviderId);
+
+            var companies = _context.Companies.Where(p => AssignedAttorneyProvider.Contains(p.id) == false 
+                                               && p.CompanyType == 2
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .ToList();
+
+
+
+            List<BO.Company> lstCompany = new List<BO.Company>();
+
+            if (companies == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                companies.ForEach(item => lstCompany.Add(CompanyConvert<BO.Company, Company>(item)));
+            }
+
+            return lstCompany;
+        }
+        #endregion
+
+        #region Get Attorney Provider By Company ID 
+        public override object GetAttorneyProviderByCompanyId(int CompanyId)
+        {
+            var AttorenyProvider = _context.AttorneyProviders.Include("Company")
+                                                             .Include("Company1")
+                                                             .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .ToList();
+
+            List<BO.AttorneyProvider> lstprovider = new List<BO.AttorneyProvider>();
+
+            if (AttorenyProvider == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                AttorenyProvider.ForEach(item => lstprovider.Add(AttorneyProviderConvert<BO.AttorneyProvider, AttorneyProvider>(item)));
+            }
+
+            return lstprovider;
+        }
+        #endregion 
+
 
         #region Delete By ID
         public override object Delete(int id)
