@@ -656,6 +656,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             {
                 return new BO.ErrorObject { ErrorMessage = "AttorneyProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
+            else if (AttorneyProviderCompanyDB != null && AttorneyProviderCompanyDB.CompanyType != (int)BO.GBEnums.CompanyType.Attorney)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Preferred AttorneyProviderId is not of company type Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
 
             var AttorneyProviderDB = _context.AttorneyProviders.Where(p => p.AttorneyProviderId == AttorneyProviderId && p.CompanyId == CompanyId
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
