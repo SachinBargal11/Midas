@@ -794,6 +794,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion 
 
+
         #region Delete By ID
         public override object Delete(int id)
         {
