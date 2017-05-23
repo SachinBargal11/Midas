@@ -556,61 +556,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         //AttorneyProvider
 
-        #region Att_providerConvert 
-        public T Att_providerConvert<T, U>(U entity)
-        {
-
-            AttorneyProvider attorneyProvider = entity as AttorneyProvider;
-            if (attorneyProvider == null)
-                return default(T);
-
-            BO.AttorneyProvider boAttorneyProvider = new BO.AttorneyProvider();
-
-            boAttorneyProvider.ID = attorneyProvider.Id;
-            boAttorneyProvider.AttorneyProviderId = attorneyProvider.AttorneyProviderId;
-            boAttorneyProvider.CompanyId = attorneyProvider.CompanyId;
-            boAttorneyProvider.IsDeleted = attorneyProvider.IsDeleted;
-            boAttorneyProvider.CreateByUserID = attorneyProvider.CreateByUserID;
-            boAttorneyProvider.UpdateByUserID = attorneyProvider.UpdateByUserID;
-
-            if (attorneyProvider.Company != null)
-            {
-                BO.Company Company = new BO.Company();
-
-                if (attorneyProvider.Company.IsDeleted.HasValue == false
-                    || (attorneyProvider.Company.IsDeleted.HasValue == true && attorneyProvider.Company.IsDeleted.Value == false))
-                {
-                    using (CompanyRepository sr = new CompanyRepository(_context))
-                    {
-                        Company = sr.Convert<BO.Company, Company>(attorneyProvider.Company);
-                        Company.Locations = null;
-                    }
-                }
-
-                boAttorneyProvider.Company = Company;
-            }
-
-            if (attorneyProvider.Company1 != null)
-            {
-                BO.Company Company = new BO.Company();
-
-                if (attorneyProvider.Company1.IsDeleted.HasValue == false
-                    || (attorneyProvider.Company1.IsDeleted.HasValue == true && attorneyProvider.Company1.IsDeleted.Value == false))
-                {
-                    using (CompanyRepository sr = new CompanyRepository(_context))
-                    {
-                        Company = sr.Convert<BO.Company, Company>(attorneyProvider.Company1);
-                        Company.Locations = null;
-                    }
-                }
-
-                boAttorneyProvider.AtorneyProvider = Company;
-            }
-
-            return (T)(object)boAttorneyProvider;
-        }
-        #endregion
-
         #region Company Conversion
         public T CompanyConvert<T, U>(U entity)
         {
@@ -749,8 +694,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetAllAttorneyProviderExcludeAssigned(int CompanyId)
         {
             var AssignedAttorneyProvider = _context.AttorneyProviders.Where(p => p.CompanyId == CompanyId
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                            .Select(p => p.AttorneyProviderId);
+                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .Select(p => p.AttorneyProviderId);
 
             var companies = _context.Companies.Where(p => AssignedAttorneyProvider.Contains(p.id) == false
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -776,7 +721,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company ID For Attorney Provider
         public override object GetAttorneyProviderByCompanyId(int CompanyId)
         {
-            var AttorenyProvider = _context.AttorneyProviders.Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            var AttorenyProvider = _context.AttorneyProviders.Include("Company")
+                                                             .Include("Company1")
+                                                             .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                     .ToList();
 
             List<BO.AttorneyProvider> lstprovider = new List<BO.AttorneyProvider>();
@@ -787,7 +734,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
             else
             {
-                AttorenyProvider.ForEach(item => lstprovider.Add(Att_providerConvert<BO.AttorneyProvider, AttorneyProvider>(item)));
+                AttorenyProvider.ForEach(item => lstprovider.Add(AttorneyProviderConvert<BO.AttorneyProvider, AttorneyProvider>(item)));
             }
 
             return lstprovider;

@@ -19,7 +19,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("company")]
         public Company Company { get; set; }
 
-        [JsonProperty("attorneyProvider")]
+        [JsonProperty("atorneyProvider")]
         public Company AtorneyProvider { get; set; }
     }
 
