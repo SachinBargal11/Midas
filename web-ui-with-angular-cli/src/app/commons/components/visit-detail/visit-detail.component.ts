@@ -67,6 +67,7 @@ export class VisitDetailComponent implements OnInit {
     visitUploadDocumentUrl: string;
     documents: VisitDocument[] = [];
     selectedDocumentList = [];
+    disableSaveDelete = false;
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
@@ -105,8 +106,17 @@ export class VisitDetailComponent implements OnInit {
         // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
         this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
         this.getDocuments();
+
+        this.checkVisitForCompany();
     }
 
+    checkVisitForCompany() {
+        if (this.selectedVisit.originalResponse.location.company.id == this.sessionStore.session.currentCompany.id) {
+            this.disableSaveDelete = false;
+        } else {
+            this.disableSaveDelete = true;
+        }
+    }
     handleVisitDialogHide() {
         this.selectedVisit = null;
     }

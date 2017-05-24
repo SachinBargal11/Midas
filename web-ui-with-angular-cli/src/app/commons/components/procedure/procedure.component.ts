@@ -8,6 +8,7 @@ import { ProgressBarService } from '../../services/progress-bar-service';
 import { Procedure } from '../../models/procedure';
 import { ProcedureStore } from '../../stores/procedure-store';
 import { PatientVisit } from '../../../patient-manager/patient-visit/models/patient-visit';
+import { SessionStore } from '../../stores/session-store';
 
 @Component({
   selector: 'app-procedure',
@@ -20,6 +21,7 @@ export class ProcedureComponent implements OnInit {
   selectedProcedures: Procedure[];
   selectedProceduresToDelete: Procedure[];
   selectedValue = 1;
+  disableSaveDelete = false;
 
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
@@ -30,6 +32,7 @@ export class ProcedureComponent implements OnInit {
     private fb: FormBuilder,
     private _progressBarService: ProgressBarService,
     private _procedureStore: ProcedureStore,
+    public sessionStore: SessionStore
   ) {
     // this.procedureForm = this.fb.group({
     //   dignosisCode: ['', Validators.required]
@@ -43,6 +46,16 @@ export class ProcedureComponent implements OnInit {
       this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
     }
     this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
+
+    this.checkVisitForCompany();
+  }
+
+  checkVisitForCompany() {
+    if (this.selectedVisit.originalResponse.location.company.id == this.sessionStore.session.currentCompany.id) {
+      this.disableSaveDelete = false;
+    } else {
+      this.disableSaveDelete = true;
+    }
   }
 
   loadProceduresForSpeciality(specialityId: number) {

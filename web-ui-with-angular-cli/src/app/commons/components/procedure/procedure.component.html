@@ -6,7 +6,7 @@
     <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
   </div>
 </div>
-<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="5" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable *ngIf="!disableSaveDelete" [value]="procedures" [(selection)]="selectedProcedures" [rows]="5" [paginator]="true" [globalFilter]="gb" [responsive]="true">
   <header>Procedures</header>
   <p-headerColumnGroup>
     <p-row>
@@ -23,7 +23,7 @@
 
 <div class="input-group">
 <h3 class="with-border">Selected Procedure codes
-    <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
+    <a class="pull-right btn btn-danger btn-sm" *ngIf="!disableSaveDelete" (click)="deleteProcedureCode()">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
       <loader [visible]="isDeleteProgress"></loader>
     </a>
@@ -48,6 +48,6 @@
   </p-column>
 </p-dataTable>
 <br>
-<button class="btn btn-success sign-up" (click)="saveProcedures()">Save
+<button *ngIf="!disableSaveDelete" class="btn btn-success sign-up" (click)="saveProcedures()">Save
     <loader [visible]="isSaveProgress"></loader>
 </button>

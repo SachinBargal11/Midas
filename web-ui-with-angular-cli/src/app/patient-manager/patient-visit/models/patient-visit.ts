@@ -46,7 +46,8 @@ const PatientVisitRecord = Record({
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, //Moment
-    updateDate: null //Moment
+    updateDate: null,//Moment
+    originalResponse: null
 });
 
 
@@ -83,6 +84,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    originalResponse: any;
 
     constructor(props) {
         super(props);
