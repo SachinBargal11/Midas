@@ -18,6 +18,7 @@ namespace MIDAS.GBX.DocumentManager
         private CloudBlockBlob _cblob;
         private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];              
         private Utility util = new Utility();
+        string tempIMGpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/sign.jpeg");
         string tempDOCpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/tempUpload.docx");
         string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/test.pdf");
         #endregion
@@ -42,12 +43,28 @@ namespace MIDAS.GBX.DocumentManager
             _cblob.DownloadToByteArray(fileContents, 0);
 
             DocX _template = DocX.Load(ms);
+
             foreach (string key in templateKeywords.Keys)
             {
-                _template.ReplaceText(key, templateKeywords[key]);
+                if (key.ToLower().Equals("{signature}"))
+                {
+                    using (FileStream imageFile = new FileStream(tempIMGpath, FileMode.Create))
+                    {
+                        byte[] bytes = System.Convert.FromBase64String(templateKeywords[key].Replace("data:image/jpeg;base64,", string.Empty));
+                        imageFile.Write(bytes, 0, bytes.Length);
+                        imageFile.Flush(); imageFile.Dispose();
+                    }
+                    Novacode.Image img = _template.AddImage(tempIMGpath);
+                    Picture pic1 = img.CreatePicture();
+                    Novacode.Paragraph p1 = _template.InsertParagraph();
+                    p1.InsertPicture(pic1);
+                    _template.ReplaceText(key, "");
+                }
+                else
+                { _template.ReplaceText(key, templateKeywords[key]); }
             }
             _template.SaveAs(tempDOCpath);
-            
+
             Microsoft.Office.Interop.Word.Document wordDocument;
             Application appWord = new Application();
             wordDocument = appWord.Documents.Open(tempDOCpath);
