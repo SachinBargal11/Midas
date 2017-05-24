@@ -76,20 +76,18 @@ export class SessionStore {
     login(userId, password, forceLogin) {
         let promise = new Promise((resolve, reject) => {
             this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
-                window.localStorage.setItem(this.__ACCESS_TOKEN__, 'bearer ' + data.access_token);
-                this._session.access_token = 'bearer ' + data.access_token;
-            this._authenticationService.authenticate(userId, password, forceLogin).subscribe((account: Account) => {
-                if (!forceLogin) {
-                    window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
-                } else {
-                    this._populateSession(account);
-                }
-                resolve(this._session);
+                let accessToken = 'bearer ' + data.access_token;
+                this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
+                    if (!forceLogin) {
+                        window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
+                    } else {
+                        this._populateSession(account);
+                    }
+                    resolve(this._session);
+                }, (error) => {
+                    reject(error);
+                });
             }, (error) => {
-                reject(error);
-            });
-                resolve(this._session);
-        }, (error) => {
                 reject(error);
             });
 
@@ -127,15 +125,19 @@ export class SessionStore {
 
     private _populateSession(account: Account) {
         this._session.account = account;
+        this._session.accessToken = account.accessToken;
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);
         this._session.currentCompany = company ? company : account.companies[0];
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(this._session.currentCompany));
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
+        window.localStorage.setItem(this.__ACCESS_TOKEN__, account.accessToken);
     }
 
     private _resetSession() {
         this.session.account = null;
+        this.session.currentCompany = null;
+        this.session.accessToken = null;
         this.userLogoutEvent.emit(null);
     }
 
@@ -160,7 +162,7 @@ export class SessionStore {
                     isOnlyDoctorRole = false;
                 }
             } else {
-                    isOnlyDoctorRole = false;
+                isOnlyDoctorRole = false;
             }
         }
         return isOnlyDoctorRole;
