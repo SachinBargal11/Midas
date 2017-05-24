@@ -19,6 +19,7 @@ import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
 import { Document } from '../../../commons/models/document';
 import { FileUpload, FileUploadModule } from 'primeng/primeng';
+import { ConsentStore } from '../../cases/stores/consent-store';
 
 @Component({
     selector: 'company-cases',
@@ -53,7 +54,7 @@ export class CompanyCasesComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
-
+        private _consentStore: ConsentStore,
     ) {
 
         this.companyId = this.sessionStore.session.currentCompany.id;
@@ -83,7 +84,7 @@ export class CompanyCasesComponent implements OnInit {
         }
     }
 
-    loadCases() {        
+    loadCases() {
         this._progressBarService.show();
         this._casesStore.getCasesByCompany()
             .subscribe(cases => {
@@ -270,6 +271,31 @@ export class CompanyCasesComponent implements OnInit {
             });
     }
 
+    downloadTemplate(caseId) {
+        this._progressBarService.show();
+        this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
     deleteDocument() {
         if (this.selectedDocumentList.length > 0) {
             this.confirmationService.confirm({
