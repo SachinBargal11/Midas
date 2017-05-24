@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/RefferingOffice")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class RefferingOfficeController : ApiController
     {
         private IRequestHandler<RefferingOffice> requestHandler;
@@ -21,7 +21,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -30,7 +30,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
        
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);

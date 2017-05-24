@@ -91,7 +91,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAllPatient")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllPatient([FromBody]Patient2 data)
         {
             return requestHandlerPatient2.GetGbObjects(Request, data);
@@ -99,7 +99,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getPatientsByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
         {
             return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
@@ -107,7 +107,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyWithOpenCases/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithOpenCases(int CompanyId)
         {
             return requestHandlerPatient2.GetGbObjects2(Request, CompanyId);
@@ -115,7 +115,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyWithCloseCases/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithCloseCases(int CompanyId)
         {
             return requestHandlerPatient2.GetGbObjects4(Request, CompanyId);
@@ -123,7 +123,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByLocationWithOpenCases/{LocationId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
         {
             return requestHandlerPatient2.GetGbObjects3(Request, LocationId);
@@ -131,7 +131,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getPatientById/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPatientById2(int id)
         {
             return requestHandlerPatient2.GetObject(Request, id);
@@ -139,7 +139,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyAndDoctorId/{companyId}/{doctorId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyAndDoctorId(int companyId,int doctorId)
         {
             return requestHandlerPatient2.GetGbObjects(Request, companyId, doctorId);
@@ -148,7 +148,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("savePatient")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
         {
             return requestHandlerPatient2.CreateGbObject(Request, patient2);
@@ -157,7 +157,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("addPatient")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage AddPatient([FromBody]AddPatient patient)
         {
             return requestHandlerAddPatient.CreateGbObject2(Request, patient);

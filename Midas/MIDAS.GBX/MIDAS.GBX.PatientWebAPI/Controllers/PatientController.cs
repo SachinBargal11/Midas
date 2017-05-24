@@ -10,7 +10,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/Patient")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class PatientController : ApiController
     {
         //private IRequestHandler<Patient> requestHandler;
@@ -25,7 +25,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getPatientById/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPatientById2(int id)
         {
             return requestHandlerPatient2.GetObject(Request, id);
@@ -33,7 +33,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyWithOpenCases/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithOpenCases(int CompanyId)
         {
             return requestHandlerPatient2.GetGbObjects2(Request, CompanyId);
@@ -41,7 +41,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("savePatient")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
         {
             return requestHandlerPatient2.CreateGbObject(Request, patient2);

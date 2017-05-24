@@ -30,7 +30,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -46,7 +46,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -54,7 +54,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]CompanyCaseConsentApproval data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -62,7 +62,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Delete/{caseId}/{documentId}/{companyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Delete(int caseId, int documentId, int companyId)
         {
             return requestHandler.Delete(Request, caseId, documentId, companyId);
@@ -84,7 +84,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseid}/{companyid}/{download}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public void DownloadConsent(int caseid, int companyid, bool download = true)
         {
             string filepath = requestHandler.Download(Request, caseid, companyid);
@@ -109,7 +109,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("uploadsignedconsent")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetElectronicSignedConsent([FromBody]CompanyCaseConsentBase64 data)
         {
             #region comment
