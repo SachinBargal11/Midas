@@ -73,10 +73,30 @@ export class SessionStore {
         return Observable.from(promise);
     }
 
+    // login(userId, password, forceLogin) {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
+    //             let accessToken = 'bearer ' + data.access_token;
+    //             this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
+    //                 if (!forceLogin) {
+    //                     window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
+    //                 } else {
+    //                     this._populateSession(account);
+    //                 }
+    //                 resolve(this._session);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //         }, (error) => {
+    //             reject(error);
+    //         });
+
+    //     });
+    //     return Observable.from(promise);
+    // }
     login(userId, password, forceLogin) {
         let promise = new Promise((resolve, reject) => {
-            this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
-                let accessToken = 'bearer ' + data.access_token;
+                let accessToken = '';
                 this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
                     if (!forceLogin) {
                         window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
@@ -87,10 +107,6 @@ export class SessionStore {
                 }, (error) => {
                     reject(error);
                 });
-            }, (error) => {
-                reject(error);
-            });
-
         });
         return Observable.from(promise);
     }
