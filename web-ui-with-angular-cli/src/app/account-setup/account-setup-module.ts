@@ -56,6 +56,10 @@ import { DocumentTypeService } from './services/document-type-service';
 
 import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
 
+import { GeneralSettingStore } from './stores/general-settings-store';
+import { GeneralSettingService } from './services/general-settings-service';
+
+
 // AccountSettingShellComponent
 @NgModule({
     imports: [
@@ -109,7 +113,8 @@ import { AccountGeneralSettingComponent } from './components/account-setting/acc
         ProcedureCodeMasterService,
         ProcedureCodeMasterStore,
         DocumentTypeStore,
-        DocumentTypeService
+        DocumentTypeService,
+        GeneralSettingStore, GeneralSettingService
     ]
 })
 export class AccountSetupModule { }
