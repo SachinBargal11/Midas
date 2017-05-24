@@ -112,37 +112,36 @@
             <label class="form-label">Attorney                               
                             </label>
             <div class="form-group" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
-                <select formControlName="attorneyId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid"
-                   >
-<option value="">-Select -</option>
-<option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.name}}</option>
-</select>
-<div class='error-list' *ngIf="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
-    <ul>
-        <li *ngIf="caseformControls.attorneyId.hasError('required')">Attorney is required.</li>
-    </ul>
+                <select formControlName="attorneyId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                    <option value="">-Select -</option>
+                        <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.prefferedAttorney.id}}">{{currentAttorney.prefferedAttorney.name}}</option>
+                </select>
+                <div class='error-list' *ngIf="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                    <ul>
+                        <li *ngIf="caseformControls.attorneyId.hasError('required')">Attorney is required.</li>
+                    </ul>
 
-</div>
-</div>
-</div>
+                </div>
+            </div>
+        </div>
 
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <label class="form-label"> Case Source
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Case Source
                             </label>
-        <div class="form-group" [class.error]="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
-            <input formControlName="caseSource" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
-            <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
-                <ul>
-                    <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
-                </ul>
+            <div class="form-group" [class.error]="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
+                <input formControlName="caseSource" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
+                <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
+                    <ul>
+                        <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<button [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+    <button [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
-<a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 </form>

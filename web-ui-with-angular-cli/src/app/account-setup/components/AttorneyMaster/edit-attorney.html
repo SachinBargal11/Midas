@@ -1,292 +1,160 @@
-<h3 class="with-border">Edit attorney</h3>
+<header class="card-header card-header-lg">
+    Edit Attorney
+</header>
 <div *ngIf="attorney">
-<form [formGroup]="attorneyform" (ngSubmit)="save()">
-    <section class="card">
-        <header class="card-header card-header-lg">
-            Attorney Information
-        </header>
-        <div class="card-block">
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> First Name
+    <form [formGroup]="attorneyform" name="attorneyform" (ngSubmit)="updateAttorney()">
+        <section class="card">
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> Company Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyform.controls.firstname.touched && !attorneyform.controls.firstname.valid">
-                        <input formControlName="firstname" [ngModel]="attorney.user.firstName" type="text" class="form-control" placeholder="" [class.error]="!attorneyform.controls.firstname.valid">
-                        <div class='error-list' *ngIf="attorneyform.controls.firstname.touched && !attorneyform.controls.firstname.valid">
-                            <ul>
-                                <li *ngIf="attorneyform.controls.firstname.hasError('required')">First Name is required.</li>
-                            </ul>
+                        <div class="form-group" [class.error]="attorneyformControls.companyName.touched && !attorneyformControls.companyName.valid">
+                            <input formControlName="companyName" [ngModel]="medicalProviderMaster.signup.company.name" type="text" class="form-control"
+                                [class.error]="!attorneyformControls.companyName.valid" />
+                            <div class='error-list' *ngIf="attorneyformControls.companyName.touched && !attorneyformControls.companyName.valid">
+                                <ul>
+                                    <li *ngIf="attorneyformControls.companyName.pending">Checking...</li>
+                                    <li *ngIf="attorneyformControls.companyName.hasError('required')">Company Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label"> Tax Id
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="attorneyformControls.taxId.touched && !attorneyformControls.taxId.valid">
+                            <input formControlName="taxId" [ngModel]="medicalProviderMaster.signup.company.taxId" type="text" class="form-control" [class.error]="!attorneyformControls.taxId.valid"
+                                minlength="10" />
+                            <div class='error-list' *ngIf="attorneyformControls.taxId.touched && !attorneyformControls.taxId.valid">
+                                <ul>
+                                    <li *ngIf="attorneyformControls.taxId.hasError('required')">Tax Id is required.</li>
+                                    <li *ngIf="attorneyformControls.taxId.hasError('minlength')">Tax Id should be minimum {{attorneyformControls.taxId.errors.minlength.requiredLength}}
+                                        characters.
+                                    </li>
+                                    <li *ngIf="attorneyformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{attorneyformControls.taxId.errors.maxlength.requiredLength}}
+                                        characters.
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Middle Name</label>
-                    <div class="form-group">
-                        <input formControlName="middlename" [ngModel]="attorney.user.middleName" type="text" class="form-control" placeholder="">
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Last Name
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyform.controls.lastname.touched && !attorneyform.controls.lastname.valid">
-                        <input formControlName="lastname" [ngModel]="attorney.user.lastName" type="text" class="form-control" placeholder="" [class.error]="!attorneyform.controls.lastname.valid">
-                        <div class='error-list' *ngIf="attorneyform.controls.lastname.touched && !attorneyform.controls.lastname.valid">
-                            <ul>
-                                <li *ngIf="attorneyform.controls.lastname.hasError('required')">Last Name is required.</li>
-                            </ul>
+                        <div class="form-group" [class.error]="attorneyformControls.firstName.touched && !attorneyformControls.firstName.valid">
+                            <input formControlName="firstName" [ngModel]="medicalProviderMaster.signup.user.firstName" type="text" class="form-control"
+                                [class.error]="!attorneyformControls.firstName.valid" />
+                            <div class='error-list' *ngIf="attorneyformControls.firstName.touched && !attorneyformControls.firstName.valid">
+                                <ul>
+                                    <li *ngIf="attorneyformControls.firstName.hasError('required')">First name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="attorneyformControls.lastName.touched && !attorneyformControls.lastName.valid">
+                            <input formControlName="lastName" [ngModel]="medicalProviderMaster.signup.user.lastName" type="text" class="form-control"
+                                [class.error]="!attorneyformControls.lastName.valid" />
+                            <div class='error-list' *ngIf="attorneyformControls.lastName.touched && !attorneyformControls.lastName.valid">
+                                <ul>
+                                    <li *ngIf="attorneyformControls.lastName.hasError('required')">Last name is required.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                       <label class="form-label"> Gender
-                                    <span class="color-red">*</span>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> Company type
+                                            <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyform.controls.gender.touched && !attorneyform.controls.gender.valid">
-                        <select formControlName="gender" [ngModel]="attorney.user.gender" class="select2-arrow form-control" [class.error]="attorneyform.controls.gender.touched && !attorneyform.controls.gender.valid">
-                                             <option value="">-Select Gender-</option>
-                                             <option disabled>────────────────────</option>
-                                             <option value="1">Male</option>
-                                             <option value="2">Female</option>
-                                             <option value="3">Others</option>
+                        <div class="form-group" [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
+                            <select formControlName="companyType" [ngModel]="medicalProviderMaster.signup.company.companyType" class="selectpicker form-control"
+                                title="Select Company Type." [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
+                                             <option value="">-Select company type-</option>
+                                             <option disabled>--------------------</option>
+                                             <option value="2">Attorney</option>                                             
                                          </select>
-                        <div class='error-list' *ngIf="attorneyform.controls.gender.touched && !attorneyform.controls.gender.valid">
-                            <ul>
-                                <li *ngIf="attorneyform.controls.gender.hasError('required')">Gender is required.</li>
-                            </ul>
+                            <div class='error-list' *ngIf="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
+                                <ul>
+                                    <li *ngIf="attorneyformControls.companyType.hasError('required')">Company type is required.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Date of Birth
+                    <div class="col-lg-6">
+                        <label class="form-label"> Phone number
+                                            <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group">
-                        <div class='input-group date'>
-                            <p-calendar formControlName="dob" [ngModel]="dateOfBirth" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true"
-                                yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                                </p-calendar>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="card">
-        <header class="card-header card-header-lg">
-            Attorney Contact
-        </header>
-        <div class="card-block">
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> E-Mail
-                                <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyEmail.touched && !attorneyformControls.attorneyEmail.valid">
-                        <input type="email" formControlName="attorneyEmail" [ngModel]="attorney.user.contact.emailAddress" [class.error]="!attorneyformControls.attorneyEmail.valid" class="form-control"
-                            type="text" placeholder="" />
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyEmail.touched && !attorneyformControls.attorneyEmail.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyEmail.hasError('required')">Attorney Email is required.</li>
-                                <li *ngIf="attorneyformControls.attorneyEmail.hasError('emailValidator')">Attorney Email is invalid.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Cellphone
-                                <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyCellPhone.touched && !attorneyformControls.attorneyCellPhone.valid">
-                        <p-inputMask mask="999-999-9999" formControlName="attorneyCellPhone" [ngModel]="cellPhone" [class.error]="attorneyformControls.attorneyCellPhone.touched && !attorneyformControls.attorneyCellPhone.valid"
-                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
-                            <div class='error-list' *ngIf="attorneyformControls.attorneyCellPhone.touched && !attorneyformControls.attorneyCellPhone.valid">
+                        <div class="form-group" [class.error]="attorneyformControls.phoneNo.touched && !attorneyformControls.attorneyCellPhone.valid">
+                            <p-inputMask mask="999-999-9999" formControlName="phoneNo" [ngModel]="medicalProviderMaster.signup.contactInfo.cellPhone"
+                                [class.error]="attorneyformControls.phoneNo.touched && !attorneyformControls.phoneNo.valid" placeholder="999-999-9999"
+                                styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="attorneyformControls.phoneNo.touched && !attorneyformControls.phoneNo.valid">
                                 <ul>
-                                    <li *ngIf="attorneyformControls.attorneyCellPhone.hasError('required')">Attorney Cellphone number is required.</li>
-                                    <li *ngIf="attorneyformControls.attorneyCellPhone.hasError('mobileNoValidator')">Attorney Cellphone number is invalid.</li>
+                                    <li *ngIf="attorneyformControls.phoneNo.hasError('required')">Phone number is required.</li>
+                                    <li *ngIf="attorneyformControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
                                 </ul>
                             </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Fax No</label>
-                        <p-inputMask mask="9-999-999 9999" [ngModel]="faxNo" formControlName="attorneyFaxNo" formControlName="attorneyFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Home Phone No</label>
-                        <input formControlName="attorneyHomePhone" [ngModel]="attorney.user.contact.homePhone" type="text" class="form-control" placeholder="" />
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Work Phone No</label>
-                        <input formControlName="attorneyWorkPhone" [ngModel]="attorney.user.contact.workPhone" type="text" class="form-control" placeholder="" />
-                    </div>
-                </div>
-             <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Office Extension</label>
-                        <input formControlName="attorneyofficeExtension" [ngModel]="attorney.user.contact.officeExtension" type="text" class="form-control" placeholder="" />
-                    </div>
-            </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Alternate E-Mail                                                                                                                                     
-                                </label>
-                        <div class="form-group" [class.error]="attorneyformControls.attorneyalternateEmail.touched && !attorneyformControls.attorneyalternateEmail.valid">
-                        <input formControlName="attorneyalternateEmail" [ngModel]="attorney.user.contact.alternateEmail" [class.error]="!attorneyformControls.attorneyalternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyalternateEmail.touched && !attorneyformControls.attorneyalternateEmail.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyalternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
                         </div>
                     </div>
                 </div>
-                </div>
-                  <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Preferred Communication
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> Subscription plan
+                                            <span class="color-red">*</span>
                                         </label>
-                        <select formControlName="attorneypreferredCommunication" [ngModel]="attorney.user.contact.preferredCommunication" type="text" class="form-control" placeholder="">
-                                        <option value="">-Select -</option>
-                                        <option disabled>────────────────────</option>
-                                        <option value="1">Cellphone</option>
-                                        <option value="2">Email</option>
-                                        <option value="3">Work Phone</option>
-                                        <option value="4">Post</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="card">
-        <header class="card-header card-header-lg">
-            Attorney Address
-        </header>
-        <div class="card-block">
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> Address1
-                         <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyAddress.touched && !attorneyformControls.attorneyAddress.valid">
-                        <input formControlName="attorneyAddress" [ngModel]="attorney.user.address.address1" type="text" class="form-control" placeholder="" [class.error]="!attorneyformControls.attorneyAddress.valid">
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyAddress.touched && !attorneyformControls.attorneyAddress.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyAddress.hasError('required')">Address is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Address2
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyAddress2.touched && !attorneyformControls.attorneyAddress2.valid">
-                        <input formControlName="attorneyAddress2" [ngModel]="attorney.user.address.address2" type="text" class="form-control" placeholder="" [class.error]="!attorneyformControls.attorneyAddress2.valid">
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyAddress2.touched && !attorneyformControls.attorneyAddress2.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyAddress2.hasError('required')">Address2 is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> State
-                                <!--<span class="color-red">*</span>-->
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyState.touched && !attorneyformControls.attorneyState.valid">
-                        <select formControlName="attorneyState" [ngModel]="attorney.user.address.state" type="text" (change)="selectState($event)" class="form-control" placeholder=""
-                            [class.error]="attorneyformControls.attorneyState.touched && !attorneyformControls.attorneyState.valid">
-                            <option value="">-Select State-</option>
-                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
-                            </select>
-                            <div class='error-list' *ngIf="attorneyformControls.attorneyState.touched && !attorneyformControls.attorneyState.valid">
+                        <div class="form-group" [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
+                            <select formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.signup.company.subscriptionType" class="selectpicker form-control"
+                                title="Select subscription plan." [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
+                                             <option value="">-Select subscription plan-</option>
+                                             <option disabled>--------------------</option>
+                                             <option value="1">Trial</option>
+                                             <!--<option value="30 day Trial">30 day Trial</option>-->
+                                         </select>
+                            <div class='error-list' *ngIf="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
                                 <ul>
-                                    <li *ngIf="attorneyformControls.attorneyState.hasError('required')">State is required.</li>
-                                </ul>
-                            </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> City
-                                <!--<span class="color-red">*</span>-->
-                            </label>
-                               <div class="form-group" [class.error]="attorneyformControls.attorneyCity.touched && !attorneyformControls.attorneyCity.valid">
-                            <input [ngModel]="attorney.user.address.city" formControlName="attorneyCity" type="text" class="form-control" [class.error]="!attorneyformControls.attorneyCity.valid"
-                                placeholder="" />
-                            <div class='error-list' *ngIf="attorneyformControls.attorneyCity.touched && !attorneyformControls.attorneyCity.valid">
-                                <ul>
-                                    <li *ngIf="attorneyformControls.attorneyCity.hasError('required')">City is required.</li>
+                                    <li *ngIf="attorneyformControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <!--<div class="form-group" [class.error]="attorneyformControls.attorneyCity.touched && !attorneyformControls.attorneyCity.valid">
-                        <select formControlName="attorneyCity" [ngModel]="selectedCity" type="text" class="form-control" placeholder="" [class.error]="attorneyformControls.attorneyCity.touched && !attorneyformControls.attorneyCity.valid">
-                            <option value="">-Select City-</option>
-                            <option *ngFor="let city of Cities" value="{{city.citytext}}">{{city.citytext}}</option>
-                        </select>
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyCity.touched && !attorneyformControls.attorneyCity.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyCity.hasError('required')">City is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>-->
-                <!--<div class="col-lg-1 m-t-lg">
-                    <loader [visible]="isattorneyCitiesLoading"></loader>
-                </div>-->
-                <div class="col-lg-4">
-                    <label class="form-label"> Zip code
-                                <!--<span class="color-red">*</span>-->
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyZipcode.touched && !attorneyformControls.attorneyZipcode.valid">
-                        <input formControlName="attorneyZipcode" [ngModel]="attorney.user.address.zipCode" type="text" class="form-control" placeholder="" [class.error]="!attorneyformControls.attorneyZipcode.valid">
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyZipcode.touched && !attorneyformControls.attorneyZipcode.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyZipcode.hasError('required')">Zipcode is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Country
-                                <!--<span class="color-red">*</span>-->
-                            </label>
-                    <div class="form-group" [class.error]="attorneyformControls.attorneyCountry.touched && !attorneyformControls.attorneyCountry.valid">
-                        <!--<input formControlName="attorneyCountry" [ngModel]="attorney.user.address.country" type="text" class="form-control" placeholder=""
-                         [class.error]="!attorneyformControls.attorneyCountry.valid">-->
-                         <select formControlName="attorneyCountry" type="text" [ngModel]="attorney.user.address.country" class="form-control" placeholder="" [class.error]="attorneyformControls.attorneyCountry.touched && !attorneyformControls.attorneyCountry.valid">
-                                        <option value="">-Select -</option>
-                                        <option disabled>────────────────────</option>
-                                        <option value="US">United States</option>
-                                    </select>
-                        <div class='error-list' *ngIf="attorneyformControls.attorneyCountry.touched && !attorneyformControls.attorneyCountry.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.attorneyCountry.hasError('required')">Country is required.</li>
-                            </ul>
+                    <div class="col-lg-6">
+                        <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="attorneyformControls.email.touched && !attorneyformControls.email.valid">
+                            <input formControlName="email" type="email" [ngModel]="medicalProviderMaster.signup.contactInfo.emailAddress" [class.error]="!attorneyformControls.email.valid"
+                                class="form-control" placeholder="" type="text" />
+                            <div class='error-list' *ngIf="attorneyformControls.email.touched && !attorneyformControls.email.valid">
+                                <ul>
+                                    <li *ngIf="attorneyformControls.email.hasError('required')">Email is required.</li>
+                                    <li *ngIf="attorneyformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <button [disabled]="!attorneyform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
-        <loader [visible]="isSaveProgress"></loader>
-    </button>
-    <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
-</form>
+        </section>
+
+        <button [disabled]="!attorneyform.valid || isRegistrationInProgress" type="submit" class="btn btn-success sign-up">Save
+                                <loader [visible]="isRegistrationInProgress"></loader>
+                            </button>
+        <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
+

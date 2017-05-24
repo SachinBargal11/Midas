@@ -127,7 +127,7 @@
                 <div class="form-group" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                     <select [ngModel]="caseDetail.attorneyId" formControlName="attorneyId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                             <option value="0">-Select -</option>
-                            <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.user.displayName}}</option>
+                            <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.prefferedAttorney.id}}">{{currentAttorney.prefferedAttorney.name}}</option>
                         </select>
                     <div class='error-list' *ngIf="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                         <ul>

@@ -89,6 +89,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         .Select(p => p.SlotDuration)
                                                         .FirstOrDefault();
 
+            if (SlotDuration == 0)
+            {
+                SlotDuration = 30;
+            }
+
             Calendar calendar = new Calendar();
             foreach (var eachEvent in CalendarEvents)
             {
@@ -279,6 +284,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .Select(p => p.SlotDuration)
                                                         .FirstOrDefault();
+            if(SlotDuration ==0)
+            {
+                SlotDuration = 30;
+            }
 
             Calendar calendar = new Calendar();
             foreach (var eachEvent in CalendarEvents)

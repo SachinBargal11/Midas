@@ -11,7 +11,8 @@
                 <div class="form-group">
                     <select type="text" [(ngModel)]="currentAttorneyId" class="form-control" placeholder="" (change)="selectAttorney($event)">
                             <option value="0">-Select Attorney-</option>
-                            <option *ngFor="let attorney of allAttorneys" value="{{attorney.id}}">{{attorney.user.firstName}} {{attorney.user.lastName}}</option>
+                            <!--<option *ngFor="let attorney of allAttorneys" value="{{attorney.id}}">{{attorney.user.firstName}} {{attorney.user.lastName}}</option>-->
+                            <option *ngFor="let attorney of allAttorneys"  value="{{attorney.id}}" >{{attorney.name}}</option>
                         </select>
                 </div>
             </div>
@@ -43,26 +44,18 @@
     </a>
             </div>
         </div>
-        <!--<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [lazy]="true" [rows]="10" [paginator]="true"
-[totalRecords]="totalRecords" (onLazyLoad)="loadAttorneysLazy($event)" [globalFilter]="gb" [responsive]="true">-->
         <p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
             <header>Attorney List</header>
             <p-column selectionMode="multiple"></p-column>
-            <p-column field="user.firstName" header="Attorney Name" [sortable]="true">
-                <ng-template let-attorney="rowData" pTemplate="body">
+            <p-column field="prefferedAttorney.name" header="Attorney Name" [sortable]="true">
+                <!--<ng-template let-attorney="rowData" pTemplate="body">
                     <a title="Edit" routerLink="edit/{{attorney.id}}">{{attorney.user.firstName}}{{attorney.user.lastName}}</a>
-                </ng-template>
-            </p-column>
-            <p-column field="user.contact.cellPhone" header="Phone Number" [sortable]="true">
-                <ng-template let-rowdata="rowData" pTemplate="body">
-                    <span>{{rowdata.user.contact.cellPhone | phoneFormat}}
-            </span>
-                </ng-template>
+                </ng-template>-->
             </p-column>
             <p-column styleClass="actions-cell" header="Actions">
-                <ng-template let-attorney="rowData" pTemplate="body">
+                <!--<ng-template let-attorney="rowData" pTemplate="body">
                     <a routerLink="edit/{{attorney.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-                </ng-template>
+                </ng-template>-->
             </p-column>
         </p-dataTable>
     </div><br>
