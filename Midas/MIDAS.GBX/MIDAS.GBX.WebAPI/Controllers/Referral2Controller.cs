@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Referral2 data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -150,7 +150,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("generateReferralDocument/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GenerateReferralDocument(int id)
         {
             return requestHandler.GenerateReferralDocument(Request, id);

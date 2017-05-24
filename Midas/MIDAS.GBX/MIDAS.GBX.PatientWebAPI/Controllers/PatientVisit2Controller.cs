@@ -21,7 +21,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByDoctorId/{doctorId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByDoctorId(int doctorId)
         {
             return requestHandler.GetByDoctorId(Request, doctorId);
@@ -29,7 +29,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByLocationId/{locationId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByLocationId(int locationId)
         {
             return requestHandler.GetByLocationId(Request, locationId);
@@ -44,7 +44,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PatientVisit2 data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -52,7 +52,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("DeleteVisit/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage DeleteVisit(int id)
         {
             return requestHandler.DeleteVisit(Request, id);
@@ -60,7 +60,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("DeleteCalendarEvent/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage DeleteCalendarEvent(int id)
         {
             return requestHandler.DeleteCalendarEvent(Request, id);
@@ -68,7 +68,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("CancleVisit/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage CancleVisit(int id)
         {
             return requestHandler.CancleVisit(Request, id);
@@ -76,7 +76,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("CancleCalendarEvent/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage CancleCalendarEvent(int id)
         {
             return requestHandler.CancleCalendarEvent(Request, id);
@@ -84,7 +84,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -92,7 +92,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("addUploadedFileData/{id}/{FileUploadPath}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage AddUploadedFileData(int id, string FileUploadPath)
         {
             return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
@@ -100,7 +100,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getDocumentList/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetDocumentList(int id)
         {
             return requestHandler.GetDocumentList(Request, id);
@@ -108,7 +108,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);

@@ -41,7 +41,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAllLocationAndCompany")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllLocationAndCompany()
         {
             return requestHandler.GetObjects(Request);

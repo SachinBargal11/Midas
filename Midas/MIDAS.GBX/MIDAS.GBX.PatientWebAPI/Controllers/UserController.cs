@@ -22,7 +22,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             adduserrequestHandler = new GbApiRequestHandler<AddUser>();
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
@@ -39,7 +39,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AddUser data)
         {
             return adduserrequestHandler.CreateGbObject(Request, data);
@@ -65,7 +65,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("ResetPassword")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage ResetPassword([FromBody]AddUser data)
         {
             return adduserrequestHandler.ResetPassword(Request, data);

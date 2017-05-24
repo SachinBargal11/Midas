@@ -42,7 +42,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
@@ -50,7 +50,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByPrefMedProviderId/{PrefMedProviderId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByPrefMedProviderId(int PrefMedProviderId)
         {
             return requestHandler.GetByPrefMedProviderId(Request, PrefMedProviderId);
@@ -80,7 +80,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getPreferredCompanyDoctorsAndRoomByCompanyId/{CompanyId}/{SpecialityId}/{RoomTestId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId)
         {
             return requestHandler.GetPreferredCompanyDoctorsAndRoomByCompanyId(Request, CompanyId, SpecialityId, RoomTestId);

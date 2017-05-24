@@ -19,7 +19,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Log")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class LogController : ApiController
     {
 
@@ -31,7 +31,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("GetAll")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Log data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -39,7 +39,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -48,7 +48,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Log data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -56,7 +56,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [Route("Update")]
         [HttpPut]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Put([FromBody]Log User)
         {
             return requestHandler.UpdateGbObject(Request, User);
@@ -64,7 +64,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpDelete]
         [Route("Delete")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Delete([FromBody]Log User)
         {
             return requestHandler.DeleteGbObject(Request, User);

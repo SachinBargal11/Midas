@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllAttornies()
         {
             return requestHandler.GetObjects(Request);
@@ -31,7 +31,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -39,7 +39,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
@@ -48,7 +48,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         
         [HttpGet]
         [Route("getAllExcludeCompany/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllExcludeCompany(int CompanyId)
         {
             return requestHandler.GetAllExcludeCompany(Request, CompanyId);
@@ -56,7 +56,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("associateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage AssociateAttorneyWithCompany(int AttorneyId, int CompanyId)
         {
             return requestHandler.AssociateAttorneyWithCompany(Request,AttorneyId,CompanyId);
@@ -64,7 +64,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("disassociateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
         {
             return requestHandler.DisassociateAttorneyWithCompany(Request, AttorneyId, CompanyId);
@@ -72,7 +72,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AttorneyMaster data)
         { return requestHandler.CreateGbObject(Request, data); }
 
