@@ -86,7 +86,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}/{type}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id, string type)
         {
             return requestHandler.GetObject(Request, id, type);
@@ -180,7 +180,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public void Download(int caseId, int documentid)
         {
             string filepath = requestHandler.Download(Request, caseId, documentid);
@@ -199,7 +199,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("Delete/{caseId}/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage DeleteFile(int caseId, int id)
         {
             return requestHandler.DeleteFile(Request, caseId, id);

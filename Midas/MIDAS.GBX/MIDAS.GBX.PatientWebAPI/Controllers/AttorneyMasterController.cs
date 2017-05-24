@@ -23,28 +23,28 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         // GET: api/getAttornyById/
         [HttpGet]
         [Route("getAll/")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllAttornies()
         { return requestHandler.GetObjects(Request); }
 
         // GET: api/getAttornyById/
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         { return requestHandler.GetObject(Request, id); }
 
         // GET: api/getAttornyByCompanyId/
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         { return requestHandler.GetGbObjects(Request, CompanyId); }
 
         // GET: api/getAttornyByCompanyId/
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AttorneyMaster data)
         { return requestHandler.CreateGbObject(Request, data); }
 

@@ -257,8 +257,30 @@ export class InboundReferralsComponent implements OnInit {
         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
     }
 
+    downloadTemplate(caseId) {       
+        this._progressBarService.show();
+        this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
 
-
-
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
 
 }

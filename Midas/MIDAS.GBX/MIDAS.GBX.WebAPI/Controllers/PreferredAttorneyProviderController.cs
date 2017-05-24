@@ -21,7 +21,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PreferredAttorneyProviderSignUp data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -43,7 +43,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getPrefAttorneyProviderByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPrefAttorneyProviderByCompanyId(int CompanyId)
         {
             return requestHandler.GetPrefAttorneyProviderByCompanyId(Request, CompanyId);

@@ -51,7 +51,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AddUser data)
         {
             return adduserrequestHandler.CreateGbObject(Request, data);
@@ -129,7 +129,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("ResetPassword")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage ResetPassword([FromBody]AddUser data)
         {
             return adduserrequestHandler.ResetPassword(Request, data);

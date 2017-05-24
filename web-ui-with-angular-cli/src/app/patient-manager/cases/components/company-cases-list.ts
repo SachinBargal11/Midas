@@ -83,7 +83,7 @@ export class CompanyCasesComponent implements OnInit {
         }
     }
 
-    loadCases() {
+    loadCases() {        
         this._progressBarService.show();
         this._casesStore.getCasesByCompany()
             .subscribe(cases => {

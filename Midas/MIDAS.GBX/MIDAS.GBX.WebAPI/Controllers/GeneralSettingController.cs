@@ -32,7 +32,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
        
         [HttpPost]
         [Route("Save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]GeneralSetting data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -40,7 +40,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);

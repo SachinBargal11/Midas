@@ -21,6 +21,7 @@ import { Patient } from '../../patients/models/patient';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import * as _ from 'underscore';
+import { Account } from '../../../account/models/account';
 @Component({
     selector: 'add-case',
     templateUrl: './add-case.html'
@@ -30,7 +31,6 @@ export class AddCaseComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
-    attorneys: Attorney[];
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
@@ -39,7 +39,7 @@ export class AddCaseComponent implements OnInit {
     patientName: string;
     patients: Patient[];
     patientsWithoutCase: Patient[];
-
+    attorneys: Account[];
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -91,8 +91,7 @@ export class AddCaseComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
             attorneyId: [''],
-            // caseStatus: [''],
-            //transportation: ['0'],
+            caseSource: ['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -102,18 +101,36 @@ export class AddCaseComponent implements OnInit {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
 
+        // this._attorneyMasterStore.getAll()
+        //     // .subscribe(attorneys => this.attorneys = attorneys);
+        //     .subscribe((attorneys: Attorney[]) => {
+        //         let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
+        //             return currentAttorney.user != null;
+        //         });
+        //         this.attorneys = matchingAttorneys;
+        //     });
+
         this._attorneyMasterStore.getAll()
             // .subscribe(attorneys => this.attorneys = attorneys);
-            .subscribe((attorneys: Attorney[]) => {
-                let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
-                    return currentAttorney.user != null;
-                });
-                this.attorneys = matchingAttorneys;
+            .subscribe((attorneys: Account[]) => {
+                // let matchingAttorneys: Account[] = _.filter(attorneys, (currentAttorney: Attorney) => {
+                //     return currentAttorney.user != null;
+                // });
+                this.attorneys = attorneys;
             });
-        // this.loadPatients();
         this.loadPatientsWithoutCase();
     }
 
+
+    // attoneyChange(event) {
+    //     let attorneyId: number;
+    //     attorneyId = parseInt(event.target.value);
+
+    //     if (attorneyId > 0) {
+
+    //     }
+    // }
+    
     selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
         let idPatient = parseInt(event.target.value);
@@ -168,9 +185,7 @@ export class AddCaseComponent implements OnInit {
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
-            // caseStatus: caseFormValues.caseStatus,
-            // transportation: caseFormValues.transportation,
-            //transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
+            caseSource: caseFormValues.caseSource,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment()
         });
@@ -203,7 +218,5 @@ export class AddCaseComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-
     }
-
 }

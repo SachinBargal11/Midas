@@ -22,7 +22,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("ValidateInvitation")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage ValidateInvitation([FromBody]Invitation data)
         {
             if (data != null)

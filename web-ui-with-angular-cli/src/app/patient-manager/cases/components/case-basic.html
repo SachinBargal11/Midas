@@ -137,30 +137,23 @@
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-
+        <div class="row">
             <div class="col-lg-4">
-                <label class="form-label"> Transportation Required
-                        <span class="color-red">*</span>
-                    </label>
-                <div class="form-group">
-                    <label class="form-check-label">
-                        <input type="radio" value="1" name="transportation" formControlName="transportation" [ngModel]="caseDetail.transportation"> Yes
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" value="0" name="transportation" formControlName="transportation" [ngModel]="caseDetail.transportation"> No
-                    </label>
-                </div>
-                <div class="form-group">
-                    <p-radioButton [ngModel]="transportation" formControlName="transportation" name="transportation" value="1" label="Yes"></p-radioButton>
-                    <p-radioButton [ngModel]="transportation" formControlName="transportation" name="transportation" value="0" label="No"></p-radioButton>
+                <label class="form-label"> Case Source
+                            </label>
+                <div class="form-group" [class.error]="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
+                    <input formControlName="caseSource" [ngModel]="caseDetail.caseSource"  type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
+                    <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-        </div>-->
+        </div>
         <button *ngIf="caseDetail.caseStatusId === 1" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
         </button>
-        <a  *ngIf="caseDetail.caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+        <a *ngIf="caseDetail.caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
