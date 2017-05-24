@@ -50,6 +50,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("get/{id}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {

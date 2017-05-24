@@ -375,6 +375,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             return lstprovider;
         }
+        #endregion
+
+
+        #region Get Attorney Provider By PreferredAttorneyProvider Id
+        public override object Get(int Id)
+        {
+            var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company")
+                                                                      .Include("Company1")
+                                                                      .Where(p => p.PrefAttorneyProviderId == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                       .ToList();
+
+            List<BO.PreferredAttorneyProvider> lstprovider = new List<BO.PreferredAttorneyProvider>();
+
+            if (AttorenyProvider == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                AttorenyProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredAttorneyProvider, PreferredAttorneyProvider>(item)));
+            }
+
+            return lstprovider;
+        }
         #endregion 
 
         #region Delete
