@@ -140,7 +140,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}/{type}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id, string type)
         {
             return requestHandler.GetObject(Request, id, type);

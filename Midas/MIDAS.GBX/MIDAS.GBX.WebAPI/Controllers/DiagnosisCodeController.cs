@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByDiagnosisTypeId/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetDiagnosisType(int id)
         {
             return requestHandler.GetDiagnosisType(Request, id);

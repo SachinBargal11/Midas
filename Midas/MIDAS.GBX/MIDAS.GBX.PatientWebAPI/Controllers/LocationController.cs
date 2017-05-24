@@ -22,7 +22,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("GetAll")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Location data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -30,7 +30,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getAllLocationAndCompany")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllLocationAndCompany()
         {
             return requestHandler.GetObjects(Request);

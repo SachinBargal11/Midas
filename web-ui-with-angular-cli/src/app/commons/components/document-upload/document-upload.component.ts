@@ -56,6 +56,10 @@ export class DocumentUploadComponent implements OnInit {
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
   @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
 
+  @Input() isdownloadTemplate: boolean = false;
+  @Output() download: EventEmitter<Document> = new EventEmitter();
+  @Input() inputCaseId: number;
+
   constructor(
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
@@ -65,6 +69,7 @@ export class DocumentUploadComponent implements OnInit {
     private _progressBarService: ProgressBarService,
     private _consentService: ConsentService,
     private _sessionStore: SessionStore,
+
   ) {
     this._updateScannerContainerId();
     this.digitalForm = this._fb.group({
@@ -143,13 +148,13 @@ export class DocumentUploadComponent implements OnInit {
   onBeforeSendEvent(event) {
     let param: string;
     if (this.currentId == 2) {
-      if(this.isConsentDocumentOn) {
-      param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"'+ this.objectId +'"}';
+      if (this.isConsentDocumentOn) {
+        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
       } else {
-      param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"'+ this.objectId +'"}';
+        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
       }
-    } else if(this.currentId == 3) {
-      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"'+ this.objectId +'"}';
+    } else if (this.currentId == 3) {
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
     }
     event.xhr.setRequestHeader("inputjson", param);
   }
@@ -242,6 +247,9 @@ export class DocumentUploadComponent implements OnInit {
       () => {
         // this._progressBarService.hide();
       });
+  }
+  downloadTemplate() {
+    this.download.emit();
   }
 }
 export interface TwainSource {

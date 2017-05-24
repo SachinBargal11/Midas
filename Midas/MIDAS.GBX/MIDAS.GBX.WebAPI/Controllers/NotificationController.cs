@@ -19,7 +19,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Notification")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class NotificationController : ApiController
     {
         //private IRequestHandler<Patient> requestHandler;
@@ -35,7 +35,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAll()
         {
             return requestHandlerNotification.GetObjects(Request);
@@ -45,7 +45,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandlerNotification.GetGbObjects(Request, CompanyId);
@@ -54,7 +54,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandlerNotification.GetObject(Request, id);
@@ -62,7 +62,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Save([FromBody]Notification notification)
         {
             return requestHandlerNotification.CreateGbObject(Request, notification);
@@ -70,7 +70,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getViewStatus/{id}/{status}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetViewStatus(int id, bool status)
         {
             return requestHandlerNotification.GetViewStatus(Request, id, status);

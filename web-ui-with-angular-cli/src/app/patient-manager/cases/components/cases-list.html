@@ -35,8 +35,7 @@
             </a>
         </ng-template>
     </p-column>
-    <p-column header="Case Source">
-    </p-column>
+    <p-column header="Case Source" field="caseSource"> </p-column>
     <!--<p-column header="Referral Status">
         <ng-template let-case="rowData" pTemplate="body">
             <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals"><u>Inbound</u></a>

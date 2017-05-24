@@ -102,6 +102,7 @@ export class CaseBasicComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
+            caseSource: ['']
             // transportation: [1, Validators.required],
         });
 
@@ -127,7 +128,7 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
-            // transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
+            caseSource: caseFormValues.caseSource,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));

@@ -22,7 +22,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
