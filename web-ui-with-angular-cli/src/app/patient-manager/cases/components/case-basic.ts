@@ -62,7 +62,7 @@ export class CaseBasicComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
-         this._route.parent.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
@@ -84,6 +84,20 @@ export class CaseBasicComponent implements OnInit {
                     this.attorneys = results[3];
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
+                 
+                    if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+                        this.caseform.get("attorneyId").disable();
+                    }
+                    else {
+                        this.caseform.get("attorneyId").enable();
+                    }
+
+                    if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+                        this.caseform.get("caseSource").disable();
+                    }
+                    else {
+                        this.caseform.get("caseSource").enable();
+                    }
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -112,7 +126,29 @@ export class CaseBasicComponent implements OnInit {
     ngOnInit() {
     }
 
+
+    attorneyChange(event) {
+        let attorneyId = parseInt(event.target.value);
+        if (attorneyId > 0) {
+            this.caseform.get("caseSource").disable();
+        }
+        else {
+            this.caseform.get("caseSource").enable();
+        }
+    }
+
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        if (CaseSource != "") {
+            this.caseform.get("attorneyId").disable();
+        }
+        else {
+            this.caseform.get("attorneyId").enable();
+        }
+    }
+
     saveCase() {
+       
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;
@@ -126,7 +162,7 @@ export class CaseBasicComponent implements OnInit {
             locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.attorneyId,
+            attorneyId: parseInt(caseFormValues.attorneyId, 10),
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
             updateByUserID: this.sessionStore.session.account.user.id,

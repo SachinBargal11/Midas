@@ -39,7 +39,8 @@ export class AddCaseComponent implements OnInit {
     patientName: string;
     patients: Patient[];
     patientsWithoutCase: Patient[];
-    attorneys: Attorney[];
+    attorneys: Attorney[];  
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -97,7 +98,7 @@ export class AddCaseComponent implements OnInit {
         this.caseformControls = this.caseform.controls;
     }
 
-   ngOnInit() {
+    ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
 
@@ -109,20 +110,31 @@ export class AddCaseComponent implements OnInit {
                 // });
                 this.attorneys = attorneys;
             });
-        // this.loadPatients();
+        
         this.loadPatientsWithoutCase();
     }
 
 
-    // attoneyChange(event) {
-    //     let attorneyId: number;
-    //     attorneyId = parseInt(event.target.value);
+    attorneyChange(event) {
+         let attorneyId = parseInt(event.target.value);         
+        if (attorneyId > 0) {
+            this.caseform.get("caseSource").disable();
+        }
+        else {
+            this.caseform.get("caseSource").enable();
+        }
+    }
 
-    //     if (attorneyId > 0) {
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        if (CaseSource != "") {
+            this.caseform.get("attorneyId").disable();
+        }
+        else {
+            this.caseform.get("attorneyId").enable();
+        }
+    }
 
-    //     }
-    // }
-    
     selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
         let idPatient = parseInt(event.target.value);
@@ -130,23 +142,6 @@ export class AddCaseComponent implements OnInit {
         result.subscribe((employer) => { this.employer = employer; }, null);
         console.log(this.employer)
     }
-
-
-    // loadPatients() {
-    //     this._progressBarService.show();
-    //     this._patientsStore.getPatients()
-    //         .subscribe(patients => {
-    //             this.patients = patients;
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    // }
-
-
 
     loadPatientsWithoutCase() {
         this._progressBarService.show();
@@ -162,7 +157,7 @@ export class AddCaseComponent implements OnInit {
             });
     }
 
-    saveCase() {
+    saveCase() {       
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;

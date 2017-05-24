@@ -197,6 +197,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+
         #region Entity Conversion ConvertWithPatient
         //public T ConvertWithPatient<T, U>(U entity)
         //{
@@ -620,9 +622,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
-                    caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
-                    caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
-
+                    if (!string.IsNullOrEmpty(caseBO.caseSource))
+                    { caseDB.AttorneyId = null; }
+                    else
+                    {
+                        caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
+                    }
+                    if (caseBO.AttorneyId > 0)
+                    { caseDB.CaseSource = null; }
+                    else
+                    {
+                        caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
+                    }
                     if (Add_caseDB == true)
                     {
                         caseDB = _context.Cases.Add(caseDB);
