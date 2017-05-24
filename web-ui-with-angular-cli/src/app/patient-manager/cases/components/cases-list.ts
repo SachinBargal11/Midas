@@ -73,6 +73,7 @@ export class CasesListComponent implements OnInit {
     }
 
     loadCases() {
+       
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {

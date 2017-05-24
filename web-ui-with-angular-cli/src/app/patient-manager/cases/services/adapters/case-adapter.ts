@@ -47,9 +47,9 @@ export class CaseAdapter {
                 caseTypeId: data.caseTypeId,
                 companies: companies,
                 caseCompanyConsentDocument: caseCompanyConsentDocument,
-                companyCaseConsentApproval:companyCaseConsentApproval,
+                companyCaseConsentApproval: companyCaseConsentApproval,
                 // referral:referral,
-                referral:data.referral,
+                referral: data.referral,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 // transportation: data.transportation ? true : false,
@@ -61,7 +61,9 @@ export class CaseAdapter {
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                caseSource: data.caseSource
+
             });
         }
         return patient_case;
@@ -112,12 +114,15 @@ export class CaseAdapter {
                 patientEmpInfoId: data.patientEmpInfoId,
                 caseCompanyConsentDocument: caseCompanyConsentDocument,
                 companyCaseConsentApproval: companyCaseConsentApproval,
-                referral:data.referral,
+                referral: data.referral,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                caseSource: data.caseSource
+
+
             });
         }
         return patient_case;
