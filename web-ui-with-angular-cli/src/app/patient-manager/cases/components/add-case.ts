@@ -39,7 +39,7 @@ export class AddCaseComponent implements OnInit {
     patientName: string;
     patients: Patient[];
     patientsWithoutCase: Patient[];
-    attorneys: Account[];
+    attorneys: Attorney[];
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -97,27 +97,19 @@ export class AddCaseComponent implements OnInit {
         this.caseformControls = this.caseform.controls;
     }
 
-    ngOnInit() {
+   ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
 
-        // this._attorneyMasterStore.getAll()
-        //     // .subscribe(attorneys => this.attorneys = attorneys);
-        //     .subscribe((attorneys: Attorney[]) => {
-        //         let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
-        //             return currentAttorney.user != null;
-        //         });
-        //         this.attorneys = matchingAttorneys;
-        //     });
-
-        this._attorneyMasterStore.getAll()
+        this._attorneyMasterStore.getAttorneyMasters()
             // .subscribe(attorneys => this.attorneys = attorneys);
-            .subscribe((attorneys: Account[]) => {
-                // let matchingAttorneys: Account[] = _.filter(attorneys, (currentAttorney: Attorney) => {
+            .subscribe((attorneys: Attorney[]) => {
+                // let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
                 //     return currentAttorney.user != null;
                 // });
                 this.attorneys = attorneys;
             });
+        // this.loadPatients();
         this.loadPatientsWithoutCase();
     }
 

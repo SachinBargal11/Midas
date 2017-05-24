@@ -1,3 +1,4 @@
+import { AnonymousSubscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -91,11 +92,11 @@ export class AttorneyMasterStore {
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
 
-    addAttorney(attorney: Attorney): Observable<Attorney> {
+    addAttorney(signUp: any): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.addAttorney(attorney).subscribe((attorney: Attorney) => {
-                this._attorneyMaster.next(this._attorneyMaster.getValue().push(attorney));
-                resolve(attorney);
+            this._attorneyMasterService.addAttorney(signUp).subscribe((any) => {
+                this._attorneyMaster.next(this._attorneyMaster.getValue().push(any));
+                resolve(any);
             }, error => {
                 reject(error);
             });
@@ -132,17 +133,17 @@ export class AttorneyMasterStore {
         });
         return <Observable<Attorney>>Observable.from(promise);
     }
-    getAll(): Observable<Attorney[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.getAll().subscribe((attorney: Attorney[]) => {
-                this._allAttorneyInMidas.next(List(attorney));
-                resolve(attorney);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Attorney[]>>Observable.fromPromise(promise);
-    }
+    // getAll(): Observable<Attorney[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._attorneyMasterService.getAll().subscribe((attorney: Attorney[]) => {
+    //             this._allAttorneyInMidas.next(List(attorney));
+    //             resolve(attorney);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Attorney[]>>Observable.fromPromise(promise);
+    // }
     resetStore() {
         this._attorneyMaster.next(this._attorneyMaster.getValue().clear());
         this._allAttorneyInMidas.next(this._allAttorneyInMidas.getValue().clear());
