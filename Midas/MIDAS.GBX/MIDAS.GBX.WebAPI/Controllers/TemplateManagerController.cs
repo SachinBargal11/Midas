@@ -27,7 +27,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {        
         private IRequestHandler<TemplateType> requestHandler;
         private IBlobService blobhandler;
-        
+        string temppath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/");
         public TemplateManagerController()
         {
             requestHandler = new GbApiRequestHandler<TemplateType>();
@@ -42,7 +42,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (res != null)
             {
                 string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText);
+                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText, temppath);
 
                 FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
                                 
@@ -68,7 +68,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (res != null)
             {
                 string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText);
+                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText, temppath);
 
                 FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
 

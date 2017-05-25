@@ -24,11 +24,14 @@ export class VisitReferralService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getPendingReferralById(pendingReferralId: Number): Observable<VisitReferral> {
         let promise: Promise<VisitReferral> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PendingReferral/get/' + pendingReferralId).map(res => res.json())
+            return this._http.get(this._url + '/PendingReferral/get/' + pendingReferralId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let visitReferral = null;
                     if (data) {
@@ -47,7 +50,9 @@ export class VisitReferralService {
 
     getPendingReferralByPatientVisitId(patientVisitId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PendingReferral/getByPatientVisitId/' + patientVisitId ).map(res => res.json())
+            return this._http.get(this._url + '/PendingReferral/getByPatientVisitId/' + patientVisitId , {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);
@@ -61,7 +66,9 @@ export class VisitReferralService {
     }
     getPendingReferralByCompanyId(companyId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PendingReferral/getPendingReferralByCompanyId/' + companyId ).map(res => res.json())
+            return this._http.get(this._url + '/PendingReferral/getPendingReferralByCompanyId/' + companyId, {
+                headers: this._headers
+            } ).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);
@@ -76,7 +83,9 @@ export class VisitReferralService {
 
     getPendingReferralByDoctorId(doctorId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PendingReferral/getByDoctorId/' + doctorId ).map(res => res.json())
+            return this._http.get(this._url + '/PendingReferral/getByDoctorId/' + doctorId , {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);
@@ -90,7 +99,9 @@ export class VisitReferralService {
     }
     getPendingReferralBySpecialityId(specialityId: Number): Observable<VisitReferral[]> {
         let promise: Promise<VisitReferral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PendingReferral/getBySpecialityId/' + specialityId ).map(res => res.json())
+            return this._http.get(this._url + '/PendingReferral/getBySpecialityId/' + specialityId , {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let visitReferral = (<Object[]>data).map((data: any) => {
                         return visitReferralAdapter.parseResponse(data);

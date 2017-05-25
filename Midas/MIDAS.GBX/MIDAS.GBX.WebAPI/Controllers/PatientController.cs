@@ -172,11 +172,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("associatePatientWithAttorneyCompany/{PatientId}/{CompanyId}")]
+        [Route("associatePatientWithAttorneyCompany/{PatientId}/{AttorneyCompanyId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage AssociatePatientWithAttorneyCompany(int PatientId, int CompanyId)
+        public HttpResponseMessage AssociatePatientWithAttorneyCompany(int PatientId, int AttorneyCompanyId)
         {
-            return requestHandlerPatient2.AssociatePatientWithAttorneyCompany(Request, PatientId, CompanyId);
+            return requestHandlerPatient2.AssociatePatientWithAttorneyCompany(Request, PatientId, AttorneyCompanyId);
         }
 
         protected override void Dispose(bool disposing)

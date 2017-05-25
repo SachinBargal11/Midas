@@ -26,11 +26,14 @@ export class PatientVisitService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getPatientVisit(patientVisitId: Number): Observable<PatientVisit> {
         let promise: Promise<PatientVisit> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/get/' + patientVisitId).map(res => res.json())
+            return this._http.get(this._url + '/PatientVisit/get/' + patientVisitId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let patientVisits = null;
                     if (data) {
@@ -49,7 +52,9 @@ export class PatientVisitService {
 
     getPatientVisitsByLocationId(locationId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationId/' + locationId)
+            return this._http.get(this._url + '/PatientVisit/getByLocationId/' + locationId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -66,7 +71,9 @@ export class PatientVisitService {
 
     getPatientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByCaseId/' + caseId)
+            return this._http.get(this._url + '/PatientVisit/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -85,7 +92,9 @@ export class PatientVisitService {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDates/' + doctorId + '/' + fromDate + '/' + toDate)
+            return this._http.get(this._url + '/patientVisit/getByDates/' + doctorId + '/' + fromDate + '/' + toDate, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -103,7 +112,9 @@ export class PatientVisitService {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDoctorAndDates/' + doctorId + '/' + fromDate + '/' + toDate)
+            return this._http.get(this._url + '/patientVisit/getByDoctorAndDates/' + doctorId + '/' + fromDate + '/' + toDate, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -121,7 +132,9 @@ export class PatientVisitService {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDoctorDatesAndName/' + fromDate + '/' + toDate + '/' + doctorName)
+            return this._http.get(this._url + '/patientVisit/getByDoctorDatesAndName/' + fromDate + '/' + toDate + '/' + doctorName, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -139,7 +152,9 @@ export class PatientVisitService {
 
     getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/get/' + visitId + '/visit')
+            return this._http.get(this._url + '/fileupload/get/' + visitId + '/visit', {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -176,7 +191,9 @@ export class PatientVisitService {
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByDoctorId/' + doctorId)
+            return this._http.get(this._url + '/PatientVisit/getByDoctorId/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -193,7 +210,9 @@ export class PatientVisitService {
 
     getPatientVisitsByLocationAndRoomId(locationId: number, roomId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationAndRoomId/' + locationId + '/' + roomId)
+            return this._http.get(this._url + '/PatientVisit/getByLocationAndRoomId/' + locationId + '/' + roomId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -210,7 +229,9 @@ export class PatientVisitService {
 
     getPatientVisitsByLocationAndDoctorId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationAndDoctorId/' + locationId + '/' + doctorId)
+            return this._http.get(this._url + '/PatientVisit/getByLocationAndDoctorId/' + locationId + '/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -312,7 +333,9 @@ export class PatientVisitService {
 
     cancelPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/CancleCalendarEvent/' + patientVisitDetail.calendarEvent.id)
+            return this._http.get(this._url + '/PatientVisit/CancleCalendarEvent/' + patientVisitDetail.calendarEvent.id, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedCalendarEvent: ScheduledEvent = null;
@@ -350,7 +373,9 @@ export class PatientVisitService {
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
 
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/DeleteVisit/' + patientVisitDetail.id)
+            return this._http.get(this._url + '/PatientVisit/DeleteVisit/' + patientVisitDetail.id, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);

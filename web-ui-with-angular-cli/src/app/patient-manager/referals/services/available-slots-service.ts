@@ -23,13 +23,16 @@ export class AvailableSlotsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getAvailableSlotsByLocationAndDoctorId(locationId: Number, doctorId: Number, startDate: moment.Moment, endDate: moment.Moment): Observable<AvailableSlot[]> {
         let formattedStartDate: string = startDate.format('YYYY-MM-DD');
         let formattedEndDate: string = endDate.format('YYYY-MM-DD');
         let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForDoctorByLocationId/${doctorId}/${locationId}/${formattedStartDate}/${formattedEndDate}`).map(res => res.json())
+            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForDoctorByLocationId/${doctorId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let availableSlots: AvailableSlot[] = [];
                     if (_.isArray(data)) {
@@ -50,7 +53,9 @@ export class AvailableSlotsService {
         let formattedStartDate: string = startDate.format('YYYY-MM-DD');
         let formattedEndDate: string = endDate.format('YYYY-MM-DD');
         let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForRoomByLocationId/${roomId}/${locationId}/${formattedStartDate}/${formattedEndDate}`).map(res => res.json())
+            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForRoomByLocationId/${roomId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let availableSlots: AvailableSlot[] = [];
                     if (_.isArray(data)) {

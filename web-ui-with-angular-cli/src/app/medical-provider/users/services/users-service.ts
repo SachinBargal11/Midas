@@ -22,11 +22,14 @@ export class UsersService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getUser(userId: Number): Observable<User> {
         let promise: Promise<User> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/user/get/' + userId).map(res => res.json())
+            return this._http.get(this._url + '/user/get/' + userId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((userData: any) => {
                     let parsedUser: User = null;
                     parsedUser = UserAdapter.parseResponse(userData);
@@ -68,7 +71,9 @@ export class UsersService {
     }
     // getUsers(accountId: number): Observable<AccountDetail[]> {
     //     let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/Account/Get/' + accountId).map(res => res.json())
+    //         return this._http.get(this._url + '/Account/Get/' + accountId, {
+            //     headers: this._headers
+            // }).map(res => res.json())
     //             .subscribe((data: any) => {
     //                 let users = (<Object[]>data.users).map((userData: any) => {
     //                     return UserAdapter.parseResponse(userData);

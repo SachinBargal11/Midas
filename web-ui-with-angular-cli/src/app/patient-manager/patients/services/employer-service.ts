@@ -20,10 +20,13 @@ export class EmployerService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getEmployer(employerId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/get/' + employerId).map(res => res.json())
+            return this._http.get(this._url + '/PatientEmpInfo/get/' + employerId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let employer = null;
                     if (data.length) {
@@ -42,7 +45,9 @@ export class EmployerService {
 
     getEmployers(patientId: Number): Observable<Employer[]> {
         let promise: Promise<Employer[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/getByPatientId/' + patientId)
+            return this._http.get(this._url + '/PatientEmpInfo/getByPatientId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let employers = (<Object[]>data).map((data: any) => {
@@ -58,7 +63,9 @@ export class EmployerService {
     }
     getCurrentEmployer(patientId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/getCurrentEmpByPatientId/' + patientId)
+            return this._http.get(this._url + '/PatientEmpInfo/getCurrentEmpByPatientId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     let employer = null;

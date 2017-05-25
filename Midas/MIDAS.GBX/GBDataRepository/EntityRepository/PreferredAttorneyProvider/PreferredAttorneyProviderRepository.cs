@@ -260,6 +260,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
             }
 
+            try
+            {
+                #region Send Email
+
+                var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (userBO != null)
+                {
+                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
+                    if (mailTemplateDB == null)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        string msg = mailTemplateDB.EmailBody;
+                        string subject = mailTemplateDB.EmailSubject;
+
+                        string message = string.Format(msg, userBO.FirstName, prefAttProvider.Id);
+
+                        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                        objEmail.SendMail();
+                    }
+                }
+
+                #endregion
+            }
+            catch (Exception ex) { }
+
             var result = _context.PreferredAttorneyProviders.Include("Company").Include("Company1")
                                                            .Where(p => p.Id == prefAttProvider.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                            .FirstOrDefault();

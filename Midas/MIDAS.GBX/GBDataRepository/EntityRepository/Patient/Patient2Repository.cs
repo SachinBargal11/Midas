@@ -994,7 +994,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region AssociatePatientWithAttorneyCompany
-        public override object AssociatePatientWithAttorneyCompany(int PatientId, int CompanyId)
+        public override object AssociatePatientWithAttorneyCompany(int PatientId, int AttorneyCompanyId)
         {
             bool add_UserCompany = false;
             bool sendEmail = false;
@@ -1003,7 +1003,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.User userBO = addAttorneyBO.User;
 
 
-            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var company = _context.Companies.Where(p => p.id == AttorneyCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
             if (company == null)
             {
@@ -1017,7 +1017,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == CompanyId && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == AttorneyCompanyId && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
             if (userCompany == null)
             {
@@ -1026,7 +1026,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 sendEmail = true;
             }
 
-            userCompany.CompanyID = CompanyId;
+            userCompany.CompanyID = AttorneyCompanyId;
             userCompany.UserID = PatientId;
             userCompany.IsAccepted = false;
 
@@ -1052,31 +1052,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
 
                     #region Send Email
-
-                   // var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
-
-                   // var userBO = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                    //var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
+                 
                     if (PatientDB != null)
                     {
-                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AssociatePatientWithAttorneyCompany".ToUpper()).FirstOrDefault();
-                        if (mailTemplateDB == null)
+                        var attorneyCompany = _context.Companies.Include("ContactInfo")
+                                                               .Where(x => x.id == AttorneyCompanyId).FirstOrDefault();
+
+                        if(attorneyCompany.ContactInfo.EmailAddress !=null)
                         {
-                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AssociatePatientWithAttorneyCompany".ToUpper()).FirstOrDefault();
+                            if (mailTemplateDB == null)
+                            {
+                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            }
+                            else
+                            {
+                                string msg = mailTemplateDB.EmailBody;
+                                string subject = mailTemplateDB.EmailSubject;
+
+                                string message = string.Format(msg, attorneyCompany.Name, PatientDB.Id, PatientDB.User.UserName, attorneyCompany.ContactInfo.EmailAddress, VerificationLink);
+
+                                BO.Email objEmail = new BO.Email { ToEmail = attorneyCompany.ContactInfo.EmailAddress, Subject = subject, Body = message };
+                                objEmail.SendMail();
+                            }
                         }
                         else
                         {
-                            string msg = mailTemplateDB.EmailBody;
-                            string subject = mailTemplateDB.EmailSubject;
-
-                            string message = string.Format(msg, PatientDB.User.FirstName, PatientDB.User.UserName, VerificationLink);
-
-                            BO.Email objEmail = new BO.Email { ToEmail = PatientDB.User.UserName, Subject = subject, Body = message };
-                            objEmail.SendMail();
+                            return new BO.ErrorObject { ErrorMessage = "Email address not found for attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                         }
+
+                       
                     }
 
                     #endregion

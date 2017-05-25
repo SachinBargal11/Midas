@@ -24,11 +24,14 @@ export class ScheduleService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getSchedule(scheduleId: Number): Observable<any> {
         let promise: Promise<Schedule> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Schedule/get/' + scheduleId).map(res => res.json())
+            return this._http.get(this._url + '/Schedule/get/' + scheduleId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: Schedule = null;
                     if (data) {
@@ -63,7 +66,9 @@ export class ScheduleService {
 
     getSchedulesByCompanyId(companyId: Number): Observable<Schedule[]> {
         let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Schedule/getByCompanyId/' + companyId ).map(res => res.json())
+            return this._http.get(this._url + '/Schedule/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((schedulesData: Array<Object>) => {
                     let schedules: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
                         return ScheduleAdapter.parseResponse(schedulesData);
@@ -138,7 +143,9 @@ export class ScheduleService {
     }
     deleteSchedule(schedule: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${schedule.id}`)
+            return this._http.delete(`${this._url}/${schedule.id}`, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((schedule) => {
                     resolve(schedule);
