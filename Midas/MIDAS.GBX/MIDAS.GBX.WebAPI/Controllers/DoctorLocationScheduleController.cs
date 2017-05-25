@@ -24,9 +24,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
 
         private IRequestHandler<DoctorLocationSchedule> requestHandler;
+        private IRequestHandler<List<DoctorLocationSchedule>> requestHandlerList;
+
         public DoctorLocationScheduleController()
         {
             requestHandler = new GbApiRequestHandler<DoctorLocationSchedule>();
+            requestHandlerList = new GbApiRequestHandler<List<DoctorLocationSchedule>>();
         }
 
 
@@ -74,6 +77,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpPost]
+        [Route("associateLocationToDoctors")]
+        public HttpResponseMessage AssociateLocationToDoctors([FromBody]List<DoctorLocationSchedule> data)
+        {
+            return requestHandlerList.CreateGbObject1(Request, data);
+        }
+
+        [HttpPost]
+        [Route("associateDoctorToLocations")]
+        public HttpResponseMessage AssociateDoctorToLocations([FromBody]List<DoctorLocationSchedule> data)
+        {
+            return requestHandlerList.CreateGb(Request, data);
+        }
+
+
         // PUT: api/Organizations/5
 
         [Route("Update")]
@@ -90,6 +108,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Delete([FromBody]DoctorLocationSchedule User)
         {
             return requestHandler.DeleteGbObject(Request, User);
+        }
+
+        [HttpDelete]
+        [HttpPost]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
         }
 
 

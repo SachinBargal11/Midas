@@ -8,7 +8,7 @@ const EmployerRecord = Record({
     patientId: 0,
     jobTitle: '',
     empName: '',
-    isCurrentEmp: 1,
+    isCurrentEmp: true,
     createByUserID: 0,
     createDate: moment(),
     address: null,

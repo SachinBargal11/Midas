@@ -39,40 +39,13 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsAllDay { get; set; }
 
+        [JsonProperty("isCancelled")]
+        public bool? IsCancelled { get; set; }
 
     }
 
-    //---------------------------------------------------------
-    /*
-    public class CalendarEventWithPatientVisit2 : GbObject
+    public class mCalendarEvent : GbObject
     {
-        //PatientVisit2 Data
-        [JsonProperty("calendarEventId")]
-        public int? CalendarEventId { get; set; }
-
-        [JsonProperty("caseId")]
-        public int? CaseId { get; set; }
-
-        [JsonProperty("patientId")]
-        public int? PatientId { get; set; }
-
-        [JsonProperty("locationId")]
-        public int? LocationId { get; set; }
-
-        [JsonProperty("roomId")]
-        public int? RoomId { get; set; }
-
-        [JsonProperty("doctorId")]
-        public int? DoctorId { get; set; }
-
-        [JsonProperty("visitStatusId")]
-        public byte? VisitStatusId { get; set; }
-
-        [JsonProperty("visitType")]
-        public byte? VisitType { get; set; }
-
-
-        //CalendarEvent Data
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -85,21 +58,36 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("timeZone")]
         public string TimeZone { get; set; }
 
-        [JsonProperty("description")]
-        public string Description { get; set; }
-
-        [JsonProperty("recurrenceId")]
-        public int? RecurrenceId { get; set; }
-
-        [JsonProperty("recurrenceRule")]
-        public string RecurrenceRule { get; set; }
-
-        [JsonProperty("recurrenceException")]
-        public string RecurrenceException { get; set; }
-
         [JsonProperty("isAllDay")]
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsAllDay { get; set; }
+
     }
-    */
+
+    public class FreeSlots : GbObject
+    {
+        [JsonProperty("forDate")]
+        public DateTime ForDate { get; set; }
+
+        [JsonProperty("startAndEndTimes")]
+        public List<StartAndEndTime> StartAndEndTimes { get; set; }
+    }
+
+    public class StartAndEndTime
+    {
+        [JsonProperty("startTime")]
+        public DateTime StartTime { get; set; }
+
+        [JsonProperty("endTime")]
+        public DateTime EndTime { get; set; }
+    }
+
+    public class StartAndEndTimeSlots
+    {
+        [JsonProperty("startTime")]
+        public TimeSpan StartTime { get; set; }
+
+        [JsonProperty("endTime")]
+        public TimeSpan EndTime { get; set; }
+    }
 }

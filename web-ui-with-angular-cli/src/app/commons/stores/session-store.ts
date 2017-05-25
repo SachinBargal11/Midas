@@ -1,3 +1,4 @@
+import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -18,6 +19,8 @@ export class SessionStore {
     private _session: Session = new Session();
 
     private __ACCOUNT_STORAGE_KEY__ = 'logged_account';
+    private __CURRENT_COMPANY__ = 'current_company';
+    private __ACCESS_TOKEN__ = 'access_token';
 
     public get session(): Session {
         return this._session;
@@ -70,18 +73,40 @@ export class SessionStore {
         return Observable.from(promise);
     }
 
+    // login(userId, password, forceLogin) {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
+    //             let accessToken = 'bearer ' + data.access_token;
+    //             this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
+    //                 if (!forceLogin) {
+    //                     window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
+    //                 } else {
+    //                     this._populateSession(account);
+    //                 }
+    //                 resolve(this._session);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //         }, (error) => {
+    //             reject(error);
+    //         });
+
+    //     });
+    //     return Observable.from(promise);
+    // }
     login(userId, password, forceLogin) {
         let promise = new Promise((resolve, reject) => {
-            this._authenticationService.authenticate(userId, password, forceLogin).subscribe((account: Account) => {
-                if (!forceLogin) {
-                    window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
-                } else {
-                    this._populateSession(account);
-                }
-                resolve(this._session);
-            }, (error) => {
-                reject(error);
-            });
+                let accessToken = '';
+                this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
+                    if (!forceLogin) {
+                        window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
+                    } else {
+                        this._populateSession(account);
+                    }
+                    resolve(this._session);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return Observable.from(promise);
     }
@@ -89,6 +114,8 @@ export class SessionStore {
     logout() {
         this._resetSession();
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
+        window.localStorage.removeItem(this.__CURRENT_COMPANY__);
+        window.localStorage.removeItem(this.__ACCESS_TOKEN__);
     }
 
     authenticatePassword(userName, oldpassword) {
@@ -114,19 +141,46 @@ export class SessionStore {
 
     private _populateSession(account: Account) {
         this._session.account = account;
-        this._session.currentCompany = account.companies[0];
+        this._session.accessToken = account.accessToken;
+        let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
+        let company: Company = CompanyAdapter.parseResponse(storedCompany);
+        this._session.currentCompany = company ? company : account.companies[0];
+        window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(this._session.currentCompany));
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
+        window.localStorage.setItem(this.__ACCESS_TOKEN__, account.accessToken);
     }
 
     private _resetSession() {
         this.session.account = null;
+        this.session.currentCompany = null;
+        this.session.accessToken = null;
         this.userLogoutEvent.emit(null);
     }
 
     selectCurrentCompany(event, companyId) {
         event.preventDefault();
-        let company: Company = _.find(this.session.companies, {id: parseInt(companyId, 10)});
+        let company: Company = _.find(this.session.companies, { id: parseInt(companyId, 10) });
         this._session.currentCompany = company;
+        window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
+    }
+    isOnlyDoctorRole() {
+        let isOnlyDoctorRole: boolean = false;
+        let roles = this.session ? this.session.user.roles : null;
+        if (roles) {
+            if (roles.length === 1) {
+                let doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+                if (doctorRoleOnly) {
+                    isOnlyDoctorRole = true;
+                } else {
+                    isOnlyDoctorRole = false;
+                }
+            } else {
+                isOnlyDoctorRole = false;
+            }
+        }
+        return isOnlyDoctorRole;
     }
 }

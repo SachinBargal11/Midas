@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Signup
+    public class Signup: GbObject
     {
         public Company company { get; set; }
         public User user { get; set; }

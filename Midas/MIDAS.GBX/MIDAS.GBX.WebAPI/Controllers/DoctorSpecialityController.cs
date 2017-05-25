@@ -20,11 +20,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DoctorSpeciality")]
     
-    public class DoctorSpeciality : ApiController
+    public class DoctorSpecialityController : ApiController
     {
 
         private IRequestHandler<BusinessObjects.DoctorSpeciality> requestHandler;
-        public DoctorSpeciality()
+        public DoctorSpecialityController()
         {
             requestHandler = new GbApiRequestHandler<BusinessObjects.DoctorSpeciality>();
         }
@@ -48,7 +48,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        
         public HttpResponseMessage Post([FromBody] BusinessObjects.DoctorSpeciality data)
         {
             return requestHandler.CreateGbObject(Request, data);

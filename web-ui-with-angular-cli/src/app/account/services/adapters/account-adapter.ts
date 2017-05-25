@@ -7,7 +7,7 @@ import { CompanyAdapter } from './company-adapter';
 export class AccountAdapter {
 
 
-    static parseResponse(accountData: any): Account {
+    static parseResponse(accountData: any, accessToken: string): Account {
 
         let account = null;
         let companies: Company[] = [];
@@ -20,7 +20,8 @@ export class AccountAdapter {
             }
             account = new Account({
                 user: UserAdapter.parseUserResponse(accountData.user),
-                companies: companies
+                companies: companies,
+                accessToken: accessToken
             });
         }
         return account;
@@ -37,7 +38,8 @@ export class AccountAdapter {
             }
             account = new Account({
                 user: UserAdapter.parseUserResponse(accountData.user),
-                companies: companies
+                companies: companies,
+                accessToken: accountData.accessToken
             });
         }
         return account;

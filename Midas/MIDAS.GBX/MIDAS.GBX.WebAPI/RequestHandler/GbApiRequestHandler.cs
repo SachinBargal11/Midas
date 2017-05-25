@@ -19,6 +19,25 @@ namespace MIDAS.GBX.WebAPI
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
+        public string Download(HttpRequestMessage request, int caseId, int documentid)
+        {
+            string path = dataAccessManager.Download(caseId, documentid);
+            if (caseId > 0)
+            {
+                return path;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public object DownloadSignedConsent(HttpRequestMessage request, T gbObject)
+        {
+            object path = dataAccessManager.DownloadSignedConsent(gbObject);
+            return path;
+        }
+
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);
@@ -36,7 +55,135 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
+
+        public HttpResponseMessage UpdateMedicalProvider(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.UpdateMedicalProvider(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, List<T> gbObject)
+        {
+            var objResult = dataAccessManager.Save(gbObject);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent, string uploadpath)
+        {
+            var objResult = dataAccessManager.Save(id, type, streamContent, uploadpath);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.OK, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed)
+        {
+            var objResult = new object();
+            objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath, signed);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.OK, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AssociateLocationToDoctors(gbObject);
+
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AssociateDoctorToLocations(gbObject);
+
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AddQuickPatient(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
         private static string GetCurrentUserFromContext(HttpRequestMessage request)
         {
@@ -44,9 +191,65 @@ namespace MIDAS.GBX.WebAPI
             return "";
         }
 
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
+        {
+            var objResult = dataAccessManager.Get(id, type);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string objectType, string documentType)
+        {
+            var objResult = dataAccessManager.Get(id, objectType, documentType);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.Get(id);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetDiagnosisType(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetDiagnosisType(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetConsentList(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetConsentList(id);
             try
             {
                 var res = (GbObject)(object)objResult;
@@ -77,6 +280,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage DeleteObject(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.DeleteObject(gbObject);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
             var res = dataAccessManager.Delete(id);
@@ -89,6 +310,35 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
             }
         }
+
+        public HttpResponseMessage Delete(HttpRequestMessage request, int param1, int param2, int param3)
+        {
+            var res = dataAccessManager.Delete(param1, param2, param3);
+            if (param1 > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        
+
+        public HttpResponseMessage DeleteFile(HttpRequestMessage request,int caseId, int id)
+        {
+            var res = dataAccessManager.DeleteFile(caseId,id);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+        
 
         public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject)
         {
@@ -105,7 +355,28 @@ namespace MIDAS.GBX.WebAPI
             var objResult = dataAccessManager.Get(gbObject);
             try
             {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);                
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status)
+        {
+            var objResult = dataAccessManager.GetViewStatus(id, status);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
             catch (Exception ex)
             {
@@ -347,6 +618,98 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath)
+        {
+            var objResult = dataAccessManager.AddUploadedFileData(id, FileUploadPath);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId)
+        {
+            var objResult = dataAccessManager.GetByLocationAndSpecialty(locationId, specialtyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId)
+        {
+            var objResult = dataAccessManager.GetBySpecialityInAllApp(specialtyId);
+
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.GetAllCompanyAndLocation();
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        public HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId)
+        {
+            var objResult = dataAccessManager.GetByRoomInAllApp(roomTestId);
+
+            try
+            {
+                // var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByCompanyId(id);
@@ -360,9 +723,100 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAllExcludeCompany(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByCompanyWithOpenCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyWithCloseCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByReferringCompanyId(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByReferredToCompanyId(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByReferredToCompanyId(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -460,6 +914,32 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByReferringLocationId(HttpRequestMessage request, int LocationId)
+        {
+            var objResult = dataAccessManager.GetByReferringLocationId(LocationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByReferringToLocationId(HttpRequestMessage request, int LocationId)
+        {
+            var objResult = dataAccessManager.GetByReferringToLocationId(LocationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int DoctorId)
         {
             var objResult = dataAccessManager.GetByDoctorId(DoctorId);
@@ -472,7 +952,33 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
+
+        public HttpResponseMessage GetByReferringUserId(HttpRequestMessage request, int UserId)
+        {
+            var objResult = dataAccessManager.GetByReferringUserId(UserId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByReferredToDoctorId(HttpRequestMessage request, int DoctorId)
+        {
+            var objResult = dataAccessManager.GetByReferredToDoctorId(DoctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetPatientAccidentInfoByPatientId(HttpRequestMessage request, int PatientId)
         {
             var objResult = dataAccessManager.GetPatientAccidentInfoByPatientId(PatientId);
@@ -525,6 +1031,71 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetDocumentList(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        public HttpResponseMessage DeleteVisit(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteVisit(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+        public HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteCalendarEvent(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CancleVisit(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.CancleVisit(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+        public HttpResponseMessage CancleCalendarEvent(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.CancleCalendarEvent(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
         public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2)
         {
             var objResult = dataAccessManager.Get(param1, param2);
@@ -551,6 +1122,34 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByCaseAndCompanyId(HttpRequestMessage request, int caseId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByCaseAndCompanyId(caseId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+        public HttpResponseMessage DismissPendingReferral(HttpRequestMessage request, int PendingReferralId, int userId)
+        {
+            var objResult = dataAccessManager.DismissPendingReferral(PendingReferralId, userId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+    
         public HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail)
         {
             var objResult = dataAccessManager.AssociateUserToCompany(UserName, CompanyId, sendEmail);
@@ -564,6 +1163,591 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-      
+        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
+        {
+            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name)
+        {
+            var objResult = dataAccessManager.GetByDoctorDatesAndName(DoctorId, FromDate, ToDate,Name);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId)
+        {
+            var objResult = dataAccessManager.GetByRoomId(RoomId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId)
+        {
+            var objResult = dataAccessManager.GetByRoomTestId(RoomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId)
+        {
+            var objResult = dataAccessManager.GetBySpecialityId(specialityId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetBySpecialityAndCompanyId(HttpRequestMessage request, int specialityId,int companyId,bool showAll)
+        {
+            var objResult = dataAccessManager.GetBySpecialityAndCompanyId(specialityId, companyId, showAll);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByRoomTestAndCompanyId(HttpRequestMessage request, int roomTestId, int companyId, bool showAll)
+        {
+            var objResult = dataAccessManager.GetByRoomTestAndCompanyId(roomTestId, companyId, showAll);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId)
+        {
+            var objResult = dataAccessManager.GetByPatientVisitId(patientVisitId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+
+        public HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GenerateReferralDocument(id);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId)
+        {
+            var objResult = dataAccessManager.AssociateAttorneyWithCompany(AttorneyId,CompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DisassociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId)
+        {
+            var objResult = dataAccessManager.DisassociateAttorneyWithCompany(AttorneyId, CompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId)
+        {
+            var objResult = dataAccessManager.AssociateDoctorWithCompany(DoctorId, CompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DisassociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId)
+        {
+            var objResult = dataAccessManager.DisassociateDoctorWithCompany(DoctorId, CompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId)
+        {
+            var objResult = dataAccessManager.GetByLocationAndPatientId(LocationId, PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId)
+        {
+            var objResult = dataAccessManager.GetByLocationDoctorAndPatientId(locationId, doctorId, patientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetBySpecialtyAndCompanyId(HttpRequestMessage request, int specialtyId, int companyId)
+        {
+            var objResult = dataAccessManager.GetBySpecialtyAndCompanyId(specialtyId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByUserAndCompanyId(HttpRequestMessage request, int userId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByUserAndCompanyId(userId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociateMedicalProviderWithCompany(HttpRequestMessage request, int PrefMedProviderId, int CompanyId)
+        {
+            var objResult = dataAccessManager.AssociateMedicalProviderWithCompany(PrefMedProviderId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+        public HttpResponseMessage GetAllMedicalProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAllMedicalProviderExcludeAssigned(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId)
+        {
+            var objResult = dataAccessManager.GetByPrefMedProviderId(PrefMedProviderId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId, int SpecialityId, int RoomTestId)
+        {
+            var objResult = dataAccessManager.GetPreferredCompanyDoctorsAndRoomByCompanyId(CompanyId, SpecialityId, RoomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPendingReferralByCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetPendingReferralByCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPendingReferralByCompanyId2(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetPendingReferralByCompanyId2(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByFromCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetByFromCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByToCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetByToCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetReferralByFromCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByFromCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetReferralByToCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByToCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByFromLocationId(HttpRequestMessage request, int locationId)
+        {
+            var objResult = dataAccessManager.GetByFromLocationId(locationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByToLocationId(HttpRequestMessage request, int locationId)
+        {
+            var objResult = dataAccessManager.GetByToLocationId(locationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByFromDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByFromDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByToDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByToDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetReferralByFromDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByFromDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetReferralByToDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetReferralByToDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByForRoomId(HttpRequestMessage request, int roomId)
+        {
+            var objResult = dataAccessManager.GetByForRoomId(roomId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByToRoomId(HttpRequestMessage request, int roomId)
+        {
+            var objResult = dataAccessManager.GetByToRoomId(roomId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByForSpecialtyId(HttpRequestMessage request, int specialtyId)
+        {
+            var objResult = dataAccessManager.GetByForSpecialtyId(specialtyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByForRoomTestId(HttpRequestMessage request, int roomTestId)
+        {
+            var objResult = dataAccessManager.GetByForRoomTestId(roomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetFreeSlotsForDoctorByLocationId(HttpRequestMessage request, int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            var objResult = dataAccessManager.GetFreeSlotsForDoctorByLocationId(DoctorId, LocationId, StartDate, EndDate);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetFreeSlotsForRoomByLocationId(HttpRequestMessage request, int RoomId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            var objResult = dataAccessManager.GetFreeSlotsForRoomByLocationId(RoomId, LocationId, StartDate, EndDate);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociateVisitWithReferral(HttpRequestMessage request, int ReferralId, int PatientVisitId)
+        {
+            var objResult = dataAccessManager.AssociateVisitWithReferral(ReferralId, PatientVisitId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociatePrefAttorneyProviderWithCompany(HttpRequestMessage request, int PrefAttorneyProviderId, int CompanyId)
+        {
+            var objResult = dataAccessManager.AssociatePrefAttorneyProviderWithCompany(PrefAttorneyProviderId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetAllPrefAttorneyProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAllPrefAttorneyProviderExcludeAssigned(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetPrefAttorneyProviderByCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+
+
     }
 }

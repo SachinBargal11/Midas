@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     };
     constructor(
         private fb: FormBuilder,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _authenticationService: AuthenticationService,
         private _router: Router
@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, AppValidators.emailValidator]],
             password: ['', Validators.required],
+            chkOTP: ['']
         });
         this.loginFormControls = this.loginForm.controls;
     }
@@ -55,14 +56,18 @@ export class LoginComponent implements OnInit {
         if (this.checkSecuredLogin(this.loginForm.value.email)) {
             forceLogin = false;
         }
-        result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
+        if (this.loginForm.value.chkOTP) {
+            forceLogin = true;
+        }
+        result = this.sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
 
         result.subscribe(
             (session: Session) => {
                 if (this.checkSecuredLogin(this.loginForm.value.email)) {
                     this._router.navigate(['/account/security-check']);
                 } else {
-                    this._router.navigate(['/dashboard']);
+                    this._router.navigate(['/patient-manager/profile/viewall']);
+                    // this._router.navigate(['/dashboard']);
                 }
             },
             (error: Error) => {
@@ -72,6 +77,7 @@ export class LoginComponent implements OnInit {
             },
             () => {
                 this.isLoginInProgress = false;
+                this._router.navigate(['/patient-manager/profile/viewall']);
             });
     }
 }

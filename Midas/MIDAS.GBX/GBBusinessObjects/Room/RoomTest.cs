@@ -37,11 +37,49 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
+        [Required]
+        [JsonProperty("colorCode")]
+        public string ColorCode { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
             return validations;
         }
+    }
+
+    public class mRoomTest : GbObject
+    {
+        private string _name;
+        public string name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        private List<mRoom> _rooms;
+        public List<mRoom> rooms
+        {
+            get
+            {
+                return this._rooms;
+            }
+            set
+            {
+                _rooms = value;
+            }
+        }
+
+        [Required]
+        [JsonProperty("colorCode")]
+        public string ColorCode { get; set; }
+
     }
 }

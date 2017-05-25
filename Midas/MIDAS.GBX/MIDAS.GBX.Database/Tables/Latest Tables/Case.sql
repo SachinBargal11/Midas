@@ -3,33 +3,21 @@
 	[PatientId] [int] NOT NULL,
 	[CaseName] [nvarchar](50) NULL,
 	[CaseTypeId] [TINYINT] NULL,
-	--[DateOfInjury] [datetime2](7) NOT NULL,
-	[LocationId] [int] NOT NULL,
+	[LocationId] [int] NOT NULL, -- Will drop this column, since the mapping data will be in [CaseCompanyDoctorMapping]
 	[PatientEmpInfoId] [int] NULL,
-	
-	--[PatientInsuranceInfoId] [int] NULL,
-	--[CaseInsuranceMappingId] [INT] NULL,
-
-	--[PatientAccidentInfoId] [int] NULL,
-	--[RefferingOfficeId] [int] NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
-	[Transportation] [bit] NOT NULL DEFAULT 0,
+	--[Transportation] [bit] NOT NULL DEFAULT 0,
 	[CaseStatusId] [TINYINT] NULL,
 	[AttorneyId] [int] NULL,
+	--[FileUploadPath] [NVARCHAR](250) NULL,
+
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
 	[UpdateDate] [datetime2](7) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
---ALTER TABLE [dbo].[Case] ADD  DEFAULT ((0)) FOR [Transportation]
+	CONSTRAINT [PK_Case] PRIMARY KEY ([Id])
+)
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Location_LocationID] FOREIGN KEY([LocationId])
@@ -46,21 +34,11 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Patient2_PatientId]
 GO
 
---ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientAccidentInfo_PatientAccidentInfoId] FOREIGN KEY([PatientAccidentInfoId])
---	REFERENCES [dbo].[PatientAccidentInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientAccidentInfo_PatientAccidentInfoId]
---GO
-
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId] FOREIGN KEY([PatientEmpInfoId])
 	REFERENCES [dbo].[PatientEmpInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId]
-GO
-
---ALTER TABLE [dbo].[Case] ALTER COLUMN [CaseTypeId] [TINYINT] NULL 
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseType_CaseTypeId] FOREIGN KEY([CaseTypeId])
@@ -70,9 +48,6 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseType_CaseTypeId]
 GO
 
---ALTER TABLE [dbo].[Case] ALTER COLUMN [CaseStatusId] [TINYINT] NULL 
-GO
-
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseStatus_CaseStatusId] FOREIGN KEY([CaseStatusId])
 	REFERENCES [dbo].[CaseStatus] ([Id])
 GO
@@ -80,3 +55,14 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseStatus_CaseStatusId]
 GO
 
+--ALTER TABLE [dbo].[Case] DROP [LocationId]
+--ALTER TABLE [dbo].[Case] ADD [FileUploadPath] [NVARCHAR](250) NULL
+
+/*
+ALTER TABLE [dbo].[Case] DROP CONSTRAINT [DF__Case__Transporta__1387E197]
+GO
+ALTER TABLE [dbo].[Case] DROP COLUMN [Transportation]
+GO
+ALTER TABLE [dbo].[Case] DROP COLUMN [FileUploadPath]
+GO
+*/

@@ -19,6 +19,10 @@ import { Notification } from '../../../commons/models/notification';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Observable } from 'rxjs/Rx';
+import { PendingReferral } from '../../referals/models/pending-referral';
 
 @Component({
     selector: 'demographics',
@@ -26,6 +30,8 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 })
 
 export class DemographicsComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     cellPhone: string;
     faxNo: string;
     patientId: number;
@@ -57,45 +63,63 @@ export class DemographicsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef,
         private _phoneFormatPipe: PhoneFormatPipe,
-        private _faxNoFormatPipe: FaxNoFormatPipe
+        private _faxNoFormatPipe: FaxNoFormatPipe,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
             this._progressBarService.show();
-            let result = this._patientsStore.getPatientById(this.patientId);
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patientInfo = patient;
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            let result = this._patientsStore.fetchPatientById(this.patientId);
+            Observable.forkJoin([caseResult, result])
+                .subscribe(
+                (results) => {
+                    this.caseDetail = results[0];
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                        })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
+                    } else {
+                        this.referredToMe = false;
+                    }
+                    this.patientInfo = results[1];
                     this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
                         ? this.patientInfo.dateOfFirstTreatment.toDate()
                         : null;
-                    // if (this.patientInfo.user.address.state) {
-                    //     this.loadCities(this.patientInfo.user.address.state);
-                    // }
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
                     this._progressBarService.hide();
                 });
-
         });
         this.demographicsform = this.fb.group({
             userInfo: this.fb.group({
                 ssn: ['', Validators.required],
                 weight: [''],
                 height: [''],
-                dateOfFirstTreatment: ['']
+                dateOfFirstTreatment: [''],
+                // races: ['', Validators.required],
+                // ethnicities: ['', Validators.required],
             }),
             contact: this.fb.group({
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
-                faxNo: ['']
+                faxNo: [''],
+                alternateEmail: ['', AppValidators.emailValidator],
+                officeExtension: [''],
+                preferredCommunication: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -125,6 +149,8 @@ export class DemographicsComponent implements OnInit {
             weight: parseInt(demographicsFormValues.userInfo.weight, 10),
             height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
+            //raceId: demographicsFormValues.userInfo.races,
+            //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
             updateByUserId: this._sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this._sessionStore.session.account.user.id,
@@ -133,6 +159,9 @@ export class DemographicsComponent implements OnInit {
                     faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : '',
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
+                    officeExtension: demographicsFormValues.contact.officeExtension,
+                    alternateEmail: demographicsFormValues.contact.alternateEmail,
+                    preferredCommunication: demographicsFormValues.contact.preferredCommunication,
                     updateByUserId: this._sessionStore.session.account.user.id
                 })),
                 address: new Address(_.extend(existingPatientJS.user.address, {

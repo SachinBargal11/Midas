@@ -51,7 +51,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company boCompany = new BO.Company();
                 boCompany.ID = location.Company.id;
-                locationBO.Company = boCompany;
+                boCompany.Name = location.Company.Name;
+                boCompany.TaxID = location.Company.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)location.Company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+
+                locationBO.Company = boCompany;               
             }
 
                 if (location.AddressInfo != null)
@@ -411,6 +417,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
             
+            return lstLocations;
+        }
+        #endregion
+
+        #region Get All Locations and their Companies
+        public override Object Get()
+        {
+            var acc_ = _context.Locations.Include("Company").Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Location>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Location> lstLocations = new List<BO.Location>();
+            foreach (Location item in acc_)
+            {
+                lstLocations.Add(Convert<BO.Location, Location>(item));
+            }
             return lstLocations;
         }
         #endregion

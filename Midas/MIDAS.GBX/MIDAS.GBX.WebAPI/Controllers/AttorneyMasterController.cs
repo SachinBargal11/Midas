@@ -17,40 +17,93 @@ namespace MIDAS.GBX.WebAPI.Controllers
         private IRequestHandler<AttorneyMaster> requestHandler;
 
         public AttorneyMasterController()
-        { requestHandler = new GbApiRequestHandler<AttorneyMaster>(); }
+        {
+            requestHandler = new GbApiRequestHandler<AttorneyMaster>();
+        }
 
-        // GET: api/getAttornyById/
         [HttpGet]
-        [Route("getAll/")]
-        [AllowAnonymous]
+        [Route("getAll")]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllAttornies()
-        { return requestHandler.GetObjects(Request); }
+        {
+            return requestHandler.GetObjects(Request);
+        }
 
-        // GET: api/getAttornyById/
         [HttpGet]
         [Route("get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
-        { return requestHandler.GetObject(Request, id); }
+        {
+            return requestHandler.GetObject(Request, id);
+        }
 
-        // GET: api/getAttornyByCompanyId/
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
-        { return requestHandler.GetGbObjects(Request, CompanyId); }
+        {
+            return requestHandler.GetGbObjects(Request, CompanyId);
+        }
 
-        // GET: api/getAttornyByCompanyId/
+        
+        [HttpGet]
+        [Route("getAllExcludeCompany/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetAllExcludeCompany(int CompanyId)
+        {
+            return requestHandler.GetAllExcludeCompany(Request, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("associateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage AssociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            return requestHandler.AssociateAttorneyWithCompany(Request,AttorneyId,CompanyId);
+        }
+
+        [HttpGet]
+        [Route("disassociateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            return requestHandler.DisassociateAttorneyWithCompany(Request, AttorneyId, CompanyId);
+        }
+
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AttorneyMaster data)
         { return requestHandler.CreateGbObject(Request, data); }
+
+        //[HttpGet]
+        //[Route("associateAttorneyProviderWithCompany/{AttorneyProviderId}/{CompanyId}")]
+        //public HttpResponseMessage AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
+        //{
+        //    return requestHandler.AssociateAttorneyProviderWithCompany(Request, AttorneyProviderId, CompanyId);
+        //}
+
+        //[HttpGet]
+        //[Route("getAllAttorneyProviderExcludeAssigned/{CompanyId}")]
+        //public HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(int CompanyId)
+        //{
+        //    return requestHandler.GetAllAttorneyProviderExcludeAssigned(Request, CompanyId);
+        //}
+
+        //[HttpGet]
+        //[Route("getAttorneyProviderByCompanyId/{CompanyId}")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage GetAttorneyProviderByCompanyId(int CompanyId)
+        //{
+        //    return requestHandler.GetAttorneyProviderByCompanyId(Request, CompanyId);
+        //}
 
         [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
-        { return requestHandler.Delete(Request, id); }
+        {
+            return requestHandler.Delete(Request, id);
+        }
 
         protected override void Dispose(bool disposing) { base.Dispose(disposing); }
     }

@@ -22,7 +22,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -32,7 +32,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -48,16 +48,15 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PatientAccidentInfo data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);

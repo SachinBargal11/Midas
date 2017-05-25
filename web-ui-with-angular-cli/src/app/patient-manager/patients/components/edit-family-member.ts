@@ -1,3 +1,4 @@
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,6 +14,9 @@ import { FamilyMember } from '../models/family-member';
 import { FamilyMemberStore } from '../stores/family-member-store';
 import { PatientsStore } from '../stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
+import * as _ from "underscore";
 
 @Component({
     selector: 'edit-family-member',
@@ -21,6 +25,8 @@ import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 
 
 export class EditFamilyMemberComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     cellPhone: string;
     patientId: number;
     familyMemberForm: FormGroup;
@@ -39,22 +45,48 @@ export class EditFamilyMemberComponent implements OnInit {
         private _familyMemberStore: FamilyMemberStore,
         private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
-        });
-        this._route.params.subscribe((routeParams: any) => {
-            let familyMemberId: number = parseInt(routeParams.id);
             this._progressBarService.show();
-            let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
-            result.subscribe(
-                (familyMember: any) => {
-                    this.familyMember = familyMember.toJS();
-                    this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                        })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                    this._route.params.subscribe((routeParams: any) => {
+                        let familyMemberId: number = parseInt(routeParams.id);
+                        let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
+                        result.subscribe(
+                            (familyMember: any) => {
+                                this.familyMember = familyMember.toJS();
+                                this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+                            },
+                            (error) => {
+                                this._router.navigate(['../../'], { relativeTo: this._route });
+                            },
+                            () => {
+                            });
+                    });
+
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
@@ -62,18 +94,20 @@ export class EditFamilyMemberComponent implements OnInit {
                 });
         });
         this.familyMemberForm = this.fb.group({
-                relationId: ['', Validators.required],
-                fullName: ['', Validators.required],
-                familyName: ['', Validators.required],
-                prefix: ['', Validators.required],
-                suffix: ['', Validators.required],
-                age: ['', Validators.required],
-                races: ['', Validators.required],
-                ethnicities: ['', Validators.required],
-                gender: ['', Validators.required],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                workPhone: [''],
-                primaryContact: ['']
+            relationId: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
+            age: ['', Validators.required],
+            races: ['', Validators.required],
+            ethnicities: ['', Validators.required],
+            gender: ['', Validators.required],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            workPhone: [''],
+            primaryContact: [''],
+            alternateEmail: ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredCommunication: ['']
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
@@ -88,17 +122,21 @@ export class EditFamilyMemberComponent implements OnInit {
         let familyMember = new FamilyMember({
             patientId: this.patientId,
             relationId: familyMemberFormValues.relationId,
-            fullName: familyMemberFormValues.fullName,
-            familyName: familyMemberFormValues.familyName,
-            prefix: familyMemberFormValues.prefix,
-            sufix: familyMemberFormValues.suffix,
+            firstName: familyMemberFormValues.firstName,
+            middleName: familyMemberFormValues.middleName,
+            lastName: familyMemberFormValues.lastName,
             age: familyMemberFormValues.age,
             raceId: familyMemberFormValues.races,
             ethnicitiesId: familyMemberFormValues.ethnicities,
             genderId: familyMemberFormValues.gender,
             cellPhone: familyMemberFormValues.cellPhone ? familyMemberFormValues.cellPhone.replace(/\-/g, '') : null,
             workPhone: familyMemberFormValues.workPhone,
-            primaryContact: familyMemberFormValues.primaryContact
+            // primaryContact: familyMemberFormValues.primaryContact,
+            primaryContact: familyMemberFormValues.primaryContact ? familyMemberFormValues.primaryContact == '1' : true ? familyMemberFormValues.primaryContact == '0' : false,
+            //officeExtension: familyMemberFormValues.officeExtension,
+            //alternateEmail: familyMemberFormValues.alternateEmail,
+            //preferredCommunication: familyMemberFormValues.preferredCommunication,   
+
         });
         this._progressBarService.show();
         result = this._familyMemberStore.updateFamilyMember(familyMember, this.familyMember.id);

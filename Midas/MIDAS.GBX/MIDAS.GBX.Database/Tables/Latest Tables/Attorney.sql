@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Attorney]
 (
 	[Id] [INT] NOT NULL,
-	[CompanyId] [INT] NULL,
+	--[CompanyId] [INT] NULL,
 
 	[IsDeleted] [BIT] NULL,
 	[CreateByUserID] [INT] NOT NULL,
@@ -20,9 +20,16 @@ GO
 ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_User_id]
 GO
 
-ALTER TABLE [dbo].[Attorney]  WITH CHECK ADD  CONSTRAINT [FK_Attorney_Company_CompanyId] FOREIGN KEY([CompanyId])
-	REFERENCES [dbo].[Company] ([Id])
+--ALTER TABLE [dbo].[Attorney]  WITH CHECK ADD  CONSTRAINT [FK_Attorney_Company_CompanyId] FOREIGN KEY([CompanyId])
+--	REFERENCES [dbo].[Company] ([Id])
+--GO
+
+--ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_Company_CompanyId]
+--GO
+/*
+ALTER TABLE [dbo].[Attorney] DROP CONSTRAINT [FK_Attorney_Company_CompanyId]
 GO
 
-ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_Company_CompanyId]
+ALTER TABLE [dbo].[Attorney] DROP COLUMN [CompanyId]
 GO
+*/

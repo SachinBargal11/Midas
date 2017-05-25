@@ -1,0 +1,60 @@
+<section class="tabs-section">
+	<div class="tabs-section-nav">
+		<div class="tbl">
+			<ul class="nav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" routerLink="basic" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Basic
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="consent" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Consent
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="accident" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Accident
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="patient-visit" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Visits
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Documents
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="insurance-mapping" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Insurance
+						</span>
+					</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+			<router-outlet></router-outlet>
+
+		</div>
+	</div>
+	<!--.tab-content-->
+</section>
+<!--.tabs-section-->

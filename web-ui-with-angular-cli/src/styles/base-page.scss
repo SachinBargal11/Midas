@@ -1,4 +1,5 @@
-input.disabled, select.disabled {
+input.disabled,
+select.disabled {
     cursor: not-allowed;
     background-color: #dbe4ea;
     opacity: .65;
@@ -52,6 +53,14 @@ h6 {
 }
 
 body {
+    .ui-dialog {
+        .ui-dialog-titlebar {
+            .ui-dialog-title {
+                font-weight: bold;
+                font-size: 1em;
+            }
+        }
+    }
     .ui-widget-header {
         padding: 0;
         border: none;
@@ -67,6 +76,13 @@ body {
                     padding: 0.3em 0.5em;
                     &.actions-cell {
                         width: 100px;
+                    }
+                    &.inbound-column {
+                        border-right: 1px solid #c7c7c7 !important; // width: 38px;
+                    }
+                    &.inbound-column-span {
+                        border-right: 1px solid #c7c7c7 !important;
+                        text-align: center; // width: 38px;
                     }
                     &.ui-selection-column {
                         width: 38px;
@@ -99,6 +115,12 @@ body {
             margin-bottom: 0;
         }
     }
+    .list-control {
+        width: 100%;
+    }
+    .select-list {
+        width: 300px;
+    }
 }
 
 .breadcrumb {
@@ -121,8 +143,7 @@ body {
 .ui-inputtext.ui-state-focus,
 .ui-widget-content .ui-inputtext.ui-state-focus,
 .ui-widget-header .ui-inputtext.ui-state-focus {
-    background: inherit;
-    // border: inherit;
+    background: inherit; // border: inherit;
     box-shadow: none;
 }
 
@@ -132,7 +153,9 @@ body {
 }
 
 .fc-content {
-    .fc-title, .fc-time, .fa {
+    .fc-title,
+    .fc-time,
+    .fa {
         color: white;
     }
 }
@@ -142,4 +165,12 @@ body {
     label {
         font-weight: bold;
     }
+}
+
+.warningMsg {
+    color: red;
+}
+
+.site-header {
+    background-color: darkolivegreen;
 }

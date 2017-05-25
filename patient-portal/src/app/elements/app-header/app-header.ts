@@ -7,7 +7,7 @@ import { NotificationsStore } from '../../commons/stores/notifications-store';
 @Component({
     selector: 'app-header',
     templateUrl: './app-header.html',
-	styleUrls: ['./app-header.scss']
+    styleUrls: ['./app-header.scss']
 })
 
 export class AppHeaderComponent implements OnInit {
@@ -25,7 +25,7 @@ export class AppHeaderComponent implements OnInit {
 
     constructor(
         private _authenticationService: AuthenticationService,
-        private _notificationsStore: NotificationsStore,
+       public notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
         private _router: Router
     ) {
@@ -78,7 +78,7 @@ export class AppHeaderComponent implements OnInit {
     }
 
     showNotifications() {
-        this._notificationsStore.toggleVisibility();
+        this.notificationsStore.toggleVisibility();
     }
 
 }

@@ -53,13 +53,17 @@
     <Compile Include="Address\AddressInfo.cs" />
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
+    <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="CalendarEvent\CalendarEvent.cs" />
     <Compile Include="Case\Case.cs" />
+    <Compile Include="Case\CaseCompanyConsentDocument.cs" />
+    <Compile Include="Case\CaseCompanyMapping.cs" />
     <Compile Include="Case\CaseInsuranceMapping.cs" />
     <Compile Include="Common\CaseStatus.cs" />
+    <Compile Include="Common\TemplateType.cs" />
     <Compile Include="Common\CaseType.cs" />
     <Compile Include="Common\City.cs" />
     <Compile Include="Common\Gender.cs" />
@@ -69,18 +73,31 @@
     <Compile Include="Common\PolicyOwner.cs" />
     <Compile Include="Common\Relation.cs" />
     <Compile Include="Common\State.cs" />
+    <Compile Include="Common\UploadInfo.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
+    <Compile Include="ConsentGivenType\ConsentGivenType.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />
+    <Compile Include="DiagnosisCode\DiagnosisCode.cs" />
+    <Compile Include="DiagnosisType\DiagnosisType.cs" />
     <Compile Include="Doctor\Doctor.cs" />
+    <Compile Include="CompanyCaseConsentApproval\CompanyCaseConsentApproval.cs" />
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
+    <Compile Include="DocumentInfo\Document.cs" />
+    <Compile Include="DocumentManager\DocumentManager.cs" />
+    <Compile Include="DocumentNodeObjectMapping\DocumentNodeObjectMapping.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="ErrorObject.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="GeneralSetting\GeneralSetting.cs" />
     <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
+    <Compile Include="PendingReferralProcedureCode\PendingReferralProcedureCode.cs" />
+    <Compile Include="PendingReferral\PendingReferral.cs" />
+    <Compile Include="PreferredMedicalProvider\PreferredMedicalProvider.cs" />
+    <Compile Include="Notification\Notification.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
     <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />
     <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
@@ -91,14 +108,22 @@
     <Compile Include="Location\SaveLocation.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
+    <Compile Include="PatientVisitDiagnosisCode\PatientVisitDiagnosisCode.cs" />
     <Compile Include="PatientVisitEvent\PatientVisitEvent.cs" />
+    <Compile Include="PatientVisitProcedureCode\PatientVisitProcedureCode.cs" />
     <Compile Include="PatientVisit\PatientVisit.cs" />
     <Compile Include="PatientVisit\PatientVisit2.cs" />
-    <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Patient\PatientType.cs" />
+    <Compile Include="ProcedureCode\ProcedureCode.cs" />
+    <Compile Include="ReferralProcedureCode\ReferralProcedureCode.cs" />
+    <Compile Include="Referral\MidasDocument.cs" />
+    <Compile Include="Referral\Referral.cs" />
+    <Compile Include="Referral\Referral2.cs" />
+    <Compile Include="Referral\ReferralDocument.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
+    <Compile Include="Reports\Reports.cs" />
     <Compile Include="Room\Room.cs" />
     <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />
@@ -108,6 +133,7 @@
     <Compile Include="Speciality\CompanySpecialtyDetails.cs" />
     <Compile Include="Speciality\Specialty.cs" />
     <Compile Include="Speciality\SpecialtyDetails.cs" />
+    <Compile Include="UserPersonalSetting\UserPersonalSetting.cs" />
     <Compile Include="User\AddUser.cs" />
     <Compile Include="User\OTP.cs" />
     <Compile Include="User\PasswordToken.cs" />
@@ -121,9 +147,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Schedule\Room\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

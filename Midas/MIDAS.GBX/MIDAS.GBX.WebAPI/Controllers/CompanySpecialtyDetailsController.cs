@@ -39,7 +39,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -47,17 +46,22 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // POST: api/Organizations
         [HttpPost]
-        [Route("Add")]
-        
+        [Route("Save")]
         public HttpResponseMessage Post([FromBody]CompanySpecialtyDetails data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpGet]
+        [Route("getBySpecialtyAndCompanyId/{specialtyId}/{companyId}")]
+        public HttpResponseMessage GetBySpecialtyAndCompanyId(int specialtyId, int companyId)
+        {
+            return requestHandler.GetBySpecialtyAndCompanyId(Request, specialtyId, companyId);
+        }
+
         // PUT: api/Organizations/5
         [Route("Update")]
         [HttpPut]
-        
         public HttpResponseMessage Put([FromBody]CompanySpecialtyDetails User)
         {
             return requestHandler.UpdateGbObject(Request, User);
@@ -66,7 +70,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
-        
         public HttpResponseMessage Delete([FromBody]CompanySpecialtyDetails User)
         {
             return requestHandler.DeleteGbObject(Request, User);

@@ -11,8 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class User:GbObject
     {
-        [Required]
-        
+        [Required]        
         [JsonProperty("userType")]
         public GBEnums.UserType UserType { get; set; }
 
@@ -64,9 +63,11 @@ namespace MIDAS.GBX.BusinessObjects
 
         public List<UserCompany> UserCompanies { get; set; }
 
-        public List<DoctorSpeciality> DoctorSpecialities { get; set; }
+       // public List<DoctorSpeciality> DoctorSpecialities { get; set; }
 
         public List<Role> Roles { get; set; }
+
+        public List<UserPersonalSetting> UserPersonalSettings { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -76,5 +77,42 @@ namespace MIDAS.GBX.BusinessObjects
 
             return validations;
         }
+    }
+
+    public class mUser : GbObject
+    {
+        [Required]
+
+        [JsonProperty("userType")]
+        public GBEnums.UserType UserType { get; set; }
+
+        [JsonProperty("addressInfo")]
+        public AddressInfo AddressInfo { get; set; }
+
+        [JsonProperty("contactInfo")]
+        public ContactInfo ContactInfo { get; set; }
+
+        [Required]
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+
+        [Required]
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("password")]
+        public string Password /*Need to be updated to SecureString*/ { get; set; }
+
+        [JsonProperty("forceLogin")]
+        public bool forceLogin { get; set; }
+
+        public List<mUserCompany> mUserCompanies { get; set; }
+
+        public List<mRole> mRoles { get; set; }
+
     }
 }

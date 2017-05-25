@@ -8,7 +8,7 @@ using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
 
-namespace MIDAS.GBX.DataRepository.EntityRepository.Common
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class PatientInsuranceInfoRepository : BaseEntityRepo, IDisposable
     {
@@ -49,73 +49,94 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (InsuranceInfos.AddressInfo != null)
             {
-                BO.AddressInfo boAddress = new BO.AddressInfo();
-                boAddress.Name = InsuranceInfos.AddressInfo.Name;
-                boAddress.Address1 = InsuranceInfos.AddressInfo.Address1;
-                boAddress.Address2 = InsuranceInfos.AddressInfo.Address2;
-                boAddress.City = InsuranceInfos.AddressInfo.City;
-                boAddress.State = InsuranceInfos.AddressInfo.State;
-                boAddress.ZipCode = InsuranceInfos.AddressInfo.ZipCode;
-                boAddress.Country = InsuranceInfos.AddressInfo.Country;
-                //[STATECODE-CHANGE]
-                //boAddress.StateCode = InsuranceInfos.AddressInfo.StateCode;
-                //[STATECODE-CHANGE]
-                boAddress.CreateByUserID = InsuranceInfos.AddressInfo.CreateByUserID;
-                boAddress.ID = InsuranceInfos.AddressInfo.id;
-                insuranceBO.addressInfo = boAddress;
+                if (InsuranceInfos.AddressInfo.IsDeleted.HasValue == false || (InsuranceInfos.AddressInfo.IsDeleted.HasValue == true && InsuranceInfos.AddressInfo.IsDeleted.Value == false))
+                {
+                    BO.AddressInfo boAddress = new BO.AddressInfo();
+                    boAddress.Name = InsuranceInfos.AddressInfo.Name;
+                    boAddress.Address1 = InsuranceInfos.AddressInfo.Address1;
+                    boAddress.Address2 = InsuranceInfos.AddressInfo.Address2;
+                    boAddress.City = InsuranceInfos.AddressInfo.City;
+                    boAddress.State = InsuranceInfos.AddressInfo.State;
+                    boAddress.ZipCode = InsuranceInfos.AddressInfo.ZipCode;
+                    boAddress.Country = InsuranceInfos.AddressInfo.Country;
+                    //[STATECODE-CHANGE]
+                    //boAddress.StateCode = InsuranceInfos.AddressInfo.StateCode;
+                    //[STATECODE-CHANGE]
+                    boAddress.CreateByUserID = InsuranceInfos.AddressInfo.CreateByUserID;
+                    boAddress.ID = InsuranceInfos.AddressInfo.id;
+                    insuranceBO.addressInfo = boAddress;
+                }
             }
 
             if (InsuranceInfos.ContactInfo != null)
             {
-                BO.ContactInfo boContactInfo = new BO.ContactInfo();
-                boContactInfo.Name = InsuranceInfos.ContactInfo.Name;
-                boContactInfo.CellPhone = InsuranceInfos.ContactInfo.CellPhone;
-                boContactInfo.EmailAddress = InsuranceInfos.ContactInfo.EmailAddress;
-                boContactInfo.HomePhone = InsuranceInfos.ContactInfo.HomePhone;
-                boContactInfo.WorkPhone = InsuranceInfos.ContactInfo.WorkPhone;
-                boContactInfo.FaxNo = InsuranceInfos.ContactInfo.FaxNo;
-                boContactInfo.CreateByUserID = InsuranceInfos.ContactInfo.CreateByUserID;
-                boContactInfo.ID = InsuranceInfos.ContactInfo.id;
-                insuranceBO.contactInfo = boContactInfo;
+                if (InsuranceInfos.ContactInfo.IsDeleted.HasValue == false || (InsuranceInfos.ContactInfo.IsDeleted.HasValue == true && InsuranceInfos.ContactInfo.IsDeleted.Value == false))
+                {
+                    BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                    boContactInfo.Name = InsuranceInfos.ContactInfo.Name;
+                    boContactInfo.CellPhone = InsuranceInfos.ContactInfo.CellPhone;
+                    boContactInfo.EmailAddress = InsuranceInfos.ContactInfo.EmailAddress;
+                    boContactInfo.HomePhone = InsuranceInfos.ContactInfo.HomePhone;
+                    boContactInfo.WorkPhone = InsuranceInfos.ContactInfo.WorkPhone;
+                    boContactInfo.FaxNo = InsuranceInfos.ContactInfo.FaxNo;
+                    boContactInfo.OfficeExtension = InsuranceInfos.ContactInfo.OfficeExtension;
+                    boContactInfo.AlternateEmail = InsuranceInfos.ContactInfo.AlternateEmail;
+                    boContactInfo.PreferredCommunication = InsuranceInfos.ContactInfo.PreferredCommunication;
+                    boContactInfo.CreateByUserID = InsuranceInfos.ContactInfo.CreateByUserID;
+                    boContactInfo.ID = InsuranceInfos.ContactInfo.id;
+                    insuranceBO.contactInfo = boContactInfo;
+                }
             }
 
             if (InsuranceInfos.AddressInfo1 != null)
             {
-                BO.AddressInfo boAddress1 = new BO.AddressInfo();
-                boAddress1.Name = InsuranceInfos.AddressInfo1.Name;
-                boAddress1.Address1 = InsuranceInfos.AddressInfo1.Address1;
-                boAddress1.Address2 = InsuranceInfos.AddressInfo1.Address2;
-                boAddress1.City = InsuranceInfos.AddressInfo1.City;
-                boAddress1.State = InsuranceInfos.AddressInfo1.State;
-                boAddress1.ZipCode = InsuranceInfos.AddressInfo1.ZipCode;
-                boAddress1.Country = InsuranceInfos.AddressInfo1.Country;
-                //[STATECODE-CHANGE]
-                //boAddress1.StateCode = InsuranceInfos.AddressInfo1.StateCode;
-                //[STATECODE-CHANGE]
-                boAddress1.CreateByUserID = InsuranceInfos.AddressInfo1.CreateByUserID;
-                boAddress1.ID = InsuranceInfos.AddressInfo1.id;
-                insuranceBO.addressInfo1 = boAddress1;
+                if (InsuranceInfos.AddressInfo1.IsDeleted.HasValue == false || (InsuranceInfos.AddressInfo1.IsDeleted.HasValue == true && InsuranceInfos.AddressInfo1.IsDeleted.Value == false))
+                {
+                    BO.AddressInfo boAddress1 = new BO.AddressInfo();
+                    boAddress1.Name = InsuranceInfos.AddressInfo1.Name;
+                    boAddress1.Address1 = InsuranceInfos.AddressInfo1.Address1;
+                    boAddress1.Address2 = InsuranceInfos.AddressInfo1.Address2;
+                    boAddress1.City = InsuranceInfos.AddressInfo1.City;
+                    boAddress1.State = InsuranceInfos.AddressInfo1.State;
+                    boAddress1.ZipCode = InsuranceInfos.AddressInfo1.ZipCode;
+                    boAddress1.Country = InsuranceInfos.AddressInfo1.Country;
+                    //[STATECODE-CHANGE]
+                    //boAddress1.StateCode = InsuranceInfos.AddressInfo1.StateCode;
+                    //[STATECODE-CHANGE]
+                    boAddress1.CreateByUserID = InsuranceInfos.AddressInfo1.CreateByUserID;
+                    boAddress1.ID = InsuranceInfos.AddressInfo1.id;
+                    insuranceBO.addressInfo1 = boAddress1;
+                }
             }
 
             if (InsuranceInfos.ContactInfo1 != null)
             {
-                BO.ContactInfo boContactInfo1 = new BO.ContactInfo();
-                boContactInfo1.Name = InsuranceInfos.ContactInfo1.Name;
-                boContactInfo1.CellPhone = InsuranceInfos.ContactInfo1.CellPhone;
-                boContactInfo1.EmailAddress = InsuranceInfos.ContactInfo1.EmailAddress;
-                boContactInfo1.HomePhone = InsuranceInfos.ContactInfo1.HomePhone;
-                boContactInfo1.WorkPhone = InsuranceInfos.ContactInfo1.WorkPhone;
-                boContactInfo1.FaxNo = InsuranceInfos.ContactInfo1.FaxNo;
-                boContactInfo1.CreateByUserID = InsuranceInfos.ContactInfo1.CreateByUserID;
-                boContactInfo1.ID = InsuranceInfos.ContactInfo1.id;
-                insuranceBO.contactInfo1 = boContactInfo1;
+                if (InsuranceInfos.ContactInfo1.IsDeleted.HasValue == false || (InsuranceInfos.ContactInfo1.IsDeleted.HasValue == true && InsuranceInfos.ContactInfo1.IsDeleted.Value == false))
+                {
+                    BO.ContactInfo boContactInfo1 = new BO.ContactInfo();
+                    boContactInfo1.Name = InsuranceInfos.ContactInfo1.Name;
+                    boContactInfo1.CellPhone = InsuranceInfos.ContactInfo1.CellPhone;
+                    boContactInfo1.EmailAddress = InsuranceInfos.ContactInfo1.EmailAddress;
+                    boContactInfo1.HomePhone = InsuranceInfos.ContactInfo1.HomePhone;
+                    boContactInfo1.WorkPhone = InsuranceInfos.ContactInfo1.WorkPhone;
+                    boContactInfo1.FaxNo = InsuranceInfos.ContactInfo1.FaxNo;
+                    boContactInfo1.OfficeExtension = InsuranceInfos.ContactInfo1.OfficeExtension;
+                    boContactInfo1.AlternateEmail = InsuranceInfos.ContactInfo1.AlternateEmail;
+                    boContactInfo1.PreferredCommunication = InsuranceInfos.ContactInfo1.PreferredCommunication;
+                    boContactInfo1.CreateByUserID = InsuranceInfos.ContactInfo1.CreateByUserID;
+                    boContactInfo1.ID = InsuranceInfos.ContactInfo1.id;
+                    insuranceBO.contactInfo1 = boContactInfo1;
+                }
             }
 
-            BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
-            using (InsuranceMasterRepository cmp = new InsuranceMasterRepository(_context))
+            if (InsuranceInfos.InsuranceMaster.IsDeleted.HasValue == false || (InsuranceInfos.InsuranceMaster.IsDeleted.HasValue == true && InsuranceInfos.InsuranceMaster.IsDeleted.Value == false))
             {
-                boInsuranceMaster = cmp.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(InsuranceInfos.InsuranceMaster);
-                insuranceBO.InsuranceMaster = boInsuranceMaster;
+                BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
+                using (InsuranceMasterRepository cmp = new InsuranceMasterRepository(_context))
+                {
+                    boInsuranceMaster = cmp.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(InsuranceInfos.InsuranceMaster);
+                    insuranceBO.InsuranceMaster = boInsuranceMaster;
+                }
             }
 
 
@@ -180,14 +201,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Is InsuranceInfo Added
+        public override object IsInsuranceInfoAdded(int id)
+        {
+            var acc = _context.PatientInsuranceInfoes.Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .FirstOrDefault<PatientInsuranceInfo>();
+           
+            if (acc == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }            
+        }
+        #endregion
+
+
         #region save
         public override object Save<T>(T entity)
         {
             BO.PatientInsuranceInfo insuranceBO = (BO.PatientInsuranceInfo)(object)entity;
-            BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.addressInfo;
-            BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.contactInfo;
-            BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.addressInfo1;
-            BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.contactInfo1;
+            BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.addressInfo1;
+            BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.contactInfo1;
+            BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.addressInfo;
+            BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.contactInfo;
 
             PatientInsuranceInfo insuranceDB = new PatientInsuranceInfo();
 
@@ -272,6 +311,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     contactinfoPolicyHolderDB.HomePhone = IsEditMode == true && contactinfoPolicyHolderBO.HomePhone == null ? contactinfoPolicyHolderDB.HomePhone : contactinfoPolicyHolderBO.HomePhone;
                     contactinfoPolicyHolderDB.WorkPhone = IsEditMode == true && contactinfoPolicyHolderBO.WorkPhone == null ? contactinfoPolicyHolderDB.WorkPhone : contactinfoPolicyHolderBO.WorkPhone;
                     contactinfoPolicyHolderDB.FaxNo = IsEditMode == true && contactinfoPolicyHolderBO.FaxNo == null ? contactinfoPolicyHolderDB.FaxNo : contactinfoPolicyHolderBO.FaxNo;
+                    contactinfoPolicyHolderDB.OfficeExtension = IsEditMode == true && contactinfoPolicyHolderBO.OfficeExtension == null ? contactinfoPolicyHolderDB.OfficeExtension : contactinfoPolicyHolderBO.OfficeExtension;
+                    contactinfoPolicyHolderDB.AlternateEmail = IsEditMode == true && contactinfoPolicyHolderBO.AlternateEmail == null ? contactinfoPolicyHolderDB.AlternateEmail : contactinfoPolicyHolderBO.AlternateEmail;
+                    contactinfoPolicyHolderDB.PreferredCommunication = IsEditMode == true && contactinfoPolicyHolderBO.PreferredCommunication == null ? contactinfoPolicyHolderDB.PreferredCommunication : contactinfoPolicyHolderBO.PreferredCommunication;
                     contactinfoPolicyHolderDB.IsDeleted = contactinfoPolicyHolderBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
@@ -328,11 +370,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    if (IsEditMode == false)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance address details.", ErrorLevel = ErrorLevel.Error };
-                    }
+                    //if (IsEditMode == false)
+                    //{
+                    //    dbContextTransaction.Rollback();
+                    //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance address details.", ErrorLevel = ErrorLevel.Error };
+                    //}
                     addressinfoInsuranceCompanyDB = null;
                 }
                 #endregion
@@ -360,6 +402,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     contactinfoInsuranceCompanyDB.HomePhone = IsEditMode == true && contactinfoInsuranceCompanyBO.HomePhone == null ? contactinfoInsuranceCompanyDB.HomePhone : contactinfoInsuranceCompanyBO.HomePhone;
                     contactinfoInsuranceCompanyDB.WorkPhone = IsEditMode == true && contactinfoInsuranceCompanyBO.WorkPhone == null ? contactinfoInsuranceCompanyDB.WorkPhone : contactinfoInsuranceCompanyBO.WorkPhone;
                     contactinfoInsuranceCompanyDB.FaxNo = IsEditMode == true && contactinfoInsuranceCompanyBO.FaxNo == null ? contactinfoInsuranceCompanyDB.FaxNo : contactinfoInsuranceCompanyBO.FaxNo;
+                    contactinfoInsuranceCompanyDB.OfficeExtension = IsEditMode == true && contactinfoInsuranceCompanyBO.OfficeExtension == null ? contactinfoInsuranceCompanyDB.OfficeExtension : contactinfoInsuranceCompanyBO.OfficeExtension;
+                    contactinfoInsuranceCompanyDB.AlternateEmail = IsEditMode == true && contactinfoInsuranceCompanyBO.AlternateEmail == null ? contactinfoInsuranceCompanyDB.AlternateEmail : contactinfoInsuranceCompanyBO.AlternateEmail;
+                    contactinfoInsuranceCompanyDB.PreferredCommunication = IsEditMode == true && contactinfoInsuranceCompanyBO.PreferredCommunication == null ? contactinfoInsuranceCompanyDB.PreferredCommunication : contactinfoInsuranceCompanyBO.PreferredCommunication;
                     contactinfoInsuranceCompanyDB.IsDeleted = contactinfoInsuranceCompanyBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)

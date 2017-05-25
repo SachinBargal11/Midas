@@ -45,6 +45,44 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByCompanyId/{id}")]
+
+        public HttpResponseMessage GetByCompanyId(int id)
+        {
+            return requestHandler.GetGbObjects(Request, id);
+        }
+
+        [HttpGet]
+        [Route("associateDoctorWithCompany/{doctorId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage AssociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            return requestHandler.AssociateDoctorWithCompany(Request, DoctorId, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("disassociateDoctorWithCompany/{doctorId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            return requestHandler.DisassociateDoctorWithCompany(Request, DoctorId, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("getByLocationAndSpecialty/{locationId}/{SpecialtyId}")]
+        public HttpResponseMessage GetByLocationAndSpecialty(int locationId, int specialtyId)
+        {
+            return requestHandler.GetByLocationAndSpecialty(Request, locationId, specialtyId);
+        }
+
+        [HttpGet]
+        [Route("getBySpecialityInAllApp/{SpecialtyId}")]
+        public HttpResponseMessage GetBySpecialityInAllApp(int specialtyId)
+        {
+            return requestHandler.GetBySpecialityInAllApp(Request, specialtyId);
+        }
+
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
@@ -65,11 +103,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete")]
+        [Route("Delete/{id}")]
         
-        public HttpResponseMessage Delete([FromBody]Doctor doctor)
+        public HttpResponseMessage Delete(int id)
         {
-            return requestHandler.DeleteGbObject(Request, doctor);
+            return requestHandler.Delete(Request, id);
         }
 
 
@@ -79,6 +117,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage IsUnique([FromBody]Doctor doctor)
         {
             return requestHandler.ValidateUniqueName(Request, doctor);
+        }
+
+        [HttpGet]
+        [Route("getReadingDoctors/{companyId}")]
+        public HttpResponseMessage GetReadingDoctors(int companyId)
+        {
+            return requestHandler.GetObject(Request, companyId, string.Empty);
         }
 
         protected override void Dispose(bool disposing)

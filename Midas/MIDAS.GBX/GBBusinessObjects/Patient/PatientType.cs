@@ -14,4 +14,10 @@ namespace MIDAS.GBX.BusinessObjects
         public string PatientTypeText { get; set; }
         public PatientAccidentInfo PatientAccidentInfo { get; set; }
     }
+
+    public class mPatientType : GbObject
+    {
+        public string PatientTypeText { get; set; }
+        public mPatientAccidentInfo mPatientAccidentInfo { get; set; }
+    }
 }

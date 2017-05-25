@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI
         public static void Register(HttpConfiguration config)
         {
             if(Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
-            config.Filters.Add(new AuthorizeAttribute());
+            config.Filters.Add(new MidasAuthorize());
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
@@ -70,7 +70,7 @@ public class PreflightRequestsHandler : DelegatingHandler
         {
             var response = new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
             response.Headers.Add("Access-Control-Allow-Origin", "*");
-            response.Headers.Add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
+            response.Headers.Add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization, x-requested-with, dwt-md5, inputjson ");
             response.Headers.Add("Access-Control-Allow-Methods", "*");
             var tsc = new TaskCompletionSource<HttpResponseMessage>();
             tsc.SetResult(response);

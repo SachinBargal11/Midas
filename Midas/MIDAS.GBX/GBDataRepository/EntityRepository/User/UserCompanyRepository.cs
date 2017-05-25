@@ -42,22 +42,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.UserCompany usercompanyBO = new BO.UserCompany();
 
                 usercompanyBO.ID = usercompany.id;
+                usercompanyBO.UserId = usercompany.UserID;
+                usercompanyBO.CompanyId = usercompany.CompanyID;
+                usercompanyBO.IsAccepted = usercompany.IsAccepted;
 
                 if (usercompany.IsDeleted.HasValue)
                     usercompanyBO.IsDeleted = usercompany.IsDeleted.Value;
                 if (usercompany.UpdateByUserID.HasValue)
                     usercompanyBO.UpdateByUserID = usercompany.UpdateByUserID.Value;
 
-                using (UserRepository sr = new UserRepository(_context))
+                if (usercompany.User != null && (usercompany.User.IsDeleted.HasValue == false || (usercompany.User.IsDeleted.HasValue == true && usercompany.User.IsDeleted.Value == false)))
                 {
-                    BO.User boUser = sr.Convert<BO.User, User>(usercompany.User);
-                    usercompanyBO.User = boUser;
+                    using (UserRepository sr = new UserRepository(_context))
+                    {
+                        BO.User boUser = sr.Convert<BO.User, User>(usercompany.User);
+                        usercompanyBO.User = boUser;
+                    }
                 }
 
-                using (CompanyRepository sr = new CompanyRepository(_context))
+                if (usercompany.Company != null && (usercompany.Company.IsDeleted.HasValue == false || (usercompany.Company.IsDeleted.HasValue == true && usercompany.Company.IsDeleted.Value == false)))
                 {
-                    BO.Company boCompany = sr.Convert<BO.Company, Company>(usercompany.Company);
-                    usercompanyBO.Company = boCompany;
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        BO.Company boCompany = sr.Convert<BO.Company, Company>(usercompany.Company);
+                        usercompanyBO.Company = boCompany;
+                    }
                 }
 
                 return (T)(object)usercompanyBO;
@@ -66,9 +75,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 User userDB = entity as User;
                 BO.User boUser = new BO.User();
-                using (UserRepository sr = new UserRepository(_context))
+
+                if (userDB.IsDeleted.HasValue == false || (userDB.IsDeleted.HasValue == true && userDB.IsDeleted.Value == false))
                 {
-                    boUser = sr.Convert<BO.User, User>(userDB);
+                    using (UserRepository sr = new UserRepository(_context))
+                    {
+                        boUser = sr.Convert<BO.User, User>(userDB);
+                    }
                 }
 
                 if (boUser.UserCompanies == null && userDB.UserCompanies != null)
@@ -77,17 +90,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     foreach (var eachUserCompany in userDB.UserCompanies)
                     {
-                        BO.UserCompany usercompanyBO = new BO.UserCompany();
+                        if (eachUserCompany.IsDeleted.HasValue == false || (eachUserCompany.IsDeleted.HasValue == true && eachUserCompany.IsDeleted.Value == false))
+                        {
+                            BO.UserCompany usercompanyBO = new BO.UserCompany();
 
-                        usercompanyBO.ID = eachUserCompany.id;
-                        usercompanyBO.UserId = eachUserCompany.UserID;
-                        usercompanyBO.CompanyId = eachUserCompany.CompanyID;                        
+                            usercompanyBO.ID = eachUserCompany.id;
+                            usercompanyBO.UserId = eachUserCompany.UserID;
+                            usercompanyBO.CompanyId = eachUserCompany.CompanyID;
 
-                        usercompanyBO.IsDeleted = eachUserCompany.IsDeleted;
-                        usercompanyBO.CreateByUserID = eachUserCompany.CreateByUserID;
-                        usercompanyBO.UpdateByUserID = eachUserCompany.UpdateByUserID;
+                            usercompanyBO.IsDeleted = eachUserCompany.IsDeleted;
+                            usercompanyBO.CreateByUserID = eachUserCompany.CreateByUserID;
+                            usercompanyBO.UpdateByUserID = eachUserCompany.UpdateByUserID;
 
-                        boUser.UserCompanies.Add(usercompanyBO);
+                            boUser.UserCompanies.Add(usercompanyBO);
+                        }
                     }
                 }
 
@@ -108,6 +124,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = (BO.GbObject)(object)entity;
             return usercompanyDB;
+        }
+        #endregion
+
+        #region Delete
+        public override Object Delete(int id)
+        {
+            var acc = _context.UserCompanies.Where(p => p.id == id && p.IsAccepted == true
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<UserCompany>();
+            if (acc != null)
+            {
+               
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.UserCompany, UserCompany>(acc);
+            return (object)res;
         }
         #endregion
 
@@ -153,6 +191,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
+            UserCompany UserCompanyDB1 = _context.UserCompanies.Where(p => (p.UserID == UserDB.id && p.CompanyID== CompanyId && p.IsAccepted == true)
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault();
+            if (UserCompanyDB1==null)
+            { 
             UserCompany UserCompanyDB = new UserCompany();
 
             Guid invitationDB_UniqueID = Guid.NewGuid();
@@ -163,6 +206,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     UserCompanyDB.UserID = UserDB.id;
                     UserCompanyDB.CompanyID = CompanyDB.id;
+                    UserCompanyDB.IsAccepted = false;
                     UserCompanyDB.IsDeleted = false;
                     UserCompanyDB.CreateByUserID = 0;
                     UserCompanyDB.CreateDate = DateTime.UtcNow;
@@ -199,8 +243,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserDB = _context.Users.Include("AddressInfo")
                                        .Include("ContactInfo")
                                        .Include("UserCompanyRoles")
-                                       .Include("UserCompanies")
-                                       .Where(p => p.id == UserDB.id 
+                                       .Include("UserCompanies")                                     
+                                       .Where(p => p.id == UserDB.id
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .FirstOrDefault<User>();
             }
@@ -221,6 +265,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
+        }
+        else
+         {
+                return new BO.ErrorObject { ErrorMessage = "User is already  associated with this Company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+         }
+
             var res = Convert<BO.User, User>(UserDB);
             return (object)res;
         }
@@ -231,7 +281,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get User Company By ID
         public override Object Get(int id)
         {
-            BO.UserCompany acc_ = Convert<BO.UserCompany, UserCompany>(_context.UserCompanies.Include("User").Include("Company").Where(p => p.id == id).FirstOrDefault<UserCompany>());
+            BO.UserCompany acc_ = Convert<BO.UserCompany, UserCompany>(_context.UserCompanies.Include("User").Include("Company").Where(p => p.id == id && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<UserCompany>());
             if (acc_ == null)
             {
                 return acc_;
@@ -264,7 +314,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.UserCompany usercompanyBO = (BO.UserCompany)(object)entity;
             List<BO.UserCompany> lstUserCompanies = new List<BO.UserCompany>();
             dynamic result = null;
-            var acc_ = _context.UserCompanies.Include("User").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null) as IQueryable<UserCompany>;
+            var acc_ = _context.UserCompanies.Include("User").Include("Company").Where(p=> p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) as IQueryable<UserCompany>;
             if (acc_ == null || acc_.Count() == 0)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

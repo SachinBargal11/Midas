@@ -1,3 +1,4 @@
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -19,6 +20,8 @@ import { PatientsStore } from '../stores/patients-store';
 import * as _ from 'underscore';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'employer',
@@ -32,9 +35,12 @@ export class PatientEmployerComponent implements OnInit {
     states: any[];
     cities: any[];
     patientId: number;
-    employer: Employer[];
+    employer: Employer;
     currentEmployer: Employer;
+    isCurrentEmp: any;
     selectedCity = '';
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     isCitiesLoading = false;
     options = {
         timeOut: 3000,
@@ -59,6 +65,7 @@ export class PatientEmployerComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
+        private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe
@@ -67,26 +74,31 @@ export class PatientEmployerComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            let result = this._employerStore.getEmployers(this.patientId);
+            let result = this._employerStore.getCurrentEmployer(this.patientId);
             result.subscribe(
-                (employer: Employer[]) => {
+                (employer: Employer) => {
                     this.employer = employer;
-                    this.currentEmployer = _.find(this.employer, (employer) => {
-                        return employer.isCurrentEmp;
-                    });
-                    this.title = this.currentEmployer? 'Edit Employer' : 'Add Employer';
-                    if (this.currentEmployer) {
+                    this.currentEmployer = this.employer;
+                    this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
+                    this.title = this.currentEmployer.id? 'Edit Employer' : 'Add Employer';
+                    if (this.currentEmployer.id) {
                     this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
-                    //     if (this.currentEmployer.address.state) {
-                    //         this.selectedCity = this.currentEmployer.address.city;
-                    //         // this.loadCities(this.currentEmployer.address.state);
-                    //     }
-                    // } else {
+                    //     if (!this.currentEmployer.address) {
                     //     this.currentEmployer = new Employer({
-                    //         address: new Address({}),
+                    //         address: new Address({})
+                    //     });
+                    // }
+                    // if (!this.currentEmployer.contact) {
+                    //     this.currentEmployer = new Employer({
                     //         contact: new Contact({})
                     //     });
+                    //     }
+                    } else {
+                        this.currentEmployer = new Employer({
+                            address: new Address({}),
+                            contact: new Contact({})
+                        });
 
                     }
 
@@ -99,10 +111,36 @@ export class PatientEmployerComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                        })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
             employerName: ['', Validators.required],
-            isCurrentEmployer: ['', Validators.required],
+            isCurrentEmployer: ['1', Validators.required],
             address: [''],
             address2: [''],
             state: [''],
@@ -110,10 +148,13 @@ export class PatientEmployerComponent implements OnInit {
             zipcode: [''],
             country: [''],
             email: ['', [Validators.required, AppValidators.emailValidator]],
-            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            cellPhone: ['', [Validators.required,AppValidators.mobileNoValidator]],
             homePhone: [''],
             workPhone: [''],
-            faxNo: ['']
+            faxNo: [''],
+            alternateEmail:  ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredCommunication: ['']
         });
 
         this.employerformControls = this.employerform.controls;
@@ -134,13 +175,17 @@ export class PatientEmployerComponent implements OnInit {
             patientId: this.patientId,
             jobTitle: employerformValues.jobTitle,
             empName: employerformValues.employerName,
-            isCurrentEmp: parseInt(employerformValues.isCurrentEmployer),
+            // isCurrentEmp: parseInt(employerformValues.isCurrentEmployer),
+            isCurrentEmp: employerformValues.isCurrentEmployer == '1' ? true : false,
             contact: new Contact({
                 cellPhone: employerformValues.cellPhone ? employerformValues.cellPhone.replace(/\-/g, '') : null,
                 emailAddress: employerformValues.email,
                 faxNo: employerformValues.faxNo ? employerformValues.faxNo.replace(/\-|\s/g, '') : '',
                 homePhone: employerformValues.homePhone,
-                workPhone: employerformValues.workPhone
+                workPhone: employerformValues.workPhone,
+                officeExtension: employerformValues.officeExtension,
+                alternateEmail: employerformValues.alternateEmail,
+                preferredCommunication: employerformValues.preferredCommunication,
 
             }),
             address: new Address({

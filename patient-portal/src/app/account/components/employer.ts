@@ -55,17 +55,17 @@ export class PatientEmployerComponent implements OnInit {
         private _statesStore: StatesStore,
         private _employerStore: EmployerStore,
         private _patientsStore: PatientsStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _notificationsService: NotificationsService,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe
 
     ) {
-            this.patientId = this._sessionStore.session.user.id;
-            this._progressBarService.show();
+            this.patientId = this.sessionStore.session.user.id;
+            this.progressBarService.show();
             let result = this._employerStore.getEmployers(this.patientId);
             result.subscribe(
                 (employer: Employer[]) => {
@@ -88,10 +88,10 @@ export class PatientEmployerComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/dashboard']);
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
@@ -148,7 +148,7 @@ export class PatientEmployerComponent implements OnInit {
 
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
 
         if (this.currentEmployer.id) {
             result = this._employerStore.updateEmployer(employer, this.currentEmployer.id);
@@ -159,7 +159,7 @@ export class PatientEmployerComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._router.navigate(['/dashboard']);
                 },
                 (error) => {
@@ -170,13 +170,13 @@ export class PatientEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveEmployerProgress = false;
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
                     this.isSaveEmployerProgress = false;
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         } else {
             addResult = this._employerStore.addEmployer(employer);
@@ -188,7 +188,7 @@ export class PatientEmployerComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._router.navigate(['/dashboard']);
                 },
                 (error) => {
@@ -199,13 +199,13 @@ export class PatientEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveEmployerProgress = false;
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
                     this.isSaveEmployerProgress = false;
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         }
 

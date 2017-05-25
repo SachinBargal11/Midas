@@ -1,6 +1,7 @@
 <header class="site-header">
 	<div class="container-fluid">
-
+		<a href="#" class="site-logo" style="color: white;">MP
+        </a>
 
 		<button class="hamburger hamburger--htla" (click)="onLeftBurgerClick()">
             <span>toggle menu</span>
@@ -10,14 +11,14 @@
 				<div class="site-header-shown" *ngIf="sessionStore.session.user">
 					<div class="dropdown dropdown-notification notif">
 						<a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded" [class.swing]="_notificationsStore.highlightAddition"
-							[class.animated]="_notificationsStore.highlightAddition">
+						 [class.animated]="_notificationsStore.highlightAddition">
 							<i class="font-icon-alarm"></i>
 						</a>
 					</div>
 
 					<div class="dropdown user-menu" dropdown>
 						<button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">
+						 aria-expanded="false">
 							  <img src="assets/theme/img/avatar.png" alt="">
                             <!--Welcome ,<b> {{ sessionStore.session.user.displayName }} </b>-->
                         </button>
@@ -28,6 +29,8 @@
 							<a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>{{ sessionStore.session.user.displayName }}</a>
 							<div class="dropdown-divider"></div>
 							<a (click)="changePassword()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-edit"></span>Change Password</a>
+							<a (click)="showSettingsDialog()" class="dropdown-item"><span class="font-icon glyphicon font-icon-player-settings"></span>User Setting</a>
+
 							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 						</div>
 					</div>
@@ -43,10 +46,10 @@
 					<div class="site-header-collapsed-in">
 						<div class="dropdown dropdown-typical">
 							<a [routerLink]="['/patient-manager']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
-                                Patient Manager
+                                Case Manager
 							</a>
 						</div>
-						<div class="dropdown dropdown-typical">
+						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
 							<a [routerLink]="['/medical-provider']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Medical Office Manager
 							</a>
@@ -61,14 +64,14 @@
                                 Medical Facilities
 							</a>
 						</div>-->
-						<div class="dropdown dropdown-typical">
+						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
 							<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Account Setup
 							</a>
 						</div>
 						<div class="dropdown" dropdown>
 							<button dropdownToggle class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false">
+							 aria-expanded="false">
 							{{sessionStore.session.currentCompany.name}}
 						</button>
 							<div class="dropdown-menu" aria-labelledby="dd-header-add">

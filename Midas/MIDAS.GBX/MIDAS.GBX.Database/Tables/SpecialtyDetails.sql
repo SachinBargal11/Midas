@@ -12,6 +12,7 @@ CREATE TABLE [dbo].[SpecialtyDetails](
 	[AssociatedSpecialty] [int] NULL,
 	[AllowMultipleVisit] [bit] NULL,
 	[MedicalFacilitiesID] [int] NULL,
+	[MandatoryProcCode] [BIT] NULL DEFAULT 0,
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NULL,
@@ -32,4 +33,11 @@ GO
 ALTER TABLE [dbo].[SpecialtyDetails] CHECK CONSTRAINT [FK_SpecialtyDetails_Specialty]
 GO
 
-
+/*
+ALTER TABLE [dbo].[SpecialtyDetails] ADD [MandatoryProcCode] [BIT] NULL DEFAULT 0
+GO
+UPDATE [dbo].[SpecialtyDetails] SET [MandatoryProcCode] = 0
+GO
+ALTER TABLE [dbo].[SpecialtyDetails] ALTER COLUMN [MandatoryProcCode] [BIT] NOT NULL
+GO
+*/

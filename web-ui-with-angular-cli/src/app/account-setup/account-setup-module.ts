@@ -15,9 +15,14 @@ import { SpecialityShellComponent } from './components/speciality/speciality-she
 import { AddSpecialityDetailsComponent } from './components/speciality-details/add-speciality-detail';
 import { EditSpecialityDetailsComponent } from './components/speciality-details/edit-speciality-detail';
 // import { SpecialityDetailComponent } from './components/speciality-details/speciality-details';
+import { AddInsuranceMasterComponent } from './components/insurance-master/add-insurance-master';
+import { EditInsuranceMasterComponent } from './components/insurance-master/edit-insurance-master';
+import { InsuranceMasterListComponent } from './components/insurance-master/insurance-master-list';
+
 import { AccountSetupNavComponent } from './components/navigation/account-setup-nav-bar';
 import { AccountSetupShellComponent } from './account-setup-shell';
 import { AccountSetupRoutingModule } from './account-setup-routes';
+
 import { SpecialityService } from './services/speciality-service';
 import { SpecialityDetailsService } from './services/speciality-details-service';
 import { SpecialityStore } from './stores/speciality-store';
@@ -26,9 +31,36 @@ import { AdjusterMasterStore } from './stores/adjuster-store';
 import { AdjusterMasterService } from './services/adjuster-service';
 import { AttorneyMasterStore } from './stores/attorney-store';
 import { AttorneyMasterService } from './services/attorney-service';
+import { InsuranceMasterService } from './services/insurance-master-service';
+import { InsuranceMasterStore } from './stores/insurance-master-store';
+
 import { InsuranceStore } from '../patient-manager/patients/stores/insurance-store';
 import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
+import { MedicalProviderListComponent } from './components/medical-provider-master/medical-provider-list';
+// import { MedicalProviderMasterService } from './services/medical-provider-master-service';
+// import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
+// import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
+import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
+
+import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
+import { ProcedureCodeComponent } from './components/account-setting/procedure-code-master';
+import { DocumentTypeComponent } from './components/account-setting/document-type';
+import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
+import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
+
+import { ProcedureCodeMasterService } from './services/procedure-code-master-service';
+import { ProcedureCodeMasterStore } from './stores/procedure-code-master-store';
+import { DocumentTypeStore } from './stores/document-type-store';
+import { DocumentTypeService } from './services/document-type-service';
+
+import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
+
+import { GeneralSettingStore } from './stores/general-settings-store';
+import { GeneralSettingService } from './services/general-settings-service';
+
+
+// AccountSettingShellComponent
 @NgModule({
     imports: [
         CommonModule,
@@ -48,7 +80,17 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         EditAdjusterComponent,
         AddAttorneyComponent,
         EditAttorneyComponent,
-        AttorneyMasterListComponent
+        AttorneyMasterListComponent,
+        AddInsuranceMasterComponent,
+        EditInsuranceMasterComponent,
+        InsuranceMasterListComponent,
+        MedicalProviderListComponent,
+        // AddMedicalProviderComponent,
+        EditMedicalProviderComponent,
+        AccountSettingShellComponent,
+        ProcedureCodeComponent,
+        DocumentTypeComponent,
+        AccountGeneralSettingComponent
 
     ],
     providers: [
@@ -61,11 +103,18 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         InsuranceStore,
         InsuranceService,
         AttorneyMasterService,
-        AttorneyMasterStore
-        
-
-
-
+        AttorneyMasterStore,
+        InsuranceMasterService,
+        InsuranceMasterStore,
+        // MedicalProviderMasterService,
+        // MedicalProviderMasterStore
+        RoomsStore,
+        RoomsService,
+        ProcedureCodeMasterService,
+        ProcedureCodeMasterStore,
+        DocumentTypeStore,
+        DocumentTypeService,
+        GeneralSettingStore, GeneralSettingService
     ]
 })
 export class AccountSetupModule { }

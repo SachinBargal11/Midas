@@ -15,8 +15,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("ssn")]
         public string SSN { get; set; }
 
-        [JsonProperty("companyId")]
-        public int? CompanyId { get; set; }
+        //[JsonProperty("companyId")]
+        //public int? CompanyId { get; set; }
 
         [JsonProperty("weight")]
         public decimal? Weight { get; set; }
@@ -30,26 +30,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("dateOfFirstTreatment")]
         public DateTime? DateOfFirstTreatment { get; set; }
 
-        [JsonProperty("attorneyName")]
-        public string AttorneyName { get; set; }
-
-        [JsonProperty("attorneyAddressInfoId")]
-        public int? AttorneyAddressInfoId { get; set; }
-
-        [JsonProperty("attorneyContactInfoId")]
-        public int? AttorneyContactInfoId { get; set; }
-
-        [JsonProperty("attorneyAddressInfo")]
-        public AddressInfo AddressInfo { get; set; }
-
-        [JsonProperty("attorneyContactInfo")]
-        public ContactInfo ContactInfo { get; set; }
-
         [JsonProperty("user")]
         public User User { get; set; }
 
         [JsonProperty("cases")]
         public List<Case> Cases { get; set; }
+
+        [JsonProperty("patientInsuranceInfoes")]
+        public List<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -136,9 +124,62 @@ namespace MIDAS.GBX.BusinessObjects
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
             //}
 
-           
-
             return validations;
         }
+    }
+
+    public class mPatient : GbObject
+    {
+        [JsonProperty("ssn")]
+        public string SSN { get; set; }
+
+        [JsonProperty("dateOfFirstTreatment")]
+        public DateTime? DateOfFirstTreatment { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
+
+        [JsonProperty("cases")]
+        public List<Case> Cases { get; set; }
+
+        [JsonProperty("patientInsuranceInfoes")]
+        public List<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+
+  }
+
+    public class AddPatient : GbObject
+    {
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("cellPhone")]
+        public string CellPhone { get; set; }
+
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
+    }
+
+    public class mAddPatient : GbObject
+    {
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("cellPhone")]
+        public string CellPhone { get; set; }
+
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
     }
 }

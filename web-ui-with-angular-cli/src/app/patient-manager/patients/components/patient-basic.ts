@@ -1,3 +1,4 @@
+import { PendingReferral } from '../../referals/models/pending-referral';
 import { Patient } from '../models/patient';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
@@ -13,6 +14,9 @@ import { Notification } from '../../../commons/models/notification';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { User } from '../../../commons/models/user';
 import * as _ from 'underscore';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'basic',
@@ -20,6 +24,8 @@ import * as _ from 'underscore';
 })
 
 export class PatientBasicComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     patientId: number;
     patientInfo: Patient;
     dateOfBirth: Date;
@@ -41,27 +47,43 @@ export class PatientBasicComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _patientsStore: PatientsStore
+        private _patientsStore: PatientsStore,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
             this._progressBarService.show();
-            let result = this._patientsStore.getPatientById(this.patientId);
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patientInfo = patient;
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            let result = this._patientsStore.fetchPatientById(this.patientId);
+            Observable.forkJoin([caseResult, result])
+                .subscribe(
+                (results) => {
+                    this.caseDetail = results[0];
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                        })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
+                    } else {
+                        this.referredToMe = false;
+                    }
+                    this.patientInfo = results[1];
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth
                         ? this.patientInfo.user.dateOfBirth.toDate()
                         : null;
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
                     this._progressBarService.hide();
                 });
-
         });
         this.basicform = this.fb.group({
             dob: [''],

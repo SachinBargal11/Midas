@@ -10,9 +10,12 @@ import { SessionStore } from '../commons/stores/session-store';
 export class AccountSetupShellComponent implements OnInit {
 
     constructor(
-        public router: Router,
+        public _router: Router,
         private _sessionStore: SessionStore
     ) {
+         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/account-setup/account-setting/general-settings']); ;
+        });
 
     }
 

@@ -8,6 +8,12 @@ using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
 
+using Ical.Net;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization.iCalendar.Serializers;
+using Ical.Net.Serialization;
+using Ical.Net.Interfaces.DataTypes;
+
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class CalendarEventRepository : BaseEntityRepo, IDisposable
@@ -49,6 +55,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             calendarEventBO.RecurrenceException = calendarEvent.RecurrenceException;
             calendarEventBO.IsAllDay = calendarEvent.IsAllDay;
 
+            calendarEventBO.IsCancelled = calendarEvent.IsCancelled;
             calendarEventBO.IsDeleted = calendarEvent.IsDeleted;
             calendarEventBO.CreateByUserID = calendarEvent.CreateByUserID;
             calendarEventBO.UpdateByUserID = calendarEvent.UpdateByUserID;            
@@ -57,6 +64,397 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         }
         #endregion
+
+        public override object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            if (LocationId <= 0)
+            {
+                LocationId = _context.DoctorLocationSchedules.Where(p => p.DoctorID == DoctorId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                             .Select(p => p.LocationID).FirstOrDefault();
+            }
+
+            var CalendarEvents = _context.PatientVisit2.Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .Select(p => p.CalendarEvent)
+                                                        .ToList();
+
+            var CompanyId = _context.Locations.Where(p => p.id == LocationId
+                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .Select(p => p.CompanyID)
+                                                       .FirstOrDefault();
+
+            var SlotDuration = _context.UserPersonalSettings.Where(p =>  p.UserId == DoctorId && p.CompanyId == CompanyId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .Select(p => p.SlotDuration)
+                                                        .FirstOrDefault();
+
+            if (SlotDuration == 0)
+            {
+                SlotDuration = 30;
+            }
+
+            Calendar calendar = new Calendar();
+            foreach (var eachEvent in CalendarEvents)
+            {
+                if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
+                {
+                    var newEvent = new Event()
+                    {
+                        Name = eachEvent.Name,
+                        Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                        End = new CalDateTime(eachEvent.EventEnd, "UTC"),
+                        Description = eachEvent.Description,
+                        IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
+                        Created = new CalDateTime(eachEvent.CreateDate)
+                    };
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceRule = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceRule += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                    }
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceException = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceException += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                    }
+
+                    calendar.Events.Add(newEvent);
+                }
+            }
+
+            var Occurrences = calendar.GetOccurrences(StartDate, EndDate);
+
+            List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
+
+            var schedule = _context.DoctorLocationSchedules.Where(p => p.DoctorID == DoctorId && p.LocationID == LocationId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .Select(p => p.Schedule).Distinct()
+                                                           .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                           .Select(p => p).Include("ScheduleDetails")
+                                                           .FirstOrDefault();
+
+            if (schedule == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Doctor is not available in this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
+            List<DateTime> EventDays = new List<DateTime>();
+            for (DateTime eachDate = StartDate; eachDate <= EndDate; eachDate = eachDate.Date.AddDays(1))
+            {
+                EventDays.Add(eachDate);
+            }
+
+            foreach (var eachEventDay in EventDays)
+            {
+                BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
+                FreeSlotForDay.ForDate = eachEventDay;
+                List<BO.StartAndEndTimeSlots> StartAndEndTimeSlots = new List<BO.StartAndEndTimeSlots>();
+
+                var StartEndOfDay = schedule.ScheduleDetails.Where(p => p.DayOfWeek == (int)eachEventDay.DayOfWeek + 1).Select(p => new { p.SlotStart, p.SlotEnd }).FirstOrDefault();
+                TimeSpan StartOfDay = StartEndOfDay.SlotStart;
+                TimeSpan EndOfDay = StartEndOfDay.SlotEnd;
+
+
+                for (TimeSpan i = StartOfDay; i < EndOfDay; i = i.Add(new TimeSpan(0, SlotDuration, 0)))
+                {
+                    StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, SlotDuration, 0)) });
+                }
+
+                var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(210), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(210) })
+                                                    .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
+
+                foreach (var eachEventTime in EventTimes)
+                {
+                    if (eachEventTime.StartTime.Minute > 0 && eachEventTime.StartTime.Minute < 30)
+                    {
+                        eachEventTime.StartTime = eachEventTime.StartTime.Add(new TimeSpan(0, -eachEventTime.StartTime.Minute, 0));
+                    }
+                    else if (eachEventTime.StartTime.Minute > 30 && eachEventTime.StartTime.Minute < 60)
+                    {
+                        eachEventTime.StartTime = eachEventTime.StartTime.Add(new TimeSpan(0, -eachEventTime.StartTime.Minute + 30, 0));
+                    }
+
+                    if (eachEventTime.EndTime.Minute > 0 && eachEventTime.EndTime.Minute < 30)
+                    {
+                        eachEventTime.EndTime = eachEventTime.EndTime.Add(new TimeSpan(0, 30 - eachEventTime.EndTime.Minute, 0));
+                    }
+                    else if (eachEventTime.EndTime.Minute > 30 && eachEventTime.EndTime.Minute < 60)
+                    {
+                        eachEventTime.EndTime = eachEventTime.EndTime.Add(new TimeSpan(0, 60 - eachEventTime.EndTime.Minute, 0));
+                    }
+
+                    var removeStartAndEndTime = StartAndEndTimeSlots.Where(p => p.StartTime >= eachEventTime.StartTime.TimeOfDay && p.EndTime <= eachEventTime.EndTime.TimeOfDay).ToList();
+                    removeStartAndEndTime.ForEach(p => StartAndEndTimeSlots.Remove(p));
+                }
+
+                FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
+                StartAndEndTimeSlots.ForEach(p => FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachEventDay.Add(p.StartTime), EndTime = eachEventDay.Add(p.EndTime) }));
+
+                freeSlots.Add(FreeSlotForDay);
+            }
+
+            return (object)freeSlots;
+        }
+
+        public override object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            if (LocationId <= 0)
+            {
+                LocationId = _context.Rooms.Where(p => p.id == RoomId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .Select(p => p.LocationID).FirstOrDefault();
+            }
+
+            var CalendarEvents = _context.PatientVisit2.Where(p => p.LocationId == LocationId && p.RoomId == RoomId
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .Select(p => p.CalendarEvent)
+                                         .ToList();
+
+            var CompanyId = _context.Locations.Where(p => p.id == LocationId
+                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Select(p => p.CompanyID)
+                                                     .FirstOrDefault();
+
+            var SlotDuration = _context.GeneralSettings.Where(p => p.CompanyId == CompanyId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .Select(p => p.SlotDuration)
+                                                        .FirstOrDefault();
+            if(SlotDuration ==0)
+            {
+                SlotDuration = 30;
+            }
+
+            Calendar calendar = new Calendar();
+            foreach (var eachEvent in CalendarEvents)
+            {
+                if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
+                {
+                    var newEvent = new Event()
+                    {
+                        Name = eachEvent.Name,
+                        Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                        End = new CalDateTime(eachEvent.EventEnd, "UTC"),
+                        Description = eachEvent.Description,
+                        IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
+                        Created = new CalDateTime(eachEvent.CreateDate)
+                    };
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceRule = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceRule += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                    }
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceException = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceException += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                    }
+
+                    calendar.Events.Add(newEvent);
+                }
+            }
+
+            var Occurrences = calendar.GetOccurrences(StartDate, EndDate);
+
+            List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
+
+            var schedule = _context.Rooms.Where(p => p.id == RoomId && p.LocationID == LocationId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .Select(p => p.Schedule).Distinct()
+                                                           .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                           .Select(p => p).Include("ScheduleDetails")
+                                                           .FirstOrDefault();
+
+            if (schedule == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Room is not available in this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //var EventDays = Occurrences.Select(p => p.Period.StartTime.Date).ToList().Distinct();
+            List<DateTime> EventDays = new List<DateTime>();
+            for (DateTime eachDate = StartDate; eachDate <= EndDate; eachDate = eachDate.Date.AddDays(1))
+            {
+                EventDays.Add(eachDate);
+            }
+
+            foreach (var eachEventDay in EventDays)
+            {
+                BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
+                FreeSlotForDay.ForDate = eachEventDay;
+                List<BO.StartAndEndTimeSlots> StartAndEndTimeSlots = new List<BO.StartAndEndTimeSlots>();
+
+                var StartEndOfDay = schedule.ScheduleDetails.Where(p => p.DayOfWeek == (int)eachEventDay.DayOfWeek + 1).Select(p => new { p.SlotStart, p.SlotEnd }).FirstOrDefault();
+                TimeSpan StartOfDay = StartEndOfDay.SlotStart;
+                TimeSpan EndOfDay = StartEndOfDay.SlotEnd;
+
+
+                for (TimeSpan i = StartOfDay; i < EndOfDay; i = i.Add(new TimeSpan(0, SlotDuration, 0)))
+                {
+                    StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, SlotDuration, 0)) });
+                }
+
+                var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(210), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(210) })
+                                                    .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
+
+                foreach (var eachEventTime in EventTimes)
+                {
+                    if (eachEventTime.StartTime.Minute > 0 && eachEventTime.StartTime.Minute < 30)
+                    {
+                        eachEventTime.StartTime = eachEventTime.StartTime.Add(new TimeSpan(0, -eachEventTime.StartTime.Minute, 0));
+                    }
+                    else if (eachEventTime.StartTime.Minute > 30 && eachEventTime.StartTime.Minute < 60)
+                    {
+                        eachEventTime.StartTime = eachEventTime.StartTime.Add(new TimeSpan(0, -eachEventTime.StartTime.Minute + 30, 0));
+                    }
+
+                    if (eachEventTime.EndTime.Minute > 0 && eachEventTime.EndTime.Minute < 30)
+                    {
+                        eachEventTime.EndTime = eachEventTime.EndTime.Add(new TimeSpan(0, 30 - eachEventTime.EndTime.Minute, 0));
+                    }
+                    else if (eachEventTime.EndTime.Minute > 30 && eachEventTime.EndTime.Minute < 60)
+                    {
+                        eachEventTime.EndTime = eachEventTime.EndTime.Add(new TimeSpan(0, 60 - eachEventTime.EndTime.Minute, 0));
+                    }
+
+                    var removeStartAndEndTime = StartAndEndTimeSlots.Where(p => p.StartTime >= eachEventTime.StartTime.TimeOfDay && p.EndTime <= eachEventTime.EndTime.TimeOfDay).ToList();
+                    removeStartAndEndTime.ForEach(p => StartAndEndTimeSlots.Remove(p));
+                }
+
+                FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
+                StartAndEndTimeSlots.ForEach(p => FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachEventDay.Add(p.StartTime), EndTime = eachEventDay.Add(p.EndTime) }));
+
+                freeSlots.Add(FreeSlotForDay);
+            }
+
+            return (object)freeSlots;
+        }
 
         public void Dispose()
         {

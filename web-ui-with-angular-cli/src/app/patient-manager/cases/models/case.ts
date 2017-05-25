@@ -1,8 +1,14 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { CaseType } from './enums/case-types';
 import { CaseStatus } from './enums/case-status';
-import {Patient} from '../../patients/models/patient';
+import { Company } from '../../../account/models/company';
+import { Consent } from './consent';
+import { Referral } from './referral';
+import { PendingReferral } from '../../referals/models/pending-referral';
+import { Patient } from '../../patients/models/patient';
+import { CaseDocument } from './case-document';
 
 const CaseRecord = Record({
     id: 0,
@@ -10,17 +16,23 @@ const CaseRecord = Record({
     patient: null,
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
+    companies: null,
+    caseCompanyConsentDocument: null,
+    companyCaseConsentApproval: null,
+    referral: null,
     locationId: 0,
-    patientEmpInfoId: 0,
+    patientEmpInfoId: null,
     carrierCaseNo: '',
-    transportation: 1,
+    // transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    caseSource: ''
+    
 });
 
 export class Case extends CaseRecord {
@@ -30,10 +42,14 @@ export class Case extends CaseRecord {
     patientId: number;
     caseName: string;
     caseTypeId: CaseType;
+    companies: Company[];
+    caseCompanyConsentDocument: CaseDocument[];
+    companyCaseConsentApproval: Consent[];
+    referral: PendingReferral[];
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;
-    transportation: boolean;
+    // transportation: boolean;
     caseStatusId: CaseStatus;
     attorneyId: number;
     isDeleted: boolean;
@@ -41,7 +57,8 @@ export class Case extends CaseRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-
+    caseSource: string;
+    
     constructor(props) {
         super(props);
     }
@@ -77,5 +94,41 @@ export class Case extends CaseRecord {
 
         }
     }
+    isConsentReceived(companyId): boolean {
+        let isConsentReceived: boolean = false;
+        _.forEach(this.companyCaseConsentApproval, (currentConsent: Consent) => {
+            if (currentConsent.companyId === companyId) {
+                isConsentReceived = true;
+            }
+        });
+        return isConsentReceived;
+    }
 
+    getInboundReferral(companyId): boolean {
+        let isInboundReferral: boolean = false;
+        _.forEach(this.referral, (currentReferral: PendingReferral) => {
+            if (currentReferral.toCompanyId === companyId) {
+                isInboundReferral = true;
+            }
+        });
+        return isInboundReferral;
+    }
+    getOutboundReferral(companyId): boolean {
+        let isOutboundReferral: boolean = false;
+        _.forEach(this.referral, (currentReferral: PendingReferral) => {
+            if (currentReferral.fromCompanyId === companyId) {
+                isOutboundReferral = true;
+            }
+        });
+        return isOutboundReferral;
+    }
+    isSessionCompany(companyId): boolean {
+        let isSessionCompany: boolean = false;
+        _.forEach(this.companies, (currentCompany: any) => {
+            if (currentCompany.id === companyId) {
+                isSessionCompany = true;
+            }
+        });
+        return isSessionCompany;
+    }
 }

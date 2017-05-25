@@ -66,6 +66,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+                boCompany.RegistrationComplete = company.RegistrationComplete;
+
+                if (company.Locations != null)
+                {
+                    List<BO.Location> lstLocation = new List<BO.Location>();
+                    foreach (var item in company.Locations)
+                    {
+                        using (LocationRepository sr = new LocationRepository(_context))
+                        {
+                            BO.Location location = sr.Convert<BO.Location, Location>(item);
+                            location.Company = null;
+                            lstLocation.Add(location);
+                        }
+                    }
+
+                    boCompany.Locations = lstLocation;
+                }
                 return (T)(object)boCompany;
             }
 
@@ -87,7 +104,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return companyDB;
         }
         #endregion
-
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
@@ -122,6 +138,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = signUPBO.addressInfo;
             BO.ContactInfo contactinfoBO = signUPBO.contactInfo;
             BO.Role roleBO = signUPBO.role;
+            //BO.Referral referralBO = new BO.Referral();
 
             Company companyDB = new Company();
             User userDB = new User();
@@ -152,6 +169,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyDB.Status = System.Convert.ToByte(companyBO.Status);
             companyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
             companyDB.SubscriptionPlanType = System.Convert.ToByte(companyBO.SubsCriptionType);
+            companyDB.RegistrationComplete = companyBO.RegistrationComplete;
             if (companyDB.IsDeleted.HasValue)
                 companyDB.IsDeleted = companyBO.IsDeleted.Value;
             #endregion
@@ -208,12 +226,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userDB.AddressInfo = addressDB;
                 userDB.ContactInfo = contactinfoDB;
                 userCompanyDB.User = userDB;
+                userCompanyDB.IsAccepted = true;
             }
             else
             {
                 ////Find Record By Name
                 User user_ = _context.Users.Where(p => p.UserName == userBO.UserName).FirstOrDefault<User>();
                 userCompanyDB.User = user_;
+                userCompanyDB.IsAccepted = true;
                 _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
             }
 
@@ -246,8 +266,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _dbSet.Add(companyDB);
                 //_dbuser.Add(userDB);
             }
-            _context.SaveChanges();
-
+            _context.SaveChanges();            
 
             #region Insert User Block
             userCompanyDB.Company = companyDB;
@@ -273,6 +292,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             invitationDB.CreateDate = companyBO.CreateDate;
             invitationDB.CreateByUserID = companyBO.CreateByUserID;
             _dbInvitation.Add(invitationDB);
+            _context.SaveChanges();
+            #endregion
+
+            #region Update referral
+            //var referral = _context.Referrals.Where(p => p.ReferredToEmail == userDB.UserName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Referral>();
+
+            //foreach (var eachReferral in referral)
+            //{
+            //    eachReferral.ReferredToCompanyId = companyDB.id;
+            //    eachReferral.ReferralAccepted = true;
+            //}
+
             _context.SaveChanges();
             #endregion
 
@@ -302,6 +333,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
             return acc_;
+        }
+        #endregion
+
+        #region Get All Companies
+        public override Object Get()
+        {
+            var acc_ = _context.Companies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Company> lstCompanies = new List<BO.Company>();
+            foreach (Company item in acc_)
+            {
+                lstCompanies.Add(Convert<BO.Company, Company>(item));
+            }
+            return lstCompanies;
+        }
+        #endregion
+
+        #region Get All Company and their Location
+        public override Object GetAllCompanyAndLocation()
+        {
+            var acc_ = _context.Companies.Include("Locations").Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Company> lstCompanies = new List<BO.Company>();
+            foreach (Company item in acc_)
+            {
+                lstCompanies.Add(Convert<BO.Company, Company>(item));
+            }
+            return lstCompanies;
         }
         #endregion
 

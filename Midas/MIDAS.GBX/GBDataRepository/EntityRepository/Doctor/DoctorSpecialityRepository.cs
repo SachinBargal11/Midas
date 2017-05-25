@@ -40,10 +40,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorspecilityBO.UpdateByUserID.HasValue)
                 doctorspecilityBO.UpdateByUserID = doctorspecility.UpdateByUserID.Value;
 
-            BO.User boDoctor = new BO.User();
+            BO.Doctor boDoctor = new BO.Doctor();
             using (DoctorRepository sr = new DoctorRepository(_context))
             {
-                boDoctor = sr.Convert<BO.User, User>(doctorspecility.User);
+                boDoctor = sr.Convert<BO.Doctor, Doctor>(doctorspecility.Doctor);
                 doctorspecilityBO.Doctor = boDoctor;
             }
 
@@ -72,11 +72,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorspecilityBO.UpdateByUserID.HasValue)
                 doctorspecilityBO.UpdateByUserID = doctorspecility.UpdateByUserID.Value;
 
-            BO.Specialty boSpecliality = new BO.Specialty();
-            using (SpecialityRepository sr = new SpecialityRepository(_context))
+            if (doctorspecility.Specialty != null && (doctorspecility.Specialty.IsDeleted.HasValue == false || (doctorspecility.Specialty.IsDeleted.HasValue == true && doctorspecility.Specialty.IsDeleted.Value == false)))
             {
-                boSpecliality = sr.Convert<BO.Specialty, Specialty>(doctorspecility.Specialty);
-                doctorspecilityBO.Specialty = boSpecliality;
+                BO.Specialty boSpecliality = new BO.Specialty();
+                using (SpecialityRepository sr = new SpecialityRepository(_context))
+                {
+                    boSpecliality = sr.Convert<BO.Specialty, Specialty>(doctorspecility.Specialty);
+                    doctorspecilityBO.Specialty = boSpecliality;
+                }
             }
 
             return (T)(object)doctorspecilityBO;
@@ -128,11 +131,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     //Find Record By ID
-                    User doctor = _context.Users.Include("User").Where(p => p.id == doctorSpecialityBO.Doctor.ID).FirstOrDefault<User>();
+                    Doctor doctor = _context.Doctors.Include("User").Where(p => p.Id == doctorSpecialityBO.Doctor.ID).FirstOrDefault<Doctor>();
                     if (doctor == null)
                         return new BO.ErrorObject { ErrorMessage = "Invalid doctor details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
-                    doctorSpecilityDB.User = doctor;
+                    doctorSpecilityDB.Doctor = doctor;
                     _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
 
                     //Find Record By ID

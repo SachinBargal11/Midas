@@ -45,15 +45,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (room.UpdateByUserID.HasValue)
                 roomBO.UpdateByUserID = room.UpdateByUserID.Value;
 
-            BO.RoomTest roomtestBO = new BO.RoomTest();
-            roomtestBO.name = room.RoomTest.Name;
-            roomtestBO.ID = room.RoomTest.id;
+            if (room.RoomTest != null)
+            {
+                BO.RoomTest roomtestBO = new BO.RoomTest();
+                roomtestBO.name = room.RoomTest.Name;
+                roomtestBO.ID = room.RoomTest.id;
+                roomtestBO.ColorCode = room.RoomTest.ColorCode;
 
-            if (room.RoomTest.IsDeleted.HasValue)
-                roomtestBO.IsDeleted = room.RoomTest.IsDeleted.Value;
-            if (room.RoomTest.UpdateByUserID.HasValue)
-                roomtestBO.UpdateByUserID = room.RoomTest.UpdateByUserID.Value;
-            roomBO.roomTest = roomtestBO;
+                if (room.RoomTest.IsDeleted.HasValue)
+                    roomtestBO.IsDeleted = room.RoomTest.IsDeleted.Value;
+                if (room.RoomTest.UpdateByUserID.HasValue)
+                    roomtestBO.UpdateByUserID = room.RoomTest.UpdateByUserID.Value;
+                roomBO.roomTest = roomtestBO;
+            }
 
             BO.Location boLocation = new BO.Location();
             using (LocationRepository sr = new LocationRepository(_context))
@@ -181,7 +185,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (roomDB.id > 0)
             {
-                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID  && o.id!= roomDB.id))
+                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID  && o.id!= roomDB.id && (o.IsDeleted == false || o.IsDeleted == null)))
                 {
                     return new BO.ErrorObject { ErrorMessage = "Room already exists for selected location and test.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
@@ -250,7 +254,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID))
+                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
                     return new BO.ErrorObject { ErrorMessage = "Room already exists for selected location and test.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
@@ -346,6 +350,47 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             return lstRoom;
+        }
+        #endregion
+
+        #region Get By LocationId
+        public override object GetByLocationId(int LocationId)
+        {
+            var acc_ = _context.Rooms.Where(p => p.LocationID == LocationId
+                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Room> RoomBO = new List<BO.Room>();
+
+            acc_.ForEach(p => RoomBO.Add(Convert<BO.Room, Room>(p)));
+
+            return (object)RoomBO;
+        }
+        #endregion
+
+        #region GetByRoom
+        public override object GetByRoomInAllApp(int roomTestId)
+        {
+           
+            var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Location.Company").Where(p => p.RoomTest.id == roomTestId
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this room Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Room> doctorBO = new List<BO.Room>();
+
+            foreach (Room item in acc_)
+            {
+                doctorBO.Add(Convert<BO.Room, Room>(item));
+            }
+            return (object)doctorBO;
         }
         #endregion
 

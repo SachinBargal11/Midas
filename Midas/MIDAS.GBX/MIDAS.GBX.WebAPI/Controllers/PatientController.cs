@@ -19,16 +19,17 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Patient")]
-    [AllowAnonymous]
     public class PatientController : ApiController
     {
         //private IRequestHandler<Patient> requestHandler;
         private IRequestHandler<Patient2> requestHandlerPatient2;
+        private IRequestHandler<AddPatient> requestHandlerAddPatient;
 
         public PatientController()
         {
             //requestHandler = new GbApiRequestHandler<Patient>();
             requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
+            requestHandlerAddPatient = new GbApiRequestHandler<AddPatient>();
         }
 
         //[HttpGet]
@@ -90,7 +91,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAllPatient")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetAllPatient([FromBody]Patient2 data)
         {
             return requestHandlerPatient2.GetGbObjects(Request, data);
@@ -98,7 +99,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getPatientsByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
         {
             return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
@@ -106,28 +107,62 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyWithOpenCases/{CompanyId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithOpenCases(int CompanyId)
         {
             return requestHandlerPatient2.GetGbObjects2(Request, CompanyId);
         }
 
+        [HttpGet]
+        [Route("getByCompanyWithCloseCases/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetByCompanyWithCloseCases(int CompanyId)
+        {
+            return requestHandlerPatient2.GetGbObjects4(Request, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("getByLocationWithOpenCases/{LocationId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
+        {
+            return requestHandlerPatient2.GetGbObjects3(Request, LocationId);
+        }
 
         [HttpGet]
         [Route("getPatientById/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetPatientById2(int id)
         {
             return requestHandlerPatient2.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByCompanyAndDoctorId/{companyId}/{doctorId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetByCompanyAndDoctorId(int companyId,int doctorId)
+        {
+            return requestHandlerPatient2.GetGbObjects(Request, companyId, doctorId);
+        }
+        
+
         [HttpPost]
         [Route("savePatient")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
         {
             return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
+
+
+        [HttpPost]
+        [Route("addPatient")]
+        //[AllowAnonymous]
+        public HttpResponseMessage AddPatient([FromBody]AddPatient patient)
+        {
+            return requestHandlerAddPatient.CreateGbObject2(Request, patient);
+        }
+
 
         [HttpGet]
         [Route("Delete/{id}")]

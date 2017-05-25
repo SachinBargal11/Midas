@@ -39,12 +39,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             specialtyBO.ID = specialty.id;
             specialtyBO.Name = specialty.Name;
             specialtyBO.SpecialityCode = specialty.SpecialityCode;
+            specialtyBO.MandatoryProcCode = specialty.MandatoryProcCode;
+            specialtyBO.SchedulingAvailable = specialty.SchedulingAvailable;
             if (specialty.IsUnitApply.HasValue)
                 specialtyBO.IsDeleted = specialty.IsUnitApply.Value;
             if (specialty.IsDeleted.HasValue)
                 specialtyBO.IsDeleted = specialty.IsDeleted.Value;
             if (specialty.UpdateByUserID.HasValue)
                 specialtyBO.UpdateByUserID = specialty.UpdateByUserID.Value;
+            
+            specialtyBO.ColorCode = specialty.ColorCode;
+
             return (T)(object)specialtyBO;
         }
         #endregion
@@ -71,6 +76,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             speclityDB.SpecialityCode = specialtyBO.SpecialityCode;
             speclityDB.IsUnitApply = specialtyBO.IsUnitApply;
             speclityDB.IsDeleted = specialtyBO.IsDeleted.HasValue ? specialtyBO.IsDeleted.Value : false;
+            speclityDB.ColorCode = specialtyBO.ColorCode;
             #endregion
 
 
@@ -89,6 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     specialty.SpecialityCode = specialtyBO.SpecialityCode != null ? specialtyBO.SpecialityCode : specialty.SpecialityCode;
                     specialty.IsDeleted = specialtyBO.IsDeleted != null ? specialtyBO.IsDeleted : specialty.IsDeleted;
                     specialty.UpdateByUserID = specialtyBO.UpdateByUserID;
+                    specialty.ColorCode = specialtyBO.ColorCode != null ? specialtyBO.ColorCode : specialty.ColorCode;
                     #endregion
 
                     _context.Entry(specialty).State = System.Data.Entity.EntityState.Modified;
@@ -178,6 +185,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By LocationId
+        public override object GetByLocationId(int LocationId)
+        {
+            List<int> doctorsInLocation = _context.DoctorLocationSchedules.Where(p => p.LocationID == LocationId
+                                                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .Select(p => p.DoctorID)
+                                                                          .Distinct()
+                                                                          .ToList();
+
+            var acc_ = _context.Specialties.Where(p => (p.DoctorSpecialities.Any(p2 => doctorsInLocation.Contains(p2.DoctorID)
+                                                                                   && (p2.IsDeleted == false)) == true)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .Distinct()
+                                           .ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Specialty> SpecialtyBO = new List<BO.Specialty>();
+
+            acc_.ForEach(p => SpecialtyBO.Add(Convert<BO.Specialty, Specialty>(p)));
+
+            return (object)SpecialtyBO;
+        }
+        #endregion
 
         public void Dispose()
         {

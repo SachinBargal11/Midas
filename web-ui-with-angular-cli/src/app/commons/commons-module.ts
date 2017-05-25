@@ -7,6 +7,7 @@ import { DateFormatPipe } from './pipes/date-format-pipe';
 import { MapToJSPipe } from './pipes/map-to-js';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
+import { DateTimeFormatPipe } from './pipes/date-time-format-pipe';
 import { PhoneFormatPipe } from './pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './pipes/faxno-format-pipe';
 
@@ -18,6 +19,16 @@ import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
+import { LeaveEventEditorComponent } from '../medical-provider/calendar/components/leave-event-editor';
+import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
+import { DignosisComponent } from './components/dignosis/dignosis.component';
+import { ProcedureComponent } from './components/procedure/procedure.component';
+import { ReferralsComponent } from './components/referrals/referrals.component';
+
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
+import { AddMedicalProviderComponent } from '../account-setup/components/medical-provider-master/add-medical-provider';
+import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
 
 import {
   AccordionModule,
@@ -33,9 +44,17 @@ import {
   ScheduleModule,
   CheckboxModule,
   SharedModule,
-  ConfirmDialogModule
+  ConfirmDialogModule,
+  FileUploadModule,
+  GrowlModule,
+  TabViewModule,
+  LightboxModule,
+  ListboxModule,
+  CarouselModule,
+  BlockUIModule
+
 } from 'primeng/primeng';
-import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 @NgModule({
@@ -58,7 +77,15 @@ import { DropdownModule } from 'ng2-bootstrap';
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    DropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    FileUploadModule,
+    GrowlModule,
+    TabViewModule,
+    LightboxModule,
+    ListboxModule,
+    CarouselModule,
+    BlockUIModule,
+    SignaturePadModule
   ],
   declarations: [
     LimitPipe,
@@ -68,6 +95,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateTimeFormatPipe,    
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -75,7 +103,15 @@ import { DropdownModule } from 'ng2-bootstrap';
     LoaderComponent,
     NotificationComponent,
     ShellComponent,
-    ScheduledEventEditorComponent
+    ScheduledEventEditorComponent,
+    LeaveEventEditorComponent,
+    DocumentUploadComponent,
+    SignatureFieldComponent,
+    DignosisComponent,
+    ProcedureComponent,
+    ReferralsComponent,
+    AddMedicalProviderComponent,
+    VisitDetailComponent
   ],
   exports: [
     CommonModule,
@@ -87,6 +123,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
+    DateTimeFormatPipe,
     FaxNoFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
@@ -109,9 +146,24 @@ import { DropdownModule } from 'ng2-bootstrap';
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    DropdownModule,
+    BsDropdownModule,
+    FileUploadModule,
+    GrowlModule,
+    TabViewModule,
+    LightboxModule,
+    ListboxModule,
+    CarouselModule,
+    BlockUIModule,
     ShellComponent,
-    ScheduledEventEditorComponent
+    ScheduledEventEditorComponent,
+    LeaveEventEditorComponent,
+    DocumentUploadComponent,
+    SignatureFieldComponent,
+    DignosisComponent,
+    ProcedureComponent,
+    ReferralsComponent,
+    AddMedicalProviderComponent,
+    VisitDetailComponent
   ]
 })
 export class CommonsModule { }

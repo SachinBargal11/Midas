@@ -1,3 +1,10 @@
+input.disabled,
+select.disabled {
+    cursor: not-allowed;
+    background-color: #dbe4ea;
+    opacity: .65;
+}
+
 .page-content {
     padding-top: 55px;
     .control-panel & {
@@ -7,12 +14,15 @@
         padding-left: 100px;
     }
 }
+
 .card-block {
     padding-bottom: 0;
 }
+
 .card-header {
     padding: .50rem 1.25rem;
 }
+
 .box-typical {
     &.box-typical-padding {
         padding: 10px 15px;
@@ -29,12 +39,6 @@ h6 {
         padding-bottom: 0.4rem;
     }
 }
-h4  {
-    &.panel-title {
-        margin-top: 1.2rem;
-        margin-left: 1.2rem;
-    }
-}
 
 .nav {
     .nav-item .btn-close {
@@ -45,7 +49,6 @@ h4  {
 .side-menu {
     &.side-menu-compact {
         padding-top: 50px;
-        width: 110px;
     }
 }
 
@@ -65,6 +68,15 @@ body {
                     padding: 0.3em 0.5em;
                     &.actions-cell {
                         width: 100px;
+                    }
+                    &.inbound-column {
+                        border-right: 1px solid #c7c7c7 !important;
+                        // width: 38px;
+                    }
+                    &.inbound-column-span {
+                        border-right: 1px solid #c7c7c7 !important;
+                        text-align: center; 
+                        // width: 38px;
                     }
                     &.ui-selection-column {
                         width: 38px;
@@ -97,6 +109,12 @@ body {
             margin-bottom: 0;
         }
     }
+    .list-control {
+        width: 100%;
+    }
+    .select-list {
+        width: 300px;
+    }
 }
 
 .breadcrumb {
@@ -119,13 +137,29 @@ body {
 .ui-inputtext.ui-state-focus,
 .ui-widget-content .ui-inputtext.ui-state-focus,
 .ui-widget-header .ui-inputtext.ui-state-focus {
-    background: inherit;
-    // border: inherit;
+    background: inherit; // border: inherit;
     box-shadow: none;
 }
 
 .control-panel.open .notification-panel-container {
     width: 280px;
     display: block;
-    padding-top: 50px;
+}
+
+.fc-content {
+    .fc-title,
+    .fc-time,
+    .fa {
+        color: white;
+    }
+}
+
+.ui-grid-row div {
+    padding: 4px 10px;
+    label {
+        font-weight: bold;
+    }
+}
+.site-header {
+    background-color: gray;
 }

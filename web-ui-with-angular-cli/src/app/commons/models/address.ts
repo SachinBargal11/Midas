@@ -10,7 +10,7 @@ const AddressRecord = Record({
     state: '',
     zipCode: '',
     country: '',
-    isDeleted: 0,
+    isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, // Moment

@@ -4,6 +4,6 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const environment = {
-  production: false,
-  SERVICE_BASE_URL: 'http://midas.codearray.tk:5003/midaspatientapi'
+  production: false, 
+  SERVICE_BASE_URL: 'http://patientapi.codearray.tk/midaspatientapi' 
 };

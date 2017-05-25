@@ -30,15 +30,15 @@ export class AddFamilyMemberComponent implements OnInit {
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
-        private _progressBarService: ProgressBarService,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
         private _familyMemberStore: FamilyMemberStore,
         private _elRef: ElementRef
     ) {
-            this.patientId = this._sessionStore.session.user.id;
+            this.patientId = this.sessionStore.session.user.id;
         this.familyMemberForm = this.fb.group({
             relationId: ['', Validators.required],
             fullName: ['', Validators.required],
@@ -78,7 +78,7 @@ export class AddFamilyMemberComponent implements OnInit {
             workPhone: familyMemberFormValues.workPhone,
             primaryContact: familyMemberFormValues.primaryContact
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._familyMemberStore.addFamilyMember(familyMember);
         result.subscribe(
             (response) => {
@@ -87,7 +87,7 @@ export class AddFamilyMemberComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
@@ -98,13 +98,13 @@ export class AddFamilyMemberComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

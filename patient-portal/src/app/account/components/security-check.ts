@@ -34,7 +34,7 @@ export class SecurityCheckComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _authenticationService: AuthenticationService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _notificationsService: NotificationsService
     ) {
         this.referenceNumber = window.sessionStorage.getItem('pin');
@@ -48,10 +48,11 @@ export class SecurityCheckComponent implements OnInit {
     validateSecurityCode() {
         let securityCheckFormControlsValues = this.securityCheckForm.value;
         this.isSecurityCheckInProgress = true;
-        let result = this._sessionStore.verifyLoginDevice(securityCheckFormControlsValues.code);
+        let result = this.sessionStore.verifyLoginDevice(securityCheckFormControlsValues.code);
         result.subscribe(
             (response) => {
-                this._router.navigate(['/dashboard']);
+                // this._router.navigate(['/dashboard']);
+                this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
                 this.isSecurityCheckInProgress = false;

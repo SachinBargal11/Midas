@@ -3,6 +3,7 @@
 	[Name] [nvarchar](50) NOT NULL,
 	[ContactPersonName] [nvarchar](50) NOT NULL,
 	[Phone] [nvarchar](20) NOT NULL,
+	[ScheduleID] [int] NULL,
 	[LocationID] [int] NOT NULL,
 	[RoomTestID] [int] NOT NULL,
 	[IsDeleted] [bit] NULL,
@@ -10,24 +11,27 @@
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
 	[UpdateDate] [datetime2](7) NULL,
- CONSTRAINT [PK_Room] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
+	CONSTRAINT [PK_Room] PRIMARY KEY ([Id])
+ )
 GO
 
 ALTER TABLE [dbo].[Room]  WITH CHECK ADD  CONSTRAINT [FK_Room_Location] FOREIGN KEY([LocationID])
-REFERENCES [dbo].[Location] ([id])
+	REFERENCES [dbo].[Location] ([id])
 GO
 
 ALTER TABLE [dbo].[Room] CHECK CONSTRAINT [FK_Room_Location]
 GO
 
 ALTER TABLE [dbo].[Room]  WITH CHECK ADD  CONSTRAINT [FK_Room_RoomTest] FOREIGN KEY([RoomTestID])
-REFERENCES [dbo].[RoomTest] ([id])
+	REFERENCES [dbo].[RoomTest] ([id])
 GO
 
 ALTER TABLE [dbo].[Room] CHECK CONSTRAINT [FK_Room_RoomTest]
+GO
+
+ALTER TABLE [dbo].[Room]  WITH CHECK ADD  CONSTRAINT [FK_Room_Schedule] FOREIGN KEY([ScheduleID])
+	REFERENCES [dbo].[Schedule] ([id])
+GO
+
+ALTER TABLE [dbo].[Room] CHECK CONSTRAINT [FK_Room_Schedule]
 GO

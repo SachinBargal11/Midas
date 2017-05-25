@@ -1,5 +1,6 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { Address } from './address';
 import { Contact } from './contact';
 import { UserRole } from './user-role';
@@ -12,7 +13,7 @@ const UserRecord = Record({
     // name: '',
     userType: UserType.STAFF,
     roles: null,
-    accountId: '',
+    accountId: 0,
     userName: '',
     firstName: '',
     middleName: '',
@@ -22,7 +23,7 @@ const UserRecord = Record({
     address: null, //Address
     contact: null, //Contact
     dateOfBirth: moment(),
-    isDeleted: 0,
+    isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
     // createDate: null, //Moment
@@ -71,11 +72,23 @@ export class User extends UserRecord {
                 return 'Staff';
         }
     }
- 
-      get genderLabel(): string {
+
+    get userRole(): string {
+        let roleString: string = null;
+        let userRoles: any = [];
+        _.forEach(this.roles, (currentRole: UserRole) => {
+            userRoles.push(currentRole.name);
+        });
+        if (userRoles.length > 0) {
+            roleString = userRoles.join(', ');
+        }
+        return roleString;
+    }
+
+    get genderLabel(): string {
         return User.getGender(this.gender);
     }
-    // tslint:disable-next-line:member-ordering
+
     static getGender(genderStatus: Gender): string {
         switch (genderStatus) {
             case Gender.MALE:

@@ -36,6 +36,8 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
+        public int? CompanyId { get; set; }
+
         //public List<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public List<Location> Locations { get; set; }
         public List<ScheduleDetail> ScheduleDetails { get; set; }
@@ -46,5 +48,36 @@ namespace MIDAS.GBX.BusinessObjects
             BusinessValidation validation = new BusinessValidation();
             return validations;
         }
+    }
+
+    public class mSchedule : GbObject
+    {
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+        private bool _isdefault;
+        public bool isDefault
+        {
+            get
+            {
+                return this._isdefault;
+            }
+            set
+            {
+                _isdefault = value;
+            }
+        }
+        public int? CompanyId { get; set; }
+        public List<mLocation> mLocations { get; set; }
+        public List<mScheduleDetail> mScheduleDetails { get; set; }
     }
 }

@@ -33,12 +33,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
-        [HttpPost]
-        [Route("GetAll")]
-        
-        public HttpResponseMessage Get([FromBody]Company data)
+        [HttpGet]
+        [Route("getAll")]
+        //[AllowAnonymous]
+        public HttpResponseMessage Get()
         {
-            return requestHandler.GetGbObjects(Request, data);
+            return requestHandler.GetObjects(Request);
+        }
+
+
+        [HttpGet]
+        [Route("getAllCompanyAndLocation")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetAllCompanyAndLocation()
+        {
+            return requestHandler.GetAllCompanyAndLocation(Request);
         }
 
         // POST: api/Organizations
@@ -77,7 +86,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, account);
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         [Route("RegisterCompany")]
         [Route("Signup")]
@@ -91,7 +100,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("ValidateInvitation")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage ValidateInvitation([FromBody]Invitation data)
         {
             if (data != null)

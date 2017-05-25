@@ -37,6 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.RoomTest roomtestBO = new BO.RoomTest();
             roomtestBO.name = roomtest.Name;
             roomtestBO.ID = roomtest.id;
+            roomtestBO.ColorCode = roomtest.ColorCode;
 
             if (roomtest.IsDeleted.HasValue)
                 roomtestBO.IsDeleted = roomtest.IsDeleted.Value;
@@ -76,6 +77,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region RoomTest
             roomtestDB.id = roomtestBO.ID;
             roomtestDB.Name = roomtestBO.name;
+            roomtestDB.ColorCode = roomtestBO.ColorCode;
             roomtestDB.IsDeleted = roomtestBO.IsDeleted.HasValue ? roomtestBO.IsDeleted : false;
             #endregion
             if (roomtestDB.id > 0)
@@ -90,6 +92,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     #region Location
                     roomtest.id = roomtestBO.ID;
                     roomtest.Name = roomtestBO.name == null ? roomtest.Name : roomtestBO.name;
+                    roomtest.ColorCode = roomtestBO.ColorCode;
                     roomtest.IsDeleted = roomtestBO.IsDeleted == null ? roomtestBO.IsDeleted : roomtest.IsDeleted;
                     roomtest.UpdateDate = roomtestBO.UpdateDate;
                     roomtest.UpdateByUserID = roomtestBO.UpdateByUserID;
@@ -159,6 +162,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstRoomTest;
         }
         #endregion
+
+        #region Get By RoomId
+        public override object GetByRoomId(int RoomId)
+        {
+            var acc_ = _context.RoomTests.Where(p => p.Rooms.Any(p2 => p2.id == RoomId
+                                                                   && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == true
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.RoomTest> RoomTestBO = new List<BO.RoomTest>();
+
+            acc_.ForEach(p => RoomTestBO.Add(Convert<BO.RoomTest, RoomTest>(p)));
+
+            return (object)RoomTestBO;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

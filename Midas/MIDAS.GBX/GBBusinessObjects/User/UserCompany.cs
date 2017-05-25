@@ -11,15 +11,22 @@ namespace MIDAS.GBX.BusinessObjects
     {
         public int UserId { get; set; }
         public int CompanyId { get; set; }
+        public bool IsAccepted { get; set; }
         public User User { get; set; }
         public Company Company { get; set; }
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
-            //Implement logic for validation
-
             return validations;
         }
+    }
+
+    public class mUserCompany : GbObject
+    {
+        public int UserId { get; set; }
+        public int CompanyId { get; set; }
+        public mUser User { get; set; }
+        public Company Company { get; set; }
     }
 }

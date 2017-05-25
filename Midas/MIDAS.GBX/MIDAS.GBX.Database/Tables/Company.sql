@@ -1,5 +1,4 @@
-﻿
-CREATE TABLE [dbo].[Company](
+﻿CREATE TABLE [dbo].[Company](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
 	[Status] [tinyint] NOT NULL,
@@ -8,7 +7,10 @@ CREATE TABLE [dbo].[Company](
 	[TaxID] [nvarchar](10) NOT NULL,
 	[AddressId] [int] NOT NULL,
 	[ContactInfoID] [int] NOT NULL,
-	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT ((0)),
+	[BlobStorageTypeId] [int] NOT NULL DEFAULT 1,
+	[RegisteringCompanyId] [INT] NULL,
+	[RegistrationComplete] [BIT] NOT NULL CONSTRAINT [DF_Company_RegistrationComplete]  DEFAULT 0,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
@@ -48,3 +50,34 @@ GO
 
 ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_SubscriptionPlan]
 GO
+
+ALTER TABLE [dbo].[Company]  WITH CHECK ADD CONSTRAINT [FK_Company_BlobStorageType_BlobStorageTypeId] FOREIGN KEY([BlobStorageTypeId])
+	REFERENCES [dbo].[BlobStorageType] ([Id])
+GO
+
+ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_BlobStorageType_BlobStorageTypeId]
+GO
+
+/*
+ALTER TABLE [dbo].[Company] ADD [BlobStorageTypeId] [int] NOT NULL DEFAULT (1)
+
+ALTER TABLE [dbo].[Company] ALTER COLUMN [BlobStorageTypeId] SET DEFAULT (1)
+GO
+*/
+/*
+ALTER TABLE [dbo].[Company] ADD [RegisteringCompanyId] [INT] NULL
+GO
+ALTER TABLE [dbo].[Company] ADD [RegistrationComplete] [BIT] NULL CONSTRAINT [DF_Company_RegistrationComplete]  DEFAULT 0
+GO
+UPDATE [dbo].[Company] SET [RegistrationComplete] = 1
+GO
+ALTER TABLE [dbo].[Company] ALTER COLUMN [RegistrationComplete] [BIT] NOT NULL
+GO
+
+ALTER TABLE [dbo].[Company]  WITH CHECK ADD CONSTRAINT [FK_Company_Company_RegisteringCompanyId] FOREIGN KEY([RegisteringCompanyId])
+	REFERENCES [dbo].[Company] ([Id])
+GO
+
+ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_Company_RegisteringCompanyId]
+GO
+*/

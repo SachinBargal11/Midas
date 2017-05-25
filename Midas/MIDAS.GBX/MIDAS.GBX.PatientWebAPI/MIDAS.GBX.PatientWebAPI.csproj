@@ -251,20 +251,32 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
+    <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
+    <Compile Include="Controllers\DoctorController.cs" />
+    <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\InsuranceMasterController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
     <Compile Include="Controllers\PatientAccidentInfoController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
+    <Compile Include="Controllers\PatientVisit2Controller.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
+    <Compile Include="Controllers\ReferralController.cs" />
     <Compile Include="Controllers\RefferingOfficeController.cs" />
+    <Compile Include="Controllers\RoomController.cs" />
+    <Compile Include="Controllers\RoomTestController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -375,7 +387,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49899</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

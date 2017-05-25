@@ -1,34 +1,54 @@
+<p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
-<h3 class="with-border">Cases for {{patientName}}
-    <!--<a class="pull-right btn btn-danger btn-sm" (click)="deleteCases()">
-        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Cases</span>
-        <loader [visible]="isDeleteProgress"></loader>
-    </a>-->
-    <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
+    <h3 class="with-border">Cases for {{patientName}}
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteCases()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Cases</span>
+            <loader [visible]="isDeleteProgress"></loader>
+        </a>
+        <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Case</span>
-    </a>    
-</h3>
+    </a>
+    </h3>
 </div>
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
-         <span class="input-group-addon"><i class="fa fa-search"></i></span>
-         <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-         <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Patients">-->
-         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-    </div>
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
 </div>
-<!--<p-dataTable [value]="cases" [(selection)]="selectedCase" selectionMode="single" (onRowSelect)="onRowSelect(selectedCase)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
-<p-dataTable [value]="cases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+</div>
+<!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
+<p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
-    <p-column field="caseName" header="Name" [sortable]="true"></p-column>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
+    <p-column header="Consent Received">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
+                <u>Yes</u>
+            </a>
+            <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/consent">
+                <u>No</u>
+            </a>
+        </ng-template>
+    </p-column>
+    <p-column header="Case Source" field="caseSource"> </p-column>
+    <!--<p-column header="Referral Status">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals"><u>Inbound</u></a>
+            <a *ngIf="case.getOutboundReferral(sessionStore.session.currentCompany.id) && !case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/outbound-referrals"><u>Outbound</u></a>
+            <a *ngIf="!case.getInboundReferral(sessionStore.session.currentCompany.id)"><u></u></a>
+          
+        </ng-template>
+    </p-column>-->
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-case="rowData" pTemplate="body">
+        <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>
 <router-outlet></router-outlet>
-

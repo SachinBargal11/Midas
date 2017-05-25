@@ -1,0 +1,161 @@
+<header class="card-header card-header-lg">
+    Add Medical Provider
+</header>
+<form [formGroup]="providerform" name="providerform" (ngSubmit)="saveMedicalProvider()">
+    <section class="card">
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> Company Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.companyName.touched && !providerformControls.companyName.valid">
+                        <input formControlName="companyName" type="text" class="form-control" [class.error]="!providerformControls.companyName.valid"
+                        />
+                        <div class='error-list' *ngIf="providerformControls.companyName.touched && !providerformControls.companyName.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.companyName.pending">Checking...</li>
+                                <li *ngIf="providerformControls.companyName.hasError('required')">Company Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label"> Tax Id
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.taxId.touched && !providerformControls.taxId.valid">
+                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!providerformControls.taxId.valid" minlength="10"
+                        />
+                        <div class='error-list' *ngIf="providerformControls.taxId.touched && !providerformControls.taxId.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.taxId.hasError('required')">Tax Id is required.</li>
+                                <li *ngIf="providerformControls.taxId.hasError('minlength')">Tax Id should be minimum {{providerformControls.taxId.errors.minlength.requiredLength}} characters.
+                                </li>
+                                <li *ngIf="providerformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{providerformControls.taxId.errors.maxlength.requiredLength}} characters.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.firstName.touched && !providerformControls.firstName.valid">
+                        <input formControlName="firstName" type="text" class="form-control" [class.error]="!providerformControls.firstName.valid"
+                        />
+                        <div class='error-list' *ngIf="providerformControls.firstName.touched && !providerformControls.firstName.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.firstName.hasError('required')">First name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.lastName.touched && !providerformControls.lastName.valid">
+                        <input formControlName="lastName" type="text" class="form-control" [class.error]="!providerformControls.lastName.valid" />
+                        <div class='error-list' *ngIf="providerformControls.lastName.touched && !providerformControls.lastName.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.lastName.hasError('required')">Last name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> Company type
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                        <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                                             <option value="">-Select company type-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Medical Provider</option>
+                                             <!--<option value="Medical Provider">Medical Provider</option>
+                                             <option value="PI\BI Firm">PI\BI Firm</option>
+                                             <option value="Collection Firm">Collection Firm</option>
+                                             <option value="Transportation">Transportation</option>-->
+                                         </select>
+                        <div class='error-list' *ngIf="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.companyType.hasError('required')">Company type is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label"> Phone number
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
+                        <p-inputMask mask="999-999-9999" formControlName="phoneNo" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid"
+                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <!--<input formControlName="phoneNo" type="text" class="form-control" [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" />-->
+                        <div class='error-list' *ngIf="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.phoneNo.hasError('required')">Phone number is required.</li>
+                                <li *ngIf="providerformControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> Subscription plan
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
+                        <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
+                                             <option value="">-Select subscription plan-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Trial</option>
+                                             <!--<option value="30 day Trial">30 day Trial</option>-->
+                                         </select>
+                        <div class='error-list' *ngIf="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="providerformControls.email.touched && !providerformControls.email.valid">
+                        <input formControlName="email" type="email" [class.error]="!providerformControls.email.valid" class="form-control" placeholder=""
+                            type="text" />
+                        <div class='error-list' *ngIf="providerformControls.email.touched && !providerformControls.email.valid">
+                            <ul>
+                                <li *ngIf="providerformControls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="providerformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+
+    <button [disabled]="!providerform.valid ||  isSaveProgress " type="submit" class="btn btn-success sign-up">Save
+                                <loader [visible]="isSaveProgress"></loader>
+                            </button>
+    <a *ngIf="inputCancel != 1" [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+    <a *ngIf="inputCancel == 1" (click)="closeDialog()" class="btn btn-secondary">Cancel</a>
+
+</form>

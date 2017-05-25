@@ -111,15 +111,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.FaxNo = user.ContactInfo.FaxNo;
                 boContactInfo.CreateByUserID = user.ContactInfo.CreateByUserID;
                 boContactInfo.ID = user.ContactInfo.id;
+                boContactInfo.OfficeExtension = user.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = user.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = user.ContactInfo.PreferredCommunication;
+
+
                 boUser.ContactInfo = boContactInfo;
             }
 
+            if (user.UserCompanies != null && user.UserCompanies.Count > 0)
+            {
+                List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
+                user.UserCompanies.Where(p => p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                  .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, UserId = x.UserID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
+                boUser.UserCompanies = boUserCompany;
+            }
+
             if (user.UserCompanyRoles != null)
-            {               
+            {
                 List<BO.Role> roles = new List<BO.Role>();
                 //user.UserCompanyRoles.ToList().ForEach(p => roles.Add(new BO.Role() { RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
                 user.UserCompanyRoles.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                     .ToList().ForEach(p => roles.Add(new BO.Role() { RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
+                                     .ToList().ForEach(p => roles.Add(new BO.Role() { ID = p.id, RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType),p.RoleID) }));
                 boUser.Roles = roles;
             }
 
@@ -139,6 +152,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = (BO.GbObject)(object)entity;
             return userDB;
+        }
+        #endregion
+
+        #region Delete
+        public override Object Delete(int id)
+        {
+            var acc = _context.Users.Include("UserCompanies").Where(p => p.id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<User>();
+            if (acc != null)
+            {
+               if(acc.UserCompanies!=null)
+                {
+                    foreach (var item in acc.UserCompanies)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                            {
+                                sr.Delete(item.id);
+                            }
+                        }
+                    }
+                }
+
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.User, User>(acc);
+            return (object)res;         
         }
         #endregion
 
@@ -193,7 +241,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 addressDB.ZipCode = addressBO.ZipCode;
                 addressDB.Country = addressBO.Country;
                 //[STATECODE-CHANGE]
-                addressDB.StateCode = addressBO.StateCode;
+                //addressDB.StateCode = addressBO.StateCode;
                 //[STATECODE-CHANGE]
             }
             #endregion
@@ -209,6 +257,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
                 contactinfoDB.FaxNo = contactinfoBO.FaxNo;
                 contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+                contactinfoDB.OfficeExtension = contactinfoBO.OfficeExtension;
+                contactinfoDB.AlternateEmail = contactinfoBO.AlternateEmail;
+                contactinfoDB.PreferredCommunication = contactinfoBO.PreferredCommunication;
             }
             #endregion
 
@@ -226,6 +277,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.ContactInfo = contactinfoDB;            
             if (userBO.DateOfBirth.HasValue) userDB.DateOfBirth = userBO.DateOfBirth.Value;
             if (userBO.IsDeleted.HasValue) userDB.IsDeleted = userBO.IsDeleted.Value;
+            userDB.C2FactAuthEmailEnabled = true;
 
             #region Company
             if (companyBO != null)
@@ -252,7 +304,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (userDB.id > 0)
             {
                 //Find User By ID
-                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>();
+                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Include("UserCompanies").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>();
 
                 List<int> companyRoles_New = roleBO.Select(p => (int)p.RoleType).ToList<int>();
 
@@ -326,6 +378,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                         usr.ContactInfo.FaxNo = contactinfoBO.FaxNo;
                         if (userBO.UpdateByUserID.HasValue) usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
+                        usr.ContactInfo.OfficeExtension = contactinfoBO.OfficeExtension;
+                        usr.ContactInfo.AlternateEmail = contactinfoBO.AlternateEmail;
+                        usr.ContactInfo.PreferredCommunication = contactinfoBO.PreferredCommunication;
+
                     }
                     #endregion
                 }
@@ -341,7 +397,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                if (_context.Users.Any(o => o.UserName == userBO.UserName)) return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+                if (_context.Users.Any(o => o.UserName == userBO.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false)))) return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
 
                 userDB.CreateDate = DateTime.UtcNow;
                 userDB.CreateByUserID = userBO.CreateByUserID;
@@ -446,7 +502,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Login
-
         public override Object Login<T>(T entity)
         {
             BO.User userBO = (BO.User)(object)entity;
@@ -494,6 +549,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //Check if the User even if valid is logging as invalid User Type
             BO.User acc_ = isPasswordCorrect && isUserTypeValid ? Convert<BO.User, User>(data_) : null;
 
+            //bool UseOTP = true;
+            //if (bool.TryParse(Utility.GetConfigValue("UseOTP"), out UseOTP))
+            //{
+            //    userBO.forceLogin = UseOTP;
+            //}
+            //userBO.forceLogin = true;
+
             if (!userBO.forceLogin)
             {
                 if (acc_.C2FactAuthEmailEnabled)
@@ -535,6 +597,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
                     }
                     boOTP.User = acc_;
+
+                    List<BO.Role> RoleBO1 = new List<BO.Role>();
+                    var roles1 = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in roles1)
+                    {
+                        RoleBO1.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID
+                        });
+                    }
+                    boOTP.User.Roles = RoleBO1;
                     return boOTP;
                 }
                 else if (acc_.C2FactAuthSMSEnabled)
@@ -552,7 +627,49 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
             }
             boOTP_.User = acc_;
+
+            List<BO.Role> RoleBO = new List<BO.Role>();
+            var roles = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+            foreach (var item in roles)
+            {
+                RoleBO.Add(new BO.Role()
+                {
+                    ID = item.RoleID,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                    RoleType = (BO.GBEnums.RoleType)item.RoleID
+                });
+            }
+            boOTP_.User.Roles = RoleBO;
             return boOTP_;
+        }
+
+        public override Object Login2<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            string Pass = userBO.Password;
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            bool isPasswordCorrect = false;
+            try
+            {
+                isPasswordCorrect = PasswordHash.ValidatePassword(userBO.Password, ((User)data_).Password);
+
+                if (!isPasswordCorrect)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //Check if the User even if valid is logging as invalid User Type
+            BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
+           
+            return acc_;
         }
         #endregion
 
@@ -581,7 +698,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                             return lstUsers;
                         default:
-                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
                             if (data1 == null || data1.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in data1)
@@ -612,7 +729,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return lstUsers;
                     default:
                         {
-                            var acc1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<User>();
+                            var acc1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null)).ToList<User>();
                             if (acc1 == null || acc1.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in acc1)

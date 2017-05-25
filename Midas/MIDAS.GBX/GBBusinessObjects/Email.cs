@@ -80,13 +80,13 @@ namespace MIDAS.GBX.BusinessObjects
         }
         public void SendMail()
         {
-            var client = new SmtpClient("smtp.zoho.com", 587)
+            var client = new SmtpClient("smtp.mailgun.org", 25)
             {
-                Credentials = new NetworkCredential("mangesh.s@codearray.tech", "mangesh123 "),
+                Credentials = new NetworkCredential("postmaster@chartingview.com", "Abc123def"),
                 EnableSsl = true,
             };
 
-            var mail = new System.Net.Mail.MailMessage("mangesh.s@codearray.tech", ToEmail);
+            var mail = new System.Net.Mail.MailMessage("support@codearray.tech", ToEmail);
             mail.Subject = Subject;
             mail.Body = Body;
             mail.IsBodyHtml = true;

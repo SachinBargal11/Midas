@@ -28,3 +28,6 @@ GO
 
 ALTER TABLE [dbo].[UserCompany] CHECK CONSTRAINT [FK_UserCompany_User]
 GO
+
+--alter table [dbo].[UserCompany] add IsAccepted bit not null default 1
+--GO

@@ -9,8 +9,8 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class AttorneyMaster : GbObject
     {
-        [JsonProperty("CompanyId")]
-        public int? companyId { get; set; }
+        //[JsonProperty("CompanyId")]
+        //public int? companyId { get; set; }
         [JsonProperty("user")]
         public User User { get; set; }        
 
@@ -19,12 +19,12 @@ namespace MIDAS.GBX.BusinessObjects
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
 
-            if (companyId == null || companyId <= 0)
-                validations.Add(new BusinessValidation
-                {
-                    ValidationResult = BusinessValidationResult.Failure,
-                    ValidationMessage = "CompanyId is required"
-                });
+            //if (companyId == null || companyId <= 0)
+            //    validations.Add(new BusinessValidation
+            //    {
+            //        ValidationResult = BusinessValidationResult.Failure,
+            //        ValidationMessage = "CompanyId is required"
+            //    });
 
             return validations;
         }

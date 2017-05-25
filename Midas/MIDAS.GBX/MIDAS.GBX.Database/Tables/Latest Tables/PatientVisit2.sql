@@ -1,30 +1,22 @@
 ﻿CREATE TABLE [dbo].[PatientVisit2]
 (
-	[Id] [INT] NOT NULL IDENTITY,--**************
-	[CalendarEventId] INT NOT NULL,--**************
-	[CaseId] [INT] NOT NULL, --10 ------ GET optional--**************
-	[PatientId] [INT] NOT NULL, ------ GET--**************	
-	[LocationId] [INT] NOT NULL,  ------ GET--**************
-	[RoomId] [INT] NULL,------ GET, --**************
-	[DoctorId] [INT] NULL,     --15--**************
-	[SpecialtyId] [INT] NULL,--From [Specialty] table, AC, CH, PT add only visit no event, rest visit add event
+	[Id] [INT] NOT NULL IDENTITY,
+	[CalendarEventId] INT NOT NULL,
+	[CaseId] [INT] NOT NULL,
+	[PatientId] [INT] NOT NULL,
+	[LocationId] [INT] NOT NULL,
+	[RoomId] [INT] NULL,
+	[DoctorId] [INT] NULL,
+	[SpecialtyId] [INT] NULL,
 	[EventStart] [DATETIME2] NULL,
 	[EventEnd] [DATETIME2] NULL,
     [Notes] [NVARCHAR](250) NULL, 
-    --[RefferId] [INT] NULL, --Is reffered from another location
-    [VisitStatusId] [TINYINT] NULL, --Is Schedule, Complete, Reschedule, No Show--**************
-    --[BillStatus] [BIT] NULL, -- Billed Or Not Billed
-	--[BillDate] [DATETIME2] NULL, -- Billed Date
-    --[BillNumber] [NVARCHAR](50) NULL, -- Bill Number
-    [VisitType] [TINYINT] NULL, --IE FU C --Need to be Confirmed--**************
-    --[ReschduleId] [INT] NULL, -- If Rechedule then its Id
-    --[ReschduleDate] [DATETIME2] NULL, -- If Rechedule then its date
-    --[StudyNumber] [NVARCHAR](50) NULL, 
-    --[BillFinalize] [BIT] NULL, 
-    --[AddedByDoctor] [BIT] NULL DEFAULT 0, 
-    --[CheckInUserId] [INT] NULL, 
-    --Is doctor vist from website
-    --[BillManualyUnFinalized] [BIT] NULL, --UnFinalized
+    [VisitStatusId] [TINYINT] NULL,
+    [VisitType] [TINYINT] NULL,
+	[IsCancelled] [bit] NULL DEFAULT 0,
+	--[FileUploadPath] [NVARCHAR](250) NULL,
+	[IsTransportationRequired] [BIT] NOT NULL DEFAULT 0,
+	[TransportProviderId] [INT] NULL,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -83,3 +75,33 @@ GO
 
 ALTER TABLE [dbo].[PatientVisit2] CHECK CONSTRAINT [FK_PatientVisit2_Doctor_DoctorId]
 GO
+
+--ALTER TABLE [dbo].[PatientVisit2] ADD [IsCancelled] [bit] NULL DEFAULT 0
+--GO
+--ALTER TABLE [dbo].[PatientVisit2] ADD [FileUploadPath] [NVARCHAR](250) NULL
+/*
+ALTER TABLE [dbo].[PatientVisit2] ADD [IsOutOfOffice] [bit] NULL DEFAULT 0
+GO
+ALTER TABLE [dbo].[PatientVisit2] ADD [LeaveStartDate] [DATETIME2] NULL
+GO
+ALTER TABLE [dbo].[PatientVisit2] ADD [LeaveEndDate] [DATETIME2] NULL
+GO
+
+
+ALTER TABLE [dbo].[PatientVisit2] ALTER COLUMN [PatientId] [int] NULL;
+
+ALTER TABLE [dbo].[PatientVisit2] ALTER COLUMN [CaseId] [int] NULL;
+*/
+
+/*
+ALTER TABLE [dbo].[PatientVisit2] DROP COLUMN [FileUploadPath]
+GO
+ALTER TABLE [dbo].[PatientVisit2] ADD [IsTransportationRequired] [BIT] NULL DEFAULT 0
+GO
+ALTER TABLE [dbo].[PatientVisit2] ADD [TransportProviderId] [INT] NULL
+GO
+UPDATE [dbo].[PatientVisit2] SET [IsTransportationRequired] = 0
+GO
+ALTER TABLE [dbo].[PatientVisit2] ALTER COLUMN [IsTransportationRequired] [BIT] NOT NULL
+GO
+*/

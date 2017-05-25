@@ -1,27 +1,22 @@
-﻿/*
-Table Name: [dbo].[Patient2]
-[PatientID] not required since the id from user table can be used
-[DateOfBirth] not required since the user table has date of birth
-Address not included as User table has address info
-*/
-CREATE TABLE [dbo].[Patient2](
+﻿CREATE TABLE [dbo].[Patient2](
 	[Id] [INT] NOT NULL,
-	[SSN] [NVARCHAR](20) NOT NULL, /*Social Security Number*/
+	[SSN] [NVARCHAR](20) NOT NULL, 
 	[CompanyId] [INT] NULL,
---	[LocationID] [INT] NULL, /*Location id where current case is registered*/
-	[Weight] [DECIMAL](5, 2) NULL, /*Weight in KG OR Pounds*/
+	[Weight] [DECIMAL](5, 2) NULL, 
 	[Height] [DECIMAL](5, 2) NULL,
 	[MaritalStatusId] [TINYINT] NULL,
 	[DateOfFirstTreatment] [DATETIME2](7) NULL,
+	/*
 	[AttorneyName] [NVARCHAR](50) NULL,
 	[AttorneyAddressInfoId] [INT] NULL,
 	[AttorneyContactInfoId] [INT] NULL,
+	
 	[PatientEmpInfoId] [INT] NULL,
 	[InsuranceInfoId] [INT] NULL,
 	[AccidentInfoId] [INT] NULL,
 	[AttorneyInfoId] [INT] NULL,
 	[ReferingOfficeId] [INT] NULL,
-
+	*/
 	[IsDeleted] [bit] NULL DEFAULT (0),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
@@ -60,7 +55,7 @@ GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_MaritalStatusId]
 GO
-
+/*
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId] FOREIGN KEY([AttorneyAddressInfoId])
 	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
@@ -88,3 +83,43 @@ GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]
 GO
+*/
+
+--ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
+/*
+Link Patient with user company table
+*/
+GO
+
+/*
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyName]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyAddressInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyContactInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [PatientEmpInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [InsuranceInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AccidentInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [ReferingOfficeId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_Company_CompanyId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [UK_Patient2_SSN]
+GO
+*/

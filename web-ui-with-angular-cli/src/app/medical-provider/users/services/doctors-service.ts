@@ -52,6 +52,51 @@ export class DoctorsService {
         });
         return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
+    getDoctorsByCompanyId(companyId: number): Observable<Doctor[]> {
+        let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Doctor/getByCompanyId/' + companyId).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let doctors = (<Object[]>data).map((doctorData: any) => {
+                        return DoctorAdapter.parseResponse(doctorData);
+                    });
+                    resolve(doctors);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+    getReadingDoctorsByCompanyId(companyId: number): Observable<Doctor[]> {
+        let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Doctor/getReadingDoctors/' + companyId).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let doctors = (<Object[]>data).map((doctorData: any) => {
+                        return DoctorAdapter.parseResponse(doctorData);
+                    });
+                    resolve(doctors);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+    getDoctorsBySpecialityInAllApp(specialityId: number): Observable<Doctor[]> {
+        let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Doctor/getBySpecialityInAllApp/' + specialityId).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let doctors = (<Object[]>data).map((doctorData: any) => {
+                        return DoctorAdapter.parseResponse(doctorData);
+                    });
+                    resolve(doctors);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
 
     addDoctor(doctorDetail: Doctor): Observable<Doctor> {
         let promise: Promise<Doctor> = new Promise((resolve, reject) => {
@@ -63,19 +108,13 @@ export class DoctorsService {
                         id: this._sessionStore.session.currentCompany.id
                     }
                 }];
-            // doctorDetailRequestData = {
-            //     user: doctorDetailRequestData.user,
-            //     userCompanies: [{
-            //         company: {
-            //             id: this._sessionStore.session.currentCompany.id
-            //         }
-            //     }],
-            //     doctorSpecialities: doctorDetailRequestData.doctorSpecialities
-            // };
 
             doctorDetailRequestData.user.userCompanies = userCompanies;
-            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
-            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
+            // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            doctorDetailRequestData.user.contactInfo = doctorDetailRequestData.user.contact;
+            doctorDetailRequestData.user.addressInfo = doctorDetailRequestData.user.address;
+            doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'contact', 'address');
+            // doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
 
             // add/replace values which need to be changed
             // _.extend(doctorDetailRequestData.user, {
@@ -115,8 +154,11 @@ export class DoctorsService {
                     }
                 }];
             doctorDetailRequestData.user.userCompanies = userCompanies;
-            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
-            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
+            // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            // doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
+            doctorDetailRequestData.user.contactInfo = doctorDetailRequestData.user.contact;
+            doctorDetailRequestData.user.addressInfo = doctorDetailRequestData.user.address;
+            doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'contact', 'address');
 
             // add/replace values which need to be changed
             // _.extend(doctorDetailRequestData.user, {

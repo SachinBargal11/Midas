@@ -11,7 +11,7 @@
                             <span class="color-red">*</span>
                         </label>
                         <select formControlName="schedule" [ngModel]="currentSchedule.id" class="select2-arrow form-control" (change)="selectSchedule($event)">
-                                 <option *ngFor="let schedule of schedules" [value]="schedule.id">{{schedule.name}}</option>                                       
+                                 <option *ngFor="let schedule of _scheduleStore.schedules | async" [value]="schedule.id">{{schedule.name}}</option>                                       
                         </select>
                     </div>
                 </div>
@@ -22,8 +22,9 @@
         <header class="card-header card-header-lg clearfix">
             Details for {{currentSchedule.name}}
             <div class="pull-right" *ngIf="!isInEditMode">
-                <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableSaveAsNew()">Duplicate</button>
-                <button type="button" class="btn btn-sm btn-primary" (click)="enableEdit()">Edit</button>
+                <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableAssign()">Assign this schedule</button>
+                <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableSaveAsNew()">Customize</button>
+                <button type="button" *ngIf="!isDefaultSchedule" class="btn btn-sm btn-primary" (click)="enableEdit()">Edit</button>
             </div>
             <div class="pull-right" *ngIf="isInEditMode">
                 <!--<button type="button" class="btn btn-sm btn-secondary" (click)="resetEditMode()">Cancel</button>                            {{scheduleform.valid}}

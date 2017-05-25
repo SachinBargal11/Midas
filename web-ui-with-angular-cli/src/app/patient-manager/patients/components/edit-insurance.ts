@@ -1,12 +1,14 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { PendingReferral } from '../../referals/models/pending-referral';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
@@ -18,6 +20,8 @@ import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'edit-insurance',
@@ -26,7 +30,11 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 
 export class EditInsuranceComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     insuranceMasters: InsuranceMaster[];
+    insuranceMastersAdress: Address;
+    insuranceMaster: InsuranceMaster;
     policyCellPhone: string;
     policyFaxNo: string;
     insuranceCellPhone: string;
@@ -41,9 +49,10 @@ export class EditInsuranceComponent implements OnInit {
     policyContact = new Contact({});
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
-    patientId;
+    patientId: number;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
+    uploadedFiles: any[] = [];
 
     insuranceform: FormGroup;
     insuranceformControls;
@@ -61,10 +70,38 @@ export class EditInsuranceComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
+            this._progressBarService.show();
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                        })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
@@ -73,14 +110,13 @@ export class EditInsuranceComponent implements OnInit {
             result.subscribe(
                 (insurance: any) => {
                     this.insurance = insurance.toJS();
+
+                    this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
                     this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
                     this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
-                    // this.selectedInsuranceCity = insurance.insuranceAddress.city;
-                    // this.selectedPolicyCity = insurance.policyAddress.city;
-                    // this.loadInsuranceCities(insurance.insuranceAddress.state);
-                    // this.loadPolicyCities(insurance.policyAddress.state);
+
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -90,92 +126,79 @@ export class EditInsuranceComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+
         this.insuranceform = this.fb.group({
-                policyNo: ['', Validators.required],
-                policyOwner: ['', Validators.required],
-                policyHolderName: ['', Validators.required],
-                insuranceCompanyCode: ['', Validators.required],
-                insuranceType: ['', Validators.required],
-                insuranceMasterId: ['', Validators.required],
-                contactPerson: ['', Validators.required],
-                policyAddress: ['', Validators.required],
-                policyAddress2: [''],
-                policyState: [''],
-                policyCity: [''],
-                policyZipcode: [''],
-                policyCountry: [''],
-                policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
-                policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                policyHomePhone: [''],
-                policyWorkPhone: [''],
-                policyFaxNo: [''],
-                address: ['', Validators.required],
-                address2: [''],
-                state: [''],
-                city: [''],
-                zipcode: [''],
-                country: [''],
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: [''],
-                workPhone: [''],
-                faxNo: ['']
-            });
+            policyNo: ['', Validators.required],
+            policyOwner: ['', Validators.required],
+            policyHoldersName: ['', Validators.required],
+            insuranceCompanyCode: [''],
+            insuranceType: ['', Validators.required],
+            insuranceMasterId: ['', Validators.required],
+            contactPerson: ['', Validators.required],
+            policyAddress: ['', Validators.required],
+            policyAddress2: [''],
+            policyState: [''],
+            policyCity: [''],
+            policyZipCode: [''],
+            policyCountry: [''],
+            policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
+            policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            policyHomePhone: [''],
+            policyWorkPhone: [''],
+            policyFaxNo: [''],
+            policyOfficeExtension: [''],
+            policyAlternateEmail: ['', [AppValidators.emailValidator]],
+            policyPreferredCommunication: [''],
+            address: [],
+            address2: [],
+            state: [],
+            city: [],
+            zipcode: [],
+            country: [],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            homePhone: [''],
+            workPhone: [''],
+            faxNo: [''],
+            alternateEmail: ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredCommunication: ['']
+        });
 
         this.insuranceformControls = this.insuranceform.controls;
     }
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+
         this._insuranceStore.getInsurancesMaster()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
+
     }
 
-    // selectPolicyState(event) {
-    //     let currentState = event.target.value;
-    //     if (currentState === this.insurance.policyAddress.state) {
-    //         this.loadPolicyCities(currentState);
-    //         this.selectedPolicyCity = this.insurance.policyAddress.city;
-    //     } else {
-    //     this.loadPolicyCities(currentState);
-    //     this.selectedPolicyCity = '';
-    //     }
-    // }
-    // loadPolicyCities(stateName) {
-    //     this.isPolicyCitiesLoading = true;
-    //     if ( stateName !== '') {
-    //     this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.policyCities = cities; },
-    //             null,
-    //             () => { this.isPolicyCitiesLoading = false; });
-    //     } else {
-    //         this.policyCities = [];
-    //         this.isPolicyCitiesLoading = false;
-    //     }
-    // }
-    // selectInsuranceState(event) {
-    //     let currentState = event.target.value;
-    //     if (currentState === this.insurance.insuranceAddress.state) {
-    //         this.loadInsuranceCities(currentState);
-    //         this.selectedInsuranceCity = this.insurance.insuranceAddress.city;
-    //     } else {
-    //     this.loadInsuranceCities(currentState);
-    //     this.selectedInsuranceCity = '';
-    //     }
-    // }
-    // loadInsuranceCities(stateName) {
-    //     this.isInsuranceCitiesLoading = true;
-    //     if ( stateName !== '') {
-    //     this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.insuranceCities = cities; },
-    //             null,
-    //             () => { this.isInsuranceCitiesLoading = false; });
-    //     } else {
-    //         this.insuranceCities = [];
-    //         this.isInsuranceCitiesLoading = false;
-    //     }
-    // }
+    selectInsurance(event) {
+        let currentInsurance: number = parseInt(event.target.value);
+        if (currentInsurance !== 0) {
+            this.loadInsuranceMasterAddress(currentInsurance);
+        } else {
+            this.insuranceMastersAdress = null
+        }
+    }
+    onUpload(event) {
 
+        for (let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+    }
+
+    loadInsuranceMasterAddress(currentInsurance) {
+        this._insuranceStore.getInsuranceMasterById(currentInsurance)
+            .subscribe(
+            (insuranceMaster) => {
+                this.insuranceMaster = insuranceMaster;
+                this.insuranceMastersAdress = insuranceMaster.Address
+            });
+    }
     save() {
         this.isSaveProgress = true;
         let insuranceformValues = this.insuranceform.value;
@@ -183,7 +206,7 @@ export class EditInsuranceComponent implements OnInit {
         let insurance = new Insurance({
             id: this.insurance.id,
             patientId: this.patientId,
-            policyHoldersName: insuranceformValues.policyHolderName,
+            policyHoldersName: insuranceformValues.policyHoldersName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNo,
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
@@ -195,7 +218,11 @@ export class EditInsuranceComponent implements OnInit {
                 emailAddress: insuranceformValues.policyEmail,
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone
+                workPhone: insuranceformValues.policyWorkPhone,
+                officeExtension: insuranceformValues.policyOfficeExtension,
+                alternateEmail: insuranceformValues.policyAlternateEmail,
+                preferredCommunication: insuranceformValues.policyPreferredCommunication,
+
             }),
             policyAddress: new Address({
                 address1: insuranceformValues.policyAddress,
@@ -203,22 +230,19 @@ export class EditInsuranceComponent implements OnInit {
                 city: insuranceformValues.policyCity,
                 country: insuranceformValues.policyCountry,
                 state: insuranceformValues.policyState,
-                zipCode: insuranceformValues.policyZipcode
+                zipCode: insuranceformValues.policyZipCode
             }),
             insuranceContact: new Contact({
-                cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
-                emailAddress: insuranceformValues.policyEmail,
-                faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
-                homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone
+                cellPhone: insuranceformValues.cellPhone ? insuranceformValues.cellPhone.replace(/\-/g, '') : null,
+                emailAddress: insuranceformValues.email,
+                faxNo: insuranceformValues.faxNo ? insuranceformValues.faxNo.replace(/\-|\s/g, '') : null,
+                homePhone: insuranceformValues.homePhone,
+                workPhone: insuranceformValues.workPhone,
+                officeExtension: insuranceformValues.officeExtension,
+                alternateEmail: insuranceformValues.alternateEmail,
+                preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
-                address1: insuranceformValues.address,
-                address2: insuranceformValues.address2,
-                city: insuranceformValues.city,
-                country: insuranceformValues.country,
-                state: insuranceformValues.state,
-                zipCode: insuranceformValues.zipcode
             })
         });
         this._progressBarService.show();
@@ -231,8 +255,7 @@ export class EditInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                    // this._router.navigate(['/patient-manager/patients/' + this.patientId + '/insurances']);
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to update Insurance.';
@@ -249,5 +272,6 @@ export class EditInsuranceComponent implements OnInit {
             () => {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
-            });}
+            });
+    }
 }

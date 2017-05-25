@@ -37,16 +37,16 @@ export class PatientBasicComponent implements OnInit {
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
             // this.patientId = parseInt(params.patientId, 10);
-            this._progressBarService.show();
-            this.patientId = this._sessionStore.session.user.id;
+            this.progressBarService.show();
+            this.patientId = this.sessionStore.session.user.id;
             let result = this._patientsStore.getPatientById(this.patientId);
             result.subscribe(
                 (patient: Patient) => {
@@ -57,10 +57,10 @@ export class PatientBasicComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/dashboard']);
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
         });
@@ -87,18 +87,18 @@ export class PatientBasicComponent implements OnInit {
         let existingPatientJS = this.patientInfo.toJS();
         let patient = new Patient(_.extend(existingPatientJS, {
             maritalStatusId: basicFormValues.maritalStatusId,
-            updateByUserId: this._sessionStore.session.account.user.id,
+            updateByUserId: this.sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
                 dateOfBirth: basicFormValues.dob ? moment(basicFormValues.dob) : null,
                 firstName: basicFormValues.firstname,
                 middleName: basicFormValues.middlename,
                 lastName: basicFormValues.lastname,
-                updateByUserId: this._sessionStore.session.account.user.id,
+                updateByUserId: this.sessionStore.session.account.user.id,
                 gender: basicFormValues.gender
             }))
         }));
 
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._patientsStore.updatePatient(patient);
         result.subscribe(
             (response) => {
@@ -107,7 +107,7 @@ export class PatientBasicComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['/dashboard']);
             },
             (error) => {
@@ -118,13 +118,13 @@ export class PatientBasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSavePatientProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSavePatientProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 

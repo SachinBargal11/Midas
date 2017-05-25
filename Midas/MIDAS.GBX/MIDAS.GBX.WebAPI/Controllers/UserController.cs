@@ -51,7 +51,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AddUser data)
         {
             return adduserrequestHandler.CreateGbObject(Request, data);
@@ -75,7 +75,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.DeleteGbObject(Request, User);
         }
 
-        [AllowAnonymous]
+        [HttpDelete]
+        [Route("Delete/{id}")]
+
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
+        }
+        
         [HttpPost]
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
@@ -89,6 +96,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             return requestHandler.Login(Request, user);
         }
+        
+        /*[HttpPost]
+        [Route("Signin2")]
+        public HttpResponseMessage Signin2([FromBody]User user)
+        {
+            if (user != null)
+            {
+                //Since the API should only validate for Staff Users.
+                //Rest all other even if valid are not Authorised.
+                user.UserType = GBEnums.UserType.Staff;
+            }
+
+            return requestHandler.Login(Request, user);
+        }*/
 
         // Unique Name Validation
         [HttpGet]
@@ -108,7 +129,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("ResetPassword")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage ResetPassword([FromBody]AddUser data)
         {
             return adduserrequestHandler.ResetPassword(Request, data);

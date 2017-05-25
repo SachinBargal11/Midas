@@ -1,0 +1,33 @@
+<form [formGroup]="leaveEventEditorForm" novalidate>
+    <div class="row">
+        <div class="col-md-2"><label class="form-label">Start<span class="color-red">*</span></label></div>
+        <div class="col-md-4">
+            <div class="form-group" [class.error]="leaveEventEditorFormControls.eventStartDate.touched && !leaveEventEditorFormControls.eventStartDate.valid">
+                <p-calendar [class.error]="!leaveEventEditorFormControls.eventStartDate.valid" formControlName="eventStartDate" [(ngModel)]="eventStartAsDate"
+                    dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                    [showIcon]="true" icon="font-icon font-icon-calend">
+                </p-calendar>
+                <div class='error-list' *ngIf="leaveEventEditorFormControls.eventStartDate.touched && !leaveEventEditorFormControls.eventStartDate.valid">
+                    <ul>
+                        <li *ngIf="leaveEventEditorFormControls.eventStartDate.hasError('required')">Start Date is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><label class="form-label">End<span class="color-red">*</span></label></div>
+        <div class="col-md-4">
+            <div class="form-group" [class.error]="leaveEventEditorFormControls.eventEndDate.touched && !leaveEventEditorFormControls.eventEndDate.valid">
+                <p-calendar [class.error]="!leaveEventEditorFormControls.eventEndDate.valid" formControlName="eventEndDate" [(ngModel)]="eventEndAsDate"
+                    dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                    [showIcon]="true" icon="font-icon font-icon-calend"></p-calendar>
+                <div class='error-list' *ngIf="leaveEventEditorFormControls.eventEndDate.touched && !leaveEventEditorFormControls.eventEndDate.valid">
+                    <ul>
+                        <li *ngIf="leaveEventEditorFormControls.eventEndDate.hasError('required')">End Date is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

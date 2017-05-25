@@ -11,4 +11,10 @@ namespace MIDAS.GBX.BusinessObjects
         public User User { get; set; }
         public Role[] Role { get; set; }
     }
+
+    public class mUserCompanyRole : GbObject
+    {
+        public mUser mUser { get; set; }
+        public mRole[] mRole { get; set; }
+    }
 }

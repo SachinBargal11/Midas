@@ -38,6 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Schedule scheduleBO = new BO.Schedule();
             scheduleBO.Name = schedule.Name;
             scheduleBO.ID = schedule.id;
+            scheduleBO.CompanyId = schedule.CompanyId;
             scheduleBO.isDefault = schedule.IsDefault;
 
             if (schedule.IsDeleted.HasValue)
@@ -69,7 +70,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)scheduleBO;
         }
         #endregion
-
+   
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -95,7 +96,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             if(scheduleDB.id==0)
-            if (_context.Schedules.Any(o => o.Name == scheduleBO.Name))
+            if (_context.Schedules.Any(o => o.Name == scheduleBO.Name && (o.CompanyId == scheduleBO.CompanyId || o.IsDefault == true)))
             {
                 return new BO.ErrorObject { ErrorMessage = "Schedule already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -140,11 +141,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid schedule details or default schdule.", ErrorLevel = ErrorLevel.Error };
                 schedule.ScheduleDetails = scheduleDB.ScheduleDetails;
+
+                if (scheduleBO.CompanyId.HasValue == false || (scheduleBO.CompanyId.HasValue == true && scheduleBO.CompanyId.Value <= 0))
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid company id.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    bool ExistsCompany = _context.Companies.Any(p => p.id == scheduleBO.CompanyId.Value && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                    if (ExistsCompany == false)
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company id dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    schedule.CompanyId = scheduleBO.CompanyId;
+                }
             }
             else
             {
                 scheduleDB.CreateDate = scheduleBO.CreateDate;
                 scheduleDB.CreateByUserID = scheduleBO.CreateByUserID;
+
+                if (scheduleBO.CompanyId.HasValue == false || (scheduleBO.CompanyId.HasValue == true && scheduleBO.CompanyId.Value <= 0))
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid company id.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    bool ExistsCompany = _context.Companies.Any(p => p.id == scheduleBO.CompanyId.Value && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                    if (ExistsCompany == false)
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company id dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    scheduleDB.CompanyId = scheduleBO.CompanyId;
+                }
+
                 _dbSet.Add(scheduleDB);
             }
             _context.SaveChanges();
@@ -190,6 +220,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             //acc_ = Convert<BO.Schedule, Schedule>(schedule);
             //return (object)acc_;
+        }
+        #endregion
+
+        #region Get By Company ID
+        public override object GetByCompanyId(int id)
+        {
+            bool ExistsCompany = _context.Companies.Any(p => p.id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+            var acc = _context.Schedules.Where(p => (p.CompanyId == id || p.IsDefault == true) && ExistsCompany == true
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .OrderBy(p => p.id)
+                                        .ToList<Schedule>();
+
+            List<BO.Schedule> lstschedule = new List<BO.Schedule>();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this schedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                foreach (var Eachschedule in acc)
+                {
+                    lstschedule.Add(Convert<BO.Schedule, Schedule>(Eachschedule));
+                }
+            }
+
+            return (object)lstschedule;
         }
         #endregion
 
@@ -243,26 +299,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Company Filter
-        public override object GetByCompanyId(int CompanyId)
-        {
-            List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
+        //#region Get By Company Filter
+        //public override object GetByCompanyId(int CompanyId)
+        //{
+        //    List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
 
-            var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => p.Locations.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
-                                                                                           .Any(p3 => p3.CompanyID == CompanyId 
-                                                                                                  && (p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false))) == true 
-                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                    .ToList<Schedule>();
-            if (acc_ == null)
+        //    var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => p.Locations.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+        //                                                                                   .Any(p3 => p3.CompanyID == CompanyId 
+        //                                                                                          && (p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false))) == true 
+        //                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                            .ToList<Schedule>();
+        //    if (acc_ == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    foreach (Schedule item in acc_)
+        //    {
+        //        lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+        //    }
+
+        //    return lstSchedules;
+        //}
+        //#endregion
+
+        #region Get By Location Filter
+        public override object GetByLocationId(int LocationId)
+        {
+
+
+            //var location = _context.Locations.Where(p => p.id == LocationId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                      .Select(p => p.ScheduleID);
+            //var acc = _context.Schedules.Include("ScheduleDetails").Where(p => location.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                       .FirstOrDefault<Schedule>();
+
+            var acc = _context.Schedules.Include("ScheduleDetails")
+                                         .Where(p => p.Locations.Any(p2 => p2.id == LocationId
+                                                                          && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == true)
+                                         .FirstOrDefault();
+                                        
+
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            foreach (Schedule item in acc_)
-            {
-                lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
-            }
+            BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(acc);
+            return (object)acc_;
 
-            return lstSchedules;
+
         }
         #endregion
 

@@ -12,6 +12,8 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class MIDASGBXEntities : DbContext
     {
@@ -28,40 +30,62 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
+        public virtual DbSet<AuditTableMapping> AuditTableMappings { get; set; }
+        public virtual DbSet<BlobStorage> BlobStorages { get; set; }
+        public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
+        public virtual DbSet<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
+        public virtual DbSet<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+        public virtual DbSet<CaseDocument> CaseDocuments { get; set; }
         public virtual DbSet<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         public virtual DbSet<CaseStatu> CaseStatus { get; set; }
         public virtual DbSet<CaseType> CaseTypes { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
+        public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
+        public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
+        public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
+        public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
+        public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<InvitationType> InvitationTypes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<MailTemplate> MailTemplates { get; set; }
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
+        public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
-        public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
         public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         public virtual DbSet<PatientType> PatientTypes { get; set; }
-        public virtual DbSet<PatientVisit> PatientVisits { get; set; }
         public virtual DbSet<PatientVisit2> PatientVisit2 { get; set; }
-        public virtual DbSet<PatientVisitEvent> PatientVisitEvents { get; set; }
+        public virtual DbSet<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
+        public virtual DbSet<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
+        public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
+        public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
+        public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
+        public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
+        public virtual DbSet<Referral2> Referral2 { get; set; }
+        public virtual DbSet<ReferralDocument> ReferralDocuments { get; set; }
+        public virtual DbSet<ReferralProcedureCode> ReferralProcedureCodes { get; set; }
         public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
         public virtual DbSet<Relation> Relations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
@@ -74,10 +98,23 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Template> Templates { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserApiRoleMapping> UserApiRoleMappings { get; set; }
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
+        public virtual DbSet<UserPersonalSetting> UserPersonalSettings { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<Doctor_old> Doctor_old { get; set; }
+        public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
+        public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
+    
+        public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
+        {
+            var document_nodeParameter = document_node != null ?
+                new ObjectParameter("document_node", document_node) :
+                new ObjectParameter("document_node", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("midas_sp_get_document_path", document_nodeParameter);
+        }
     }
 }

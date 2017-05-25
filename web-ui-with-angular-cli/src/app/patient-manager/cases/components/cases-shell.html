@@ -1,4 +1,5 @@
 <section class="tabs-section">
+	<h5 class="with-border">Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist">
@@ -10,33 +11,69 @@
 					</a>
 				</li>
 				<li class="nav-item">
+					<a class="nav-link" routerLink="consent" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Consent
+						</span>
+					</a>
+				</li>
+				<!--<li class="nav-item">
+					<a class="nav-link" routerLink="referrals" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Referrals
+						</span>
+					</a>
+				</li>	-->
+				<li class="nav-item">
+					<a class="nav-link" routerLink="insurance-mapping" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Insurance
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Documents
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link" routerLink="accident" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Accident
 						</span>
 					</a>
 				</li>
-				<li class="nav-item">
+				<!--<li class="nav-item">
 					<a class="nav-link" routerLink="referring-offices" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Referring Offices
 						</span>
 					</a>
-				</li>
+				</li>-->
 				<li class="nav-item">
-					<a class="nav-link" routerLink="insurance-mapping" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" routerLink="patient-visit" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
-					Insurance Mapping
+					Visits
 						</span>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" routerLink="cases-mapping" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" routerLink="billings" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
-					Case Mapping
+					Billings
 						</span>
 					</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="payment" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Payment
+						</span>
+					</a>
+				</li>
+
 			</ul>
 		</div>
 	</div>

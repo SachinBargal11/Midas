@@ -26,5 +26,34 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("faxNo")]
         public string FaxNo { get; set; }
+
+        [JsonProperty("officeExtension")]
+        public string OfficeExtension { get; set; }
+
+        [JsonProperty("alternateEmail")]
+        public string AlternateEmail { get; set; }
+
+        [JsonProperty("preferredCommunication")]
+        public byte? PreferredCommunication { get; set; }
+
+    }
+
+    public class mContactInfo : GbObject
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("cellPhone")]
+        public string CellPhone { get; set; }
+
+        [JsonProperty("emailAddress")]
+        public string EmailAddress { get; set; }
+
+        [JsonProperty("homePhone")]
+        public string HomePhone { get; set; }
+
+        [JsonProperty("preferredCommunication")]
+        public byte? PreferredCommunication { get; set; }
+
     }
 }

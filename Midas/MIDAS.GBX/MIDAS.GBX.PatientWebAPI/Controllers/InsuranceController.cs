@@ -24,8 +24,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         // GET: api/Organizations/5
         [HttpGet]
-        [Route("Get/{id}")]
-        [AllowAnonymous]
+        [Route("get/{id}")]
+        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -33,33 +33,31 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage GetByPatientId(int PatientId)
         {
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
-
-        //[HttpGet]
-        //[Route("GetAll")]
+        [HttpGet]
+        [Route("isInsuranceInfoAdded/{PatientId}")]
         //[AllowAnonymous]
-        //public HttpResponseMessage GetAllPatient([FromBody]PatientInsuranceInfo data)
-        //{
-        //    return requestHandler.GetGbObjects(Request, data);
-        //}
+        public HttpResponseMessage IsInsuranceInfoAdded(int PatientId)
+        {
+            return requestHandler.IsInsuranceInfoAdded(Request, PatientId);
+        }
 
         [HttpPost]
         [Route("Save")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PatientInsuranceInfo data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
