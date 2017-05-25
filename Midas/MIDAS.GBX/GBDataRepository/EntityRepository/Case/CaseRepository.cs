@@ -971,7 +971,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var company2 = _context.Referral2.Where(p => p.CaseId == caseId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .Select(p => p.Company).ToList();
+                                             .Select(p => p.Company1).ToList();
 
             if (company1 == null && company2 == null)
             {
