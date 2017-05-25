@@ -563,7 +563,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userCompany.CompanyID = CompanyId;
             userCompany.UserID = DoctorId;
-            userCompany.IsAccepted = false;
+            userCompany.IsAccepted = true;
 
             if (add_UserCompany)
             {

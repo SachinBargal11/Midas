@@ -206,7 +206,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     UserCompanyDB.UserID = UserDB.id;
                     UserCompanyDB.CompanyID = CompanyDB.id;
-                    UserCompanyDB.IsAccepted = false;
+                    UserCompanyDB.IsAccepted = true;
                     UserCompanyDB.IsDeleted = false;
                     UserCompanyDB.CreateByUserID = 0;
                     UserCompanyDB.CreateDate = DateTime.UtcNow;
