@@ -378,15 +378,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
 
-        #region Get Attorney Provider By PreferredAttorneyProvider Id
+        #region Get Attorney Provider By  Id
         public override object Get(int Id)
-        {
+         {
             var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company")
                                                                       .Include("Company1")
-                                                                      .Where(p => p.PrefAttorneyProviderId == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                       .ToList();
+                                                                      .Where(p => p.Id == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                       .FirstOrDefault();
 
-            List<BO.PreferredAttorneyProvider> lstprovider = new List<BO.PreferredAttorneyProvider>();
+            BO.PreferredAttorneyProvider provider = new BO.PreferredAttorneyProvider();
 
             if (AttorenyProvider == null)
             {
@@ -394,10 +394,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                AttorenyProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredAttorneyProvider, PreferredAttorneyProvider>(item)));
+                provider = Convert<BO.PreferredAttorneyProvider, PreferredAttorneyProvider>(AttorenyProvider);
             }
 
-            return lstprovider;
+            return provider;
         }
         #endregion 
 
