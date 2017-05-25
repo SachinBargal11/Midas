@@ -24,11 +24,14 @@ export class DiagnosisService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
         let promise: Promise<DiagnosisType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisType/getAll')
+            return this._http.get(this._url + '/DiagnosisType/getAll', {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let diagnosisTypes = (<Object[]>data).map((data: any) => {
@@ -43,7 +46,9 @@ export class DiagnosisService {
     }
     getAllDiagnosisCodesByDiagnosisTypeId(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
         let promise: Promise<DiagnosisCode[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisCode/getByDiagnosisTypeId/' + diagnosisTypeId)
+            return this._http.get(this._url + '/DiagnosisCode/getByDiagnosisTypeId/' + diagnosisTypeId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let diagnosisCodes = (<Object[]>data).map((data: any) => {

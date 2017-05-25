@@ -21,12 +21,15 @@ export class ProcedureCodeMasterService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
 
     getProceduresBySpecialityAndCompanyId(specialityId: number, companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getBySpecialityAndCompanyId/' + specialityId + '/' + companyId + '/' + true)
+            return this._http.get(this._url + '/ProcedureCode/getBySpecialityAndCompanyId/' + specialityId + '/' + companyId + '/' + true, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let procedures = (<Object[]>data).map((data: any) => {
@@ -42,7 +45,9 @@ export class ProcedureCodeMasterService {
 
     getProceduresByRoomTestAndCompanyId(roomTestId: number, companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getByRoomTestAndCompanyId/' + roomTestId + '/' + companyId + '/' + true)
+            return this._http.get(this._url + '/ProcedureCode/getByRoomTestAndCompanyId/' + roomTestId + '/' + companyId + '/' + true, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let procedures = (<Object[]>data).map((data: any) => {
