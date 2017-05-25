@@ -22,9 +22,8 @@ export class PatientsService {
     ) {
         this._headers.append('Content-Type', 'application/json');
         this._headers.append('Authorization', this._sessionStore.session.accessToken);
-    }       , {
-                headers: this._headers
-            }
+    }
+    
     getPatient(patientId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Patient/getPatientById/' + patientId, {
