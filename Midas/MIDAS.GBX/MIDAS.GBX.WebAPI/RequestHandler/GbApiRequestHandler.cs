@@ -1339,9 +1339,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage AssociatePatientWithAttorneyCompany(HttpRequestMessage request, int PatientId, int CompanyId)
+        public HttpResponseMessage AssociatePatientWithAttorneyCompany(HttpRequestMessage request, int PatientId, int AttorneyCompanyId)
         {
-            var objResult = dataAccessManager.AssociatePatientWithAttorneyCompany(PatientId, CompanyId);
+            var objResult = dataAccessManager.AssociatePatientWithAttorneyCompany(PatientId, AttorneyCompanyId);
 
             try
             {

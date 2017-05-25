@@ -15,4 +15,8 @@ GO
 
 --insert into [dbo].[MailTemplates] values('CaseCreated','Alert Message From GBX MIDAS','Dear {0} <br><br>Case is created for patient id {1}.');
 
+GO
+--insert into [dbo].[MailTemplates] values('AssociatePatientWithAttorneyCompany','User associated','Dear  {0}(attorney) ,<br><br>New patient has been associated with company.<br>PatientId:{1} PatientEmail:{2} .<br><br> Your user name is:- {3}<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>{4}</b><br><br>Thanks;');
+
+
 Go
