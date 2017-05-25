@@ -15,12 +15,15 @@ export class FamilyMemberService {
     // private _url: string = 'http://localhost:3004/familyMember';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getFamilyMember(familyMemberId: Number): Observable<FamilyMember> {
         let promise: Promise<FamilyMember> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientFamilyMember/get/' + familyMemberId).map(res => res.json())
+            return this._http.get(this._url + '/PatientFamilyMember/get/' + familyMemberId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let familyMember = null;
                     if (data) {
@@ -39,7 +42,9 @@ export class FamilyMemberService {
 
     getFamilyMembers(patientId: number): Observable<FamilyMember[]> {
         let promise: Promise<FamilyMember[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientFamilyMember/getByPatientId/' + patientId)
+            return this._http.get(this._url + '/PatientFamilyMember/getByPatientId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let familyMembers = (<Object[]>data).map((data: any) => {

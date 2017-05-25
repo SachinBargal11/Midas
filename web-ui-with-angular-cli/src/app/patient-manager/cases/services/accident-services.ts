@@ -19,10 +19,13 @@ export class AccidentService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getAccident(accidentId: Number): Observable<Accident> {
         let promise: Promise<Accident> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientAccidentInfo/get/' + accidentId).map(res => res.json())
+            return this._http.get(this._url + '/PatientAccidentInfo/get/' + accidentId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -40,7 +43,9 @@ export class AccidentService {
     getAccidents(caseId: Number): Observable<Accident[]> {
 
         let promise: Promise<Accident[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientAccidentInfo/getByCaseId/' + caseId)
+            return this._http.get(this._url + '/PatientAccidentInfo/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let accidents = (<Object[]>data).map((data: any) => {

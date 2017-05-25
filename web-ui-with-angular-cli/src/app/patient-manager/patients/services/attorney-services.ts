@@ -13,12 +13,15 @@ export class AttorneyService {
     private _url: string = 'http://localhost:3004/attorney';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getAttorney(attorneyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + attorneyId).map(res => res.json())
+            return this._http.get(this._url + '?id=' + attorneyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -35,7 +38,9 @@ export class AttorneyService {
 
     getAttorneys(): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url)
+            return this._http.get(this._url, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     resolve(data);
@@ -76,7 +81,9 @@ export class AttorneyService {
     }
     deleteAttorney(attorney: Attorney): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${attorney.id}`)
+            return this._http.delete(`${this._url}/${attorney.id}`, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((attorney:Attorney) => {
                     resolve(attorney);

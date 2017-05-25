@@ -22,11 +22,14 @@ export class ConsentService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getdoctors(CompanyId: Number): Observable<ConsentAdapter> {
         let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/getByCompanyId/' + CompanyId).map(res => res.json())
+            return this._http.get(this._url + '/Doctor/getByCompanyId/' + CompanyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -63,7 +66,9 @@ export class ConsentService {
 
     getDocumentsForCaseId(caseId: number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + caseId)
+            return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -81,7 +86,9 @@ export class ConsentService {
 
     getDoctorCaseConsentApproval(Id: Number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanyCaseConsentApproval/get/' + Id)
+            return this._http.get(this._url + '/CompanyCaseConsentApproval/get/' + Id, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     let docData = ConsentAdapter.parseResponse(data);
@@ -126,7 +133,9 @@ export class ConsentService {
             // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
-            return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
+            return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 //fileupload/get/86/consent
                 .subscribe((data: Array<any>) => {
                     let consent = null;
@@ -185,7 +194,9 @@ export class ConsentService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId)
+                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+                headers: this._headers
+            })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -218,7 +229,9 @@ export class ConsentService {
         let thefile = {};
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId)
+                .get(this._url + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {

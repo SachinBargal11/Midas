@@ -23,11 +23,14 @@ export class DoctorLocationSpecialityService {
         private _usersStore: UsersStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getDoctorLocationSpeciality(specialityId: Number): Observable<any> {
         let promise: Promise<DoctorLocationSpeciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DoctorLocationSpeciality/get/' + specialityId).map(res => res.json())
+            return this._http.get(this._url + '/DoctorLocationSpeciality/get/' + specialityId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: DoctorLocationSpeciality = null;
                     parsedData = DoctorLocationSpecialityAdapter.parseResponse(data);
@@ -41,7 +44,9 @@ export class DoctorLocationSpecialityService {
     }
     getDoctorLocationSpecialityByLocationId(locationId: Number): Observable<DoctorLocationSpeciality[]> {
         let promise: Promise<DoctorLocationSpeciality[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DoctorLocationSpeciality/GetByLocationId/' + locationId).map(res => res.json())
+            return this._http.get(this._url + '/DoctorLocationSpeciality/GetByLocationId/' + locationId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: DoctorLocationSpeciality[] = [];
                     if (_.isArray(data)) {
@@ -59,7 +64,9 @@ export class DoctorLocationSpecialityService {
     }
     getDoctorLocationSpecialityByDoctorId(doctorId: Number): Observable<any> {
         let promise: Promise<DoctorLocationSpeciality[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DoctorLocationSpeciality/GetByDoctorId/' + doctorId).map(res => res.json())
+            return this._http.get(this._url + '/DoctorLocationSpeciality/GetByDoctorId/' + doctorId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: DoctorLocationSpeciality[];
                     if (data) {
@@ -77,7 +84,9 @@ export class DoctorLocationSpecialityService {
     }
     getDoctorLocationSpecialityByDoctorIdAndLocationId(doctorId: Number, locationId: Number): Observable<any> {
         let promise: Promise<DoctorLocationSpeciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DoctorLocationSpeciality/GetByLocationAndDoctor/' + locationId + '/' + doctorId)
+            return this._http.get(this._url + '/DoctorLocationSpeciality/GetByLocationAndDoctor/' + locationId + '/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: DoctorLocationSpeciality;
@@ -95,7 +104,9 @@ export class DoctorLocationSpecialityService {
 
     // getDoctorLocationSpecialities(): Observable<DoctorLocationSpeciality[]> {
     //     let promise: Promise<DoctorLocationSpeciality[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/DoctorLocationSchedule/getall').map(res => res.json())
+    //         return this._http.get(this._url + '/DoctorLocationSchedule/getall', {
+            //     headers: this._headers
+            // }).map(res => res.json())
     //             .subscribe((schedulesData: Array<Object>) => {
     //                 let parsedData: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
     //                     return DoctorLocationSpecialityAdapter.parseResponse(schedulesData);

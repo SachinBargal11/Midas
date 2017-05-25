@@ -22,11 +22,14 @@ export class DoctorLocationsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getLocation(id: Number): Observable<LocationDetails> {
         let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Location/get/' + id).map(res => res.json())
+            return this._http.get(this._url + '/Location/get/' + id, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedLocation: LocationDetails = null;
                     parsedLocation = LocationDetailAdapter.parseResponse(data);

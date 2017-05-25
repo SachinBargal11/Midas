@@ -10,6 +10,7 @@ import { Schedule } from '../models/rooms-schedule';
 import { Tests } from '../models/tests';
 import { RoomsAdapter } from './adapters/rooms-adapter';
 import { TestsAdapter } from './adapters/tests-adapter';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Injectable()
 export class RoomsService {
@@ -19,14 +20,18 @@ export class RoomsService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getRoom(roomId: Number): Observable<Room> {
         let promise: Promise<Room> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Room/Get/' + roomId).map(res => res.json())
+            return this._http.get(this._url + '/Room/Get/' + roomId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((roomData: any) => {
                     let parsedData: Room = null;
                     parsedData = RoomsAdapter.parseResponse(roomData);
@@ -60,7 +65,9 @@ export class RoomsService {
     }
     getRoomsByTestInAllApp(testId: number): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/room/getByRoomInAllApp/' + testId).map(res => res.json())
+            return this._http.get(this._url + '/room/getByRoomInAllApp/' + testId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((roomsData: any) => {
                     let rooms: any[] = [];
                     if (_.isArray(roomsData)) {
@@ -183,7 +190,9 @@ export class RoomsService {
     }
     // deleteRoom(room: Room): Observable<Room> {
     //     let promise = new Promise((resolve, reject) => {
-    //         return this._http.delete(`${this._url}/${room.id}`)
+    //         return this._http.delete(`${this._url}/${room.id}`, {
+            //     headers: this._headers
+            // })
     //             .map(res => res.json())
     //             .subscribe((room) => {
     //                 resolve(room);
