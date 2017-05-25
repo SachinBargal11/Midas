@@ -15,12 +15,15 @@ export class AdjusterMasterService {
     // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getAdjusterMaster(adjusterId: Number): Observable<Adjuster> {
         let promise: Promise<Adjuster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/get/' + adjusterId).map(res => res.json())
+            return this._http.get(this._url + '/AdjusterMaster/get/' + adjusterId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let adjuster = null;
                     adjuster = AdjusterAdapter.parseResponse(data);
@@ -34,7 +37,9 @@ export class AdjusterMasterService {
     }
     getAdjusterMasterByInsurance(insuranceId: Number): Observable<Adjuster> {
         let promise: Promise<Adjuster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/getByInsuranceMasterId/' + insuranceId).map(res => res.json())
+            return this._http.get(this._url + '/AdjusterMaster/getByInsuranceMasterId/' + insuranceId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let adjuster = null;
                     adjuster = AdjusterAdapter.parseResponse(data);
@@ -49,7 +54,9 @@ export class AdjusterMasterService {
 
     getAllAdjusterMaster(): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/getAll/')
+            return this._http.get(this._url + '/AdjusterMaster/getAll/', {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let adjuster = (<Object[]>data).map((data: any) => {
@@ -67,7 +74,9 @@ export class AdjusterMasterService {
     //
     getAdjusterMastersByCompanyAndInsuranceMasterId(companyId: Number, insuranceMasterId: Number): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/GetByCompanyAndInsuranceMasterId/' + companyId + '/' + insuranceMasterId)
+            return this._http.get(this._url + '/AdjusterMaster/GetByCompanyAndInsuranceMasterId/' + companyId + '/' + insuranceMasterId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let adjuster = (<Object[]>data).map((data: any) => {
@@ -83,7 +92,9 @@ export class AdjusterMasterService {
     }
     getAllAdjusterMasterByCompany(companyId: Number): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/getByCompanyId/' + companyId)
+            return this._http.get(this._url + '/AdjusterMaster/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let adjuster = (<Object[]>data).map((data: any) => {

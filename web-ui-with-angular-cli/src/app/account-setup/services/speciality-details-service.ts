@@ -20,11 +20,14 @@ export class SpecialityDetailsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getSpecialityDetail(id: Number): Observable<SpecialityDetail> {
         let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanySpecialtyDetails/get/' + id).map(res => res.json())
+            return this._http.get(this._url + '/CompanySpecialtyDetails/get/' + id, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((specialityDetailData: any) => {
                     let parsedData: SpecialityDetail = null;
                     parsedData = SpecialityDetailAdapter.parseResponse(specialityDetailData);

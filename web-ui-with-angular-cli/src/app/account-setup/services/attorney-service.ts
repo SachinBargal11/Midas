@@ -21,10 +21,13 @@ export class AttorneyMasterService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getAttorneyMaster(attorneyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/get/' + attorneyId).map(res => res.json())
+            return this._http.get(this._url + '/AttorneyMaster/get/' + attorneyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let attorney = null;
                     attorney = AttorneyAdapter.parseResponse(data);
@@ -39,8 +42,9 @@ export class AttorneyMasterService {
 
     getAllAttorneyMasterByCompany(companyId: Number): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredAttorneyProvider/getPrefAttorneyProviderByCompanyId/' + companyId)
-                .map(res => res.json())
+            return this._http.get(this._url + '/PreferredAttorneyProvider/getPrefAttorneyProviderByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let attorney = (<Object[]>data).map((data: any) => {
                         return AttorneyAdapter.parseResponse(data);
@@ -56,8 +60,9 @@ export class AttorneyMasterService {
 
     getAllAttorney(companyId: Number): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredAttorneyProvider/GetAllPrefAttorneyProviderExcludeAssigned/' + companyId)
-                .map(res => res.json())
+            return this._http.get(this._url + '/PreferredAttorneyProvider/GetAllPrefAttorneyProviderExcludeAssigned/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let allAttorney = (<Object[]>data).map((data: any) => {
                         return PrefferedAttorneyAdapter.parseResponse(data);
@@ -72,7 +77,9 @@ export class AttorneyMasterService {
 
     assignAttorney(currentAttorneyId: Number, companyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredAttorneyProvider/associatePrefAttorneyProviderWithCompany/' + currentAttorneyId + '/' + companyId).map(res => res.json())
+            return this._http.get(this._url + '/PreferredAttorneyProvider/associatePrefAttorneyProviderWithCompany/' + currentAttorneyId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let attorney = null;
                     attorney = AttorneyAdapter.parseResponse(data);
@@ -128,7 +135,9 @@ export class AttorneyMasterService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/AttorneyMaster/delete/' + attorney.id, {
-            return this._http.get(this._url + '/AttorneyMaster/disassociateAttorneyWithCompany/' + attorney.id + '/' + companyId).map(res => res.json())
+            return this._http.get(this._url + '/AttorneyMaster/disassociateAttorneyWithCompany/' + attorney.id + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedAttorney: Attorney = null;
                     parsedAttorney = AttorneyAdapter.parseResponse(data);
@@ -142,8 +151,9 @@ export class AttorneyMasterService {
 
     // getAll(): Observable<Attorney[]> {
     //     let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/AttorneyMaster/getAll')
-    //             .map(res => res.json())
+    //         return this._http.get(this._url + '/AttorneyMaster/getAll', {
+            //     headers: this._headers
+            // }).map(res => res.json())
     //             .subscribe((data: Array<Object>) => {
     //                 let attorney = (<Object[]>data).map((data: any) => {
     //                     return PrefferedAttorneyAdapter.parseResponse(data);
