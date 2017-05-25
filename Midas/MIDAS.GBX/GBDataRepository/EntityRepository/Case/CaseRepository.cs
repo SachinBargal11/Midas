@@ -45,7 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
             caseBO.UpdateByUserID = cases.UpdateByUserID;
-            caseBO.caseSource = cases.CaseSource;
+            caseBO.caseSource = !string.IsNullOrEmpty(cases.CaseSource) ? cases.CaseSource : (cases.AttorneyId > 0 ? _context.Companies.Where(p => p.id == cases.AttorneyId && p.CompanyType == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault().Name : "");
 
 
             if (cases.PatientEmpInfo != null)
