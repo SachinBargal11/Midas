@@ -993,6 +993,109 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region AssociatePatientWithAttorneyCompany
+        public override object AssociatePatientWithAttorneyCompany(int PatientId, int CompanyId)
+        {
+            bool add_UserCompany = false;
+            bool sendEmail = false;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            BO.AttorneyMaster addAttorneyBO = new BO.AttorneyMaster();
+            BO.User userBO = addAttorneyBO.User;
+
+
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var Patient = _context.Patient2.Where(p => p.Id == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (Patient == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == CompanyId && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (userCompany == null)
+            {
+                userCompany = new UserCompany();
+                add_UserCompany = true;
+                sendEmail = true;
+            }
+
+            userCompany.CompanyID = CompanyId;
+            userCompany.UserID = PatientId;
+            userCompany.IsAccepted = false;
+
+            if (add_UserCompany)
+            {
+                _context.UserCompanies.Add(userCompany);
+            }
+
+            _context.SaveChanges();
+
+            var PatientDB = _context.Patient2.Include("User")
+                                             .Include("User.UserCompanies")
+                                             .Include("User.AddressInfo")
+                                             .Include("User.ContactInfo")
+                                             .Include("Cases")
+                                             .Include("Cases.Referral2")
+                                              .Where(p => p.Id == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Patient2>();
+
+            #region Send Email
+            if (sendEmail == true)
+            {
+                try
+                {
+
+                    #region Send Email
+
+                   // var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                   // var userBO = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    //var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    if (PatientDB != null)
+                    {
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AssociatePatientWithAttorneyCompany".ToUpper()).FirstOrDefault();
+                        if (mailTemplateDB == null)
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else
+                        {
+                            string msg = mailTemplateDB.EmailBody;
+                            string subject = mailTemplateDB.EmailSubject;
+
+                            string message = string.Format(msg, PatientDB.User.FirstName, PatientDB.User.UserName, VerificationLink);
+
+                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                            objEmail.SendMail();
+                        }
+                    }
+
+                    #endregion
+                    //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    //string Message = "Dear " + doctorDB.User.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + doctorDB.User.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    //BO.Email objEmail = new BO.Email { ToEmail = doctorDB.User.UserName, Subject = "User registered", Body = Message };
+                    //objEmail.SendMail();
+
+                }
+                catch (Exception ex) { }
+            }
+            #endregion
+
+            var res = Convert<BO.Patient2, Patient2>(PatientDB);
+            return (object)res;
+
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
