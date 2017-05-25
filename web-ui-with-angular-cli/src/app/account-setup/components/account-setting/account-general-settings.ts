@@ -34,6 +34,7 @@ export class AccountGeneralSettingComponent implements OnInit {
         private _generalSettingStore: GeneralSettingStore,
         public _route: ActivatedRoute,
         private _router: Router,
+        private _notificationsStore: NotificationsStore
     ) {
         this.settingForm = this.fb.group({
             roomTimeSlot: ['', Validators.required]
@@ -46,27 +47,42 @@ export class AccountGeneralSettingComponent implements OnInit {
     }
 
     save() {
-
         this.isSaveProgress = true;
         let settingFormValues = this.settingForm.value;
         let result;
         let generalSettings = new GeneralSetting({
             companyId: this._sessionStore.session.currentCompany.id,
             slotDuration: this.settingForm.value.roomTimeSlot
-        })
+        });
+
+        this._progressBarService.show();
         result = this._generalSettingStore.save(generalSettings);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Settings saved successfully!.');
+                let notification = new Notification({
+                    'title': 'Settings added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Settings added successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
+                let errString = 'Unable to add Settings.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
                 this.isSaveProgress = false;
-                let errString = 'Unable to save Settings.';
+                this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
     }
 }
