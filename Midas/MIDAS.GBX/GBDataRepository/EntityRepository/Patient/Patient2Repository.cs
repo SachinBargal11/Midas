@@ -1074,7 +1074,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                             string message = string.Format(msg, PatientDB.User.FirstName, PatientDB.User.UserName, VerificationLink);
 
-                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                            BO.Email objEmail = new BO.Email { ToEmail = PatientDB.User.UserName, Subject = subject, Body = message };
                             objEmail.SendMail();
                         }
                     }
