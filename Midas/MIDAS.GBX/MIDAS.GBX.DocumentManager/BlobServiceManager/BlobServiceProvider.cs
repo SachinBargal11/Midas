@@ -39,7 +39,7 @@ namespace MIDAS.GBX.DocumentManager
             throw new NotImplementedException();
         }
 
-        public virtual Object Template(Int32 CompanyId, string templateBlobPath, Dictionary<string, string> templateKeywords)
+        public virtual Object Template(Int32 CompanyId, string templateBlobPath, Dictionary<string, string> templateKeywords, string temppath)
         {
             throw new NotImplementedException();
         }
