@@ -110,6 +110,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociateAttorneyWithCompany(int AttorneyId,int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object AssociatePatientWithAttorneyCompany(int PatientId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
         Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationRoomAndPatientId(int locationId, int roomId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

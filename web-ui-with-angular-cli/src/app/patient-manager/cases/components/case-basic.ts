@@ -84,20 +84,34 @@ export class CaseBasicComponent implements OnInit {
                     this.attorneys = results[3];
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
-                 
-                    if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
-                        this.caseform.get("attorneyId").disable();
-                    }
-                    else {
-                        this.caseform.get("attorneyId").enable();
-                    }
 
-                    if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
-                        this.caseform.get("caseSource").disable();
+                    if (this.caseDetail.attorneyId != null) {
+                        if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+                            // this.caseDetail.caseSource = "";
+                            this.caseform.get("caseSource").disable();
+
+                        }
+                        else {
+                            this.caseform.get("caseSource").enable();
+                        }
                     }
                     else {
-                        this.caseform.get("caseSource").enable();
+                        if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+                            this.caseform.get("attorneyId").disable();
+                        }
+                        else {
+                            this.caseform.get("attorneyId").enable();
+                        }
                     }
+                    // if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+                    //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+                    //         this.caseform.get("attorneyId").disable();
+                    //     }
+                    //     else {
+                    //         this.caseform.get("attorneyId").enable();
+                    //     }
+                    // }
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -148,7 +162,7 @@ export class CaseBasicComponent implements OnInit {
     }
 
     saveCase() {
-       
+
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;
