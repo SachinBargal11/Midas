@@ -17,7 +17,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import * as _ from 'underscore';
-import {ConfirmDialogModule, ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import { SessionStore } from '../../../commons/stores/session-store';
@@ -71,7 +71,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-             this._progressBarService.show();
+            this._progressBarService.show();
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
@@ -86,14 +86,14 @@ export class PatientVisitListDoctorComponent implements OnInit {
                 });
         });
 
-          this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
-             this._progressBarService.show();
+            this._progressBarService.show();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(
                 (patient: Patient) => {
                     this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -145,11 +145,12 @@ export class PatientVisitListDoctorComponent implements OnInit {
         }, 250);
     }
 
-   fetchPatientVisit(visitId: number) {
+    fetchPatientVisit(visitId: number) {
         // this._progressBarService.show();
         this._patientVisitStore.fetchPatientVisitById(visitId)
             .subscribe((visit: PatientVisit) => {
                 this.selectedVisit = visit;
+                this.visitDialogVisible = true;
             },
             (error) => {
                 // this._progressBarService.hide();
@@ -161,8 +162,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
 
     showDialog(visitId: number) {
         this.fetchPatientVisit(visitId);
-            this.selectedVisitId = visitId;
-            this.visitDialogVisible = true;
+        this.selectedVisitId = visitId;
     }
 
     handleVisitDialogHide() {
@@ -177,45 +177,45 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-            this.selectedVisits.forEach(currentVisit => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                let result;
-                result = this._patientVisitStore.deletePatientVisit(currentVisit);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Visit deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadPatientVisits();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedVisits = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete visits';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedVisits = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedVisits.forEach(currentVisit => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        let result;
+                        result = this._patientVisitStore.deletePatientVisit(currentVisit);
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Visit deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadPatientVisits();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedVisits = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete visits';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedVisits = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
-            });
-            }
+                }
             });
         } else {
             let notification = new Notification({
@@ -228,7 +228,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
         }
     }
 
-        bill() {
+    bill() {
         this._notificationsService.success('Success', 'Bill No AB69852 has been successfully created');
     }
 }

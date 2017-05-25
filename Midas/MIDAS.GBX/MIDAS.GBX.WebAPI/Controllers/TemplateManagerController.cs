@@ -42,7 +42,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (res != null)
             {
                 string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                var tempPath = blobhandler.CreateTemplate(Request, templatePath, templateReplaceText);
+                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText);
 
                 FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
                                 
@@ -68,7 +68,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (res != null)
             {
                 string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                var tempPath = blobhandler.CreateTemplate(Request, templatePath, templateReplaceText);
+                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText);
 
                 FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
 

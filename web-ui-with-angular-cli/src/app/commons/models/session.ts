@@ -13,6 +13,7 @@ export class Session extends SessionRecord {
     // private _user: User = null;
     private _account: Account = null;
     private _currentCompany: Company = null;
+    private _accessToken: string = '';
 
     public get user(): User {
         return this._account ? this._account.user : null;
@@ -40,6 +41,14 @@ export class Session extends SessionRecord {
 
     get isAuthenticated() {
         return this.account ? true : false;
+    }
+
+    public get accessToken(): string {
+        return this._accessToken;
+    }
+
+    public set accessToken(value: string) {
+        this._accessToken = value;
     }
 
 

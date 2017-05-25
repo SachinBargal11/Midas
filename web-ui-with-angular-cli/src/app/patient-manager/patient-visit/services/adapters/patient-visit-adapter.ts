@@ -58,7 +58,8 @@ export class PatientVisitAdapter {
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                originalResponse: data
             });
         }
 

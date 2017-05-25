@@ -28,9 +28,9 @@ namespace MIDAS.GBX.DocumentManager
             util.BlobStorageConnectionString = ConfigurationManager.AppSettings["BlobStorageConnectionString"];
         }
 
-        public override object Template(string templateBlobPath, Dictionary<string, string> templateKeywords)
+        public override object Template(Int32 CompanyId, string templateBlobPath, Dictionary<string, string> templateKeywords)
         {
-            util.ContainerName = "company-95";
+            util.ContainerName = "company-" + CompanyId;
             string blobName = util.getBlob(templateBlobPath);
             _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
             //_cblob.FetchAttributes();

@@ -51,6 +51,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     updatePassword() {
+        let authAccessToken = this._sessionStore.session.accessToken;
         let userId: number = this._sessionStore.session.user.id;
         let userDetail = ({
             user: {
@@ -64,7 +65,7 @@ export class ChangePasswordComponent implements OnInit {
         let userName = this._sessionStore.session.user.userName;
         let oldpassword = this.changePassForm.value.oldpassword;
 
-        let result = this._authenticationService.authenticate(userName, oldpassword, true);
+        let result = this._authenticationService.authenticate(userName, oldpassword, true, authAccessToken);
         result.subscribe(
             (response) => {
                 this._authenticationService.updatePassword(userDetail)

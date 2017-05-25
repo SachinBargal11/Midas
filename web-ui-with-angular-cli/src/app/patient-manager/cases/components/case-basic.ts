@@ -68,22 +68,36 @@ export class CaseBasicComponent implements OnInit {
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
-            let fetchAttorneys = this._attorneyMasterStore.getAll();
+            let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 
             Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
                 (results) => {
-                    let matchingAttorneys: Attorney[] = _.filter(results[3], (currentAttorney: Attorney) => {
-                        return currentAttorney.user != null;
-                    });
+                    // let matchingAttorneys: Attorney[] = _.filter(results[3], (currentAttorney: Attorney) => {
+                    //     return currentAttorney.user != null;
+                    // });
                     this.patient = results[0];
                     this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
                     this.locations = results[1];
                     this.employer = results[2];
-                    this.attorneys = matchingAttorneys;
+                    this.attorneys = results[3];
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
+                 
+                    if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+                        this.caseform.get("attorneyId").disable();
+                    }
+                    else {
+                        this.caseform.get("attorneyId").enable();
+                    }
+
+                    if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+                        this.caseform.get("caseSource").disable();
+                    }
+                    else {
+                        this.caseform.get("caseSource").enable();
+                    }
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -112,7 +126,29 @@ export class CaseBasicComponent implements OnInit {
     ngOnInit() {
     }
 
+
+    attorneyChange(event) {
+        let attorneyId = parseInt(event.target.value);
+        if (attorneyId > 0) {
+            this.caseform.get("caseSource").disable();
+        }
+        else {
+            this.caseform.get("caseSource").enable();
+        }
+    }
+
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        if (CaseSource != "") {
+            this.caseform.get("attorneyId").disable();
+        }
+        else {
+            this.caseform.get("attorneyId").enable();
+        }
+    }
+
     saveCase() {
+       
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;
@@ -126,7 +162,7 @@ export class CaseBasicComponent implements OnInit {
             locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.attorneyId,
+            attorneyId: parseInt(caseFormValues.attorneyId, 10),
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
             updateByUserID: this.sessionStore.session.account.user.id,

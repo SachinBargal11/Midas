@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { DocumentTypeAdapter } from './adapters/document-type-adapter';
 import { DocumentType } from '../models/document-type';
 import { Document } from '../models/enum/document';
+import { SessionStore } from '../../commons/stores/session-store';
 
 
 @Injectable()
@@ -18,14 +19,18 @@ export class DocumentTypeService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getDocumentObjectType(companyId: Number, currentId: number): Observable<DocumentType[]> {
         let promise: Promise<DocumentType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId)
+            return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId, {
+                headers: this._headers
+            })
                 // return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {

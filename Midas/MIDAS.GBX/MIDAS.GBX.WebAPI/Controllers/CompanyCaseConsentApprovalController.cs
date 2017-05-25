@@ -83,7 +83,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("download/{caseid}/{companyid}/{download}")]
+        [Route("download/{caseid}/{companyid}")]
         //[AllowAnonymous]
         public void DownloadConsent(int caseid, int companyid, bool download = true)
         {

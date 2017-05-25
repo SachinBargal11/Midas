@@ -39,7 +39,8 @@ export class AddCaseComponent implements OnInit {
     patientName: string;
     patients: Patient[];
     patientsWithoutCase: Patient[];
-    attorneys: Account[];
+    attorneys: Attorney[];  
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -101,36 +102,39 @@ export class AddCaseComponent implements OnInit {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
 
-        // this._attorneyMasterStore.getAll()
-        //     // .subscribe(attorneys => this.attorneys = attorneys);
-        //     .subscribe((attorneys: Attorney[]) => {
-        //         let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
-        //             return currentAttorney.user != null;
-        //         });
-        //         this.attorneys = matchingAttorneys;
-        //     });
-
-        this._attorneyMasterStore.getAll()
+        this._attorneyMasterStore.getAttorneyMasters()
             // .subscribe(attorneys => this.attorneys = attorneys);
-            .subscribe((attorneys: Account[]) => {
-                // let matchingAttorneys: Account[] = _.filter(attorneys, (currentAttorney: Attorney) => {
+            .subscribe((attorneys: Attorney[]) => {
+                // let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
                 //     return currentAttorney.user != null;
                 // });
                 this.attorneys = attorneys;
             });
+        
         this.loadPatientsWithoutCase();
     }
 
 
-    // attoneyChange(event) {
-    //     let attorneyId: number;
-    //     attorneyId = parseInt(event.target.value);
+    attorneyChange(event) {
+         let attorneyId = parseInt(event.target.value);         
+        if (attorneyId > 0) {
+            this.caseform.get("caseSource").disable();
+        }
+        else {
+            this.caseform.get("caseSource").enable();
+        }
+    }
 
-    //     if (attorneyId > 0) {
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        if (CaseSource != "") {
+            this.caseform.get("attorneyId").disable();
+        }
+        else {
+            this.caseform.get("attorneyId").enable();
+        }
+    }
 
-    //     }
-    // }
-    
     selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
         let idPatient = parseInt(event.target.value);
@@ -138,23 +142,6 @@ export class AddCaseComponent implements OnInit {
         result.subscribe((employer) => { this.employer = employer; }, null);
         console.log(this.employer)
     }
-
-
-    // loadPatients() {
-    //     this._progressBarService.show();
-    //     this._patientsStore.getPatients()
-    //         .subscribe(patients => {
-    //             this.patients = patients;
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    // }
-
-
 
     loadPatientsWithoutCase() {
         this._progressBarService.show();
@@ -170,7 +157,7 @@ export class AddCaseComponent implements OnInit {
             });
     }
 
-    saveCase() {
+    saveCase() {       
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;

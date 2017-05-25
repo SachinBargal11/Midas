@@ -30,6 +30,7 @@ namespace MIDAS.GBX.WebAPI.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             if(string.IsNullOrEmpty(context.UserName))
             {

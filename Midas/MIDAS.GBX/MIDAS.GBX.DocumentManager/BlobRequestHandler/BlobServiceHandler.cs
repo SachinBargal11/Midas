@@ -61,10 +61,10 @@ namespace MIDAS.GBX.DocumentManager
                 return request.CreateResponse(HttpStatusCode.NotFound, objResult);
         }
 
-        public object CreateTemplate(HttpRequestMessage request, string templateBlobPath, Dictionary<string, string> templateKeywords)
+        public object CreateTemplate(HttpRequestMessage request,Int32 companyId, string templateBlobPath, Dictionary<string, string> templateKeywords)
         {
             TemplateManager templatemanager = new TemplateManager(_context);
-            var objResult = templatemanager.Template(templateBlobPath, templateKeywords);
+            var objResult = templatemanager.Template(companyId,templateBlobPath, templateKeywords);
             return objResult;
         }
     }
