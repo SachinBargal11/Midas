@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
                     // });
                     // if (this.doctorRole) {
                     // this._router.navigate(['/doctor-manager/doctor-appointment']);
-                    this._router.navigate(['/patient-manager']);
+                    this._router.navigate(['/dashboard']);
                     // } else {
                     //     this._router.navigate(['/dashboard']);
                     // }

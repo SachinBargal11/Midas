@@ -57,7 +57,6 @@ export const PatientsShellRoutes: Routes = [
     {
         path: 'patients',
         component: ShellComponent,
-        canActivate: [ValidateDoctorSession],
         data: {
             breadcrumb: 'Patients'
         },

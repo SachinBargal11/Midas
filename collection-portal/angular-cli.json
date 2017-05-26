@@ -33,7 +33,12 @@
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.js",
         "./Resources/dynamsoft.webtwain.initiate.js",
-        "./Resources/dynamsoft.webtwain.config.js"
+        "./Resources/dynamsoft.webtwain.config.js",
+        "../node_modules/amcharts/dist/amcharts/amcharts.js",
+        "../node_modules/amcharts/dist/amcharts/serial.js",
+        "../node_modules/amcharts/dist/amcharts/pie.js",
+        "../node_modules/amcharts/dist/amcharts/themes/light.js",
+        "../node_modules/amcharts/dist/amcharts/plugins/export/export.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -10,7 +10,7 @@ export const routes: Routes = [
     { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
     { path: 'doctor-manager', loadChildren: 'app/doctor-manager/doctor-manager-module#DoctorManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
-    { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
+    { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession, ValidateDoctorSession] },
     { path: 'medical-provider', loadChildren: 'app/medical-provider/medical-provider-module#MedicalProviderModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'account-setup', loadChildren: 'app/account-setup/account-setup-module#AccountSetupModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: '404', component: NoContentComponent },
