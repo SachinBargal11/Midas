@@ -39,6 +39,7 @@ export const PatientsShellRoutes: Routes = [
     {
         path: 'appointments',
         component: ShellComponent,
+        canActivate: [ValidateDoctorSession],
         data: {
             breadcrumb: 'Appointments'
         },
@@ -56,6 +57,7 @@ export const PatientsShellRoutes: Routes = [
     {
         path: 'patients',
         component: ShellComponent,
+        canActivate: [ValidateDoctorSession],
         data: {
             breadcrumb: 'Patients'
         },
@@ -63,6 +65,7 @@ export const PatientsShellRoutes: Routes = [
             {
                 path: '',
                 component: PatientsListComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'root'
                 }
@@ -70,6 +73,7 @@ export const PatientsShellRoutes: Routes = [
             {
                 path: 'add',
                 component: AddPatientComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Add Patient'
                 }
@@ -77,6 +81,7 @@ export const PatientsShellRoutes: Routes = [
             {
                 path: ':patientId',
                 component: PatientsShellComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'root'
                 },

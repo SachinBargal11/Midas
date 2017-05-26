@@ -12,6 +12,7 @@ export const PatientVisitRoutes: Routes = [
     {
         path: 'patient-visit',
         component: PatientVisitComponent,
+        canActivate: [ValidateActiveSession],
         data: {
             breadcrumb: 'Visit'
         }

@@ -40,7 +40,7 @@ export class Session extends SessionRecord {
     }
 
     get isAuthenticated() {
-        return this.account ? true : false;
+        return this.account ? this.account.accessToken != '' ? true : false : false;
     }
 
     public get accessToken(): string {

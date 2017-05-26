@@ -39,6 +39,7 @@ export const CasesShellRoutes: Routes = [
     {
         path: 'cases',
         component: CompanyCasesComponent,
+        canActivate: [ValidateActiveSession],
         data: {
             breadcrumb: 'Cases'
         }
@@ -53,6 +54,7 @@ export const CasesShellRoutes: Routes = [
             {
                 path: 'add',
                 component: AddCaseComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Add Case'
                 }
@@ -73,6 +75,7 @@ export const CasesShellRoutes: Routes = [
             {
                 path: '',
                 component: CasesListComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'root'
                 }
@@ -80,6 +83,7 @@ export const CasesShellRoutes: Routes = [
             {
                 path: 'add',
                 component: AddCaseComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Add Case'
                 }
@@ -87,6 +91,7 @@ export const CasesShellRoutes: Routes = [
             {
                 path: ':caseId',
                 component: CaseShellComponent,
+                canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'root'
                 },
@@ -170,6 +175,7 @@ export const CasesShellRoutes: Routes = [
                                     {
                                         path: ':visitId',
                                         component: PatientVisitListShellComponent,
+                                        canActivate: [ValidateActiveSession],
                                         data: {
                                             breadcrumb: 'root'
                                         },
@@ -210,6 +216,7 @@ export const CasesShellRoutes: Routes = [
                                     {
                                         path: '',
                                         component: PatientVisitListTreatingRoomComponent,
+                                        canActivate: [ValidateActiveSession],
                                         data: {
                                             breadcrumb: 'root'
                                         },
@@ -219,6 +226,7 @@ export const CasesShellRoutes: Routes = [
                                     {
                                         path: ':visitId',
                                         component: PatientVisitListShellComponent,
+                                        canActivate: [ValidateActiveSession],
                                         data: {
                                             breadcrumb: 'root'
                                         },
@@ -251,6 +259,7 @@ export const CasesShellRoutes: Routes = [
                             {
                                 path: ':visitId',
                                 component: PatientVisitListShellComponent,
+                                canActivate: [ValidateActiveSession],
                                 data: {
                                     breadcrumb: 'root'
                                 },
@@ -296,7 +305,7 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Accident'
                         }
                     },
-                     {
+                    {
                         path: 'billings',
                         component: BillingInfoComponent,
                         canActivate: [ValidateActiveSession],
@@ -339,6 +348,7 @@ export const CasesShellRoutes: Routes = [
                             {
                                 path: 'assign',
                                 component: AssignInsuranceComponent,
+                                canActivate: [ValidateActiveSession],
                                 data: {
                                     breadcrumb: 'Assign Insurance'
                                 }
@@ -358,6 +368,7 @@ export const CasesShellRoutes: Routes = [
                             {
                                 path: '',
                                 component: AddConsentComponent,
+                                canActivate: [ValidateActiveSession],
                                 data: {
                                     breadcrumb: 'root'
                                 }
