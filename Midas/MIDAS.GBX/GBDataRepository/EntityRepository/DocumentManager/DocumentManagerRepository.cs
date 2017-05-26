@@ -85,7 +85,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         public override object GetByDocumentId(int documentId)
         {
             BO.Document docInfo = new BO.Document();
-            var midasDocs = _context.MidasDocuments.Where(p => p.ObjectId == documentId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();            
+            var midasDocs = _context.MidasDocuments.Where(p => p.Id == documentId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();            
             return midasDocs.DocumentPath;
         }
 
