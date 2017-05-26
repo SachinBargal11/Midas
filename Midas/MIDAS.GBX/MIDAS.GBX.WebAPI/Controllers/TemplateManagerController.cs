@@ -27,7 +27,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {        
         private IRequestHandler<TemplateType> requestHandler;
         private IBlobService blobhandler;
-        string temppath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/");
+        
         public TemplateManagerController()
         {
             requestHandler = new GbApiRequestHandler<TemplateType>();
@@ -36,28 +36,35 @@ namespace MIDAS.GBX.WebAPI.Controllers
             
         [HttpPost]
         [Route("generatetemplate/{templateName}")]
-        public void GenerateTemplate(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
+        public string GenerateTemplate(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
         {
-            var res = requestHandler.GetObjects(Request, templateName);
-            if (res != null)
+            try
             {
-                string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText, temppath);
+                var res = requestHandler.GetObjects(Request, templateName);
+                if (res != null)
+                {
+                    string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
+                    var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText);
 
-                FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
-                                
-                HttpContext.Current.Response.ContentType = "application/pdf";
-                HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
-                HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
-                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-                HttpContext.Current.Response.WriteFile(tempPath.ToString());
-                //HttpContext.Current.Response.BinaryWrite(btFile);
-                HttpContext.Current.Response.End();
+                    FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
 
-                if (File.Exists(tempPath.ToString())) File.Delete(tempPath.ToString());
+                    HttpContext.Current.Response.ContentType = "application/pdf";
+                    HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+                    HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                    HttpContext.Current.Response.WriteFile(tempPath.ToString());
+                    //HttpContext.Current.Response.BinaryWrite(btFile);
+                    HttpContext.Current.Response.End();
+
+                    if (File.Exists(tempPath.ToString())) File.Delete(tempPath.ToString());
+                }
+            }
+            catch (Exception error)
+            {
+                return error.Message + "::" + error.InnerException;
             }
             
-            //return new HttpResponseMessage();
+            return "";
         }
 
         [HttpPost]
@@ -68,7 +75,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (res != null)
             {
                 string templatePath = ((TemplateType)(((ObjectContent)res.Content).Value)).TemplatePath;
-                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText, temppath);
+                var tempPath = blobhandler.CreateTemplate(Request, Convert.ToInt32(templateName.Split('_')[1]), templatePath, templateReplaceText);
 
                 FileInfo fileInfo = new System.IO.FileInfo(tempPath.ToString());
 
