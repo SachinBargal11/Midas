@@ -994,14 +994,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region AssociatePatientWithAttorneyCompany
-        public override object AssociatePatientWithAttorneyCompany(int PatientId, int AttorneyCompanyId)
+        public override object AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
         {
             bool add_UserCompany = false;
+            bool add_CaseCompanyMap = false;
             bool sendEmail = false;
             Guid invitationDB_UniqueID = Guid.NewGuid();
             BO.AttorneyMaster addAttorneyBO = new BO.AttorneyMaster();
             BO.User userBO = addAttorneyBO.User;
-
 
             var company = _context.Companies.Where(p => p.id == AttorneyCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
@@ -1017,7 +1017,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == AttorneyCompanyId && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == AttorneyCompanyId && p.IsAccepted == true 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .FirstOrDefault();
 
             if (userCompany == null)
             {
@@ -1033,6 +1035,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (add_UserCompany)
             {
                 _context.UserCompanies.Add(userCompany);
+            }
+
+            var caseCompanyMap = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.CompanyId == AttorneyCompanyId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                             .FirstOrDefault();
+
+            if (caseCompanyMap == null)
+            {
+                caseCompanyMap = new CaseCompanyMapping();
+                add_CaseCompanyMap = true;
+                sendEmail = true;
+            }
+
+            caseCompanyMap.CaseId = CaseId;
+            caseCompanyMap.CompanyId = AttorneyCompanyId;
+
+            if (add_CaseCompanyMap)
+            {
+                _context.CaseCompanyMappings.Add(caseCompanyMap);
             }
 
             _context.SaveChanges();
