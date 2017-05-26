@@ -268,7 +268,7 @@ export class PendingReferralsComponent implements OnInit {
                     }
 
                     if (this.selectedMedicalProviderId && this.selectedOption === 1) {
-                        debugger;
+                      
                         this.locationsStore.getLocationsByCompanyDoctorId(this.selectedMedicalProviderId, this.selectedDoctorId)
                             .subscribe((locations: LocationDetails[]) => {
                                 this.locations = locations;
