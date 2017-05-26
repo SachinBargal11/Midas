@@ -96,6 +96,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     userCompany = new UserCompany();
                     userCompany.CompanyID = companyCaseConsentApprovalBO.CompanyId;
                     userCompany.UserID = patient;
+                    userCompany.IsAccepted = true;
                     userCompany = _context.UserCompanies.Add(userCompany);
                     _context.SaveChanges();
                 }

@@ -448,6 +448,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserCompanyDB.IsDeleted = false;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
+                UserCompanyDB.IsAccepted = true;
 
                 _context.UserCompanies.Add(UserCompanyDB);
                 _context.SaveChanges();
