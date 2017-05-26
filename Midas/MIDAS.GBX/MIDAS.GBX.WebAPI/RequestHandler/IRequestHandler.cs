@@ -129,6 +129,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage AssociatePrefAttorneyProviderWithCompany(HttpRequestMessage request, int PrefAttorneyProviderId, int CompanyId);
         HttpResponseMessage GetAllPrefAttorneyProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId);  
+    
 
     }
 }
