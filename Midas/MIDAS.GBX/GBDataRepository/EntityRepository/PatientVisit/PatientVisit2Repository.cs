@@ -1113,8 +1113,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Patient Id
-        public override object GetByPatientId(int PatientId, int LocationId)
+        #region Get By PatientId And LocationId
+        public override object GetByPatientIdAndLocationId(int PatientId, int LocationId)
         {
             int caseId = _context.Cases.Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
