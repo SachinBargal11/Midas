@@ -1,14 +1,11 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using MIDAS.GBX.DataRepository.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Web;
-using MIDAS.GBX.DataAccessManager;
-using BO = MIDAS.GBX.BusinessObjects;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.Text.RegularExpressions;
@@ -20,15 +17,12 @@ namespace MIDAS.GBX.DocumentManager
     {
         #region private members
         private CloudBlockBlob Cloudblob;
-        private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];
-        private List<BO.Document> documents = new List<BO.Document>();
-        private IGbDataAccessManager<BO.Document> dataAccessManager;
+        private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];        
         private Utility util = new Utility();
         #endregion
 
-        public AzureBlobService(MIDASGBXEntities context) : base(context)
-        {
-            dataAccessManager = new GbDataAccessManager<BO.Document>();
+        public AzureBlobService()
+        {            
             util.BlobStorageConnectionString = ConfigurationManager.AppSettings["BlobStorageConnectionString"];
         }
 
@@ -50,17 +44,38 @@ namespace MIDAS.GBX.DocumentManager
             }
             catch (Exception er)
             {
-                return (Object)"Unable to upload";
+                return "Unable to upload";
             }
 
-            return (Object)Cloudblob.Uri.AbsoluteUri;
+            return Cloudblob.Uri.AbsoluteUri;
+        }
+
+        public override Object Upload(string blobPath, MemoryStream memorystream, int companyId)
+        {
+            util.ContainerName = "company-" + companyId;
+
+            try
+            {
+                Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
+
+                using (Stream stream = memorystream)
+                {
+                    Cloudblob.UploadFromStream(stream);
+                }
+            }
+            catch (Exception er)
+            {
+                return "Unable to upload";
+            }
+
+            return Cloudblob.Uri.AbsoluteUri;
         }
 
         public override Object Download(int companyId, int documentId)
         {
             //Sample BLOB URL : https://midasdocument.blob.core.windows.net/company-16/cs-86/nofault/consent/consent.pdf
             util.ContainerName = "company-" + companyId;
-            string blobName = util.getBlob(documentId, _context);
+            string blobName = util.getBlob("");
             CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
             //_cblob.FetchAttributes();
 
@@ -124,15 +139,14 @@ namespace MIDAS.GBX.DocumentManager
             {
                 Cloudblob = util.BlobContainer.GetBlockBlobReference(blobPath);
 
-                Cloudblob.UploadFromFile(serverPath);                    
-                
+                Cloudblob.UploadFromFile(serverPath);                                    
             }
             catch (Exception er)
             {
-                return (Object)"Unable to upload";
+                return "Unable to upload";
             }
 
-            return (Object)Cloudblob.Uri.AbsoluteUri;
+            return Cloudblob.Uri.AbsoluteUri;
         }
 
         public bool DeleteBlob(string blobName)

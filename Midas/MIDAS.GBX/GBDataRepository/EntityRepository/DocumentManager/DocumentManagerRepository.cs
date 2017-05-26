@@ -82,6 +82,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             return serviceProvider.BlobStorageType.BlobStorageType1.ToString().ToUpper();
         }
 
+        public override object GetByDocumentId(int documentId)
+        {
+            BO.Document docInfo = new BO.Document();
+            var midasDocs = _context.MidasDocuments.Where(p => p.ObjectId == documentId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();            
+            return midasDocs.DocumentPath;
+        }
+
         #region Get
         public override object Get(int id, string type)
         {

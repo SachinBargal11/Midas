@@ -1,9 +1,6 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MIDAS.GBX.BusinessObjects.Common;
-using MIDAS.GBX.DataRepository.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -11,15 +8,17 @@ using System.Web;
 namespace MIDAS.GBX.DocumentManager
 {
     public abstract class BlobServiceProvider
-    {
-        internal MIDASGBXEntities _context;
-        public BlobServiceProvider(MIDASGBXEntities context)
-        {
-            _context = context;
-        }
+    {      
+        public BlobServiceProvider()
+        { }           
 
         #region Virtual Methods
         public virtual Object Upload(string blobPath, HttpContent content, int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Upload(string blobPath, MemoryStream stream, int companyId)
         {
             throw new NotImplementedException();
         }
