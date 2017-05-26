@@ -19,6 +19,11 @@ namespace MIDAS.GBX.Notification.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual object SendMultipleSMS<T>(T smsObject)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

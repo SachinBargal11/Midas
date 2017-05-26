@@ -10,5 +10,6 @@ namespace MIDAS.GBX.Notification.RequestHandler
     public interface IRequestHandler<T>
     {
         HttpResponseMessage SendSMS(HttpRequestMessage request, T smsObject);
+        HttpResponseMessage SendMultipleSMS(HttpRequestMessage request, T multipleSMSObject);
     }
 }

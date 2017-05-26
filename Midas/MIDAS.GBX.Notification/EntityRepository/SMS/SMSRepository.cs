@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Twilio;
+using Twilio.Types;
+using BO = MIDAS.GBX.BusinessObjects;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace MIDAS.GBX.Notification.EntityRepository.SMS
 {
@@ -12,12 +16,103 @@ namespace MIDAS.GBX.Notification.EntityRepository.SMS
 
         }
 
-        #region Get By ID
+        #region SendSMS
         public override object SendSMS<T>(T smsObject)
         {
+            BO.SMS SMSBO = (BO.SMS)(object)smsObject;
+
+            string accountSid = SMSBO.twilio_account_id;
+            string authToken = SMSBO.twilio_auth_token;
+            TwilioClient.Init(accountSid, authToken);
+
+            var FromNumber = new PhoneNumber(SMSBO.FromNumber);
+            var ToNumber = new PhoneNumber(SMSBO.ToNumber);
+            
+            var Message = SMSBO.Message;
+
+            var message = MessageResource.Create(
+                ToNumber,
+                from: FromNumber,
+                body: Message
+            );
+
+            SMSBO.MessageResource = new BO.MessageResource() {
+                AccountSid = message.AccountSid,
+                ApiVersion = message.ApiVersion,
+                Body = message.Body,
+                DateCreated = message.DateCreated,
+                DateSent = message.DateSent,
+                DateUpdated = message.DateUpdated,
+                //Direction = message.Direction,
+                ErrorCode = message.ErrorCode,
+                ErrorMessage = message.ErrorMessage,
+                From = message.From.ToString(),
+                MessagingServiceSid = message.MessagingServiceSid,
+                NumMedia = message.NumMedia,
+                NumSegments = message.NumSegments,
+                Price = message.Price,
+                PriceUnit = message.PriceUnit,
+                Sid = message.Sid,
+                //Status = message.Status,
+                SubresourceUris = message.SubresourceUris,
+                To = message.To,
+                Uri = message.Uri
+            };
+
+            return (object)SMSBO;
+        }
+        #endregion
+
+        #region SendSMS
+        public override object SendMultipleSMS<T>(T multipleSMSObject)
+        {
+            BO.MultipleSMS MultipleSMSBO = (BO.MultipleSMS)(object)multipleSMSObject;
+
+            string accountSid = MultipleSMSBO.twilio_account_id;
+            string authToken = MultipleSMSBO.twilio_auth_token;
+            TwilioClient.Init(accountSid, authToken);
+
+            var FromNumber = new PhoneNumber(MultipleSMSBO.FromNumber);
+
+            foreach (var eachSMS in MultipleSMSBO.SMSList)
+            {
+                var ToNumber = new PhoneNumber(eachSMS.ToNumber);
+
+                var Message = eachSMS.Message;
+
+                var message = MessageResource.Create(
+                    ToNumber,
+                    from: FromNumber,
+                    body: Message
+                );
+
+                eachSMS.MessageResource = new BO.MessageResource()
+                {
+                    AccountSid = message.AccountSid,
+                    ApiVersion = message.ApiVersion,
+                    Body = message.Body,
+                    DateCreated = message.DateCreated,
+                    DateSent = message.DateSent,
+                    DateUpdated = message.DateUpdated,
+                    //Direction = message.Direction,
+                    ErrorCode = message.ErrorCode,
+                    ErrorMessage = message.ErrorMessage,
+                    From = message.From.ToString(),
+                    MessagingServiceSid = message.MessagingServiceSid,
+                    NumMedia = message.NumMedia,
+                    NumSegments = message.NumSegments,
+                    Price = message.Price,
+                    PriceUnit = message.PriceUnit,
+                    Sid = message.Sid,
+                    //Status = message.Status,
+                    SubresourceUris = message.SubresourceUris,
+                    To = message.To,
+                    Uri = message.Uri
+                };
+            }
             
 
-            return (object)smsObject;
+            return (object)MultipleSMSBO;
         }
         #endregion
 

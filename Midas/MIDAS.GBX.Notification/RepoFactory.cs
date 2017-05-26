@@ -17,6 +17,10 @@ namespace MIDAS.GBX.Notification
             {
                 repo = new SMSRepository();
             }
+            else if (typeof(T) == typeof(BO.MultipleSMS))
+            {
+                repo = new SMSRepository();
+            }
 
             return repo;
         }

@@ -13,10 +13,12 @@ namespace MIDAS.GBX.Notification.Controllers
     public class SendNotificationController : ApiController
     {
         private IRequestHandler<SMS> requestHandlerSMS;
+        private IRequestHandler<MultipleSMS> requestHandlerMultipleSMS;
 
         public SendNotificationController()
         {
             requestHandlerSMS = new NotificationRequestHandler<SMS>();
+            requestHandlerMultipleSMS = new NotificationRequestHandler<MultipleSMS>();
         }
 
         [HttpPost]
@@ -24,6 +26,13 @@ namespace MIDAS.GBX.Notification.Controllers
         public HttpResponseMessage SendSMS([FromBody]SMS smsObject)
         {
             return requestHandlerSMS.SendSMS(Request, smsObject);
+        }
+
+        [HttpPost]
+        [Route("sendMultipleSMS")]
+        public HttpResponseMessage SendMultipleSMS([FromBody]MultipleSMS multipleSMSObject)
+        {
+            return requestHandlerMultipleSMS.SendMultipleSMS(Request, multipleSMSObject);
         }
     }
 }
