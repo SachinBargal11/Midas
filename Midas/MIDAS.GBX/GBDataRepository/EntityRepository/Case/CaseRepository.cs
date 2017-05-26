@@ -282,12 +282,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
 
                         var company = new Company();
-                        if (eachCase.AttorneyId != null)
+                        if (eachCase.AttorneyId > 0)
                         {
                             company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && p.CompanyType == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                         }
 
-                        if (eachCase.AttorneyId != null)
+                        if (eachCase.AttorneyId > 0)
                         {
                             caseWithUserAndPatient.caseSource = company.Name;
                         }
