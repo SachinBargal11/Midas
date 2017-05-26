@@ -28,7 +28,7 @@ namespace MIDAS.GBX.DocumentManager
             throw new NotImplementedException();
         }
 
-        public virtual Object Download(int companyid, int documentid)
+        public virtual Object Download(int companyid, string documentPath)
         {
             throw new NotImplementedException();
         }

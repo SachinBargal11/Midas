@@ -16,7 +16,7 @@ namespace MIDAS.GBX.DocumentManager
 
         HttpResponseMessage UploadToBlob(HttpRequestMessage request, MemoryStream stream, string blobPath, int companyId, string servicepProvider);
 
-        HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid, string servicepProvider);
+        HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, string documentPath, string servicepProvider);
 
         HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles,string blobPath, string servicepProvider);
 

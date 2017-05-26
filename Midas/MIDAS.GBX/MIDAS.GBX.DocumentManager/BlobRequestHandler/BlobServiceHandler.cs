@@ -50,11 +50,11 @@ namespace MIDAS.GBX.DocumentManager
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, ex.Message); }
         }
 
-        public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid, string servicepProvider)
+        public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, string documentPath, string servicepProvider)
         {
             var objResult = new Object();
             serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider);
-            serviceProvider.Download(companyid, documentid);
+            serviceProvider.Download(companyid, documentPath);
             try { return request.CreateResponse(HttpStatusCode.Created, objResult); }
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }
         }

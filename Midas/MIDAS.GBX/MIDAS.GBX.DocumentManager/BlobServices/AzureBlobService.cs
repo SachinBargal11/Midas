@@ -71,11 +71,11 @@ namespace MIDAS.GBX.DocumentManager
             return Cloudblob.Uri.AbsoluteUri;
         }
 
-        public override Object Download(int companyId, int documentId)
+        public override Object Download(int companyId, string documentPath)
         {
             //Sample BLOB URL : https://midasdocument.blob.core.windows.net/company-16/cs-86/nofault/consent/consent.pdf
             util.ContainerName = "company-" + companyId;
-            string blobName = util.getBlob("");
+            string blobName = util.getBlob(documentPath);
             CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
             //_cblob.FetchAttributes();
 

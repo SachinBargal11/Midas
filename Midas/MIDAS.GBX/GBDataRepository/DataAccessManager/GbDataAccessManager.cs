@@ -3036,7 +3036,7 @@ namespace MIDAS.GBX.DataAccessManager
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByCompanyAndDoctorId(companyId, doctorId);
+                var gbdata = baseRepo.GetByDocumentId(documentId);
 
                 return gbdata;
             }

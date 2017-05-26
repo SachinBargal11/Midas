@@ -146,7 +146,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (serviceProvider == null)
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
-            return blobhandler.DownloadFromBlob(Request, companyid, documentid, ((ObjectContent)serviceProvider.Content).Value.ToString());
+            HttpResponseMessage documentPath = requestHandler.GetByDocumentId(Request, documentid);
+            if (documentPath == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "No document found", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            return blobhandler.DownloadFromBlob(Request, companyid, ((ObjectContent)documentPath.Content).Value.ToString(), ((ObjectContent)serviceProvider.Content).Value.ToString());
         }
 
         [HttpPost]
