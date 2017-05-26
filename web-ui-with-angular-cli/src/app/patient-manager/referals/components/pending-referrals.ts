@@ -200,8 +200,8 @@ export class PendingReferralsComponent implements OnInit {
         } else {
             this.selectedMode = 0;
         }
-        if (this.selectedMedicalProviderId && this.selectedOption === 1) {          
-            this.locationsStore.getLocationsByCompanyDoctorId(this.selectedMedicalProviderId,this.selectedDoctorId)
+        if (this.selectedMedicalProviderId && this.selectedOption === 1) {
+            this.locationsStore.getLocationsByCompanyDoctorId(this.selectedMedicalProviderId, this.selectedDoctorId)
                 .subscribe((locations: LocationDetails[]) => {
                     this.locations = locations;
                 },
@@ -268,7 +268,8 @@ export class PendingReferralsComponent implements OnInit {
                     }
 
                     if (this.selectedMedicalProviderId && this.selectedOption === 1) {
-                        this.locationsStore.getLocationsByCompanyId(this.selectedMedicalProviderId)
+                        debugger;
+                        this.locationsStore.getLocationsByCompanyDoctorId(this.selectedMedicalProviderId, this.selectedDoctorId)
                             .subscribe((locations: LocationDetails[]) => {
                                 this.locations = locations;
                             },
