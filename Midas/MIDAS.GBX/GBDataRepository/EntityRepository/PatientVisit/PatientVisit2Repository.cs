@@ -284,6 +284,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (location.UpdateByUserID.HasValue)
                     locationBO.UpdateByUserID = location.UpdateByUserID.Value;
 
+                if (location.Company != null)
+                {
+                    BO.Company boCompany = new BO.Company();
+                    boCompany.ID = location.Company.id;
+                    boCompany.Name = location.Company.Name;
+                    boCompany.TaxID = location.Company.TaxID;
+                    boCompany.Status = (BO.GBEnums.AccountStatus)location.Company.Status;
+                    boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+
+                    locationBO.Company = boCompany;
+                }
+
                 return (T)(object)locationBO;
             }
 
@@ -1149,6 +1162,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Location")
+                                                                        .Include("Location.Company")
                                                                         .Where(p => ((p.CaseId.HasValue == true) && (caseId > 0) && (p.CaseId.Value == caseId))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -1175,7 +1189,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete
+        public override object Delete(int id)
+        {
+            PatientVisit2 patientVisit2DB = new PatientVisit2();
 
+            patientVisit2DB = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+
+            if (patientVisit2DB != null)
+            {
+                patientVisit2DB.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "No record found.", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(patientVisit2DB);
+            return (object)res;
+        }
+        #endregion
 
         public void Dispose()
         {
