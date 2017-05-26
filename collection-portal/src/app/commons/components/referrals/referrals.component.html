@@ -1,0 +1,93 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<br>
+<div class="col-lg-6" *ngIf="routeFrom !== 2">
+  <div class="row">
+    <div class="col-lg-6">
+      <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+        <option value="0">- Select speciality -</option>
+        <optgroup label="Select Specialty">
+           <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        </optgroup>
+        <optgroup label="Select Test">
+           <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+        </optgroup>
+    </select>
+    </div>
+    <div class="col-lg-6">
+      <button type="submit" class="btn btn-success btn-sm" (click)="addToList()">Add</button>
+    </div>
+  </div>
+  <label class="warningMsg">{{msg}}</label>
+  <br>
+  <div class="ui-widget-header row">
+    <div class="col-lg-6 input-group">
+      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+      <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+</div>
+</div>
+<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+  [globalFilter]="gb" [responsive]="true">
+  <header>Procedures</header>
+  <p-headerColumnGroup>
+    <p-row>
+      <p-column [style]="{'width':'38px'}"></p-column>
+      <p-column header="Procedure Code" [style]="{'width':'150px'}"></p-column>
+      <p-column header="Description"></p-column>
+    </p-row>
+  </p-headerColumnGroup>
+  <p-column selectionMode="multiple"></p-column>
+  <p-column field="procedureCodeText" [style]="{'width':'150px'}"></p-column>
+  <p-column field="procedureCodeDesc"></p-column>
+</p-dataTable>
+<br>
+</div>
+
+<div class="col-lg-6">
+  <h3 class="with-border">Selected Refererls</h3>
+
+  <div style="padding-bottom: 0.1rem;"></div>
+<div class="ui-widget-header row">
+  <div class="col-lg-6 input-group">
+    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    <input #gbsl type="text" class="form-control" style="float:left" placeholder="Search ">
+</div>
+<div class="col-lg-6 input-group" *ngIf="sessionStore.isOnlyDoctorRole() && routeFrom !== 2">
+  <button class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
+      <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Refererls </span>
+      <loader [visible]="isDeleteProgress"></loader>
+    </button>
+</div>
+</div>
+<p-dataTable [value]="proceduresList" [(selection)]="selectedProceduresToDelete" [rows]="5" [paginator]="true" [pageLinks]="3"
+  [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbsl" [responsive]="true">
+  <header>Procedures</header>
+  <p-column selectionMode="multiple"></p-column>
+  <p-column header="Specialty" [style]="{'width':'80px'}">
+    <ng-template let-procedure="rowData" pTemplate="body">
+      <div *ngIf="procedure.speciality == null">
+        <div *ngFor="let speciality of specialities">
+          <div *ngIf="speciality.id == procedure.specialityId">
+            {{speciality.name}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="procedure.speciality != null">
+        {{procedure.speciality.name}}
+      </div>
+      <div *ngIf="procedure.roomTest == null">
+        <div *ngFor="let test of tests">
+          <div *ngIf="test.id == procedure.roomTestId">
+            {{test.name}}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-column>
+  <p-column field="procedureCodeText" header="Procedure Code"></p-column>
+  <p-column field="procedureCodeDesc" header="Description"></p-column>
+</p-dataTable>
+<br>
+<button *ngIf="sessionStore.isOnlyDoctorRole() && routeFrom !== 2" class="btn btn-success sign-up" (click)="saveReferral()">Save
+    <loader [visible]="isSaveProgress"></loader>
+</button>
+</div>
