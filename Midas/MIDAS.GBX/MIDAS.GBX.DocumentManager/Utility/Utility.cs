@@ -19,7 +19,7 @@ namespace MIDAS.GBX.DocumentManager
         public string getBlob(string relativePath)
         {
             string blobPath = string.Empty;
-            blobPath = new Uri(relativePath).AbsolutePath;
+            blobPath = HttpUtility.UrlDecode(new Uri(relativePath).AbsolutePath);
 
             return blobPath.Remove(0, blobPath.IndexOf('/', blobPath.IndexOf('/') + 1)).TrimStart('/');
         }

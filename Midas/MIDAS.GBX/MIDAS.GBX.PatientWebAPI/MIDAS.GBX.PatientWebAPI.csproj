@@ -77,6 +77,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MIDAS.GBX.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\bin\Debug\MIDAS.GBX.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MIDAS.GBX.DocumentManager">
+      <HintPath>..\MIDAS.GBX.DocumentManager\bin\MIDAS.GBX.DocumentManager.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -251,6 +258,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\DocumentManagerController.cs" />
     <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
@@ -277,6 +285,7 @@
     <Compile Include="Controllers\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
+    <Compile Include="Controllers\TemplateManagerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">

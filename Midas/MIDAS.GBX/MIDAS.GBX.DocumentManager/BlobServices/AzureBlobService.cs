@@ -47,7 +47,7 @@ namespace MIDAS.GBX.DocumentManager
                 return "Unable to upload";
             }
 
-            return Cloudblob.Uri.AbsoluteUri;
+            return HttpUtility.UrlDecode(Cloudblob.Uri.AbsoluteUri);
         }
 
         public override Object Upload(string blobPath, MemoryStream memorystream, int companyId)
@@ -68,7 +68,7 @@ namespace MIDAS.GBX.DocumentManager
                 return "Unable to upload";
             }
 
-            return Cloudblob.Uri.AbsoluteUri;
+            return HttpUtility.UrlDecode(Cloudblob.Uri.AbsoluteUri);
         }
 
         public override Object Download(int companyId, string documentPath)
