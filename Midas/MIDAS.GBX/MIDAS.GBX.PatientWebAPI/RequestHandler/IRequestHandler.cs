@@ -61,8 +61,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetByLocationRoomAndPatientId(HttpRequestMessage request, int locationId, int roomId, int patientId);
         HttpResponseMessage GetLocationForPatientId(HttpRequestMessage request, int patientId);
         HttpResponseMessage GetByPatientIdAndLocationId(HttpRequestMessage request, int PatientId, int LocationId);
-        HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId);
-
+      
 
     }
 }
