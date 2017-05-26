@@ -210,7 +210,7 @@ export class LocationsService {
 
     getLocationsByCompanyDoctorId(companyId: number, doctorId: number): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Location/getall/' + companyId + '/' + doctorId, {
+            return this._http.get(this._url + '/Location/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
