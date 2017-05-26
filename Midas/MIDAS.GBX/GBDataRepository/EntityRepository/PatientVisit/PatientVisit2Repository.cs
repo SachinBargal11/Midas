@@ -1093,6 +1093,63 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Patient Id
+        public override object GetByPatientId(int id)
+        {
+            var caseId = _context.Cases.Where(p => p.PatientId == id && p.CaseStatusId == 1
+                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.Id);
+
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Where(p => ((p.CaseId.HasValue == true) && (caseId.Contains(p.CaseId.Value)))
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        #region Get Location For PatientId
+        public override object GetLocationForPatientId(int patientId)
+        {
+            var caseId = _context.Cases.Where(p => p.PatientId == patientId && p.CaseStatusId == 1
+                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.Id);
+
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Where(p => ((p.CaseId.HasValue == true) && (caseId.Contains(p.CaseId.Value)))
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            lstPatientVisit.GroupBy(p => p.LocationId);
+
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

@@ -142,8 +142,19 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByLocationRoomAndPatientId(Request, locationId, roomId, patientId);
         }
 
+        [HttpGet]
+        [Route("getByPatientId/{patientId}")]
+        public HttpResponseMessage GetByPatientId(int patientId)
+        {
+            return requestHandler.GetByPatientId(Request,patientId);
+        }
 
-
+        [HttpGet]
+        [Route("getLocationForPatientId/{patientId}")]
+        public HttpResponseMessage GetLocationForPatientId(int patientId)
+        {
+            return requestHandler.GetLocationForPatientId(Request, patientId);
+        }
 
         protected override void Dispose(bool disposing)
         {

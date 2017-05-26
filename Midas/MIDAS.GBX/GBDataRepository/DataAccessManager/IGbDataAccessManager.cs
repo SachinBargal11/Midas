@@ -143,5 +143,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociatePrefAttorneyProviderWithCompany(int PrefAttorneyProviderId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllPrefAttorneyProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetPrefAttorneyProviderByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetLocationForPatientId(int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        
+
+
     }
 }
