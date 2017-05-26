@@ -1,8 +1,6 @@
-﻿using MIDAS.GBX.BusinessObjects.Common;
-using MIDAS.GBX.DataAccessManager;
-using MIDAS.GBX.DataRepository.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,26 +9,19 @@ using System.Web;
 namespace MIDAS.GBX.DocumentManager
 {
     public class BlobServiceHandler : IBlobService
-    {
-        private IGbDataAccessManager<AzureBlobService> dataAccessManager;
+    {        
         private BlobServiceProvider serviceProvider;
-        internal MIDASGBXEntities _context;
-        IDBContextProvider dbContextProvider = new DBContextProvider();
 
-        public BlobServiceHandler()
-        {
-            dataAccessManager = new GbDataAccessManager<AzureBlobService>();
-            _context = dbContextProvider.GetGbDBContext();
-        }
+        public BlobServiceHandler() { }        
 
         public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId, string servicepProvider)
         {
             string objResult = "";
             try
             {
-                serviceProvider = BlobStorageFactory.GetBlobServiceProviders(servicepProvider, _context);
+                serviceProvider = BlobStorageFactory.GetBlobServiceProviders(servicepProvider);
                 if (serviceProvider == null)
-                    return request.CreateResponse(HttpStatusCode.NotFound, new BusinessObjects.ErrorObject { ErrorMessage = "No BLOB storage provider found.", errorObject = "", ErrorLevel = ErrorLevel.Error });
+                    return request.CreateResponse(HttpStatusCode.NotFound, "No BLOB storage provider found.");
 
                 objResult = serviceProvider.Upload(blobPath, content, companyId) as string;
                 if (objResult != null)
@@ -41,11 +32,29 @@ namespace MIDAS.GBX.DocumentManager
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, ex.Message); }
         }
 
-        public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid, string servicepProvider)
+        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, MemoryStream stream, string blobPath, int companyId, string servicepProvider)
+        {
+            string objResult = "";
+            try
+            {
+                serviceProvider = BlobStorageFactory.GetBlobServiceProviders(servicepProvider);
+                if (serviceProvider == null)
+                    return request.CreateResponse(HttpStatusCode.NotFound, "No BLOB storage provider found.");
+
+                objResult = serviceProvider.Upload(blobPath, stream, companyId) as string;
+                if (objResult != null)
+                    return request.CreateResponse(HttpStatusCode.Created, objResult);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, objResult);
+            }
+            catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, ex.Message); }
+        }
+
+        public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, string documentPath, string servicepProvider)
         {
             var objResult = new Object();
-            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider, _context);
-            serviceProvider.Download(companyid, documentid);
+            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider);
+            serviceProvider.Download(companyid, documentPath);
             try { return request.CreateResponse(HttpStatusCode.Created, objResult); }
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }
         }
@@ -53,7 +62,7 @@ namespace MIDAS.GBX.DocumentManager
         public HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles, string blobPath, string servicepProvider)
         {
             var objResult = new Object();
-            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider, _context);
+            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(servicepProvider);
             objResult = serviceProvider.Merge(companyid, pdfFiles, blobPath);
             if (objResult != null)
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -63,7 +72,7 @@ namespace MIDAS.GBX.DocumentManager
 
         public object CreateTemplate(HttpRequestMessage request, Int32 companyId, string templateBlobPath, Dictionary<string, string> templateKeywords)
         {
-            TemplateManager templatemanager = new TemplateManager(_context);
+            TemplateManager templatemanager = new TemplateManager();
             var objResult = templatemanager.Template(companyId, templateBlobPath, templateKeywords);
             return objResult;
         }

@@ -194,9 +194,9 @@ export class PatientsStore {
         this._selectedPatients.next(selectedPatients.delete(index));
     }
 
-    assignPatientToAttorney(id: number,attorneyId: number): Observable<Patient> {      
+    assignPatientToAttorney(id: number,caseId:number,attorneyId: number): Observable<Patient> {      
         let promise = new Promise((resolve, reject) => {
-            this._patientsService.assignPatientToAttorney(id, attorneyId).subscribe((patient: Patient) => {
+            this._patientsService.assignPatientToAttorney(id,caseId, attorneyId).subscribe((patient: Patient) => {
                 // this._attorneyMaster.next(List(allattorney));
                 resolve(patient);
             }, error => {

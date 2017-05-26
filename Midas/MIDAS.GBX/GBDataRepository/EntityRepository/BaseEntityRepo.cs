@@ -731,7 +731,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-
+        public virtual Object GetByDocumentId(int documentId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

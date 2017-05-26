@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { AmChartsModule } from "amcharts3-angular2";
 
 import { AppComponent } from './app.component';
 
@@ -78,7 +79,8 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     CommonsModule,
     AppRoutingModule,
     DashboardModule,
-    SimpleNotificationsModule
+    SimpleNotificationsModule,
+    AmChartsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

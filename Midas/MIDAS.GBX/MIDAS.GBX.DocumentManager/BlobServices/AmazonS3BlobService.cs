@@ -1,8 +1,4 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MIDAS.GBX.BusinessObjects.Common;
-using MIDAS.GBX.DataRepository.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -14,10 +10,8 @@ namespace MIDAS.GBX.DocumentManager
 {
     public class AmazonS3BlobService : BlobServiceProvider, IDisposable
     {
-        public AmazonS3BlobService(MIDASGBXEntities context) : base(context)
-        {
-            
-        }
+        public AmazonS3BlobService()
+        { }
 
         public override Object Upload(string blobPath, HttpContent content, int companyId)
         {            

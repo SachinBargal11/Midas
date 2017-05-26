@@ -801,7 +801,18 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
-        
+        public HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId)
+        {
+            var objResult = dataAccessManager.GetByDocumentId(documentId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
 
     }

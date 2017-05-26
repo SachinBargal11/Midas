@@ -1,6 +1,5 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using MIDAS.GBX.DataRepository.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,7 +22,7 @@ namespace MIDAS.GBX.DocumentManager
         string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/test.pdf");
         #endregion
 
-        public TemplateManager(MIDASGBXEntities context) : base(context)
+        public TemplateManager()
         {            
             util.BlobStorageConnectionString = ConfigurationManager.AppSettings["BlobStorageConnectionString"];
         }

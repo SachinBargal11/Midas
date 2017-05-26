@@ -8,10 +8,11 @@ using System.Web.Http;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.DocumentManager;
 using MIDAS.GBX.BusinessObjects.Common;
+using MIDAS.GBX.PatientWebAPI.RequestHandler;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/documentmanager")]
+    [RoutePrefix("midaspatientapi/documentmanager")]
     //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
     //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
     public class DocumentManagerController : ApiController
@@ -20,7 +21,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         private IRequestHandler<UploadInfo> requestHandler;
         private IRequestHandler<MergePDF> requestHandler1;
         private IBlobService blobhandler;
-        private List<Document> documentList = new List<Document>();
+        private List<Document> documentList = new List<Document>();        
 
         public DocumentManagerController()
         {

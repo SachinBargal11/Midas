@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MIDAS.GBX.DataRepository.Model;
-using System.Net.Http;
 using MIDAS.GBX.DocumentManager;
 
 namespace MIDAS.GBX
 {
     public class BlobStorageFactory
     {
-        public static BlobServiceProvider GetBlobServiceProviders(string serviceProvider, MIDASGBXEntities _context)
+        public static BlobServiceProvider GetBlobServiceProviders(string serviceProvider)
         {            
             BlobServiceProvider serviceprovider = null;
 
@@ -24,10 +19,10 @@ namespace MIDAS.GBX
                 switch (serviceProvider.ToUpper())
                 {
                     case "AZURE":
-                        serviceprovider = new AzureBlobService(_context);
+                        serviceprovider = new AzureBlobService();
                         break;
                     case "AMAZONS3":
-                        serviceprovider = new AmazonS3BlobService(_context);
+                        serviceprovider = new AmazonS3BlobService();
                         break;
                     default: throw new Exception("No BLOB storage provider found for this company.");
                 }
