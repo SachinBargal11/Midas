@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using MIDAS.GBX.DataAccessManager;
 using MIDAS.GBX.BusinessObjects;
 
-namespace MIDAS.GBX.WebAPI
+namespace MIDAS.GBX.AttorneyWebAPI
 {
     public class GbApiRequestHandler<T> : IRequestHandler<T>
     {

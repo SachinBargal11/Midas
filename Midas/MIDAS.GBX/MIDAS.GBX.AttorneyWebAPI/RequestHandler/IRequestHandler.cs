@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 
-namespace MIDAS.GBX.WebAPI
+namespace MIDAS.GBX.AttorneyWebAPI
 {
     public interface IRequestHandler<T> 
     {
