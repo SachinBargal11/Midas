@@ -16,7 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.BusinessObjects;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/User")]
     

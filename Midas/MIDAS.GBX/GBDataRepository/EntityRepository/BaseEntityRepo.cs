@@ -552,7 +552,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object AssociatePatientWithAttorneyCompany(int PatientId, int AttorneyCompanyId)
+        public virtual Object AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
         {
             throw new NotImplementedException();
         }
@@ -715,6 +715,23 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetLocationForPatientId(int patientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByPatientIdAndLocationId(int PatientId, int LocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByCompanyAndDoctorId(int companyId, int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         #endregion
     }
 }

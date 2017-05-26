@@ -386,6 +386,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+
+                var companyTypeDB = company.CompanyType1;
+                if (company.CompanyType != 0)
+                {
+                    boCompany.CompanyType1 = new BO.CompanyType();
+                    boCompany.CompanyType1.ID = companyTypeDB.id;
+                    boCompany.CompanyType1.Name = companyTypeDB.Name;
+                    boCompany.CompanyType1.IsDeleted = companyTypeDB.IsDeleted;
+                    boCompany.CompanyType1.CreateByUserID = companyTypeDB.CreateByUserID;
+                    boCompany.CompanyType1.UpdateByUserID = companyTypeDB.UpdateByUserID;
+                  
+                }
+               
             }
 
             return (T)(object)boCompany;
@@ -967,11 +980,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var company1 = _context.CaseCompanyMappings.Where(p => p.CaseId == caseId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .Select(p => p.Company).ToList();
-
+                                                       .Select(p => p.Company)
+                                                       .Include("CompanyType1")
+                                                       .ToList();
+           
             var company2 = _context.Referral2.Where(p => p.CaseId == caseId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .Select(p => p.Company1).ToList();
+                                             .Select(p => p.Company1)
+                                             .Include("CompanyType1")
+                                             .ToList();
 
             if (company1 == null && company2 == null)
             {

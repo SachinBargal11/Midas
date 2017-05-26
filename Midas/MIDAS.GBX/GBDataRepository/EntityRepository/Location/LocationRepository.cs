@@ -13,7 +13,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class LocationRepository : BaseEntityRepo,IDisposable
+    internal class LocationRepository : BaseEntityRepo, IDisposable
     {
         private DbSet<Location> _dbSet;
 
@@ -57,10 +57,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
 
-                locationBO.Company = boCompany;               
+                locationBO.Company = boCompany;
             }
 
-                if (location.AddressInfo != null)
+            if (location.AddressInfo != null)
             {
                 BO.AddressInfo boAddress = new BO.AddressInfo();
                 boAddress.Name = location.AddressInfo.Name;
@@ -144,7 +144,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             if (saveLocationBO.location.ID == 0)
             {
-             if (saveLocationBO.company == null)
+                if (saveLocationBO.company == null)
                 {
                     return new BO.ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
@@ -253,7 +253,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (locationDB.id > 0)
             {
                 //For Update Record
-                
+
                 //Find Location By ID
                 Location location = _context.Locations.Include("Company").Include("ContactInfo").Include("AddressInfo").Where(p => p.id == locationDB.id).FirstOrDefault<Location>();
 
@@ -261,8 +261,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     #region Location
                     locationDB.id = locationBO.ID;
-                    location.Name = locationBO.Name==null?location.Name:locationBO.Name;
-                    location.LocationType = locationBO.LocationType==null? location.LocationType: System.Convert.ToByte(locationBO.LocationType);
+                    location.Name = locationBO.Name == null ? location.Name : locationBO.Name;
+                    location.LocationType = locationBO.LocationType == null ? location.LocationType : System.Convert.ToByte(locationBO.LocationType);
                     location.IsDefault = locationBO.IsDefault;
                     location.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
                     location.UpdateDate = locationBO.UpdateDate;
@@ -381,7 +381,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (locationBO.Company != null)
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID==locationBO.Company.ID)).ToList<Location>();
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID == locationBO.Company.ID)).ToList<Location>();
                     if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -416,7 +416,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
             }
-            
+
             return lstLocations;
         }
         #endregion
@@ -437,6 +437,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstLocations;
         }
         #endregion
+
+
+        #region Get All Locations BY Company & doctor id
+        public override Object GetByCompanyAndDoctorId(int CompanyId, int doctorId)
+        {
+            var user = _context.UserCompanies.Include("Company").Where(p => p.CompanyID == CompanyId
+             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            ).Select(p2 => p2.UserID);
+
+            var locationDB = _context.DoctorLocationSchedules.Include("Company").Where(p => user.Contains(p.DoctorID)
+           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+          ).Select(p2 => p2.Location);
+
+            if (locationDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Location> lstLocations = new List<BO.Location>();
+            foreach (Location item in locationDB)
+            {
+                lstLocations.Add(Convert<BO.Location, Location>(item));
+            }
+            return lstLocations;
+        }
+        #endregion
+
 
         public void Dispose()
         {

@@ -207,5 +207,28 @@ export class LocationsService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
+
+    getLocationsByCompanyDoctorId(companyId: number, doctorId: number): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/Location/getall/' + companyId + '/' + doctorId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: any[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
+
 }
 

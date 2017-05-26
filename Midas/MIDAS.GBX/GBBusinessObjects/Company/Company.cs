@@ -28,6 +28,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         public AddressInfo AddressInfo { get; set; }
         public ContactInfo ContactInfo { get; set; }
+        public CompanyType CompanyType1 { get; set; }
 
         [JsonProperty("location")]
         public List<Location> Locations { get; set; }
