@@ -442,13 +442,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get All Locations BY Company & doctor id
         public override Object GetByCompanyAndDoctorId(int CompanyId, int doctorId)
         {
-            var user = _context.UserCompanies.Include("Company").Where(p => p.CompanyID == CompanyId
-             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-            ).Select(p2 => p2.UserID);
+            var user = _context.UserCompanies.Include("Company").Where(p => p.CompanyID == CompanyId && 
+                                                                            p.UserID==doctorId &&
+                                                                            (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
 
-            var locationDB = _context.DoctorLocationSchedules.Include("Company").Where(p => user.Contains(p.DoctorID)
-           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-          ).Select(p2 => p2.Location);
+            var locationDB = _context.DoctorLocationSchedules.Include("Company").Where(p => user.Contains(p.DoctorID) && 
+                                                                                            (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.Location);
 
             if (locationDB == null)
             {
