@@ -1148,9 +1148,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Select(p => p.Id).FirstOrDefault();
 
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Include("Location")
                                                                         .Where(p => ((p.CaseId.HasValue == true) && (caseId > 0) && (p.CaseId.Value == caseId))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
+
 
             IEnumerable<Location> Locations = lstPatientVisit.Select(p => p.Location).ToList().Distinct();
 
