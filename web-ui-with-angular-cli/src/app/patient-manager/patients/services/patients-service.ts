@@ -236,9 +236,9 @@ export class PatientsService {
     }
 
 
-    assignPatientToAttorney(currentPatientId: Number, attorneyId: Number): Observable<Patient> {
+    assignPatientToAttorney(currentPatientId: Number, caseId: Number, attorneyId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/associatePatientWithAttorneyCompany/' + currentPatientId + '/' + attorneyId, {
+            return this._http.get(this._url + '/Patient/associatePatientWithAttorneyCompany/' + currentPatientId + '/' + caseId + '/' + attorneyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
