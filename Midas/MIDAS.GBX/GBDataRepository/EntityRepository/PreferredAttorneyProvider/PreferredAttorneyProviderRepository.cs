@@ -117,6 +117,88 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region New Conversion
+        public T ConvertPreferredAttorneyProviderSignUp<T, U>(U entity)
+        {
+            PreferredAttorneyProvider preferredAttorneyProviderr = entity as PreferredAttorneyProvider;
+            if (preferredAttorneyProviderr == null)
+                return default(T);
+
+            BO.PreferredAttorneyProviderSignUp PreferredAttorneyProviderSignUpBO = new BO.PreferredAttorneyProviderSignUp();
+
+            PreferredAttorneyProviderSignUpBO.ID = preferredAttorneyProviderr.Id;
+            PreferredAttorneyProviderSignUpBO.PrefAttorneyProviderId = preferredAttorneyProviderr.PrefAttorneyProviderId;
+            PreferredAttorneyProviderSignUpBO.CompanyId = preferredAttorneyProviderr.CompanyId;
+            PreferredAttorneyProviderSignUpBO.IsCreated = preferredAttorneyProviderr.IsCreated;
+
+            PreferredAttorneyProviderSignUpBO.Signup = new BO.Signup();
+            if (preferredAttorneyProviderr.Company1 != null)
+            {
+                if (preferredAttorneyProviderr.Company1.IsDeleted.HasValue == false || (preferredAttorneyProviderr.Company1.IsDeleted.HasValue == true && preferredAttorneyProviderr.Company1.IsDeleted.Value == false))
+                {
+                    BO.Company boCompany = new BO.Company();
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        boCompany = sr.Convert<BO.Company, Company>(preferredAttorneyProviderr.Company1);
+
+                        PreferredAttorneyProviderSignUpBO.Signup.company = boCompany;
+                    }
+                }
+            }
+
+            if (preferredAttorneyProviderr.Company1.ContactInfo != null)
+            {
+
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.Name = preferredAttorneyProviderr.Company1.ContactInfo.Name;
+                boContactInfo.CellPhone = preferredAttorneyProviderr.Company1.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = preferredAttorneyProviderr.Company1.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = preferredAttorneyProviderr.Company1.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = preferredAttorneyProviderr.Company1.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = preferredAttorneyProviderr.Company1.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = preferredAttorneyProviderr.Company1.ContactInfo.CreateByUserID;
+                boContactInfo.ID = preferredAttorneyProviderr.Company1.ContactInfo.id;
+                boContactInfo.OfficeExtension = preferredAttorneyProviderr.Company1.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = preferredAttorneyProviderr.Company1.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = preferredAttorneyProviderr.Company1.ContactInfo.PreferredCommunication;
+
+                PreferredAttorneyProviderSignUpBO.Signup.contactInfo = boContactInfo;
+
+            }
+
+            if (preferredAttorneyProviderr.Company1.UserCompanies != null)
+            {
+                BO.User lstUser = new BO.User();
+                if (preferredAttorneyProviderr.Company1.UserCompanies.Count >= 1)
+                {
+                    var item = preferredAttorneyProviderr.Company1.UserCompanies.FirstOrDefault();
+
+                    if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    {
+                        var userDB = _context.Users.Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
+
+                        using (UserRepository sr = new UserRepository(_context))
+                        {
+                            BO.User BOUser = new BO.User();
+                            BOUser = sr.Convert<BO.User, User>(userDB);
+                            BOUser.UserCompanies = null;
+                            BOUser.ContactInfo = null;
+                            BOUser.AddressInfo = null;
+                            BOUser.Roles = null;
+
+                            lstUser = BOUser;
+                        }
+                    }
+                }
+
+                PreferredAttorneyProviderSignUpBO.Signup.user = lstUser;
+            }
+
+            return (T)(object)PreferredAttorneyProviderSignUpBO;
+        }
+        #endregion
+
         #region Save Data
         public override object Save<T>(T entity)
         {
@@ -408,29 +490,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-
-        #region Get Attorney Provider By  Id
+        #region Get By  Id
         public override object Get(int Id)
          {
-            var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company")
-                                                                      .Include("Company1")
+            var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company1.UserCompanies.User")
                                                                       .Where(p => p.Id == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                       .FirstOrDefault();
+                                                                      .FirstOrDefault();
 
-            BO.PreferredAttorneyProvider provider = new BO.PreferredAttorneyProvider();
+            BO.PreferredAttorneyProviderSignUp boProviderSignUp = new BO.PreferredAttorneyProviderSignUp();
 
             if (AttorenyProvider == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this preferred Attorney Provider.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
-                provider = Convert<BO.PreferredAttorneyProvider, PreferredAttorneyProvider>(AttorenyProvider);
+                boProviderSignUp = ConvertPreferredAttorneyProviderSignUp<BO.PreferredAttorneyProviderSignUp, PreferredAttorneyProvider>(AttorenyProvider);
             }
 
-            return provider;
+            return boProviderSignUp;
         }
-        #endregion 
+        #endregion
 
         #region Delete
         public override object Delete(int id)

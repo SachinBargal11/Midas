@@ -93,20 +93,6 @@ export class AppHeaderComponent implements OnInit {
                 this.doctorRoleFlag = false;
             }
         }
-
-        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
-            .subscribe((userSetting) => {
-                this.userSetting = userSetting;
-                this.isPublic = userSetting.isPublic;
-                this.isCalendarPublic = userSetting.isCalendarPublic;
-                this.isSearchable = userSetting.isSearchable;
-                this.isTimeSlot = userSetting.SlotDuration;
-
-            },
-            (error) => { },
-            () => {
-            });
-
     }
     onLeftBurgerClick() {
         if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {

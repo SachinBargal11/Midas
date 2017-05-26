@@ -1028,7 +1028,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userCompany.CompanyID = AttorneyCompanyId;
             userCompany.UserID = PatientId;
-            userCompany.IsAccepted = false;
+            userCompany.IsAccepted = true;
 
             if (add_UserCompany)
             {
