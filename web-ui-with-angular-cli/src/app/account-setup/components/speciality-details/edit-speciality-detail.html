@@ -54,7 +54,7 @@
                     <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [ngModel]="specialityDetail.include1500"></p-radioButton>-->
                 </div>
             </div>
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Max Reval 
                             <span class="color-red">*</span>
                         </label>
@@ -67,7 +67,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!--<div class="col-lg-4">
                 <div class="form-group" [class.error]="!specialityDetailFormControls.mandatoryProcCode.valid">
                     <p-checkbox name="mandatoryProcCode" label="Show Procedure Codes for Speciality" formControlName="mandatoryProcCode" [(ngModel)]="mandatoryProcCode"
@@ -172,6 +172,25 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Max Reval 
+                                      <span class="color-red">*</span>
+                        </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.maxReval.touched && !specialityDetailFormControls.maxReval.valid">
+                                    <input formControlName="maxReval" [ngModel]="specialityDetail.maxReval" [class.error]="!specialityDetailFormControls.maxReval.valid"
+                                        class="form-control" />
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.maxReval.touched && !specialityDetailFormControls.maxReval.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.maxReval.hasError('required')">Max Reval is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                         
                         </div>
                         <div class="row">
                             <div class="col-lg-3">

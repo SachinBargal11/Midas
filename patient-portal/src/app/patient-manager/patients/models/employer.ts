@@ -8,7 +8,7 @@ const EmployerRecord = Record({
     patientId: 0,
     jobTitle: '',
     empName: '',
-    isCurrentEmp: 1,
+    isCurrentEmp: false,
     createByUserID: 0,
     createDate: moment(),
     address: null,
@@ -21,7 +21,7 @@ export class Employer extends EmployerRecord {
     patientId: number;
     jobTitle: string;
     empName: string;
-    isCurrentEmp: number;
+    isCurrentEmp: boolean;
     createByUserID: number;
     createDate: moment.Moment;
     address: Address;

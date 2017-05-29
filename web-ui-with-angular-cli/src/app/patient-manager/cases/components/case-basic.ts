@@ -42,7 +42,7 @@ export class CaseBasicComponent implements OnInit {
     patientId: number;
     patientName: string;
     // transportation: any;
-
+   attorneyId: number = 0;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -142,8 +142,8 @@ export class CaseBasicComponent implements OnInit {
 
 
     attorneyChange(event) {
-        let attorneyId = parseInt(event.target.value);
-        if (attorneyId > 0) {
+        this.attorneyId = parseInt(event.target.value);
+        if (this.attorneyId > 0) {
             this.caseform.get("caseSource").disable();
         }
         else {
@@ -184,9 +184,41 @@ export class CaseBasicComponent implements OnInit {
         }));
 
         this._progressBarService.show();
-        result = this._casesStore.updateCase(caseDetail);
+        result = this._casesStore.updateCase(caseDetail);      
         result.subscribe(
             (response) => {
+                if (this.attorneyId > 0) {
+                    let result1 = this._patientStore.assignPatientToAttorney(this.patientId, this.caseId, this.attorneyId);
+                    result1.subscribe(
+                        (response) => {
+                            let notification = new Notification({
+                                'title': 'Case updated successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+                            });
+                            this._notificationsStore.addNotification(notification);
+                            this._router.navigate(['../'], { relativeTo: this._route });
+                        },
+                        (error) => {
+                            let errString = 'Unable to update case.';
+                            let notification = new Notification({
+                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                'type': 'ERROR',
+                                'createdAt': moment()
+                            });
+                            this.isSaveProgress = false;
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            this._progressBarService.hide();
+                        },
+                        () => {
+                            this.isSaveProgress = false;
+                            this._progressBarService.hide();
+                        });
+                }
+
+
+
                 let notification = new Notification({
                     'title': 'Case updated successfully!',
                     'type': 'SUCCESS',
