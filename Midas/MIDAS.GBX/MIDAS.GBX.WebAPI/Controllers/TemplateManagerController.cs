@@ -36,7 +36,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             
         [HttpPost]
         [Route("generatetemplate/{templateName}")]
-        public void GenerateTemplate(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
+        public string GenerateTemplate(string templateName, [FromBody]Dictionary<string, string> templateReplaceText)
         {
             try
             {
@@ -57,10 +57,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
                     HttpContext.Current.Response.End();
 
                     if (File.Exists(tempPath.ToString())) File.Delete(tempPath.ToString());
+                    return tempPath.ToString();
                 }
             }
             catch (Exception error)
-            { }                        
+            {
+                return error.Message;
+            }
+            return "S";
         }
 
         [HttpPost]
