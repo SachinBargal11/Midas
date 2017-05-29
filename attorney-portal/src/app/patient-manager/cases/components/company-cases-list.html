@@ -66,8 +66,8 @@
             <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)">
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
-            <div *ngIf="case.isSessionCompany(sessionStore.session.currentCompany.id) ">
-                <a title="Edit" routerLink="{{case.patient.user.id}}/{{case.id}}/basic"></a>
+            <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
+                <a title="Edit" routerLink="{{case.patientId}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
         </ng-template>
     </p-column>
@@ -77,10 +77,11 @@
     [contentStyle]="{'overflow':'auto', 'max-height':'600px'}">
 
     <div *ngIf="selectedCaseId">
-       <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
-            [signedDocumentUploadUrl]="signedDocumentUploadUrl" (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)"
-            (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
-            (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)"></app-document-upload>
+        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
+            [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+            (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
+            [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true"
+            (download)="downloadTemplate($event)"></app-document-upload>
     </div>
 </p-dialog>
 
