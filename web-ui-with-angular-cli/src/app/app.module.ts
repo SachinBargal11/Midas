@@ -64,6 +64,9 @@ import { UserSettingService } from './commons/services/user-setting-service';
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
+// import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+// import { MomentModule } from 'angular2-moment'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +81,9 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     CommonsModule,
     AppRoutingModule,
     DashboardModule,
-    SimpleNotificationsModule
+    SimpleNotificationsModule,
+    // MomentModule,
+    // NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

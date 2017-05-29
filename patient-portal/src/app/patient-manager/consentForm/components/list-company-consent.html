@@ -13,12 +13,13 @@
     <header> List</header>
     <!--<p-column selectionMode="multiple"></p-column>-->
     <p-column field="name" header="Company Name"></p-column>
+    <p-column field="companyTypeLabel" header="Company Type"></p-column>
     <p-column header="Case Id">
         <ng-template pTemplate="body">
             {{caseId}}
         </ng-template>
     </p-column>
-    <p-column header="Consent Received">
+    <p-column header="Consent Given">
         <ng-template let-company="rowData" pTemplate="body">
             <div *ngFor="let case of cases">
                 <a *ngIf="case.isConsentReceived(company.id)" (click)="downloadConsent(case.caseCompanyConsentDocument, company.id)">

@@ -23,7 +23,7 @@
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
-    <p-column header="Consent Received">
+    <p-column header="Consent Given">
         <ng-template let-case="rowData" pTemplate="body">
             <a *ngIf="case.isConsentReceived(CompanyId)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
                 <u>Yes</u>

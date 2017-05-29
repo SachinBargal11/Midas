@@ -46,6 +46,7 @@ export class PatientEmployerComponent implements OnInit {
     employerformControls;
     isSaveProgress = false;
     isSaveEmployerProgress = false;
+    isCurrentEmp: any;
 
 
     constructor(
@@ -55,7 +56,7 @@ export class PatientEmployerComponent implements OnInit {
         private _statesStore: StatesStore,
         private _employerStore: EmployerStore,
         private _patientsStore: PatientsStore,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         public sessionStore: SessionStore,
         private _elRef: ElementRef,
@@ -66,15 +67,16 @@ export class PatientEmployerComponent implements OnInit {
     ) {
         // this._route.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
-            this.patientId = this.sessionStore.session.user.id;
-            this.progressBarService.show();
-            let result = this._employerStore.getCurrentEmployer(this.patientId);
-            result.subscribe(
-                (employer: Employer) => {
-                    this.employer = employer;
-                    this.currentEmployer = this.employer;
-                    this.title = this.currentEmployer.id ? 'Edit Employer' : 'Add Employer';
-                    if (this.currentEmployer.id) {
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
+        let result = this._employerStore.getCurrentEmployer(this.patientId);
+        result.subscribe(
+            (employer: Employer) => {
+                this.employer = employer;
+                this.currentEmployer = this.employer;
+                this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
+                this.title = this.currentEmployer.id ? 'Edit Employer' : 'Add Employer';
+                if (this.currentEmployer.id) {
                     this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
                     //     if (!this.currentEmployer.address) {
@@ -87,22 +89,22 @@ export class PatientEmployerComponent implements OnInit {
                     //         contact: new Contact({})
                     //     });
                     //     }
-                    } else {
-                        this.currentEmployer = new Employer({
-                            address: new Address({}),
-                            contact: new Contact({})
-                        });
+                } else {
+                    this.currentEmployer = new Employer({
+                        address: new Address({}),
+                        contact: new Contact({})
+                    });
 
-                    }
+                }
 
-                },
-                (error) => {
-                    this._router.navigate(['/patient-manager/profile/viewall']);
-                    this.progressBarService.hide();
-                },
-                () => {
-                    this.progressBarService.hide();
-                });
+            },
+            (error) => {
+                this._router.navigate(['/patient-manager/profile/viewall']);
+                this.progressBarService.hide();
+            },
+            () => {
+                this.progressBarService.hide();
+            });
         // });
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
