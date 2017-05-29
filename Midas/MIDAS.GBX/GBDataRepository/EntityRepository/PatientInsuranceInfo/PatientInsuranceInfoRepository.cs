@@ -129,13 +129,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
-            if (InsuranceInfos.InsuranceMaster.IsDeleted.HasValue == false || (InsuranceInfos.InsuranceMaster.IsDeleted.HasValue == true && InsuranceInfos.InsuranceMaster.IsDeleted.Value == false))
+
+            if (InsuranceInfos.InsuranceMaster != null)
             {
-                BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
-                using (InsuranceMasterRepository cmp = new InsuranceMasterRepository(_context))
+                if (InsuranceInfos.InsuranceMaster.IsDeleted.HasValue == false || (InsuranceInfos.InsuranceMaster.IsDeleted.HasValue == true && InsuranceInfos.InsuranceMaster.IsDeleted.Value == false))
                 {
-                    boInsuranceMaster = cmp.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(InsuranceInfos.InsuranceMaster);
-                    insuranceBO.InsuranceMaster = boInsuranceMaster;
+                    BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
+                    using (InsuranceMasterRepository cmp = new InsuranceMasterRepository(_context))
+                    {
+                        boInsuranceMaster = cmp.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(InsuranceInfos.InsuranceMaster);
+                        insuranceBO.InsuranceMaster = boInsuranceMaster;
+                    }
                 }
             }
 
