@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
             <div class="col-lg-4">
                 <label class="form-label"> Case Source
                             </label>
@@ -152,7 +152,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <button *ngIf="caseDetail.caseStatusId === 1" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
         </button>
