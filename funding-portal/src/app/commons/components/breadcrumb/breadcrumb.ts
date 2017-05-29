@@ -13,7 +13,7 @@ interface IBreadcrumb {
     selector: 'breadcrumb',
     template: `
     <ol class="breadcrumb">
-      <li><a routerLink="" class="">Home</a></li>
+      <li><a routerLink="dashboard/funding-receivable" class="">Home</a></li>
       <!--<li><a (click)="home()" class="">Home</a></li>
       <li *ngIf="!doctorRole"><a routerLink="" class="">Home</a></li>
       <li *ngIf="doctorRole"><a [routerLink]="['/doctor-manager/doctor-appointment']" class="">Home</a></li>
