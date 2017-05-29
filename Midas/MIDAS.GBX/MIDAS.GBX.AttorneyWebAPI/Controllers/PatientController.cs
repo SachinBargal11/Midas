@@ -171,6 +171,15 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandlerPatient2.Delete(Request, id);
         }
 
+
+        [HttpGet]
+        [Route("associatePatientWithAttorneyCompany/{PatientId}/{CaseId}/{AttorneyCompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
+        {
+            return requestHandlerPatient2.AssociatePatientWithAttorneyCompany(Request, PatientId, CaseId, AttorneyCompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
