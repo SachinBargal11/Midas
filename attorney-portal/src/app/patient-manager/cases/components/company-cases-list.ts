@@ -46,7 +46,7 @@ export class CompanyCasesComponent implements OnInit {
     signedDocumentUploadUrl: string;
     signedDocumentPostRequestData: any;
     isElectronicSignatureOn: boolean = false;
-     
+
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -56,7 +56,7 @@ export class CompanyCasesComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
-          private _consentStore: ConsentStore,
+        private _consentStore: ConsentStore,
 
     ) {
         this.companyId = this.sessionStore.session.currentCompany.id;
@@ -335,7 +335,7 @@ export class CompanyCasesComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.addConsentDialogVisible = false;
-
+                this.loadCases();
             }
 
         });
@@ -363,7 +363,7 @@ export class CompanyCasesComponent implements OnInit {
             });
             this._notificationsStore.addNotification(notification);
             this.addConsentDialogVisible = false;
-
+            this.loadCases();
         }
 
     }

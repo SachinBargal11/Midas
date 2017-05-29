@@ -67,7 +67,7 @@
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
             <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
-                <a title="Edit" routerLink="{{case.patientId}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+                <a title="Edit" routerLink="{{case.patient.user.id}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
         </ng-template>
     </p-column>
