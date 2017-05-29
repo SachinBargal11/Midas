@@ -814,6 +814,18 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
-
+        public HttpResponseMessage GetVisitsByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetVisitsByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
     }
 }

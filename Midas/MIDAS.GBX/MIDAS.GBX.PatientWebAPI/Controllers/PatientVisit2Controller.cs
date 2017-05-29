@@ -155,6 +155,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             return requestHandler.GetLocationForPatientId(Request, patientId);
         }
+        
+        [HttpGet]
+        [Route("getVisitsByPatientId/{PatientId}")]
+        public HttpResponseMessage GetVisitsByPatientId(int PatientId)
+        {
+            return requestHandler.GetVisitsByPatientId(Request, PatientId);
+        }
 
         [HttpGet]
         [Route("delete/{id}")]

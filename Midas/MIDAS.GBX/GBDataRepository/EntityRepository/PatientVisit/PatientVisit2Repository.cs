@@ -1318,6 +1318,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get VisitsBy PatientId
+        public override object GetVisitsByPatientId(int PatientId)
+        {
+            var acc = _context.PatientVisit2.Include("CalendarEvent")
+                                            .Where(p => p.PatientId == PatientId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .ToList<PatientVisit2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstpatientvisit = new List<BO.PatientVisit2>();
+                foreach (PatientVisit2 item in acc)
+                {
+                    lstpatientvisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(item));
+                }
+                return lstpatientvisit;
+            }
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
