@@ -179,7 +179,7 @@ export class ProcedureCodeComponent implements OnInit {
                     });
                     this._notificationsStore.addNotification(notification);
                     // this._notificationsService.success('Welcome!', 'Procedure code amount updated successfully!.');
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+              
                     this.selProcedureCodes = [];
                     this.selectedProcedures = [];
                     this.loadProceduresForSpeciality(this.selectedSpecialityId);

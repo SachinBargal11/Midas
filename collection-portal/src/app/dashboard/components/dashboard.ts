@@ -21,21 +21,6 @@ export class DashboardComponent {
     ) {
 
     }
-    makeRandomDataProvider() {
-        var dataProvider = [];
-
-        // Generate random data
-        for (var year = 1950; year <= 2005; ++year) {
-            dataProvider.push({
-                year: "" + year,
-                Funded: Math.floor(Math.random() * 100) - 50,
-                Recovered: Math.floor(Math.random() * 100) - 50,
-                WriteOff: Math.floor(Math.random() * 100) - 50
-            });
-        }
-
-        return dataProvider;
-    }
     ngOnInit() {
         this.chart = this.AmCharts.makeChart("chartdiv", {
             "type": "serial",
@@ -57,7 +42,7 @@ export class DashboardComponent {
                     "lineColor": "#d1655d",
                     "negativeLineColor": "#637bb6",
                     "lineThickness": 2,
-                    "type": "smoothedLine",
+                    "type": "line",
                     "valueField": "Funded",
 
                     "title": "Funded",
@@ -112,8 +97,7 @@ export class DashboardComponent {
                 "graphLineAlpha": 0.2,
                 "graphLineColor": "#c2c2c2",
                 "selectedGraphLineColor": "#888888",
-                "selectedGraphLineAlpha": 1,
-                "dragIcon": "../../../assets/theme/img/dragIconRoundBig.png"
+                "selectedGraphLineAlpha": 1
             },
             "chartCursor": {
                 "cursorAlpha": 0,
@@ -166,30 +150,6 @@ export class DashboardComponent {
                     "fillAlphas": 1,
                     "lineColor": "Orange",
                     "balloonText": "Funded:[[Funded]]$ Amt"
-                },
-                // GRAPH -- Recovered Amount
-                {
-                    "id": "g2",
-                    "title": "Recovered",
-                    "labelText": "[[value]]",
-                    "valueField": "Recovered",
-                    "type": "column",
-                    "lineAlpha": 0,
-                    "fillAlphas": 1,
-                    "lineColor": "cyan",
-                    "balloonText": "Recovered: [[Recovered]]$ Amt"
-                },
-                // GRAPH -- Written Off Amount
-                {
-                    "id": "g3",
-                    "title": "WriteOff",
-                    "labelText": "[[value]]",
-                    "valueField": "WriteOff",
-                    "type": "column",
-                    "lineAlpha": 0,
-                    "fillAlphas": 1,
-                    "lineColor": "lightblue",
-                    "balloonText": "Write-off: [[WriteOff]]$ Amt"
                 }],
             "legend": {
                 "borderAlpha": 0.2,
@@ -245,50 +205,63 @@ export class DashboardComponent {
         clearInterval(this.timer);
         this.AmCharts.destroyChart(this.chart);
     }
+    getChartData() {
+        var chartData1 = [
+            {
+                "year": "2011",
+                "SumOfBalance": 8288636.33
+            },
+            {
+                "year": "2012",
+                "SumOfBalance": 7905612.00
+            }
+        ];
+        return chartData1;
+    }
 
     getMainChartData() {
         var chartData = [
             {
                 "year": "2011",
-                "Funded": 100,
-                "Recovered": 90,
-                "WriteOff": 10
+                "Funded": 654132.6,
+                // "Recovered": 90,
+                // "WriteOff": 10
             },
             {
                 "year": "2012",
-                "Funded": 150,
-                "Recovered": 80,
-                "WriteOff": 70
+                "Funded": 1103360.85,
+                // "Recovered": 80,
+                // "WriteOff": 70
             },
             {
                 "year": "2013",
-                "Funded": 90,
-                "Recovered": 0,
-                "WriteOff": 90
+                "Funded": 161167.60,
+                // "Recovered": 0,
+                // "WriteOff": 90
             },
             {
                 "year": "2014",
-                "Funded": 250,
-                "Recovered": 200,
-                "WriteOff": 50
+                "Funded": 1066342.64,
+                // "Recovered": 200,
+                // "WriteOff": 50
             },
             {
                 "year": "2015",
-                "Funded": 205,
-                "Recovered": 100,
-                "WriteOff": 5
+                "Funded": 577643.56,
+                // "Recovered": 100,
+                // "WriteOff": 5
             },
             {
                 "year": "2016",
-                "Funded": 100,
-                "Recovered": 90,
-                "WriteOff": 10
+                "Funded": 1360761.20,
+                // "Recovered": 90,
+                // "WriteOff": 10
             },
             {
                 "year": "2017",
-                "Funded": 320,
-                "Recovered": 170,
-                "WriteOff": 50
+                "Funded": 1229716.53,
+                // "Recovered": 170,
+                // "WriteOff": 50
             }
         ];
         return chartData;
