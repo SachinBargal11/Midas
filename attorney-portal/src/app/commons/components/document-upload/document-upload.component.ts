@@ -13,6 +13,8 @@ import { ConsentService } from '../../../patient-manager/cases/services/consent-
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { DocumentType } from '../../../account-setup/models/document-type';
 
 @Component({
   selector: 'app-document-upload',
@@ -32,6 +34,10 @@ export class DocumentUploadComponent implements OnInit {
   scannedFileName: string = '';
   digitalForm: FormGroup;
   cosentFormUrl: SafeResourceUrl;
+  // currentId: number = 0;
+  documentTypes: DocumentType[];
+  companyId: number = this._sessionStore.session.currentCompany.id;
+  documentType: string;
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -42,11 +48,17 @@ export class DocumentUploadComponent implements OnInit {
   @Input() url: string;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
-
+  @Input() currentId: number;
+  @Input() objectId: number;
+  @Input() isConsentDocumentOn: boolean = false;
 
 
   @ViewChildren(SignatureFieldComponent) public sigs: QueryList<SignatureFieldComponent>;
   @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
+
+  @Input() isdownloadTemplate: boolean = false;
+  @Output() download: EventEmitter<Document> = new EventEmitter();
+  @Input() inputCaseId: number;
 
   constructor(
     private _fb: FormBuilder,
@@ -55,7 +67,9 @@ export class DocumentUploadComponent implements OnInit {
     private _notificationsService: NotificationsService,
     private _documentUploadService: DocumentUploadService,
     private _progressBarService: ProgressBarService,
-    private _consentService: ConsentService
+    private _consentService: ConsentService,
+    private _sessionStore: SessionStore,
+
   ) {
     this._updateScannerContainerId();
     this.digitalForm = this._fb.group({
@@ -65,6 +79,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
       this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
     }
@@ -128,6 +143,20 @@ export class DocumentUploadComponent implements OnInit {
 
   private _updateScannerContainerId() {
     this.scannerContainerId = `scanner_${moment().valueOf()}`;
+  }
+
+  onBeforeSendEvent(event) {
+    let param: string;
+    if (this.currentId == 2) {
+      if (this.isConsentDocumentOn) {
+        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else {
+        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      }
+    } else if (this.currentId == 3) {
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+    }
+    event.xhr.setRequestHeader("inputjson", param);
   }
 
   onFilesUploadComplete(event) {
@@ -201,6 +230,27 @@ export class DocumentUploadComponent implements OnInit {
     }
   }
 
+  selectDocument(event) {
+    let documentType = event.target.value;
+    this.documentType = documentType;
+  }
+
+  loadDocumentForObjectType(companyId: number, currentId: number) {
+    // this._progressBarService.show();
+    let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
+      .subscribe(documentType => {
+        this.documentTypes = documentType;
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
+  downloadTemplate() {
+    this.download.emit();
+  }
 }
 export interface TwainSource {
   idx: number;

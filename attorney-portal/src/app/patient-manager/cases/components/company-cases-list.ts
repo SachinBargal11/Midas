@@ -11,7 +11,7 @@ import * as _ from 'underscore';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import { Referral } from '../models/referral';
@@ -19,7 +19,7 @@ import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
 import { Document } from '../../../commons/models/document';
 import { FileUpload, FileUploadModule } from 'primeng/primeng';
-
+import { ConsentStore } from '../../cases/stores/consent-store';
 @Component({
     selector: 'company-cases',
     templateUrl: './company-cases-list.html'
@@ -32,7 +32,7 @@ export class CompanyCasesComponent implements OnInit {
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
-    isDeleteProgress:boolean = false;
+    isDeleteProgress: boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
     addConsentDialogVisible: boolean = false;
@@ -43,7 +43,10 @@ export class CompanyCasesComponent implements OnInit {
     caseId: number;
     companyId: number;
     selectedCaseId: number;
-
+    signedDocumentUploadUrl: string;
+    signedDocumentPostRequestData: any;
+    isElectronicSignatureOn: boolean = false;
+     
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -53,11 +56,14 @@ export class CompanyCasesComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
+          private _consentStore: ConsentStore,
 
     ) {
-        
         this.companyId = this.sessionStore.session.currentCompany.id;
         this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+        this.companyId = this.sessionStore.session.currentCompany.id;
+        this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadCasesCheckingDoctor();
 
@@ -106,7 +112,7 @@ export class CompanyCasesComponent implements OnInit {
     }
 
 
-       consentAvailable(case1: Case) {
+    consentAvailable(case1: Case) {
         if (case1.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
@@ -122,7 +128,7 @@ export class CompanyCasesComponent implements OnInit {
     }
 
 
-        referralAvailable(case1: any) {
+    referralAvailable(case1: any) {
         let referralOutBound;
         let referralInBound;
         let referralInBoundOutBound;
@@ -180,45 +186,45 @@ export class CompanyCasesComponent implements OnInit {
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-            this.selectedCases.forEach(currentCase => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                this._casesStore.deleteCase(currentCase)
-                    .subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Case deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadCases();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedCases = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete case';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedCases = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedCases.forEach(currentCase => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        this._casesStore.deleteCase(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Case deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadCases();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedCases = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete case';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedCases = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
+                }
             });
-            }
-             });
         } else {
             let notification = new Notification({
                 'title': 'select case to delete',
@@ -229,28 +235,14 @@ export class CompanyCasesComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
-  showDialog(currentCaseId: number){
-          this.addConsentDialogVisible = true;
-          this.selectedCaseId = currentCaseId;
-    }
-    
-    documentUploadComplete(documents: Document[]) {
-        _.forEach(documents, (currentDocument: Document) => {
-            if (currentDocument.status == 'Failed') {
-                let notification = new Notification({
-                    'title': currentDocument.message + '  ' + currentDocument.documentName,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'DuplicateFileName');
-            }
-        });
-        this.getDocuments();
-    }
-
-    documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    showDialog(currentCaseId) {
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+        this.signedDocumentPostRequestData = {
+            companyId: this.companyId,
+            caseId: this.selectedCaseId
+        };
     }
 
     getDocuments() {
@@ -321,5 +313,95 @@ export class CompanyCasesComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
+    }
+
+
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+            }
+            else {
+                let notification = new Notification({
+                    'title': 'Consent Uploaded Successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this.addConsentDialogVisible = false;
+
+            }
+
+        });
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    signedDocumentUploadComplete(document: Document) {
+        if (document.status == 'Failed') {
+            let notification = new Notification({
+                'title': document.message + '  ' + document.documentName,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Consent Uploaded Successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this.addConsentDialogVisible = false;
+
+        }
+
+    }
+
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    }
+
+    downloadTemplate(caseId) {
+        this._progressBarService.show();
+        this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
     }
 }

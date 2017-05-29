@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {Patient} from '../models/patient';
-import {PatientsService} from '../services/patients-service';
-import {List} from 'immutable';
-import {BehaviorSubject} from 'rxjs/Rx';
-import {SessionStore} from '../../../commons/stores/session-store';
+import { Patient } from '../models/patient';
+import { PatientsService } from '../services/patients-service';
+import { List } from 'immutable';
+import { BehaviorSubject } from 'rxjs/Rx';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Injectable()
 export class PatientsStore {
@@ -65,8 +65,8 @@ export class PatientsStore {
         return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
 
-        //
-     getPatientsWithNoCase(): Observable<Patient[]> {
+    //
+    getPatientsWithNoCase(): Observable<Patient[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.getPatientsWithNoCase().subscribe((patients: Patient[]) => {
                 resolve(patients);
@@ -194,5 +194,16 @@ export class PatientsStore {
         this._selectedPatients.next(selectedPatients.delete(index));
     }
 
+    assignPatientToMP(id: number, caseId: number, providerId: number): Observable<Patient> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.assignPatientToMP(id, caseId, providerId).subscribe((patient: Patient) => {
+                // this._attorneyMaster.next(List(allattorney));
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.fromPromise(promise);
+    }
 
 }

@@ -209,4 +209,9 @@ export class CasesListComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
+
+     showDialog(currentCaseId: number) {
+        // this.addConsentDialogVisible = true;
+        // this.selectedCaseId = currentCaseId;
+    }
 }

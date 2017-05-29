@@ -41,6 +41,7 @@ export class AddCaseComponent implements OnInit {
     patientsWithoutCase: Patient[];
     allProviders: Account[];
     currentProviderId: number = 0;
+    providerId: number = 0;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -92,8 +93,7 @@ export class AddCaseComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
             providerId: [''],
-            // caseStatus: [''],
-            //transportation: ['0'],
+            caseSource: ['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -121,6 +121,27 @@ export class AddCaseComponent implements OnInit {
         // this.loadPatients();
         this.loadPatientsWithoutCase();
     }
+
+    providerChange(event) {
+        this.providerId = parseInt(event.target.value);
+        if (this.providerId > 0) {
+            this.caseform.get("caseSource").disable();
+        }
+        else {
+            this.caseform.get("caseSource").enable();
+        }
+    }
+
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        if (CaseSource != "") {
+            this.caseform.get("providerId").disable();
+        }
+        else {
+            this.caseform.get("providerId").enable();
+        }
+    }
+
 
     selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
@@ -185,6 +206,37 @@ export class AddCaseComponent implements OnInit {
         result = this._casesStore.addCase(caseDetail);
         result.subscribe(
             (response) => {
+                if (this.providerId > 0) {
+                    let result1 = this._patientsStore.assignPatientToMP((this.patientId) ? this.patientId : parseInt(this.idPatient), response.id, this.providerId);
+                    result1.subscribe(
+                        (response) => {
+                            let notification = new Notification({
+                                'title': 'Case added successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+                            });
+                            this._notificationsStore.addNotification(notification);
+                            this._router.navigate(['../'], { relativeTo: this._route });
+                        },
+                        (error) => {
+                            let errString = 'Unable to add case.';
+                            let notification = new Notification({
+                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                'type': 'ERROR',
+                                'createdAt': moment()
+                            });
+                            this.isSaveProgress = false;
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            this._progressBarService.hide();
+                        },
+                        () => {
+                            this.isSaveProgress = false;
+                            this._progressBarService.hide();
+                        });
+                }
+
+
                 let notification = new Notification({
                     'title': 'Case added successfully!',
                     'type': 'SUCCESS',

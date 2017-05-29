@@ -90,7 +90,7 @@ export class Case extends CaseRecord {
 
         }
     }
-    isConsentReceived(companyId): boolean {
+    isConsentReceived(companyId): boolean {      
         let isConsentReceived: boolean = false;
         _.forEach(this.companyCaseConsentApproval, (currentConsent: Consent) => {
             if (currentConsent.companyId === companyId) {
