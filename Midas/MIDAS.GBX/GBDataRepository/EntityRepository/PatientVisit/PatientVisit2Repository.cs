@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
@@ -11,6 +9,7 @@ using Twilio;
 using Twilio.Types;
 using Twilio.Rest.Api.V2010.Account;
 using System.Configuration;
+using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -614,18 +613,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     try
                     {
                         if (sendNotification)
-                        {                            
-                            string accountSid = ConfigurationManager.AppSettings.Get("TWILIO_ACCOUNT_ID");      //-- Account SID from twilio.com/console : AC48ba9355b0bae1234caa9e29dc73b407                            
-                            string authToken = ConfigurationManager.AppSettings.Get("TWILIO_AUTH_TOKEN");       //-- bAuth Token from twilio.com/console : 74b9f9f1c60c200d28b8c5b22968e65f
-                            TwilioClient.Init(accountSid, authToken);
-                            var to = new PhoneNumber(dictionary[patientUserName]);
-                            var message = MessageResource.Create(
-                                to,
-                                from: new PhoneNumber(ConfigurationManager.AppSettings.Get("TWILIO_FROM_PHN")), //-- +14252150865
-                                body: "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault()
-                                );
+                        {
+                            //string accountSid = ConfigurationManager.AppSettings.Get("TWILIO_ACCOUNT_ID");      //-- Account SID from twilio.com/console : AC48ba9355b0bae1234caa9e29dc73b407                            
+                            //string authToken = ConfigurationManager.AppSettings.Get("TWILIO_AUTH_TOKEN");       //-- bAuth Token from twilio.com/console : 74b9f9f1c60c200d28b8c5b22968e65f
+                            //TwilioClient.Init(accountSid, authToken);
+                            //var to = new PhoneNumber(dictionary[patientUserName]);
+                            //var message = MessageResource.Create(
+                            //    to,
+                            //    from: new PhoneNumber(ConfigurationManager.AppSettings.Get("TWILIO_FROM_PHN")), //-- +14252150865
+                            //    body: "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault()
+                            //    );
 
-                            string msgid = message.Sid;
+                            string to =dictionary[patientUserName];
+                            string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+
+                            string msgid = SMSGateway.SendSMS(to, body);
                         }
                     }
                     catch (Exception) { }
@@ -839,6 +841,111 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 dbContextTransaction.Commit();
+
+                int preferredCommunicationType = 3;
+
+                try
+                {
+                    //var UserName = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.UserName).FirstOrDefault();
+                    ContactInfo contact = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
+
+                    if (preferredCommunicationType == 1)
+                    {
+                        if (contact.EmailAddress != null)
+                        {
+                            #region Send Email
+
+                            var userBO = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                            if (userBO != null)
+                            {
+                                var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreated".ToUpper()).FirstOrDefault();
+                                if (mailTemplateDB == null)
+                                {
+                                    return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                }
+                                else
+                                {
+                                    string msg = mailTemplateDB.EmailBody;
+                                    string subject = mailTemplateDB.EmailSubject;
+
+                                    string message = string.Format(msg, userBO.FirstName, PatientVisit2BO.ID);
+
+                                    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                                    objEmail.SendMail();
+                                }
+                            }
+
+                            #endregion
+                        }
+                    }
+                    if (preferredCommunicationType == 2)
+                    {
+                        if (contact.CellPhone != null)
+                        {
+                            #region send SMS notification 
+                            try
+                            {
+                                string to = dictionary[patientUserName];
+                                string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+
+                                string msgid = SMSGateway.SendSMS(to, body);
+                            }
+                            catch (Exception) { }
+                            #endregion
+                        }
+
+                    }
+                    if (preferredCommunicationType == 3)
+                    {
+                        if (contact.EmailAddress != null)
+                        {
+                            #region Send Email
+
+                            var userBO = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                            if (userBO != null)
+                            {
+                                var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreated".ToUpper()).FirstOrDefault();
+                                if (mailTemplateDB == null)
+                                {
+                                    return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                }
+                                else
+                                {
+                                    string msg = mailTemplateDB.EmailBody;
+                                    string subject = mailTemplateDB.EmailSubject;
+
+                                    string message = string.Format(msg, userBO.FirstName, PatientVisit2DB.Id);
+
+                                    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                                    objEmail.SendMail();
+                                }
+                            }
+
+                            #endregion
+                        }
+                        if (contact.CellPhone != null)
+                        {
+                            #region send SMS notification 
+                            try
+                            {
+                                string to = dictionary[patientUserName];
+                                string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+
+                                string msgid = SMSGateway.SendSMS(to, body);
+                            }
+                            catch (Exception) { }
+                            #endregion
+
+                        }
+
+                    }
+
+                }
+
+                catch (Exception e) { }
+
 
                 if (PatientVisit2DB != null)
                 {
