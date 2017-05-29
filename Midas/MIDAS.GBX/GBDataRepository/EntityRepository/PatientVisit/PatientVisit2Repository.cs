@@ -1141,7 +1141,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (lstPatientVisit == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No visit found for this Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Patient and Location Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
