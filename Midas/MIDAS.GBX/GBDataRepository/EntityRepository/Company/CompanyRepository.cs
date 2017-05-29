@@ -170,6 +170,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
             companyDB.SubscriptionPlanType = System.Convert.ToByte(companyBO.SubsCriptionType);
             companyDB.RegistrationComplete = companyBO.RegistrationComplete;
+            companyDB.BlobStorageTypeId = 1;
             if (companyDB.IsDeleted.HasValue)
                 companyDB.IsDeleted = companyBO.IsDeleted.Value;
             #endregion
