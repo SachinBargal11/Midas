@@ -5,7 +5,7 @@ import { ValidateDoctorSession } from './commons/guards/validate-doctor-session'
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: '/dashboard/charts', pathMatch: 'full' },
     { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
     { path: 'doctor-manager', loadChildren: 'app/doctor-manager/doctor-manager-module#DoctorManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },

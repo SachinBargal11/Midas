@@ -213,12 +213,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             UserCompany UserCompanyDB = new UserCompany();
 
             PreferredAttorneyProvider prefAttProvider = new PreferredAttorneyProvider();
+            bool IsEditMode = false;
+            IsEditMode = (preferredAttorneyProviderBO != null && preferredAttorneyProviderBO.ID > 0) ? true : false;
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                bool IsEditMode = false;
-                IsEditMode = (preferredAttorneyProviderBO != null && preferredAttorneyProviderBO.ID > 0) ? true : false;
-
                 if (companyBO == null || (companyBO != null && companyBO.ID <= 0))
                 {
                     dbContextTransaction.Rollback();
@@ -345,8 +344,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
             }
+            if (IsEditMode == false)
+            {
+                try
+                {
+                    #region Send Email
 
-            try
+                    var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                    var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    if (userBO != null)
+                    {
+                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
+                        if (mailTemplateDB == null)
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else
+                        {
+                            #region Insert Invitation
+                            Invitation invitationDB = new Invitation();
+                            invitationDB.User = userDB;
+
+                            invitationDB_UniqueID = Guid.NewGuid();
+                            invitationDB.UniqueID = invitationDB_UniqueID;
+                            invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+                            invitationDB.CreateDate = DateTime.UtcNow;
+                            invitationDB.CreateByUserID = userDB.id;
+                            _context.Invitations.Add(invitationDB);
+                            _context.SaveChanges();
+                            #endregion
+
+                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                            string msg = mailTemplateDB.EmailBody;
+                            string subject = mailTemplateDB.EmailSubject;
+
+                            string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+
+                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                            objEmail.SendMail();
+                        }
+                    }
+
+                    #endregion
+                }
+                catch (Exception ex) { }
+
+            }
+            else
             {
                 #region Send Email
 
@@ -356,7 +402,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (userBO != null)
                 {
-                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
+                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderUpdated".ToUpper()).FirstOrDefault();
                     if (mailTemplateDB == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -376,11 +422,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         _context.SaveChanges();
                         #endregion
 
-                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                        //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
                         string msg = mailTemplateDB.EmailBody;
                         string subject = mailTemplateDB.EmailSubject;
 
-                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, LoginLink2);
 
                         BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
                         objEmail.SendMail();
@@ -388,9 +435,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 #endregion
-            }
-            catch (Exception ex) { }
 
+            }
             var result = _context.PreferredAttorneyProviders.Include("Company").Include("Company1")
                                                            .Where(p => p.Id == prefAttProvider.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                            .FirstOrDefault();
