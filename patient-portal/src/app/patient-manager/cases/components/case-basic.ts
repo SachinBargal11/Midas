@@ -39,7 +39,7 @@ export class CaseBasicComponent implements OnInit {
     caseId: number;
     patientId: number;
     patientName: string;
-   
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -102,7 +102,7 @@ export class CaseBasicComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
-            transportation: [true, Validators.required],
+            // transportation: [true, Validators.required],
         });
 
         this.caseformControls = this.caseform.controls;
@@ -110,11 +110,11 @@ export class CaseBasicComponent implements OnInit {
 
     ngOnInit() {
         this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations); 
-        this._employerStore.getCurrentEmployer(this.patientId)
-            .subscribe(employer => this.employer = employer);
-        this._attorneyMasterStore.getAttorneyMasters()
-            .subscribe(attorneys => this.attorneys = attorneys);
+            .subscribe(locations => this.locations = locations);
+        // this._employerStore.getCurrentEmployer(this.patientId)
+        //     .subscribe(employer => this.employer = employer);
+        // this._attorneyMasterStore.getAttorneyMasters()
+        //     .subscribe(attorneys => this.attorneys = attorneys);
     }
 
     saveCase() {

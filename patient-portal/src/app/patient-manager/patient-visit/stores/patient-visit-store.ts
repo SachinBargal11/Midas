@@ -233,6 +233,20 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
+    deletePatientAppointment(id: Number): Observable<PatientVisit> {
+        let patientVisits = this._patientVisits.getValue();
+        let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.id === id);
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deletePatientAppointment(id).subscribe((patientVisitDetail: PatientVisit) => {
+                this._patientVisits.next(patientVisits.delete(index));
+                resolve(patientVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
     findPatientVisitByCalendarEventId(calendarEventId: number): PatientVisit {
         let patientVisits = this._patientVisits.getValue();
         let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.calendarEventId === calendarEventId);

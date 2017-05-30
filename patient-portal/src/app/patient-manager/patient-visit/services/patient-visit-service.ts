@@ -358,6 +358,20 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
+    deletePatientAppointment(id:Number): Observable<PatientVisit> {
+
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/delete/' + id)
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
+
     deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/fileupload/delete/' + caseDocument.visitId + '/' + caseDocument.document.documentId, {

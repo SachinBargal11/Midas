@@ -190,11 +190,12 @@
 
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
                             <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
+                            <button type="button" class="btn btn-danger" (click)="deletePatientAppointment()">Cancel Current Appointment </button>
                         </div>
                     </div>
                 </form>
