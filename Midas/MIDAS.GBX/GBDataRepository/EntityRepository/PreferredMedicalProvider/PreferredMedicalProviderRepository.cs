@@ -343,6 +343,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Signup prefMedProviderBO = preferredMedicalProviderBO.Signup;
 
             PreferredMedicalProvider prefMedProvider = new PreferredMedicalProvider();
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            User userDB = new User();
+            UserCompany UserCompanyDB = new UserCompany();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -426,7 +429,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.Companies.Add(prefMedProvider_CompanyDB);
                 _context.SaveChanges();
 
-                User userDB = new User();
+                
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
                 userDB.UserName = userBO.UserName;
@@ -441,8 +444,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.Users.Add(userDB);
                 _context.SaveChanges();
-
-                UserCompany UserCompanyDB = new UserCompany();
+              
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefMedProvider_CompanyDB.id;
                 UserCompanyDB.IsDeleted = false;
@@ -495,10 +497,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
+                        #region Insert Invitation
+                        Invitation invitationDB = new Invitation();
+                        invitationDB.User = userDB;
+
+                       invitationDB_UniqueID = Guid.NewGuid();
+                        invitationDB.UniqueID = invitationDB_UniqueID;
+                        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = userDB.id;
+                        _context.Invitations.Add(invitationDB);
+                        _context.SaveChanges();
+                        #endregion
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                         string msg = mailTemplateDB.EmailBody;
                         string subject = mailTemplateDB.EmailSubject;
 
-                        string message = string.Format(msg, userBO.FirstName, prefMedProvider.Id);
+                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
 
                         BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
                         objEmail.SendMail();
@@ -530,6 +546,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Signup prefMedProviderBO = preferredMedicalProviderBO.Signup;
 
             PreferredMedicalProvider prefMedProvider = new PreferredMedicalProvider();
+
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            User userDB = new User();
+            Company prefMedProvider_CompanyDB = new Company();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -582,7 +602,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.User userBO = prefMedProviderBO.user;
                 BO.Role roleBO = prefMedProviderBO.role;
 
-                Company prefMedProvider_CompanyDB = _context.Companies.Where(p => p.id == prefMedProviderCompanyBO.ID
+                prefMedProvider_CompanyDB = _context.Companies.Where(p => p.id == prefMedProviderCompanyBO.ID
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                       .FirstOrDefault();
 
@@ -623,7 +643,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
 
 
-                User userDB = _context.Users.Where(p => p.id == userBO.ID
+                userDB = _context.Users.Where(p => p.id == userBO.ID
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault();
 
@@ -649,6 +669,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
             }
+
+            try
+            {
+                #region Send Email
+
+                var userId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                //var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (userBO != null)
+                {
+                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefMedicalProviderUpdated".ToUpper()).FirstOrDefault();
+                    if (mailTemplateDB == null)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        #region Insert Invitation
+                        Invitation invitationDB = new Invitation();
+                        invitationDB.User = userDB;
+
+                        invitationDB_UniqueID = Guid.NewGuid();
+                        invitationDB.UniqueID = invitationDB_UniqueID;
+                        invitationDB.CompanyID = prefMedProvider_CompanyDB.id != 0 ? prefMedProvider_CompanyDB.id : 0;
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = userDB.id;
+                        _context.Invitations.Add(invitationDB);
+                        _context.SaveChanges();
+                        #endregion
+
+                        string VerificationLink = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                        string msg = mailTemplateDB.EmailBody;
+                        string subject = mailTemplateDB.EmailSubject;
+
+                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+
+                        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                        objEmail.SendMail();
+                    }
+                }
+
+                #endregion
+            }
+            catch (Exception ex) { }
 
             var result = _context.PreferredMedicalProviders.Include("Company").Include("Company1")
                                                             .Where(p => p.PrefMedProviderId == prefMedProviderBO.company.ID

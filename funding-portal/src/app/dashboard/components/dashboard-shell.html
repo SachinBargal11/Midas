@@ -1,0 +1,32 @@
+<section class="tabs-section">
+	<!--<h3 class="with-border">Details of {{patientName}}</h3>-->
+	<div class="tabs-section-nav">
+		<div class="tbl">
+			<ul class="nav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" routerLink="funding-receivable" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Funding Receivable
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="available-receivable" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Available Receivable
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+			<router-outlet></router-outlet>
+
+		</div>
+	</div>
+	<!--.tab-content-->
+</section>
+<!--.tabs-section-->

@@ -55,6 +55,8 @@ namespace MIDAS.GBX.WebAPI.Providers
                 var res_ = (User)(object)res;
                 identity.AddClaim(new Claim("userName", context.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, res_.FirstName));
+                identity.AddClaim(new Claim(ClaimTypes.Email, res_.UserName));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, res_.ID.ToString()));
                 identity.AddClaim(new Claim("userId", res_.ID.ToString()));
                 identity.AddClaim(new Claim("creationDate", DateTime.UtcNow.ToString()));
 

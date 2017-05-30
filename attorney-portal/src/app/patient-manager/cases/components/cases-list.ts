@@ -19,7 +19,7 @@ import * as _ from 'underscore';
 import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
-
+import { ConsentStore } from '../../cases/stores/consent-store';
 @Component({
     selector: 'caseslist',
     templateUrl: './cases-list.html'
@@ -49,6 +49,7 @@ export class CasesListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
+        private _consentStore: ConsentStore,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
@@ -88,11 +89,42 @@ export class CasesListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    // downloadConsent(caseDocuments: CaseDocument[]) {
+    //     caseDocuments.forEach(caseDocument => {
+    //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+    //     });
+    // }
+
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            this._progressBarService.show();
+            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            }
+            this._progressBarService.hide();
         });
     }
+
     consentAvailable(case1: Case) {
         // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {
         //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
@@ -208,5 +240,10 @@ export class CasesListComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
+    }
+
+    showDialog(currentCaseId: number) {
+        // this.addConsentDialogVisible = true;
+        // this.selectedCaseId = currentCaseId;
     }
 }

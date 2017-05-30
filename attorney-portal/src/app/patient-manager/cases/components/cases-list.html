@@ -14,7 +14,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-    </div>
+</div>
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
@@ -27,24 +27,25 @@
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column header="Consent Received">
         <ng-template let-case="rowData" pTemplate="body">
-             <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)"><u>Yes</u></a>
-             <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/consent"><u>No</u></a>
+            <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
+                <u>Yes</u>
+            </a>
+            <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/consent">
+                <u>Upload Consent Form</u>
+            </a>
         </ng-template>
     </p-column>
-    <p-column header="Referral Status">
-        <ng-template let-case="rowData" pTemplate="body">
-            <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals"><u>Inbound</u></a>
-            <a *ngIf="case.getOutboundReferral(sessionStore.session.currentCompany.id) && !case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/outbound-referrals"><u>Outbound</u></a>
-            <a *ngIf="!case.getInboundReferral(sessionStore.session.currentCompany.id)"><u></u></a>
-            <!--<a routerLink="/patient-manager/referrals/inbound-referrals">
-                <u>{{referralAvailable(case)}}</u>
-            </a>-->
-        </ng-template>
-    </p-column>
+
+    <p-column header="Case Source" field="caseSource"> </p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
-            <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
-            <a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
+            <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id) ">
+                <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
+            </div>
+            <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
+                <a title="Edit" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            </div>
         </ng-template>
     </p-column>
 </p-dataTable>

@@ -208,6 +208,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Company companyBO = preferredAttorneyProviderBO.Company;
             BO.Signup prefAttProviderBO = preferredAttorneyProviderBO.Signup;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            User userDB = new User();
+            UserCompany UserCompanyDB = new UserCompany();
 
             PreferredAttorneyProvider prefAttProvider = new PreferredAttorneyProvider();
 
@@ -293,7 +296,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.Companies.Add(prefAttProvider_CompanyDB);
                 _context.SaveChanges();
 
-                User userDB = new User();
+                
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
                 userDB.UserName = userBO.UserName;
@@ -309,7 +312,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.Users.Add(userDB);
                 _context.SaveChanges();
 
-                UserCompany UserCompanyDB = new UserCompany();
+                
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefAttProvider_CompanyDB.id;
                 UserCompanyDB.IsDeleted = false;
@@ -360,10 +363,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
+                        #region Insert Invitation
+                        Invitation invitationDB = new Invitation();
+                        invitationDB.User = userDB;
+
+                        invitationDB_UniqueID = Guid.NewGuid();
+                        invitationDB.UniqueID = invitationDB_UniqueID;
+                        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = userDB.id;
+                        _context.Invitations.Add(invitationDB);
+                        _context.SaveChanges();
+                        #endregion
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                         string msg = mailTemplateDB.EmailBody;
                         string subject = mailTemplateDB.EmailSubject;
 
-                        string message = string.Format(msg, userBO.FirstName, prefAttProvider.Id);
+                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
 
                         BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
                         objEmail.SendMail();

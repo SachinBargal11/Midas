@@ -3053,5 +3053,26 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetVisitsByPatientId(int PatientId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetVisitsByPatientId(PatientId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        
+
     }
 }

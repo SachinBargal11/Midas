@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonsModule } from '../commons/commons-module';
 import { DashboardComponent } from './components/dashboard';
+import { Dashboard2Component } from './components/dashboard2';
+import { DashboardShellComponent } from './components/dashboard-shell';
 import { DashboardRoutingModule } from './dashboard-routes';
 
 @NgModule({
@@ -15,7 +17,9 @@ import { DashboardRoutingModule } from './dashboard-routes';
         DashboardRoutingModule
     ],
     declarations: [
-        DashboardComponent
+        DashboardShellComponent,
+        DashboardComponent,
+        Dashboard2Component
     ],
     providers: [
     ]

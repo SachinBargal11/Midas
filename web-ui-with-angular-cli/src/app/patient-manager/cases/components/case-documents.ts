@@ -121,6 +121,32 @@ export class CaseDocumentsUploadComponent implements OnInit {
             });
     }
 
+    
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._casesStore.downloadDocumentForm(this.caseId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
     deleteDocument() {
         if (this.selectedDocumentList.length > 0) {
             this.confirmationService.confirm({
