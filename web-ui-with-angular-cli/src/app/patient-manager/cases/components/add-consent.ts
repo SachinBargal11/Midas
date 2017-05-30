@@ -314,6 +314,7 @@ export class AddConsentComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
+    
     downloadTemplate() {
         this._progressBarService.show();
         this._consentStore.downloadTemplate(this.caseId, this.companyId)

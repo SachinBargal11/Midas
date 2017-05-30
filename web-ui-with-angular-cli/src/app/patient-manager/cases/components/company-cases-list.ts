@@ -58,7 +58,8 @@ export class CompanyCasesComponent implements OnInit {
     ) {
 
         this.companyId = this.sessionStore.session.currentCompany.id;
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+        // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadCasesCheckingDoctor();
 
@@ -101,13 +102,34 @@ export class CompanyCasesComponent implements OnInit {
             });
     }
     downloadConsent(caseDocuments: CaseDocument[]) {
-        caseDocuments.forEach(caseDocument => {
+      caseDocuments.forEach(caseDocument => {
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            this._progressBarService.show();
             if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
-                window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
             }
+            this._progressBarService.hide();
         });
     }
-
 
     consentAvailable(case1: Case) {
         if (case1.companyCaseConsentApproval.length > 0) {
@@ -249,27 +271,27 @@ export class CompanyCasesComponent implements OnInit {
                 this._notificationsService.error('Oh No!', 'DuplicateFileName');
             }
         });
-        this.getDocuments();
+        // this.getDocuments();
     }
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    getDocuments() {
-        this._progressBarService.show();
-        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
-            .subscribe(document => {
-                this.documents = document;
-            },
+    // getDocuments() {
+    //     this._progressBarService.show();
+    //     this._casesStore.getDocumentsForCaseId(this.currentCaseId)
+    //         .subscribe(document => {
+    //             this.documents = document;
+    //         },
 
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
+    //         (error) => {
+    //             this._progressBarService.hide();
+    //         },
+    //         () => {
+    //             this._progressBarService.hide();
+    //         });
+    // }
 
     downloadTemplate(caseId) {
         this._progressBarService.show();
@@ -316,7 +338,7 @@ export class CompanyCasesComponent implements OnInit {
                                     'createdAt': moment()
 
                                 });
-                                this.getDocuments();
+                                // this.getDocuments();
                                 this._notificationsStore.addNotification(notification);
                                 this.selectedDocumentList = [];
                             },

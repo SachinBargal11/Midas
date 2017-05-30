@@ -222,7 +222,7 @@ export class ConsentService {
     }
 
     getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
-        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
+        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}`;
     }
 
     downloadTemplate(caseId: Number, companyId: Number): Observable<Consent[]> {

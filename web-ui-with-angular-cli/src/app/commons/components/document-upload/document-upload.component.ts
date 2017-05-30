@@ -81,7 +81,7 @@ export class DocumentUploadComponent implements OnInit {
   ngOnInit() {
     this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
-      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
+      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
   }
 
