@@ -14,7 +14,7 @@ export class AccountSettingShellComponent implements OnInit {
         public _sessionStore: SessionStore
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this._router.navigate(['/account-setup/account-setting/procedure-codes']);;
+            this._router.navigate(['/account-setup/account-setting/document-types']);;
         });
     }
 

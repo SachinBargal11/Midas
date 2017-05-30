@@ -123,19 +123,34 @@ export class EditMedicalProviderComponent implements OnInit {
                 }
             })
         });
+        this._progressBarService.show();
         result = this._medicalProviderMasterStore.updateMedicalProvider(provider);
         result.subscribe(
             (response) => {
+                let notification = new Notification({
+                    'title': 'Medical provider has been updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
+                let errString = 'Unable to update User.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
                 this.isSaveProgress = false;
-                let errString = 'Unable to Register User.';
+                this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
     }
 
