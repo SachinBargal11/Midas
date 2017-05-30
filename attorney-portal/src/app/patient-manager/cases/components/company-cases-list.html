@@ -60,7 +60,7 @@
             </a>
         </ng-template>
     </p-column>-->
-    <p-column header="Case Source" field="caseSource"> </p-column>
+    <p-column field="caseSource" header="Case Source" > </p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)">
