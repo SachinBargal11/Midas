@@ -289,7 +289,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefAttProvider_CompanyDB.RegistrationComplete = false;
                 prefAttProvider_CompanyDB.IsDeleted = false;
-                prefAttProvider_CompanyDB.CreateByUserID = 0;
+                prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
+                prefAttProvider_CompanyDB.UpdateByUserID = prefAttProviderCompanyBO.UpdateByUserID;
                 prefAttProvider_CompanyDB.CreateDate = DateTime.UtcNow;
 
                 _context.Companies.Add(prefAttProvider_CompanyDB);
@@ -336,7 +337,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider.CompanyId = companyBO.ID;
                 prefAttProvider.IsCreated = true;
                 prefAttProvider.IsDeleted = false;
-                prefAttProvider.CreateByUserID = 0;
+                prefAttProvider.CreateByUserID = prefAttProvider_CompanyDB.CreateByUserID;
+                prefAttProvider.UpdateByUserID = prefAttProvider_CompanyDB.UpdateByUserID;
                 prefAttProvider.CreateDate = DateTime.UtcNow;
 
                 _context.PreferredAttorneyProviders.Add(prefAttProvider);
@@ -350,42 +352,132 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     #region Send Email
 
-                    var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+                    #region Send Email
 
-                    var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    var CurrentUser = _context.Users.Where(p => p.id == prefAttProvider.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
+                    var CurrentCompanyId = _context.UserCompanies.Where(p => p.UserID == CurrentUser.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyID).FirstOrDefault();
+                    var CurrentCompany = _context.Companies.Where(p => p.id == CurrentCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                    if (userBO != null)
+                    if (CurrentUser != null)
                     {
-                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
-                        if (mailTemplateDB == null)
+                        if (CurrentUser.UserType == 3)
                         {
-                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+                            //var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                            // var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
+                            var attorneyprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                            var attorneyprovider_user = _context.Users.Where(p => p.id == attorneyprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+
+                            if (attorneyprovider_user != null)
+                            {
+
+                                var PreferredAttorneyAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAttorneyAddByAttorney".ToUpper()).FirstOrDefault();                               
+                                if (PreferredAttorneyAddByAttorney == null)
+                                {
+                                    return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                }
+                                else
+                                {
+
+
+                                    #region Send mail to attorney
+                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                    string msg1 = PreferredAttorneyAddByAttorney.EmailBody;
+                                    string subject1 = PreferredAttorneyAddByAttorney.EmailSubject;
+
+                                    string message1 = string.Format(msg1, attorneyprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                                    BO.Email objEmail1 = new BO.Email { ToEmail = attorneyprovider_user.UserName, Subject = subject1, Body = message1 };
+                                    objEmail1.SendMail();
+                                    #endregion
+
+                                  
+                                }
+
+                            }
+
+
                         }
-                        else
-                        {
-                            #region Insert Invitation
-                            Invitation invitationDB = new Invitation();
-                            invitationDB.User = userDB;
+                        else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
+                        {                          
+                            var attorneyprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                            var attorneyprovider_user = _context.Users.Where(p => p.id == attorneyprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                            invitationDB_UniqueID = Guid.NewGuid();
-                            invitationDB.UniqueID = invitationDB_UniqueID;
-                            invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
-                            invitationDB.CreateDate = DateTime.UtcNow;
-                            invitationDB.CreateByUserID = userDB.id;
-                            _context.Invitations.Add(invitationDB);
-                            _context.SaveChanges();
-                            #endregion
 
-                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                            string msg = mailTemplateDB.EmailBody;
-                            string subject = mailTemplateDB.EmailSubject;
 
-                            string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+                            if (attorneyprovider_user != null)
+                            {
 
-                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
-                            objEmail.SendMail();
+                                var PreferredAttorneyAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAttorneyAddByProvider".ToUpper()).FirstOrDefault();
+                                if (PreferredAttorneyAddByProvider == null)
+                                {
+                                    return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                }
+                                else
+                                {
+
+
+                                    #region Send mail to attorney
+                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                    string msg1 = PreferredAttorneyAddByProvider.EmailBody;
+                                    string subject1 = PreferredAttorneyAddByProvider.EmailSubject;
+
+                                    string message1 = string.Format(msg1, attorneyprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                                    BO.Email objEmail1 = new BO.Email { ToEmail = attorneyprovider_user.UserName, Subject = subject1, Body = message1 };
+                                    objEmail1.SendMail();
+                                    #endregion
+
+
+                                }
+
+                            }
                         }
                     }
+
+                   
+
+                    #endregion
+
+                    //var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                    //var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    //if (userBO != null)
+                    //{
+                    //    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
+                    //    if (mailTemplateDB == null)
+                    //    {
+                    //        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //    else
+                    //    {
+                    //        #region Insert Invitation
+                    //        Invitation invitationDB = new Invitation();
+                    //        invitationDB.User = userDB;
+
+                    //        invitationDB_UniqueID = Guid.NewGuid();
+                    //        invitationDB.UniqueID = invitationDB_UniqueID;
+                    //        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+                    //        invitationDB.CreateDate = DateTime.UtcNow;
+                    //        invitationDB.CreateByUserID = userDB.id;
+                    //        _context.Invitations.Add(invitationDB);
+                    //        _context.SaveChanges();
+                    //        #endregion
+
+                    //        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    //        string msg = mailTemplateDB.EmailBody;
+                    //        string subject = mailTemplateDB.EmailSubject;
+
+                    //        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+
+                    //        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                    //        objEmail.SendMail();
+                    //    }
+                    //}
 
                     #endregion
                 }
