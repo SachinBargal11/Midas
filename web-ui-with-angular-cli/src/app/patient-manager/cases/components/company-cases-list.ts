@@ -269,6 +269,14 @@ export class CompanyCasesComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', 'DuplicateFileName');
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
             }
         });
         // this.getDocuments();
