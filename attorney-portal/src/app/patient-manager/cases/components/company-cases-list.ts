@@ -105,9 +105,38 @@ export class CompanyCasesComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    // downloadConsent(caseDocuments: CaseDocument[]) {
+    //     caseDocuments.forEach(caseDocument => {
+    //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+    //     });
+    // }
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            this._progressBarService.show();
+            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            }
+            this._progressBarService.hide();
         });
     }
 
