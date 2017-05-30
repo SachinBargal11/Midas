@@ -849,16 +849,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     User currentUser = _context.Users.Where(p => p.id == PatientVisit2DB.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                     Doctor doctor = _context.Doctors.Where(p => p.Id == PatientVisit2DB.DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    ContactInfo contact = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
+                    Patient2 patient = _context.Patient2.Where(p => p.Id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                     if (currentUser != null)
                     {
-                        #region UserType Dcotor
-                        if (currentUser.UserType == 4)
+                        #region UserType Doctor
+                        if (currentUser.UserType == 4 || currentUser.UserType == 2)
                         {
                             try
                             {
-                                ContactInfo contact = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
-
                                 if (preferredCommunicationType == 1)
                                 {
                                     if (contact.EmailAddress != null)
@@ -916,7 +918,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                         if (userBO != null)
                                         {
-                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreated".ToUpper()).FirstOrDefault();
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByDoctor".ToUpper()).FirstOrDefault();
                                             if (mailTemplateDB == null)
                                             {
                                                 return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -927,9 +929,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 string msg = mailTemplateDB.EmailBody;
                                                 string subject = mailTemplateDB.EmailSubject;
 
-                                                string message = string.Format(msg, userBO.FirstName, currentUser.FirstName, doctor.Title, CalendarEventBO.EventStart.Value, CalendarEventDB.TimeZone, LoginLink2);
+                                                string message = string.Format(msg, patient.User.FirstName, doctor_user.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
 
-                                                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                                                BO.Email objEmail = new BO.Email { ToEmail = patient.User.UserName, Subject = subject, Body = message };
                                                 objEmail.SendMail();
                                             }
                                         }
@@ -943,7 +945,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         {
                                             string to = dictionary[patientUserName];
                                             //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                            string body = " Doctor " + currentUser.FirstName + " has created a visit " + doctor.Title + " on " + CalendarEventBO.EventStart.Value + " at " + CalendarEventDB.TimeZone + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
+                                            string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
                                             string msgid = SMSGateway.SendSMS(to, body);
                                         }
                                         catch (Exception) { }
@@ -961,20 +963,112 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         #region UserType Patient
                         if (currentUser.UserType == 1)
                         {
+                            try
+                            {
+                                if (preferredCommunicationType == 1)
+                                {
+                                    if (contact.EmailAddress != null)
+                                    {
+                                        #region Send Email
 
+                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
+                                        if (userBO != null)
+                                        {
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreated".ToUpper()).FirstOrDefault();
+                                            if (mailTemplateDB == null)
+                                            {
+                                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                            else
+                                            {
+                                                string msg = mailTemplateDB.EmailBody;
+                                                string subject = mailTemplateDB.EmailSubject;
 
+                                                string message = string.Format(msg, userBO.FirstName, PatientVisit2BO.ID);
+
+                                                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                                                objEmail.SendMail();
+                                            }
+                                        }
+
+                                        #endregion
+                                    }
+                                }
+                                if (preferredCommunicationType == 2)
+                                {
+                                    if (contact.CellPhone != null)
+                                    {
+                                        #region send SMS notification 
+                                        try
+                                        {
+                                            string to = dictionary[patientUserName];
+                                            string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+
+                                            string msgid = SMSGateway.SendSMS(to, body);
+                                        }
+                                        catch (Exception) { }
+                                        #endregion
+                                    }
+
+                                }
+                                if (preferredCommunicationType == 3)
+                                {
+                                    if (contact.EmailAddress != null)
+                                    {
+                                        #region Send Email
+
+                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                        if (userBO != null)
+                                        {
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByPatient".ToUpper()).FirstOrDefault();
+                                            if (mailTemplateDB == null)
+                                            {
+                                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                            else
+                                            {
+                                                string LoginLink2 = "<a href='http://www.medicalprovider.codearray.tk </a>";
+                                                string msg = mailTemplateDB.EmailBody;
+                                                string subject = mailTemplateDB.EmailSubject;
+
+                                                string message = string.Format(msg, doctor.User.FirstName, patient.User.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+
+                                                BO.Email objEmail = new BO.Email { ToEmail = doctor.User.UserName, Subject = subject, Body = message };
+                                                objEmail.SendMail();
+                                            }
+                                        }
+
+                                        #endregion
+                                    }
+                                    if (contact.CellPhone != null)
+                                    {
+                                        #region send SMS notification 
+                                        try
+                                        {
+                                            string to = doctor.User.UserName;
+                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                            string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
+                                            string msgid = SMSGateway.SendSMS(to, body);
+                                        }
+                                        catch (Exception) { }
+                                        #endregion
+
+                                    }
+
+                                }
+
+                            }
+                            catch (Exception e) { }
+
+                        
 
                         }
                         #endregion
                     }
                 }
-                else
-                {
 
-
-                }
-                  
 
                 if (PatientVisit2DB != null)
                 {
