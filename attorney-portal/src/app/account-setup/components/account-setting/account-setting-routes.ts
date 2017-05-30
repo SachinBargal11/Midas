@@ -13,7 +13,7 @@ export const AccountSettingShellRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'account-setting/procedure-codes'
+        redirectTo: 'account-setting/document-types'
     },
     {
         path: 'account-setting',

@@ -73,11 +73,11 @@ export class AttorneyMasterListComponent implements OnInit {
         this._progressBarService.show();
         this._attorneyMasterStore.getAllAttorney()
             .subscribe((allAttorney: Attorney[]) => {
-                // this.allAttorneys = allAttorney;
-                let allFilteredAttorneys: Attorney[] = _.reject(allAttorney, (currentAttorney: Attorney) => {
-                    return currentAttorney.user == null;
-                });
-                this.allAttorneys = allFilteredAttorneys;
+                this.allAttorneys = allAttorney;
+                // let allFilteredAttorneys: Attorney[] = _.reject(allAttorney, (currentAttorney: Attorney) => {
+                //     return currentAttorney.user == null;
+                // });
+                // this.allAttorneys = allFilteredAttorneys;
             },
             (error) => {
                 this._progressBarService.hide();

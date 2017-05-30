@@ -93,11 +93,11 @@ export class AttorneyMasterStore {
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
 
-    addAttorney(attorney: Attorney): Observable<Attorney> {
+    addAttorney(signUp: any): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.addAttorney(attorney).subscribe((attorney: Attorney) => {
-                this._attorneyMaster.next(this._attorneyMaster.getValue().push(attorney));
-                resolve(attorney);
+            this._attorneyMasterService.addAttorney(signUp).subscribe((any) => {
+                this._attorneyMaster.next(this._attorneyMaster.getValue().push(any));
+                resolve(any);
             }, error => {
                 reject(error);
             });
