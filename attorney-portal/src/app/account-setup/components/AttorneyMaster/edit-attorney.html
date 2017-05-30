@@ -81,10 +81,10 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
-                            <select formControlName="companyType" [ngModel]="medicalProviderMaster.signup.company.companyType" class="selectpicker form-control"
+                            <select disabled [ngModel]=2 formControlName="companyType" [ngModel]="medicalProviderMaster.signup.company.companyType" class="selectpicker form-control"
                                 title="Select Company Type." [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
-                                             <option value="">-Select company type-</option>
-                                             <option disabled>--------------------</option>
+                                             <!--<option value="">-Select company type-</option>
+                                             <option disabled>--------------------</option>-->
                                              <option value="2">Attorney</option>                                             
                                          </select>
                             <div class='error-list' *ngIf="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
@@ -118,10 +118,10 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
-                            <select formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.signup.company.subscriptionType" class="selectpicker form-control"
-                                title="Select subscription plan." [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
-                                             <option value="">-Select subscription plan-</option>
-                                             <option disabled>--------------------</option>
+                            <select disabled [ngModel]=1 formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.signup.company.subscriptionType"
+                                class="selectpicker form-control" title="Select subscription plan." [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
+                                             <!--<option value="">-Select subscription plan-</option>
+                                             <option disabled>--------------------</option>-->
                                              <option value="1">Trial</option>
                                              <!--<option value="30 day Trial">30 day Trial</option>-->
                                          </select>
@@ -157,4 +157,3 @@
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-

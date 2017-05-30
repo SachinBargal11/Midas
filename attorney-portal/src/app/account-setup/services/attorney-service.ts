@@ -91,7 +91,7 @@ export class AttorneyMasterService {
         });
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
-    addAttorney(requestData: any): Observable<Attorney> {
+     addAttorney(requestData: any): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
