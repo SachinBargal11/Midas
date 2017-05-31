@@ -516,7 +516,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                 #region Send mail to medical provider
-                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                 string msg1 = PreferredMedicalAddByAttorney.EmailBody;
                                 string subject1 = PreferredMedicalAddByAttorney.EmailSubject;
 
