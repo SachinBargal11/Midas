@@ -807,7 +807,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                         string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorney.FirstName, LoginLink2);
 
-                                        BO.Email objEmail2 = new BO.Email { ToEmail = attorney.UserName, Subject = subject2, Body = message2 };
+                                        BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                         objEmail2.SendMail();
                                         #endregion
 
@@ -921,7 +921,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                         string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorney.FirstName, LoginLink2);
 
-                                        BO.Email objEmail2 = new BO.Email { ToEmail = attorney.UserName, Subject = subject2, Body = message2 };
+                                        BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                         objEmail2.SendMail();
                                         #endregion
 

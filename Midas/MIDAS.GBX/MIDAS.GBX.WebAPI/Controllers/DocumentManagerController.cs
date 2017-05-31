@@ -51,7 +51,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 List<HttpContent> streamContent = streamProvider.Contents.ToList();
 
                 HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, uploadObject.CompanyId);
-                if(serviceProvider == null)
+                if (serviceProvider== null)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
                 HttpResponseMessage resDocumentPath = requestHandler.GetGbObjects(Request, uploadObject);
@@ -69,7 +69,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
                         documentList.Add((Document)((ObjectContent)requestHandler.CreateGbObject(Request, uploadObject).Content).Value);
                     }
                     else if (resBlob.StatusCode.Equals(HttpStatusCode.NotFound))
+                    {
                         return resBlob;
+                    }
                     else
                         documentList.Add(new Document { Status = "Failed", DocumentName = ctnt.Headers.ContentDisposition.FileName });
                 }

@@ -421,7 +421,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                     #region Send mail to attorney
-                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                     string msg1 = PreferredAttorneyAddByProvider.EmailBody;
                                     string subject1 = PreferredAttorneyAddByProvider.EmailSubject;
 
@@ -807,8 +807,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                       .Select(p => p.PrefAttorneyProviderId);
 
             var companies = _context.Companies.Where(p => AssignedPrefAttorneyProvider.Contains(p.id) == false
-                                               && p.CompanyType == 2
-                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                && p.CompanyType == 2
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .OrderBy(x => x.Name)
                                               .ToList();
 
 
@@ -834,7 +835,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company")
                                                                       .Include("Company1")
                                                                       .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                       .ToList();
+                                                                      .OrderBy(p => p.Company1.Name)
+                                                                      .ToList();
 
             List<BO.PreferredAttorneyProvider> lstprovider = new List<BO.PreferredAttorneyProvider>();
 

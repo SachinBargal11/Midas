@@ -100,7 +100,8 @@ export class AddMedicalProviderComponent implements OnInit {
                     name: this.providerform.value.companyName,
                     taxId: this.providerform.value.taxId,
                     companyType: this.providerform.value.companyType,
-                    subsCriptionType: this.providerform.value.subscriptionPlan
+                    subsCriptionType: this.providerform.value.subscriptionPlan,
+                    createByUserID: this._sessionStore.session.account.user.id
                 }
             }
         };
