@@ -190,6 +190,7 @@ export class AddConsentComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this._router.navigate(['../'], { relativeTo: this._route });
             }
             this.loadConsentForm();
