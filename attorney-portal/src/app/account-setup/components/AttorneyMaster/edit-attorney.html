@@ -11,7 +11,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.companyName.touched && !attorneyformControls.companyName.valid">
-                            <input formControlName="companyName" [ngModel]="medicalProviderMaster.signup.company.name" type="text" class="form-control"
+                            <input formControlName="companyName" [ngModel]="attorney.signup.company.name" type="text" class="form-control"
                                 [class.error]="!attorneyformControls.companyName.valid" />
                             <div class='error-list' *ngIf="attorneyformControls.companyName.touched && !attorneyformControls.companyName.valid">
                                 <ul>
@@ -26,7 +26,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.taxId.touched && !attorneyformControls.taxId.valid">
-                            <input formControlName="taxId" [ngModel]="medicalProviderMaster.signup.company.taxId" type="text" class="form-control" [class.error]="!attorneyformControls.taxId.valid"
+                            <input formControlName="taxId" [ngModel]="attorney.signup.company.taxId" type="text" class="form-control" [class.error]="!attorneyformControls.taxId.valid"
                                 minlength="10" />
                             <div class='error-list' *ngIf="attorneyformControls.taxId.touched && !attorneyformControls.taxId.valid">
                                 <ul>
@@ -49,7 +49,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.firstName.touched && !attorneyformControls.firstName.valid">
-                            <input formControlName="firstName" [ngModel]="medicalProviderMaster.signup.user.firstName" type="text" class="form-control"
+                            <input formControlName="firstName" [ngModel]="attorney.signup.user.firstName" type="text" class="form-control"
                                 [class.error]="!attorneyformControls.firstName.valid" />
                             <div class='error-list' *ngIf="attorneyformControls.firstName.touched && !attorneyformControls.firstName.valid">
                                 <ul>
@@ -64,7 +64,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.lastName.touched && !attorneyformControls.lastName.valid">
-                            <input formControlName="lastName" [ngModel]="medicalProviderMaster.signup.user.lastName" type="text" class="form-control"
+                            <input formControlName="lastName" [ngModel]="attorney.signup.user.lastName" type="text" class="form-control"
                                 [class.error]="!attorneyformControls.lastName.valid" />
                             <div class='error-list' *ngIf="attorneyformControls.lastName.touched && !attorneyformControls.lastName.valid">
                                 <ul>
@@ -81,7 +81,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
-                            <select disabled [ngModel]=2 formControlName="companyType" [ngModel]="medicalProviderMaster.signup.company.companyType" class="selectpicker form-control"
+                            <select disabled [ngModel]=2 formControlName="companyType" [ngModel]="attorney.signup.company.companyType" class="selectpicker form-control"
                                 title="Select Company Type." [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
                                              <!--<option value="">-Select company type-</option>
                                              <option disabled>--------------------</option>-->
@@ -99,7 +99,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.phoneNo.touched && !attorneyformControls.attorneyCellPhone.valid">
-                            <p-inputMask mask="999-999-9999" formControlName="phoneNo" [ngModel]="medicalProviderMaster.signup.contactInfo.cellPhone"
+                            <p-inputMask mask="999-999-9999" formControlName="phoneNo" [ngModel]="attorney.signup.contactInfo.cellPhone"
                                 [class.error]="attorneyformControls.phoneNo.touched && !attorneyformControls.phoneNo.valid" placeholder="999-999-9999"
                                 styleClass="form-control"></p-inputMask>
                             <div class='error-list' *ngIf="attorneyformControls.phoneNo.touched && !attorneyformControls.phoneNo.valid">
@@ -118,7 +118,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
-                            <select disabled [ngModel]=1 formControlName="subscriptionPlan" [ngModel]="medicalProviderMaster.signup.company.subscriptionType"
+                            <select disabled [ngModel]=1 formControlName="subscriptionPlan" [ngModel]="attorney.signup.company.subscriptionType"
                                 class="selectpicker form-control" title="Select subscription plan." [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
                                              <!--<option value="">-Select subscription plan-</option>
                                              <option disabled>--------------------</option>-->
@@ -137,7 +137,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="attorneyformControls.email.touched && !attorneyformControls.email.valid">
-                            <input formControlName="email" type="email" [ngModel]="medicalProviderMaster.signup.contactInfo.emailAddress" [class.error]="!attorneyformControls.email.valid"
+                            <input formControlName="email" type="email" [ngModel]="attorney.signup.contactInfo.emailAddress" [class.error]="!attorneyformControls.email.valid"
                                 class="form-control" placeholder="" type="text" />
                             <div class='error-list' *ngIf="attorneyformControls.email.touched && !attorneyformControls.email.valid">
                                 <ul>

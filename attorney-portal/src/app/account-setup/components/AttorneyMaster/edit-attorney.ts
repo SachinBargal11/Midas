@@ -51,7 +51,7 @@ export class EditAttorneyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
 
-          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/attorney']);
         });
 
@@ -62,8 +62,7 @@ export class EditAttorneyComponent implements OnInit {
             let result = this._attorneyMasterStore.fetchAttorneyById(attorneyId);
             result.subscribe(
                 (attorney: Attorney) => {
-                       this.attorney = attorney;
-                   
+                    this.attorney = attorney;
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -98,7 +97,9 @@ export class EditAttorneyComponent implements OnInit {
         let attorney = new Attorney({
             id: this.attorney.id,
             companyId: this._sessionStore.session.currentCompany.id,
-           signup: new Signup({
+            prefAttorneyProviderId: this.attorney.prefAttorneyProviderId,
+
+            signup: new Signup({
                 company: {
                     id: this.attorney.signup.company.id,
                     name: this.attorneyform.value.companyName,
@@ -124,7 +125,7 @@ export class EditAttorneyComponent implements OnInit {
         result = this._attorneyMasterStore.updateAttorney(attorney);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Medical provider has been updated successfully!.');
+                this._notificationsService.success('Welcome!', 'Preffered attorney has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
