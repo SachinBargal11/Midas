@@ -575,10 +575,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 objEmail1.SendMail();
                                 #endregion
 
-                               
-
-
-
                             }
 
                         }

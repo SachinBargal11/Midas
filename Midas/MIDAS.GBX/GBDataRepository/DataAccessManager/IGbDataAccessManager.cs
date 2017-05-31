@@ -12,6 +12,7 @@ namespace MIDAS.GBX.DataAccessManager
     {
         Object Save(T gbObject);
         Object UpdateMedicalProvider(T gbObject);
+        Object UpdateAttorneyProvider(T gbObject);
         Object Save(List<T> gbObject);
         Object SaveDoctor(T gbObject);
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);

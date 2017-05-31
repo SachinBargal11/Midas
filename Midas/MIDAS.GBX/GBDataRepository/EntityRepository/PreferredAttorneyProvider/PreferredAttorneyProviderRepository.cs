@@ -540,6 +540,211 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Update Medical Provider
+        public override object UpdateAttorneyProvider<T>(T entity)
+        {
+
+            BO.PreferredAttorneyProviderSignUp preferredÀttorneyProviderBO = (BO.PreferredAttorneyProviderSignUp)(object)entity;
+            PreferredAttorneyProvider preferredAttorneyProviderDB = new PreferredAttorneyProvider();
+
+            BO.Signup prefAttProviderBO = preferredÀttorneyProviderBO.Signup;
+            BO.Company company = preferredÀttorneyProviderBO.Company;
+            PreferredAttorneyProvider prefAttProvider = new PreferredAttorneyProvider();
+
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            User userDB = new User();
+            Company prefAttProvider_CompanyDB = new Company();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                if (prefAttProviderBO == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (prefAttProviderBO.company == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (prefAttProviderBO.user == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (prefAttProviderBO.contactInfo == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (_context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && o.id != prefAttProviderBO.company.ID
+                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (_context.Companies.Any(o => o.Name == prefAttProviderBO.company.Name && o.id != prefAttProviderBO.company.ID
+                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                else if (_context.Users.Any(o => o.UserName == prefAttProviderBO.user.UserName && o.id != prefAttProviderBO.user.ID
+                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "User Name already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                BO.Company prefAttProviderCompanyBO = prefAttProviderBO.company;
+                BO.ContactInfo ContactInfoBO = prefAttProviderBO.contactInfo;
+                BO.User userBO = prefAttProviderBO.user;
+                BO.Role roleBO = prefAttProviderBO.role;
+
+                prefAttProvider_CompanyDB = _context.Companies.Where(p => p.id == prefAttProviderCompanyBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
+
+                if (prefAttProvider_CompanyDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Company Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                prefAttProvider_CompanyDB.Name = prefAttProviderCompanyBO.Name;
+                prefAttProvider_CompanyDB.Status = System.Convert.ToByte(prefAttProviderCompanyBO.Status);
+                prefAttProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefAttProviderCompanyBO.CompanyType);
+                prefAttProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAttProviderCompanyBO.SubsCriptionType);
+                prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
+                prefAttProvider_CompanyDB.AddressId = prefAttProvider_CompanyDB.AddressId;
+                prefAttProvider_CompanyDB.ContactInfoID = prefAttProvider_CompanyDB.ContactInfoID;
+                prefAttProvider_CompanyDB.RegistrationComplete = false;
+                prefAttProvider_CompanyDB.IsDeleted = false;
+                prefAttProvider_CompanyDB.UpdateByUserID = 0;
+                prefAttProvider_CompanyDB.UpdateDate = DateTime.UtcNow;
+
+                _context.SaveChanges();
+
+
+                ContactInfo ContactInfo = _context.ContactInfoes.Where(p => p.id == ContactInfoBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
+
+                if (ContactInfo == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Contact Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                ContactInfo.CellPhone = ContactInfoBO.CellPhone;
+                ContactInfo.EmailAddress = ContactInfoBO.EmailAddress;
+
+                _context.SaveChanges();
+
+
+                userDB = _context.Users.Where(p => p.id == userBO.ID
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault();
+
+                if (userDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "User Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                userDB.FirstName = userBO.FirstName;
+                userDB.LastName = userBO.LastName;
+                userDB.UserName = userBO.UserName;
+                userDB.UserType = 2;
+                userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
+                userDB.AddressId = prefAttProvider_CompanyDB.AddressId;
+                userDB.ContactInfoId = prefAttProvider_CompanyDB.ContactInfoID;
+                userDB.IsDeleted = false;
+                userDB.CreateByUserID = 0;
+                userDB.CreateDate = DateTime.UtcNow;
+
+                _context.SaveChanges();
+
+                prefAttProvider.PrefAttorneyProviderId = prefAttProviderBO.company.ID;
+                prefAttProvider.CompanyId = company.ID;
+                prefAttProvider.IsCreated = true;
+                prefAttProvider.IsDeleted = false;
+                prefAttProvider.CreateByUserID = prefAttProvider_CompanyDB.CreateByUserID;
+                prefAttProvider.UpdateByUserID = prefAttProvider_CompanyDB.UpdateByUserID;
+                prefAttProvider.CreateDate = DateTime.UtcNow;
+
+                _context.PreferredAttorneyProviders.Add(prefAttProvider);
+                _context.SaveChanges();
+
+                dbContextTransaction.Commit();
+            }
+
+            try
+            {
+                #region Send Email
+
+                var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                //var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (userBO != null)
+                {
+                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderUpdated".ToUpper()).FirstOrDefault();
+                    if (mailTemplateDB == null)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        #region Insert Invitation
+                        Invitation invitationDB = new Invitation();
+                        invitationDB.User = userDB;
+
+                        invitationDB_UniqueID = Guid.NewGuid();
+                        invitationDB.UniqueID = invitationDB_UniqueID;
+                        invitationDB.CompanyID = prefAttProvider_CompanyDB.id != 0 ? prefAttProvider_CompanyDB.id : 0;
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = userDB.id;
+                        _context.Invitations.Add(invitationDB);
+                        _context.SaveChanges();
+                        #endregion
+
+                        //string VerificationLink = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                        string VerificationLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                        string msg = mailTemplateDB.EmailBody;
+                        string subject = mailTemplateDB.EmailSubject;
+
+                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+
+                        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                        objEmail.SendMail();
+                    }
+                }
+
+                #endregion
+            }
+            catch (Exception ex) { }
+
+            var result = _context.PreferredAttorneyProviders.Include("Company").Include("Company1")
+                                                            .Where(p => p.PrefAttorneyProviderId == prefAttProviderBO.company.ID
+                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
+
+            BO.PreferredAttorneyProviderSignUp acc_ = ConvertPreferredAttorneyProviderSignUp<BO.PreferredAttorneyProviderSignUp, PreferredAttorneyProvider>(result);
+
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
+        }
+        #endregion
+
         #region Associate Attorney Provider With Company
         public override object AssociatePrefAttorneyProviderWithCompany(int PrefAttorneyProviderId, int CompanyId)
         {
@@ -683,7 +888,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Attorney provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
             }
 
             var res = Convert<BO.PreferredAttorneyProvider, PreferredAttorneyProvider>(preferredAttProviderDB);
