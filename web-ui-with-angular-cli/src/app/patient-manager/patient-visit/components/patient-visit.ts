@@ -126,6 +126,7 @@ export class PatientVisitComponent implements OnInit {
     selectedSpeciality: Speciality;
     readingDoctors: Doctor[];
     readingDoctor = 0;
+    visitId: number;
 
 
     eventRenderer: Function = (event, element) => {
@@ -669,7 +670,9 @@ export class PatientVisitComponent implements OnInit {
                     eventEnd: event.date.clone().local().add(30, 'minutes'),
                     timezone: '',
                     isAllDay: false
-                })
+                }),
+                createByUserID: this.sessionStore.session.account.user.id
+
             });
             this.visitInfo = this.selectedVisit.visitDisplayString;
             this.eventDialogVisible = true;
@@ -807,6 +810,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveVisit() {
+       
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
@@ -1035,6 +1039,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveEvent() {
+       
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
@@ -1058,9 +1063,10 @@ export class PatientVisitComponent implements OnInit {
             leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
             transportProviderId: updatedEvent ? updatedEvent.transportProviderId : 0,
             notes: patientScheduleFormValues.notes,
-            patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : []
+            patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : [],
+            createByUserID: this.sessionStore.session.account.user.id
         }));
-        if (updatedVisit.id) {
+        if (updatedVisit.id) {           
             if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {
                 let endDate: Date = this.selectedVisit.calendarEvent.recurrenceRule.before(this.selectedCalEvent.start.startOf('day').toDate());
                 let updatedvisitWithRecurrence: PatientVisit = this._getUpdatedVisitWithSeriesTerminatedOn(this.selectedVisit, moment(endDate));
@@ -1102,7 +1108,7 @@ export class PatientVisitComponent implements OnInit {
                     dtstart: eventStart,
                     until: until
                 }));
-
+               
                 let updatedAddNewVisit: PatientVisit = new PatientVisit(_.extend(updatedVisit.toJS(), {
                     id: 0,
                     calendarEventId: 0,
@@ -1110,11 +1116,14 @@ export class PatientVisitComponent implements OnInit {
                         id: 0,
                         eventStart: moment(eventStart),
                         eventEnd: moment(eventEnd),
-                        recurrenceRule: rrule
-                    }))
+                        recurrenceRule: rrule                       
+                    })),
+                    createByUserID: this.sessionStore.session.account.user.id
                 }));
+
                 let addVisitResult = this._patientVisitsStore.addPatientVisit(updatedAddNewVisit);
                 addVisitResult.subscribe(
+
                     (response) => {
                         let notification = new Notification({
                             'title': 'Event added successfully!',
@@ -1246,6 +1255,15 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();
@@ -1253,6 +1271,31 @@ export class PatientVisitComponent implements OnInit {
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitsStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
     }
 
     deleteDocument() {

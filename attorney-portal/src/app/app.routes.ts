@@ -4,8 +4,8 @@ import { NoContentComponent } from './no-content-component';
 import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
 
 export const routes: Routes = [
-    // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: '', redirectTo: '/patient-manager/appointments', pathMatch: 'full', canActivate: [ValidateDoctorSession] },
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    // { path: '', redirectTo: '/patient-manager/appointments', pathMatch: 'full', canActivate: [ValidateDoctorSession] },
     { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' } },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
     { path: 'doctor-manager', loadChildren: 'app/doctor-manager/doctor-manager-module#DoctorManagerModule', data: { breadcrumb: 'root' } },

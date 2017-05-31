@@ -11,6 +11,7 @@ import { CaseAdapter } from './adapters/case-adapter';
 import { CaseDocumentAdapter } from './adapters/case-document-adapters';
 import { Document } from '../../../commons/models/document';
 import * as _ from 'underscore';
+import { Consent } from '../models/consent';
 
 @Injectable()
 export class CaseService {
@@ -24,11 +25,14 @@ export class CaseService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getCase(caseId: Number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/get/' + caseId).map(res => res.json())
+            return this._http.get(this._url + '/Case/get/' + caseId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let cases = null;
                     if (data) {
@@ -47,7 +51,9 @@ export class CaseService {
 
     getOpenCaseForPatient(patientId: Number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getOpenCaseForPatient/' + patientId).map(res => res.json())
+            return this._http.get(this._url + '/Case/getOpenCaseForPatient/' + patientId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
                         return CaseAdapter.parseResponse(data);
@@ -66,7 +72,9 @@ export class CaseService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/Case/getByPatientId/' + patientId)
-            return this._http.get(this._url + '/Case/getByPatientIdAndCompanyId/' + patientId + '/' + companyId)
+            return this._http.get(this._url + '/Case/getByPatientIdAndCompanyId/' + patientId + '/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
@@ -82,7 +90,9 @@ export class CaseService {
     }
     getCasesByCompany(companyId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByCompanyId/' + companyId)
+            return this._http.get(this._url + '/Case/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
@@ -99,7 +109,9 @@ export class CaseService {
     getCasesByCompanyAndDoctorId(companyId: number): Observable<Case[]> {
         let doctorId = this._sessionStore.session.user.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByCompanyAndDoctorId/' + companyId + '/' + doctorId)
+            return this._http.get(this._url + '/Case/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
@@ -116,7 +128,9 @@ export class CaseService {
 
     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/get/' + caseId + '/case')
+            return this._http.get(this._url + '/fileupload/get/' + caseId + '/case', {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -132,7 +146,9 @@ export class CaseService {
     }
     getDocumentForCaseId(caseId: number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/case/GetConsentList/' + caseId)
+            return this._http.get(this._url + '/case/GetConsentList/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let document: Case = null
@@ -270,5 +286,38 @@ export class CaseService {
         });
         return <Observable<Case>>Observable.from(promise);
     }
+
+     downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+        let thefile = {};
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+            this._http
+                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+                headers: this._headers
+            })
+                .map(res => {
+                    // If request fails, throw an Error that will be caught
+                    if (res.status < 200 || res.status == 500 || res.status == 404) {
+                        throw new Error('This request has failed ' + res.status);
+                    }
+                    // If everything went fine, return the response
+                    else {
+
+                        window.location.assign(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        // return res.arrayBuffer();
+                    }
+                })
+                .subscribe(data => thefile = new Blob([data], { type: "application/octet-stream" }),
+                (error) => {
+                    reject(error);
+                    console.log("Error downloading the file.")
+
+                },
+                () => console.log('Completed file download.'));
+            //window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
 }
 

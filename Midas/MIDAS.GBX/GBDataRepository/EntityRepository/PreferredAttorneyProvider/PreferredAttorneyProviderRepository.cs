@@ -117,6 +117,88 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region New Conversion
+        public T ConvertPreferredAttorneyProviderSignUp<T, U>(U entity)
+        {
+            PreferredAttorneyProvider preferredAttorneyProviderr = entity as PreferredAttorneyProvider;
+            if (preferredAttorneyProviderr == null)
+                return default(T);
+
+            BO.PreferredAttorneyProviderSignUp PreferredAttorneyProviderSignUpBO = new BO.PreferredAttorneyProviderSignUp();
+
+            PreferredAttorneyProviderSignUpBO.ID = preferredAttorneyProviderr.Id;
+            PreferredAttorneyProviderSignUpBO.PrefAttorneyProviderId = preferredAttorneyProviderr.PrefAttorneyProviderId;
+            PreferredAttorneyProviderSignUpBO.CompanyId = preferredAttorneyProviderr.CompanyId;
+            PreferredAttorneyProviderSignUpBO.IsCreated = preferredAttorneyProviderr.IsCreated;
+
+            PreferredAttorneyProviderSignUpBO.Signup = new BO.Signup();
+            if (preferredAttorneyProviderr.Company1 != null)
+            {
+                if (preferredAttorneyProviderr.Company1.IsDeleted.HasValue == false || (preferredAttorneyProviderr.Company1.IsDeleted.HasValue == true && preferredAttorneyProviderr.Company1.IsDeleted.Value == false))
+                {
+                    BO.Company boCompany = new BO.Company();
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        boCompany = sr.Convert<BO.Company, Company>(preferredAttorneyProviderr.Company1);
+
+                        PreferredAttorneyProviderSignUpBO.Signup.company = boCompany;
+                    }
+                }
+            }
+
+            if (preferredAttorneyProviderr.Company1.ContactInfo != null)
+            {
+
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.Name = preferredAttorneyProviderr.Company1.ContactInfo.Name;
+                boContactInfo.CellPhone = preferredAttorneyProviderr.Company1.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = preferredAttorneyProviderr.Company1.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = preferredAttorneyProviderr.Company1.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = preferredAttorneyProviderr.Company1.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = preferredAttorneyProviderr.Company1.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = preferredAttorneyProviderr.Company1.ContactInfo.CreateByUserID;
+                boContactInfo.ID = preferredAttorneyProviderr.Company1.ContactInfo.id;
+                boContactInfo.OfficeExtension = preferredAttorneyProviderr.Company1.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = preferredAttorneyProviderr.Company1.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = preferredAttorneyProviderr.Company1.ContactInfo.PreferredCommunication;
+
+                PreferredAttorneyProviderSignUpBO.Signup.contactInfo = boContactInfo;
+
+            }
+
+            if (preferredAttorneyProviderr.Company1.UserCompanies != null)
+            {
+                BO.User lstUser = new BO.User();
+                if (preferredAttorneyProviderr.Company1.UserCompanies.Count >= 1)
+                {
+                    var item = preferredAttorneyProviderr.Company1.UserCompanies.FirstOrDefault();
+
+                    if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    {
+                        var userDB = _context.Users.Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
+
+                        using (UserRepository sr = new UserRepository(_context))
+                        {
+                            BO.User BOUser = new BO.User();
+                            BOUser = sr.Convert<BO.User, User>(userDB);
+                            BOUser.UserCompanies = null;
+                            BOUser.ContactInfo = null;
+                            BOUser.AddressInfo = null;
+                            BOUser.Roles = null;
+
+                            lstUser = BOUser;
+                        }
+                    }
+                }
+
+                PreferredAttorneyProviderSignUpBO.Signup.user = lstUser;
+            }
+
+            return (T)(object)PreferredAttorneyProviderSignUpBO;
+        }
+        #endregion
+
         #region Save Data
         public override object Save<T>(T entity)
         {
@@ -126,14 +208,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Company companyBO = preferredAttorneyProviderBO.Company;
             BO.Signup prefAttProviderBO = preferredAttorneyProviderBO.Signup;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            User userDB = new User();
+            UserCompany UserCompanyDB = new UserCompany();
 
             PreferredAttorneyProvider prefAttProvider = new PreferredAttorneyProvider();
+            bool IsEditMode = false;
+            IsEditMode = (preferredAttorneyProviderBO != null && preferredAttorneyProviderBO.ID > 0) ? true : false;
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                bool IsEditMode = false;
-                IsEditMode = (preferredAttorneyProviderBO != null && preferredAttorneyProviderBO.ID > 0) ? true : false;
-
                 if (companyBO == null || (companyBO != null && companyBO.ID <= 0))
                 {
                     dbContextTransaction.Rollback();
@@ -205,13 +289,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefAttProvider_CompanyDB.RegistrationComplete = false;
                 prefAttProvider_CompanyDB.IsDeleted = false;
-                prefAttProvider_CompanyDB.CreateByUserID = 0;
+                prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
+                prefAttProvider_CompanyDB.UpdateByUserID = prefAttProviderCompanyBO.UpdateByUserID;
                 prefAttProvider_CompanyDB.CreateDate = DateTime.UtcNow;
 
                 _context.Companies.Add(prefAttProvider_CompanyDB);
                 _context.SaveChanges();
 
-                User userDB = new User();
+                
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
                 userDB.UserName = userBO.UserName;
@@ -227,12 +312,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.Users.Add(userDB);
                 _context.SaveChanges();
 
-                UserCompany UserCompanyDB = new UserCompany();
+                
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefAttProvider_CompanyDB.id;
                 UserCompanyDB.IsDeleted = false;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
+                UserCompanyDB.IsAccepted = true;
 
                 _context.UserCompanies.Add(UserCompanyDB);
                 _context.SaveChanges();
@@ -251,7 +337,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider.CompanyId = companyBO.ID;
                 prefAttProvider.IsCreated = true;
                 prefAttProvider.IsDeleted = false;
-                prefAttProvider.CreateByUserID = 0;
+                prefAttProvider.CreateByUserID = prefAttProvider_CompanyDB.CreateByUserID;
+                prefAttProvider.UpdateByUserID = prefAttProvider_CompanyDB.UpdateByUserID;
                 prefAttProvider.CreateDate = DateTime.UtcNow;
 
                 _context.PreferredAttorneyProviders.Add(prefAttProvider);
@@ -259,7 +346,189 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
             }
+            if (IsEditMode == false)
+            {
+                try
+                {
+                    #region Send Email
 
+                    #region Send Email
+
+                    var CurrentUser = _context.Users.Where(p => p.id == prefAttProvider.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
+                    var CurrentCompanyId = _context.UserCompanies.Where(p => p.UserID == CurrentUser.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyID).FirstOrDefault();
+                    var CurrentCompany = _context.Companies.Where(p => p.id == CurrentCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    if (CurrentUser != null)
+                    {
+                        if (CurrentUser.UserType == 3)
+                        {
+
+                            //var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                            // var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
+                            var attorneyprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                            var attorneyprovider_user = _context.Users.Where(p => p.id == attorneyprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+
+                            if (attorneyprovider_user != null)
+                            {
+
+                                var PreferredAttorneyAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAttorneyAddByAttorney".ToUpper()).FirstOrDefault();                               
+                                if (PreferredAttorneyAddByAttorney == null)
+                                {
+                                    return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                }
+                                else
+                                {
+
+
+                                    #region Send mail to attorney
+                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                    string msg1 = PreferredAttorneyAddByAttorney.EmailBody;
+                                    string subject1 = PreferredAttorneyAddByAttorney.EmailSubject;
+
+                                    string message1 = string.Format(msg1, attorneyprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                                    BO.Email objEmail1 = new BO.Email { ToEmail = attorneyprovider_user.UserName, Subject = subject1, Body = message1 };
+                                    objEmail1.SendMail();
+                                    #endregion
+
+                                  
+                                }
+
+                            }
+
+
+                        }
+                        else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
+                        {                          
+                            var attorneyprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                            var attorneyprovider_user = _context.Users.Where(p => p.id == attorneyprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+
+                            if (attorneyprovider_user != null)
+                            {
+
+                                var PreferredAttorneyAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAttorneyAddByProvider".ToUpper()).FirstOrDefault();
+                                if (PreferredAttorneyAddByProvider == null)
+                                {
+                                    return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                }
+                                else
+                                {
+
+
+                                    #region Send mail to attorney
+                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                    string msg1 = PreferredAttorneyAddByProvider.EmailBody;
+                                    string subject1 = PreferredAttorneyAddByProvider.EmailSubject;
+
+                                    string message1 = string.Format(msg1, attorneyprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                                    BO.Email objEmail1 = new BO.Email { ToEmail = attorneyprovider_user.UserName, Subject = subject1, Body = message1 };
+                                    objEmail1.SendMail();
+                                    #endregion
+
+
+                                }
+
+                            }
+                        }
+                    }
+
+                   
+
+                    #endregion
+
+                    //var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                    //var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    //if (userBO != null)
+                    //{
+                    //    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
+                    //    if (mailTemplateDB == null)
+                    //    {
+                    //        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //    else
+                    //    {
+                    //        #region Insert Invitation
+                    //        Invitation invitationDB = new Invitation();
+                    //        invitationDB.User = userDB;
+
+                    //        invitationDB_UniqueID = Guid.NewGuid();
+                    //        invitationDB.UniqueID = invitationDB_UniqueID;
+                    //        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+                    //        invitationDB.CreateDate = DateTime.UtcNow;
+                    //        invitationDB.CreateByUserID = userDB.id;
+                    //        _context.Invitations.Add(invitationDB);
+                    //        _context.SaveChanges();
+                    //        #endregion
+
+                    //        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    //        string msg = mailTemplateDB.EmailBody;
+                    //        string subject = mailTemplateDB.EmailSubject;
+
+                    //        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
+
+                    //        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                    //        objEmail.SendMail();
+                    //    }
+                    //}
+
+                    #endregion
+                }
+                catch (Exception ex) { }
+
+            }
+            else
+            {
+                #region Send Email
+
+                var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (userBO != null)
+                {
+                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderUpdated".ToUpper()).FirstOrDefault();
+                    if (mailTemplateDB == null)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        #region Insert Invitation
+                        Invitation invitationDB = new Invitation();
+                        invitationDB.User = userDB;
+
+                        invitationDB_UniqueID = Guid.NewGuid();
+                        invitationDB.UniqueID = invitationDB_UniqueID;
+                        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = userDB.id;
+                        _context.Invitations.Add(invitationDB);
+                        _context.SaveChanges();
+                        #endregion
+
+                        //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                        string msg = mailTemplateDB.EmailBody;
+                        string subject = mailTemplateDB.EmailSubject;
+
+                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, LoginLink2);
+
+                        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                        objEmail.SendMail();
+                    }
+                }
+
+                #endregion
+
+            }
             var result = _context.PreferredAttorneyProviders.Include("Company").Include("Company1")
                                                            .Where(p => p.Id == prefAttProvider.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                            .FirstOrDefault();
@@ -333,8 +602,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                       .Select(p => p.PrefAttorneyProviderId);
 
             var companies = _context.Companies.Where(p => AssignedPrefAttorneyProvider.Contains(p.id) == false
-                                               && p.CompanyType == 2
-                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                && p.CompanyType == 2
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .OrderBy(x => x.Name)
                                               .ToList();
 
 
@@ -360,7 +630,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company")
                                                                       .Include("Company1")
                                                                       .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                       .ToList();
+                                                                      .OrderBy(p => p.Company1.Name)
+                                                                      .ToList();
 
             List<BO.PreferredAttorneyProvider> lstprovider = new List<BO.PreferredAttorneyProvider>();
 
@@ -377,29 +648,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-
-        #region Get Attorney Provider By PreferredAttorneyProvider Id
+        #region Get By  Id
         public override object Get(int Id)
-        {
-            var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company")
-                                                                      .Include("Company1")
-                                                                      .Where(p => p.PrefAttorneyProviderId == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                       .ToList();
+         {
+            var AttorenyProvider = _context.PreferredAttorneyProviders.Include("Company1.UserCompanies.User")
+                                                                      .Where(p => p.Id == Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
 
-            List<BO.PreferredAttorneyProvider> lstprovider = new List<BO.PreferredAttorneyProvider>();
+            BO.PreferredAttorneyProviderSignUp boProviderSignUp = new BO.PreferredAttorneyProviderSignUp();
 
             if (AttorenyProvider == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this preferred Attorney Provider.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
-                AttorenyProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredAttorneyProvider, PreferredAttorneyProvider>(item)));
+                boProviderSignUp = ConvertPreferredAttorneyProviderSignUp<BO.PreferredAttorneyProviderSignUp, PreferredAttorneyProvider>(AttorenyProvider);
             }
 
-            return lstprovider;
+            return boProviderSignUp;
         }
-        #endregion 
+        #endregion
 
         #region Delete
         public override object Delete(int id)

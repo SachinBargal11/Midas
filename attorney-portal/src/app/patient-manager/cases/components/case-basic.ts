@@ -43,6 +43,7 @@ export class CaseBasicComponent implements OnInit {
     patientName: string;
     // transportation: any;
     allProviders: Account[];
+    attorneyId: number = 0;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -81,6 +82,25 @@ export class CaseBasicComponent implements OnInit {
                     this.allProviders = results[3];
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
+
+                    // if (this.caseDetail.attorneyId != null) {
+                    //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+                    //         // this.caseDetail.caseSource = "";
+                    //         this.caseform.get("caseSource").disable();
+
+                    //     }
+                    //     else {
+                    //         this.caseform.get("caseSource").enable();
+                    //     }
+                    // }
+                    // else {
+                    //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+                    //         this.caseform.get("attorneyId").disable();
+                    //     }
+                    //     else {
+                    //         this.caseform.get("attorneyId").enable();
+                    //     }
+                    // }
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -99,7 +119,7 @@ export class CaseBasicComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             providerId: [''],
-            // transportation: [1, Validators.required],
+            caseSource: ['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -107,6 +127,26 @@ export class CaseBasicComponent implements OnInit {
 
     ngOnInit() {
     }
+    attorneyChange(event) {
+        this.attorneyId = parseInt(event.target.value);
+        if (this.attorneyId > 0) {
+            this.caseform.get("caseSource").disable();
+        }
+        else {
+            this.caseform.get("caseSource").enable();
+        }
+    }
+
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        if (CaseSource != "") {
+            this.caseform.get("attorneyId").disable();
+        }
+        else {
+            this.caseform.get("attorneyId").enable();
+        }
+    }
+
 
     saveCase() {
         this.isSaveProgress = true;
@@ -124,7 +164,7 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.providerId,
             caseStatus: caseFormValues.caseStatusId,
-            // transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
+            caseSource: caseFormValues.caseSource,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));

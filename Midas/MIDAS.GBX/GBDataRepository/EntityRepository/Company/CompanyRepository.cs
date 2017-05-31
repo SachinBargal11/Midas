@@ -170,6 +170,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
             companyDB.SubscriptionPlanType = System.Convert.ToByte(companyBO.SubsCriptionType);
             companyDB.RegistrationComplete = companyBO.RegistrationComplete;
+            companyDB.BlobStorageTypeId = 1;
             if (companyDB.IsDeleted.HasValue)
                 companyDB.IsDeleted = companyBO.IsDeleted.Value;
             #endregion
@@ -266,9 +267,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _dbSet.Add(companyDB);
                 //_dbuser.Add(userDB);
             }
-            _context.SaveChanges();            
+            _context.SaveChanges();
 
             #region Insert User Block
+            userCompanyDB.IsAccepted = true;
             userCompanyDB.Company = companyDB;
             userCompanyDB.CreateDate = companyBO.CreateDate;
             userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
@@ -339,7 +341,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get All Companies
         public override Object Get()
         {
-            var acc_ = _context.Companies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
+            var acc_ = _context.Companies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).OrderBy(p => p.Name).ToList<Company>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

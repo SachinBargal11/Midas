@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, AppValidators.emailValidator]],
             password: ['', Validators.required],
-            chkOTP: ['']
+            chkOTP: ['true']
         });
         this.loginFormControls = this.loginForm.controls;
     }
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         return false;
     }
 
-    login() {
+    login() {     
         let result;
         this.isLoginInProgress = true;
         let forceLogin = true;
@@ -75,9 +75,9 @@ export class LoginComponent implements OnInit {
                     // });
                     // if (this.doctorRole) {
                     // this._router.navigate(['/doctor-manager/doctor-appointment']);
-                    this._router.navigate(['/patient-manager']);
+                    // this._router.navigate(['/patient-manager']);
                     // } else {
-                    //     this._router.navigate(['/dashboard']);
+                        this._router.navigate(['/dashboard']);
                     // }
                 }
             },

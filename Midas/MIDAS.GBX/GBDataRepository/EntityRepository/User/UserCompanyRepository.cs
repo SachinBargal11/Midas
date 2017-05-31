@@ -101,6 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             usercompanyBO.IsDeleted = eachUserCompany.IsDeleted;
                             usercompanyBO.CreateByUserID = eachUserCompany.CreateByUserID;
                             usercompanyBO.UpdateByUserID = eachUserCompany.UpdateByUserID;
+                            usercompanyBO.IsAccepted = true;
 
                             boUser.UserCompanies.Add(usercompanyBO);
                         }
@@ -206,7 +207,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     UserCompanyDB.UserID = UserDB.id;
                     UserCompanyDB.CompanyID = CompanyDB.id;
-                    UserCompanyDB.IsAccepted = false;
+                    UserCompanyDB.IsAccepted = true;
                     UserCompanyDB.IsDeleted = false;
                     UserCompanyDB.CreateByUserID = 0;
                     UserCompanyDB.CreateDate = DateTime.UtcNow;

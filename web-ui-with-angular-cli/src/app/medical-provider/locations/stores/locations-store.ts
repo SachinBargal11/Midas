@@ -167,5 +167,17 @@ export class LocationsStore {
         return <Observable<LocationDetails>>Observable.from(promise);
     }
 
+    getLocationsByCompanyDoctorId(companyId: number, doctorId: number): Observable<LocationDetails[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.getLocationsByCompanyDoctorId(companyId,doctorId).subscribe((locations: LocationDetails[]) => {
+                this._companyLocations.next(List(locations));
+                resolve(locations);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+    }
+
 
 }

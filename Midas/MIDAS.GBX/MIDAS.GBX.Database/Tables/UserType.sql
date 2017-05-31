@@ -21,3 +21,6 @@ GO
 INSERT INTO [dbo].[UserType] ([Name], [IsDeleted], [CreateByUserID], [CreateDate]) VALUES ('Attorney', NULL, 0, GETDATE())
 GO
 */
+
+
+--insert into [dbo].[UserType] values('Doctor',null,0,'2017-01-24 16:18:19.8870000',null,null);

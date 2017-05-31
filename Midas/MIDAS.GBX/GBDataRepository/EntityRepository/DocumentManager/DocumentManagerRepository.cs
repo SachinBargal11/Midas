@@ -82,6 +82,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             return serviceProvider.BlobStorageType.BlobStorageType1.ToString().ToUpper();
         }
 
+        public override object GetByDocumentId(int documentId)
+        {
+            BO.Document docInfo = new BO.Document();
+            var midasDocs = _context.MidasDocuments.Where(p => p.Id == documentId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();            
+            return midasDocs.DocumentPath;
+        }
+
         #region Get
         public override object Get(int id, string type)
         {
@@ -126,6 +133,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                                                 .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
                                                                                                            .FirstOrDefault().CaseType.CaseTypeText.ToLower())
                                                 .Replace("cs", "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (uploadInfo.ObjectType.ToUpper())
+                    {
+                        case EN.Constants.CaseType:
+                            path = "cs-" + uploadInfo.ObjectId +
+                                   "/" + _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
+                            break;
+                        /*case EN.Constants.ConsentType:
+                            path = documentPath[0].Replace("cmp/", "")                              
+                                                .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                            break;*/
+                        case EN.Constants.VisitType:
+                            path = "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId +
+                                   "/" + _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                             .FirstOrDefault().CaseType.CaseTypeText.ToLower();
                             break;
                     }
                 }

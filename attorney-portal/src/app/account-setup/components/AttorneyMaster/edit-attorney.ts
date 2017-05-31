@@ -18,6 +18,9 @@ import { User } from '../../../commons/models/user';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 // import { PatientsStore } from '../stores/PatientsStore';
+import { Signup } from '../../models/signup';
+import { UserType } from '../../../commons/models/enums/user-type';
+import { PrefferedProvider } from '../../models/preffered-provider';
 
 @Component({
     selector: 'edit-attorney',
@@ -26,23 +29,13 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 
 export class EditAttorneyComponent implements OnInit {
-    states: any[];
-    cellPhone: string;
-    faxNo: string;
-    Cities: any[];
-    attorney: Attorney;
-    dateOfBirth: Date;
-    minDate: Date;
-    maxDate: Date;
-    patientId: number;
-    selectedCity='';
-    isattorneyCitiesLoading = false;
-    isSaveAttorneyProgress = false;
-
 
     attorneyform: FormGroup;
     attorneyformControls;
     isSaveProgress = false;
+    attorney: Attorney;
+    isRegistrationInProgress = false;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -58,28 +51,18 @@ export class EditAttorneyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
 
-          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/attorney']);
         });
 
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
-        });
+
         this._route.params.subscribe((routeParams: any) => {
             let attorneyId: number = parseInt(routeParams.id);
             this._progressBarService.show();
             let result = this._attorneyMasterStore.fetchAttorneyById(attorneyId);
             result.subscribe(
-                (attorney: any) => {
-
-                    this.attorney = attorney.toJS();
-                    this.dateOfBirth = this.attorney.user.dateOfBirth
-                        ? this.attorney.user.dateOfBirth.toDate()
-                        : null;
-                    this.cellPhone = this._phoneFormatPipe.transform(this.attorney.user.contact.cellPhone);
-                    this.faxNo = this._faxNoFormatPipe.transform(this.attorney.user.contact.faxNo);
-                    this.selectedCity = attorney.user.address.city;
-                    this.loadCities(attorney.user.address.state);
+                (attorney: Attorney) => {
+                    this.attorney = attorney;
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -90,138 +73,69 @@ export class EditAttorneyComponent implements OnInit {
                 });
         });
         this.attorneyform = this.fb.group({
-            firstname: ['', Validators.required],
-            middlename: [''],
-            lastname: ['', Validators.required],
-            attorneyAddress: ['', Validators.required],
-            dob: [''],
-            gender: ['', Validators.required],
-            attorneyAddress2: [''],
-            attorneyState: [''],
-            attorneyCity: [''],
-            attorneyZipcode: [''],
-            attorneyCountry: [''],
-            attorneyEmail: ['', [Validators.required, AppValidators.emailValidator]],
-            attorneyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            attorneyHomePhone: [''],
-            attorneyWorkPhone: [''],
-            attorneyFaxNo: [''],
-            attorneyalternateEmail:  ['', [AppValidators.emailValidator]],
-            attorneyofficeExtension: [''],
-            attorneypreferredCommunication: ['']
+            companyName: ['', [Validators.required]],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            taxId: ['', [Validators.required, Validators.maxLength(10)]],
+            phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            companyType: ['', Validators.required],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            subscriptionPlan: ['', Validators.required]
         });
 
 
         this.attorneyformControls = this.attorneyform.controls;
     }
     ngOnInit() {
-        let today = new Date();
-        let currentDate = today.getDate();
-        this.maxDate = new Date();
-        this.maxDate.setDate(currentDate);
-        this._statesStore.getStates()
-            .subscribe(states => this.states = states);
-        // this._statesStore.getStates()
-        //     .subscribe(states => this.states = states);
-
-        // this._statesStore.getStates()
-        //     .subscribe(states => this.states = states);
 
     }
 
-    selectState(event) {
-        let currentState = event.target.value;
-        if (currentState === this.attorney.user.address.state) {
-            this.loadCities(currentState);
-            this.selectedCity = this.attorney.user.address.city;
-        } else {
-            // this.loadCities(currentState);
-            this.selectedCity = '';
-        }
-    }
-
-    loadCities(stateName) {
-        this.isattorneyCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.Cities = cities; },
-                null,
-                () => { this.isattorneyCitiesLoading = false; });
-        } else {
-            this.Cities = [];
-            this.isattorneyCitiesLoading = false;
-        }
-    }
-
-
-    save() {
+    updateAttorney() {
         this.isSaveProgress = true;
         let attorneyformValues = this.attorneyform.value;
         let result;
         let attorney = new Attorney({
             id: this.attorney.id,
             companyId: this._sessionStore.session.currentCompany.id,
-            user: new User({
-                id: this.attorney.user.id,
-                dateOfBirth: attorneyformValues.dob ? moment(attorneyformValues.dob) : null,
-                firstName: attorneyformValues.firstname,
-                middleName: attorneyformValues.middlename,
-                lastName: attorneyformValues.lastname,
-                userType: 3,
-                userName: attorneyformValues.attorneyEmail,
-                createByUserId: this._sessionStore.session.account.user.id,
-                gender: attorneyformValues.gender,
-                contact: new Contact({
-                    cellPhone: attorneyformValues.attorneyCellPhone ? attorneyformValues.attorneyCellPhone.replace(/\-/g, '') : null,
-                    emailAddress: attorneyformValues.attorneyEmail,
-                    faxNo: attorneyformValues.attorneyFaxNo ? attorneyformValues.attorneyFaxNo.replace(/\-|\s/g, '') : null,
-                    homePhone: attorneyformValues.attorneyHomePhone,
-                    workPhone: attorneyformValues.attorneyWorkPhone,
-                    officeExtension: attorneyformValues.attorneyofficeExtension,
-                    alternateEmail: attorneyformValues.attorneyalternateEmail,
-                    preferredCommunication: attorneyformValues.attorneypreferredCommunication,
-                    createByUserId: this._sessionStore.session.account.user.id
-                }),
-                address: new Address({
-                    address1: attorneyformValues.attorneyAddress,
-                    address2: attorneyformValues.attorneyAddress2,
-                    city: attorneyformValues.attorneyCity,
-                    country: attorneyformValues.attorneyCountry,
-                    state: attorneyformValues.attorneyState,
-                    zipCode: attorneyformValues.attorneyZipcode,
-                    createByUserId: this._sessionStore.session.account.user.id
-                })
+            prefAttorneyProviderId: this.attorney.prefAttorneyProviderId,
+
+            signup: new Signup({
+                company: {
+                    id: this.attorney.signup.company.id,
+                    name: this.attorneyform.value.companyName,
+                    taxId: this.attorneyform.value.taxId,
+                    companyType: this.attorneyform.value.companyType,
+                    subsCriptionType: this.attorneyform.value.subscriptionPlan
+                },
+                user: {
+                    id: this.attorney.signup.user.id,
+                    userType: UserType.STAFF,
+                    userName: this.attorneyform.value.email,
+                    firstName: this.attorneyform.value.firstName,
+                    lastName: this.attorneyform.value.lastName
+                },
+                contactInfo: {
+                    id: this.attorney.signup.contactInfo.id,
+                    cellPhone: this.attorneyform.value.phoneNo.replace(/\-/g, ''),
+                    emailAddress: this.attorneyform.value.email,
+                    preferredCommunication: 1
+                }
             })
-
-
         });
-        this._progressBarService.show();
         result = this._attorneyMasterStore.updateAttorney(attorney);
         result.subscribe(
             (response) => {
-                let notification = new Notification({
-                    'title': 'Attorney updated successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Welcome!', 'Preffered attorney has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to updated attorney.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                let errString = 'Unable to Register User.';
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
             });
     }
+
 }

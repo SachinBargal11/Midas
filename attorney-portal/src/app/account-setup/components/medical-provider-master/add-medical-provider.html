@@ -1,5 +1,5 @@
 <header class="card-header card-header-lg">
-    Add Medical Provider
+    Add Preffered Medical Provider
 </header>
 <form [formGroup]="providerform" name="providerform" (ngSubmit)="saveMedicalProvider()">
     <section class="card">
@@ -74,17 +74,15 @@
             <div class="row">
                 <div class="col-lg-6">
                     <label class="form-label"> Company type
-                                            <span class="color-red">*</span>
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                     <div class="form-group" [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
-                        <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
-                                             <option value="">-Select company type-</option>
-                                             <option disabled>────────────────────</option>
-                                             <option value="1">Billing</option>
-                                             <!--<option value="Medical Provider">Medical Provider</option>
-                                             <option value="PI\BI Firm">PI\BI Firm</option>
-                                             <option value="Collection Firm">Collection Firm</option>
-                                             <option value="Transportation">Transportation</option>-->
+                        <select disabled [ngModel]=1 formControlName="companyType" class="selectpicker form-control" title="Select Company Type."
+                            [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                                             <!--<option value="">-Select company type-</option>
+                                             <option disabled>────────────────────</option>-->
+                                             <option value="1">Medical Provider</option>
+                                             
                                          </select>
                         <div class='error-list' *ngIf="providerformControls.companyType.touched && !providerformControls.companyType.valid">
                             <ul>
@@ -114,14 +112,15 @@
             <div class="row">
                 <div class="col-lg-6">
                     <label class="form-label"> Subscription plan
-                                            <span class="color-red">*</span>
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                     <div class="form-group" [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
-                        <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
-                                             <option value="">-Select subscription plan-</option>
-                                             <option disabled>────────────────────</option>
+                        <select disabled [ngModel]=1 formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan."
+                            [class.error]="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
+                                             <!--<option value="">-Select subscription plan-</option>
+                                             <option disabled>────────────────────</option>-->
                                              <option value="1">Trial</option>
-                                             <!--<option value="30 day Trial">30 day Trial</option>-->
+                                            
                                          </select>
                         <div class='error-list' *ngIf="providerformControls.subscriptionPlan.touched && !providerformControls.subscriptionPlan.valid">
                             <ul>

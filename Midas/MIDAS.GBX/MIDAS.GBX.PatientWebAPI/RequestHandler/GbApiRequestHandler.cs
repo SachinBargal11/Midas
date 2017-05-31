@@ -775,6 +775,57 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage GetLocationForPatientId(HttpRequestMessage request, int patientId)
+        {
+            var objResult = dataAccessManager.GetLocationForPatientId(patientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
+        public HttpResponseMessage GetByPatientIdAndLocationId(HttpRequestMessage request, int PatientId, int LocationId)
+        {
+            var objResult = dataAccessManager.GetByPatientIdAndLocationId(PatientId, LocationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId)
+        {
+            var objResult = dataAccessManager.GetByDocumentId(documentId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetVisitsByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetVisitsByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
     }
 }

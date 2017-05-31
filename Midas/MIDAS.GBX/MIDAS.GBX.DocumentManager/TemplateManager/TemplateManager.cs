@@ -1,6 +1,5 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using MIDAS.GBX.DataRepository.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,12 +17,12 @@ namespace MIDAS.GBX.DocumentManager
         private CloudBlockBlob _cblob;
         private string blobStorageContainerName = ConfigurationManager.AppSettings["BlobStorageContainerName"];              
         private Utility util = new Utility();
-        string tempIMGpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/sign.jpeg");
-        string tempDOCpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/tempUpload.docx");
-        string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/app_data/uploads/test.pdf");
+        string tempIMGpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/sign.jpeg");
+        string tempDOCpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/tempUpload.docx");
+        string tempPDFpath = System.Web.HttpContext.Current.Server.MapPath(@"~/App_Data/uploads/test.pdf");
         #endregion
 
-        public TemplateManager(MIDASGBXEntities context) : base(context)
+        public TemplateManager()
         {            
             util.BlobStorageConnectionString = ConfigurationManager.AppSettings["BlobStorageConnectionString"];
         }

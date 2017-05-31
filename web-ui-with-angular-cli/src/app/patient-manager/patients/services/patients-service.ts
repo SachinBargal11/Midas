@@ -26,7 +26,9 @@ export class PatientsService {
 
     getPatient(patientId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/getPatientById/' + patientId).map(res => res.json())
+            return this._http.get(this._url + '/Patient/getPatientById/' + patientId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let patient = null;
                     if (data) {
@@ -46,7 +48,9 @@ export class PatientsService {
     getPatientsWithOpenCases() {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/getByCompanyWithOpenCases/' + companyId)
+            return this._http.get(this._url + '/Patient/getByCompanyWithOpenCases/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {
@@ -85,7 +89,9 @@ export class PatientsService {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let doctorId: number = this._sessionStore.session.user.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/getByCompanyAndDoctorId/' + companyId + '/' + doctorId)
+            return this._http.get(this._url + '/Patient/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {
@@ -105,7 +111,9 @@ export class PatientsService {
     getPatientsWithNoCase(): Observable<Patient[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/getByCompanyWithCloseCases/' + companyId)
+            return this._http.get(this._url + '/Patient/getByCompanyWithCloseCases/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {
@@ -212,12 +220,31 @@ export class PatientsService {
 
     deletePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/patient/delete/' + patient.id)
+            return this._http.get(this._url + '/patient/delete/' + patient.id, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((patientData: any) => {
                     let parsedPatient: Patient = null;
                     parsedPatient = PatientAdapter.parseResponse(patientData);
                     resolve(parsedPatient);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Patient>>Observable.fromPromise(promise);
+    }
+
+
+    assignPatientToAttorney(currentPatientId: Number, caseId: Number, attorneyId: Number): Observable<Patient> {
+        let promise: Promise<Patient> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Patient/associatePatientWithAttorneyCompany/' + currentPatientId + '/' + caseId + '/' + attorneyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let patient = null;
+                    patient = PatientAdapter.parseResponse(data);
+                    resolve(patient);
                 }, (error) => {
                     reject(error);
                 });

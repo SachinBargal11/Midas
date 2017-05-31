@@ -45,7 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
             caseBO.UpdateByUserID = cases.UpdateByUserID;
-            caseBO.caseSource = cases.CaseSource;
+            caseBO.caseSource = !string.IsNullOrEmpty(cases.CaseSource) ? cases.CaseSource : (cases.AttorneyId > 0 ? _context.Companies.Where(p => p.id == cases.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault().Name : "");
 
 
             if (cases.PatientEmpInfo != null)
@@ -282,12 +282,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
 
                         var company = new Company();
-                        if (eachCase.AttorneyId != null)
+                        if (eachCase.AttorneyId > 0)
                         {
-                            company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && p.CompanyType == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                            company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                         }
 
-                        if (eachCase.AttorneyId != null)
+                        if (eachCase.AttorneyId > 0)
                         {
                             caseWithUserAndPatient.caseSource = company.Name;
                         }
@@ -386,6 +386,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+
+                var companyTypeDB = company.CompanyType1;
+                if (company.CompanyType != 0)
+                {
+                    boCompany.CompanyType1 = new BO.CompanyType();
+                    boCompany.CompanyType1.ID = companyTypeDB.id;
+                    boCompany.CompanyType1.Name = companyTypeDB.Name;
+                    boCompany.CompanyType1.IsDeleted = companyTypeDB.IsDeleted;
+                    boCompany.CompanyType1.CreateByUserID = companyTypeDB.CreateByUserID;
+                    boCompany.CompanyType1.UpdateByUserID = companyTypeDB.UpdateByUserID;
+                  
+                }
+               
             }
 
             return (T)(object)boCompany;
@@ -622,6 +635,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
+                    caseDB.CreateByUserID = IsEditMode == true && caseBO.CreateByUserID == 0 ? caseDB.CreateByUserID : caseBO.CreateByUserID;
+                    caseDB.UpdateByUserID = IsEditMode == true && caseBO.UpdateByUserID == 0 ? caseDB.UpdateByUserID : caseBO.UpdateByUserID;
                     if (!string.IsNullOrEmpty(caseBO.caseSource))
                     { caseDB.AttorneyId = null; }
                     else
@@ -691,31 +706,233 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     #region Send Email
 
-                    var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
-
-                    var userBO = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                    //var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                    if (userBO != null)
+                    if (IsEditMode)
                     {
-                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "CaseCreated".ToUpper()).FirstOrDefault();
-                        if (mailTemplateDB == null)
-                        {
-                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                        }
-                        else
-                        {
-                            string msg = mailTemplateDB.EmailBody;
-                            string subject = mailTemplateDB.EmailSubject;
+                        var CurrentUser = _context.Users.Where(p => p.id == caseDB.UpdateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
 
-                            string message = string.Format(msg, userBO.FirstName, caseDB.PatientId);
+                        if (CurrentUser != null)
+                        {
+                            if (CurrentUser.UserType == 3)
+                            {
 
-                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
-                            objEmail.SendMail();
+                                var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
+                                var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == medicalprovider && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                                var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+                                if (medicalprovider_user != null && patient != null)
+                                {
+
+                                    var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplateUpdate".ToUpper()).FirstOrDefault();
+                                    //var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
+                                    var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByAttorneyUpdate".ToUpper()).FirstOrDefault();
+                                    if (medicalProviderTemplate == null || patientCaseTemplate == null)
+                                    {
+                                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                    }
+                                    else
+                                    {
+
+
+                                        #region Send mail to medical provider
+                                        string LoginLink1 = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                                        string msg1 = medicalProviderTemplate.EmailBody;
+                                        string subject1 = medicalProviderTemplate.EmailSubject;
+
+                                        string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, LoginLink1);
+
+                                        BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                                        objEmail1.SendMail();
+                                        #endregion
+
+                                        #region Send mail to patient
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string msg2 = patientCaseTemplate.EmailBody;
+                                        string subject2 = patientCaseTemplate.EmailSubject;
+
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
+
+                                        BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
+                                        objEmail2.SendMail();
+                                        #endregion
+
+
+
+                                    }
+
+                                }
+
+
+                            }
+                            else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
+                            {
+
+                                var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                                var attorney = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+
+                                if (attorney != null && patient != null)
+                                {
+
+                                    //var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplate".ToUpper()).FirstOrDefault();
+                                    var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplateUpdate".ToUpper()).FirstOrDefault();
+                                    var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByMedicalProviderUpdate".ToUpper()).FirstOrDefault();
+                                    if (attorneyTemplate == null || patientCaseTemplate == null)
+                                    {
+                                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                    }
+                                    else
+                                    {
+                                        #region Send mail to attorney
+                                        string LoginLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                                        string msg = attorneyTemplate.EmailBody;
+                                        string subject = attorneyTemplate.EmailSubject;
+
+                                        string message = string.Format(msg, attorney.FirstName, CurrentUser.FirstName, LoginLink);
+
+                                        BO.Email objEmail = new BO.Email { ToEmail = attorney.UserName, Subject = subject, Body = message };
+                                        objEmail.SendMail();
+                                        #endregion
+
+                                        #region Send mail to patient
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string msg2 = patientCaseTemplate.EmailBody;
+                                        string subject2 = patientCaseTemplate.EmailSubject;
+
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorney.FirstName, LoginLink2);
+
+                                        BO.Email objEmail2 = new BO.Email { ToEmail = attorney.UserName, Subject = subject2, Body = message2 };
+                                        objEmail2.SendMail();
+                                        #endregion
+
+
+
+                                    }
+
+                                }
+                            }
                         }
                     }
+                    else
+                    {
 
+                        var CurrentUser = _context.Users.Where(p => p.id == caseDB.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
+
+                        if (CurrentUser != null)
+                        {
+                            if (CurrentUser.UserType == 3)
+                            {
+
+                                var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
+                                var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == medicalprovider && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                                var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+                                if (medicalprovider_user != null && patient != null)
+                                {
+
+                                    var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplate".ToUpper()).FirstOrDefault();
+                                    //var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
+                                    var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByAttorney".ToUpper()).FirstOrDefault();
+                                    if (medicalProviderTemplate == null || patientCaseTemplate == null)
+                                    {
+                                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                    }
+                                    else
+                                    {
+
+
+                                        #region Send mail to medical provider
+                                        string LoginLink1 = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                                        string msg1 = medicalProviderTemplate.EmailBody;
+                                        string subject1 = medicalProviderTemplate.EmailSubject;
+
+                                        string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, LoginLink1);
+
+                                        BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                                        objEmail1.SendMail();
+                                        #endregion
+
+                                        #region Send mail to patient
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string msg2 = patientCaseTemplate.EmailBody;
+                                        string subject2 = patientCaseTemplate.EmailSubject;
+
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
+
+                                        BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
+                                        objEmail2.SendMail();
+                                        #endregion
+
+
+
+                                    }
+
+                                }
+
+
+                            }
+                            else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
+                            {
+
+                                var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+
+                                var attorney = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+
+                                if (attorney != null && patient != null)
+                                {
+
+                                    //var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplate".ToUpper()).FirstOrDefault();
+                                    var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
+                                    var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByMedicalProvider".ToUpper()).FirstOrDefault();
+                                    if (attorneyTemplate == null || patientCaseTemplate == null)
+                                    {
+                                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                    }
+                                    else
+                                    {
+                                        #region Send mail to attorney
+                                        string LoginLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                                        string msg = attorneyTemplate.EmailBody;
+                                        string subject = attorneyTemplate.EmailSubject;
+
+                                        string message = string.Format(msg, attorney.FirstName, CurrentUser.FirstName, LoginLink);
+
+                                        BO.Email objEmail = new BO.Email { ToEmail = attorney.UserName, Subject = subject, Body = message };
+                                        objEmail.SendMail();
+                                        #endregion
+
+                                        #region Send mail to patient
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string msg2 = patientCaseTemplate.EmailBody;
+                                        string subject2 = patientCaseTemplate.EmailSubject;
+
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorney.FirstName, LoginLink2);
+
+                                        BO.Email objEmail2 = new BO.Email { ToEmail = attorney.UserName, Subject = subject2, Body = message2 };
+                                        objEmail2.SendMail();
+                                        #endregion
+
+
+
+                                    }
+
+                                }
+                            }
+                        }
+                    }
                     #endregion
                 }
                 catch (Exception ex) { }
@@ -967,11 +1184,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var company1 = _context.CaseCompanyMappings.Where(p => p.CaseId == caseId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .Select(p => p.Company).ToList();
-
+                                                       .Select(p => p.Company)
+                                                       .Include("CompanyType1")
+                                                       .ToList();
+           
             var company2 = _context.Referral2.Where(p => p.CaseId == caseId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .Select(p => p.Company).ToList();
+                                             .Select(p => p.Company1)
+                                             .Include("CompanyType1")
+                                             .ToList();
 
             if (company1 == null && company2 == null)
             {

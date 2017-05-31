@@ -45,6 +45,11 @@
 		<div class="site-header-collapsed">
 			<div class="site-header-collapsed-in">
 				<div class="dropdown dropdown-typical">
+					<a [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Dashboard
+							</a>
+				</div>
+				<div class="dropdown dropdown-typical">
 					<a [routerLink]="['/patient-manager']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Case Manager
 							</a>

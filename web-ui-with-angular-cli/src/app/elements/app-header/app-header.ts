@@ -23,24 +23,11 @@ import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter
 
 export class AppHeaderComponent implements OnInit {
 
-    userId: number = this.sessionStore.session.user.id;
-    companyId: number = this.sessionStore.session.currentCompany.id;
-    userSetting: UserSetting;
     doctorRoleFlag = false;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
     menu_right_opened: boolean = false;
     menu_left_opened: boolean = false;
-
-    /* Dialog Visibilities */
-    settingsDialogVisible: boolean = false;
-
-    addUserSettings: FormGroup;
-    addUserSettingsControls;
-    isSearchable: boolean = false;
-    isCalendarPublic: boolean = false;
-    isPublic: boolean = false;
-    isTimeSlot = 30;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -60,14 +47,6 @@ export class AppHeaderComponent implements OnInit {
         private _elRef: ElementRef
 
     ) {
-
-        this.addUserSettings = this._fb.group({
-            isPublic: [''],
-            isCalendarPublic: [''],
-            isSearchable: [''],
-            timeSlot: ['']
-        })
-        this.addUserSettingsControls = this.addUserSettings.controls;
 
     }
 
@@ -93,20 +72,6 @@ export class AppHeaderComponent implements OnInit {
                 this.doctorRoleFlag = false;
             }
         }
-
-        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
-            .subscribe((userSetting) => {
-                this.userSetting = userSetting;
-                this.isPublic = userSetting.isPublic;
-                this.isCalendarPublic = userSetting.isCalendarPublic;
-                this.isSearchable = userSetting.isSearchable;
-                this.isTimeSlot = userSetting.SlotDuration;
-
-            },
-            (error) => { },
-            () => {
-            });
-
     }
     onLeftBurgerClick() {
         if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {

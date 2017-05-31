@@ -22,11 +22,14 @@ export class LocationsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getLocation(id: Number): Observable<LocationDetails> {
         let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Location/get/' + id).map(res => res.json())
+            return this._http.get(this._url + '/Location/get/' + id, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedLocation: LocationDetails = null;
                     parsedLocation = LocationDetailAdapter.parseResponse(data);
@@ -93,7 +96,9 @@ export class LocationsService {
 
     getAllLocationAndTheirCompany(): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Location/getAllLocationAndCompany').map(res => res.json())
+            return this._http.get(this._url + '/Location/getAllLocationAndCompany', {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data.errorMessage) {
                         reject(new Error(data.errorMessage));
@@ -201,6 +206,29 @@ export class LocationsService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+
+
+    getLocationsByCompanyDoctorId(companyId: number, doctorId: number): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Location/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: any[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
 
 }
 

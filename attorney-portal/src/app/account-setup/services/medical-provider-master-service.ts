@@ -24,12 +24,15 @@ export class MedicalProviderMasterService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        // this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
 
     getAllProviders(companyId: Number): Observable<Account[]> {
         let promise: Promise<Account[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/GetAllMedicalProviderExcludeAssigned/' + companyId)
+            return this._http.get(this._url + '/PreferredMedicalProvider/GetAllMedicalProviderExcludeAssigned/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let allProviders = (<Object[]>data).map((data: any) => {
@@ -45,7 +48,9 @@ export class MedicalProviderMasterService {
 
     assignProviders(currentProviderId: Number, companyId: Number): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId).map(res => res.json())
+            return this._http.get(this._url + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let provider = null;
                     provider = MedicalProviderMasterAdapter.parseResponse(data);
@@ -59,7 +64,9 @@ export class MedicalProviderMasterService {
 
     getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
         let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/getByCompanyId/' + companyId)
+            return this._http.get(this._url + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let provider = (<Object[]>data).map((data: any) => {
@@ -109,7 +116,9 @@ export class MedicalProviderMasterService {
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/Delete/' + medicalProviderMaster.id).map(res => res.json())
+            return this._http.get(this._url + '/PreferredMedicalProvider/Delete/' + medicalProviderMaster.id, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedProvider: MedicalProviderMaster = null;
                     parsedProvider = MedicalProviderMasterAdapter.parseResponse(data);
@@ -124,7 +133,9 @@ export class MedicalProviderMasterService {
     getMedicalProviderById(providerId: Number): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
-            return this._http.get(this._url + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId).map(res => res.json())
+            return this._http.get(this._url + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let provider = null;
                     provider = MedicalProviderMasterAdapter.parseResponse(data);

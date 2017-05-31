@@ -71,55 +71,66 @@ export class AttorneyMasterStore {
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
 
-    findAttorneyById(id: number): Attorney {
-        let attorney = this._attorneyMaster.getValue();
-        let index = attorney.findIndex((currentAttorney: Attorney) => currentAttorney.id === id);
-        return attorney.get(index);
-    }
+    // findAttorneyById(id: number): Attorney {
+    //     let attorney = this._attorneyMaster.getValue();
+    //     let index = attorney.findIndex((currentAttorney: Attorney) => currentAttorney.id === id);
+    //     return attorney.get(index);
+    // }
 
     fetchAttorneyById(id: number): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            let matchedAttorney: Attorney = this.findAttorneyById(id);
-            if (matchedAttorney) {
-                resolve(matchedAttorney);
-            } else {
+          
                 this._attorneyMasterService.getAttorneyMaster(id).subscribe((attorney: Attorney) => {
                     resolve(attorney);
                 }, error => {
                     reject(error);
                 });
-            }
+            
         });
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
 
-    addAttorney(attorney: Attorney): Observable<Attorney> {
+    addAttorney(signUp: any): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.addAttorney(attorney).subscribe((attorney: Attorney) => {
-                this._attorneyMaster.next(this._attorneyMaster.getValue().push(attorney));
-                resolve(attorney);
+            this._attorneyMasterService.addAttorney(signUp).subscribe((any) => {
+                this._attorneyMaster.next(this._attorneyMaster.getValue().push(any));
+                resolve(any);
             }, error => {
                 reject(error);
             });
         });
         return <Observable<Attorney>>Observable.from(promise);
     }
-    updateAttorney(attorney: Attorney): Observable<Attorney> {
+    // updateAttorney(attorney: any): Observable<Attorney> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._attorneyMasterService.updateAttorney(attorney).subscribe((updatedAttorney: any) => {
+    //             let attorney: List<Attorney> = this._attorneyMaster.getValue();
+    //             let index = attorney.findIndex((currentAttorney: any) => currentAttorney.id === updatedAttorney.id);
+    //             attorney = attorney.update(index, function () {
+    //                 return updatedAttorney;
+    //             });
+    //             this._attorneyMaster.next(attorney);
+    //             resolve(attorney);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Attorney>>Observable.from(promise);
+    // }
+
+
+    updateAttorney(signUp: any): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.updateAttorney(attorney).subscribe((updatedAttorney: Attorney) => {
-                let attorney: List<Attorney> = this._attorneyMaster.getValue();
-                let index = attorney.findIndex((currentAttorney: Attorney) => currentAttorney.id === updatedAttorney.id);
-                attorney = attorney.update(index, function () {
-                    return updatedAttorney;
-                });
-                this._attorneyMaster.next(attorney);
-                resolve(attorney);
+            this._attorneyMasterService.updateAttorney(signUp).subscribe((any) => {
+                this._attorneyMaster.next(this._attorneyMaster.getValue().push(any));
+                resolve(Attorney);
             }, error => {
                 reject(error);
             });
         });
         return <Observable<Attorney>>Observable.from(promise);
     }
+
     deleteAttorney(attorney: Attorney) {
         let attorneys = this._attorneyMaster.getValue();
         let index = attorneys.findIndex((currentAttorney: Attorney) => currentAttorney.id === attorney.id);
@@ -136,7 +147,7 @@ export class AttorneyMasterStore {
     }
 
 
-    getAllProviders(): Observable<Account[]> {      
+    getAllProviders(): Observable<Account[]> {
         let promise = new Promise((resolve, reject) => {
             this._attorneyMasterService.getAllProviders().subscribe((allProvider: Account[]) => {
                 this._allProvidersInMidas.next(List(allProvider));
@@ -152,4 +163,7 @@ export class AttorneyMasterStore {
         this._attorneyMaster.next(this._attorneyMaster.getValue().clear());
         this._allAttorneyInMidas.next(this._allAttorneyInMidas.getValue().clear());
     }
+
+
+
 }
