@@ -29,61 +29,69 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.Document docInfo = new BO.Document();
             string errMessage = string.Empty;
+            string errDesc = string.Empty;
 
-            MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                ObjectType = documentType.ToUpper().Equals(EN.Constants.ConsentType) ? string.Concat(EN.Constants.ConsentType, "_" + companyId) : objectType,
-                ObjectId = objectId,
-                DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
-                DocumentPath = uploadpath,
-                CreateDate = DateTime.UtcNow
-            });
-            _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
-            _context.SaveChanges();
-
-            if (documentType.ToUpper().Equals(EN.Constants.ConsentType))
-            {
-                CaseCompanyConsentDocument caseCompConsentDoc = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
+                MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
                 {
-                    MidasDocumentId = midasdoc.Id,
-                    CaseId = objectId,
-                    CompanyId = companyId,
+                    ObjectType = documentType.ToUpper().Equals(EN.Constants.ConsentType) ? string.Concat(EN.Constants.ConsentType, "_" + companyId) : objectType,
+                    ObjectId = objectId,
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                    DocumentPath = uploadpath,
                     CreateDate = DateTime.UtcNow
                 });
-                _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
+                _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
                 _context.SaveChanges();
 
-                BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
-                CompanyCaseConsentApprovalRepository CompanyCaseConsentApprovalRepository = new CompanyCaseConsentApprovalRepository(_context);
-                companyCaseConsentApprovalBO.CaseId = objectId;
-                companyCaseConsentApprovalBO.CompanyId = companyId;
-                var result = CompanyCaseConsentApprovalRepository.Save(companyCaseConsentApprovalBO);
-                if (result is BO.ErrorObject)
+                if (documentType.ToUpper().Equals(EN.Constants.ConsentType))
                 {
-                    return result;
+                    CaseCompanyConsentDocument caseCompConsentDoc = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
+                    {
+                        MidasDocumentId = midasdoc.Id,
+                        CaseId = objectId,
+                        CompanyId = companyId,
+                        DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                        CreateDate = DateTime.UtcNow
+                    });
+                    _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
+                    _context.SaveChanges();
+
+                    BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+                    CompanyCaseConsentApprovalRepository CompanyCaseConsentApprovalRepository = new CompanyCaseConsentApprovalRepository(_context);
+                    companyCaseConsentApprovalBO.CaseId = objectId;
+                    companyCaseConsentApprovalBO.CompanyId = companyId;
+                    var result = CompanyCaseConsentApprovalRepository.Save(companyCaseConsentApprovalBO);
+                    if (result is BO.ErrorObject)
+                    {
+                        errMessage = "Failed";
+                        errDesc = ((BO.ErrorObject)result).ErrorMessage;
+                        dbContextTransaction.Rollback();
+                    }
+                    else dbContextTransaction.Commit();
                 }
-            }
-            else
-            {
-                CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
+                else
                 {
-                    MidasDocumentId = midasdoc.Id,
-                    CaseId = objectId,
-                    DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
-                    CreateDate = DateTime.UtcNow
-                });
-                _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
-                _context.SaveChanges();                
+                    CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
+                    {
+                        MidasDocumentId = midasdoc.Id,
+                        CaseId = objectId,
+                        DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                        CreateDate = DateTime.UtcNow
+                    });
+                    _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
+                    _context.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                
+                docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
+                docInfo.Message = errDesc;
+                docInfo.DocumentId = midasdoc.Id;
+                docInfo.DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName;
+                docInfo.DocumentName = midasdoc.DocumentName;
+                docInfo.id = objectId;
             }
-
-            docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
-            docInfo.Message = errMessage;
-            docInfo.DocumentId = midasdoc.Id;
-            docInfo.DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName;
-            docInfo.DocumentName = midasdoc.DocumentName;
-            docInfo.id = objectId;
-
+            
             return (Object)docInfo;
         }
 
