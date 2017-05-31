@@ -421,7 +421,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                     #region Send mail to attorney
-                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                    string VarificationLink1 = "<a href='" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                     string msg1 = PreferredAttorneyAddByProvider.EmailBody;
                                     string subject1 = PreferredAttorneyAddByProvider.EmailSubject;
 

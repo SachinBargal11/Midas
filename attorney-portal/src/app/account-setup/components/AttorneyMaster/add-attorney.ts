@@ -99,11 +99,12 @@ export class AddAttorneyComponent implements OnInit {
                     name: this.attorneyform.value.companyName,
                     taxId: this.attorneyform.value.taxId,
                     companyType: this.attorneyform.value.companyType,
-                    subsCriptionType: this.attorneyform.value.subscriptionPlan
+                    subsCriptionType: this.attorneyform.value.subscriptionPlan,
+                    createByUserID: this._sessionStore.session.account.user.id
                 }
             }
         };
-        result= this._attorneyMasterStore.addAttorney(attorney);
+        result = this._attorneyMasterStore.addAttorney(attorney);
         result.subscribe(
             (response) => {
                 this._notificationsService.success('Welcome!', 'Medical provider has been registered successfully!.');

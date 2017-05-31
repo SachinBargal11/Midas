@@ -25,7 +25,7 @@
 </section><br>
 <section class="card">
     <header class="card-header card-header-lg">
-        Add Attorney
+        Preffered Attorney List
     </header>
     <p-confirmDialog width="425"></p-confirmDialog>
     <div class="card-block">
@@ -45,7 +45,7 @@
 </div>
 </div>
 <p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
-    <header>Attorney List</header>
+    <header>Preffered Attorney List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="prefferedAttorney.name" header="Attorney Name" [sortable]="true">
         <!--<ng-template let-attorney="rowData" pTemplate="body">
