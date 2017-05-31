@@ -19,6 +19,8 @@ import * as _ from 'underscore';
 import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
+import { ConsentStore } from '../../cases/stores/consent-store';
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'caseslist',
@@ -38,6 +40,11 @@ export class CasesListComponent implements OnInit {
     isDeleteProgress: boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
+    caseId: number;
+    companyId: number;
+    url;
 
     constructor(
         public _route: ActivatedRoute,
@@ -49,7 +56,11 @@ export class CasesListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
+        private _consentStore: ConsentStore,
+        
     ) {
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
+
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
@@ -73,7 +84,7 @@ export class CasesListComponent implements OnInit {
     }
 
     loadCases() {
-       
+
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
@@ -89,9 +100,67 @@ export class CasesListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.addConsentDialogVisible = false;
+         }
+        });
+        // this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
+
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            this._progressBarService.show();
+            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            }
+            this._progressBarService.hide();
         });
     }
     consentAvailable(case1: Case) {
