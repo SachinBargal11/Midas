@@ -57,6 +57,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpPost]
+        [Route("updateAttorneyProvider")]
+        public HttpResponseMessage UpdateAttorneyProvider([FromBody]PreferredAttorneyProviderSignUp data)
+        {
+            return requestHandler.UpdateAttorneyProvider(Request, data);
+        }
+
+
         [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
