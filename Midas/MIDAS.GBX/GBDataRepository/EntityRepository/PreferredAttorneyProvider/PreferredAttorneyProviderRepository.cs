@@ -346,6 +346,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
             }
+
+            #region Insert Invitation
+            Invitation invitationDB = new Invitation();
+            invitationDB.User = userDB;
+
+            invitationDB_UniqueID = Guid.NewGuid();
+            invitationDB.UniqueID = invitationDB_UniqueID;
+            invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+            invitationDB.CreateDate = DateTime.UtcNow;
+            invitationDB.CreateByUserID = userDB.id;
+            _context.Invitations.Add(invitationDB);
+            _context.SaveChanges();
+            #endregion
             if (IsEditMode == false)
             {
                 try
@@ -501,18 +514,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        #region Insert Invitation
-                        Invitation invitationDB = new Invitation();
-                        invitationDB.User = userDB;
-
-                        invitationDB_UniqueID = Guid.NewGuid();
-                        invitationDB.UniqueID = invitationDB_UniqueID;
-                        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
-                        invitationDB.CreateDate = DateTime.UtcNow;
-                        invitationDB.CreateByUserID = userDB.id;
-                        _context.Invitations.Add(invitationDB);
-                        _context.SaveChanges();
-                        #endregion
+                       
 
                         //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                         string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
