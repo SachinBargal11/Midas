@@ -142,7 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     {
                         case EN.Constants.CaseType:
                             path = "cs-" + uploadInfo.ObjectId +
-                                   "/cstype" + _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
+                                   "/" + _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
                             break;
                         /*case EN.Constants.ConsentType:
                             path = documentPath[0].Replace("cmp/", "")                              
@@ -150,7 +150,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                             break;*/
                         case EN.Constants.VisitType:
                             path = "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId +
-                                   "/cstype" + _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                   "/" + _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
                                                              .FirstOrDefault().CaseType.CaseTypeText.ToLower();
                             break;
                     }

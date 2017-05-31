@@ -52,7 +52,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
                 List<HttpContent> streamContent = streamProvider.Contents.ToList();
 
                 HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, uploadObject.CompanyId);
-                if ((ObjectContent)serviceProvider.Content == null)
+                if (serviceProvider.StatusCode.Equals(HttpStatusCode.BadRequest))
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
                 HttpResponseMessage resDocumentPath = requestHandler.GetGbObjects(Request, uploadObject);

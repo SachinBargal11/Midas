@@ -710,13 +710,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (UserCompanyDB == null)
                         {
                             UserCompanyDB = new UserCompany();
-                            add_UserCompany = true;
-                            UserCompanyDB.IsAccepted = true;
+                            add_UserCompany = true;                            
                         }
                         
                         UserCompanyDB.CompanyID = userCompany.Company.ID;
                         UserCompanyDB.UserID = userCompany.UserId;
-
+                        UserCompanyDB.IsAccepted = true;
 
                         if (add_UserCompany)
                         {
@@ -831,6 +830,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             {
                                 userCompanyDB.User = userDB;
                                 userCompanyDB.Company = company;
+                                userCompanyDB.IsAccepted = true;
                                 invitationDB.Company = company;
                                 _context.Entry(userCompanyDB).State = System.Data.Entity.EntityState.Added;
                                 _context.SaveChanges();

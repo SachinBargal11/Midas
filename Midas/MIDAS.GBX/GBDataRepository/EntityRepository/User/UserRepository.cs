@@ -288,6 +288,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         userCompanyDB.User = userDB;
                         userCompanyDB.Company = company;
+                        userCompanyDB.IsAccepted = true;
                         invitationDB.Company = company;
                     }
                     else return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
