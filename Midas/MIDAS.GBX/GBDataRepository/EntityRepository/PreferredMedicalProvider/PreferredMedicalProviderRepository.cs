@@ -423,7 +423,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefMedProvider_CompanyDB.RegistrationComplete = false;
                 prefMedProvider_CompanyDB.IsDeleted = false;
-                prefMedProvider_CompanyDB.CreateByUserID = 0;
+                prefMedProvider_CompanyDB.CreateByUserID = prefMedProviderCompanyBO.CreateByUserID;
+                prefMedProvider_CompanyDB.UpdateByUserID = prefMedProviderCompanyBO.UpdateByUserID;
                 prefMedProvider_CompanyDB.CreateDate = DateTime.UtcNow;
 
                 _context.Companies.Add(prefMedProvider_CompanyDB);
@@ -469,7 +470,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider.CompanyId = companyBO.ID;
                 prefMedProvider.IsCreated = true;
                 prefMedProvider.IsDeleted = false;
-                prefMedProvider.CreateByUserID = 0;
+                prefMedProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
+                prefMedProvider.UpdateByUserID = prefMedProvider_CompanyDB.UpdateByUserID;
                 prefMedProvider.CreateDate = DateTime.UtcNow;
 
                 _context.PreferredMedicalProviders.Add(prefMedProvider);
@@ -482,44 +484,108 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 #region Send Email
 
-                var userId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+                var CurrentUser = _context.Users.Where(p => p.id == prefMedProvider.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
+                var CurrentCompanyId= _context.UserCompanies.Where(p => p.UserID == CurrentUser.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2=>p2.CompanyID).FirstOrDefault();
+                var CurrentCompany = _context.Companies.Where(p => p.id == CurrentCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                //var userBO = _context.Users.Where(p => p.id == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                if (userBO != null)
+                if (CurrentUser != null)
                 {
-                    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefMedicalProviderCreated".ToUpper()).FirstOrDefault();
-                    if (mailTemplateDB == null)
+                    if (CurrentUser.UserType == 3)
                     {
-                        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+                        //var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                       // var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
+                        var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                        var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+
+                        if (medicalprovider_user != null )
+                        {
+
+                            var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByAttorney".ToUpper()).FirstOrDefault();
+                            //var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
+                            //var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByAttorney".ToUpper()).FirstOrDefault();
+                            if (PreferredMedicalAddByAttorney == null )
+                            {
+                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            }
+                            else
+                            {
+
+
+                                #region Send mail to medical provider
+                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                string msg1 = PreferredMedicalAddByAttorney.EmailBody;
+                                string subject1 = PreferredMedicalAddByAttorney.EmailSubject;
+
+                                string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                                BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                                objEmail1.SendMail();
+                                #endregion
+
+                                //#region Send mail to patient
+                                //string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                //string msg2 = patientCaseTemplate.EmailBody;
+                                //string subject2 = patientCaseTemplate.EmailSubject;
+
+                                //string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
+
+                                //BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
+                                //objEmail2.SendMail();
+                                
+
+
+
+                            }
+
+                        }
+
+
                     }
-                    else
+                    else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
                     {
-                        #region Insert Invitation
-                        Invitation invitationDB = new Invitation();
-                        invitationDB.User = userDB;
+                  
+                        var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
+                        var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                       invitationDB_UniqueID = Guid.NewGuid();
-                        invitationDB.UniqueID = invitationDB_UniqueID;
-                        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
-                        invitationDB.CreateDate = DateTime.UtcNow;
-                        invitationDB.CreateByUserID = userDB.id;
-                        _context.Invitations.Add(invitationDB);
-                        _context.SaveChanges();
-                        #endregion
+                        if (medicalprovider_user != null)
+                        {
 
-                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                        string msg = mailTemplateDB.EmailBody;
-                        string subject = mailTemplateDB.EmailSubject;
+                            var PreferredMedicalAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByProvider".ToUpper()).FirstOrDefault();
+                           
+                            if (PreferredMedicalAddByProvider == null)
+                            {
+                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            }
+                            else
+                            {
 
-                        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
 
-                        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
-                        objEmail.SendMail();
+                                #region Send mail to medical provider
+                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                string msg1 = PreferredMedicalAddByProvider.EmailBody;
+                                string subject1 = PreferredMedicalAddByProvider.EmailSubject;
+
+                                string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, CurrentCompany.Name, VarificationLink1);
+
+                                BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                                objEmail1.SendMail();
+                                #endregion
+
+                               
+
+
+
+                            }
+
+                        }
                     }
                 }
+
+              
 
                 #endregion
             }
