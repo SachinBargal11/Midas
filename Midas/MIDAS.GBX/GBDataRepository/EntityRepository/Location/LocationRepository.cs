@@ -381,7 +381,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (locationBO.Company != null)
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID == locationBO.Company.ID)).ToList<Location>();
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID == locationBO.Company.ID)).OrderBy(p => p.Name).ToList<Location>();
                     if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
