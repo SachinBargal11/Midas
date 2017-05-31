@@ -10,15 +10,16 @@ export class AttorneyAdapter {
     static parseResponse(data: any): Attorney {
 
         let attorney = null;
-        if (data) {
+        if (data) {         
             attorney = new Attorney({
                 id: data.id,
                 companyId: data.companyId,
-                // PrefAttorneyProviderId: data.PrefAttorneyProviderId,
+                prefAttorneyProviderId: data.prefAttorneyProviderId,
                 company: CompanyAdapter.parseResponse(data.company),
-                prefferedAttorney: PrefferedAttorneyAdapter.parseResponse(data.prefAttorneyProvider),
                 isCreated: data.isCreated,
                 signup: SignupAdapter.parseResponse(data.signup),
+                prefferedAttorney: PrefferedAttorneyAdapter.parseResponse(data.prefAttorneyProvider)
+
             });
         }
         return attorney;
