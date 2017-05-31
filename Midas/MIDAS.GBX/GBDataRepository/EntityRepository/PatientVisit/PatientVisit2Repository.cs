@@ -867,23 +867,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     {
                                         #region Send Email
 
-                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                                         if (userBO != null)
                                         {
-                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreated".ToUpper()).FirstOrDefault();
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByDoctor".ToUpper()).FirstOrDefault();
                                             if (mailTemplateDB == null)
                                             {
                                                 return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                                             }
                                             else
                                             {
+                                                string LoginLink2 = "<a href='http://www.patient.codearray.tk'>http://www.patient.codearray.tk</a>";
                                                 string msg = mailTemplateDB.EmailBody;
                                                 string subject = mailTemplateDB.EmailSubject;
 
-                                                string message = string.Format(msg, userBO.FirstName, PatientVisit2BO.ID);
+                                                string message = string.Format(msg, patient.User.FirstName, doctor_user.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
 
-                                                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                                                BO.Email objEmail = new BO.Email { ToEmail = patient.User.UserName, Subject = subject, Body = message };
                                                 objEmail.SendMail();
                                             }
                                         }
@@ -899,8 +900,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         try
                                         {
                                             string to = dictionary[patientUserName];
-                                            string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-
+                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                            string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
                                             string msgid = SMSGateway.SendSMS(to, body);
                                         }
                                         catch (Exception) { }
@@ -925,13 +926,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             }
                                             else
                                             {
-                                                string LoginLink2 = "<a href='http://www.patient.codearray.tk </a>";
+                                                string LoginLink2 = "<a href='http://www.patient.codearray.tk'>http://www.patient.codearray.tk</a>";
                                                 string msg = mailTemplateDB.EmailBody;
                                                 string subject = mailTemplateDB.EmailSubject;
 
                                                 string message = string.Format(msg, patient.User.FirstName, doctor_user.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+                                                //string message = string.Format(msg, userBO.FirstName, doctor_user.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
 
                                                 BO.Email objEmail = new BO.Email { ToEmail = patient.User.UserName, Subject = subject, Body = message };
+                                                //BO.Email objEmail = new BO.Email { ToEmail = userBO.FirstName, Subject = subject, Body = message };
                                                 objEmail.SendMail();
                                             }
                                         }
@@ -971,23 +974,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     {
                                         #region Send Email
 
-                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2BO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                                         if (userBO != null)
                                         {
-                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreated".ToUpper()).FirstOrDefault();
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByPatient".ToUpper()).FirstOrDefault();
                                             if (mailTemplateDB == null)
                                             {
                                                 return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                                             }
                                             else
                                             {
+                                                string LoginLink2 = "<a href='http://www.medicalprovider.codearray.tk'> http://www.medicalprovider.codearray.tk </a>";
                                                 string msg = mailTemplateDB.EmailBody;
                                                 string subject = mailTemplateDB.EmailSubject;
 
-                                                string message = string.Format(msg, userBO.FirstName, PatientVisit2BO.ID);
+                                                string message = string.Format(msg, doctor.User.FirstName, patient.User.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
 
-                                                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
+                                                BO.Email objEmail = new BO.Email { ToEmail = doctor.User.UserName, Subject = subject, Body = message };
                                                 objEmail.SendMail();
                                             }
                                         }
@@ -1002,9 +1006,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #region send SMS notification 
                                         try
                                         {
-                                            string to = dictionary[patientUserName];
-                                            string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-
+                                            string to = doctor.User.UserName;
+                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                            string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
                                             string msgid = SMSGateway.SendSMS(to, body);
                                         }
                                         catch (Exception) { }
@@ -1029,13 +1033,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             }
                                             else
                                             {
-                                                string LoginLink2 = "<a href='http://www.medicalprovider.codearray.tk </a>";
+                                                string LoginLink2 = "<a href='http://www.medicalprovider.codearray.tk'> http://www.medicalprovider.codearray.tk </a>";
                                                 string msg = mailTemplateDB.EmailBody;
                                                 string subject = mailTemplateDB.EmailSubject;
 
                                                 string message = string.Format(msg, doctor.User.FirstName, patient.User.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+                                                //string message = string.Format(msg, doctor.User.FirstName, userBO.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
 
                                                 BO.Email objEmail = new BO.Email { ToEmail = doctor.User.UserName, Subject = subject, Body = message };
+
                                                 objEmail.SendMail();
                                             }
                                         }
@@ -1073,6 +1079,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (PatientVisit2DB != null)
                 {
                     PatientVisit2DB = _context.PatientVisit2.Include("CalendarEvent")
+                                                            .Include("Patient2").Include("Patient2.User").Include("Patient2.User.UserCompanies")
                                                             .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                                             .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                             .Where(p => p.Id == PatientVisit2DB.Id

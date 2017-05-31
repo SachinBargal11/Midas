@@ -480,6 +480,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
             }
 
+            #region Insert Invitation
+            Invitation invitationDB = new Invitation();
+            invitationDB.User = userDB;
+
+            invitationDB_UniqueID = Guid.NewGuid();
+            invitationDB.UniqueID = invitationDB_UniqueID;
+            invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
+            invitationDB.CreateDate = DateTime.UtcNow;
+            invitationDB.CreateByUserID = userDB.id;
+            _context.Invitations.Add(invitationDB);
+            _context.SaveChanges();
+            #endregion
+
             try
             {
                 #region Send Email
@@ -574,10 +587,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
                                 objEmail1.SendMail();
                                 #endregion
-
-                               
-
-
 
                             }
 

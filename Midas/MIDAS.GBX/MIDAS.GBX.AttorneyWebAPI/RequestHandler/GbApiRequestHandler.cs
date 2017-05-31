@@ -1789,5 +1789,23 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
+        public HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.UpdateAttorneyProvider(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }
