@@ -68,6 +68,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
                         uploadObject.BlobPath = ((ObjectContent)resBlob.Content).Value.ToString();
                         documentList.Add((Document)((ObjectContent)requestHandler.CreateGbObject(Request, uploadObject).Content).Value);
                     }
+                    else if (resBlob.StatusCode.Equals(HttpStatusCode.NotFound))
+                    {
+                        return resBlob;
+                    }
                     else
                         documentList.Add(new Document { Status = "Failed", DocumentName = ctnt.Headers.ContentDisposition.FileName });
                 }
