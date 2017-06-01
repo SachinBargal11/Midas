@@ -36,8 +36,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("mDiagnosisCode")]
         public mDiagnosisCode mDiagnosisCode { get; set; }
 
-        [JsonProperty("mPatientVisit")]
-        public mPatientVisit mPatientVisit { get; set; }
+        //[JsonProperty("mPatientVisit")]
+        //public mPatientVisit mPatientVisit { get; set; }
 
     }
 }
