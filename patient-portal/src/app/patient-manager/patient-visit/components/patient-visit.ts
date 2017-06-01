@@ -149,7 +149,7 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.owningEvent.recurrenceRule) {
             content = `<i class="fa fa-refresh"></i>`;
         }
-        content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
+        content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
         element.find('.fc-content').html(content);
     }
 
@@ -225,6 +225,8 @@ export class PatientVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.loadAllVisits();
+        
         this.header = {
             left: 'prev,next today',
             center: 'title',
@@ -235,7 +237,7 @@ export class PatientVisitComponent implements OnInit {
             listWeek: { buttonText: 'list week' }
         };
 
-        this.locationsStore.getAllLocationAndTheirCompany()
+        this.locationsStore.getLocationAndTheirCompanyForPatient(this.patientId)
             .subscribe((locations) => {
                 let locationDetails = _.filter(locations, (currentLocationDetail: LocationDetails) => {
                     return _.indexOf([], currentLocationDetail.company.id) < 0 ? true : false;
@@ -463,6 +465,8 @@ export class PatientVisitComponent implements OnInit {
     }
 
     loadVisits() {
+        if (this.selectedOption == null)
+            this.loadAllVisits();
         if (this.selectedOption == 1) {
             this.loadLocationDoctorVisits();
         } else if (this.selectedOption == 2) {
@@ -470,6 +474,28 @@ export class PatientVisitComponent implements OnInit {
         } else {
             this.loadLocationVisits();
         }
+    }
+
+     loadAllVisits() {
+        this._patientVisitsStore.getAllVisitsByPatientId(this.patientId)
+         .subscribe(
+            (visits: PatientVisit[]) => {
+                this.events = this.getVisitOccurrences(visits);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
     }
 
     getVisitOccurrences(visits) {

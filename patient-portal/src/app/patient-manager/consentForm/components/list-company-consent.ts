@@ -21,7 +21,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { ReferralStore } from '../../cases/stores/referral-store';
 import { Referral } from '../../cases/models/referral';
 import { Company } from '../../../account/models/company';
-
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'list-company-consent',
@@ -45,6 +45,11 @@ export class ListCompanyConsentComponent implements OnInit {
     referrals: Referral[];
     companies: Company[];
     companyCaseConsentApproval: Consent[];
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
+    currentCaseId: number;
+    url;
+
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -58,6 +63,7 @@ export class ListCompanyConsentComponent implements OnInit {
         public sessionStore: SessionStore,
 
     ) {
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.patientId = this.sessionStore.session.user.id;
         this.progressBarService.show();
         this._patientsStore.fetchPatientById(this.patientId)
@@ -109,6 +115,11 @@ export class ListCompanyConsentComponent implements OnInit {
             });
     }
 
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.caseId = currentCaseId;
+    }
+
 
     loadConsentFormLazy(event: LazyLoadEvent) {
         setTimeout(() => {
@@ -117,12 +128,34 @@ export class ListCompanyConsentComponent implements OnInit {
             }
         }, 250);
     }
-    
+
     downloadConsent(caseDocuments: CaseDocument[], companyId: number) {
         caseDocuments.forEach(caseDocument => {
-            if(caseDocument.document.originalResponse.companyId === companyId) {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            this.progressBarService.show();
+            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
+                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.progressBarService.hide();
+                        //  this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+                    },
+                    () => {
+                        this.progressBarService.hide();
+                    });
             }
+            this.progressBarService.hide();
         });
     }
 
@@ -168,8 +201,35 @@ export class ListCompanyConsentComponent implements OnInit {
             this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
+    }
 
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment(),
 
+                });
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.loadConsentForm();
+                this.addConsentDialogVisible = false
+            }
+        });
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
     DownloadPdf(documentId) {
@@ -177,6 +237,4 @@ export class ListCompanyConsentComponent implements OnInit {
         window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
         this.progressBarService.hide();
     }
-
-
 }
