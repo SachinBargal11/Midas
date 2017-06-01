@@ -49,7 +49,7 @@ export class AccidentService {
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let accidents = (<Object[]>data).map((data: any) => {
-                       
+
                         return AccidentAdapter.parseResponse(data);
                     });
                     resolve(accidents);
@@ -89,10 +89,11 @@ export class AccidentService {
             let requestData: any = accident.toJS();
             requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
             requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
-            requestData.id = accidentId;         
+            requestData.id = accidentId;
             requestData.accidentAddressInfo = requestData.accidentAddress;
-            requestData.hospitalAddressInfo = requestData.hospitalAddress;  
-            requestData = _.omit(requestData, 'accidentAddress', 'hospitalAddress');           
+            requestData.hospitalAddressInfo = requestData.hospitalAddress;
+            requestData.medicalReportNumber = requestData.medicalReportNumber;
+            requestData = _.omit(requestData, 'accidentAddress', 'hospitalAddress');
             return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })

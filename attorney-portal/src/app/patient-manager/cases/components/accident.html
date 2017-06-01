@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-4">
                         <label class="form-label"> Patient Type 
                         <span class="color-red">*</span>
                     </label>
@@ -126,13 +126,20 @@
                             <label class="form-check-label">
                                 <input type="radio" value="3" name="patientType" formControlName="patientType" [ngModel]="currentAccident.patientTypeId"> Passenger
                             </label>
-                            <label class="form-check-label">
-                                <input type="radio" value="4" name="patientType" formControlName="patientType" [ngModel]="currentAccident.patientTypeId"> Pedestrain
-                            </label>
-                            <label class="form-check-label">
-                                <input type="radio" value="5" name="patientType" formControlName="patientType" [ngModel]="currentAccident.patientTypeId"> OD
-                            </label>
+                            <input type="radio" value="4" name="patientType" formControlName="patientType" [ngModel]="currentAccident.patientTypeId">                            Pedestrain
+                            <input type="radio" value="5" name="patientType" formControlName="patientType" [ngModel]="currentAccident.patientTypeId">                            OD
+
                         </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Medical Report Number                                   
+                               </label>
+                        <div class="form-group" [class.error]="accidentformControls.additionalPatient.touched && !accidentformControls.additionalPatient.valid">
+                            <input formControlName="medicalReportNumber" [ngModel]="currentAccident.medicalReportNumber" type="text" class="form-control"
+                                placeholder="" [class.error]="!accidentformControls.additionalPatient.valid">
+
+                        </div>
+
                     </div>
                     <div class="col-lg-4">
                         <label class="form-label">Additional Patient

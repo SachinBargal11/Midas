@@ -20,7 +20,8 @@ const AccidentRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    medicalReportNumber: ''
 });
 
 export class Accident extends AccidentRecord {
@@ -42,6 +43,7 @@ export class Accident extends AccidentRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+    medicalReportNumber: string;
 
     constructor(props) {
         super(props);

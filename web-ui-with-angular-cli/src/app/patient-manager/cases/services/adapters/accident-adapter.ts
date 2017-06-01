@@ -12,12 +12,12 @@ export class AccidentAdapter {
                 caseId: data.caseId,
                 accidentAddress: AddressAdapter.parseResponse(data.accidentAddressInfo),
                 hospitalAddress: AddressAdapter.parseResponse(data.hospitalAddressInfo),
-                accidentDate: data.accidentDate ? moment(data.accidentDate): null,
+                accidentDate: data.accidentDate ? moment(data.accidentDate) : null,
                 plateNumber: data.plateNumber,
                 reportNumber: data.reportNumber,
                 hospitalName: data.hospitalName,
                 describeInjury: data.describeInjury,
-                dateOfAdmission: data.dateOfAdmission ? moment(data.dateOfAdmission): null,
+                dateOfAdmission: data.dateOfAdmission ? moment(data.dateOfAdmission) : null,
                 isCurrentAccident: data.isCurrentAccident ? 1 : 0,
                 additionalPatients: data.additionalPatients,
                 patientTypeId: String(data.patientTypeId),
@@ -25,7 +25,8 @@ export class AccidentAdapter {
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                medicalReportNumber: data.medicalReportNumber
             });
         }
         return accident;

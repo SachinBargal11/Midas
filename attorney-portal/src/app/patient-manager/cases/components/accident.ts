@@ -43,7 +43,7 @@ export class AccidentInfoComponent implements OnInit {
     isSaveProgress = false;
     isSaveAccidentProgress = false;
     accAddId: number;
-    hospAddId :number;
+    hospAddId: number;
     caseDetail: Case;
     caseStatusId: number;
 
@@ -102,7 +102,7 @@ export class AccidentInfoComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-        
+
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
@@ -141,7 +141,8 @@ export class AccidentInfoComponent implements OnInit {
             accidentState: [''],
             accidentCity: [''],
             accidentZipcode: [''],
-            accidentCountry: ['']
+            accidentCountry: [''],
+            medicalReportNumber: ['']
         });
         this.accidentformControls = this.accidentform.controls;
     }
@@ -173,6 +174,7 @@ export class AccidentInfoComponent implements OnInit {
             patientTypeId: parseInt(accidentformValues.patientType),
             additionalPatients: accidentformValues.additionalPatient,
             accidentDate: accidentformValues.doa ? moment(accidentformValues.doa) : null,
+            medicalReportNumber: accidentformValues.medicalReportNumber,
             accidentAddress: new Address({
                 id: this.currentAccident.accidentAddress.id,
                 address1: accidentformValues.accidentAddress,
@@ -184,7 +186,7 @@ export class AccidentInfoComponent implements OnInit {
 
             }),
             hospitalAddress: new Address({
-                 id: this.currentAccident.hospitalAddress.id,
+                id: this.currentAccident.hospitalAddress.id,
                 address1: accidentformValues.address,
                 address2: accidentformValues.address2,
                 city: accidentformValues.city,

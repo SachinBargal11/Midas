@@ -128,4 +128,6 @@ export class Case extends CaseRecord {
         });
         return isSessionCompany;
     }
+
+   
 }

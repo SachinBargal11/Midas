@@ -81,8 +81,14 @@ export class CaseBasicComponent implements OnInit {
                     this.employer = results[2];
                     this.allProviders = results[3];
                     this.caseDetail = results[4];
-                    // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
 
+                    if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
+                        this.caseform.get("caseSource").disable();
+                    }
+                    else {
+                        this.caseform.get("caseSource").enable();
+                    }
+                    
                     // if (this.caseDetail.attorneyId != null) {
                     //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
                     //         // this.caseDetail.caseSource = "";
@@ -127,26 +133,25 @@ export class CaseBasicComponent implements OnInit {
 
     ngOnInit() {
     }
-    attorneyChange(event) {
-        this.attorneyId = parseInt(event.target.value);
-        if (this.attorneyId > 0) {
-            this.caseform.get("caseSource").disable();
-        }
-        else {
-            this.caseform.get("caseSource").enable();
-        }
-    }
+    // attorneyChange(event) {
+    //     this.attorneyId = parseInt(event.target.value);
+    //     if (this.attorneyId > 0) {
+    //         this.caseform.get("caseSource").disable();
+    //     }
+    //     else {
+    //         this.caseform.get("caseSource").enable();
+    //     }
+    // }
 
-    casesourceChange(event) {
-        let CaseSource: string = event.target.value;
-        if (CaseSource != "") {
-            this.caseform.get("attorneyId").disable();
-        }
-        else {
-            this.caseform.get("attorneyId").enable();
-        }
-    }
-
+    // casesourceChange(event) {
+    //     let CaseSource: string = event.target.value;
+    //     if (CaseSource != "") {
+    //         this.caseform.get("attorneyId").disable();
+    //     }
+    //     else {
+    //         this.caseform.get("attorneyId").enable();
+    //     }
+    // }
 
     saveCase() {
         this.isSaveProgress = true;

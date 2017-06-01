@@ -125,8 +125,7 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                 <div class="form-group" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                    <select [ngModel]="caseDetail.attorneyId" (change)="attorneyChange($event)" formControlName="providerId" type="text" class="form-control"
-                        placeholder="" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
+                    <select [ngModel]="caseDetail.attorneyId" formControlName="providerId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
                             <option value="">-Select -</option>
                             <!--<option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.user.displayName}}</option>-->
                              <option *ngFor="let provider of allProviders" value="{{provider.id}}">{{provider.name}} </option>
@@ -145,11 +144,8 @@
                 <label class="form-label"> Case Source
                             </label>
                 <div class="form-group">
-                    <input *ngIf="!caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" [ngModel]="caseDetail.caseSource"
-                        type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
-                    <input *ngIf="caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" type="text" class="form-control"
-                        placeholder="" [class.error]="!caseformControls.caseSource.valid">
-
+                    <input formControlName="caseSource" [ngModel]="caseDetail.caseSource" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
+                    <!--<input *ngIf="caseDetail.attorneyId" formControlName="caseSource" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">-->
                     <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
                         <ul>
                             <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
