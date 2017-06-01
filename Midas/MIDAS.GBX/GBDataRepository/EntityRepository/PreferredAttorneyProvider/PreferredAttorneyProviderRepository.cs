@@ -543,7 +543,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Update Medical Provider
+        #region Update Attorney Provider
         public override object UpdateAttorneyProvider<T>(T entity)
         {
 
