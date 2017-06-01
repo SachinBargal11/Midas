@@ -287,15 +287,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                         }
 
-                        if (eachCase.AttorneyId > 0)
-                        {
-                            caseWithUserAndPatient.caseSource = company.Name;
-                        }
-                        else
-                        {
-                            caseWithUserAndPatient.caseSource = eachCase.caseSource;
-                        }
-
+                        //if (eachCase.AttorneyId > 0)
+                        //{
+                        //    caseWithUserAndPatient.caseSource = company.Name;
+                        //}
+                        //else
+                        //{
+                        //    caseWithUserAndPatient.caseSource = eachCase.caseSource;
+                        //}
+                        caseWithUserAndPatient.caseSource = eachCase.caseSource;
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
