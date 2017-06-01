@@ -57,7 +57,7 @@ export class CasesListComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
         private _consentStore: ConsentStore,
-        
+
     ) {
         this.url = `${this._url}/documentmanager/uploadtoblob`;
 
@@ -84,11 +84,10 @@ export class CasesListComponent implements OnInit {
     }
 
     loadCases() {
-
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
-                this.cases = cases.reverse();
+                this.cases = cases;
                 // this.datasource = cases.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.cases = this.datasource.slice(0, 10);
@@ -99,6 +98,16 @@ export class CasesListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+
+    isCurrentUser(userId): boolean {
+        let isCurrentUser: boolean = false;
+        _.forEach(this.cases, (currentCase: Case) => {
+            if (currentCase.createByUserID === userId) {
+                isCurrentUser = true;
+            }
+        });
+        return isCurrentUser;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -121,7 +130,7 @@ export class CasesListComponent implements OnInit {
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this.addConsentDialogVisible = false;
                 this.loadCases();
-         }
+            }
         });
         // this.getDocuments();
     }

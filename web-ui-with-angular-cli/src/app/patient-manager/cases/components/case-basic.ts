@@ -42,7 +42,7 @@ export class CaseBasicComponent implements OnInit {
     patientId: number;
     patientName: string;
     // transportation: any;
-   attorneyId: number = 0;
+    attorneyId: number = 0;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -85,24 +85,24 @@ export class CaseBasicComponent implements OnInit {
                     this.caseDetail = results[4];
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
 
-                    if (this.caseDetail.attorneyId != null) {
-                        if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
-                            // this.caseDetail.caseSource = "";
-                            this.caseform.get("caseSource").disable();
+                    // if (this.caseDetail.attorneyId != null) {
+                    //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+                    //         // this.caseDetail.caseSource = "";
+                    //         this.caseform.get("caseSource").disable();
 
-                        }
-                        else {
-                            this.caseform.get("caseSource").enable();
-                        }
-                    }
-                    else {
-                        if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
-                            this.caseform.get("attorneyId").disable();
-                        }
-                        else {
-                            this.caseform.get("attorneyId").enable();
-                        }
-                    }
+                    //     }
+                    //     else {
+                    //         this.caseform.get("caseSource").enable();
+                    //     }
+                    // }
+                    // else {
+                    //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+                    //         this.caseform.get("attorneyId").disable();
+                    //     }
+                    //     else {
+                    //         this.caseform.get("attorneyId").enable();
+                    //     }
+                    // }
                     // if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
                     //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
                     //         this.caseform.get("attorneyId").disable();
@@ -143,22 +143,22 @@ export class CaseBasicComponent implements OnInit {
 
     attorneyChange(event) {
         this.attorneyId = parseInt(event.target.value);
-        if (this.attorneyId > 0) {
-            this.caseform.get("caseSource").disable();
-        }
-        else {
-            this.caseform.get("caseSource").enable();
-        }
+        // if (this.attorneyId > 0) {
+        //     this.caseform.get("caseSource").disable();
+        // }
+        // else {
+        //     this.caseform.get("caseSource").enable();
+        // }
     }
 
     casesourceChange(event) {
         let CaseSource: string = event.target.value;
-        if (CaseSource != "") {
-            this.caseform.get("attorneyId").disable();
-        }
-        else {
-            this.caseform.get("attorneyId").enable();
-        }
+        // if (CaseSource != "") {
+        //     this.caseform.get("attorneyId").disable();
+        // }
+        // else {
+        //     this.caseform.get("attorneyId").enable();
+        // }
     }
 
     saveCase() {
@@ -180,11 +180,12 @@ export class CaseBasicComponent implements OnInit {
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
             updateByUserID: this.sessionStore.session.account.user.id,
-            updateDate: moment()
+            updateDate: moment(),
+            createdByCompanyId: this.sessionStore.session.currentCompany.id
         }));
 
         this._progressBarService.show();
-        result = this._casesStore.updateCase(caseDetail);      
+        result = this._casesStore.updateCase(caseDetail);
         result.subscribe(
             (response) => {
                 if (this.attorneyId > 0) {
