@@ -69,15 +69,15 @@ export class CasesListComponent implements OnInit {
                 });
         });
     }
-    ngOnInit() {
+    ngOnInit() {       
         this.loadCases();
     }
 
-    loadCases() {
+    loadCases() {     
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
-                this.cases = cases.reverse();
+                this.cases = cases;
                 // this.datasource = cases.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.cases = this.datasource.slice(0, 10);
@@ -88,6 +88,15 @@ export class CasesListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    isCurrentUser(userId): boolean {
+        let isCurrentUser: boolean = false;
+        _.forEach(this.cases, (currentCase: Case) => {
+            if (currentCase.createByUserID === userId) {
+                isCurrentUser = true;
+            }
+        });
+        return isCurrentUser;
     }
     // downloadConsent(caseDocuments: CaseDocument[]) {
     //     caseDocuments.forEach(caseDocument => {

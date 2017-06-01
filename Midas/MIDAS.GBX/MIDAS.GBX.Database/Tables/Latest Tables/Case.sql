@@ -3,13 +3,12 @@
 	[PatientId] [int] NOT NULL,
 	[CaseName] [nvarchar](50) NULL,
 	[CaseTypeId] [TINYINT] NULL,
-	[LocationId] [int] NOT NULL, -- Will drop this column, since the mapping data will be in [CaseCompanyDoctorMapping]
+	[LocationId] [int] NOT NULL,
 	[PatientEmpInfoId] [int] NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
-	--[Transportation] [bit] NOT NULL DEFAULT 0,
 	[CaseStatusId] [TINYINT] NULL,
 	[AttorneyId] [int] NULL,
-	--[FileUploadPath] [NVARCHAR](250) NULL,
+    [CreatedByCompanyId] [INT] NOT NULL,
 
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
@@ -74,3 +73,23 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Company_AttorneyId]
 GO
 
+/*
+ALTER TABLE [dbo].[Case] ADD [CreatedByCompanyId] [INT] NULL
+GO
+UPDATE [dbo].[Case] SET [dbo].[Case].[CreatedByCompanyId] = (SELECT TOP 1 [CompanyId] FROM [dbo].[CaseCompanyMapping] AS tbl2 WHERE tbl2.[CaseId] = [dbo].[Case].[Id] AND (tbl2.[IsDeleted] = 0 OR tbl2.[IsDeleted] IS NULL))
+GO
+UPDATE [dbo].[Case] SET [dbo].[Case].[CreatedByCompanyId] = (SELECT TOP 1 [CompanyId] FROM [dbo].[CaseCompanyMapping] AS tbl2 WHERE tbl2.[CaseId] = [dbo].[Case].[Id]) 
+    WHERE [dbo].[Case].[CreatedByCompanyId] IS NULL
+GO
+UPDATE [dbo].[Case] SET [dbo].[Case].[CreatedByCompanyId] = 1 WHERE [dbo].[Case].[CreatedByCompanyId] IS NULL
+GO
+ALTER TABLE [dbo].[Case] ALTER COLUMN [CreatedByCompanyId] [INT] NOT NULL
+GO
+*/
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Company_CreatedByCompanyId] FOREIGN KEY([CreatedByCompanyId])
+	REFERENCES [dbo].[Company] ([Id])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Company_CreatedByCompanyId]
+GO

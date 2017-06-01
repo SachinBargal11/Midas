@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NoContentComponent } from './no-content-component';
 import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
+import { ValidateActiveSession } from './commons/guards/validate-active-session';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' } },
     { path: 'medical-provider', loadChildren: 'app/medical-provider/medical-provider-module#MedicalProviderModule', data: { breadcrumb: 'root' } },
     { path: 'account-setup', loadChildren: 'app/account-setup/account-setup-module#AccountSetupModule', data: { breadcrumb: 'root' } },
+     { path: 'event', loadChildren: 'app/event/event-module#EventModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: '404', component: NoContentComponent },
     { path: '**',  redirectTo: '/404' }
 ];

@@ -122,25 +122,25 @@ export class AddCaseComponent implements OnInit {
         this.loadPatientsWithoutCase();
     }
 
-    providerChange(event) {
-        this.providerId = parseInt(event.target.value);
-        if (this.providerId > 0) {
-            this.caseform.get("caseSource").disable();
-        }
-        else {
-            this.caseform.get("caseSource").enable();
-        }
-    }
+    // providerChange(event) {
+    //     this.providerId = parseInt(event.target.value);
+    //     if (this.providerId > 0) {
+    //         this.caseform.get("caseSource").disable();
+    //     }
+    //     else {
+    //         this.caseform.get("caseSource").enable();
+    //     }
+    // }
 
-    casesourceChange(event) {
-        let CaseSource: string = event.target.value;
-        if (CaseSource != "") {
-            this.caseform.get("providerId").disable();
-        }
-        else {
-            this.caseform.get("providerId").enable();
-        }
-    }
+    // casesourceChange(event) {
+    //     let CaseSource: string = event.target.value;
+    //     if (CaseSource != "") {
+    //         this.caseform.get("providerId").disable();
+    //     }
+    //     else {
+    //         this.caseform.get("providerId").enable();
+    //     }
+    // }
 
 
     selectPatient(event) {

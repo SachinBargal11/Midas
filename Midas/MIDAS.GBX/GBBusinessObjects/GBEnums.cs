@@ -52,7 +52,7 @@ namespace MIDAS.GBX.BusinessObjects
             Billing = 3,
             Funding = 4,
             Collection = 5,
-            Anicliary = 6
+            Ancillary = 6
         }
         #endregion
 

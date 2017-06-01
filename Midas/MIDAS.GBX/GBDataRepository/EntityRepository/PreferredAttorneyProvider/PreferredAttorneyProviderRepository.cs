@@ -287,6 +287,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
                 prefAttProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
+                prefAttProvider_CompanyDB.BlobStorageTypeId = 1;
                 prefAttProvider_CompanyDB.RegistrationComplete = false;
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
@@ -543,7 +544,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Update Medical Provider
+        #region Update Attorney Provider
         public override object UpdateAttorneyProvider<T>(T entity)
         {
 

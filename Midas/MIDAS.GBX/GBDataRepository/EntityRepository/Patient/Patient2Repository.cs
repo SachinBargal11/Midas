@@ -1069,51 +1069,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region Send Email
             if (sendEmail == true)
             {
-                try
-                {
+                //try
+                //{
 
-                    #region Send Email
-                 
-                    if (PatientDB != null)
-                    {
-                        var attorneyCompany = _context.Companies.Include("ContactInfo")
-                                                               .Where(x => x.id == AttorneyCompanyId).FirstOrDefault();
+                //    #region Send Email
 
-                        if(attorneyCompany.ContactInfo.EmailAddress !=null)
-                        {
-                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AssociatePatientWithAttorneyCompany".ToUpper()).FirstOrDefault();
-                            if (mailTemplateDB == null)
-                            {
-                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                            }
-                            else
-                            {
-                                string msg = mailTemplateDB.EmailBody;
-                                string subject = mailTemplateDB.EmailSubject;
+                //    if (PatientDB != null)
+                //    {
+                //        var attorneyCompany = _context.Companies.Include("ContactInfo")
+                //                                               .Where(x => x.id == AttorneyCompanyId).FirstOrDefault();
 
-                                string message = string.Format(msg, attorneyCompany.Name, PatientDB.Id, PatientDB.User.UserName, attorneyCompany.ContactInfo.EmailAddress, VerificationLink);
+                //        if (attorneyCompany.ContactInfo.EmailAddress != null)
+                //        {
+                //            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                //            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AssociatePatientWithAttorneyCompany".ToUpper()).FirstOrDefault();
+                //            if (mailTemplateDB == null)
+                //            {
+                //                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //            }
+                //            else
+                //            {
+                //                string msg = mailTemplateDB.EmailBody;
+                //                string subject = mailTemplateDB.EmailSubject;
 
-                                BO.Email objEmail = new BO.Email { ToEmail = attorneyCompany.ContactInfo.EmailAddress, Subject = subject, Body = message };
-                                objEmail.SendMail();
-                            }
-                        }
-                        else
-                        {
-                            return new BO.ErrorObject { ErrorMessage = "Email address not found for attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                        }
+                //                string message = string.Format(msg, attorneyCompany.Name, PatientDB.Id, PatientDB.User.UserName, attorneyCompany.ContactInfo.EmailAddress, VerificationLink);
 
-                       
-                    }
+                //                BO.Email objEmail = new BO.Email { ToEmail = attorneyCompany.ContactInfo.EmailAddress, Subject = subject, Body = message };
+                //                objEmail.SendMail();
+                //            }
+                //        }
+                //        else
+                //        {
+                //            return new BO.ErrorObject { ErrorMessage = "Email address not found for attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //        }
 
-                    #endregion
-                    //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                    //string Message = "Dear " + doctorDB.User.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + doctorDB.User.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
-                    //BO.Email objEmail = new BO.Email { ToEmail = doctorDB.User.UserName, Subject = "User registered", Body = Message };
-                    //objEmail.SendMail();
 
-                }
-                catch (Exception ex) { }
+                //    }
+
+                //    #endregion
+                   
+
+                //}
+                //catch (Exception ex) { }
             }
             #endregion
 

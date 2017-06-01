@@ -83,6 +83,11 @@
 								<a *ngFor="let company of sessionStore.session.companies" class="dropdown-item" href="#" (click)="sessionStore.selectCurrentCompany($event, company.id)">{{company.name}}</a>
 							</div>
 						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/event']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Social
+							</a>
+						</div>
 					</div>
 					<!--.site-header-collapsed-in-->
 				</div>
