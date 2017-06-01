@@ -268,7 +268,7 @@ export class CompanyCasesComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+                this._notificationsService.error('Oh No!', currentDocument.message);
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Consent uploaded successfully',

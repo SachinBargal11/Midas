@@ -66,3 +66,11 @@ GO
 ALTER TABLE [dbo].[Case] DROP COLUMN [FileUploadPath]
 GO
 */
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Company_AttorneyId] FOREIGN KEY([AttorneyId])
+	REFERENCES [dbo].[Company] ([Id])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Company_AttorneyId]
+GO
+

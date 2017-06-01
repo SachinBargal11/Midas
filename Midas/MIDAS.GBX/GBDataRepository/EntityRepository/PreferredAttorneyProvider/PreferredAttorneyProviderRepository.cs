@@ -330,6 +330,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserCompanyRoleDB.IsDeleted = false;
                 UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
                 UserCompanyRoleDB.CreateByUserID = 0;
+
                 _context.UserCompanyRoles.Add(UserCompanyRoleDB);
                 _context.SaveChanges();
 
@@ -550,7 +551,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             PreferredAttorneyProvider preferredAttorneyProviderDB = new PreferredAttorneyProvider();
 
             BO.Signup prefAttProviderBO = preferredÀttorneyProviderBO.Signup;
-            BO.Company company = preferredÀttorneyProviderBO.Company;
+            //BO.Company company = preferredÀttorneyProviderBO.Company;
             PreferredAttorneyProvider prefAttProvider = new PreferredAttorneyProvider();
 
             Guid invitationDB_UniqueID = Guid.NewGuid();
@@ -674,7 +675,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
 
                 prefAttProvider.PrefAttorneyProviderId = prefAttProviderBO.company.ID;
-                prefAttProvider.CompanyId = company.ID;
+                prefAttProvider.CompanyId = preferredÀttorneyProviderBO.CompanyId;
                 prefAttProvider.IsCreated = true;
                 prefAttProvider.IsDeleted = false;
                 prefAttProvider.CreateByUserID = prefAttProvider_CompanyDB.CreateByUserID;

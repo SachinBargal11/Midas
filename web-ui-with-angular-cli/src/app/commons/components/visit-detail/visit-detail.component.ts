@@ -68,6 +68,7 @@ export class VisitDetailComponent implements OnInit {
     documents: VisitDocument[] = [];
     selectedDocumentList = [];
     disableSaveDelete = false;
+    visitId: number;
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
@@ -160,6 +161,31 @@ export class VisitDetailComponent implements OnInit {
             });
     }
 
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status === 'Failed') {
@@ -169,6 +195,15 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();

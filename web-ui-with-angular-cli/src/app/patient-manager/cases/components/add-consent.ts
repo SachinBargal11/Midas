@@ -181,7 +181,7 @@ export class AddConsentComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+                this._notificationsService.error('Oh No!', currentDocument.message);
             }
             else {
                 let notification = new Notification({

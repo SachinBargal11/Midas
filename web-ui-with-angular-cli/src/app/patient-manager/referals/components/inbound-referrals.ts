@@ -58,7 +58,7 @@ export class InboundReferralsComponent implements OnInit {
     ) {
         this.companyId = this.sessionStore.session.currentCompany.id;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
-
+         this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
         });
@@ -185,7 +185,6 @@ export class InboundReferralsComponent implements OnInit {
     }
 
     showDialog(currentCaseId) {
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
         this.signedDocumentPostRequestData = {
@@ -203,7 +202,7 @@ export class InboundReferralsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+                this._notificationsService.error('Oh No!', currentDocument.message);
             }
             else {
                 let notification = new Notification({
@@ -212,6 +211,7 @@ export class InboundReferralsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this.addConsentDialogVisible = false;
                 this.checkSessions();
             }
