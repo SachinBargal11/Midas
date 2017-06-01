@@ -1294,6 +1294,18 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Case_Company_AttorneyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Case" Type="Self.Case" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Case">
+              <PropertyRef Name="AttorneyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Case_Location_LocationID">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
           <End Role="Case" Type="Self.Case" Multiplicity="*" />
@@ -2983,6 +2995,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="CaseType" EntitySet="CaseType" />
             <End Role="Case" EntitySet="Case" />
           </AssociationSet>
+          <AssociationSet Name="FK_Case_Company_AttorneyId" Association="Self.FK_Case_Company_AttorneyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Case" EntitySet="Case" />
+          </AssociationSet>
           <AssociationSet Name="FK_Case_Location_LocationID" Association="Self.FK_Case_Location_LocationID">
             <End Role="Location" EntitySet="Location" />
             <End Role="Case" EntitySet="Case" />
@@ -3652,6 +3668,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CaseSource" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CaseStatu" Relationship="Self.FK_Case_CaseStatus_CaseStatusId" FromRole="Case" ToRole="CaseStatus" />
           <NavigationProperty Name="CaseType" Relationship="Self.FK_Case_CaseType_CaseTypeId" FromRole="Case" ToRole="CaseType" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Case_Company_AttorneyId" FromRole="Case" ToRole="Company" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Case_Location_LocationID" FromRole="Case" ToRole="Location" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Case_Patient2_PatientId" FromRole="Case" ToRole="Patient2" />
           <NavigationProperty Name="PatientEmpInfo" Relationship="Self.FK_Case_PatientEmpInfo_PatientEmpInfoId" FromRole="Case" ToRole="PatientEmpInfo" />
@@ -3778,6 +3795,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
+          <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Company_AttorneyId" FromRole="Company" ToRole="Case" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="Company" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
           <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
@@ -5222,6 +5240,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Case">
               <PropertyRef Name="CaseTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Case_Company_AttorneyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Case" Type="Self.Case" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Case">
+              <PropertyRef Name="AttorneyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6792,6 +6822,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_Case_CaseType_CaseTypeId" Association="Self.FK_Case_CaseType_CaseTypeId">
             <End Role="CaseType" EntitySet="CaseTypes" />
+            <End Role="Case" EntitySet="Cases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Case_Company_AttorneyId" Association="Self.FK_Case_Company_AttorneyId">
+            <End Role="Company" EntitySet="Companies" />
             <End Role="Case" EntitySet="Cases" />
           </AssociationSet>
           <AssociationSet Name="FK_Case_Location_LocationID" Association="Self.FK_Case_Location_LocationID">

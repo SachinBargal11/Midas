@@ -192,6 +192,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.Referrals = BOListReferral;
             }
 
+            if(cases.Company != null)
+            {
+                BO.Company boCompany = new BO.Company();
+
+                boCompany.ID = cases.Company.id;
+                boCompany.Name = cases.Company.Name;
+                boCompany.TaxID = cases.Company.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
+                boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
+
+                caseBO.Attorney = boCompany;
+            }
+
 
             return (T)(object)caseBO;
         }
@@ -295,6 +310,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         //{
                         //    caseWithUserAndPatient.caseSource = eachCase.caseSource;
                         //}
+                        caseWithUserAndPatient.Attorney = eachCase.Attorney;
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
@@ -454,6 +470,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
                                     .Include("Referral2")
+                                    .Include("Company")
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
