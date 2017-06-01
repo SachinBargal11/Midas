@@ -45,7 +45,7 @@ export class AddAttorneyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
 
-          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/attorney']);
         });
 
@@ -66,15 +66,15 @@ export class AddAttorneyComponent implements OnInit {
         console.log(this.inputCancel);
     }
 
-      closeDialog() {
+    closeDialog() {
         this.closeDialogBox.emit();
     }
-   
+
     saveAttorney() {
         this.isSaveProgress = true;
         let attorneyformValues = this.attorneyform.value;
         let result;
-        let attorney =  {
+        let attorney = {
             company: {
                 Id: this._sessionStore.session.currentCompany.id
             },
@@ -107,7 +107,7 @@ export class AddAttorneyComponent implements OnInit {
         result = this._attorneyMasterStore.addAttorney(attorney);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Attorney provider has been registered successfully!.');
+                this._notificationsService.success('Welcome!', 'Medical provider has been registered successfully!.');
                 if (!this.inputCancel) {
                     setTimeout(() => {
                         this._router.navigate(['../'], { relativeTo: this._route });

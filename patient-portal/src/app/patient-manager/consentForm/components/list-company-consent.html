@@ -25,7 +25,7 @@
                 <a *ngIf="case.isConsentReceived(company.id)" (click)="downloadConsent(case.caseCompanyConsentDocument, company.id)">
                     <u>Yes</u>
                 </a>
-                <a *ngIf="!case.isConsentReceived(company.id)" routerLink="{{case.id}}/{{company.id}}/add">
+                <a *ngIf="!case.isConsentReceived(company.id)" (click)="showDialog(case.id)">
                     <u>No</u>
                 </a>
             </div>
@@ -33,3 +33,16 @@
     </p-column>
     <!--<p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>-->
 </p-dataTable>
+
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
+    <div>
+        <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
+            [signedDocumentUploadUrl]="signedDocumentUploadUrl" (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)"
+            (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
+            (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)">
+        </app-document-upload>
+    </div>
+</p-dialog>
+<router-outlet></router-outlet>
