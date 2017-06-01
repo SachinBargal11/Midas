@@ -50,10 +50,10 @@
     <p-column header="Case Source" [sortable]="true">
         <ng-template let-currentUser="rowData" pTemplate="body">
             <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.caseName}}
+                {{currentUser.caseSource}}
             </div>
-            <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
-             
+            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
+                {{currentUser.createdByCompany.name}}
             </div>
         </ng-template>
     </p-column>
