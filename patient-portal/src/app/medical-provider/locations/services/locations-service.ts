@@ -65,9 +65,9 @@ export class LocationsService {
         return <Observable<any[]>>Observable.fromPromise(promise);
     }
 
-    getAllLocationAndTheirCompany(): Observable<any[]> {
+    getLocationAndTheirCompanyForPatient(patientId: number): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Location/getAllLocationAndCompany').map(res => res.json())
+            return this._http.get(this._url + '/patientVisit/getLocationForPatientId/' + patientId).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data.errorMessage) {
                         reject(new Error(data.errorMessage));
