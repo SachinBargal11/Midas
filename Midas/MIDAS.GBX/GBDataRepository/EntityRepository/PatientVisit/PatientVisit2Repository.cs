@@ -303,6 +303,47 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetByvisitsConvert Entity Conversion
+
+        public T GetByvisitsConvert<T, U>(U entity)
+        {
+            PatientVisit2 patientVisit2 = entity as PatientVisit2;
+
+            if (patientVisit2 == null)
+                return default(T);
+
+            BO.mPatientVisits mpatientVisits = new BO.mPatientVisits();
+
+            mpatientVisits.ID = patientVisit2.Id;
+            mpatientVisits.CalendarEventId = patientVisit2.CalendarEventId;
+            mpatientVisits.CaseId = patientVisit2.CaseId;
+            mpatientVisits.PatientId = patientVisit2.PatientId;
+            mpatientVisits.LocationId = patientVisit2.LocationId;
+            mpatientVisits.RoomId = patientVisit2.RoomId;
+            mpatientVisits.DoctorId = patientVisit2.DoctorId;
+            mpatientVisits.SpecialtyId = patientVisit2.SpecialtyId;
+            mpatientVisits.LocationName = patientVisit2.Location.Name;
+            mpatientVisits.RoomName = patientVisit2.Room.Name;
+            mpatientVisits.RoomTestName = patientVisit2.Room.RoomTest.Name;
+            mpatientVisits.DoctorFirstName = patientVisit2.Doctor.User.FirstName;
+            mpatientVisits.DoctorLastName = patientVisit2.Doctor.User.LastName;
+            mpatientVisits.PatientFirstName = patientVisit2.Patient2.User.FirstName;
+            mpatientVisits.PatientLastName = patientVisit2.Patient2.User.LastName;
+
+            using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+            {
+                mpatientVisits.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(patientVisit2.CalendarEvent);
+            }
+
+            mpatientVisits.IsDeleted = patientVisit2.IsDeleted;
+            mpatientVisits.CreateByUserID = patientVisit2.CreateByUserID;
+            mpatientVisits.UpdateByUserID = patientVisit2.UpdateByUserID;
+                        
+            return (T)(object)mpatientVisits;
+        }
+
+        #endregion
+
         #region Get By Location Id
         public override object GetByLocationId(int id)
         {
@@ -1451,6 +1492,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetVisitsByPatientId(int PatientId)
         {
             var acc = _context.PatientVisit2.Include("CalendarEvent")
+                                            .Include("Location")
+                                            .Include("Doctor")
+                                            .Include("Doctor.User")
+                                            .Include("Room")
+                                            .Include("Room.RoomTest")
+                                            .Include("Patient2")
+                                            .Include("Patient2.User")
                                             .Where(p => p.PatientId == PatientId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList<PatientVisit2>();
@@ -1461,12 +1509,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                List<BO.PatientVisit2> lstpatientvisit = new List<BO.PatientVisit2>();
+               // List<BO.PatientVisit2> lstpatientvisit = new List<BO.PatientVisit2>();
+                BO.mPatientVisits mpatientVisits = new BO.mPatientVisits();
+                List<BO.mPatientVisits> lstmpatientVisits = new List<BO.mPatientVisits>();
                 foreach (PatientVisit2 item in acc)
                 {
-                    lstpatientvisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(item));
+                    lstmpatientVisits.Add(GetByvisitsConvert<BO.mPatientVisits, PatientVisit2>(item));
                 }
-                return lstpatientvisit;
+                return lstmpatientVisits;
             }
         }
         #endregion
