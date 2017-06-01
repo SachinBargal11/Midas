@@ -50,7 +50,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
-            this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
+            this.url = `${this._url}/documentmanager/uploadtoblob`;
         });
     }
 
@@ -67,7 +67,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+                this._notificationsService.error('Oh No!', currentDocument.message);
             }
         });
         this.getDocuments();

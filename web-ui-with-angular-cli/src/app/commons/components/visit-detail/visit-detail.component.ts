@@ -68,6 +68,7 @@ export class VisitDetailComponent implements OnInit {
     documents: VisitDocument[] = [];
     selectedDocumentList = [];
     disableSaveDelete = false;
+    visitId: number;
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
@@ -158,6 +159,31 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 // this._progressBarService.hide();
             });
+    }
+
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
     }
 
     documentUploadComplete(documents: Document[]) {

@@ -93,8 +93,9 @@ namespace MIDAS.GBX.BusinessObjects
         public List<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
     }
 
-    public class mPatientVisit : GbObject
+    public class mPatientVisits : GbObject
     {
+
         [JsonProperty("calendarEventId")]
         public int? CalendarEventId { get; set; }
 
@@ -116,31 +117,29 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("specialtyId")]
         public int? SpecialtyId { get; set; }
 
-        [JsonProperty("visitStatusId")]
-        public byte? VisitStatusId { get; set; }
+        [JsonProperty("locationName")]
+        public string LocationName { get; set; }
 
-        [JsonProperty("visitType")]
-        public byte? VisitType { get; set; }
+        [JsonProperty("roomName")]
+        public string RoomName { get; set; }
 
-        [JsonProperty("fileUploadPath")]
-        public string FileUploadPath { get; set; }
+        [JsonProperty("roomTestName")]
+        public string RoomTestName { get; set; }
 
-        [JsonProperty("isOutOfOffice")]
-        public bool? IsOutOfOffice { get; set; }
+        [JsonProperty("doctorFirstName")]
+        public string DoctorFirstName { get; set; }
 
-        [JsonProperty("leaveStartDate")]
-        public DateTime? LeaveStartDate { get; set; }
+        [JsonProperty("doctorLastName")]
+        public string DoctorLastName { get; set; }
 
-        [JsonProperty("leaveEndDate")]
-        public DateTime? LeaveEndDate { get; set; }
+        [JsonProperty("patientFirstName")]
+        public string PatientFirstName { get; set; }
 
-        [JsonProperty("mPatient")]
-        public mPatient mPatient { get; set; }
+        [JsonProperty("patientLastName")]
+        public string PatientLastName { get; set; }
 
-        [JsonProperty("mPatientVisitDiagnosisCodes")]
-        public List<mPatientVisitDiagnosisCode> mPatientVisitDiagnosisCodes { get; set; }
+        [JsonProperty("calendarEvent")]
+        public CalendarEvent CalendarEvent { get; set; }
 
-        [JsonProperty("mPatientVisitProcedureCodes")]
-        public List<mPatientVisitProcedureCode> mPatientVisitProcedureCodes { get; set; }
     }
 }

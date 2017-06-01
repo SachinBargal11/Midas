@@ -20,6 +20,7 @@ import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
 import { ConsentStore } from '../stores/consent-store';
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'cases',
@@ -39,6 +40,10 @@ export class CasesListComponent implements OnInit {
     consentRecived: string = '';
     referralRecived: string = '';
     CompanyId: number = 0;
+    url;
+    caseId: number;
+    addConsentDialogVisible: boolean = false;
+
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -50,11 +55,12 @@ export class CasesListComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
         private _AddConsentStore: ConsentStore,
+        public notificationsStore: NotificationsStore,
 
     ) {
         // this._route.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
-
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.patientId = this.sessionStore.session.user.id;
         this.progressBarService.show();
 
@@ -95,6 +101,39 @@ export class CasesListComponent implements OnInit {
                 this.progressBarService.hide();
             });
     }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.caseId = currentCaseId;
+    }
+
+     documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!',  currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.addConsentDialogVisible  = false;
+        }
+        });
+      }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
             // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);

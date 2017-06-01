@@ -131,5 +131,9 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId);
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
+        HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);
+
+        
+
     }
 }
