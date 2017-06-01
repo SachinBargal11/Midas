@@ -43,6 +43,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             PatientAccidentInfoBO.patientTypeId = patientAccidentInfo.PatientTypeId;
             PatientAccidentInfoBO.caseId = patientAccidentInfo.CaseId;
 
+            PatientAccidentInfoBO.MedicalReportNumber = patientAccidentInfo.MedicalReportNumber;
+
             if (patientAccidentInfo.AddressInfo != null)
             {
                 if (patientAccidentInfo.AddressInfo.IsDeleted.HasValue == false || (patientAccidentInfo.AddressInfo.IsDeleted.HasValue == true && patientAccidentInfo.AddressInfo.IsDeleted.Value == false))
@@ -421,6 +423,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.patientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.patientTypeId.Value;
                     PatientAccidentInfoDB.AccidentAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.accidentAddressInfoId == null) ? PatientAccidentInfoDB.AccidentAddressInfoId : AccidentAddressInfoDB.id;
                     PatientAccidentInfoDB.HospitalAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.hospitalAddressInfoId == null) ? PatientAccidentInfoDB.HospitalAddressInfoId :  HospitalAddressInfoDB.id;
+
+                    PatientAccidentInfoDB.MedicalReportNumber = (IsEditMode == true && PatientAccidentInfoBO.MedicalReportNumber == null) ? PatientAccidentInfoDB.MedicalReportNumber : PatientAccidentInfoBO.MedicalReportNumber;
 
                     if (Add_PatientAccidentInfoDB == true)
                     {
