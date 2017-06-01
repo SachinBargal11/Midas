@@ -13,6 +13,8 @@ import { ConsentService } from '../../../patient-manager/cases/services/consent-
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { DocumentType } from '../../../commons/models/document-type';
 
 @Component({
   selector: 'app-document-upload',
@@ -32,6 +34,9 @@ export class DocumentUploadComponent implements OnInit {
   scannedFileName: string = '';
   digitalForm: FormGroup;
   cosentFormUrl: SafeResourceUrl;
+  documentType: string;
+  companyId: number = this._sessionStore.session.currentCompany.id;
+  documentTypes: DocumentType[];
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -49,6 +54,10 @@ export class DocumentUploadComponent implements OnInit {
   @ViewChildren('signatureContainer') public signatureContainer: QueryList<ElementRef>;
 
   @Input() changeCompneyConsenturl: string;
+  @Input() isConsentDocumentOn: boolean = false;
+  @Input() currentId: number;
+  @Input() objectId: number;
+  @Input() isdownloadTemplate: boolean = false;
 
   constructor(
     private _fb: FormBuilder,
@@ -57,7 +66,8 @@ export class DocumentUploadComponent implements OnInit {
     private _notificationsService: NotificationsService,
     private _documentUploadService: DocumentUploadService,
     private _progressBarService: ProgressBarService,
-    private _consentService: ConsentService
+    private _consentService: ConsentService,
+    private _sessionStore: SessionStore,
   ) {
     this._updateScannerContainerId();
     this.digitalForm = this._fb.group({
@@ -68,8 +78,10 @@ export class DocumentUploadComponent implements OnInit {
 
   ngOnInit() {
     if (this.signedDocumentPostRequestData) {
-      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId, false));
+      this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
+
+
   }
 
   ngOnDestroy() {
@@ -132,6 +144,21 @@ export class DocumentUploadComponent implements OnInit {
   private _updateScannerContainerId() {
     this.scannerContainerId = `scanner_${moment().valueOf()}`;
   }
+
+  onBeforeSendEvent(event) {
+    let param: string;
+    if (this.currentId == 2) {
+      if (this.isConsentDocumentOn) {
+        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else {
+        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      }
+    } else if (this.currentId == 3) {
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+    }
+    event.xhr.setRequestHeader("inputjson", param);
+  }
+
 
   onFilesUploadComplete(event) {
     let responseDocuments: any = JSON.parse(event.xhr.responseText);
@@ -204,6 +231,24 @@ export class DocumentUploadComponent implements OnInit {
     }
   }
 
+ selectDocument(event) {
+    let documentType = event.target.value;
+    this.documentType = documentType;
+  }
+
+  loadDocumentForObjectType(companyId: number, currentId: number) {
+    // this._progressBarService.show();
+    let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
+      .subscribe(documentType => {
+        this.documentTypes = documentType;
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
 }
 export interface TwainSource {
   idx: number;
