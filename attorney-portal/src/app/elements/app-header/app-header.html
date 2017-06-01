@@ -59,11 +59,7 @@
                                Office Manager
 							</a>
 				</div>
-				<div class="dropdown dropdown-typical">
-							<a [routerLink]="['/event']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
-                                Social
-							</a>
-						</div>
+
 				<!--<div class="dropdown dropdown-typical">
 							<a [routerLink]="['/doctors']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Doctors
@@ -77,6 +73,11 @@
 				<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
 					<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Account Setup
+							</a>
+				</div>
+				<div class="dropdown dropdown-typical">
+					<a [routerLink]="['/event']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Social
 							</a>
 				</div>
 				<div class="dropdown" dropdown>

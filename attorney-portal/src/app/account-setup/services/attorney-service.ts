@@ -110,7 +110,7 @@ export class AttorneyMasterService {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/PreferredAttorneyProvider/save', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/PreferredAttorneyProvider/updateAttorneyProvider', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {

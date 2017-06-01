@@ -93,7 +93,7 @@ export class CompanyCasesComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getCasesByCompany()
             .subscribe(cases => {
-                this.cases = cases.reverse();
+                this.cases = cases;
                 // this.datasource = cases.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.cases = this.datasource.slice(0, 10);
@@ -105,6 +105,17 @@ export class CompanyCasesComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
+    isCurrentUser(userId): boolean {
+        let isCurrentUser: boolean = false;
+        _.forEach(this.cases, (currentCase: Case) => {
+            if (currentCase.createByUserID === userId) {
+                isCurrentUser = true;
+            }
+        });
+        return isCurrentUser;
+    }
+
     // downloadConsent(caseDocuments: CaseDocument[]) {
     //     caseDocuments.forEach(caseDocument => {
     //         window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);

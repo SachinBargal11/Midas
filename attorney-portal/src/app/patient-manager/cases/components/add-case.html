@@ -134,7 +134,7 @@
                             <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.name}}</option>
                         </select>-->
 
-                <select type="text" formControlName="providerId" class="form-control" placeholder="" (change)="providerChange($event)">
+                <select type="text" formControlName="providerId" class="form-control" placeholder="">
                             <option value="">-Select Provider-</option>
                              <!--<option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       -->
                               <option *ngFor="let provider of allProviders" value="{{provider.id}}">{{provider.name}} </option>
@@ -153,7 +153,7 @@
             <label class="form-label"> Case Source
                             </label>
             <div class="form-group">
-                <input formControlName="caseSource" type="text" (change)="casesourceChange($event)" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
+                <input formControlName="caseSource" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
                 <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
                     <ul>
                         <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
