@@ -29,7 +29,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
     url;
     selectedDocumentList = [];
     isDeleteProgress: boolean = false;
-
+    visitId: number;
 
     constructor(
         private _router: Router,
@@ -98,6 +98,31 @@ export class VisitDocumentsUploadComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
     }
 
     deleteDocument() {

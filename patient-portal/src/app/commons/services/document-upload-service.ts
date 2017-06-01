@@ -9,7 +9,8 @@ import { environment } from '../../../environments/environment';
 import { States } from '../models/states';
 import { Cities } from '../models/cities';
 import * as moment from 'moment';
-
+import { DocumentTypeAdapter } from '../services/adapters/document-type-adapter'
+import { DocumentType } from '../models/document-type';
 @Injectable()
 export class DocumentUploadService {
 
@@ -57,6 +58,24 @@ export class DocumentUploadService {
                 });
         });
         return promise;
+    }
+
+    getDocumentObjectType(companyId: Number, currentId: number): Observable<DocumentType[]> {
+        let promise: Promise<DocumentType[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId)
+                // return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    // let documentType: DocumentType[] = null;
+                    let documentType = (<DocumentType[]>data).map((data: any) => {
+                        return DocumentTypeAdapter.parseResponse(data);
+                    });
+                    resolve(documentType);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<DocumentType[]>>Observable.fromPromise(promise);
     }
 
 }

@@ -135,7 +135,29 @@ export class ConsentListComponent implements OnInit {
 
     DownloadPdf(documentId) {
         this._progressBarService.show();
-        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-        this._progressBarService.hide();
+          this._progressBarService.show();
+        this._ConsentStore.downloadConsentForm(this.caseId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                // let notification = new Notification({
+                //     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                //     'type': 'ERROR',
+                //     'createdAt': moment()
+                // });
+
+                this._progressBarService.hide();
+                // this._notificationsStore.addNotification("Unable to download");
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
     }
 }

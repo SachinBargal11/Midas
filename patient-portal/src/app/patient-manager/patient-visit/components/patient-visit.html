@@ -135,10 +135,10 @@
         <div *ngIf="selectedVisit">
             <div class="row" *ngIf="!selectedVisit.id">
                 <div class="col-md-2"><label class="form-label">Patient</label></div>
-                <div class="col-md-4">                   
+                <div class="col-md-4">
                     <div class="form-group">
                         {{patientName}} </div>
-                </div>               
+                </div>
             </div>
 
             <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
@@ -202,33 +202,36 @@
             </p-tabPanel>
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
-                <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                <app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)"
+                    (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
-                    <h3 class="with-border">Uploaded Documents                        
+                    <h3 class="with-border">Uploaded Documents
                     </h3>
                 </div>
                 <div class="ui-widget-header row">
                     <div class="col-lg-4 input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
-</div>
-</div>
-<p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
-    <header> List</header>
-    <p-column field="document.documentName" header="Document Name" [sortable]="true"></p-column>
-    <p-column field="createDate" header="Created Date" [sortable]="true">
-        <ng-template let-document="rowData.document" pTemplate="body">
-            {{ document.createDate | dateTimeFormat }}
-        </ng-template>
-    </p-column>
-
-</p-dataTable>
-</p-tabPanel>
-
-
-</p-tabView>
-</div>
-
+                    </div>
+                </div>
+                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+                    [globalFilter]="gb" [responsive]="true">
+                    <header> List</header>
+                    <p-column header="Document Name">
+                        <ng-template let-document="rowData" pTemplate="body">
+                            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+                                <u>{{document.document.originalResponse.documentName}}</u>
+                            </a>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="createDate" header="Created Date" [sortable]="true">
+                        <ng-template let-document="rowData.document" pTemplate="body">
+                            {{ document.createDate | dateTimeFormat }}
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
 </p-dialog>
