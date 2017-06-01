@@ -85,7 +85,6 @@ export class AccidentService {
         return <Observable<Accident>>Observable.fromPromise(promise);
     }
     updateAccident(accident: Accident, accidentId: number): Observable<Accident> {
-        debugger;
         let promise = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
             requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
