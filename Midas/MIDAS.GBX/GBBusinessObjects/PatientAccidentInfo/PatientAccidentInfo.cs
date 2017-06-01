@@ -54,6 +54,9 @@ namespace MIDAS.GBX.BusinessObjects
         //[JsonProperty("patientType")]
         //public PatientType PatientType { get; set; }
 
+        [JsonProperty("medicalReportNumber")]
+        public string MedicalReportNumber { get; set; }
+
     }
 
     public class mPatientAccidentInfo : GbObject
