@@ -54,12 +54,11 @@ export class AddMedicalProviderComponent implements OnInit {
         this.providerform = this.fb.group({
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            taxId: ['', [Validators.required, Validators.maxLength(10)]],
+            lastName: ['', Validators.required],          
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            subscriptionPlan: ['', Validators.required]
+            email: ['', [Validators.required, AppValidators.emailValidator]]
+           
         });
 
         this.providerformControls = this.providerform.controls;
@@ -97,10 +96,8 @@ export class AddMedicalProviderComponent implements OnInit {
                     status: 'active'
                 },
                 company: {
-                    name: this.providerform.value.companyName,
-                    taxId: this.providerform.value.taxId,
-                    companyType: this.providerform.value.companyType,
-                    subsCriptionType: this.providerform.value.subscriptionPlan,
+                    name: this.providerform.value.companyName,                
+                    companyType: this.providerform.value.companyType,                 
                     createByUserID: this._sessionStore.session.account.user.id
                 }
             }
