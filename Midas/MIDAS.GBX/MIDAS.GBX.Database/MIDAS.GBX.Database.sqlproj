@@ -140,6 +140,7 @@
     <Build Include="Tables\Latest Tables\MailTemplates.sql" />
     <Build Include="Tables\Latest Tables\GeneralSettings.sql" />
     <Build Include="Tables\Latest Tables\PreferredAttorneyProvider.sql" />
+    <Build Include="Tables\Latest Tables\CaseCompanyConsentDocuments.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

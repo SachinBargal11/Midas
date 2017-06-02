@@ -16,3 +16,4 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 GO
+--ALTER TABLE MidasDocuments ADD DocumentType varchar(50) NULL;
