@@ -39,7 +39,7 @@ export class AddCaseComponent implements OnInit {
     patientName: string;
     patients: Patient[];
     patientsWithoutCase: Patient[];
-    attorneys: Attorney[];    
+    attorneys: Attorney[];
     attorneyId: number = 0;
     constructor(
         private fb: FormBuilder,
@@ -117,22 +117,22 @@ export class AddCaseComponent implements OnInit {
 
     attorneyChange(event) {
         this.attorneyId = parseInt(event.target.value);
-        if (this.attorneyId > 0) {
-            this.caseform.get("caseSource").disable();
-        }
-        else {
-            this.caseform.get("caseSource").enable();
-        }
+        // if (this.attorneyId > 0) {
+        //     this.caseform.get("caseSource").disable();
+        // }
+        // else {
+        //     this.caseform.get("caseSource").enable();
+        // }
     }
 
     casesourceChange(event) {
         let CaseSource: string = event.target.value;
-        if (CaseSource != "") {
-            this.caseform.get("attorneyId").disable();
-        }
-        else {
-            this.caseform.get("attorneyId").enable();
-        }
+        // if (CaseSource != "") {
+        //     this.caseform.get("attorneyId").disable();
+        // }
+        // else {
+        //     this.caseform.get("attorneyId").enable();
+        // }
     }
 
     selectPatient(event) {
@@ -174,11 +174,13 @@ export class AddCaseComponent implements OnInit {
             attorneyId: caseFormValues.attorneyId,
             caseSource: caseFormValues.caseSource,
             createByUserID: this._sessionStore.session.account.user.id,
-            createDate: moment()
+            createDate: moment(),
+            createdByCompanyId: this._sessionStore.session.currentCompany.id
+
         });
 
         this._progressBarService.show();
-        result = this._casesStore.addCase(caseDetail);           
+        result = this._casesStore.addCase(caseDetail);
         result.subscribe(
             (response) => {
                 if (this.attorneyId > 0) {

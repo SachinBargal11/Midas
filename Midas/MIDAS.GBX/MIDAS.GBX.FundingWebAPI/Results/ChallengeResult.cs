@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace MIDAS.GBX.WebAPI.Results
+namespace MIDAS.GBX.FundingWebAPI.Results
 {
     public class ChallengeResult : IHttpActionResult
     {

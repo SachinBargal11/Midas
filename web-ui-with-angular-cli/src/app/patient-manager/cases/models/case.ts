@@ -1,3 +1,4 @@
+
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -31,8 +32,10 @@ const CaseRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
-    caseSource: ''
-    
+    caseSource: '',
+    createdByCompanyId: 0,
+    createdByCompany: null
+
 });
 
 export class Case extends CaseRecord {
@@ -58,7 +61,8 @@ export class Case extends CaseRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     caseSource: string;
-    
+    createdByCompanyId: Number;
+    createdByCompany: Company;
     constructor(props) {
         super(props);
     }
@@ -102,6 +106,14 @@ export class Case extends CaseRecord {
             }
         });
         return isConsentReceived;
+    }
+
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.createdByCompany.id === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
     }
 
     getInboundReferral(companyId): boolean {

@@ -1,4 +1,4 @@
-<app-document-upload [url]="url" (uploadComplete)="documentUploadComplete($event)"
+<app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="currentVisitId" (uploadComplete)="documentUploadComplete($event)"
     (uploadError)="documentUploadError($event)"></app-document-upload>
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">

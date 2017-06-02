@@ -20,6 +20,7 @@ import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
 import { ConsentStore } from '../../cases/stores/consent-store';
+import { Document } from '../../../commons/models/document';
 @Component({
     selector: 'caseslist',
     templateUrl: './cases-list.html'
@@ -38,7 +39,14 @@ export class CasesListComponent implements OnInit {
     isDeleteProgress: boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
-
+    url;
+    caseId: number;
+    companyId: number;
+    selectedCaseId: number;
+    signedDocumentUploadUrl: string;
+    signedDocumentPostRequestData: any;
+    isElectronicSignatureOn: boolean = false;
+    addConsentDialogVisible: boolean = false;
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -51,6 +59,9 @@ export class CasesListComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private _consentStore: ConsentStore,
     ) {
+        this.companyId = this.sessionStore.session.currentCompany.id;
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
@@ -69,11 +80,11 @@ export class CasesListComponent implements OnInit {
                 });
         });
     }
-    ngOnInit() {       
+    ngOnInit() {
         this.loadCases();
     }
 
-    loadCases() {     
+    loadCases() {
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
@@ -251,8 +262,104 @@ export class CasesListComponent implements OnInit {
         }
     }
 
-    showDialog(currentCaseId: number) {
-        // this.addConsentDialogVisible = true;
-        // this.selectedCaseId = currentCaseId;
+    showDialog(currentCaseId) {
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+        this.signedDocumentPostRequestData = {
+            companyId: this.companyId,
+            caseId: this.selectedCaseId
+        };
     }
+
+
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+            }
+            else {
+                let notification = new Notification({
+                    'title': 'Consent Uploaded Successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this.addConsentDialogVisible = false;
+                this.loadCases();
+            }
+
+        });
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    signedDocumentUploadComplete(document: Document) {
+        if (document.status == 'Failed') {
+            let notification = new Notification({
+                'title': document.message + '  ' + document.documentName,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+        }
+        else {
+            let notification = new Notification({
+                'title': 'Consent Uploaded Successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this.addConsentDialogVisible = false;
+            this.loadCases();
+        }
+
+    }
+
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    }
+
+    downloadTemplate(caseId) {
+        this._progressBarService.show();
+        this._consentStore.downloadTemplate(this.selectedCaseId, this.companyId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
 }

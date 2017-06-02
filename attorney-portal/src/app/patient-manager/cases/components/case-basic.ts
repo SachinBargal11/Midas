@@ -82,13 +82,13 @@ export class CaseBasicComponent implements OnInit {
                     this.allProviders = results[3];
                     this.caseDetail = results[4];
 
-                    if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
-                        this.caseform.get("caseSource").disable();
-                    }
-                    else {
-                        this.caseform.get("caseSource").enable();
-                    }
-                    
+                    // if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
+                    //     this.caseform.get("caseSource").disable();
+                    // }
+                    // else {
+                    //     this.caseform.get("caseSource").enable();
+                    // }
+
                     // if (this.caseDetail.attorneyId != null) {
                     //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
                     //         // this.caseDetail.caseSource = "";
@@ -133,25 +133,25 @@ export class CaseBasicComponent implements OnInit {
 
     ngOnInit() {
     }
-    // attorneyChange(event) {
-    //     this.attorneyId = parseInt(event.target.value);
-    //     if (this.attorneyId > 0) {
-    //         this.caseform.get("caseSource").disable();
-    //     }
-    //     else {
-    //         this.caseform.get("caseSource").enable();
-    //     }
-    // }
+    attorneyChange(event) {
+        this.attorneyId = parseInt(event.target.value);
+        // if (this.attorneyId > 0) {
+        //     this.caseform.get("caseSource").disable();
+        // }
+        // else {
+        //     this.caseform.get("caseSource").enable();
+        // }
+    }
 
-    // casesourceChange(event) {
-    //     let CaseSource: string = event.target.value;
-    //     if (CaseSource != "") {
-    //         this.caseform.get("attorneyId").disable();
-    //     }
-    //     else {
-    //         this.caseform.get("attorneyId").enable();
-    //     }
-    // }
+    casesourceChange(event) {
+        let CaseSource: string = event.target.value;
+        // if (CaseSource != "") {
+        //     this.caseform.get("attorneyId").disable();
+        // }
+        // else {
+        //     this.caseform.get("attorneyId").enable();
+        // }
+    }
 
     saveCase() {
         this.isSaveProgress = true;
@@ -171,13 +171,44 @@ export class CaseBasicComponent implements OnInit {
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
             updateByUserID: this.sessionStore.session.account.user.id,
-            updateDate: moment()
+            updateDate: moment(),
+            createdByCompanyId: this.sessionStore.session.currentCompany.id
         }));
 
         this._progressBarService.show();
         result = this._casesStore.updateCase(caseDetail);
         result.subscribe(
             (response) => {
+                if (this.attorneyId > 0) {
+                    let result1 = this._patientStore.assignPatientToMP(this.patientId, this.caseId, this.attorneyId);
+                    result1.subscribe(
+                        (response) => {
+                            let notification = new Notification({
+                                'title': 'Case updated successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+                            });
+                            this._notificationsStore.addNotification(notification);
+                            this._router.navigate(['../'], { relativeTo: this._route });
+                        },
+                        (error) => {
+                            let errString = 'Unable to update case.';
+                            let notification = new Notification({
+                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                'type': 'ERROR',
+                                'createdAt': moment()
+                            });
+                            this.isSaveProgress = false;
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            this._progressBarService.hide();
+                        },
+                        () => {
+                            this.isSaveProgress = false;
+                            this._progressBarService.hide();
+                        });
+                }
+
                 let notification = new Notification({
                     'title': 'Case updated successfully!',
                     'type': 'SUCCESS',

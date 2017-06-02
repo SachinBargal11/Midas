@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.FundingWebAPI.Controllers
 {
     [Authorize]
     public class ValuesController : ApiController

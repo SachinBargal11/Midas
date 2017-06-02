@@ -62,8 +62,9 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource
-
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
         return patient_case;
@@ -120,7 +121,9 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
 
 
             });

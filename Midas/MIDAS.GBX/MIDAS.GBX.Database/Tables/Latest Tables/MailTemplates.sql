@@ -71,3 +71,20 @@ Go
 --  ('PatientCaseTemplateByAttorneyUpdate','Alert Message From GBX MIDAS','Dear {0},<br><br>case have been updated by {1}<Attorney> and assigned to {2}<Medical Provider> .<br><br> Please click on below link to login to MIDAS and see the case details.<br><br><b>{3}</b><br><br>Thanks');
 
 --  Go
+
+ --insert into [MIDASGBX].[dbo].[MailTemplates] values('PreferredMedicalAddByProvider','User registered','Dear {0},<br><br>{1} of {2} medical provider has added you as medical provider to the Midas portal. <br><br>Please click below link to activate and setup your profile:<br><br><b>{3}</b><br><br>Midas Application Support');
+
+
+
+
+ --insert into [MIDASGBX].[dbo].[MailTemplates] values('PreferredMedicalAddByAttorney','User registered','Dear {0},<br><br>{1} of {2} attorney has added you as medical provider to the Midas portal. <br><br>Please click below link to activate and setup your profile:<br><br><b>{3}</b><br><br>Midas Application Support');
+
+
+
+
+ --insert into [MIDASGBX].[dbo].[MailTemplates] values('PreferredAttorneyAddByProvider','User registered','Dear {0},<br><br>{1} of {2} medical provider has added you as attorney to the Midas portal. <br><br>Please click below link to activate and setup your profile:<br><br><b>{3}</b><br><br>Midas Application Support');
+
+
+
+ --insert into [MIDASGBX].[dbo].[MailTemplates] values('PreferredAttorneyAddByAttorney','User registered','Dear {0},<br><br>{1} of {2} attorney has added you as attorney  to the Midas portal. <br><br>Please click below link to activate and setup your profile:<br><br><b>{3}</b><br><br>Midas Application Support');
+

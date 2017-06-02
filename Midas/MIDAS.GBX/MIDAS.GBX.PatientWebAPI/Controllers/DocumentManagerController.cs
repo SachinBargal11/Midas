@@ -46,7 +46,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
                 if (!Request.Content.IsMimeMultipartContent("form-data"))
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "File input is not proper.", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
-                if (string.IsNullOrEmpty(uploadObject.DocumentType))
+                if (string.IsNullOrEmpty(uploadObject.DocumentType) || uploadObject.DocumentType.ToUpper().Equals("UNDEFINED"))
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Document Type missing.", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
                 var streamProvider = new MultipartMemoryStreamProvider();

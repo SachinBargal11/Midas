@@ -63,13 +63,15 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
         return patient_case;
     }
 
-    static parseCaseComapnyResponse(data: any): Case {    
+    static parseCaseComapnyResponse(data: any): Case {
         let patient_case = null;
         let companies: Company[] = [];
         let companyCaseConsentApproval: Consent[] = [];
@@ -120,7 +122,9 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
         return patient_case;

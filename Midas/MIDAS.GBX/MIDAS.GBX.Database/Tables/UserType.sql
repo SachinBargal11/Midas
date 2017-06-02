@@ -24,3 +24,5 @@ GO
 
 
 --insert into [dbo].[UserType] values('Doctor',null,0,'2017-01-24 16:18:19.8870000',null,null);
+
+--insert into [MIDASGBX].[dbo].[UserType] values('Ancillary',null,0,'2017-02-17 12:00:40.6830000',null,null);

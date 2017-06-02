@@ -30,6 +30,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
     selectedDocumentList = [];
     isDeleteProgress: boolean = false;
     visitId: number;
+    visitUploadDocumentUrl: string;
 
     constructor(
         private _router: Router,
@@ -45,7 +46,8 @@ export class VisitDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentVisitId = parseInt(routeParams.visitId, 10);
-            this.url = `${this._url}/fileupload/multiupload/${this.currentVisitId}/visit`;
+            // this.url = `${this._url}/fileupload/multiupload/${this.currentVisitId}/visit`;
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             //this.url = this._url + '/fileupload/multiupload/'+ this.currentVisitId +'/visit';
             // this._progressBarService.show();
             // this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
@@ -75,11 +77,20 @@ export class VisitDocumentsUploadComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();
     }
+
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');

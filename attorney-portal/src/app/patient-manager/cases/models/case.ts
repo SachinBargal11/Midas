@@ -30,7 +30,9 @@ const CaseRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
-    caseSource: null
+    caseSource: null,
+    createdByCompanyId: 0,
+    createdByCompany: null
 });
 
 export class Case extends CaseRecord {
@@ -56,6 +58,8 @@ export class Case extends CaseRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     caseSource: string;
+    createdByCompanyId: Number;
+    createdByCompany: Company;
     constructor(props) {
         super(props);
     }
@@ -100,7 +104,14 @@ export class Case extends CaseRecord {
         });
         return isConsentReceived;
     }
-
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.createdByCompany.id === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
+    }
+    
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
         _.forEach(this.referral, (currentReferral: Referral) => {
@@ -129,5 +140,5 @@ export class Case extends CaseRecord {
         return isSessionCompany;
     }
 
-   
+
 }

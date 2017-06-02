@@ -839,8 +839,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             foreach (var eachMedicalProvider in PreferredMedicalCompanyBO)
             {
-                if (eachMedicalProvider.RegistrationComplete == true)
-                {
+                //if (eachMedicalProvider.RegistrationComplete == true)
+                //{
                     var locations = _context.Locations.Where(p => p.CompanyID == eachMedicalProvider.ID
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                       .Select(p => p.id);
@@ -869,7 +869,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     rooms.ForEach(p => roomsBO.Add(ConvertDoctorAndRoom<BO.Room, Room>(p)));
 
                     eachMedicalProvider.Rooms = roomsBO;
-                }                
+                //}                
             }
 
             return PreferredMedicalCompanyBO;

@@ -57,8 +57,9 @@ export class DocumentUploadComponent implements OnInit {
   @Input() isConsentDocumentOn: boolean = false;
   @Input() currentId: number;
   @Input() objectId: number;
+  @Input() providerId: number;
   @Input() isdownloadTemplate: boolean = false;
-
+  
   constructor(
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
@@ -150,12 +151,12 @@ export class DocumentUploadComponent implements OnInit {
     let param: string;
     if (this.currentId == 2) {
       if (this.isConsentDocumentOn) {
-        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
       } else {
-        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
       }
     } else if (this.currentId == 3) {
-      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
     }
     event.xhr.setRequestHeader("inputjson", param);
   }
