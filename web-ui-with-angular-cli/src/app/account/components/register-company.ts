@@ -87,7 +87,7 @@ export class RegisterCompanyComponent implements OnInit {
                 roleType: 'Admin',
                 status: 'active'
             }),
-            subscriptionPlan: registercompanyformValues.subscriptionPlan
+            subscriptionPlan: registercompanyformValues.subscriptionPlan ?  registercompanyformValues.subscriptionPlan : null
         });
         result = this._registrationService.registerCompany(company);
         result.subscribe(
