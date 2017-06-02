@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using System.Xml.XPath;
-using MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions;
+using MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage
 {
     /// <summary>
     /// A custom <see cref="IDocumentationProvider"/> that reads the API documentation from an XML documentation file.

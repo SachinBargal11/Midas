@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace MIDAS.GBX.WebAPI.Models
+namespace MIDAS.GBX.FundingWebAPI.Models
 {
     // Models used as parameters to AccountController actions.
 

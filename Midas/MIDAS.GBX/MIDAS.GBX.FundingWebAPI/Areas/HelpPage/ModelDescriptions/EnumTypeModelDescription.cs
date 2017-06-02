@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions
 {
     public class EnumTypeModelDescription : ModelDescription
     {

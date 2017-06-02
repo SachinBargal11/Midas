@@ -1,7 +1,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage
 {
     public class HelpPageAreaRegistration : AreaRegistration
     {

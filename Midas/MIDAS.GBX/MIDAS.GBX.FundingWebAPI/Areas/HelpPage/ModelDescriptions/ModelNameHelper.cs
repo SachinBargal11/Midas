@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions
 {
     internal static class ModelNameHelper
     {

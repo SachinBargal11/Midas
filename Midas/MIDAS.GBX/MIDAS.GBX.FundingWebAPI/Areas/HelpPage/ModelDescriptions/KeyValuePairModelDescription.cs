@@ -1,4 +1,4 @@
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions
 {
     public class KeyValuePairModelDescription : ModelDescription
     {

@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/RefferingOffice")]
 

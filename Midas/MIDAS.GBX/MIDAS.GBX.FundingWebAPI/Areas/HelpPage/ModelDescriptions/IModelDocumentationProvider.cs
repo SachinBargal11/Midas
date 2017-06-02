@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions
 {
     public interface IModelDocumentationProvider
     {

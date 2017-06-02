@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions
 {
     public class ComplexTypeModelDescription : ModelDescription
     {
