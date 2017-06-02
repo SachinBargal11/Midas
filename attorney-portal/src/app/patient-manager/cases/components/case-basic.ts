@@ -82,12 +82,12 @@ export class CaseBasicComponent implements OnInit {
                     this.allProviders = results[3];
                     this.caseDetail = results[4];
 
-                    if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
-                        this.caseform.get("caseSource").disable();
-                    }
-                    else {
-                        this.caseform.get("caseSource").enable();
-                    }
+                    // if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
+                    //     this.caseform.get("caseSource").disable();
+                    // }
+                    // else {
+                    //     this.caseform.get("caseSource").enable();
+                    // }
 
                     // if (this.caseDetail.attorneyId != null) {
                     //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
