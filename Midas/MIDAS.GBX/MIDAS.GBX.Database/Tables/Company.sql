@@ -81,3 +81,9 @@ GO
 ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_Company_RegisteringCompanyId]
 GO
 */
+/*
+ALTER TABLE [dbo].[Company] ALTER COLUMN [SubscriptionPlanType] [int] NULL
+GO
+ALTER TABLE [dbo].[Company] ALTER COLUMN [TaxID] [nvarchar](10) NULL
+GO
+*/
