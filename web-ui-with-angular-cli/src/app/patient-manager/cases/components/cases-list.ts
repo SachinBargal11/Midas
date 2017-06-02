@@ -110,6 +110,16 @@ export class CasesListComponent implements OnInit {
         return isCurrentUser;
     }
 
+    // isCreatedByCompany(companyId): boolean {
+    //     let isCreatedByCompany: boolean = false;
+    //     _.forEach(this.cases, (currentCase: Case) => {
+    //         if (currentCase.createdByCompanyId === companyId) {
+    //             isCreatedByCompany = true;
+    //         }
+    //     });
+    //     return isCreatedByCompany;
+    // }
+    
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {

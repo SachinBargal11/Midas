@@ -35,25 +35,18 @@
             </a>
         </ng-template>
     </p-column>
-    <!--<p-column header="Case Source" field="caseSource"> </p-column>-->
+
     <p-column header="Case Source" [sortable]="true">
-        <ng-template let-currentUser="rowData" pTemplate="body">
-            <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.caseSource}}
+        <ng-template let-case="rowData" pTemplate="body">
+            <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.caseSource}}
             </div>
-            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.createdByCompany.name}}
+            <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.createdByCompany.name}}
             </div>
         </ng-template>
     </p-column>
-    <!--<p-column header="Referral Status">
-        <ng-template let-case="rowData" pTemplate="body">
-            <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals"><u>Inbound</u></a>
-            <a *ngIf="case.getOutboundReferral(sessionStore.session.currentCompany.id) && !case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/outbound-referrals"><u>Outbound</u></a>
-            <a *ngIf="!case.getInboundReferral(sessionStore.session.currentCompany.id)"><u></u></a>
-          
-        </ng-template>
-    </p-column>-->
+
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->

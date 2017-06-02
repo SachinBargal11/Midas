@@ -112,6 +112,17 @@ export class CompanyCasesComponent implements OnInit {
         return isCurrentUser;
     }
 
+    // isCreatedByCompany(): boolean {
+    //     debugger;
+    //     let isCreatedByCompany: boolean = false;
+    //     _.forEach(this.cases, (currentCase: Case) => {
+    //         if (currentCase.createdByCompanyId === this.companyId) {
+    //             isCreatedByCompany = true;
+    //         }
+    //     });
+    //     return isCreatedByCompany;
+    // }
+
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
             // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);

@@ -1,3 +1,4 @@
+
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -105,6 +106,14 @@ export class Case extends CaseRecord {
             }
         });
         return isConsentReceived;
+    }
+
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.createdByCompany.id === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
     }
 
     getInboundReferral(companyId): boolean {
