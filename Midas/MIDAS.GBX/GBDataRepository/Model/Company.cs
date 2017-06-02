@@ -48,7 +48,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string Name { get; set; }
         public byte Status { get; set; }
         public int CompanyType { get; set; }
-        public int SubscriptionPlanType { get; set; }
+        public Nullable<int> SubscriptionPlanType { get; set; }
         public string TaxID { get; set; }
         public int AddressId { get; set; }
         public int ContactInfoID { get; set; }

@@ -33,6 +33,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> CreateUserId { get; set; }
         public Nullable<int> UpdateUserId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string DocumentType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }

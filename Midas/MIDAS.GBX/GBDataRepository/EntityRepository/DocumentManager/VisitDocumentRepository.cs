@@ -33,6 +33,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 ObjectType = objectType,
                 ObjectId = objectId,
+                DocumentType = documentType,
                 DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                 DocumentPath = uploadpath,
                 CreateDate = DateTime.UtcNow
@@ -43,6 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             VisitDocument visitDoc = _context.VisitDocuments.Add(new VisitDocument()
             {
                 MidasDocumentId = midasdoc.Id,
+                DocumentType = documentType,
                 PatientVisitId = objectId,
                 DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                 CreateDate = DateTime.UtcNow

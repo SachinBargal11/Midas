@@ -37,6 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     ObjectType = documentType.ToUpper().Equals(EN.Constants.ConsentType) ? string.Concat(EN.Constants.ConsentType, "_" + companyId) : objectType,
                     ObjectId = objectId,
+                    DocumentType = documentType,
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                     DocumentPath = uploadpath,
                     CreateDate = DateTime.UtcNow
@@ -50,6 +51,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         MidasDocumentId = midasdoc.Id,
                         CaseId = objectId,
+                        DocumentType = documentType,
                         CompanyId = companyId,
                         DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                         CreateDate = DateTime.UtcNow
@@ -76,6 +78,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         MidasDocumentId = midasdoc.Id,
                         CaseId = objectId,
+                        DocumentType = documentType,
                         DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                         CreateDate = DateTime.UtcNow
                     });
