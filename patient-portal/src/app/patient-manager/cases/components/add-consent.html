@@ -33,7 +33,7 @@
     </section>
 </div>
 
-<app-document-upload [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+<app-document-upload [currentId]="2" [objectId]="caseId"  [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
     (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
     [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [changeCompneyConsenturl]="changeCompneyConsenturl"></app-document-upload>
 

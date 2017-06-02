@@ -287,6 +287,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
                 prefAttProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
+                prefAttProvider_CompanyDB.BlobStorageTypeId = 1;
                 prefAttProvider_CompanyDB.RegistrationComplete = false;
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
@@ -330,6 +331,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserCompanyRoleDB.IsDeleted = false;
                 UserCompanyRoleDB.CreateDate = DateTime.UtcNow;
                 UserCompanyRoleDB.CreateByUserID = 0;
+
                 _context.UserCompanyRoles.Add(UserCompanyRoleDB);
                 _context.SaveChanges();
 
@@ -542,7 +544,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Update Medical Provider
+        #region Update Attorney Provider
         public override object UpdateAttorneyProvider<T>(T entity)
         {
 
@@ -550,7 +552,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             PreferredAttorneyProvider preferredAttorneyProviderDB = new PreferredAttorneyProvider();
 
             BO.Signup prefAttProviderBO = preferredÀttorneyProviderBO.Signup;
-            BO.Company company = preferredÀttorneyProviderBO.Company;
+            //BO.Company company = preferredÀttorneyProviderBO.Company;
             PreferredAttorneyProvider prefAttProvider = new PreferredAttorneyProvider();
 
             Guid invitationDB_UniqueID = Guid.NewGuid();
@@ -674,7 +676,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
 
                 prefAttProvider.PrefAttorneyProviderId = prefAttProviderBO.company.ID;
-                prefAttProvider.CompanyId = company.ID;
+                prefAttProvider.CompanyId = preferredÀttorneyProviderBO.CompanyId;
                 prefAttProvider.IsCreated = true;
                 prefAttProvider.IsDeleted = false;
                 prefAttProvider.CreateByUserID = prefAttProvider_CompanyDB.CreateByUserID;

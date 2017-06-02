@@ -36,7 +36,18 @@
         </ng-template>
     </p-column>
 
-    <p-column header="Case Source" field="caseSource"> </p-column>
+    <!--<p-column header="Case Source" field="caseSource"> </p-column>-->
+    <p-column header="Case Source" [sortable]="true">
+        <ng-template let-currentUser="rowData" pTemplate="body">
+            <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
+                {{currentUser.caseSource}}
+            </div>
+            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
+                {{currentUser.createdByCompany.name}}
+            </div>
+        </ng-template>
+    </p-column>
+
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->

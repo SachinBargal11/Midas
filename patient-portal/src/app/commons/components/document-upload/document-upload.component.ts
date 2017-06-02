@@ -36,7 +36,7 @@ export class DocumentUploadComponent implements OnInit {
   cosentFormUrl: SafeResourceUrl;
   documentType: string;
   companyId: number = this._sessionStore.session.currentCompany.id;
-  // documentTypes: DocumentType[];
+  documentTypes: DocumentType[];
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -57,8 +57,9 @@ export class DocumentUploadComponent implements OnInit {
   @Input() isConsentDocumentOn: boolean = false;
   @Input() currentId: number;
   @Input() objectId: number;
+  @Input() providerId: number;
   @Input() isdownloadTemplate: boolean = false;
-
+  
   constructor(
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
@@ -77,6 +78,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+     this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
       this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
@@ -145,19 +147,19 @@ export class DocumentUploadComponent implements OnInit {
     this.scannerContainerId = `scanner_${moment().valueOf()}`;
   }
 
-  // onBeforeSendEvent(event) {
-  //   let param: string;
-  //   if (this.currentId == 2) {
-  //     if (this.isConsentDocumentOn) {
-  //       param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-  //     } else {
-  //       param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-  //     }
-  //   } else if (this.currentId == 3) {
-  //     param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-  //   }
-  //   event.xhr.setRequestHeader("inputjson", param);
-  // }
+  onBeforeSendEvent(event) {
+    let param: string;
+    if (this.currentId == 2) {
+      if (this.isConsentDocumentOn) {
+        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
+      } else {
+        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
+      }
+    } else if (this.currentId == 3) {
+      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
+    }
+    event.xhr.setRequestHeader("inputjson", param);
+  }
 
 
   onFilesUploadComplete(event) {
@@ -231,24 +233,24 @@ export class DocumentUploadComponent implements OnInit {
     }
   }
 
-//  selectDocument(event) {
-//     let documentType = event.target.value;
-//     this.documentType = documentType;
-//   }
+ selectDocument(event) {
+    let documentType = event.target.value;
+    this.documentType = documentType;
+  }
 
-//   loadDocumentForObjectType(companyId: number, currentId: number) {
-//     // this._progressBarService.show();
-//     let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
-//       .subscribe(documentType => {
-//         this.documentTypes = documentType;
-//       },
-//       (error) => {
-//         // this._progressBarService.hide();
-//       },
-//       () => {
-//         // this._progressBarService.hide();
-//       });
-//   }
+  loadDocumentForObjectType(companyId: number, currentId: number) {
+    // this._progressBarService.show();
+    let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
+      .subscribe(documentType => {
+          this.documentTypes = documentType;
+      },
+      (error) => {
+        // this._progressBarService.hide();
+      },
+      () => {
+        // this._progressBarService.hide();
+      });
+  }
 }
 export interface TwainSource {
   idx: number;

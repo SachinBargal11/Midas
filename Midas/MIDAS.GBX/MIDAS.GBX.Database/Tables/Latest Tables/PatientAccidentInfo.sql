@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [dbo].[PatientAccidentInfo]
 (
 	[Id] [INT] NOT NULL IDENTITY(1,1), 
-	--[PatientId] [INT] NOT NULL, 
 	[CaseId] [INT] NOT NULL,
 	[AccidentDate] [DATETIME2](7) NULL, 
 	[PlateNumber] [NVARCHAR](50) NULL,
@@ -13,7 +12,7 @@
 	[AdditionalPatients] [NVARCHAR](128) NULL, 
 	[DescribeInjury] [NVARCHAR](128) NULL, 
 	[PatientTypeId] [TINYINT] NOT NULL, 
-	--[IsCurrentAccident] [BIT] NOT NULL DEFAULT 0, 
+    [MedicalReportNumber] [NVARCHAR](150) NULL,
 
 	[IsDeleted] [BIT] NULL DEFAULT (0),
 	[CreateByUserID] [INT] NOT NULL,
@@ -52,3 +51,7 @@ GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_PatientType_PatientTypeId]
 GO
+
+/*
+ALTER TABLE [dbo].[PatientAccidentInfo] ADD [MedicalReportNumber] [NVARCHAR](150) NULL
+*/

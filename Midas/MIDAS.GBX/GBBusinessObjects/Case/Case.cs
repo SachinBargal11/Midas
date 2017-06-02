@@ -59,6 +59,15 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("caseSource")]
         public string caseSource { get; set; }
+
+        [JsonProperty("attorney")]
+        public Company Attorney { get; set; }
+
+        [JsonProperty("createdByCompanyId")]
+        public int CreatedByCompanyId { get; set; }
+
+        [JsonProperty("createdByCompany")]
+        public Company CreatedByCompany { get; set; }
     }
 
     public class mCase : GbObject
@@ -148,7 +157,7 @@ namespace MIDAS.GBX.BusinessObjects
         public byte? CaseStatusId { get; set; }
 
         [JsonProperty("attorneyId")]
-        public int? AttorneyId { get; set; }        
+        public int? AttorneyId { get; set; }
 
         [JsonProperty("patientEmpInfo")]
         public PatientEmpInfo PatientEmpInfo { get; set; }
@@ -173,6 +182,15 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("caseSource")]
         public string caseSource { get; set; }
+
+        [JsonProperty("attorney")]
+        public Company Attorney { get; set; }
+
+        [JsonProperty("createdByCompanyId")]
+        public int CreatedByCompanyId { get; set; }
+
+        [JsonProperty("createdByCompany")]
+        public Company CreatedByCompany { get; set; }
     }
 
     public class mCaseWithUserAndPatient : GbObject

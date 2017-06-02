@@ -142,10 +142,10 @@
                 <label class="form-label"> Case Source
                             </label>
                 <div class="form-group">
-                    <input *ngIf="!caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" [ngModel]="caseDetail.caseSource"
+                    <input formControlName="caseSource" (change)="casesourceChange($event)" [ngModel]="caseDetail.caseSource"
                         type="text" class="form-control" placeholder="" [class.error]="!caseformControls.caseSource.valid">
-                    <input *ngIf="caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" type="text" class="form-control"
-                        placeholder="" [class.error]="!caseformControls.caseSource.valid">
+                    <!--<input *ngIf="caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" type="text" class="form-control"
+                        placeholder="" [class.error]="!caseformControls.caseSource.valid">-->
 
                     <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
                         <ul>

@@ -124,22 +124,22 @@ export class AddCaseComponent implements OnInit {
 
     providerChange(event) {
         this.providerId = parseInt(event.target.value);
-        if (this.providerId > 0) {
-            this.caseform.get("caseSource").disable();
-        }
-        else {
-            this.caseform.get("caseSource").enable();
-        }
+        // if (this.providerId > 0) {
+        //     this.caseform.get("caseSource").disable();
+        // }
+        // else {
+        //     this.caseform.get("caseSource").enable();
+        // }
     }
 
     casesourceChange(event) {
         let CaseSource: string = event.target.value;
-        if (CaseSource != "") {
-            this.caseform.get("providerId").disable();
-        }
-        else {
-            this.caseform.get("providerId").enable();
-        }
+        // if (CaseSource != "") {
+        //     this.caseform.get("providerId").disable();
+        // }
+        // else {
+        //     this.caseform.get("providerId").enable();
+        // }
     }
 
 
@@ -199,7 +199,8 @@ export class AddCaseComponent implements OnInit {
             // transportation: caseFormValues.transportation,
             //transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             createByUserID: this._sessionStore.session.account.user.id,
-            createDate: moment()
+            createDate: moment(),
+            createdByCompanyId: this._sessionStore.session.currentCompany.id
         });
 
         this._progressBarService.show();
@@ -207,6 +208,7 @@ export class AddCaseComponent implements OnInit {
         result.subscribe(
             (response) => {
                 if (this.providerId > 0) {
+
                     let result1 = this._patientsStore.assignPatientToMP((this.patientId) ? this.patientId : parseInt(this.idPatient), response.id, this.providerId);
                     result1.subscribe(
                         (response) => {

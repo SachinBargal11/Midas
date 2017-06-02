@@ -115,9 +115,10 @@ export class ListCompanyConsentComponent implements OnInit {
             });
     }
 
-    showDialog(currentCaseId: number) {
+    showDialog(currentCaseId: number, providerCompanyId: number) {
         this.addConsentDialogVisible = true;
         this.caseId = currentCaseId;
+        this.companyId = providerCompanyId;
     }
 
 

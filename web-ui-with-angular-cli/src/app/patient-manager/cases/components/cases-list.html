@@ -35,7 +35,17 @@
             </a>
         </ng-template>
     </p-column>
-    <p-column header="Case Source" field="caseSource"> </p-column>
+    <!--<p-column header="Case Source" field="caseSource"> </p-column>-->
+    <p-column header="Case Source" [sortable]="true">
+        <ng-template let-currentUser="rowData" pTemplate="body">
+            <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
+                {{currentUser.caseSource}}
+            </div>
+            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
+                {{currentUser.createdByCompany.name}}
+            </div>
+        </ng-template>
+    </p-column>
     <!--<p-column header="Referral Status">
         <ng-template let-case="rowData" pTemplate="body">
             <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals"><u>Inbound</u></a>
@@ -56,10 +66,11 @@
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
     <div *ngIf="selectedCaseId">
-        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="selectedCaseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
-            [signedDocumentUploadUrl]="signedDocumentUploadUrl" (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)"
-            (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
-            (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)">
+        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="selectedCaseId" [isConsentDocumentOn]="true"
+            [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+            (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
+            [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true"
+            (download)="downloadTemplate($event)">
         </app-document-upload>
     </div>
 </p-dialog>

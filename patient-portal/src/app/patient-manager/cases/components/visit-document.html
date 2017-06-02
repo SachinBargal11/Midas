@@ -1,7 +1,8 @@
-<app-document-upload [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+<app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="currentVisitId" (uploadComplete)="documentUploadComplete($event)"
+    (uploadError)="documentUploadError($event)"></app-document-upload>
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
-    <h3 class="with-border">Uploaded Documents       
+    <h3 class="with-border">Uploaded Documents
     </h3>
 </div>
 <div class="ui-widget-header row">
@@ -15,7 +16,13 @@
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
     <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="document.documentName" header="Document Name" [sortable]="true"></p-column>
+    <p-column header="Document Name">
+        <ng-template let-document="rowData" pTemplate="body">
+            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+                <u>{{document.document.originalResponse.documentName}}</u>
+            </a>
+        </ng-template>
+    </p-column>
     <p-column field="createDate" header="Created Date" [sortable]="true">
         <ng-template let-document="rowData.document" pTemplate="body">
             {{ document.createDate | dateTimeFormat }}
@@ -23,4 +30,3 @@
     </p-column>
 
 </p-dataTable>
- 

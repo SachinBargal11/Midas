@@ -112,7 +112,7 @@
             <label class="form-label">Attorney                               
                             </label>
             <div class="form-group">
-                <select formControlName="attorneyId" type="text" class="form-control" placeholder="" (change)="attorneyChange($event)" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                <select formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control" placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                     <option value="">-Select -</option>
                         <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.prefferedAttorney.id}}">{{currentAttorney.prefferedAttorney.name}}</option>
                 </select>

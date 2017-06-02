@@ -322,17 +322,54 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             mpatientVisits.RoomId = patientVisit2.RoomId;
             mpatientVisits.DoctorId = patientVisit2.DoctorId;
             mpatientVisits.SpecialtyId = patientVisit2.SpecialtyId;
-            mpatientVisits.LocationName = patientVisit2.Location.Name;
-            mpatientVisits.RoomName = patientVisit2.Room.Name;
-            mpatientVisits.RoomTestName = patientVisit2.Room.RoomTest.Name;
-            mpatientVisits.DoctorFirstName = patientVisit2.Doctor.User.FirstName;
-            mpatientVisits.DoctorLastName = patientVisit2.Doctor.User.LastName;
-            mpatientVisits.PatientFirstName = patientVisit2.Patient2.User.FirstName;
-            mpatientVisits.PatientLastName = patientVisit2.Patient2.User.LastName;
 
-            using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+            if (patientVisit2.Location != null)
             {
-                mpatientVisits.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(patientVisit2.CalendarEvent);
+                if (patientVisit2.Location.IsDeleted.HasValue == false || (patientVisit2.Location.IsDeleted.HasValue == true && patientVisit2.Location.IsDeleted.Value == false))
+                {
+                    mpatientVisits.LocationName = patientVisit2.Location.Name;
+                }
+            }
+            if (patientVisit2.Room != null)
+            {
+                if (patientVisit2.Room.IsDeleted.HasValue == false || (patientVisit2.Room.IsDeleted.HasValue == true && patientVisit2.Room.IsDeleted.Value == false))
+                {
+                    mpatientVisits.RoomName = patientVisit2.Room.Name;
+                    if (patientVisit2.Room.RoomTest.IsDeleted.HasValue == false || (patientVisit2.Room.RoomTest.IsDeleted.HasValue == true && patientVisit2.Room.RoomTest.IsDeleted.Value == false))
+                    {
+                        if (patientVisit2.Room.RoomTest != null)
+                        {
+                            mpatientVisits.RoomTestName = patientVisit2.Room.RoomTest.Name;
+                        }
+                    }
+                }
+            }
+           
+            if (patientVisit2.Doctor != null)
+            {
+                if (patientVisit2.Doctor.IsDeleted.HasValue == false || (patientVisit2.Doctor.IsDeleted.HasValue == true && patientVisit2.Doctor.IsDeleted.Value == false))
+                {
+                    mpatientVisits.DoctorFirstName = patientVisit2.Doctor.User.FirstName;
+                    mpatientVisits.DoctorLastName = patientVisit2.Doctor.User.LastName;
+                }
+            }
+            if (patientVisit2.Patient2 != null)
+            {
+                if (patientVisit2.Patient2.IsDeleted.HasValue == false || (patientVisit2.Patient2.IsDeleted.HasValue == true && patientVisit2.Patient2.IsDeleted.Value == false))
+                {
+                    mpatientVisits.PatientFirstName = patientVisit2.Patient2.User.FirstName;
+                    mpatientVisits.PatientLastName = patientVisit2.Patient2.User.LastName;
+                }
+            }
+            if (patientVisit2.CalendarEvent != null)
+            {
+                if (patientVisit2.CalendarEvent.IsDeleted.HasValue == false || (patientVisit2.CalendarEvent.IsDeleted.HasValue == true && patientVisit2.CalendarEvent.IsDeleted.Value == false))
+                {
+                    using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+                    {
+                        mpatientVisits.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(patientVisit2.CalendarEvent);
+                    }
+                }
             }
 
             mpatientVisits.IsDeleted = patientVisit2.IsDeleted;

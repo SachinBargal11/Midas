@@ -13,6 +13,7 @@ export const routes: Routes = [
     { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'medical-provider', loadChildren: 'app/medical-provider/medical-provider-module#MedicalProviderModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'account-setup', loadChildren: 'app/account-setup/account-setup-module#AccountSetupModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
+    { path: 'event', loadChildren: 'app/event/event-module#EventModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: '404', component: NoContentComponent },
     { path: '**',  redirectTo: '/404' }
 ];

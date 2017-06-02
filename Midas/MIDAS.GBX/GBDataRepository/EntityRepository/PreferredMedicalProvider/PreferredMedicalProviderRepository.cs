@@ -421,6 +421,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider_CompanyDB.TaxID = prefMedProviderCompanyBO.TaxID;
                 prefMedProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
+                prefMedProvider_CompanyDB.BlobStorageTypeId = 1;
                 prefMedProvider_CompanyDB.RegistrationComplete = false;
                 prefMedProvider_CompanyDB.IsDeleted = false;
                 prefMedProvider_CompanyDB.CreateByUserID = prefMedProviderCompanyBO.CreateByUserID;

@@ -6,7 +6,7 @@ const CompanyRecord = Record({
     name: '',
     taxId: '',
     companyType: CompanyType.NONE,
-     subscriptionType: 0,
+    subscriptionType: 0,
 });
 
 export class Company extends CompanyRecord {
@@ -20,5 +20,4 @@ export class Company extends CompanyRecord {
     constructor(props) {
         super(props);
     }
-
 }

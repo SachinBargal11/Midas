@@ -42,9 +42,12 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string CaseSource { get; set; }
+        public int CreatedByCompanyId { get; set; }
     
         public virtual CaseStatu CaseStatu { get; set; }
         public virtual CaseType CaseType { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
         public virtual Location Location { get; set; }
         public virtual Patient2 Patient2 { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }

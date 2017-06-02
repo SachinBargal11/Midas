@@ -31,8 +31,10 @@ const CaseRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
-    caseSource: ''
-    
+    caseSource: '',
+    createdByCompanyId: 0,
+    createdByCompany: null
+
 });
 
 export class Case extends CaseRecord {
@@ -58,7 +60,8 @@ export class Case extends CaseRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     caseSource: string;
-    
+    createdByCompanyId: Number;
+    createdByCompany: Company;
     constructor(props) {
         super(props);
     }

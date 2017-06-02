@@ -45,7 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
             caseBO.UpdateByUserID = cases.UpdateByUserID;
-            caseBO.caseSource = !string.IsNullOrEmpty(cases.CaseSource) ? cases.CaseSource : (cases.AttorneyId > 0 ? _context.Companies.Where(p => p.id == cases.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault().Name : "");
+            //caseBO.caseSource = !string.IsNullOrEmpty(cases.CaseSource) ? cases.CaseSource : (cases.AttorneyId > 0 ? _context.Companies.Where(p => p.id == cases.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault().Name : "");
 
 
             if (cases.PatientEmpInfo != null)
@@ -192,6 +192,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.Referrals = BOListReferral;
             }
 
+            if(cases.Company != null)
+            {
+                BO.Company boCompany = new BO.Company();
+
+                boCompany.ID = cases.Company.id;
+                boCompany.Name = cases.Company.Name;
+                boCompany.TaxID = cases.Company.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
+                boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
+
+                caseBO.Attorney = boCompany;
+            }
+
+            if (cases.Company1 != null)
+            {
+                BO.Company boCompany = new BO.Company();
+
+                boCompany.ID = cases.Company1.id;
+                boCompany.Name = cases.Company1.Name;
+                boCompany.TaxID = cases.Company1.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company1.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company1.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company1.SubscriptionPlanType;
+                boCompany.RegistrationComplete = cases.Company1.RegistrationComplete;
+
+                caseBO.CreatedByCompany = boCompany;
+            }
+
+            caseBO.AttorneyId = cases.AttorneyId;
+            //caseBO.Attorney = cases.Attorney;
+            caseBO.caseSource = cases.CaseSource;
+            caseBO.CreatedByCompanyId = cases.CreatedByCompanyId;
+            //caseBO.CreatedByCompany = cases.CreatedByCompany;
 
             return (T)(object)caseBO;
         }
@@ -281,11 +316,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
 
-                        var company = new Company();
-                        if (eachCase.AttorneyId > 0)
-                        {
-                            company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                        }
+                        //var company = new Company();
+                        //if (eachCase.AttorneyId > 0)
+                        //{
+                        //    company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                        //}
 
                         //if (eachCase.AttorneyId > 0)
                         //{
@@ -295,7 +330,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         //{
                         //    caseWithUserAndPatient.caseSource = eachCase.caseSource;
                         //}
+                        caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
+                        caseWithUserAndPatient.Attorney = eachCase.Attorney;
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
+                        caseWithUserAndPatient.CreatedByCompanyId = eachCase.CreatedByCompanyId;
+                        caseWithUserAndPatient.CreatedByCompany = eachCase.CreatedByCompany;
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
@@ -454,6 +493,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
                                     .Include("Referral2")
+                                    .Include("Company")
+                                    .Include("Company1")
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -637,20 +678,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
                     caseDB.CreateByUserID = IsEditMode == true && caseBO.CreateByUserID == 0 ? caseDB.CreateByUserID : caseBO.CreateByUserID;
                     caseDB.UpdateByUserID = IsEditMode == true && caseBO.UpdateByUserID == 0 ? caseDB.UpdateByUserID : caseBO.UpdateByUserID;
-                    if (!string.IsNullOrEmpty(caseBO.caseSource))
-                    { caseDB.AttorneyId = null; }
-                    else
-                    {
-                        caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
-                    }
-                    if (caseBO.AttorneyId > 0)
-                    { caseDB.CaseSource = null; }
-                    else
-                    {
-                        caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
-                    }
+                    //if (!string.IsNullOrEmpty(caseBO.caseSource))
+                    //{ caseDB.AttorneyId = null; }
+                    //else
+                    //{
+                    //    caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
+                    //}
+                    //if (caseBO.AttorneyId > 0)
+                    //{ caseDB.CaseSource = null; }
+                    //else
+                    //{
+                    //    caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
+                    //}
+                    caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
+                    caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
+
                     if (Add_caseDB == true)
                     {
+                        caseDB.CreatedByCompanyId = caseBO.CreatedByCompanyId; // This column need to be set only once while adding the record.
+
                         caseDB = _context.Cases.Add(caseDB);
                     }
                     _context.SaveChanges();
@@ -700,6 +746,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("CaseCompanyConsentDocuments")
                                        .Include("CaseCompanyConsentDocuments.MidasDocument")
                                        .Include("Referral2")
+                                       .Include("Company")
+                                       .Include("Company1")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
 
                 try

@@ -195,6 +195,15 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();

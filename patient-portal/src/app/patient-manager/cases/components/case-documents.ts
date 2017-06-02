@@ -35,7 +35,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
     url;
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
-
+    caseId: number;
+    
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -68,6 +69,14 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();
@@ -90,6 +99,31 @@ export class CaseDocumentsUploadComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+
+     downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._casesStore.downloadDocumentForm(this.caseId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
     }
 
     deleteDocument() {

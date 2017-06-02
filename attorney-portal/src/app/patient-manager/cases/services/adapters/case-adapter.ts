@@ -38,8 +38,9 @@ export class CaseAdapter {
             //     for (let referral of data.referral) {
             //         referral.push(ReferralAdapter.parseResponse(referral));
             //     }
-            // }
+            // }       
             patient_case = new Case({
+
                 id: data.id,
                 patientId: data.patientId,
                 patient: PatientAdapter.parseResponse(data.patient2),
@@ -58,11 +59,13 @@ export class CaseAdapter {
                 attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,
                 isDeleted: data.isDeleted ? true : false,
-                createByUserID: data.createbyuserID,
+                createByUserID: data.createByUserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
         return patient_case;
@@ -115,11 +118,13 @@ export class CaseAdapter {
                 companyCaseConsentApproval: companyCaseConsentApproval,
                 referral: data.referral,
                 isDeleted: data.isDeleted ? true : false,
-                createByUserID: data.createbyuserID,
+                createByUserID: data.createByUserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
         return patient_case;
