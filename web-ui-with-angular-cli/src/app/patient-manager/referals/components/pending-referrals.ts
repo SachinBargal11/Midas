@@ -248,7 +248,7 @@ export class PendingReferralsComponent implements OnInit {
 
         if (shouldAppointVisit) {
             this.confirmationService.confirm({
-                message: 'Do you want to Appoint Schedule?',
+                message: 'Do you want to scedule an appointment?',
                 header: 'Confirmation',
                 icon: 'fa fa-question-circle',
                 accept: () => {
