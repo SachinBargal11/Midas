@@ -61,6 +61,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> BlobStorageTypeId { get; set; }
         public bool RegistrationComplete { get; set; }
+        public byte CompanyStatusTypeID { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -74,6 +75,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+        public virtual CompanyStatusType CompanyStatusType { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual SubscriptionPlan SubscriptionPlan { get; set; }

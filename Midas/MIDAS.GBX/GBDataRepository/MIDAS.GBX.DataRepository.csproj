@@ -223,6 +223,9 @@
     <Compile Include="Model\CompanySpecialtyDetail.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CompanyStatusType.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CompanyType.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
