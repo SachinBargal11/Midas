@@ -31,7 +31,7 @@
                 <u>Yes</u>
             </a>
             <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="showDialog(case.id)">
-                <u>No</u>
+                <u>Upload Consent Form</u>
             </a>
         </ng-template>
     </p-column>
