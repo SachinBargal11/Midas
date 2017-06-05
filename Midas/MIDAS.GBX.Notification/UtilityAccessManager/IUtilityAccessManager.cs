@@ -8,7 +8,7 @@ namespace MIDAS.GBX.Notification.UtilityAccessManager
 {
     public interface IUtilityAccessManager<T>
     {
-        Object SendSMS(T smsObject);
-        Object SendMultipleSMS(T multipleSMSObject);
+        //Object SendSMS(T smsObject);
+        //Object SendMultipleSMS(T multipleSMSObject);
     }
 }

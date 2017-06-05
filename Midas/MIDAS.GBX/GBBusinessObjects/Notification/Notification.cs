@@ -10,7 +10,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Notification : GbObject
+    public class Notification2 : GbObject
     {       
         //public int Id { get; set; }
         [JsonProperty("companyId")]

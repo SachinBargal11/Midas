@@ -229,7 +229,7 @@ namespace MIDAS.GBX
             {
                 repo = new FileUploadRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Notification))
+            else if (typeof(T) == typeof(BO.Notification2))
             {
                 repo = new NotificationRepository(context);
             }
@@ -293,6 +293,11 @@ namespace MIDAS.GBX
             {
                 repo = new GeneralSettingRepository(context);
             }
+            else if (typeof(T) == typeof(BO.SMSNotification))
+            {
+                repo = new SMSNotificationRepository(context);
+            }
+
             return repo;
         }
     }

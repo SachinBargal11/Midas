@@ -97,8 +97,10 @@
     <Compile Include="DataAccessManager\DataAccessManager.cs" />
     <Compile Include="DataAccessManager\DBContextProvider.cs" />
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
+    <Compile Include="DataAccessManager\GbNotificationManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
+    <Compile Include="DataAccessManager\IGbNotificationManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
+    <Compile Include="EntityRepository\Notification\SMSNotificationRepository.cs" />
     <Compile Include="EntityRepository\PendingReferral\PendingReferralRepository.cs" />
     <Compile Include="EntityRepository\PreferredAttorneyProvider\PreferredAttorneyProviderRepository.cs" />
     <Compile Include="EntityRepository\PreferredMedicalProvider\PreferredMedicalProviderRepository.cs" />

@@ -250,6 +250,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AddSMSToQueueController.cs" />
     <Compile Include="Controllers\SendNotificationController.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -349,6 +350,10 @@
     <ProjectReference Include="..\MIDAS.GBX\GBBusinessObjects\MIDAS.GBX.BusinessObjects.csproj">
       <Project>{336ea526-404f-47ff-a82d-3f4a34ccaa8e}</Project>
       <Name>MIDAS.GBX.BusinessObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MIDAS.GBX\GBDataRepository\MIDAS.GBX.DataRepository.csproj">
+      <Project>{52c99831-9ca0-4024-811c-2a311bfa182d}</Project>
+      <Name>MIDAS.GBX.DataRepository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

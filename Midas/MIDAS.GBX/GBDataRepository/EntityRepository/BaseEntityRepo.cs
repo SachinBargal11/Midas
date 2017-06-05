@@ -742,8 +742,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        
 
+        public virtual Object AddSMSToQueue<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

@@ -5,39 +5,22 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
+using MIDAS.GBX.DataRepository;
 
 namespace MIDAS.GBX.Notification.RequestHandler
 {
     public class NotificationRequestHandler<T> : IRequestHandler<T>
     {
-        private IUtilityAccessManager<T> utilityAccessManager;
+        private IGbNotificationManager<T> notificationManager;
 
         public NotificationRequestHandler()
         {
-            utilityAccessManager = new UtilityAccessManager<T>();
+            notificationManager = new GbNotificationManager<T>();
         }
 
-        public HttpResponseMessage SendSMS(HttpRequestMessage request, T smsObject)
+        public HttpResponseMessage AddSMSToQueue(HttpRequestMessage request, T smsObject)
         {
-            var objResult = utilityAccessManager.SendSMS(smsObject);
-
-            try
-            {
-                var res = (object)objResult;
-                if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, res);
-                else
-                    return request.CreateResponse(HttpStatusCode.NotFound, res);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
-
-        public HttpResponseMessage SendMultipleSMS(HttpRequestMessage request, T multipleSMSObject)
-        {
-            var objResult = utilityAccessManager.SendMultipleSMS(multipleSMSObject);
+            var objResult = notificationManager.AddSMSToQueue(smsObject);
 
             try
             {

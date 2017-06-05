@@ -23,7 +23,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Notification notification = (BO.Notification)(object)entity;
+            BO.Notification2 notification = (BO.Notification2)(object)entity;
             var result = notification.Validate(notification);
             return result;
         }
@@ -39,7 +39,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (notification == null)
                     return default(T);
 
-                BO.Notification notificationBO = new BO.Notification();
+                BO.Notification2 notificationBO = new BO.Notification2();
                 notificationBO.ID = notification.Id;
                 notificationBO.CompanyId = notification.CompanyId;
                 notificationBO.LocationId = notification.LocationId;
@@ -109,8 +109,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                List<BO.Notification> lstBONotification = new List<BO.Notification>();
-                lstNotification.ForEach(p => lstBONotification.Add(Convert<BO.Notification, Notification>(p)));
+                List<BO.Notification2> lstBONotification = new List<BO.Notification2>();
+                lstNotification.ForEach(p => lstBONotification.Add(Convert<BO.Notification2, Notification>(p)));
 
                 return lstBONotification;
             }
@@ -131,8 +131,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                List<BO.Notification> lstBONotification = new List<BO.Notification>();
-                lstNotification.ForEach(p => lstBONotification.Add(Convert<BO.Notification, Notification>(p)));
+                List<BO.Notification2> lstBONotification = new List<BO.Notification2>();
+                lstNotification.ForEach(p => lstBONotification.Add(Convert<BO.Notification2, Notification>(p)));
 
                 return lstBONotification;
             }
@@ -142,7 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region save
         public override object Save<T>(T entity)
         {
-            BO.Notification NotificationBO = (BO.Notification)(object)entity;
+            BO.Notification2 NotificationBO = (BO.Notification2)(object)entity;
            
 
             Notification NotificationDB = new Notification();
@@ -222,7 +222,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 
             }
 
-            var res = Convert<BO.Notification, Notification>(NotificationDB);
+            var res = Convert<BO.Notification2, Notification>(NotificationDB);
             return (object)res;
         }
         #endregion
@@ -238,7 +238,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 acc.IsViewed = status;
                 _context.SaveChanges();
             }
-            BO.Notification acc_ = Convert<BO.Notification, Notification>(acc);
+            BO.Notification2 acc_ = Convert<BO.Notification2, Notification>(acc);
 
             if (acc_ == null)
             {
@@ -257,7 +257,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault<Notification>();
 
-            BO.Notification acc_ = Convert<BO.Notification, Notification>(acc);
+            BO.Notification2 acc_ = Convert<BO.Notification2, Notification>(acc);
 
             if (acc_ == null)
             {

@@ -23,12 +23,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
     public class NotificationController : ApiController
     {
         //private IRequestHandler<Patient> requestHandler;
-        private IRequestHandler<Notification> requestHandlerNotification;
+        private IRequestHandler<Notification2> requestHandlerNotification;
         
         public NotificationController()
         {
             //requestHandler = new GbApiRequestHandler<Patient>();
-            requestHandlerNotification = new GbApiRequestHandler<Notification>();
+            requestHandlerNotification = new GbApiRequestHandler<Notification2>();
         }
 
        
@@ -63,7 +63,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("save")]
         //[AllowAnonymous]
-        public HttpResponseMessage Save([FromBody]Notification notification)
+        public HttpResponseMessage Save([FromBody]Notification2 notification)
         {
             return requestHandlerNotification.CreateGbObject(Request, notification);
         }

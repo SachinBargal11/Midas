@@ -19,7 +19,7 @@ namespace MIDAS.GBX.Notification.EntityRepository.SMS
         #region SendSMS
         public override object SendSMS<T>(T smsObject)
         {
-            BO.SMS SMSBO = (BO.SMS)(object)smsObject;
+            BO.SMS2 SMSBO = (BO.SMS2)(object)smsObject;
 
             string accountSid = SMSBO.twilio_account_id;
             string authToken = SMSBO.twilio_auth_token;

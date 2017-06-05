@@ -54,7 +54,8 @@
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
     <Compile Include="Company\CompanyType.cs" />
-    <Compile Include="Notification\SMS.cs" />
+    <Compile Include="Notification\SMS2.cs" />
+    <Compile Include="Notification\SMSNotification.cs" />
     <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class SMS
+    public class SMS2
     {
         public string twilio_account_id { get; set; }
         public string twilio_auth_token { get; set; }

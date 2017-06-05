@@ -13,7 +13,7 @@ namespace MIDAS.GBX.Notification
         internal static BaseEntityRepo GetRepo<T>()
         {
             BaseEntityRepo repo = null;
-            if (typeof(T) == typeof(BO.SMS))
+            if (typeof(T) == typeof(BO.SMS2))
             {
                 repo = new SMSRepository();
             }
