@@ -23,8 +23,6 @@ import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter
 
 export class AppHeaderComponent implements OnInit {
 
-    userId: number = this.sessionStore.session.user.id;
-    companyId: number = this.sessionStore.session.currentCompany.id;
     userSetting: UserSetting;
     doctorRoleFlag = false;
     disabled: boolean = false;
@@ -91,19 +89,8 @@ export class AppHeaderComponent implements OnInit {
                 this.doctorRoleFlag = false;
             }
         }
-
-        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
-            .subscribe((userSetting) => {
-                this.userSetting = userSetting;
-                this.isPublic = userSetting.isPublic;
-                this.isCalendarPublic = userSetting.isCalendarPublic;
-                this.isSearchable = userSetting.isSearchable;
-            },
-            (error) => { },
-            () => {
-            });
-
     }
+
     onLeftBurgerClick() {
         if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {
             document.getElementsByClassName('hamburger')[0].classList.remove('is-active');
@@ -162,50 +149,6 @@ export class AppHeaderComponent implements OnInit {
             this.isCalendarPublic = false;
             this.isSearchable = false;
         }
-
-    }
-
-    saveUserSettings() {
-        let userSettingsValues = this.addUserSettings.value;
-        let result;
-        let userSetting = new UserSetting(
-            {
-                userId: this.userId,
-                companyId: this.companyId,
-                isPublic: this.isPublic,
-                isCalendarPublic: this.isCalendarPublic,
-                isSearchable: this.isSearchable
-            }
-        )
-        this._progressBarService.show();
-        result = this._userSettingStore.saveUserSetting(userSetting);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'User Setting added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/patient-manager/patients']);
-                this.closeDialog()
-            },
-            (error) => {
-                let errString = 'Unable to add User Setting.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                // this.isSavePatientProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                // this.isSavePatientProgress = false;
-                this._progressBarService.hide();
-            });
 
     }
 }

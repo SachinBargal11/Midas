@@ -94,7 +94,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             PreferredAncillaryCompanyBO.ID = company.id;
             PreferredAncillaryCompanyBO.Name = company.Name;
-            PreferredAncillaryCompanyBO.RegistrationComplete = company.RegistrationComplete;
+            //PreferredAncillaryCompanyBO.RegistrationComplete = company.RegistrationComplete;
             PreferredAncillaryCompanyBO.IsDeleted = company.IsDeleted;
             PreferredAncillaryCompanyBO.CreateByUserID = company.CreateByUserID;
             PreferredAncillaryCompanyBO.UpdateByUserID = company.UpdateByUserID;
@@ -422,7 +422,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefMedProvider_CompanyDB.BlobStorageTypeId = 1;
-                prefMedProvider_CompanyDB.RegistrationComplete = false;
+                //prefMedProvider_CompanyDB.RegistrationComplete = false;
                 prefMedProvider_CompanyDB.IsDeleted = false;
                 prefMedProvider_CompanyDB.CreateByUserID = prefAncillaryProviderCompanyBO.CreateByUserID;
                 prefMedProvider_CompanyDB.UpdateByUserID = prefAncillaryProviderCompanyBO.UpdateByUserID;

@@ -291,7 +291,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boCompany.TaxID = location.Company.TaxID;
                     boCompany.Status = (BO.GBEnums.AccountStatus)location.Company.Status;
                     boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
-                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+                    if (location.Company.SubscriptionPlanType != null)
+                    {
+                        boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+                    }
+                    else
+                    {
+                        boCompany.SubsCriptionType = null;
+                    }
 
                     locationBO.Company = boCompany;
                 }
