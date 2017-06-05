@@ -73,6 +73,8 @@ export class AddConsentComponent implements OnInit {
     caseDetail: Case;
     @Input() inputCaseId: number;
     caseStatusId: number;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -172,6 +174,11 @@ export class AddConsentComponent implements OnInit {
             });
     }
 
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
@@ -182,6 +189,7 @@ export class AddConsentComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', currentDocument.message);
+                this.addConsentDialogVisible = false;
             }
             else {
                 let notification = new Notification({
@@ -191,7 +199,7 @@ export class AddConsentComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this.addConsentDialogVisible = false;
             }
             this.loadConsentForm();
         });
@@ -217,7 +225,7 @@ export class AddConsentComponent implements OnInit {
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'record deleted successfully!',
+                                    'title': 'Record deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
@@ -315,7 +323,7 @@ export class AddConsentComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
-    
+
     downloadTemplate() {
         this._progressBarService.show();
         this._consentStore.downloadTemplate(this.caseId, this.companyId)

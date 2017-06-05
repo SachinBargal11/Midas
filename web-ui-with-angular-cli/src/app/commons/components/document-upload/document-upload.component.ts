@@ -157,6 +157,7 @@ export class DocumentUploadComponent implements OnInit {
       param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
     }
     event.xhr.setRequestHeader("inputjson", param);
+    event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
   }
 
   onFilesUploadComplete(event) {

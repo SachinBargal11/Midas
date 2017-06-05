@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AmChartsService } from "amcharts3-angular2";
+// import { AmChartsService } from "amcharts3-angular2";
 
 
 @Component({
@@ -17,7 +17,7 @@ export class DashboardComponent {
     providers: any;
     medicalfacilities: any;
     constructor(
-        private AmCharts: AmChartsService
+        // private AmCharts: AmChartsService
     ) {
 
     }

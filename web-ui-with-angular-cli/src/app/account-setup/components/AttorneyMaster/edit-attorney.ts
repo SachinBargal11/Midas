@@ -75,12 +75,11 @@ export class EditAttorneyComponent implements OnInit {
         this.attorneyform = this.fb.group({
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            taxId: ['', [Validators.required, Validators.maxLength(10)]],
+            lastName: ['', Validators.required],         
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            subscriptionPlan: ['', Validators.required]
+            email: ['', [Validators.required, AppValidators.emailValidator]]
+           
         });
 
 
@@ -102,10 +101,9 @@ export class EditAttorneyComponent implements OnInit {
             signup: new Signup({
                 company: {
                     id: this.attorney.signup.company.id,
-                    name: this.attorneyform.value.companyName,
-                    taxId: this.attorneyform.value.taxId,
-                    companyType: this.attorneyform.value.companyType,
-                    subsCriptionType: this.attorneyform.value.subscriptionPlan
+                    name: this.attorneyform.value.companyName,                  
+                    companyType: this.attorneyform.value.companyType
+                    
                 },
                 user: {
                     id: this.attorney.signup.user.id,
