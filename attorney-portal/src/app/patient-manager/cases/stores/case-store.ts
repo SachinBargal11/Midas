@@ -9,13 +9,14 @@ import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseDocument } from '../models/case-document';
 import { Document } from '../../../commons/models/document';
-
+import { Consent } from '../models/consent';
 
 @Injectable()
 export class CasesStore {
 
     private _cases: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
     private _companyCases: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
+    private _consent: BehaviorSubject<List<Consent>> = new BehaviorSubject(List([]));
 
     constructor(
         private _casesService: CaseService,
@@ -59,7 +60,7 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-    
+
     getCasesByCompany(): Observable<Case[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
@@ -208,5 +209,17 @@ export class CasesStore {
             });
         });
         return <Observable<Case>>Observable.from(promise);
+    }
+
+    downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.downloadDocumentForm(CaseId, documentId).subscribe((consent: Consent[]) => {
+                this._consent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 }

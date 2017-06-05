@@ -10,12 +10,14 @@ import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as _ from 'underscore';
+import { Consent } from '../../cases/models/consent';
 
 @Injectable()
 export class PatientVisitsStore {
 
     private _patientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _companyPatientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
+    private _consent: BehaviorSubject<List<Consent>> = new BehaviorSubject(List([]));
 
     constructor(
         private _patientVisitsService: PatientVisitService,
@@ -341,6 +343,18 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
+     downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.downloadDocumentForm(visitId, documentId).subscribe((consent: Consent[]) => {
+                this._consent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
 }
