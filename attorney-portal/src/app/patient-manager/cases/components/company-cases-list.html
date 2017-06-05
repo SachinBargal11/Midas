@@ -48,12 +48,12 @@
     </p-column>
     <!--<p-column field="caseSource" header="Case Source" > </p-column>-->
     <p-column header="Case Source" [sortable]="true">
-        <ng-template let-currentUser="rowData" pTemplate="body">
-            <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.caseSource}}
+        <ng-template let-case="rowData" pTemplate="body">
+            <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.caseSource}}
             </div>
-            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.createdByCompany.name}}
+            <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.createdByCompany.name}}
             </div>
         </ng-template>
     </p-column>

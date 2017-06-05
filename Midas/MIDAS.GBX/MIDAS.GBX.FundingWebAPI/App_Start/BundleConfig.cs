@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace MIDAS.GBX.WebAPI
+namespace MIDAS.GBX.FundingWebAPI
 {
     public class BundleConfig
     {

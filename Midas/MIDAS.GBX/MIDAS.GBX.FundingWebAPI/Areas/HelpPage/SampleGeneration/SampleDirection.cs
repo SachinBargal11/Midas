@@ -1,4 +1,4 @@
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

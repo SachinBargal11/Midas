@@ -28,3 +28,4 @@ GO
 ALTER TABLE [dbo].[CaseCompanyConsentDocuments] WITH CHECK ADD CONSTRAINT [FK_CaseCompanyConsentDocuments_Company_CaseId] FOREIGN KEY([CompanyId])
 	REFERENCES [dbo].[Company] ([Id])
 GO
+

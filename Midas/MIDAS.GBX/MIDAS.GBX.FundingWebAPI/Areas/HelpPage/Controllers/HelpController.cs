@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions;
-using MIDAS.GBX.WebAPI.Areas.HelpPage.Models;
+using MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions;
+using MIDAS.GBX.FundingWebAPI.Areas.HelpPage.Models;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.Controllers
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

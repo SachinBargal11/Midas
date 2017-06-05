@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MIDAS.GBX.WebAPI.Models
+namespace MIDAS.GBX.FundingWebAPI.Models
 {
     // Models returned by AccountController actions.
 

@@ -11,10 +11,10 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions;
-using MIDAS.GBX.WebAPI.Areas.HelpPage.Models;
+using MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions;
+using MIDAS.GBX.FundingWebAPI.Areas.HelpPage.Models;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

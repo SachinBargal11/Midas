@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using MIDAS.GBX.WebAPI.Areas.HelpPage.ModelDescriptions;
+using MIDAS.GBX.FundingWebAPI.Areas.HelpPage.ModelDescriptions;
 
-namespace MIDAS.GBX.WebAPI.Areas.HelpPage.Models
+namespace MIDAS.GBX.FundingWebAPI.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

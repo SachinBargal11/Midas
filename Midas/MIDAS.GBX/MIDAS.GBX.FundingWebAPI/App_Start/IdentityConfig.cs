@@ -3,9 +3,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using MIDAS.GBX.WebAPI.Models;
+using MIDAS.GBX.FundingWebAPI.Models;
 
-namespace MIDAS.GBX.WebAPI
+namespace MIDAS.GBX.FundingWebAPI
 {
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
 

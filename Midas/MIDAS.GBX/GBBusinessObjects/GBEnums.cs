@@ -23,8 +23,10 @@ namespace MIDAS.GBX.BusinessObjects
             {
                 Patient = 1,
                 Staff = 2,
-                Attorney = 3
-            }
+                Attorney = 3,
+                Doctor = 4,
+                Ancillary=5
+        }
         #endregion
 
         #region Gender

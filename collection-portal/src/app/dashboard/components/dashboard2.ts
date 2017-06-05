@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AmChartsService } from "amcharts3-angular2";
+// import { AmChartsService } from "amcharts3-angular2";
 
 
 @Component({
@@ -21,26 +21,26 @@ export class Dashboard2Component {
     providers: any;
     medicalfacilities: any;
     constructor(
-        private AmCharts: AmChartsService
+        // private AmCharts: AmChartsService
     ) {
 
     }
     ngOnInit() {
         this.clientReports = [
             {
-                name: 'NSUH at Manhasset',
+                name: 'ABC at Medical Provider 1',
                 address: '300 Community Driv',
                 billing: 4,
                 balance: '$0.00'
             },
             {
-                name: 'NSUH at Glen Cove Hospital',
+                name: 'XYZ at Medical Provider 2',
                 address: '101 Andrew Stree',
                 billing: 4,
                 balance: '$0.00'
             },
             {
-                name: 'NSUH-Franklin Hospital',
+                name: 'PQR at Medical Provider 3',
                 address: '900 Franklin Avenue',
                 billing: 4,
                 balance: '$0.00'

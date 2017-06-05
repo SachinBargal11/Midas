@@ -141,6 +141,7 @@
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CaseCompanyMapping">
           <Key>
@@ -168,6 +169,7 @@
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CaseInsuranceMapping">
           <Key>
@@ -216,8 +218,8 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="CompanyType" Type="int" Nullable="false" />
-          <Property Name="SubscriptionPlanType" Type="int" Nullable="false" />
-          <Property Name="TaxID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SubscriptionPlanType" Type="int" />
+          <Property Name="TaxID" Type="nvarchar" MaxLength="10" />
           <Property Name="AddressId" Type="int" Nullable="false" />
           <Property Name="ContactInfoID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
@@ -545,6 +547,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -888,6 +891,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ReferralProcedureCodes">
           <Key>
@@ -1196,6 +1200,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
@@ -1516,7 +1521,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
+          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
@@ -3715,6 +3720,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="CaseCompanyConsentDocuments" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="CaseCompanyConsentDocuments" ToRole="Company" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseCompanyConsentDocuments" ToRole="MidasDocuments" />
@@ -3747,6 +3753,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseDocuments" ToRole="MidasDocuments" />
         </EntityType>
         <EntityType Name="CaseInsuranceMapping">
@@ -3801,8 +3808,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="CompanyType" Type="Int32" Nullable="false" />
-          <Property Name="SubscriptionPlanType" Type="Int32" Nullable="false" />
-          <Property Name="TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubscriptionPlanType" Type="Int32" />
+          <Property Name="TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -4203,6 +4210,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
@@ -4636,6 +4644,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="ReferralDocuments" ToRole="MidasDocuments" />
           <NavigationProperty Name="Referral2" Relationship="Self.FK_ReferralDocuments_Referral2_ReferralId" FromRole="ReferralDocuments" ToRole="Referral2" />
         </EntityType>
@@ -5001,6 +5010,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="VisitDocuments" ToRole="MidasDocuments" />
         </EntityType>
         <EntityType Name="DocumentNode">
@@ -5506,7 +5516,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
+          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
@@ -7487,6 +7497,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7516,6 +7527,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7908,6 +7920,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8271,6 +8284,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8600,6 +8614,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

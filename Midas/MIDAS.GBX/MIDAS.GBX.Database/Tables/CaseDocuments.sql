@@ -8,6 +8,7 @@
 	[CreateUserId] [int] NULL,
 	[UpdateUserId] [int] NULL,
 	[IsDeleted] [bit] NULL,
+	[DocumentType] [varchar](50) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -16,18 +17,13 @@ PRIMARY KEY CLUSTERED
 
 GO
 
-ALTER TABLE [dbo].[CaseDocuments]  WITH CHECK ADD  CONSTRAINT [FK_CaseDocuments_Case_CaseId] FOREIGN KEY([CaseId])
-REFERENCES [dbo].[Case] ([Id])
-GO
-
-ALTER TABLE [dbo].[CaseDocuments] CHECK CONSTRAINT [FK_CaseDocuments_Case_CaseId]
-GO
-
-ALTER TABLE [dbo].[CaseDocuments]  WITH CHECK ADD  CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId] FOREIGN KEY([MidasDocumentId])
+/*ALTER TABLE [dbo].[CaseDocuments]  WITH CHECK ADD  CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId] FOREIGN KEY([MidasDocumentId])
 REFERENCES [dbo].[MidasDocuments] ([Id])
 GO
 
 ALTER TABLE [dbo].[CaseDocuments] CHECK CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId]
 GO
+ALTER TABLE CaseDocuments ADD DocumentType varchar(50) NULL;
+*/
 
 

@@ -22,7 +22,7 @@ export class AttorneyMasterService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        //this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getAttorneyMaster(attorneyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {

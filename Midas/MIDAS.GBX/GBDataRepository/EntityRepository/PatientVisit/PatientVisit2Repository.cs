@@ -626,7 +626,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (PatientVisit2BO.IsOutOfOffice != true && PatientVisit2BO.PatientId == null)
                     {
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass caseId and PatientId.", ErrorLevel = ErrorLevel.Error };
+                        if (PatientVisit2BO.CaseId.HasValue == false && PatientVisit2BO.LocationId.HasValue == false && PatientVisit2BO.RoomId.HasValue == false 
+                            && PatientVisit2BO.DoctorId.HasValue == false && PatientVisit2BO.SpecialtyId.HasValue == false)
+                        {                            
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass caseId and PatientId.", ErrorLevel = ErrorLevel.Error };
+                        }
                     }
                 }
                 if (PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == false && PatientVisit2BO.LocationId.HasValue == false)

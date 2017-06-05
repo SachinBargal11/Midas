@@ -13,11 +13,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using MIDAS.GBX.WebAPI.Models;
-using MIDAS.GBX.WebAPI.Providers;
-using MIDAS.GBX.WebAPI.Results;
+using MIDAS.GBX.FundingWebAPI.Models;
+using MIDAS.GBX.FundingWebAPI.Providers;
+using MIDAS.GBX.FundingWebAPI.Results;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.FundingWebAPI.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
@@ -223,7 +223,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // GET api/Account/ExternalLogin
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
-        
+        [AllowAnonymous]
         [Route("ExternalLogin", Name = "ExternalLogin")]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
@@ -278,7 +278,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
-        
+        [AllowAnonymous]
         [Route("ExternalLogins")]
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
         {
@@ -319,7 +319,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         // POST api/Account/Register
-        
+        [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {

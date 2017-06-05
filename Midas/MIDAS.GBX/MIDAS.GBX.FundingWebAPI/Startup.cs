@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(MIDAS.GBX.WebAPI.Startup))]
+[assembly: OwinStartup(typeof(MIDAS.GBX.FundingWebAPI.Startup))]
 
-namespace MIDAS.GBX.WebAPI
+namespace MIDAS.GBX.FundingWebAPI
 {
     public partial class Startup
     {
@@ -16,6 +16,3 @@ namespace MIDAS.GBX.WebAPI
         }
     }
 }
-
-
-//test

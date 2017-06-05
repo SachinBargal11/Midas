@@ -104,7 +104,14 @@ export class Case extends CaseRecord {
         });
         return isConsentReceived;
     }
-
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.createdByCompany.id === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
+    }
+    
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
         _.forEach(this.referral, (currentReferral: Referral) => {

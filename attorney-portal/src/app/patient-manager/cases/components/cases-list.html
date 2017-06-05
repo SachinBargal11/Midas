@@ -38,12 +38,12 @@
 
     <!--<p-column header="Case Source" field="caseSource"> </p-column>-->
     <p-column header="Case Source" [sortable]="true">
-        <ng-template let-currentUser="rowData" pTemplate="body">
-            <div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.caseSource}}
+        <ng-template let-case="rowData" pTemplate="body">
+            <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.caseSource}}
             </div>
-            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.createdByCompany.name}}
+            <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.createdByCompany.name}}
             </div>
         </ng-template>
     </p-column>
@@ -60,4 +60,17 @@
         </ng-template>
     </p-column>
 </p-dataTable>
+
+<p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" [height]="650" (onAfterHide)="handleAddConsentDialogHide()"
+    [(visible)]="addConsentDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'600px'}">
+
+    <div *ngIf="selectedCaseId">
+        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
+            [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+            (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
+            [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true"
+            (download)="downloadTemplate($event)"></app-document-upload>
+    </div>
+</p-dialog>
 <router-outlet></router-outlet>
