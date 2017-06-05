@@ -1,7 +1,7 @@
 import { DocumentAdapter } from './adapters/document-adapter';
 import { Document } from '../models/document';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
@@ -11,16 +11,20 @@ import { Cities } from '../models/cities';
 import * as moment from 'moment';
 import { DocumentTypeAdapter } from '../../account-setup/services/adapters/document-type-adapter';
 import { DocumentType } from '../../account-setup/models/document-type';
+import { SessionStore } from '../../commons/stores/session-store';
 
 @Injectable()
 export class DocumentUploadService {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
+    private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
-
+        this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     uploadScanDocument(dwObject: any, url: string, fileName: string) {
@@ -63,8 +67,11 @@ export class DocumentUploadService {
 
     getDocumentObjectType(companyId: Number, currentId: number): Observable<DocumentType[]> {
         let promise: Promise<DocumentType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId)
+            return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId, {
+                headers: this._headers
+            })
                 // return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
+                
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     // let documentType: DocumentType[] = null;

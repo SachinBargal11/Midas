@@ -39,6 +39,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
     caseId: number;
     caseDetail: Case;
     caseStatusId: number;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     constructor(
         private _router: Router,
@@ -58,13 +60,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
             this.url = `${this._url}/documentmanager/uploadtoblob`;
             // documentmanager/uploadtoblob?inputjson={"ObjectType":"visit","DocumentType":"reval","CompanyId":"16",%20"ObjectId":"60"}
         });
-         this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
-                   this.caseStatusId = caseDetail.caseStatusId;
-                    },
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
@@ -73,10 +75,15 @@ export class CaseDocumentsUploadComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-    }               
-            
+    }
+
     ngOnInit() {
         this.getDocuments();
+    }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -97,6 +104,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();
@@ -121,7 +129,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
             });
     }
 
-    
+
     downloadPdf(documentId) {
         this._progressBarService.show();
         this._casesStore.downloadDocumentForm(this.caseId, documentId)
@@ -162,7 +170,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                             .subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'record deleted successfully!',
+                                    'title': 'Record deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
