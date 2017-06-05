@@ -20,7 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Companies = new HashSet<Company>();
         }
     
-        public byte ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     

@@ -21,7 +21,10 @@ namespace MIDAS.GBX.BusinessObjects
         public GBEnums.CompanyType CompanyType { get; set; }
 
         [JsonProperty("subscriptionType")]
-        public GBEnums.SubsCriptionType SubsCriptionType { get; set; }
+        public GBEnums.SubsCriptionType? SubsCriptionType { get; set; }
+
+        [JsonProperty("companyStatusType")]
+        public GBEnums.CompanyStatusType CompanyStatusType { get; set; }
 
         [JsonProperty("taxId")]
         public string TaxID { get; set; }
@@ -48,16 +51,15 @@ namespace MIDAS.GBX.BusinessObjects
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Name is required" });
             }
 
-            if (string.IsNullOrEmpty(TaxID))
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "TaxID is required" });
-            }
+            //if (string.IsNullOrEmpty(TaxID))
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "TaxID is required" });
+            //}
 
-
-            if (TaxID.Length!=10)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please input valid TaxID" });
-            }
+            //if (TaxID.Length!=10)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please input valid TaxID" });
+            //}
 
             return validations;
         }
