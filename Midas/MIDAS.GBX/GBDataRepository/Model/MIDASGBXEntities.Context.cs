@@ -80,6 +80,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
         public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<PreferredAncillaryProvider> PreferredAncillaryProviders { get; set; }
         public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
         public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }

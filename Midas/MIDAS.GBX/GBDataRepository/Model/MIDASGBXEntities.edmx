@@ -141,6 +141,7 @@
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CaseCompanyMapping">
           <Key>
@@ -168,6 +169,7 @@
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CaseInsuranceMapping">
           <Key>
@@ -216,8 +218,8 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="CompanyType" Type="int" Nullable="false" />
-          <Property Name="SubscriptionPlanType" Type="int" Nullable="false" />
-          <Property Name="TaxID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SubscriptionPlanType" Type="int" />
+          <Property Name="TaxID" Type="nvarchar" MaxLength="10" />
           <Property Name="AddressId" Type="int" Nullable="false" />
           <Property Name="ContactInfoID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
@@ -545,6 +547,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -803,6 +806,20 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="DisplayText" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="PreferredAncillaryProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PrefAncillaryProviderId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="IsCreated" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="PreferredAttorneyProvider">
           <Key>
             <PropertyRef Name="Id" />
@@ -888,6 +905,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ReferralProcedureCodes">
           <Key>
@@ -1196,6 +1214,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateUserId" Type="int" />
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
@@ -1516,7 +1535,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
+          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
@@ -2331,6 +2350,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PreferredAncillaryProvider_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="PreferredAncillaryProvider" Type="Self.PreferredAncillaryProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PreferredAncillaryProvider">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="PreferredAncillaryProvider" Type="Self.PreferredAncillaryProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PreferredAncillaryProvider">
+              <PropertyRef Name="PrefAncillaryProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PreferredAttorneyProvider_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="PreferredAttorneyProvider" Type="Self.PreferredAttorneyProvider" Multiplicity="*" />
@@ -2943,6 +2986,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PendingReferral" EntityType="Self.PendingReferral" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyOwner" EntityType="Self.PolicyOwner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PreferredAncillaryProvider" EntityType="Self.PreferredAncillaryProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredAttorneyProvider" EntityType="Self.PreferredAttorneyProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredMedicalProvider" EntityType="Self.PreferredMedicalProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProcedureCode" EntityType="Self.ProcedureCode" Schema="dbo" store:Type="Tables" />
@@ -3353,6 +3397,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
             <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
           </AssociationSet>
+          <AssociationSet Name="FK_PreferredAncillaryProvider_Company_CompanyId" Association="Self.FK_PreferredAncillaryProvider_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="PreferredAncillaryProvider" EntitySet="PreferredAncillaryProvider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId" Association="Self.FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="PreferredAncillaryProvider" EntitySet="PreferredAncillaryProvider" />
+          </AssociationSet>
           <AssociationSet Name="FK_PreferredAttorneyProvider_Company_CompanyId" Association="Self.FK_PreferredAttorneyProvider_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="PreferredAttorneyProvider" EntitySet="PreferredAttorneyProvider" />
@@ -3715,6 +3767,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="CaseCompanyConsentDocuments" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="CaseCompanyConsentDocuments" ToRole="Company" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseCompanyConsentDocuments" ToRole="MidasDocuments" />
@@ -3747,6 +3800,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseDocuments" ToRole="MidasDocuments" />
         </EntityType>
         <EntityType Name="CaseInsuranceMapping">
@@ -3801,8 +3855,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="CompanyType" Type="Int32" Nullable="false" />
-          <Property Name="SubscriptionPlanType" Type="Int32" Nullable="false" />
-          <Property Name="TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubscriptionPlanType" Type="Int32" />
+          <Property Name="TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -3832,6 +3886,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
           <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Company_FromCompanyId" FromRole="Company" ToRole="PendingReferral" />
+          <NavigationProperty Name="PreferredAncillaryProviders" Relationship="Self.FK_PreferredAncillaryProvider_Company_CompanyId" FromRole="Company" ToRole="PreferredAncillaryProvider" />
+          <NavigationProperty Name="PreferredAncillaryProviders1" Relationship="Self.FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId" FromRole="Company" ToRole="PreferredAncillaryProvider" />
           <NavigationProperty Name="PreferredAttorneyProviders" Relationship="Self.FK_PreferredAttorneyProvider_Company_CompanyId" FromRole="Company" ToRole="PreferredAttorneyProvider" />
           <NavigationProperty Name="PreferredAttorneyProviders1" Relationship="Self.FK_PreferredAttorneyProvider_Company_PrefAttorneyProviderId" FromRole="Company" ToRole="PreferredAttorneyProvider" />
           <NavigationProperty Name="PreferredMedicalProviders" Relationship="Self.FK_PreferredMedicalProvider_Company_CompanyId" FromRole="Company" ToRole="PreferredMedicalProvider" />
@@ -4203,6 +4259,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
@@ -4523,6 +4580,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" FromRole="PolicyOwner" ToRole="PatientInsuranceInfo" />
         </EntityType>
+        <EntityType Name="PreferredAncillaryProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PrefAncillaryProviderId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="IsCreated" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_PreferredAncillaryProvider_Company_CompanyId" FromRole="PreferredAncillaryProvider" ToRole="Company" />
+          <NavigationProperty Name="Company1" Relationship="Self.FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId" FromRole="PreferredAncillaryProvider" ToRole="Company" />
+        </EntityType>
         <EntityType Name="PreferredAttorneyProvider">
           <Key>
             <PropertyRef Name="Id" />
@@ -4636,6 +4709,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="ReferralDocuments" ToRole="MidasDocuments" />
           <NavigationProperty Name="Referral2" Relationship="Self.FK_ReferralDocuments_Referral2_ReferralId" FromRole="ReferralDocuments" ToRole="Referral2" />
         </EntityType>
@@ -5001,6 +5075,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="VisitDocuments" ToRole="MidasDocuments" />
         </EntityType>
         <EntityType Name="DocumentNode">
@@ -5506,7 +5581,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
+          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
@@ -5634,6 +5709,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PendingReferral">
               <PropertyRef Name="FromCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PreferredAncillaryProvider_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="PreferredAncillaryProvider" Type="Self.PreferredAncillaryProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PreferredAncillaryProvider">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="PreferredAncillaryProvider" Type="Self.PreferredAncillaryProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PreferredAncillaryProvider">
+              <PropertyRef Name="PrefAncillaryProviderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6747,6 +6846,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PendingReferrals" EntityType="Self.PendingReferral" />
           <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCode" />
           <EntitySet Name="PolicyOwners" EntityType="Self.PolicyOwner" />
+          <EntitySet Name="PreferredAncillaryProviders" EntityType="Self.PreferredAncillaryProvider" />
           <EntitySet Name="PreferredAttorneyProviders" EntityType="Self.PreferredAttorneyProvider" />
           <EntitySet Name="PreferredMedicalProviders" EntityType="Self.PreferredMedicalProvider" />
           <EntitySet Name="ProcedureCodes" EntityType="Self.ProcedureCode" />
@@ -6981,6 +7081,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PendingReferral_Company_FromCompanyId" Association="Self.FK_PendingReferral_Company_FromCompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="PendingReferral" EntitySet="PendingReferrals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PreferredAncillaryProvider_Company_CompanyId" Association="Self.FK_PreferredAncillaryProvider_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="PreferredAncillaryProvider" EntitySet="PreferredAncillaryProviders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId" Association="Self.FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="PreferredAncillaryProvider" EntitySet="PreferredAncillaryProviders" />
           </AssociationSet>
           <AssociationSet Name="FK_PreferredAttorneyProvider_Company_CompanyId" Association="Self.FK_PreferredAttorneyProvider_Company_CompanyId">
             <End Role="Company" EntitySet="Companies" />
@@ -7487,6 +7595,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7516,6 +7625,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7908,6 +8018,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8183,6 +8294,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PreferredAncillaryProviders">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PreferredAncillaryProvider">
+              <MappingFragment StoreEntitySet="PreferredAncillaryProvider">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PrefAncillaryProviderId" ColumnName="PrefAncillaryProviderId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsCreated" ColumnName="IsCreated" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PreferredAttorneyProviders">
             <EntityTypeMapping TypeName="MIDASGBXModel.PreferredAttorneyProvider">
               <MappingFragment StoreEntitySet="PreferredAttorneyProvider">
@@ -8271,6 +8397,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8600,6 +8727,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

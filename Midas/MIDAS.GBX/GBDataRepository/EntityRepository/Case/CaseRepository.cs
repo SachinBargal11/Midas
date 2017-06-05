@@ -799,7 +799,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -852,7 +852,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -917,7 +917,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -970,7 +970,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
