@@ -196,8 +196,6 @@ export class CompanyCasesComponent implements OnInit {
         } else {
             return this.referralRecived = '';
         }
-
-
     }
 
     loadCasesByCompanyAndDoctorId() {
@@ -224,6 +222,7 @@ export class CompanyCasesComponent implements OnInit {
             }
         }, 250);
     }
+    
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({

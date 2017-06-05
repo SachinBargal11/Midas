@@ -25,4 +25,7 @@ GO
 
 ALTER TABLE [dbo].[VisitDocuments] CHECK CONSTRAINT [FK_VisitDocuments_MidasDocuments_MidasDocumentId]
 GO
+
+ALTER TABLE VisitDocuments ADD DocumentType varchar(50) NULL
+GO
 */

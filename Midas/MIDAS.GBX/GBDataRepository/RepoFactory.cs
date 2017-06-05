@@ -293,6 +293,10 @@ namespace MIDAS.GBX
             {
                 repo = new GeneralSettingRepository(context);
             }
+            else if (typeof(T) == typeof(BO.PreferredAncillarProviderSignUp))
+            {
+                repo = new PreferredAncillaryProviderRepository(context);
+            }
             return repo;
         }
     }

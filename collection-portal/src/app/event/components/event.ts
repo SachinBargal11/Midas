@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { AmChartsService } from "@amcharts/amcharts3-angular";
+// import { AmChartsService } from "amcharts3-angular2";
 
 
 @Component({
-    selector: 'dashboard2',
-    templateUrl: './dashboard2.html',
+    selector: 'event',
+    templateUrl: './event.html',
 })
 
-export class Dashboard2Component {
+export class EventComponent {
     private timer: any;
     private chart: any;
     private chart1: any;
@@ -17,8 +17,8 @@ export class Dashboard2Component {
     providers: any;
     medicalfacilities: any;
     constructor(
-        private AmCharts: AmChartsService
+        // private AmCharts: AmChartsService
     ) {
 
     }
-    }
+}

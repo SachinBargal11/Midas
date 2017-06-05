@@ -54,6 +54,7 @@
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
     <Compile Include="Company\CompanyType.cs" />
+    <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
     <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />

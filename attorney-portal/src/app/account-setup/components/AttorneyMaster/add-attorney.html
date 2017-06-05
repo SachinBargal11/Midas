@@ -21,19 +21,20 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <label class="form-label"> Tax Id
-                                            <span class="color-red">*</span>
+                    <label class="form-label"> Company type
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
-                    <div class="form-group" [class.error]="attorneyformControls.taxId.touched && !attorneyformControls.taxId.valid">
-                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!attorneyformControls.taxId.valid" minlength="10"
-                        />
-                        <div class='error-list' *ngIf="attorneyformControls.taxId.touched && !attorneyformControls.taxId.valid">
+                    <div class="form-group" [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
+                        <select disabled [ngModel]=2 formControlName="companyType" class="selectpicker form-control" title="Select Company Type."
+                            [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
+                                             <!--<option value="">-Select company type-</option>
+                                             <option disabled>--------------------</option>-->
+                                             <option value="2">Attorney</option>
+                                             
+                                         </select>
+                        <div class='error-list' *ngIf="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
                             <ul>
-                                <li *ngIf="attorneyformControls.taxId.hasError('required')">Tax Id is required.</li>
-                                <li *ngIf="attorneyformControls.taxId.hasError('minlength')">Tax Id should be minimum {{attorneyformControls.taxId.errors.minlength.requiredLength}} characters.
-                                </li>
-                                <li *ngIf="attorneyformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{attorneyformControls.taxId.errors.maxlength.requiredLength}} characters.
-                                </li>
+                                <li *ngIf="attorneyformControls.companyType.hasError('required')">Company type is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -73,20 +74,16 @@
 
             <div class="row">
                 <div class="col-lg-6">
-                    <label class="form-label"> Company type
-                                            <!--<span class="color-red">*</span>-->
+                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
-                        <select disabled [ngModel]=2 formControlName="companyType" class="selectpicker form-control" title="Select Company Type."
-                            [class.error]="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
-                                             <!--<option value="">-Select company type-</option>
-                                             <option disabled>--------------------</option>-->
-                                             <option value="2">Attorney</option>
-                                             
-                                         </select>
-                        <div class='error-list' *ngIf="attorneyformControls.companyType.touched && !attorneyformControls.companyType.valid">
+                    <div class="form-group" [class.error]="attorneyformControls.email.touched && !attorneyformControls.email.valid">
+                        <input formControlName="email" type="email" [class.error]="!attorneyformControls.email.valid" class="form-control" placeholder=""
+                            type="text" />
+                        <div class='error-list' *ngIf="attorneyformControls.email.touched && !attorneyformControls.email.valid">
                             <ul>
-                                <li *ngIf="attorneyformControls.companyType.hasError('required')">Company type is required.</li>
+                                <li *ngIf="attorneyformControls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="attorneyformControls.email.hasError('emailValidator')">Email is invalid.</li>
                             </ul>
                         </div>
                     </div>
@@ -103,43 +100,6 @@
                             <ul>
                                 <li *ngIf="attorneyformControls.phoneNo.hasError('required')">Phone number is required.</li>
                                 <li *ngIf="attorneyformControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <label class="form-label"> Subscription plan
-                                            <!--<span class="color-red">*</span>-->
-                                        </label>
-                    <div class="form-group" [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
-                        <select disabled [ngModel]=1 formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan."
-                            [class.error]="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
-                                             <!--<option value="">-Select subscription plan-</option>
-                                             <option disabled>--------------------</option>-->
-                                             <option value="1">Trial</option>
-                                             <!--<option value="30 day Trial">30 day Trial</option>-->
-                                         </select>
-                        <div class='error-list' *ngIf="attorneyformControls.subscriptionPlan.touched && !attorneyformControls.subscriptionPlan.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <label class="form-label"> E-Mail
-                                            <span class="color-red">*</span>
-                                        </label>
-                    <div class="form-group" [class.error]="attorneyformControls.email.touched && !attorneyformControls.email.valid">
-                        <input formControlName="email" type="email" [class.error]="!attorneyformControls.email.valid" class="form-control" placeholder=""
-                            type="text" />
-                        <div class='error-list' *ngIf="attorneyformControls.email.touched && !attorneyformControls.email.valid">
-                            <ul>
-                                <li *ngIf="attorneyformControls.email.hasError('required')">Email is required.</li>
-                                <li *ngIf="attorneyformControls.email.hasError('emailValidator')">Email is invalid.</li>
                             </ul>
                         </div>
                     </div>
