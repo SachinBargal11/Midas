@@ -55,6 +55,7 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="Tables\Latest Tables" />
+    <Folder Include="Tables\Schema" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\AddressInfo.sql" />
@@ -144,6 +145,7 @@
     <Build Include="Tables\Latest Tables\AppMessageQueue.sql" />
     <Build Include="Tables\Latest Tables\QueueType.sql" />
     <Build Include="Tables\Latest Tables\SMSQueue.sql" />
+    <Build Include="Tables\Schema\Messaging.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
