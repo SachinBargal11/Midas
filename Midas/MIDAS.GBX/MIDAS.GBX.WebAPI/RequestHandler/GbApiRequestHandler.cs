@@ -1805,7 +1805,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
         {
-            var objResult = dataAccessManager.GetAllPrefAttorneyProviderExcludeAssigned(CompanyId);
+            var objResult = dataAccessManager.GetAllPrefAncillaryProviderExcludeAssigned(CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1818,7 +1818,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId)
         {
-            var objResult = dataAccessManager.GetPrefAttorneyProviderByCompanyId(companyId);
+            var objResult = dataAccessManager.GetPrefAncillaryProviderByCompanyId(companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
