@@ -156,6 +156,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object UpdateCompany<T>(T data)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Get(int id)
         {
             throw new NotImplementedException();

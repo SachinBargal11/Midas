@@ -55,7 +55,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.TaxID = location.Company.TaxID;
                 boCompany.Status = (BO.GBEnums.AccountStatus)location.Company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+                if (location.Company.SubscriptionPlanType != null)
+                {
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+                }
+                else
+                {
+                    boCompany.SubsCriptionType = null;
+                }
 
                 locationBO.Company = boCompany;
             }
@@ -438,26 +445,56 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        //#region Get All Locations BY Company & doctor id
+        //public override Object GetByCompanyAndDoctorId(int CompanyId, int doctorId)
+        //{
+        //    var user = _context.UserCompanies.Include("Company").Where(p => p.CompanyID == CompanyId &&
+        //                                                                    p.UserID == doctorId &&
+        //                                                                    (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
+
+        //    var locationDB = _context.DoctorLocationSchedules.Include("Company").Where(p => user.Contains(p.DoctorID) &&
+        //                                                                                    (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.Location);
+
+        //    if (locationDB == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    List<BO.Location> lstLocations = new List<BO.Location>();
+        //    foreach (Location item in locationDB)
+        //    {
+        //        lstLocations.Add(Convert<BO.Location, Location>(item));
+        //    }
+        //    return lstLocations;
+        //}
+
+        //#endregion
 
         #region Get All Locations BY Company & doctor id
         public override Object GetByCompanyAndDoctorId(int CompanyId, int doctorId)
         {
-            var user = _context.UserCompanies.Include("Company").Where(p => p.CompanyID == CompanyId && 
-                                                                            p.UserID==doctorId &&
-                                                                            (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
-
-            var locationDB = _context.DoctorLocationSchedules.Include("Company").Where(p => user.Contains(p.DoctorID) && 
-                                                                                            (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.Location);
-
-            if (locationDB == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
             List<BO.Location> lstLocations = new List<BO.Location>();
-            foreach (Location item in locationDB)
+
+            if (_context.UserCompanies.Any(p => p.CompanyID == CompanyId && p.UserID == doctorId
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
             {
-                lstLocations.Add(Convert<BO.Location, Location>(item));
+                var locations = _context.Locations.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.id);
+
+                var locationDB = _context.DoctorLocationSchedules.Include("Company").Where(p => p.DoctorID == doctorId && locations.Contains(p.LocationID)
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .Select(p2 => p2.Location);
+
+                if (locationDB == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                foreach (Location item in locationDB)
+                {
+                    lstLocations.Add(Convert<BO.Location, Location>(item));
+                }
             }
+
+
             return lstLocations;
         }
         #endregion

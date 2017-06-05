@@ -12,19 +12,19 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CaseDocument
+    public partial class CompanyStatusType
     {
-        public int Id { get; set; }
-        public int CaseId { get; set; }
-        public int MidasDocumentId { get; set; }
-        public string DocumentName { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> CreateUserId { get; set; }
-        public Nullable<int> UpdateUserId { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public string DocumentType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CompanyStatusType()
+        {
+            this.Companies = new HashSet<Company>();
+        }
     
-        public virtual MidasDocument MidasDocument { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Company> Companies { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> CreateUserId { get; set; }
         public Nullable<int> UpdateUserId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string DocumentType { get; set; }
     
         public virtual MidasDocument MidasDocument { get; set; }
         public virtual Referral2 Referral2 { get; set; }
