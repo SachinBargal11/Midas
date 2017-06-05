@@ -37,6 +37,9 @@ export class AddMedicalProviderComponent implements OnInit {
     @Input() inputCancel: number;
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
     isSaveProgress = false;
+    allProviders: Account[];
+    currentProviderId: number = 0;
+    medicalProviderMode = '1';
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -54,11 +57,12 @@ export class AddMedicalProviderComponent implements OnInit {
         this.providerform = this.fb.group({
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
-            lastName: ['', Validators.required],     
+            lastName: ['', Validators.required],
+            taxId: ['', [Validators.required, Validators.maxLength(10)]],
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]]
-            
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            subscriptionPlan: ['', Validators.required]
         });
 
         this.providerformControls = this.providerform.controls;
@@ -66,7 +70,68 @@ export class AddMedicalProviderComponent implements OnInit {
 
     ngOnInit() {
         console.log(this.inputCancel);
+        this.loadAllProviders();
     }
+
+    loadAllProviders() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.getAllProviders()
+            .subscribe((allProviders: Account[]) => {
+                this.allProviders = allProviders;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    selectProviders(event) {
+        let currentProviderId = parseInt(event.target.value);
+        this.currentProviderId = currentProviderId;
+    }
+
+    assignMedicalProvider() {
+        if (this.currentProviderId !== 0) {
+            let result;
+            result = this._medicalProviderMasterStore.assignProviders(this.currentProviderId);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Provider assigned successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.loadAllProviders();
+                    this.currentProviderId = 0;
+                    this._router.navigate(['/account-setup/medical-provider-master']);
+                },
+                (error) => {
+                    let errString = 'Unable to assign Provider.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                },
+                () => {
+                });
+
+        } else {
+            let notification = new Notification({
+                'title': 'Select provider to assign to company',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select provider to assign to company');
+        }
+    }
+
     closeDialog() {
         this.closeDialogBox.emit();
     }
@@ -96,8 +161,10 @@ export class AddMedicalProviderComponent implements OnInit {
                     status: 'active'
                 },
                 company: {
-                    name: this.providerform.value.companyName,                 
-                    companyType: this.providerform.value.companyType,                  
+                    name: this.providerform.value.companyName,
+                    taxId: this.providerform.value.taxId,
+                    companyType: this.providerform.value.companyType,
+                    subsCriptionType: this.providerform.value.subscriptionPlan,
                     createByUserID: this._sessionStore.session.account.user.id
                 }
             }
@@ -143,3 +210,4 @@ export class AddMedicalProviderComponent implements OnInit {
 
     }
 }
+
