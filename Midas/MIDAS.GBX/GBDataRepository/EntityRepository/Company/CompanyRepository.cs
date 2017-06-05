@@ -145,7 +145,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = signUPBO.addressInfo;
             BO.ContactInfo contactinfoBO = signUPBO.contactInfo;
             BO.Role roleBO = signUPBO.role;
-            //BO.Referral referralBO = new BO.Referral();
 
             Company companyDB = new Company();
             User userDB = new User();
@@ -176,7 +175,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyDB.TaxID = companyBO.TaxID;
             companyDB.Status = System.Convert.ToByte(companyBO.Status);
             companyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
-            //companyDB.SubscriptionPlanType = companyBO.SubsCriptionType.HasValue == false ? null : System.Convert.ToInt16(companyBO.SubsCriptionType);
             if (companyBO.SubsCriptionType.HasValue == true)
             {
                 companyDB.SubscriptionPlanType = System.Convert.ToInt16(companyBO.SubsCriptionType);
@@ -459,9 +457,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
             }
-
             
             BO.Company acc_ = Convert<BO.Company, Company>(companyDB);
+
             //try
             //{
             //    #region Send Email

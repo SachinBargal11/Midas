@@ -228,8 +228,7 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="BlobStorageTypeId" Type="int" />
-          <Property Name="RegistrationComplete" Type="bit" Nullable="false" />
-          <Property Name="CompanyStatusTypeID" Type="tinyint" Nullable="false" />
+          <Property Name="CompanyStatusTypeID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -273,7 +272,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
@@ -3891,8 +3890,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="BlobStorageTypeId" Type="Int32" />
-          <Property Name="RegistrationComplete" Type="Boolean" Nullable="false" />
-          <Property Name="CompanyStatusTypeID" Type="Byte" Nullable="false" />
+          <Property Name="CompanyStatusTypeID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
@@ -3974,7 +3972,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Companies" Relationship="Self.FK_Company_CompanyStatusType_CompanyStatusTypeID" FromRole="CompanyStatusType" ToRole="Company" />
@@ -7743,7 +7741,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="BlobStorageTypeId" ColumnName="BlobStorageTypeId" />
-                <ScalarProperty Name="RegistrationComplete" ColumnName="RegistrationComplete" />
                 <ScalarProperty Name="CompanyStatusTypeID" ColumnName="CompanyStatusTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
