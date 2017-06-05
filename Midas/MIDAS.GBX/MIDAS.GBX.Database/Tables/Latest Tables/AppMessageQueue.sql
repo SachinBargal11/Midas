@@ -15,4 +15,6 @@ GO
 ALTER TABLE [Messaging].[AppMessageQueue] CHECK CONSTRAINT [FK_AppMessageQueue_QueueType_QueueTypeId]
 GO
 
+/*
 INSERT INTO [Messaging].[AppMessageQueue] ([AppId], [AppName], [QueueTypeId]) VALUES (1, 'MIDAS', 1)
+*/

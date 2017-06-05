@@ -6,5 +6,6 @@
 )
 GO
 
+/*
 INSERT INTO [Messaging].[QueueType] ([QueueTypeName]) VALUES ('SQL TABLE'), ('MSMQ'), ('Azure Queue'), ('Service Bus')
-
+*/

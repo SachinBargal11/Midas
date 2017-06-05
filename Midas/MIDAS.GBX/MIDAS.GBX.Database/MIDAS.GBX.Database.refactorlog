@@ -273,4 +273,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PendingReferralId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="931b5c6f-1284-4fc2-abcb-7b8476f8d703" ChangeDateTime="06/02/2017 12:48:05">
+    <Property Name="ElementName" Value="[Messaging].[SMSQueue].[QueueTypeName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Messaging].[SMSQueue]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="accountSid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1ddf6359-bb39-4a93-80d1-9a7359100dff" ChangeDateTime="06/02/2017 12:48:17">
+    <Property Name="ElementName" Value="[Messaging].[SMSQueue].[accountSid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Messaging].[SMSQueue]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AccountSid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a02bb1b7-c5a9-45fc-bc56-047fe7409a27" ChangeDateTime="06/02/2017 12:48:22">
+    <Property Name="ElementName" Value="[Messaging].[SMSQueue].[authToken]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Messaging].[SMSQueue]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AuthToken" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2971daba-7a92-4b73-9f7e-70e2ee6731fe" ChangeDateTime="06/02/2017 13:16:22">
+    <Property Name="ElementName" Value="[Messaging].[SMSQueue].[NoOfAttempts]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Messaging].[SMSQueue]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NumberOfAttempts" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="15da5ed9-6d37-4f13-9d96-b113508f6953" ChangeDateTime="06/02/2017 13:16:50">
+    <Property Name="ElementName" Value="[Messaging].[SMSQueue].[DiliveryDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Messaging].[SMSQueue]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DeliveryDate" />
+  </Operation>
 </Operations>
