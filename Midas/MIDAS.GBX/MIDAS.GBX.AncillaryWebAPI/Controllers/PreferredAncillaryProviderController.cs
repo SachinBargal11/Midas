@@ -82,13 +82,21 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public HttpResponseMessage GetAll()
+        [Route("getAllPrefAncillaryProviderExcludeAssigned/{CompanyId}")]
+        public HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(int CompanyId)
         {
-            return requestHandler.GetObjects(Request);
+          
+            return requestHandler.GetAllPrefAncillaryProviderExcludeAssigned(Request, CompanyId);
         }
 
-       
+        [HttpGet]
+        [Route("getPrefAncillaryProviderByCompanyId/{CompanyId}")]
+        public HttpResponseMessage GetPrefAncillaryProviderByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetPrefAncillaryProviderByCompanyId(Request, CompanyId);
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

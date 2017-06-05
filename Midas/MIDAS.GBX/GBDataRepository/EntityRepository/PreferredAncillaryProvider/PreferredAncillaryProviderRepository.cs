@@ -955,13 +955,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get All Medical Provider Exclude Assigned
-        public override object Get()
+        #region Get All Ancillary Provider Exclude Assigned
+        public override object GetAllPrefAncillaryProviderExcludeAssigned(int CompanyId)
         {
-            var PrefAncillaryProviderId = _context.PreferredAncillaryProviders.Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            var AssignedPrefAncillaryProviderId = _context.PreferredAncillaryProviders.Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                             .Select(p => p.PrefAncillaryProviderId);
 
-            var companies = _context.Companies.Where(p => PrefAncillaryProviderId.Contains(p.id)
+            var companies = _context.Companies.Where(p => AssignedPrefAncillaryProviderId.Contains(p.id)==false
                                                && p.CompanyType == 6 
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                               .OrderBy(x=> x.Name)
@@ -984,27 +984,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By ID
-        public override object Get(int id)
+        #region Get Ancillary Provider By Company ID 
+        public override object GetPrefAncillaryProviderByCompanyId(int CompanyId)
         {
-           
-            PreferredMedicalProvider preferredMedicalProviderDB = _context.PreferredMedicalProviders.Include("Company")
-                                                                                                    .Include("Company1").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PreferredMedicalProvider>();
+            var AncillaryProvider = _context.PreferredAncillaryProviders.Include("Company")
+                                                                      .Include("Company1")
+                                                                      .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .OrderBy(p => p.Company1.Name)
+                                                                      .ToList();
 
-            BO.PreferredMedicalProvider preferredMedicalProviderBO = new BO.PreferredMedicalProvider();
+            List<BO.PreferredAncillarProvider> lstprovider = new List<BO.PreferredAncillarProvider>();
 
-            if (preferredMedicalProviderDB == null)
+            if (AncillaryProvider == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
-                preferredMedicalProviderBO = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(preferredMedicalProviderDB);
+                AncillaryProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredAncillarProvider, PreferredAncillaryProvider>(item)));
             }
 
-            return (object)preferredMedicalProviderBO;
+            return lstprovider;
         }
         #endregion
+
 
         #region Delete
         public override object Delete(int id)

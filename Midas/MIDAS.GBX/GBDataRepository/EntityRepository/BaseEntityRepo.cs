@@ -718,6 +718,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetAllPrefAncillaryProviderExcludeAssigned(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetPrefAncillaryProviderByCompanyId(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public virtual Object GetLocationForPatientId(int patientId)
         {
             throw new NotImplementedException();
@@ -742,7 +753,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        
+
+        public virtual Object GetByAncillaryId(int AncillaryId)
+        {
+            throw new NotImplementedException();
+        }       
+
 
 
         #endregion
