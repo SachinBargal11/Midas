@@ -43,7 +43,7 @@
 </div>
 
 <div class="col-lg-6">
-  <h3 class="with-border">Selected Refererls</h3>
+  <h3 class="with-border">Selected Referrals</h3>
 
   <div style="padding-bottom: 0.1rem;"></div>
 <div class="ui-widget-header row">
@@ -53,7 +53,7 @@
 </div>
 <div class="col-lg-6 input-group" *ngIf="sessionStore.isOnlyDoctorRole() && routeFrom !== 2">
   <button class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
-      <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Refererls </span>
+      <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Referrals </span>
       <loader [visible]="isDeleteProgress"></loader>
     </button>
 </div>

@@ -11,6 +11,7 @@ import { CaseAdapter } from './adapters/case-adapter';
 import { CaseDocumentAdapter } from './adapters/case-document-adapters';
 import { Document } from '../../../commons/models/document';
 import * as _ from 'underscore';
+import { Consent } from '../models/consent';
 
 @Injectable()
 export class CaseService {
@@ -269,6 +270,38 @@ export class CaseService {
                 });
         });
         return <Observable<Case>>Observable.from(promise);
+    }
+
+    downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+        let thefile = {};
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+            this._http
+                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+                headers: this._headers
+            })
+                .map(res => {
+                    // If request fails, throw an Error that will be caught
+                    if (res.status < 200 || res.status == 500 || res.status == 404) {
+                        throw new Error('This request has failed ' + res.status);
+                    }
+                    // If everything went fine, return the response
+                    else {
+
+                        window.location.assign(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        // return res.arrayBuffer();
+                    }
+                })
+                .subscribe(data => thefile = new Blob([data], { type: "application/octet-stream" }),
+                (error) => {
+                    reject(error);
+                    console.log("Error downloading the file.")
+
+                },
+                () => console.log('Completed file download.'));
+            //window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 }
 

@@ -127,7 +127,8 @@ export class PatientVisitComponent implements OnInit {
     readingDoctors: Doctor[];
     readingDoctor = 0;
     visitId: number;
-
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -810,7 +811,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveVisit() {
-       
+
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
@@ -881,6 +882,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
+    
     saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
@@ -918,6 +920,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
+    
     // saveReferral(inputProcedureCodes: Procedure[]) {
     saveReferral(inputVisitReferrals: VisitReferral[]) {
         let result;
@@ -1039,7 +1042,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveEvent() {
-       
+
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
@@ -1066,7 +1069,7 @@ export class PatientVisitComponent implements OnInit {
             patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : [],
             createByUserID: this.sessionStore.session.account.user.id
         }));
-        if (updatedVisit.id) {           
+        if (updatedVisit.id) {
             if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {
                 let endDate: Date = this.selectedVisit.calendarEvent.recurrenceRule.before(this.selectedCalEvent.start.startOf('day').toDate());
                 let updatedvisitWithRecurrence: PatientVisit = this._getUpdatedVisitWithSeriesTerminatedOn(this.selectedVisit, moment(endDate));
@@ -1108,7 +1111,7 @@ export class PatientVisitComponent implements OnInit {
                     dtstart: eventStart,
                     until: until
                 }));
-               
+
                 let updatedAddNewVisit: PatientVisit = new PatientVisit(_.extend(updatedVisit.toJS(), {
                     id: 0,
                     calendarEventId: 0,
@@ -1116,7 +1119,7 @@ export class PatientVisitComponent implements OnInit {
                         id: 0,
                         eventStart: moment(eventStart),
                         eventEnd: moment(eventEnd),
-                        recurrenceRule: rrule                       
+                        recurrenceRule: rrule
                     })),
                     createByUserID: this.sessionStore.session.account.user.id
                 }));
@@ -1255,7 +1258,7 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', currentDocument.message );
+                this._notificationsService.error('Oh No!', currentDocument.message);
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
@@ -1264,6 +1267,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();
@@ -1271,6 +1275,11 @@ export class PatientVisitComponent implements OnInit {
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
     }
 
     downloadPdf(documentId) {

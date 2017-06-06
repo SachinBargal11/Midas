@@ -78,7 +78,7 @@
     [contentStyle]="{'overflow':'auto', 'max-height':'600px'}">
 
     <div *ngIf="selectedCaseId">
-        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
+        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="selectedCaseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
             [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
             (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
             [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true"
