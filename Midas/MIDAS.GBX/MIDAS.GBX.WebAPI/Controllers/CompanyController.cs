@@ -20,7 +20,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public CompanyController()
         {
             requestHandler = new GbApiRequestHandler<Company>();
-            signuprequestHandler=new GbApiRequestHandler<Signup>();
+            signuprequestHandler = new GbApiRequestHandler<Signup>();
             invitationrequestHandler = new GbApiRequestHandler<Invitation>(); 
         }
 
@@ -40,7 +40,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GetObjects(Request);
         }
-
 
         [HttpGet]
         [Route("getAllCompanyAndLocation")]
@@ -96,6 +95,16 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 return signuprequestHandler.SignUp(Request, data);
             else
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "",ErrorLevel=ErrorLevel.Critical });
+        }
+
+        [HttpPost]
+        [Route("UpdateCompany")]
+        public HttpResponseMessage UpdateCompany([FromBody]Signup data)
+        {
+            if (data != null)
+                return signuprequestHandler.UpdateCompany(Request, data);
+            else
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
         }
 
         [HttpPost]

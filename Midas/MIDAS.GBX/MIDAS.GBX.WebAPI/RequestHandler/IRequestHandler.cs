@@ -27,6 +27,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage DeleteObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage UpdateCompany(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Login(HttpRequestMessage request, T gbObject);        
 
         HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
@@ -132,8 +133,10 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId);
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
 
-        
 
     }
 }

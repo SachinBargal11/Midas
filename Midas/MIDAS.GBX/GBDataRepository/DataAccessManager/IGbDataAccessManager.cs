@@ -38,6 +38,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object Get(T gbObject, int? nestingLevels = null);
         Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object UpdateCompany(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login2(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object ValidateInvitation(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -144,12 +145,15 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociatePrefAttorneyProviderWithCompany(int PrefAttorneyProviderId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllPrefAttorneyProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetPrefAttorneyProviderByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetAllPrefAncillaryProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetPrefAncillaryProviderByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetLocationForPatientId(int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByPatientIdAndLocationId(int PatientId, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyAndDoctorId(int companyId, int doctorId);
         Object GetByDocumentId(int documentId);
         Object GetVisitsByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-
+        Object GetByAncillaryId(int AncillaryId);
+        
 
     }
 }

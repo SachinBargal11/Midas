@@ -201,8 +201,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.TaxID = cases.Company.TaxID;
                 boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company.CompanyType;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
-                boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
+                if (cases.Company.SubscriptionPlanType != null)
+                {
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
+                }
+                else
+                {
+                    boCompany.SubsCriptionType = null;
+                }
+                //boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
 
                 caseBO.Attorney = boCompany;
             }
@@ -216,8 +223,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.TaxID = cases.Company1.TaxID;
                 boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company1.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company1.CompanyType;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company1.SubscriptionPlanType;
-                boCompany.RegistrationComplete = cases.Company1.RegistrationComplete;
+                if(cases.Company1.SubscriptionPlanType != null)
+                {
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company1.SubscriptionPlanType;
+                }
+                else
+                {
+                    boCompany.SubsCriptionType = null;
+                }
+                
+                //boCompany.RegistrationComplete = cases.Company1.RegistrationComplete;
 
                 caseBO.CreatedByCompany = boCompany;
             }
@@ -424,7 +439,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.TaxID = company.TaxID;
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+                if (company.SubscriptionPlanType != null)
+                {
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+                }
+                else
+                {
+                    boCompany.SubsCriptionType = null;
+                }
 
                 var companyTypeDB = company.CompanyType1;
                 if (company.CompanyType != 0)
@@ -799,7 +821,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -852,7 +874,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -917,7 +939,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -970,7 +992,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 

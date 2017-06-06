@@ -34,8 +34,9 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
 
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
 
-            if (storedAccount) {
+            if (storedAccount && storedAccessToken) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);

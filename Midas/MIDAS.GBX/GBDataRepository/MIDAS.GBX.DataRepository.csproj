@@ -102,6 +102,7 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IGbNotificationManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
+    <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\CalendarEvent\CalendarEventRepository.cs" />
@@ -445,11 +446,11 @@
     <Compile Include="RepoFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <EntityDeploy Include="Model\MIDASGBXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </None>

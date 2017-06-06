@@ -291,7 +291,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boCompany.TaxID = location.Company.TaxID;
                     boCompany.Status = (BO.GBEnums.AccountStatus)location.Company.Status;
                     boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
-                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+                    if (location.Company.SubscriptionPlanType != null)
+                    {
+                        boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+                    }
+                    else
+                    {
+                        boCompany.SubsCriptionType = null;
+                    }
 
                     locationBO.Company = boCompany;
                 }
@@ -492,6 +499,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                                                         .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id and Doctor Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        #region Get By Ancillary Id
+        public override object GetByAncillaryId(int AncillaryId)
+        {
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Location").Include("Location.Company")
+                                                                        .Include("CalendarEvent")
+                                                                        .Include("Patient2")
+                                                                        .Include("Patient2.User")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
+                                                                        .Where(p => p.TransportProviderId == AncillaryId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
 

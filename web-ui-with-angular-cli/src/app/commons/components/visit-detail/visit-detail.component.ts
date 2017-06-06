@@ -69,6 +69,8 @@ export class VisitDetailComponent implements OnInit {
     selectedDocumentList = [];
     disableSaveDelete = false;
     visitId: number;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
@@ -186,6 +188,11 @@ export class VisitDetailComponent implements OnInit {
         this._progressBarService.hide();
     }
 
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status === 'Failed') {
@@ -204,6 +211,7 @@ export class VisitDetailComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();

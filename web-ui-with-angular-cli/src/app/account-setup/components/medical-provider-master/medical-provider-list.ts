@@ -43,12 +43,13 @@ export class MedicalProviderListComponent implements OnInit {
     ) {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadAllProviders();
+            // this.loadAllProviders();
+            this.loadMedicalProviders();
         });
 
     }
     ngOnInit() {
-        this.loadAllProviders();
+        // this.loadAllProviders();
         this.loadMedicalProviders();
     }
     loadAllProviders() {

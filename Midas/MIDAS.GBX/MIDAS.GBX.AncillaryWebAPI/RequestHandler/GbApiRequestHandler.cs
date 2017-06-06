@@ -1783,6 +1783,32 @@ namespace MIDAS.GBX.AncillaryWebAPI
             }
         }
 
+        public HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAllPrefAncillaryProviderExcludeAssigned(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetPrefAttorneyProviderByCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId)
         {
             var objResult = dataAccessManager.GetByCompanyAndDoctorId(companyId, doctorId);
@@ -1808,6 +1834,20 @@ namespace MIDAS.GBX.AncillaryWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId)
+        {
+            var objResult = dataAccessManager.GetByAncillaryId(AncillaryId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
 
     }
 }

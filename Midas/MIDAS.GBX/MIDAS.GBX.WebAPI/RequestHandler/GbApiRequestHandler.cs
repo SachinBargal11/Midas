@@ -439,6 +439,39 @@ namespace MIDAS.GBX.WebAPI
         }
         #endregion
 
+        #region UpdateCompany
+        public HttpResponseMessage UpdateCompany(HttpRequestMessage request, T gbObject)
+        {
+            Signup signUPBO = (Signup)(object)gbObject;
+
+            if (signUPBO.company == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            else if (signUPBO.user == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+
+            var objResult = dataAccessManager.UpdateCompany(gbObject);
+            try
+            {
+                if (((GbObject)objResult).ID > 0)
+                {
+                    return request.CreateResponse(HttpStatusCode.Created, objResult);
+                }
+                else
+                {
+                    return request.CreateResponse(HttpStatusCode.Conflict, objResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        #endregion
+
         #region Login
         public HttpResponseMessage Login(HttpRequestMessage request, T gbObject)
         {
@@ -1770,6 +1803,32 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAllPrefAncillaryProviderExcludeAssigned(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetPrefAncillaryProviderByCompanyId(companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId)
         {
             var objResult = dataAccessManager.GetPrefAttorneyProviderByCompanyId(companyId);
@@ -1808,6 +1867,20 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId)
+        {
+            var objResult = dataAccessManager.GetByAncillaryId(AncillaryId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
 
     }
 }

@@ -34,86 +34,90 @@ import { ProcedureComponent } from '../procedure/procedure.component';
 import { ReferralsComponent } from '../referrals/referrals.component';
 
 @Component({
-  selector: 'app-visit-detail',
-  templateUrl: './visit-detail.component.html',
-  styleUrls: ['./visit-detail.component.scss']
+    selector: 'app-visit-detail',
+    templateUrl: './visit-detail.component.html',
+    styleUrls: ['./visit-detail.component.scss']
 })
 export class VisitDetailComponent implements OnInit {
-  selectedVisits: PatientVisit[] = [];
-  selectedDoctorsVisits: PatientVisit[] = [];
-  selectedRoomsVisits: PatientVisit[] = [];
-  visits: PatientVisit[];
-  caseId: number;
-  patientId: number;
-  datasource: PatientVisit[];
-  totalRecords: number;
-  currentDoctorName: string;
-  currentRoomName: string;
-  doctorsVisits: PatientVisit[];
-  roomsVisits: PatientVisit[];
-  doctor: Doctor;
-  room: Room;
-  patientName: string;
-  patient: Patient;
-  isDeleteProgress = false;
-  caseStatusId: number;
+    selectedVisits: PatientVisit[] = [];
+    selectedDoctorsVisits: PatientVisit[] = [];
+    selectedRoomsVisits: PatientVisit[] = [];
+    visits: PatientVisit[];
+    caseId: number;
+    patientId: number;
+    datasource: PatientVisit[];
+    totalRecords: number;
+    currentDoctorName: string;
+    currentRoomName: string;
+    doctorsVisits: PatientVisit[];
+    roomsVisits: PatientVisit[];
+    doctor: Doctor;
+    room: Room;
+    patientName: string;
+    patient: Patient;
+    isDeleteProgress = false;
+    caseStatusId: number;
 
-  visitDetailForm: FormGroup;
-  visitDetailFormControls;
-  visitInfo = 'Visit Info';
-//   selectedVisit: PatientVisit;
-  visitUploadDocumentUrl: string;
-  documents: VisitDocument[] = [];
-  selectedDocumentList = [];
+    visitDetailForm: FormGroup;
+    visitDetailFormControls;
+    visitInfo = 'Visit Info';
+    //   selectedVisit: PatientVisit;
+    visitUploadDocumentUrl: string;
+    documents: VisitDocument[] = [];
+    selectedDocumentList = [];
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
+    visitId: number;
 
-  private _url = `${environment.SERVICE_BASE_URL}`;
+    private _url = `${environment.SERVICE_BASE_URL}`;
 
-  @Input() selectedVisit: PatientVisit;
-//   @Input() selectedVisitId: number;
-  @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
-  constructor(
-    private _fb: FormBuilder,
-    private _router: Router,
-    public _route: ActivatedRoute,
-    private _patientVisitStore: PatientVisitsStore,
-    private _notificationsStore: NotificationsStore,
-    private _progressBarService: ProgressBarService,
-    private _patientStore: PatientsStore,
-    private _notificationsService: NotificationsService,
-    private _doctorsStore: DoctorsStore,
-    private _roomsStore: RoomsStore,
-    private confirmationService: ConfirmationService,
-    private _casesStore: CasesStore,
-    private _visitReferralStore: VisitReferralStore,
-    public sessionStore: SessionStore
-  ) {
-    this.visitDetailForm = this._fb.group({
-      notes: ['', Validators.required],
-      visitStatusId: ['']
-    });
-    this.visitDetailFormControls = this.visitDetailForm.controls;
-  }
+    @Input() selectedVisit: PatientVisit;
+    //   @Input() selectedVisitId: number;
+    @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
+    constructor(
+        private _fb: FormBuilder,
+        private _router: Router,
+        public _route: ActivatedRoute,
+        private _patientVisitStore: PatientVisitsStore,
+        private _notificationsStore: NotificationsStore,
+        private _progressBarService: ProgressBarService,
+        private _patientStore: PatientsStore,
+        private _notificationsService: NotificationsService,
+        private _doctorsStore: DoctorsStore,
+        private _roomsStore: RoomsStore,
+        private confirmationService: ConfirmationService,
+        private _casesStore: CasesStore,
+        private _visitReferralStore: VisitReferralStore,
+        public sessionStore: SessionStore
+    ) {
+        this.visitDetailForm = this._fb.group({
+            notes: ['', Validators.required],
+            visitStatusId: ['']
+        });
+        this.visitDetailFormControls = this.visitDetailForm.controls;
+    }
 
-  ngOnInit() {
-    // this.fetchPatientVisit(this.selectedVisitId);
+    ngOnInit() {
+        // this.fetchPatientVisit(this.selectedVisitId);
         this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
         // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisitId + '/visit';
+        this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
         this.getDocuments();
-  }
+    }
 
-//    fetchPatientVisit(visitId: number) {
-//         // this._progressBarService.show();
-//         this._patientVisitStore.fetchPatientVisitById(visitId)
-//             .subscribe((visit: PatientVisit) => {
-//                 this.selectedVisit = visit;
-//             },
-//             (error) => {
-//                 // this._progressBarService.hide();
-//             },
-//             () => {
-//                 // this._progressBarService.hide();
-//             });
-//     }
+    //    fetchPatientVisit(visitId: number) {
+    //         // this._progressBarService.show();
+    //         this._patientVisitStore.fetchPatientVisitById(visitId)
+    //             .subscribe((visit: PatientVisit) => {
+    //                 this.selectedVisit = visit;
+    //             },
+    //             (error) => {
+    //                 // this._progressBarService.hide();
+    //             },
+    //             () => {
+    //                 // this._progressBarService.hide();
+    //             });
+    //     }
 
     handleVisitDialogHide() {
         this.selectedVisit = null;
@@ -150,6 +154,16 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();
@@ -159,6 +173,35 @@ export class VisitDetailComponent implements OnInit {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
+
+     downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
 
     saveVisit() {
         let visitDetailFormValues = this.visitDetailForm.value;

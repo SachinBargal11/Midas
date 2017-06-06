@@ -47,6 +47,7 @@ export class CasesListComponent implements OnInit {
     signedDocumentPostRequestData: any;
     isElectronicSignatureOn: boolean = false;
     addConsentDialogVisible: boolean = false;
+
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -59,9 +60,10 @@ export class CasesListComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private _consentStore: ConsentStore,
     ) {
-        this.companyId = this.sessionStore.session.currentCompany.id;
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
 
+        this.companyId = this.sessionStore.session.currentCompany.id;
+        // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
@@ -195,10 +197,7 @@ export class CasesListComponent implements OnInit {
         } else {
             return this.referralRecived = '';
         }
-
-
     }
-
 
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
@@ -262,16 +261,10 @@ export class CasesListComponent implements OnInit {
         }
     }
 
-    showDialog(currentCaseId) {
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
+    showDialog(currentCaseId: number) {
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
-        this.signedDocumentPostRequestData = {
-            companyId: this.companyId,
-            caseId: this.selectedCaseId
-        };
     }
-
 
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
@@ -282,7 +275,7 @@ export class CasesListComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+                this._notificationsService.error('Oh No!', currentDocument.message);
             }
             else {
                 let notification = new Notification({
@@ -291,6 +284,7 @@ export class CasesListComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this.addConsentDialogVisible = false;
                 this.loadCases();
             }
@@ -322,7 +316,6 @@ export class CasesListComponent implements OnInit {
             this.addConsentDialogVisible = false;
             this.loadCases();
         }
-
     }
 
     signedDocumentUploadError(error: Error) {
@@ -361,5 +354,4 @@ export class CasesListComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
-
 }
