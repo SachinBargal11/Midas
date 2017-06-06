@@ -308,4 +308,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="DeliveryDate" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="5696d368-c714-45f4-b604-2cb02ff71844" ChangeDateTime="06/06/2017 10:24:47">
+    <Property Name="ElementName" Value="[dbo].[SMSConfiguration].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SMSConfiguration]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AppId" />
+  </Operation>
 </Operations>

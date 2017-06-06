@@ -26,6 +26,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.SMSNotification SMSNotificationBO = new BO.SMSNotification();
 
+            SMSNotificationBO.ID = SMSQueueDB.Id;
             SMSNotificationBO.AppId = SMSQueueDB.AppId;
             SMSNotificationBO.FromNumber = SMSQueueDB.FromNumber;
             SMSNotificationBO.ToNumber = SMSQueueDB.ToNumber;
@@ -46,6 +47,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             SMSQueueDB.FromNumber = SMSNotificationBO.FromNumber;
             SMSQueueDB.ToNumber = SMSNotificationBO.ToNumber;
             SMSQueueDB.Message = SMSNotificationBO.Message;
+            SMSQueueDB.CreatedDate = DateTime.UtcNow;
 
             _context.SMSQueues.Add(SMSQueueDB);
 
