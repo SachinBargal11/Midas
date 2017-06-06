@@ -94,7 +94,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             PreferredMedicalCompanyBO.ID = company.id;
             PreferredMedicalCompanyBO.Name = company.Name;            
-            //PreferredMedicalCompanyBO.RegistrationComplete = company.RegistrationComplete;
+            PreferredMedicalCompanyBO.CompanyStatusType = company.CompanyStatusTypeID;
             PreferredMedicalCompanyBO.IsDeleted = company.IsDeleted;
             PreferredMedicalCompanyBO.CreateByUserID = company.CreateByUserID;
             PreferredMedicalCompanyBO.UpdateByUserID = company.UpdateByUserID;
@@ -236,7 +236,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.SubsCriptionType = null;
             }
 
-            //boCompany.RegistrationComplete = company.RegistrationComplete;
+            boCompany.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
             boCompany.IsDeleted = company.IsDeleted;
             boCompany.CreateByUserID = company.CreateByUserID;
             boCompany.UpdateByUserID = company.UpdateByUserID;
@@ -437,7 +437,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefMedProvider_CompanyDB.BlobStorageTypeId = 1;
-                //prefMedProvider_CompanyDB.RegistrationComplete = false;
+                prefMedProvider_CompanyDB.CompanyStatusTypeID = 1;
                 prefMedProvider_CompanyDB.IsDeleted = false;
                 prefMedProvider_CompanyDB.CreateByUserID = prefMedProviderCompanyBO.CreateByUserID;
                 prefMedProvider_CompanyDB.UpdateByUserID = prefMedProviderCompanyBO.UpdateByUserID;
@@ -718,7 +718,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider_CompanyDB.TaxID = prefMedProviderCompanyBO.TaxID;
                 prefMedProvider_CompanyDB.AddressId = prefMedProvider_CompanyDB.AddressId;
                 prefMedProvider_CompanyDB.ContactInfoID = prefMedProvider_CompanyDB.ContactInfoID;
-                //prefMedProvider_CompanyDB.RegistrationComplete = false;
+                //prefMedProvider_CompanyDB.CompanyStatusTypeID = 1;
                 prefMedProvider_CompanyDB.IsDeleted = false;
                 prefMedProvider_CompanyDB.UpdateByUserID = 0;
                 prefMedProvider_CompanyDB.UpdateDate = DateTime.UtcNow;
