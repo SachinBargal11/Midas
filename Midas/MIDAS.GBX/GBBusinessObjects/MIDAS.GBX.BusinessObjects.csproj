@@ -139,6 +139,7 @@
     <Compile Include="User\AddUser.cs" />
     <Compile Include="User\OTP.cs" />
     <Compile Include="User\PasswordToken.cs" />
+    <Compile Include="User\ResetPassword.cs" />
     <Compile Include="User\User.cs" />
     <Compile Include="User\UserCompany.cs" />
     <Compile Include="User\UserCompanyRole.cs" />
