@@ -58,11 +58,10 @@ export class AddMedicalProviderComponent implements OnInit {
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            taxId: ['', [Validators.required, Validators.maxLength(10)]],
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            subscriptionPlan: ['', Validators.required]
+            email: ['', [Validators.required, AppValidators.emailValidator]]
+
         });
 
         this.providerformControls = this.providerform.controls;
@@ -162,9 +161,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 },
                 company: {
                     name: this.providerform.value.companyName,
-                    taxId: this.providerform.value.taxId,
                     companyType: this.providerform.value.companyType,
-                    subsCriptionType: this.providerform.value.subscriptionPlan,
                     createByUserID: this._sessionStore.session.account.user.id
                 }
             }
