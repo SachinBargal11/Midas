@@ -73,8 +73,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     boCompany.SubsCriptionType = null;
                 }
-                
-                //boCompany.RegistrationComplete = company.RegistrationComplete;
+                boCompany.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
 
                 if (company.Locations != null)
                 {
@@ -95,6 +94,68 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
 
+        }
+        #endregion
+
+        #region UpdateCompanysignup Conversion
+        public T ConvertUpdateCompanySignUp<T, U>(U entity)
+        {
+            Company company = entity as Company;
+            if (company == null)
+                return default(T);
+
+            BO.UpdateCompany UpdateCompanyBO = new BO.UpdateCompany();
+
+            UpdateCompanyBO.ID = company.id;
+            UpdateCompanyBO.Name = company.Name;
+            UpdateCompanyBO.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
+            UpdateCompanyBO.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+            if (company.SubscriptionPlanType != null)
+            {
+                UpdateCompanyBO.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+            }
+            else
+            {
+                UpdateCompanyBO.SubsCriptionType = null;
+            }
+            UpdateCompanyBO.TaxID = company.TaxID;
+            UpdateCompanyBO.IsDeleted = company.IsDeleted;
+
+
+            if (company.ContactInfo != null)
+            {
+                if (company.ContactInfo.IsDeleted.HasValue == false || (company.ContactInfo.IsDeleted.HasValue == true && company.ContactInfo.IsDeleted.Value == false))
+                {
+                    UpdateCompanyBO.CellPhone = company.ContactInfo.CellPhone;
+                    UpdateCompanyBO.EmailAddress = company.ContactInfo.EmailAddress;
+                }
+            }
+
+            if (company.UserCompanies != null)
+            {
+                if (company.UserCompanies.Count >= 1)
+                {
+                    var item = company.UserCompanies.FirstOrDefault();
+
+                    if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    {
+                        var userDB = _context.Users.Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault();
+
+                        if (userDB != null)
+                        {
+                            if (userDB.IsDeleted.HasValue == false || (userDB.IsDeleted.HasValue == true && userDB.IsDeleted.Value == false))
+                            {
+                                UpdateCompanyBO.UserName = userDB.UserName;
+                                UpdateCompanyBO.UserFirstName = userDB.FirstName;
+                                UpdateCompanyBO.UserLastName = userDB.LastName;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return (T)(object)UpdateCompanyBO;
         }
         #endregion
 
@@ -183,7 +244,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 companyDB.SubscriptionPlanType = null;
             }
-            companyDB.CompanyStatusTypeID = System.Convert.ToByte(companyBO.CompanyStatusType);
+            companyDB.CompanyStatusTypeID = 2;
 
             companyDB.BlobStorageTypeId = 1;
             if (companyDB.IsDeleted.HasValue)
@@ -415,21 +476,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 _context.SaveChanges();
+                        
 
                 #endregion
 
                 #region contactInfo
-                ContactInfo ContactInfo = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID
+                contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                       .FirstOrDefault();
 
-                if (ContactInfo == null)
+                if (contactinfoDB == null)
                 {
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "Contact Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                contactinfoDB.CellPhone = contactinfoDB.CellPhone == null ? contactinfoBO.CellPhone : contactinfoDB.CellPhone;
+                contactinfoDB.CellPhone = contactinfoBO.CellPhone;
 
                 _context.SaveChanges();
 
@@ -448,16 +510,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
-                userDB.AddressId = companyDB.AddressId;
-                userDB.ContactInfoId = companyDB.ContactInfoID;
+                userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
+
+                #region password
+
+                BO.ResetPassword resetPassword = new BO.ResetPassword();
+                resetPassword.OldPassword = userDB.Password;
+                if (userDB != null)
+                {
+                        resetPassword.NewPassword = PasswordHash.HashPassword(userBO.Password);
+                        userDB.Password = resetPassword.NewPassword;
+                 }
+                #endregion
 
                 _context.SaveChanges();
+
+                userDB = _context.Users.Where(p => p.id == userBO.ID 
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .FirstOrDefault();
 
                 #endregion
 
                 dbContextTransaction.Commit();
             }
-            
+
             BO.Company acc_ = Convert<BO.Company, Company>(companyDB);
 
             //try
@@ -477,6 +554,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
+        }
+        #endregion
+
+        #region Get RegisteredCompany by Id
+        public override Object GetUpdatedCompanyById(int CompanyId)
+        {
+            var company = _context.Companies.Include("ContactInfo")
+                                            .Include("UserCompanies.User")
+                                            .Where(p => p.id == CompanyId
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault();
+
+            BO.UpdateCompany boUpdateCompany = new BO.UpdateCompany();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                boUpdateCompany = ConvertUpdateCompanySignUp<BO.UpdateCompany, Company>(company);
+            }
+
+            return boUpdateCompany;
         }
         #endregion
 

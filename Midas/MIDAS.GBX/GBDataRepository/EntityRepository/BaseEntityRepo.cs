@@ -762,9 +762,13 @@ namespace MIDAS.GBX.EntityRepository
         public virtual Object GetByAncillaryId(int AncillaryId)
         {
             throw new NotImplementedException();
-        }       
+        }
 
-
+        public virtual Object GetUpdatedCompanyById(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+        
 
         #endregion
     }

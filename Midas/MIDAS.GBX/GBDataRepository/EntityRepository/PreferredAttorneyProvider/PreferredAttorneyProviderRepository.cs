@@ -58,7 +58,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 boCompany.SubsCriptionType = null;
             }
-            //boCompany.RegistrationComplete = company.RegistrationComplete;
+            boCompany.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
             boCompany.IsDeleted = company.IsDeleted;
             boCompany.CreateByUserID = company.CreateByUserID;
             boCompany.UpdateByUserID = company.UpdateByUserID;
@@ -303,7 +303,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefAttProvider_CompanyDB.BlobStorageTypeId = 1;
-                //prefAttProvider_CompanyDB.RegistrationComplete = false;
+                prefAttProvider_CompanyDB.CompanyStatusTypeID = 1;
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
                 prefAttProvider_CompanyDB.UpdateByUserID = prefAttProviderCompanyBO.UpdateByUserID;

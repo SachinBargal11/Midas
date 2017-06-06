@@ -3223,7 +3223,25 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
-        
 
+        public Object GetUpdatedCompanyById(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetUpdatedCompanyById(CompanyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        
     }
 }
