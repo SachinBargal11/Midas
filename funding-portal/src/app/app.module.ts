@@ -13,6 +13,7 @@ import { NoContentComponent } from './no-content-component';
 import { AppRoutingModule } from './app.routes';
 import { CommonsModule } from './commons/commons-module';
 import { DashboardModule } from './dashboard/dashboard-module';
+import { EventModule } from './event/event-module';
 
 import { AuthenticationService } from './account/services/authentication-service';
 import { SessionStore } from './commons/stores/session-store';
@@ -80,7 +81,8 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     AppRoutingModule,
     DashboardModule,
     SimpleNotificationsModule,
-    AmChartsModule
+    AmChartsModule,
+    EventModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
