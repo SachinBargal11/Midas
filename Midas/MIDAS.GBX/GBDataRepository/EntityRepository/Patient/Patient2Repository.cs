@@ -140,6 +140,85 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)patientBO2;
         }
 
+        public  T mConvert<T, U>(U entity)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            BO.mPatient2 mPatientBO2 = new BO.mPatient2();
+
+            mPatientBO2.ID = patient2.Id;
+            mPatientBO2.MaritalStatusId = patient2.MaritalStatusId;
+          
+
+            if (patient2.IsDeleted.HasValue)
+                mPatientBO2.IsDeleted = patient2.IsDeleted.Value;
+            if (patient2.UpdateByUserID.HasValue)
+                mPatientBO2.UpdateByUserID = patient2.UpdateByUserID.Value;
+
+            if (patient2.User != null)
+            {
+                if (patient2.User.IsDeleted.HasValue == false || (patient2.User.IsDeleted.HasValue == true && patient2.User.IsDeleted.Value == false))
+                {
+                    //BO.User boUser = new BO.User();
+
+                    mPatientBO2.FirstName = patient2.User.FirstName;
+                    mPatientBO2.MiddleName = patient2.User.MiddleName;
+                    mPatientBO2.LastName = patient2.User.LastName;
+                    if (patient2.User.Gender.HasValue == true)
+                        mPatientBO2.Gender = (BO.GBEnums.Gender)patient2.User.Gender;
+
+                    mPatientBO2.CreateByUserID = patient2.User.CreateByUserID;
+                   
+                    if (patient2.User.IsDeleted.HasValue)
+                        mPatientBO2.IsDeleted = System.Convert.ToBoolean(patient2.User.IsDeleted.Value);
+                    if (patient2.User.UpdateByUserID.HasValue)
+                        mPatientBO2.UpdateByUserID = patient2.User.UpdateByUserID.Value;
+
+
+                    if (patient2.User.ContactInfo != null)
+                    {
+                        // BO.ContactInfo boContactInfo = new BO.ContactInfo();
+
+                        mPatientBO2.CellPhone = patient2.User.ContactInfo.CellPhone;
+                        mPatientBO2.EmailAddress = patient2.User.ContactInfo.EmailAddress;
+                        mPatientBO2.HomePhone = patient2.User.ContactInfo.HomePhone;
+                        mPatientBO2.WorkPhone = patient2.User.ContactInfo.WorkPhone;
+                        mPatientBO2.FaxNo = patient2.User.ContactInfo.FaxNo;
+                        mPatientBO2.CreateByUserID = patient2.User.ContactInfo.CreateByUserID;
+                                             
+                    }
+
+
+                    if (patient2.User.AddressInfo != null)
+                    {
+                        // BO.AddressInfo boAddress = new BO.AddressInfo();
+                        //boAddress.Name = user.AddressInfo.Name;
+                        mPatientBO2.Address1 = patient2.User.AddressInfo.Address1;
+                        mPatientBO2.Address2 = patient2.User.AddressInfo.Address2;
+                        mPatientBO2.City = patient2.User.AddressInfo.City;
+                        mPatientBO2.State = patient2.User.AddressInfo.State;
+                        mPatientBO2.ZipCode = patient2.User.AddressInfo.ZipCode;
+                        mPatientBO2.Country = patient2.User.AddressInfo.Country;
+
+                        mPatientBO2.CreateByUserID = patient2.User.AddressInfo.CreateByUserID;
+                                              
+                    }                   
+
+                }
+            }
+
+
+
+            mPatientBO2.IsDeleted = patient2.IsDeleted;
+            mPatientBO2.CreateByUserID = patient2.CreateByUserID;
+            mPatientBO2.UpdateByUserID = patient2.UpdateByUserID;
+
+            return (T)(object)mPatientBO2;
+        }
+
         public override T ConvertToPatient<T, U>(U entity)
         {
             Patient2 patient2 = entity as Patient2;
@@ -259,6 +338,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return lstpatients;
             }
            
+        }
+        #endregion
+
+        #region Get By Company ID For Patient 
+        public override object GetByCompanyIdForAncillary(int CompanyId)
+        {
+            var patientList1 = _context.Patient2.Include("User")
+                                                .Include("User.UserCompanies")
+                                                .Include("User.AddressInfo")
+                                                .Include("User.ContactInfo")
+                                                .Include("Cases")
+                                                .Include("Cases.Referral2")
+                                                .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                .Any(p3 => p3.CompanyID == CompanyId)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Patient2>();
+
+            var referralList = _context.Referral2.Include("Case")
+                                                 .Include("Case.CompanyCaseConsentApprovals")
+                                                 .Include("Case.Patient2.User")
+                                                 .Include("Case.Patient2.User.UserCompanies")
+                                                 .Include("Case.Patient2.User.AddressInfo")
+                                                 .Include("Case.Patient2.User.ContactInfo")
+                                                 .Include("Case.Patient2.Cases")
+                                                 .Include("Case.Patient2.Cases.Referral2")
+                                                 .Where(p => p.FromCompanyId == CompanyId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                        && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
+                                                        && (p.Case.Patient2.IsDeleted.HasValue == false || (p.Case.Patient2.IsDeleted.HasValue == true && p.Case.Patient2.IsDeleted.Value == false)))
+                                                 .ToList<Referral2>();
+
+            var patientList2 = referralList.Select(p => p.Case.Patient2);
+
+            if (patientList1 == null && patientList2 == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.mPatient2> lstpatients = new List<BO.mPatient2>();
+                foreach (Patient2 item in patientList1.Union(patientList2).Distinct())
+                {
+                    lstpatients.Add(mConvert<BO.mPatient2, Patient2>(item));
+                }
+                return lstpatients;
+            }
+
         }
         #endregion
 

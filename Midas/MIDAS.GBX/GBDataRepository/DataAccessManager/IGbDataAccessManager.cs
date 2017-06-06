@@ -64,7 +64,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(string param1, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Update(T gbObject);
         Object Add(T gbObject);
-        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
+        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByCompanyIdForAncillary(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllExcludeCompany(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetConsentList(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByReferringCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
