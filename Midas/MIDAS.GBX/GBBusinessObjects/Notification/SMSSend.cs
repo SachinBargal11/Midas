@@ -7,22 +7,16 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class SMSNotification : GbObject
+    public class SMSSend : GbObject
     {
         [JsonProperty("appId")]
         public int AppId { get; set; }
-
-        //[JsonProperty("accountSid")]
-        //public string AccountSid { get; set; }
-
-        //[JsonProperty("authToken")]
-        //public string AuthToken { get; set; }
 
         [JsonProperty("fromNumber")]
         public string FromNumber { get; set; }
 
         [JsonProperty("toNumber")]
-        public string ToNumber { get; set; }        
+        public string ToNumber { get; set; }
 
         [JsonProperty("message")]
         public string Message { get; set; }

@@ -24,7 +24,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (SMSQueueDB == null)
                 return default(T);
 
-            BO.SMSNotification SMSNotificationBO = new BO.SMSNotification();
+            BO.SMSQueue SMSNotificationBO = new BO.SMSQueue();
 
             SMSNotificationBO.ID = SMSQueueDB.Id;
             SMSNotificationBO.AppId = SMSQueueDB.AppId;
@@ -40,7 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object AddSMSToQueue<T>(T entity)
         {
-            BO.SMSNotification SMSNotificationBO = (BO.SMSNotification)(object)entity;
+            BO.SMSQueue SMSNotificationBO = (BO.SMSQueue)(object)entity;
 
             SMSQueue SMSQueueDB = new SMSQueue();
             SMSQueueDB.AppId = SMSNotificationBO.AppId;
@@ -52,7 +52,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.SMSQueues.Add(SMSQueueDB);
             _context.SaveChanges();
 
-            var res = Convert<BO.SMSNotification, SMSQueue>(SMSQueueDB);
+            var res = Convert<BO.SMSQueue, SMSQueue>(SMSQueueDB);
             return (object)res;
         }
         #endregion

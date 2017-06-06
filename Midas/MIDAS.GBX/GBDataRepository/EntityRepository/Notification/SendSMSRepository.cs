@@ -12,9 +12,9 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class SendSMS : BaseEntityRepo, IDisposable
+    internal class SendSMSRepository : BaseEntityRepo, IDisposable
     {
-        public SendSMS(MIDASGBXEntities context) : base(context)
+        public SendSMSRepository(MIDASGBXEntities context) : base(context)
         {
             context.Configuration.ProxyCreationEnabled = false;
         }
@@ -22,7 +22,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object SendSMSFromQueue<T>(T entity)
         {
-            BO.SMSNotification SMSNotificationBO = (BO.SMSNotification)(object)entity;
+            BO.SMSQueue SMSNotificationBO = (BO.SMSQueue)(object)entity;
 
             int AppId = SMSNotificationBO.AppId;
             var smsAccount = _context.SMSConfigurations.Where(p => p.AppId == AppId && p.IsDeleted == false)

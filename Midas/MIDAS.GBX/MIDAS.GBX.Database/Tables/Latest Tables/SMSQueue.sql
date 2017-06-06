@@ -2,10 +2,8 @@
 (
     [Id] INT NOT NULL IDENTITY,
     [AppId] INT NOT NULL,
-    --[AccountSid] NVARCHAR(150) NULL, 
-    --[AuthToken] NVARCHAR(150) NULL, 
-    [ToNumber] NVARCHAR(50) NOT NULL, 
     [FromNumber] NVARCHAR(50) NOT NULL, 
+    [ToNumber] NVARCHAR(50) NOT NULL,     
     [Message] NVARCHAR(150) NOT NULL, 
     [CreatedDate] DATETIME2 NOT NULL, 
     [DeliveryDate] DATETIME2 NULL, 

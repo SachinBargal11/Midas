@@ -12,16 +12,16 @@ namespace MIDAS.GBX.Notification.Controllers
     [RoutePrefix("midasNotificationAPI/SendNotificationFromQueue")]
     public class SendNotificationFromQueueController : ApiController
     {
-        private IRequestHandler<SMSNotification> requestHandlerSMS;
+        private IRequestHandler<SMSSend> requestHandlerSMS;
 
         public SendNotificationFromQueueController()
         {
-            requestHandlerSMS = new NotificationRequestHandler<SMSNotification>();
+            requestHandlerSMS = new NotificationRequestHandler<SMSSend>();
         }
 
         [HttpPost]
         [Route("sendSMS")]
-        public HttpResponseMessage SendSMS([FromBody]SMSNotification smsObject)
+        public HttpResponseMessage SendSMS([FromBody]SMSSend smsObject)
         {
             return requestHandlerSMS.SendSMSFromQueue(Request, smsObject);
         }

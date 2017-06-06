@@ -297,13 +297,13 @@ namespace MIDAS.GBX
             {
                 repo = new PreferredAncillaryProviderRepository(context);
             }
-            else if (typeof(T) == typeof(BO.SMSNotification))
+            else if (typeof(T) == typeof(BO.SMSQueue))
             {
                 repo = new SMSNotificationRepository(context);
             }
-            else if (typeof(T) == typeof(BO.SMSNotification))
+            else if (typeof(T) == typeof(BO.SMSSend))
             {
-                repo = new SMSNotificationRepository(context);
+                repo = new SendSMSRepository(context);
             }
 
             return repo;

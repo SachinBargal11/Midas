@@ -9,3 +9,10 @@
     CONSTRAINT [PK_SMSConfiguration] PRIMARY KEY ([Id])
 )
 GO
+
+ALTER TABLE [Messaging].[SMSConfiguration]  WITH CHECK ADD  CONSTRAINT [FK_SMSConfiguration_QueueType_QueueTypeId] FOREIGN KEY([QueueTypeId])
+	REFERENCES [Messaging].[QueueType] ([Id])
+GO
+
+ALTER TABLE [Messaging].[SMSConfiguration] CHECK CONSTRAINT [FK_SMSConfiguration_QueueType_QueueTypeId]
+GO
