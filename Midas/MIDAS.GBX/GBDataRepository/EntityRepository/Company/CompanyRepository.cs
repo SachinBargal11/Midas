@@ -62,11 +62,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 boCompany.ID = company.id;
                 boCompany.Name = company.Name;
-                boCompany.TaxID = company.TaxID;
+                boCompany.TaxID = company.TaxID == null ? null : company.TaxID;
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
-                boCompany.RegistrationComplete = company.RegistrationComplete;
+                if (company.SubscriptionPlanType != null)
+                {
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+                }
+                else
+                {
+                    boCompany.SubsCriptionType = null;
+                }
+                
+                //boCompany.RegistrationComplete = company.RegistrationComplete;
 
                 if (company.Locations != null)
                 {
@@ -125,7 +133,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-
         #region Signup
         public override Object Signup<T>(T data)
         {
@@ -138,7 +145,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = signUPBO.addressInfo;
             BO.ContactInfo contactinfoBO = signUPBO.contactInfo;
             BO.Role roleBO = signUPBO.role;
-            //BO.Referral referralBO = new BO.Referral();
 
             Company companyDB = new Company();
             User userDB = new User();
@@ -148,7 +154,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
             Invitation invitationDB = new Invitation();
 
-            if (_context.Companies.Any(o => o.TaxID == companyBO.TaxID))
+            if (string.IsNullOrEmpty(companyBO.TaxID) == false && _context.Companies.Any(o => o.TaxID == companyBO.TaxID))
             {
                 return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -163,16 +169,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             #region Company
+
             companyDB.Name = companyBO.Name;
             companyDB.id = companyBO.ID;
             companyDB.TaxID = companyBO.TaxID;
             companyDB.Status = System.Convert.ToByte(companyBO.Status);
             companyDB.CompanyType = System.Convert.ToByte(companyBO.CompanyType);
-            companyDB.SubscriptionPlanType = System.Convert.ToByte(companyBO.SubsCriptionType);
-            companyDB.RegistrationComplete = companyBO.RegistrationComplete;
+            if (companyBO.SubsCriptionType.HasValue == true)
+            {
+                companyDB.SubscriptionPlanType = System.Convert.ToInt16(companyBO.SubsCriptionType);
+            }
+            else
+            {
+                companyDB.SubscriptionPlanType = null;
+            }
+            companyDB.CompanyStatusTypeID = System.Convert.ToByte(companyBO.CompanyStatusType);
+
             companyDB.BlobStorageTypeId = 1;
             if (companyDB.IsDeleted.HasValue)
                 companyDB.IsDeleted = companyBO.IsDeleted.Value;
+
             #endregion
 
             #region Address
@@ -324,6 +340,140 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 //Message sending failed
             }
+
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
+        }
+        #endregion
+
+        #region UpdateCompany
+        public override Object UpdateCompany<T>(T data)
+        {
+            BO.Signup signUPBO = (BO.Signup)(object)data;
+
+            BO.User userBO = signUPBO.user;
+            BO.Company companyBO = signUPBO.company;
+            BO.AddressInfo addressBO = signUPBO.addressInfo;
+            BO.ContactInfo contactinfoBO = signUPBO.contactInfo;
+            BO.Role roleBO = signUPBO.role;
+
+            Company companyDB = new Company();
+            User userDB = new User();
+            AddressInfo addressDB = new AddressInfo();
+            ContactInfo contactinfoDB = new ContactInfo();
+            UserCompany userCompanyDB = new UserCompany();
+            UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
+            Invitation invitationDB = new Invitation();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                if (signUPBO == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (signUPBO.company == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (signUPBO.user == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (signUPBO.contactInfo == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                #region Company
+
+                companyDB = _context.Companies.Where(p => p.id == companyBO.ID 
+                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
+                if (companyDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Company Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                companyDB.TaxID = companyBO.TaxID;
+                
+                if (companyBO.SubsCriptionType != null)
+                {
+                    companyDB.SubscriptionPlanType = (int)companyBO.SubsCriptionType;
+                }
+                else
+                {
+                    companyDB.SubscriptionPlanType = null;
+                }
+
+                _context.SaveChanges();
+
+                #endregion
+
+                #region contactInfo
+                ContactInfo ContactInfo = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .FirstOrDefault();
+
+                if (ContactInfo == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "Contact Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                contactinfoDB.CellPhone = contactinfoDB.CellPhone == null ? contactinfoBO.CellPhone : contactinfoDB.CellPhone;
+
+                _context.SaveChanges();
+
+                #endregion
+
+                #region User
+                userDB = _context.Users.Where(p => p.id == userBO.ID
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault();
+
+                if (userDB == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "User Record Not Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                userDB.FirstName = userBO.FirstName;
+                userDB.LastName = userBO.LastName;
+                userDB.AddressId = companyDB.AddressId;
+                userDB.ContactInfoId = companyDB.ContactInfoID;
+
+                _context.SaveChanges();
+
+                #endregion
+
+                dbContextTransaction.Commit();
+            }
+            
+            BO.Company acc_ = Convert<BO.Company, Company>(companyDB);
+
+            //try
+            //{
+            //    #region Send Email
+
+            //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+            //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+            //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "Company registered", Body = Message };
+            //    objEmail.SendMail();
+            //    #endregion
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
 
             var res = (BO.GbObject)(object)acc_;
             return (object)res;

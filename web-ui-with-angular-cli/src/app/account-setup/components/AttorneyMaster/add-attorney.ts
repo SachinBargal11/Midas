@@ -52,12 +52,11 @@ export class AddAttorneyComponent implements OnInit {
         this.attorneyform = this.fb.group({
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            taxId: ['', [Validators.required, Validators.maxLength(10)]],
+            lastName: ['', Validators.required],         
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            subscriptionPlan: ['', Validators.required]
+            email: ['', [Validators.required, AppValidators.emailValidator]]
+            
         });
 
         this.attorneyformControls = this.attorneyform.controls;
@@ -96,10 +95,8 @@ export class AddAttorneyComponent implements OnInit {
                     status: 'active'
                 },
                 company: {
-                    name: this.attorneyform.value.companyName,
-                    taxId: this.attorneyform.value.taxId,
-                    companyType: this.attorneyform.value.companyType,
-                    subsCriptionType: this.attorneyform.value.subscriptionPlan,
+                    name: this.attorneyform.value.companyName,                
+                    companyType: this.attorneyform.value.companyType,                   
                     createByUserID: this._sessionStore.session.account.user.id
                 }
             }

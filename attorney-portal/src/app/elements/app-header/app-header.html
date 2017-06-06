@@ -32,6 +32,8 @@
 					<a (click)="showSettingsDialog()" class="dropdown-item"><span class="font-icon glyphicon font-icon-player-settings"></span>User Setting</a>
 
 					<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
+					<a [routerLink]="['/account/activation']" class="dropdown-item"><span class="font-icon glyphicon font-icon-player-settings"></span>Activation</a>
+
 				</div>
 			</div>
 			<button type="button" class="burger-right" (click)="onBurgerClick()"><i class="font-icon-menu-addl"></i></button>

@@ -60,7 +60,8 @@ export class CompanyCasesComponent implements OnInit {
 
     ) {
         this.companyId = this.sessionStore.session.currentCompany.id;
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+        // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.companyId = this.sessionStore.session.currentCompany.id;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
 
@@ -275,8 +276,8 @@ export class CompanyCasesComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
-    showDialog(currentCaseId) {
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
+    showDialog(currentCaseId: number) {
+        // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + currentCaseId + '/' + this.companyId;
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
         this.signedDocumentPostRequestData = {
@@ -374,6 +375,7 @@ export class CompanyCasesComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this.addConsentDialogVisible = false;
                 this.loadCases();
             }

@@ -40,4 +40,7 @@ GO
 
 ALTER TABLE [dbo].[ReferralDocuments] CHECK CONSTRAINT [FK_ReferralDocuments_Referral2_ReferralId]
 GO
+
+ALTER TABLE ReferralDocuments ADD DocumentType varchar(50) NULL
+GO
 */

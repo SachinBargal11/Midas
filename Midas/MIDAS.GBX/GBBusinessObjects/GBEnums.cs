@@ -45,6 +45,15 @@ namespace MIDAS.GBX.BusinessObjects
         }
         #endregion
 
+        #region CompanyStatusType
+        public enum CompanyStatusType
+        {
+            RegistrationInComplete = 1,
+            RegistrationComplete = 2,
+            Active = 3,
+            Deleted = 4
+        }
+        #endregion
 
         #region Company Type 
         public enum CompanyType

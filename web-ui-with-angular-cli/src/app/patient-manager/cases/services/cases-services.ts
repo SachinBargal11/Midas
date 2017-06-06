@@ -66,8 +66,6 @@ export class CaseService {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-
-
     getCases(patientId: number): Observable<Case[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
@@ -88,6 +86,7 @@ export class CaseService {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+
     getCasesByCompany(companyId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Case/getByCompanyId/' + companyId, {
@@ -106,6 +105,7 @@ export class CaseService {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+
     getCasesByCompanyAndDoctorId(companyId: number): Observable<Case[]> {
         let doctorId = this._sessionStore.session.user.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
@@ -144,6 +144,7 @@ export class CaseService {
         });
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
     }
+
     getDocumentForCaseId(caseId: number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/case/GetConsentList/' + caseId, {
@@ -228,7 +229,6 @@ export class CaseService {
                 });
         });
         return <Observable<Case>>Observable.fromPromise(promise);
-
     }
 
     updateCase(caseDetail: Case): Observable<Case> {
@@ -253,7 +253,6 @@ export class CaseService {
                 });
         });
         return <Observable<Case>>Observable.fromPromise(promise);
-
     }
 
     deleteCase(caseDetail: Case): Observable<Case> {
@@ -271,6 +270,7 @@ export class CaseService {
         });
         return <Observable<Case>>Observable.from(promise);
     }
+
     deleteDocument(caseDocument: CaseDocument): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/fileupload/delete/' + caseDocument.caseId + '/' + caseDocument.document.documentId, {
@@ -318,6 +318,5 @@ export class CaseService {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
-
 }
 

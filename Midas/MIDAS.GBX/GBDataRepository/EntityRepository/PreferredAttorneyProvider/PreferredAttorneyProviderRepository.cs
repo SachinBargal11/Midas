@@ -50,8 +50,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boCompany.TaxID = company.TaxID;
             boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
             boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
-            boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
-            boCompany.RegistrationComplete = company.RegistrationComplete;
+            if (company.SubscriptionPlanType != null)
+            {
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+            }
+            else
+            {
+                boCompany.SubsCriptionType = null;
+            }
+            //boCompany.RegistrationComplete = company.RegistrationComplete;
             boCompany.IsDeleted = company.IsDeleted;
             boCompany.CreateByUserID = company.CreateByUserID;
             boCompany.UpdateByUserID = company.UpdateByUserID;
@@ -248,7 +255,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (_context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                if (string.IsNullOrEmpty(prefAttProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -283,12 +290,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.Name = prefAttProviderCompanyBO.Name;
                 prefAttProvider_CompanyDB.Status = System.Convert.ToByte(prefAttProviderCompanyBO.Status);
                 prefAttProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefAttProviderCompanyBO.CompanyType);
-                prefAttProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAttProviderCompanyBO.SubsCriptionType);
+
+                if (prefAttProviderCompanyBO.SubsCriptionType != null)
+                {
+                    prefAttProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAttProviderCompanyBO.SubsCriptionType);
+                }
+                else
+                {
+                    prefAttProvider_CompanyDB.SubscriptionPlanType = null;
+                }
                 prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
                 prefAttProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefAttProvider_CompanyDB.BlobStorageTypeId = 1;
-                prefAttProvider_CompanyDB.RegistrationComplete = false;
+                //prefAttProvider_CompanyDB.RegistrationComplete = false;
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
                 prefAttProvider_CompanyDB.UpdateByUserID = prefAttProviderCompanyBO.UpdateByUserID;
@@ -585,7 +600,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (_context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && o.id != prefAttProviderBO.company.ID
+                if (string.IsNullOrEmpty(prefAttProviderBO.company.TaxID) == false &&  _context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && o.id != prefAttProviderBO.company.ID
                     && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
                     dbContextTransaction.Rollback();
@@ -623,11 +638,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.Name = prefAttProviderCompanyBO.Name;
                 prefAttProvider_CompanyDB.Status = System.Convert.ToByte(prefAttProviderCompanyBO.Status);
                 prefAttProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefAttProviderCompanyBO.CompanyType);
-                prefAttProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAttProviderCompanyBO.SubsCriptionType);
+                if (prefAttProviderCompanyBO.SubsCriptionType != null)
+                {
+                    prefAttProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAttProviderCompanyBO.SubsCriptionType);
+                }
+                else
+                {
+                    prefAttProvider_CompanyDB.SubscriptionPlanType = null;
+                }
                 prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
                 prefAttProvider_CompanyDB.AddressId = prefAttProvider_CompanyDB.AddressId;
                 prefAttProvider_CompanyDB.ContactInfoID = prefAttProvider_CompanyDB.ContactInfoID;
-                prefAttProvider_CompanyDB.RegistrationComplete = false;
+                //prefAttProvider_CompanyDB.RegistrationComplete = false;
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.UpdateByUserID = 0;
                 prefAttProvider_CompanyDB.UpdateDate = DateTime.UtcNow;

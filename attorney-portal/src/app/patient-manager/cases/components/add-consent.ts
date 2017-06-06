@@ -73,6 +73,8 @@ export class AddConsentComponent implements OnInit {
     caseDetail: Case;
     @Input() inputCaseId: number;
     caseStatusId: number;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -107,8 +109,10 @@ export class AddConsentComponent implements OnInit {
             }
             // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
-            this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
+            // this.url = `${this._url}/CompanyCaseConsentApproval/multiupload/${this.caseId}/${this.companyId}`;
             this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+            this.url = `${this._url}/documentmanager/uploadtoblob`;
+            // this.signedDocumentUploadUrl = `${this._url}/documentmanager/uploadtoblob`;
             this.signedDocumentPostRequestData = {
                 companyId: this.companyId,
                 caseId: this.caseId
@@ -170,6 +174,11 @@ export class AddConsentComponent implements OnInit {
             });
     }
 
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
@@ -179,7 +188,8 @@ export class AddConsentComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+                this._notificationsService.error('Oh No!', currentDocument.message);
+                this.addConsentDialogVisible = false;
             }
             else {
                 let notification = new Notification({
@@ -188,7 +198,8 @@ export class AddConsentComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
             this.loadConsentForm();
         });
@@ -214,7 +225,7 @@ export class AddConsentComponent implements OnInit {
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'record deleted successfully!',
+                                    'title': 'Record deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
@@ -312,6 +323,7 @@ export class AddConsentComponent implements OnInit {
             });
         this._progressBarService.hide();
     }
+
     downloadTemplate() {
         this._progressBarService.show();
         this._consentStore.downloadTemplate(this.caseId, this.companyId)

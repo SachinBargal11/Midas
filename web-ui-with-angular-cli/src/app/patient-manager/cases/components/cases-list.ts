@@ -60,7 +60,6 @@ export class CasesListComponent implements OnInit {
 
     ) {
         this.url = `${this._url}/documentmanager/uploadtoblob`;
-
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();

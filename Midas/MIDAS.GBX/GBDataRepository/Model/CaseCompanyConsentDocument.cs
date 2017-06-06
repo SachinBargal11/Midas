@@ -24,6 +24,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> CreateUserId { get; set; }
         public Nullable<int> UpdateUserId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string DocumentType { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }

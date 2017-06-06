@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AmChartsModule } from "amcharts3-angular2";
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
 
 import { AppComponent } from './app.component';
 
@@ -13,6 +13,7 @@ import { NoContentComponent } from './no-content-component';
 import { AppRoutingModule } from './app.routes';
 import { CommonsModule } from './commons/commons-module';
 import { DashboardModule } from './dashboard/dashboard-module';
+import { EventModule } from './event/event-module';
 
 import { AuthenticationService } from './account/services/authentication-service';
 import { SessionStore } from './commons/stores/session-store';
@@ -80,7 +81,8 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     AppRoutingModule,
     DashboardModule,
     SimpleNotificationsModule,
-    AmChartsModule
+    AmChartsModule,
+    EventModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
