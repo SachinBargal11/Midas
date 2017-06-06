@@ -761,10 +761,11 @@ export class PatientVisitComponent implements OnInit {
             this.patientScheduleForm.controls[key].updateValueAndValidity();
         });
         this.visitInfo = this.selectedVisit.visitDisplayString;
+        this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
             this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            this.getDocuments();
+            // this.getDocuments();
             this.visitDialogVisible = true;
         } else {
             if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
@@ -882,7 +883,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
-    
+
     saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
@@ -920,7 +921,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
-    
+
     // saveReferral(inputProcedureCodes: Procedure[]) {
     saveReferral(inputVisitReferrals: VisitReferral[]) {
         let result;
@@ -951,6 +952,38 @@ export class PatientVisitComponent implements OnInit {
                 this._progressBarService.hide();
             });
         this.visitDialogVisible = false;
+    }
+
+    cancelAppointment() {
+        this._progressBarService.show();
+        let result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Appointment cancelled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.eventDialogVisible = false;
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
+            },
+            (error) => {
+                let errString = 'Unable to cancel Appointment!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._confirmationDialog.hide();
     }
 
     cancelCurrentOccurrence() {
