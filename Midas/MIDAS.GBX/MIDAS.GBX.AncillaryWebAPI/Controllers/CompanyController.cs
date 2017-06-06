@@ -89,7 +89,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, account);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost]
         [Route("RegisterCompany")]
         [Route("Signup")]
@@ -103,7 +103,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 
         [HttpPost]
         [Route("ValidateInvitation")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public HttpResponseMessage ValidateInvitation([FromBody]Invitation data)
         {
             if (data != null)
