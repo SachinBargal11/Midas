@@ -133,5 +133,7 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage UpdateCompany(HttpRequestMessage request, T gbObject);
+
     }
 }

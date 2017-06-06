@@ -112,7 +112,7 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
-    defaultView: string = 'agendaDay';
+    defaultView: string = 'month';
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
@@ -226,7 +226,7 @@ export class PatientVisitComponent implements OnInit {
 
     ngOnInit() {
         // this.loadAllVisits();
-        
+
         this.header = {
             left: 'prev,next today',
             center: 'title',
@@ -476,9 +476,9 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-     loadAllVisits() {
+    loadAllVisits() {
         this._patientVisitsStore.getAllVisitsByPatientId(this.patientId)
-         .subscribe(
+            .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
                 console.log(this.events);
@@ -583,7 +583,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId,this.patientId)
+        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId, this.patientId)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -804,7 +804,7 @@ export class PatientVisitComponent implements OnInit {
         this.visitInfo = this.selectedVisit.visitDisplayString;
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            this.visitUploadDocumentUrl =  this._url + '/documentmanager/uploadtoblob';
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this.getDocuments();
             this.visitDialogVisible = true;
         } else {
@@ -1003,6 +1003,37 @@ export class PatientVisitComponent implements OnInit {
     //     this.visitDialogVisible = false;
     // }
 
+    cancelAppointment() {
+        this._progressBarService.show();
+        let result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Appointment cancelled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.eventDialogVisible = false;
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
+            },
+            (error) => {
+                let errString = 'Unable to cancel Appointment!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._confirmationDialog.hide();
+    }
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
             this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
@@ -1293,7 +1324,7 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
-     documentUploadComplete(documents: Document[]) {
+    documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({
@@ -1302,7 +1333,7 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', currentDocument.message );
+                this._notificationsService.error('Oh No!', currentDocument.message);
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',

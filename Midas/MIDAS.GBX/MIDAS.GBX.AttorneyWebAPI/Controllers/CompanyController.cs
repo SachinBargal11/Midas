@@ -98,6 +98,24 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "",ErrorLevel=ErrorLevel.Critical });
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("UpdateCompany")]
+        public HttpResponseMessage UpdateCompany([FromBody]Signup data)
+        {
+            if (data != null)
+                return signuprequestHandler.UpdateCompany(Request, data);
+            else
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
+        }
+
+        [HttpGet]
+        [Route("getUpdatedCompanyById/{CompanyId}")]
+        public HttpResponseMessage GetUpdatedCompanyById(int CompanyId)
+        {
+            return requestHandler.GetUpdatedCompanyById(Request, CompanyId);
+        }
+
         [HttpPost]
         [Route("ValidateInvitation")]
         [AllowAnonymous]

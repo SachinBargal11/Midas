@@ -313,7 +313,7 @@ export class ReferralListComponent implements OnInit {
         this._pendingReferralStore.getPreferredCompanyDoctorsAndRoomByCompanyId(companyId, specialityId, roomTestId)
             .subscribe(preferredMedical => {
                 let matchingMedicalProvider: PrefferedMedicalProvider[] = _.filter(preferredMedical, (currentPreferredMedical: PrefferedMedicalProvider) => {
-                    return currentPreferredMedical.registrationComplete == false;
+                    return currentPreferredMedical.companyStatusType == 1 || currentPreferredMedical.companyStatusType == 2;
                 });
 
                 let mappedMedicalProviderDoctor: {

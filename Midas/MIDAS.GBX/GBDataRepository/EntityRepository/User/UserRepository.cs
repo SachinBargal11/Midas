@@ -755,6 +755,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.AddUser addUserBO = (BO.AddUser)(object)entity;
             BO.User userBO = addUserBO.user;
+            BO.Company companyBO = addUserBO.company;
 
             if (addUserBO.user == null)
             {
@@ -766,13 +767,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             User userDB = new User();
+            Company companyDB = new Company();
             Invitation invitationDB = new Invitation();
 
             userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
 
+            var usercompanies = _context.UserCompanies.Where(p => p.UserID == userBO.ID 
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                .Select(p => p.CompanyID);
+
+            companyDB = _context.Companies.Where(p => usercompanies.Contains(p.id)
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
             if (userDB != null)
             {
-                userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                if (companyDB.CompanyStatusTypeID == 2)
+                {
+                    userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                    companyDB.CompanyStatusTypeID = 3;
+                }
             }
             
             _context.SaveChanges();
