@@ -20,8 +20,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object AddSMSToQueue<T>(T entity)
         {
             BO.SMSNotification SMSNotificationBO = (BO.SMSNotification)(object)entity;
-            
-            
+
+            SMSQueue SMSQueueDB = new SMSQueue();
+            SMSQueueDB.AppId = SMSNotificationBO.AppId;
+
+
 
             return (object)new object();
         }
