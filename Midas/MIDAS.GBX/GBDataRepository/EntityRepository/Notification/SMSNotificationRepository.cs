@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -18,17 +19,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object AddSMSToQueue<T>(T entity)
         {
-            //var acc = _context.Notifications
-            //                                .Where(p => p.Id == id
-            //                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                .FirstOrDefault<Notification>();
-
-            //BO.Notification2 acc_ = Convert<BO.Notification2, Notification>(acc);
-
-            //if (acc_ == null)
-            //{
-            //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            //}
+            BO.SMSNotification SMSNotificationBO = (BO.SMSNotification)(object)entity;
+            
+            
 
             return (object)new object();
         }

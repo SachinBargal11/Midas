@@ -45,6 +45,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
+        public virtual DbSet<CompanyStatusType> CompanyStatusTypes { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
@@ -80,6 +81,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
         public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<PreferredAncillaryProvider> PreferredAncillaryProviders { get; set; }
         public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
         public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
@@ -106,6 +108,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserPersonalSetting> UserPersonalSettings { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
+        public virtual DbSet<AppMessageQueue> AppMessageQueues { get; set; }
+        public virtual DbSet<QueueType> QueueTypes { get; set; }
+        public virtual DbSet<SMSQueue> SMSQueues { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)

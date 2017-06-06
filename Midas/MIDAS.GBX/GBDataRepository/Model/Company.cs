@@ -32,6 +32,8 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Locations = new HashSet<Location>();
             this.Notifications = new HashSet<Notification>();
             this.PendingReferrals = new HashSet<PendingReferral>();
+            this.PreferredAncillaryProviders = new HashSet<PreferredAncillaryProvider>();
+            this.PreferredAncillaryProviders1 = new HashSet<PreferredAncillaryProvider>();
             this.PreferredAttorneyProviders = new HashSet<PreferredAttorneyProvider>();
             this.PreferredAttorneyProviders1 = new HashSet<PreferredAttorneyProvider>();
             this.PreferredMedicalProviders = new HashSet<PreferredMedicalProvider>();
@@ -58,7 +60,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> BlobStorageTypeId { get; set; }
-        public bool RegistrationComplete { get; set; }
+        public int CompanyStatusTypeID { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -72,6 +74,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+        public virtual CompanyStatusType CompanyStatusType { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual SubscriptionPlan SubscriptionPlan { get; set; }
@@ -95,6 +98,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Notification> Notifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PendingReferral> PendingReferrals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PreferredAncillaryProvider> PreferredAncillaryProviders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PreferredAncillaryProvider> PreferredAncillaryProviders1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

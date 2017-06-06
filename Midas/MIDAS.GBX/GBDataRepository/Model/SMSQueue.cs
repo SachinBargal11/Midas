@@ -12,19 +12,18 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CaseCompanyMapping
+    public partial class SMSQueue
     {
         public int Id { get; set; }
-        public int CaseId { get; set; }
-        public int CompanyId { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public bool IsOriginator { get; set; }
-    
-        public virtual Case Case { get; set; }
-        public virtual Company Company { get; set; }
+        public int AppId { get; set; }
+        public string AccountSid { get; set; }
+        public string AuthToken { get; set; }
+        public string ToNumber { get; set; }
+        public string FromNumber { get; set; }
+        public string Message { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<System.DateTime> DeliveryDate { get; set; }
+        public int NumberOfAttempts { get; set; }
+        public string ResultObject { get; set; }
     }
 }
