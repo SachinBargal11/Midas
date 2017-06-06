@@ -762,11 +762,14 @@ namespace MIDAS.GBX.EntityRepository
         public virtual Object GetByAncillaryId(int AncillaryId)
         {
             throw new NotImplementedException();
-        }       
-
-
+        }
 
         public virtual Object AddSMSToQueue<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object SendSMSFromQueue<T>(T entity)
         {
             throw new NotImplementedException();
         }

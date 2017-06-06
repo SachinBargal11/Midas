@@ -1241,14 +1241,23 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QueueTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <EntityType Name="SMSConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppId" Type="int" Nullable="false" />
+          <Property Name="QueueTypeId" Type="int" Nullable="false" />
+          <Property Name="AccountSid" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="AuthToken" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="SMSQueue">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="AccountSid" Type="nvarchar" MaxLength="150" />
-          <Property Name="AuthToken" Type="nvarchar" MaxLength="150" />
           <Property Name="ToNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="FromNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Message" Type="nvarchar" MaxLength="150" Nullable="false" />
@@ -3081,6 +3090,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppMessageQueue" EntityType="Self.AppMessageQueue" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="QueueType" EntityType="Self.QueueType" Schema="Messaging" store:Type="Tables" />
+          <EntitySet Name="SMSConfiguration" EntityType="Self.SMSConfiguration" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="SMSQueue" EntityType="Self.SMSQueue" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -5184,14 +5194,23 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="QueueTypeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AppMessageQueues" Relationship="Self.FK_AppMessageQueue_QueueType_QueueTypeId" FromRole="QueueType" ToRole="AppMessageQueue" />
         </EntityType>
+        <EntityType Name="SMSConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppId" Type="Int32" Nullable="false" />
+          <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
+          <Property Name="AccountSid" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AuthToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="SMSQueue">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="AccountSid" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="AuthToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ToNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FromNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Message" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
@@ -7022,6 +7041,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocument" />
           <EntitySet Name="AppMessageQueues" EntityType="Self.AppMessageQueue" />
           <EntitySet Name="QueueTypes" EntityType="Self.QueueType" />
+          <EntitySet Name="SMSConfigurations" EntityType="Self.SMSConfiguration" />
           <EntitySet Name="SMSQueues" EntityType="Self.SMSQueue" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
@@ -8917,13 +8937,23 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SMSConfigurations">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SMSConfiguration">
+              <MappingFragment StoreEntitySet="SMSConfiguration">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AppId" ColumnName="AppId" />
+                <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
+                <ScalarProperty Name="AccountSid" ColumnName="AccountSid" />
+                <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SMSQueues">
             <EntityTypeMapping TypeName="MIDASGBXModel.SMSQueue">
               <MappingFragment StoreEntitySet="SMSQueue">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="AccountSid" ColumnName="AccountSid" />
-                <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
                 <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
                 <ScalarProperty Name="FromNumber" ColumnName="FromNumber" />
                 <ScalarProperty Name="Message" ColumnName="Message" />

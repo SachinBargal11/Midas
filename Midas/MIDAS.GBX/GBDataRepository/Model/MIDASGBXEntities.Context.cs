@@ -110,6 +110,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<AppMessageQueue> AppMessageQueues { get; set; }
         public virtual DbSet<QueueType> QueueTypes { get; set; }
+        public virtual DbSet<SMSConfiguration> SMSConfigurations { get; set; }
         public virtual DbSet<SMSQueue> SMSQueues { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
     

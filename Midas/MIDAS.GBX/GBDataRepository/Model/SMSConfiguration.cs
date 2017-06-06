@@ -12,16 +12,13 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SMSQueue
+    public partial class SMSConfiguration
     {
         public int Id { get; set; }
         public int AppId { get; set; }
-        public string ToNumber { get; set; }
-        public string FromNumber { get; set; }
-        public string Message { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public Nullable<System.DateTime> DeliveryDate { get; set; }
-        public int NumberOfAttempts { get; set; }
-        public string ResultObject { get; set; }
+        public int QueueTypeId { get; set; }
+        public string AccountSid { get; set; }
+        public string AuthToken { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

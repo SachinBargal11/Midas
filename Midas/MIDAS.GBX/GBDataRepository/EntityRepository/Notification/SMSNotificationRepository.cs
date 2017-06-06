@@ -50,6 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             SMSQueueDB.CreatedDate = DateTime.UtcNow;
 
             _context.SMSQueues.Add(SMSQueueDB);
+            _context.SaveChanges();
 
             var res = Convert<BO.SMSNotification, SMSQueue>(SMSQueueDB);
             return (object)res;

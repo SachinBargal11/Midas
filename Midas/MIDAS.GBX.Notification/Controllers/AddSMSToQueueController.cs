@@ -20,7 +20,7 @@ namespace MIDAS.GBX.Notification.Controllers
         }
 
         [HttpPost]
-        [Route("sendSMS")]
+        [Route("addSMS")]
         public HttpResponseMessage AddSMS([FromBody]SMSNotification smsObject)
         {
             return requestHandlerSMS.AddSMSToQueue(Request, smsObject);
