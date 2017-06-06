@@ -33,6 +33,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override T Convert<T, U>(U entity)
         {
             BO.User boUser = new BO.User();
+            BO.Company boCompany = new BO.Company();
             Invitation invitation = entity as Invitation;
             if (invitation == null)
                 return default(T);
@@ -41,6 +42,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boUser.ID = invitation.UserID;
             boInvitation.InvitationID = invitation.InvitationID;
             boInvitation.User = boUser;
+
+            boCompany.ID = invitation.CompanyID;
+            boInvitation.Company = boCompany;
+
             return (T)(object)boInvitation;
         }
 
@@ -69,7 +74,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object ValidateInvitation<T>(T data)
         {
             BO.Invitation invitationBO = (BO.Invitation)(object)data;
-
             //Find Record By UniqueID
             Invitation invitation = _context.Invitations.Where(p => p.UniqueID == invitationBO.UniqueID).FirstOrDefault<Invitation>();
 
