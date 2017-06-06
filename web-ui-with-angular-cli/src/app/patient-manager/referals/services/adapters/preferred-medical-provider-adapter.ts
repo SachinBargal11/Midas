@@ -29,7 +29,8 @@ export class PrefferedMedicalProviderAdapter {
             prefferedMedicalProvider = new PrefferedMedicalProvider({
                 id: providerData.id,
                 name: providerData.name,
-                registrationComplete: providerData.registrationComplete,
+                // registrationComplete: providerData.registrationComplete,
+                companyStatusType:providerData.companyStatusType,
                 doctor: doctors,
                 room: rooms,
                 invitationID: providerData.invitationID,

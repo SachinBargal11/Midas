@@ -9,6 +9,7 @@ export const routes: Routes = [
     { path: '', redirectTo: '/patient-manager/profile/viewall', pathMatch: 'full' },
     { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' } },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
+    { path: 'event', loadChildren: 'app/event/event-module#EventModule', data: { breadcrumb: 'root' } },
     { path: '404', component: NoContentComponent },
     { path: '**', redirectTo: '/404' }
 ];

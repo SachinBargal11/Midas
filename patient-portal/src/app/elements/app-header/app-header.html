@@ -34,7 +34,11 @@
 				<div class="mobile-menu-right-overlay" (click)="hideMobileMenu()"></div>
 				<div class="site-header-collapsed">
 					<div class="site-header-collapsed-in">
-						
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/event']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Social
+							</a>
+						</div>						
 					</div>
 					<!--.site-header-collapsed-in-->
 				</div>

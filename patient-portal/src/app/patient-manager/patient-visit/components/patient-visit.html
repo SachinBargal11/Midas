@@ -143,7 +143,7 @@
 
             <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
         </div>
-        <p-footer>
+        <p-footer *ngIf="selectedVisit">
             <div class="row">
                 <div class="col-md-4">
                     <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
@@ -151,6 +151,7 @@
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
                     <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
+                    <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
                 </div>
             </div>
         </p-footer>
@@ -195,7 +196,6 @@
                 <loader [visible]="isSaveProgress"></loader>
             </button>
                             <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
-                            <button type="button" class="btn btn-danger" (click)="deletePatientAppointment()">Cancel Current Appointment </button>
                         </div>
                     </div>
                 </form>

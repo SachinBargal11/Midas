@@ -73,16 +73,16 @@ export class AddMedicalProviderComponent implements OnInit {
     }
 
     loadAllProviders() {
-        this._progressBarService.show();
+        // this._progressBarService.show();
         this._medicalProviderMasterStore.getAllProviders()
             .subscribe((allProviders: Account[]) => {
                 this.allProviders = allProviders;
             },
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
@@ -105,7 +105,15 @@ export class AddMedicalProviderComponent implements OnInit {
                     this._notificationsStore.addNotification(notification);
                     this.loadAllProviders();
                     this.currentProviderId = 0;
-                    this._router.navigate(['/account-setup/medical-provider-master']);
+                    // this._router.navigate(['/account-setup/medical-provider-master']);
+                      if (!this.inputCancel) {
+                    setTimeout(() => {
+                        this._router.navigate(['../'], { relativeTo: this._route });
+                    }, 3000);
+                }
+                else {
+                    this.closeDialog();
+                }
                 },
                 (error) => {
                     let errString = 'Unable to assign Provider.';
