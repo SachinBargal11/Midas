@@ -376,6 +376,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.Invitations.Add(invitationDB);
             _context.SaveChanges();
             #endregion
+
             if (IsEditMode == false)
             {
                 try
