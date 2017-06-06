@@ -612,6 +612,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Location Id, Doctor Id And Patient Id
+        public override object GetByPatientId(int patientId)
+        {
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Include("Patient2")
+                                                                        .Include("Patient2.User")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location").Include("Location.Company")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
+                                                                        .Where(p => p.Case.PatientId == patientId
+                                                                                && p.Case.CaseStatusId == 1 //1-- Open
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id, Doctor Id and Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
         #region Get By Doctor Id
         public override object GetByDoctorId(int id)
         {

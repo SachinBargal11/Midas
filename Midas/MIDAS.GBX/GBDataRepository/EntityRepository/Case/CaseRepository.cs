@@ -420,6 +420,52 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Entity Conversion ConvertToCaseWithUserAndPatient
+        public T ConvertToCaseWithPatientName<T, U>(U entity, int CompanyId)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            List<BO.CaseWithPatientName> lstCaseWithPatient = new List<BO.CaseWithPatientName>();
+
+            if (patient2.User != null && patient2.Cases != null)
+            {
+                //foreach (var eachCase in patient2.Cases)
+                foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
+                {
+                    if (eachCase.CaseCompanyMappings.Any(p => p.Company != null && p.Company.ID == CompanyId) == true
+                        || (eachCase.Referrals != null && eachCase.Referrals.Any(p => p.ToCompanyId == CompanyId) == true))
+                    {
+                        BO.CaseWithPatientName caseWithPatient = new BO.CaseWithPatientName();
+                      
+                        caseWithPatient.FirstName = patient2.User.FirstName;
+                        caseWithPatient.MiddleName = patient2.User.MiddleName;
+                        caseWithPatient.LastName = patient2.User.LastName;
+
+                        caseWithPatient.CaseId = eachCase.ID;
+                        
+                       
+                        caseWithPatient.CaseTypeId = eachCase.CaseTypeId;
+                       
+                        caseWithPatient.CaseStatusId = eachCase.CaseStatusId;
+
+                        caseWithPatient.IsDeleted = eachCase.IsDeleted;
+                        caseWithPatient.CreateByUserID = eachCase.CreateByUserID;
+                        caseWithPatient.UpdateByUserID = eachCase.UpdateByUserID;
+                                                                   
+                        caseWithPatient.caseSource = eachCase.caseSource;
+                                                           
+                        lstCaseWithPatient.Add(caseWithPatient);
+                    }
+                }
+            }
+
+            return (T)(object)lstCaseWithPatient;
+        }
+        #endregion
+
         #region Entity Conversion GetCaseCompanies
         public override T ConvertCompany<T, U>(U entity)
         {
@@ -1201,6 +1247,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
                 }
                 return lstCaseWithUserAndPatient;
+            }
+        }
+        #endregion
+
+        #region Get By Company Id for Ancillary
+        public override object GetByCompanyIdForAncillary(int CompanyId)
+        {
+            var UserList1 = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.UserID)
+                                                  .Distinct<int>();
+
+            var AccList = _context.Patient2.Include("User")
+                                           .Where(p => (UserList1.Contains(p.Id))
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList<Patient2>();
+
+            var ReferralList = _context.Referral2.Include("Case")
+                                                 .Include("Case.CompanyCaseConsentApprovals")
+                                                 .Include("Case.Patient2.User")
+                                                 .Where(p => p.ToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .ToList<Referral2>();
+            ReferralList.RemoveAll(referral => referral.Case.CaseStatusId == 2);
+
+            var UserList2 = ReferralList.Select(p => p.Case.Patient2).ToList();
+
+            if (AccList == null && UserList2 == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.CaseWithPatientName> lstCaseWithPatient = new List<BO.CaseWithPatientName>();
+                foreach (Patient2 eachPatient in AccList.Union(UserList2).Distinct())
+                {
+                    lstCaseWithPatient.AddRange(ConvertToCaseWithPatientName<List<BO.CaseWithPatientName>, Patient2>(eachPatient, CompanyId));
+                }
+                return lstCaseWithPatient;
             }
         }
         #endregion

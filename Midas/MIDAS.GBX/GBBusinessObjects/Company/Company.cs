@@ -67,35 +67,8 @@ namespace MIDAS.GBX.BusinessObjects
 
     public class UpdateCompany : GbObject
     {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("companyStatusTypeId")]
-        public GBEnums.CompanyStatusType CompanyStatusTypeID { get; set; }
-
-        [JsonProperty("companyType")]
-        public GBEnums.CompanyType CompanyType { get; set; }
-
-        [JsonProperty("subscriptionType")]
-        public GBEnums.SubsCriptionType? SubsCriptionType { get; set; }
-
-        [JsonProperty("taxId")]
-        public string TaxID { get; set; }
-
-        [JsonProperty("cellPhone")]
-        public string CellPhone { get; set; }
-
-        [JsonProperty("emailAddress")]
-        public string EmailAddress { get; set; }
-
-        [JsonProperty("userName")]
-        public string UserName { get; set; }
-
-        [JsonProperty("userFirstName")]
-        public string UserFirstName { get; set; }
-
-        [JsonProperty("userLastName")]
-        public string UserLastName { get; set; }
+        [JsonProperty("Signup")]
+        public Signup Signup { get; set; }
 
     }
 }

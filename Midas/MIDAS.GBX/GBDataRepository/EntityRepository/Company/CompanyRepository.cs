@@ -104,35 +104,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (company == null)
                 return default(T);
 
-            BO.UpdateCompany UpdateCompanyBO = new BO.UpdateCompany();
+            BO.UpdateCompany updateCompanyBO = new BO.UpdateCompany();
 
-            UpdateCompanyBO.ID = company.id;
-            UpdateCompanyBO.Name = company.Name;
-            UpdateCompanyBO.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
-            UpdateCompanyBO.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
-            if (company.SubscriptionPlanType != null)
+            updateCompanyBO.Signup = new BO.Signup();
+            if (company != null)
             {
-                UpdateCompanyBO.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
-            }
-            else
-            {
-                UpdateCompanyBO.SubsCriptionType = null;
-            }
-            UpdateCompanyBO.TaxID = company.TaxID;
-            UpdateCompanyBO.IsDeleted = company.IsDeleted;
+                if (company.IsDeleted.HasValue == false || (company.IsDeleted.HasValue == true && company.IsDeleted.Value == false))
+                {
+                    BO.Company boCompany = new BO.Company();
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        boCompany = sr.Convert<BO.Company, Company>(company);
 
+                        updateCompanyBO.Signup.company = boCompany;
+                    }
+                }
+            }
 
             if (company.ContactInfo != null)
             {
-                if (company.ContactInfo.IsDeleted.HasValue == false || (company.ContactInfo.IsDeleted.HasValue == true && company.ContactInfo.IsDeleted.Value == false))
-                {
-                    UpdateCompanyBO.CellPhone = company.ContactInfo.CellPhone;
-                    UpdateCompanyBO.EmailAddress = company.ContactInfo.EmailAddress;
-                }
+
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.CellPhone = company.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = company.ContactInfo.EmailAddress;
+
+                updateCompanyBO.Signup.contactInfo = boContactInfo;
+
             }
 
             if (company.UserCompanies != null)
             {
+                BO.User lstUser = new BO.User();
                 if (company.UserCompanies.Count >= 1)
                 {
                     var item = company.UserCompanies.FirstOrDefault();
@@ -142,20 +144,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         var userDB = _context.Users.Where(p => p.id == item.UserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                    .FirstOrDefault();
 
-                        if (userDB != null)
+                        using (UserRepository sr = new UserRepository(_context))
                         {
-                            if (userDB.IsDeleted.HasValue == false || (userDB.IsDeleted.HasValue == true && userDB.IsDeleted.Value == false))
-                            {
-                                UpdateCompanyBO.UserName = userDB.UserName;
-                                UpdateCompanyBO.UserFirstName = userDB.FirstName;
-                                UpdateCompanyBO.UserLastName = userDB.LastName;
-                            }
+                            BO.User BOUser = new BO.User();
+                            BOUser = sr.Convert<BO.User, User>(userDB);
+                            BOUser.UserCompanies = null;
+                            BOUser.ContactInfo = null;
+                            BOUser.AddressInfo = null;
+                            BOUser.Roles = null;
+
+                            lstUser = BOUser;
                         }
                     }
                 }
+
+                updateCompanyBO.Signup.user = lstUser;
             }
 
-            return (T)(object)UpdateCompanyBO;
+            return (T)(object)updateCompanyBO;
         }
         #endregion
 

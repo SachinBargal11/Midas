@@ -247,5 +247,33 @@ namespace MIDAS.GBX.BusinessObjects
         public List<mCaseCompanyConsentDocument> mCaseCompanyConsentDocuments { get; set; }
     }
 
+    public class CaseWithPatientName : GbObject
+    {
+        
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("middleName")]
+        public string MiddleName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+             
+        [JsonProperty("caseTypeId")]
+        public byte? CaseTypeId { get; set; }
+
+        [JsonProperty("caseStatusId")]
+        public byte? CaseStatusId { get; set; }
+             
+        [JsonProperty("caseSource")]
+        public string caseSource { get; set; }
+
+       
+    }
+
+
 
 }

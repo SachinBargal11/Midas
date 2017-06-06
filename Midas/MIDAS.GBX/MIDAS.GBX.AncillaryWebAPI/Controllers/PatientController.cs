@@ -30,11 +30,11 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
     
 
         [HttpGet]
-        [Route("getPatientsByCompanyId/{CompanyId}")]
+        [Route("getByCompanyIdForAncillary/{CompanyId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
+        public HttpResponseMessage GetByCompanyIdForAncillary(int CompanyId)
         {
-            return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
+            return requestHandlerPatient2.GetByCompanyIdForAncillary(Request, CompanyId);
         }
   
         [HttpGet]
