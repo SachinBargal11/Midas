@@ -132,8 +132,19 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
+                <!--<div class="col-lg-4">
+                    <label class="form-label">Patient Photo
+                            </label>
+                    <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"
+                        maxFileSize="1000000">
+                        <ng-template pTemplate type="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+                </div>-->
+            </div><br>
         </div>
     </section>
 
@@ -175,7 +186,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Fax No</label>
                         <!--<input formControlName="faxNo" type="text" class="form-control" placeholder="" />-->
@@ -203,20 +214,21 @@
                     </div>
                 </div>
             </div>
-             <div class="row">
+            <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail                                                                                                                                     
                                 </label>
                         <div class="form-group" [class.error]="patientformControls.contact.controls.alternateEmail.touched && !patientformControls.contact.controls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [class.error]="!patientformControls.contact.controls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="patientformControls.contact.controls.alternateEmail.touched && !patientformControls.contact.controls.alternateEmail.valid">
-                            <ul>
-                                <li *ngIf="patientformControls.contact.controls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
+                            <input formControlName="alternateEmail" [class.error]="!patientformControls.contact.controls.alternateEmail.valid" class="form-control"
+                                type="text" placeholder="" />
+                            <div class='error-list' *ngIf="patientformControls.contact.controls.alternateEmail.touched && !patientformControls.contact.controls.alternateEmail.valid">
+                                <ul>
+                                    <li *ngIf="patientformControls.contact.controls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -232,7 +244,7 @@
                         </select>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
     </section>
 
