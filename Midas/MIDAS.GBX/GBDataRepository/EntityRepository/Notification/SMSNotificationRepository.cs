@@ -16,6 +16,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             context.Configuration.ProxyCreationEnabled = false;
         }
 
+        #region Entity Conversion
+        public override T Convert<T, U>(U entity)
+        {
+            SMSQueue SMSQueueDB = entity as SMSQueue;
+
+            if (SMSQueueDB == null)
+                return default(T);
+
+            BO.SMSNotification SMSNotificationBO = new BO.SMSNotification();
+
+            SMSNotificationBO.AppId = SMSQueueDB.AppId;
+            SMSNotificationBO.FromNumber = SMSQueueDB.FromNumber;
+            SMSNotificationBO.ToNumber = SMSQueueDB.ToNumber;
+            SMSNotificationBO.Message = SMSQueueDB.Message;
+            SMSNotificationBO.CreatedDate = SMSQueueDB.CreatedDate;            
+
+            return (T)(object)SMSNotificationBO;
+        }
+        #endregion
+
         #region Get By ID
         public override object AddSMSToQueue<T>(T entity)
         {
@@ -23,10 +43,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             SMSQueue SMSQueueDB = new SMSQueue();
             SMSQueueDB.AppId = SMSNotificationBO.AppId;
+            SMSQueueDB.FromNumber = SMSNotificationBO.FromNumber;
+            SMSQueueDB.ToNumber = SMSNotificationBO.ToNumber;
+            SMSQueueDB.Message = SMSNotificationBO.Message;
 
+            _context.SMSQueues.Add(SMSQueueDB);
 
-
-            return (object)new object();
+            var res = Convert<BO.SMSNotification, SMSQueue>(SMSQueueDB);
+            return (object)res;
         }
         #endregion
 

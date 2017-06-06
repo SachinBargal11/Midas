@@ -12,17 +12,17 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("appId")]
         public int AppId { get; set; }
 
-        [JsonProperty("accountSid")]
-        public string AccountSid { get; set; }
+        //[JsonProperty("accountSid")]
+        //public string AccountSid { get; set; }
 
-        [JsonProperty("authToken")]
-        public string AuthToken { get; set; }
-
-        [JsonProperty("toNumber")]
-        public string ToNumber { get; set; }
+        //[JsonProperty("authToken")]
+        //public string AuthToken { get; set; }
 
         [JsonProperty("fromNumber")]
         public string FromNumber { get; set; }
+
+        [JsonProperty("toNumber")]
+        public string ToNumber { get; set; }        
 
         [JsonProperty("message")]
         public string Message { get; set; }
@@ -31,7 +31,7 @@ namespace MIDAS.GBX.BusinessObjects
         public DateTime CreatedDate { get; set; }
 
         [JsonProperty("deliveryDate")]
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
 
         [JsonProperty("numberOfAttempts")]
         public int NumberOfAttempts { get; set; }
