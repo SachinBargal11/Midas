@@ -125,6 +125,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
 
                 BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.ID = company.ContactInfo.id;
                 boContactInfo.CellPhone = company.ContactInfo.CellPhone;
                 boContactInfo.EmailAddress = company.ContactInfo.EmailAddress;
 
