@@ -11,6 +11,7 @@ import { DiagnosisCode } from '../../models/diagnosis-code';
 import { DiagnosisType } from '../../models/diagnosis-type';
 import { DiagnosisStore } from '../../stores/diagnosis-store';
 import { PatientVisit } from '../../../patient-manager/patient-visit/models/patient-visit';
+import { SessionStore } from '../../stores/session-store';
 
 @Component({
   selector: 'app-dignosis',
@@ -37,7 +38,8 @@ export class DignosisComponent implements OnInit {
     private _notificationsStore: NotificationsStore,
     private _progressBarService: ProgressBarService,
     private _diagnosisStore: DiagnosisStore,
-    private _confirmationService: ConfirmationService
+    private _confirmationService: ConfirmationService,
+    public sessionStore: SessionStore
   ) {
     // this.dignosisForm = this.fb.group({
     //   dignosisCode: ['', Validators.required]
