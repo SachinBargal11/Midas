@@ -437,8 +437,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefMedProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefMedProvider_CompanyDB.BlobStorageTypeId = 1;
-                prefMedProvider_CompanyDB.CompanyStatusTypeID = 1;
-                prefMedProvider_CompanyDB.IsDeleted = false;
+                prefMedProvider_CompanyDB.CompanyStatusTypeID = 1; // CompanyStatusTypeID = 1 -- RegistrationImcomplete
+                prefMedProvider_CompanyDB.IsDeleted = prefMedProviderCompanyBO.IsDeleted;
                 prefMedProvider_CompanyDB.CreateByUserID = prefMedProviderCompanyBO.CreateByUserID;
                 prefMedProvider_CompanyDB.UpdateByUserID = prefMedProviderCompanyBO.UpdateByUserID;
                 prefMedProvider_CompanyDB.CreateDate = DateTime.UtcNow;
@@ -455,8 +455,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
                 userDB.AddressId = prefMedProvider_CompanyDB.AddressId;
                 userDB.ContactInfoId = prefMedProvider_CompanyDB.ContactInfoID;
-                userDB.IsDeleted = false;
-                userDB.CreateByUserID = 0;
+                userDB.IsDeleted = userBO.IsDeleted;
+                userDB.CreateByUserID = userBO.CreateByUserID;
                 userDB.CreateDate = DateTime.UtcNow;
 
                 _context.Users.Add(userDB);
@@ -521,18 +521,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (CurrentUser.UserType == 3)
                     {
-
                         //var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
                        // var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
                         var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                         var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-
-
                         if (medicalprovider_user != null )
                         {
-
                             var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByAttorney".ToUpper()).FirstOrDefault();
                             //var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
                             //var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByAttorney".ToUpper()).FirstOrDefault();
@@ -542,8 +536,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                             else
                             {
-
-
                                 #region Send mail to medical provider
                                 string VarificationLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                 string msg1 = PreferredMedicalAddByAttorney.EmailBody;
@@ -564,25 +556,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                 //BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                 //objEmail2.SendMail();
-                                
-
-
-
                             }
 
                         }
-
-
                     }
                     else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
                     {
-                  
                         var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                         var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                         if (medicalprovider_user != null)
                         {
-
                             var PreferredMedicalAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByProvider".ToUpper()).FirstOrDefault();
                            
                             if (PreferredMedicalAddByProvider == null)
@@ -591,8 +575,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                             else
                             {
-
-
                                 #region Send mail to medical provider
                                 string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                 string msg1 = PreferredMedicalAddByProvider.EmailBody;
@@ -603,15 +585,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
                                 objEmail1.SendMail();
                                 #endregion
-
                             }
-
                         }
                     }
                 }
-
-              
-
                 #endregion
             }
             catch (Exception ex) { }
@@ -716,11 +693,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 prefMedProvider_CompanyDB.TaxID = prefMedProviderCompanyBO.TaxID;
-                prefMedProvider_CompanyDB.AddressId = prefMedProvider_CompanyDB.AddressId;
-                prefMedProvider_CompanyDB.ContactInfoID = prefMedProvider_CompanyDB.ContactInfoID;
-                //prefMedProvider_CompanyDB.CompanyStatusTypeID = 1;
-                prefMedProvider_CompanyDB.IsDeleted = false;
-                prefMedProvider_CompanyDB.UpdateByUserID = 0;
+                prefMedProvider_CompanyDB.AddressId = prefMedProviderCompanyBO.AddressInfo.ID;
+                prefMedProvider_CompanyDB.ContactInfoID = prefMedProviderCompanyBO.ContactInfo.ID;
+                prefMedProvider_CompanyDB.CompanyStatusTypeID = System.Convert.ToByte(prefMedProviderCompanyBO.CompanyStatusTypeID);
+                prefMedProvider_CompanyDB.IsDeleted = prefMedProviderCompanyBO.IsDeleted;
+                prefMedProvider_CompanyDB.CreateByUserID = prefMedProviderCompanyBO.CreateByUserID;
+                prefMedProvider_CompanyDB.UpdateByUserID = prefMedProviderCompanyBO.UpdateByUserID;
                 prefMedProvider_CompanyDB.UpdateDate = DateTime.UtcNow;
 
                 _context.SaveChanges();
