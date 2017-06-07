@@ -456,6 +456,100 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)freeSlots;
         }
 
+        /*public override object GetBusySlotsByCalendarEvent(CalendarEvent eachEvent)
+        {
+            List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
+
+            if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
+            {
+                var newEvent = new Event()
+                {
+                    Name = eachEvent.Name,
+                    Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                    End = new CalDateTime(eachEvent.EventEnd, "UTC"),
+                    Description = eachEvent.Description,
+                    IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
+                    Created = new CalDateTime(eachEvent.CreateDate)
+                };
+
+                if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
+                {
+                    var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                    if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                    {
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                            {
+                                keyValuePair[i] = "";
+                            }
+                        }
+                    }
+                    for (int i = 0; i < keyValuePair.Length; i++)
+                    {
+                        if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                        {
+                            keyValuePair[i] = "COUNT=500";
+                        }
+                    }
+
+                    string modifiedRecurrenceRule = "";
+
+                    foreach (var item in keyValuePair)
+                    {
+                        if (string.IsNullOrWhiteSpace(item) == false)
+                        {
+                            modifiedRecurrenceRule += item + ";";
+                        }
+                    }
+
+                    modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+
+                    newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                }
+
+                if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
+                {
+                    var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                    if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                    {
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                            {
+                                keyValuePair[i] = "";
+                            }
+                        }
+                    }
+                    for (int i = 0; i < keyValuePair.Length; i++)
+                    {
+                        if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                        {
+                            keyValuePair[i] = "COUNT=500";
+                        }
+                    }
+
+                    string modifiedRecurrenceException = "";
+
+                    foreach (var item in keyValuePair)
+                    {
+                        if (string.IsNullOrWhiteSpace(item) == false)
+                        {
+                            modifiedRecurrenceException += item + ";";
+                        }
+                    }
+
+                    modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+
+                    newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                }
+
+                calendar.Events.Add(newEvent);
+            }
+
+            return (object)freeSlots;
+        }*/
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
