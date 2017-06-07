@@ -47,7 +47,7 @@ export class AccountActivationComponent implements OnInit {
     ) {
         this._route.params.subscribe((routeParams: any) => {
             this.token = routeParams.token;
-            let result = this._authenticationService.checkForValidToken(this.token);         
+            let result = this._authenticationService.checkForValidToken(this.token);
             result.subscribe(
                 (data: any) => {
                     // check for response
@@ -140,12 +140,15 @@ export class AccountActivationComponent implements OnInit {
     }
 
     updatePassword() {
-        let requestData = { user: null };
+        let requestData = { user: null, company: null };
         requestData.user = {
             id: this.user.id,
             userName: this.user.userName,
             password: this.changePassForm.value.password
-        };
+        },
+            requestData.company = {
+                id: this.companyMaster.signup.company.id
+            };
         this.isPassChangeInProgress = true;
 
         this._authenticationService.updatePassword(requestData)
