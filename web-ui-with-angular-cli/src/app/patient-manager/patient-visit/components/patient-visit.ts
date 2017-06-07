@@ -177,7 +177,7 @@ export class PatientVisitComponent implements OnInit {
             isAddNewPatient: [''],
             isGoingOutOffice: [''],
             isProcedureCode: [''],
-            notes: ['', Validators.required]
+            notes: ['']
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
 
@@ -765,7 +765,7 @@ export class PatientVisitComponent implements OnInit {
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
             this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            // this.getDocuments();
+            this.getDocuments();
             this.visitDialogVisible = true;
         } else {
             if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
