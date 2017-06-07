@@ -772,13 +772,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
 
-            var usercompanies = _context.UserCompanies.Where(p => p.UserID == userBO.ID
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                .Select(p => p.CompanyID);
-
-            companyDB = _context.Companies.Where(p => usercompanies.Contains(p.id)
-                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .FirstOrDefault();
+            //var usercompanies = _context.UserCompanies.Where(p => p.UserID == userBO.ID
+            //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                    .Select(p => p.CompanyID);            
 
             if (companyBO == null)
             {
@@ -789,6 +785,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
                 {
+                    companyDB = _context.Companies.Where(p => p.id == companyBO.ID
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
                     if (companyDB.CompanyStatusTypeID == 2)
                     {
                         userDB.Password = PasswordHash.HashPassword(userBO.Password);
