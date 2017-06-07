@@ -24,7 +24,7 @@ namespace MIDAS.GBX.NotificationService
             time1 = new Timer();
             time1.Interval = 60000;
             time1.Enabled = true;
-            time1.Elapsed += Time1_Elapsed;
+            time1.Elapsed += new ElapsedEventHandler(this.Time1_Elapsed);
             Library1.WriteToLog("Started Service");
         }
 
@@ -35,7 +35,7 @@ namespace MIDAS.GBX.NotificationService
 
         protected override void OnStop()
         {
-            Library1.WriteToLog("Started Service");
+            Library1.WriteToLog("Stopped Service");
         }
     }
 }
