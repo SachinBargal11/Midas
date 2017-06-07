@@ -772,7 +772,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
 
-            var usercompanies = _context.UserCompanies.Where(p => p.UserID == userBO.ID 
+            var usercompanies = _context.UserCompanies.Where(p => p.UserID == userBO.ID
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                 .Select(p => p.CompanyID);
 
@@ -780,16 +780,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .FirstOrDefault();
 
-            if (userDB != null)
+            if (companyBO == null)
             {
-                if (companyDB.CompanyStatusTypeID == 2)
+                userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            }
+            else
+            {
+                if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
                 {
-                    userDB.Password = PasswordHash.HashPassword(userBO.Password);
-                    companyDB.CompanyStatusTypeID = 3;
+                    if (companyDB.CompanyStatusTypeID == 2)
+                    {
+                        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                        companyDB.CompanyStatusTypeID = 3;
+                    }
                 }
             }
-            
+
             _context.SaveChanges();
+
+
+
+            //if (userDB != null)
+            //{
+            //    if (companyDB.CompanyStatusTypeID == 2)
+            //    {
+            //        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            //        companyDB.CompanyStatusTypeID = 3;
+            //    }
+            //}
+
+            //_context.SaveChanges();
 
             userDB = _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>();
 

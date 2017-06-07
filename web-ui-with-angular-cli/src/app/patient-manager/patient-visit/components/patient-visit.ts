@@ -87,6 +87,7 @@ export class PatientVisitComponent implements OnInit {
     selectedTestId: number = 0;
     selectedMode: number = 0;
     selectedSpecialityId: number = 0;
+    outOfOfficeVisits: any;
 
     /* Dialog Visibilities */
     eventDialogVisible: boolean = false;
@@ -143,6 +144,13 @@ export class PatientVisitComponent implements OnInit {
             content = `<i class="fa fa-refresh"></i>`;
         }
         content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
+        // if (event.eventWrapper.isOutOfOffice) {
+        //     content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">Out of office</span>`;
+        // } else {
+        //     if (!event.eventWrapper.isOutOfOffice) {
+        // content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
+        //     }
+        // }
         element.find('.fc-content').html(content);
     }
 
@@ -456,6 +464,12 @@ export class PatientVisitComponent implements OnInit {
     }
 
     getVisitOccurrences(visits) {
+        this.outOfOfficeVisits = _.filter(visits, (currentVisit: any) => {
+            return currentVisit.isOutOfOffice;
+        })
+        visits = _.reject(visits, (currentVisit: any) => {
+            return currentVisit.isOutOfOffice;
+        })
         let occurrences: ScheduledEventInstance[] = [];
         let calendarEvents: ScheduledEvent[] = _.chain(visits)
             .map((visit: PatientVisit) => {
