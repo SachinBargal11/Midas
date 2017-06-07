@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { User } from '../../commons/models/user';
 import { UserAdapter } from '../../medical-provider/users/services/adapters/user-adapter';
 import * as _ from 'underscore';
 import { Account } from '../models/account';
+import { Signup } from '../../account-setup/models/signup';
+import { SignupAdapter } from '../../account-setup/services/adapters/signup-adapter';
 
 @Injectable()
 export class AuthenticationService {
@@ -224,5 +226,41 @@ export class AuthenticationService {
 
     getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+    updateCompany(userDetail: Signup): Observable<Signup> {
+        let promise: Promise<Signup> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/Company/UpdateCompany', JSON.stringify(userDetail), {
+                headers: headers
+            })
+                .map(res => res.json())
+                .subscribe((userData: any) => {
+                    resolve(userData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Signup>>Observable.fromPromise(promise);
+    }
+
+    fetchByCompanyId(companyId: Number): Observable<Signup> {
+        let promise: Promise<Signup> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.get(this._url + '/Company/getUpdatedCompanyById/' + companyId, {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let provider = null;
+                    provider = SignupAdapter.parseResponse(data);
+                    resolve(provider);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Signup>>Observable.fromPromise(promise);
     }
 }

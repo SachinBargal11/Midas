@@ -13,10 +13,354 @@
 			</div>
 		</div>
 		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="isTokenValidated && isTokenValid">
-			<form [formGroup]="changePassForm" (ngSubmit)="updatePassword()" class="">
+			<div *ngIf="companyMaster">
+				<form [formGroup]="companyForm" *ngIf="!isUser" (ngSubmit)="updateCompany()">
+					<section class="box-typical">
+						<div class="card-block">
+							<header class="box-typical-header-sm text-center">Please set your password for company login </header>
+							<div class="row" id="divUpdate">
+								<div class="row">
+									<div class="col-lg-6">
+										<label class="form-label"> Company Name                                            
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.companyName.touched && !companyFormControls.companyName.valid">
+											<input formControlName="companyName" [ngModel]="companyMaster.signup.company.name" type="text" class="form-control" [class.error]="!companyFormControls.companyName.valid"
+											/>
+											<div class='error-list' *ngIf="companyFormControls.companyName.touched && !companyFormControls.companyName.valid">
+												<ul>
+													<li *ngIf="companyFormControls.companyName.pending">Checking...</li>
+													<li *ngIf="companyFormControls.companyName.hasError('required')">Company Name is required.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<label class="form-label"> Tax Id
+                                            <span class="color-red">*</span>
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.taxId.touched && !companyFormControls.taxId.valid">
+											<input formControlName="taxId" type="text" class="form-control" [class.error]="!companyFormControls.taxId.valid" minlength="10"
+											/>
+											<div class='error-list' *ngIf="companyFormControls.taxId.touched && !companyFormControls.taxId.valid">
+												<ul>
+													<li *ngIf="companyFormControls.taxId.hasError('required')">Tax Id is required.</li>
+													<li *ngIf="companyFormControls.taxId.hasError('minlength')">Tax Id should be minimum {{companyFormControls.taxId.errors.minlength.requiredLength}} characters.
+													</li>
+													<li *ngIf="companyFormControls.taxId.hasError('maxlength')">Tax Id should be maximum {{companyFormControls.taxId.errors.maxlength.requiredLength}} characters.
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.firstName.touched && !companyFormControls.firstName.valid">
+											<input formControlName="firstName" type="text" [ngModel]="companyMaster.signup.user.firstName" class="form-control" [class.error]="!companyFormControls.firstName.valid"
+											/>
+											<div class='error-list' *ngIf="companyFormControls.firstName.touched && !companyFormControls.firstName.valid">
+												<ul>
+													<li *ngIf="companyFormControls.firstName.hasError('required')">First name is required.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-6">
+										<label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.lastName.touched && !companyFormControls.lastName.valid">
+											<input formControlName="lastName" type="text" [ngModel]="companyMaster.signup.user.lastName" class="form-control" [class.error]="!companyFormControls.lastName.valid"
+											/>
+											<div class='error-list' *ngIf="companyFormControls.lastName.touched && !companyFormControls.lastName.valid">
+												<ul>
+													<li *ngIf="companyFormControls.lastName.hasError('required')">Last name is required.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<label class="form-label"> Company type
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.companyType.touched && !companyFormControls.companyType.valid">
+											<select disabled [ngModel]="companyMaster.signup.company.companyType" formControlName="companyType" class="selectpicker form-control"
+												title="Select Company Type." [class.error]="companyFormControls.companyType.touched && !companyFormControls.companyType.valid">
+                                             <!--<option value="">-Select company type-</option>
+                                             <option disabled>────────────────────</option>-->
+                                            <option value="1">MedicalProvider</option>
+                                             <option value="2">Attorney</option>
+                                             <option value="3">Billing</option>
+                                             <option value="4">Funding</option>
+                                             <option value="5">Collection</option>
+                                             <option value="6">Ancillary</option>
+                                         </select>
+											<div class='error-list' *ngIf="companyFormControls.companyType.touched && !companyFormControls.companyType.valid">
+												<ul>
+													<li *ngIf="companyFormControls.companyType.hasError('required')">Company type is required.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<label class="form-label"> Phone number
+                                            <span class="color-red">*</span>
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.phoneNo.touched && !companyFormControls.phoneNo.valid">
+											<p-inputMask mask="999-999-9999" formControlName="phoneNo" [ngModel]="companyMaster.signup.contactInfo.cellPhone" [class.error]="companyFormControls.phoneNo.touched && !companyFormControls.phoneNo.valid"
+												placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+											<div class='error-list' *ngIf="companyFormControls.phoneNo.touched && !companyFormControls.phoneNo.valid">
+												<ul>
+													<li *ngIf="companyFormControls.phoneNo.hasError('required')">Phone number is required.</li>
+													<li *ngIf="companyFormControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<label class="form-label"> Subscription plan
+                                            <span class="color-red">*</span>
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.subscriptionPlan.touched && !companyFormControls.subscriptionPlan.valid">
+											<select [ngModel]=1 formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan."
+												[class.error]="companyFormControls.subscriptionPlan.touched && !companyFormControls.subscriptionPlan.valid">
+                                             <option value="">-Select subscription plan-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Trial</option>
+                                             <!--<option value="30 day Trial">30 day Trial</option>-->
+                                         </select>
+											<div class='error-list' *ngIf="companyFormControls.subscriptionPlan.touched && !companyFormControls.subscriptionPlan.valid">
+												<ul>
+													<li *ngIf="companyFormControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<label class="form-label"> E-Mail                                         
+                                        </label>
+										<div class="form-group" [class.error]="companyFormControls.email.touched && !companyFormControls.email.valid">
+											<input disabled formControlName="email" type="email" [ngModel]="companyMaster.signup.user.userName" [class.error]="!companyFormControls.email.valid"
+												class="form-control" placeholder="" type="text" />
+											<div class='error-list' *ngIf="companyFormControls.email.touched && !companyFormControls.email.valid">
+												<ul>
+													<li *ngIf="companyFormControls.email.hasError('required')">Email is required.</li>
+													<li *ngIf="companyFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="companyFormControls.password.touched && !companyFormControls.password.valid">
+										<input formControlName="password" type="password" minlength='8' class="form-control" [class.error]="!companyFormControls.password.valid"
+										/>
+										<div class='error-list' *ngIf="companyFormControls.password.touched && !companyFormControls.password.valid">
+											<ul>
+												<li *ngIf="companyFormControls.password.hasError('required')">Password is required.</li>
+												<li *ngIf="companyFormControls.password.hasError('minlength')">Password should be minimum {{companyFormControls.password.errors.minlength.requiredLength}} characters.</li>
+												<li *ngIf="companyFormControls.password.hasError('maxlength')">Password should be maximum {{companyFormControls.password.errors.maxlength.requiredLength}} characters.</li>
+												<li *ngIf="companyFormControls.password.hasError('passwordValidator')">Please enter a valid password</li>
+											</ul>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-lg-6">
+									<label class="form-label"> Confirm Password
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="companyFormControls.confirmPassword.touched && companyForm.hasError('mismatchedPasswords')">
+										<input formControlName="confirmPassword" type="password" class="form-control" [class.error]="companyForm.hasError('mismatchedPasswords')"
+										/>
+										<div class='error-list' *ngIf="companyFormControls.confirmPassword.touched && companyForm.hasError('mismatchedPasswords')">
+											<ul>
+												<li *ngIf="companyForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<small class="text-muted help-block">
+										Password must be minimum 8 characters & maximum 20 characters long. It should contain combination of uppercase (A through Z) & lowercase (a through z) letters, 0 to 9 digits & special characters. 
+								</small>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<button [disabled]="!companyForm.valid || isPassChangeInProgress" type="submit" class="btn btn-success sign-up">Set Password
+                    <loader [visible]="isPassChangeInProgress"></loader>
+                </button>
+									<button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
+                </button>
+
+								</div>
+							</div>
+						</div>
+					</section>
+				</form>
+			</div>
+			<form [formGroup]="changePassForm" *ngIf="isUser" (ngSubmit)="updatePassword()" class="">
 				<section class="box-typical">
 					<div class="card-block">
 						<header class="box-typical-header-sm text-center">Please set your password for company login </header>
+						<!--<div class="row" id="divUpdate">
+							<div class="row">
+								<div class="col-lg-6">
+									<label class="form-label"> Company Name                                     
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.companyName.touched && !changePassFormControls.companyName.valid">
+										<input disabled formControlName="companyName" type="text" class="form-control" [class.error]="!changePassFormControls.companyName.valid"
+										/>
+										<div class='error-list' *ngIf="changePassFormControls.companyName.touched && !changePassFormControls.companyName.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.companyName.pending">Checking...</li>
+												<li *ngIf="changePassFormControls.companyName.hasError('required')">Company Name is required.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<label class="form-label"> Tax Id
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.taxId.touched && !changePassFormControls.taxId.valid">
+										<input formControlName="taxId" type="text" class="form-control" [class.error]="!changePassFormControls.taxId.valid" minlength="10"
+										/>
+										<div class='error-list' *ngIf="changePassFormControls.taxId.touched && !changePassFormControls.taxId.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.taxId.hasError('required')">Tax Id is required.</li>
+												<li *ngIf="changePassFormControls.taxId.hasError('minlength')">Tax Id should be minimum {{changePassFormControls.taxId.errors.minlength.requiredLength}} characters.
+												</li>
+												<li *ngIf="changePassFormControls.taxId.hasError('maxlength')">Tax Id should be maximum {{changePassFormControls.taxId.errors.maxlength.requiredLength}} characters.
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.firstName.touched && !changePassFormControls.firstName.valid">
+										<input formControlName="firstName" type="text" class="form-control" [class.error]="!changePassFormControls.firstName.valid"
+										/>
+										<div class='error-list' *ngIf="changePassFormControls.firstName.touched && !changePassFormControls.firstName.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.firstName.hasError('required')">First name is required.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-6">
+									<label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.lastName.touched && !changePassFormControls.lastName.valid">
+										<input formControlName="lastName" type="text" class="form-control" [class.error]="!changePassFormControls.lastName.valid"
+										/>
+										<div class='error-list' *ngIf="changePassFormControls.lastName.touched && !changePassFormControls.lastName.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.lastName.hasError('required')">Last name is required.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<label class="form-label"> Company type
+                                          
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.companyType.touched && !changePassFormControls.companyType.valid">
+										<select disabled [ngModel]=1 formControlName="companyType" class="selectpicker form-control" title="Select Company Type."
+											[class.error]="changePassFormControls.companyType.touched && !changePassFormControls.companyType.valid">
+                                        
+                                            <option value="1">MedicalProvider</option>
+                                             <option value="2">Attorney</option>
+                                             <option value="3">Billing</option>
+                                             <option value="4">Funding</option>
+                                             <option value="5">Collection</option>
+                                             <option value="6">Ancillary</option>
+                                         </select>
+										<div class='error-list' *ngIf="changePassFormControls.companyType.touched && !changePassFormControls.companyType.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.companyType.hasError('required')">Company type is required.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<label class="form-label"> Phone number
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.phoneNo.touched && !changePassFormControls.phoneNo.valid">
+										<p-inputMask mask="999-999-9999" formControlName="phoneNo" [class.error]="changePassFormControls.phoneNo.touched && !changePassFormControls.phoneNo.valid"
+											placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+										<div class='error-list' *ngIf="changePassFormControls.phoneNo.touched && !changePassFormControls.phoneNo.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.phoneNo.hasError('required')">Phone number is required.</li>
+												<li *ngIf="changePassFormControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<label class="form-label"> Subscription plan
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.subscriptionPlan.touched && !changePassFormControls.subscriptionPlan.valid">
+										<select [ngModel]=1 formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan."
+											[class.error]="changePassFormControls.subscriptionPlan.touched && !changePassFormControls.subscriptionPlan.valid">
+                                             <option value="">-Select subscription plan-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Trial</option>
+                                            
+                                         </select>
+										<div class='error-list' *ngIf="changePassFormControls.subscriptionPlan.touched && !changePassFormControls.subscriptionPlan.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+									<div class="form-group" [class.error]="changePassFormControls.email.touched && !changePassFormControls.email.valid">
+										<input disabled formControlName="email" type="email" [class.error]="!changePassFormControls.email.valid" class="form-control"
+											placeholder="" type="text" />
+										<div class='error-list' *ngIf="changePassFormControls.email.touched && !changePassFormControls.email.valid">
+											<ul>
+												<li *ngIf="changePassFormControls.email.hasError('required')">Email is required.</li>
+												<li *ngIf="changePassFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>-->
 						<div class="row">
 							<div class="col-lg-6">
 								<label class="form-label"> Password
