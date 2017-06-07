@@ -802,7 +802,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 #region Patient Visit
-                if (PatientVisit2BO != null && ((PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == true && PatientVisit2BO.LocationId.HasValue == true) || (PatientVisit2BO.ID > 0)))
+                if (PatientVisit2BO != null 
+                    && ((PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == true && PatientVisit2BO.LocationId.HasValue == true) 
+                        || (PatientVisit2BO.ID > 0) 
+                        || (PatientVisit2BO.IsOutOfOffice == true)))
                 {
                     bool Add_PatientVisit2DB = false;
                     PatientVisit2DB = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID
@@ -823,21 +826,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //PatientVisit2DB.CalendarEventId = PatientVisit2BO.CalendarEventId.HasValue == false ? PatientVisit2DB.CalendarEventId : PatientVisit2BO.CalendarEventId.Value;
                     PatientVisit2DB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisit2BO.CalendarEventId.HasValue == true) ? PatientVisit2BO.CalendarEventId.Value : PatientVisit2DB.CalendarEventId);
 
-                    if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == false)
-                    {
-                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                   .Select(p => p.Id)
-                                                   .FirstOrDefault<int>();
-
-                        PatientVisit2DB.CaseId = CaseId;
-                    }
-                    else
-                    {
-                        PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
-                    }
-
-                    if (IsEditMode == false)
+                    if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == false && PatientVisit2BO.IsOutOfOffice == false)
                     {
                         int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -862,9 +851,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
                     }
 
+                    //if (IsEditMode == false)
+                    //{
+                    //    int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
+                    //                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    //                               .Select(p => p.Id)
+                    //                               .FirstOrDefault<int>();
 
-                    PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value;
-                    PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value;
+                    //    if (CaseId == 0)
+                    //    {
+                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "No open case exists for given patient.", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //    else if (PatientVisit2BO.CaseId.HasValue == true && PatientVisit2BO.CaseId.Value != CaseId)
+                    //    {
+                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case id dosent match with open case is for the given patient.", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //    else
+                    //    {
+                    //        PatientVisit2DB.CaseId = CaseId;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
+                    //}
+
+
+                    PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : (PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value);
+                    PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : (PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value);
                     PatientVisit2DB.RoomId = PatientVisit2BO.RoomId;
                     PatientVisit2DB.DoctorId = PatientVisit2BO.DoctorId;
                     PatientVisit2DB.SpecialtyId = PatientVisit2BO.SpecialtyId;
