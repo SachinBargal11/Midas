@@ -25,7 +25,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             dictionary.Add("rageesh@hotmail.com", "+14252602856");
             dictionary.Add("slaxman@greenyourbills.com", "+19144004328");
             dictionary.Add("vgaonkar@greenyourbills.com", "+19147879623");
-       }
+            dictionary.Add("midaspatientuser1@outlook.com", "+919022775974");
+            dictionary.Add("midaspatientuser2@outlook.com", "+917977935408");
+        }
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
