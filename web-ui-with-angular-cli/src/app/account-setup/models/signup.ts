@@ -8,13 +8,15 @@ import { Contact } from '../../commons/models/contact';
 const SignupRecord = Record({
     company: null,
     user: null,
-    contactInfo: null
+    contactInfo: null,
+    originalResponse: null
 });
 
 export class Signup extends SignupRecord {
     company: Company;
     user: User;
     contactInfo: Contact;
+    originalResponse: any
 
     constructor(props) {
         super(props);

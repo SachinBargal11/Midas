@@ -7,6 +7,7 @@ const CompanyRecord = Record({
     taxId: '',
     companyType: CompanyType.MEDICALPROVIDER,
     subscriptionType: 0,
+    companyStatusTypeId: 0
 });
 
 export class Company extends CompanyRecord {
@@ -16,6 +17,7 @@ export class Company extends CompanyRecord {
     taxId: string;
     companyType: CompanyType;
     subscriptionType: number;
+    companyStatusTypeId: number;
 
     constructor(props) {
         super(props);
