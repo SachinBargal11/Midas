@@ -1861,6 +1861,18 @@ namespace MIDAS.GBX.AncillaryWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+        public HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetUpdatedCompanyById(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
 
     }
