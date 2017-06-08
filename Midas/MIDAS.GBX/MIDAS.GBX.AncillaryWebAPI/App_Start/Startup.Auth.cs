@@ -10,7 +10,9 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using MIDAS.GBX.AncillaryWebAPI.Providers;
 using MIDAS.GBX.AncillaryWebAPI.Models;
+using System.Web.Http;
 
+[assembly: OwinStartup(typeof(MIDAS.GBX.AncillaryWebAPI.Startup))]
 namespace MIDAS.GBX.AncillaryWebAPI
 {
     public partial class Startup
@@ -33,18 +35,23 @@ namespace MIDAS.GBX.AncillaryWebAPI
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
-            OAuthOptions = new OAuthAuthorizationServerOptions
-            {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true
-            };
 
-            // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+
+            var authProvider = new ApplicationOAuthProvider(PublicClientId);
+            OAuthAuthorizationServerOptions options = new OAuthAuthorizationServerOptions
+            {
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/midasancillaryapi/token"),
+                //AuthorizeEndpointPath= new PathString("/midasapi/User/Signin"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                //RefreshTokenProvider = new ApplicationRefreshTokenProvider(),
+                Provider = authProvider
+            };
+            app.UseOAuthAuthorizationServer(options);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
+
+            HttpConfiguration config = new HttpConfiguration();
+            WebApiConfig.Register(config);
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

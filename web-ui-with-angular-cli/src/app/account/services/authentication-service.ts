@@ -130,7 +130,7 @@ export class AuthenticationService {
 
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    authenticate(email: string, password: string, forceLogin: boolean, authAccessToken: string): Observable<Account> {
+    authenticate(email: string, password: string, forceLogin: boolean, authAccessToken: string, tokenExpiresAt: any): Observable<Account> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', authAccessToken);
@@ -147,7 +147,7 @@ export class AuthenticationService {
                 .subscribe((data: any) => {
                     if (data) {
                         // data.company = data.usercompanies[0].company;
-                        let user = AccountAdapter.parseResponse(data, authAccessToken);
+                        let user = AccountAdapter.parseResponse(data, authAccessToken, tokenExpiresAt);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);
                     }

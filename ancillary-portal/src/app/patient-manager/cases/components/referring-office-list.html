@@ -1,0 +1,34 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<div class="input-group">
+<h3 class="with-border">Referring Offices
+    <a class="pull-right btn btn-danger btn-sm" (click)="deleteReferringOffice()">
+        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Referring Office</span>
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add Referring Office</span>
+    </a>    
+</h3>
+</div>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+         <span class="input-group-addon"><i class="fa fa-search"></i></span>
+         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patients">
+    </div>
+</div>
+<!--<p-dataTable [value]="referringOffices" [(selection)]="selectedReferringOffices" [rows]="10" [rows]="10" [paginator]="true" 
+            [totalRecords]="totalRecords" (onLazyLoad)="loadRefferingOfficesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
+<p-dataTable [value]="referringOffices" [(selection)]="selectedReferringOffices" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+             [globalFilter]="gb" [responsive]="true">
+    <header>ReferringOffice List</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="npi" header="NPI" [sortable]="true"></p-column>
+    <p-column field="refferingOfficeId" header="Referring Office" [sortable]="true"></p-column>
+    <p-column field="refferingDoctorId" header="Referring Doctor" [sortable]="true"></p-column>
+    <p-column field="isCurrentReffOffice" header="Current Referring Office" [sortable]="true"></p-column>
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-referringOffice="rowData" pTemplate="body">
+            <a routerLink="edit/{{referringOffice.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+        </ng-template>
+    </p-column>
+</p-dataTable>

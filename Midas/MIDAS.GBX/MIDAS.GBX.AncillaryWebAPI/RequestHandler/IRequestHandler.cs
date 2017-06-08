@@ -136,7 +136,7 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
-        
+        HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
 
 
     }
