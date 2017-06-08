@@ -180,7 +180,7 @@ export class PendingReferralsComponent implements OnInit {
             this.selectedOption = 2;
             this.selectedRoomId = event.target.value;
             this.medicalProviderRoom.forEach(currentMedicalProvider => {
-                if (currentMedicalProvider.room.id === this.selectedRoomId) {
+                if (currentMedicalProvider.room.id == this.selectedRoomId) {
                     this.selectedLocationId = currentMedicalProvider.room.location.location.id;
                 }
             });
@@ -253,7 +253,7 @@ export class PendingReferralsComponent implements OnInit {
                 header: 'Confirmation',
                 icon: 'fa fa-question-circle',
                 accept: () => {
-                    this.selectedLocationId = 0;
+                    // this.selectedLocationId = 0;
                     this.availableSlotsDialogVisible = true;
                     let startDate: moment.Moment = moment();
                     let endDate: moment.Moment = moment().add(7, 'days');
@@ -333,10 +333,10 @@ export class PendingReferralsComponent implements OnInit {
         if (this.selectedOption === 2) {
             pendingReferral = this._populateReferralForMedicalProviderRoom();
         }
-        if (!pendingReferral) {
-            this._notificationsService.error('Two different speciality cannot be saved simultaneously');
-            return;
-        }
+        // if (!pendingReferral) {
+        //     this._notificationsService.error('Two different speciality cannot be saved simultaneously');
+        //     return;
+        // }
         this.isAvailableSlotsSavingInProgress = true;
 
         let patientVisit: PatientVisit = this._populatePatientVisitData(slotDetail);
