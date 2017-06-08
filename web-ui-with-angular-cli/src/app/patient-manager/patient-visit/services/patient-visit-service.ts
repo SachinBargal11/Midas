@@ -152,7 +152,7 @@ export class PatientVisitService {
 
     getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/get/' + visitId + '/visit', {
+            return this._http.get(this._url + '/documentmanager/get/' + visitId + '/visit', {
                 headers: this._headers
             })
                 .map(res => res.json())
