@@ -15,21 +15,16 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Data.SqlClient;
 
-namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class DocumentManagerRepository : BaseEntityRepo, IDisposable
     {
         internal string sourcePath = string.Empty;
         internal string remotePath = string.Empty;
         private DbSet<UserCompany> _dbSet;
-        private FileUploadManager fileUploadManager;
-
         #region Constructor
         public DocumentManagerRepository(MIDASGBXEntities context) : base(context)
-        {
-            fileUploadManager = new FileUploadManager(context);
-            _dbSet = _context.Set<UserCompany>();
-        }
+        { }
         #endregion       
 
         #region Validate Entities
@@ -61,7 +56,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         }*/
 
         public override object Get(int companyId)
-        {            
+        {
             BlobStorage serviceProvider = _context.BlobStorages.Where(blob =>
                                                    blob.BlobStorageTypeId == (_context.Companies.Where(comp => comp.id == companyId))
                                                    .FirstOrDefault().BlobStorageTypeId)
@@ -85,8 +80,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         public override object GetByDocumentId(int documentId)
         {
             BO.Document docInfo = new BO.Document();
-            var midasDocs = _context.MidasDocuments.Where(p => p.Id == documentId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();            
+            var midasDocs = _context.MidasDocuments.Where(p => p.Id == documentId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
             return midasDocs.DocumentPath;
+        }
+
+        public override object GetByObjectIdAndType(int objectId, string objectType)
+        {
+            int companyId = 0;
+            switch (objectType.ToUpper())
+            {
+                case EN.Constants.CaseType:
+                    companyId = _context.CaseCompanyMappings.Where(map=>map.CaseId==objectId && map.IsOriginator == true &&
+                                                                        (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault().CompanyId;
+                    break;
+                /*case EN.Constants.ConsentType:
+                    path = documentPath[0].Replace("cmp/", "")                              
+                                        .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                    break;*/
+                case EN.Constants.VisitType:
+                    companyId = _context.CaseCompanyMappings.Where(map => map.CaseId == _context.PatientVisit2.Where(visit => visit.Id == objectId && map.IsOriginator == true &&
+                                                                                                                              (visit.IsDeleted.HasValue == false || (visit.IsDeleted.HasValue == true && visit.IsDeleted.Value == false))).FirstOrDefault().CaseId &&
+                                                                        (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault().CompanyId;
+                    break;
+            }
+
+            return companyId;
         }
 
         #region Get
@@ -188,7 +208,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
                     break;
             }
-            //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
 
             return docInfo;
         }
@@ -210,8 +229,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
                     break;
             }
-            //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
-
+            
             return docInfo;
         }
 
