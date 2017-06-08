@@ -74,7 +74,7 @@
                                 Account Setup
 							</a>
 						</div>
-						<div class="dropdown" dropdown>
+						<div  *ngIf="sessionStore.session.currentCompany" class="dropdown" dropdown>
 							<button dropdownToggle class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
 							 aria-expanded="false">
 							{{sessionStore.session.currentCompany.name}}
