@@ -44,7 +44,7 @@ namespace MIDAS.GBX.AncillaryWebAPI
                 TokenEndpointPath = new PathString("/midasancillaryapi/token"),
                 //AuthorizeEndpointPath= new PathString("/midasapi/User/Signin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-                RefreshTokenProvider = new ApplicationRefreshTokenProvider(),
+                //RefreshTokenProvider = new ApplicationRefreshTokenProvider(),
                 Provider = authProvider
             };
             app.UseOAuthAuthorizationServer(options);
