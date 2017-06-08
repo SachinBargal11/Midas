@@ -1,0 +1,25 @@
+<section class="tabs-section">
+    <div class="tabs-section-nav">
+        <div class="tab1">
+            <ul class="nav" role="tablist">
+                <li class="nav-item">
+                    <!--<a class="nav-link" [routerLink]="['PatientProfile']" role="tab" 
+                data-toggle="tab" [class.active]="isCurrentRoute(['PatientProfile'])">-->
+                    <a class="nav-link" [routerLink]="['/']" role="tab" data-toggle="tab">
+                        <span class="nav-link-in">
+                Patient Profile				
+                    </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active">
+
+            <router-outlet></router-outlet>
+
+        </div>
+    </div>
+</section>

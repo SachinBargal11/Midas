@@ -1,0 +1,103 @@
+<div *ngIf="patientInfo">
+    <form [formGroup]="basicform" (ngSubmit)="savePatient()">
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.firstname.touched && !basicformControls.firstname.valid">
+                    <input [ngModel]="patientInfo.user.firstName" formControlName="firstname" type="text" class="form-control" placeholder=""
+                        [class.error]="!basicformControls.firstname.valid">
+                        <div class='error-list' *ngIf="basicformControls.firstname.touched && !basicformControls.firstname.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.firstname.hasError('required')">First Name is required.</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Middle Name</label>
+                <div class="form-group">
+                    <input [ngModel]="patientInfo.user.middleName" formControlName="middlename" type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.lastname.touched && !basicformControls.lastname.valid">
+                    <input [ngModel]="patientInfo.user.lastName" formControlName="lastname" type="text" class="form-control" placeholder=""
+                        [class.error]="!basicformControls.lastname.valid">
+                        <div class='error-list' *ngIf="basicformControls.lastname.touched && !basicformControls.lastname.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.lastname.hasError('required')">Last Name is required.</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="form-label"> Gender
+                                    <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
+                    <select [ngModel]="patientInfo.user.gender" formControlName="gender" class="select2-arrow form-control" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Male</option>
+                                             <option value="2">Female</option>
+                                             <option value="3">Others</option>
+                                         </select>
+                    <div class='error-list' *ngIf="basicformControls.gender.touched && !basicformControls.gender.valid">
+                        <ul>
+                            <li *ngIf="basicformControls.gender.hasError('required')">Gender is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Marital Status
+                                            <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                    <select [ngModel]="patientInfo.maritalStatusId" formControlName="maritalStatusId" type="text" class="form-control" placeholder=""
+                        [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                        <option value="">-Select -</option>
+                        <option disabled>────────────────────</option>
+                        <option value="1">Single</option>
+                        <option value="2">Married</option>
+                        </select>
+                        <div class='error-list' *ngIf="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.maritalStatusId.hasError('required')">Marital Status is required.</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Date of Birth
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid">
+                    <div class='input-group date'>
+                        <p-calendar [ngModel]="dateOfBirth" formControlName="dob" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="1920:2050" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid"
+                            showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                    </div>
+                    <div class='error-list' *ngIf="basicformControls.dob.touched && !basicformControls.dob.valid">
+                        <ul>
+                            <li *ngIf="basicformControls.dob.hasError('required')">Date Of Birth is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <button *ngIf="!referredToMe" [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSavePatientProgress"></loader>
+                </button>
+        <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

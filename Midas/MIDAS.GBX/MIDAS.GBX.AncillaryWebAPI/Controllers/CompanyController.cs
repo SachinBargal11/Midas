@@ -112,6 +112,15 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getUpdatedCompanyById/{CompanyId}")]
+        public HttpResponseMessage GetUpdatedCompanyById(int CompanyId)
+        {
+            return requestHandler.GetUpdatedCompanyById(Request, CompanyId);
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
