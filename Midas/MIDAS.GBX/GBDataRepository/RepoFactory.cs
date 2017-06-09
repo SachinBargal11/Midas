@@ -299,7 +299,7 @@ namespace MIDAS.GBX
             }
             else if (typeof(T) == typeof(BO.SMSQueue))
             {
-                repo = new SMSNotificationRepository(context);
+                repo = new SMSQueueReadWriteRepository(context);
             }
             else if (typeof(T) == typeof(BO.SMSSend))
             {

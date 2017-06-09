@@ -38,6 +38,26 @@ namespace MIDAS.GBX.DataRepository
             }
         }
 
+        public object ReadSMSFromQueue()
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.ReadSMSFromQueue();
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         public object SendSMSFromQueue(T smsObject)
         {
             try

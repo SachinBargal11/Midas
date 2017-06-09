@@ -12,6 +12,12 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("appId")]
         public int AppId { get; set; }
 
+        [JsonProperty("accountSid")]
+        public string AccountSid { get; set; }
+
+        [JsonProperty("authToken")]
+        public string AuthToken { get; set; }
+
         [JsonProperty("fromNumber")]
         public string FromNumber { get; set; }
 

@@ -16,7 +16,7 @@ namespace MIDAS.GBX.Notification.Controllers
 
         public SendNotificationFromQueueController()
         {
-            requestHandlerSMS = new NotificationRequestHandler<SMSSend>();
+            requestHandlerSMS = new SMSRequestHandler<SMSSend>();
         }
 
         [HttpPost]

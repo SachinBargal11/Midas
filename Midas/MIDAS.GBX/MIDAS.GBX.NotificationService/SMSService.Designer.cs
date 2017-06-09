@@ -1,6 +1,6 @@
 ﻿namespace MIDAS.GBX.NotificationService
 {
-    partial class Service1
+    partial class SMSService
     {
         /// <summary> 
         /// Required designer variable.

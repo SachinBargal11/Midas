@@ -778,15 +778,22 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        public virtual Object AddSMSToQueue<T>(T entity)
-        {
-            throw new NotImplementedException();
-        }
 
         public virtual object GetBusySlotsByCalendarEvent(BO.CalendarEvent CalEvent)
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object AddSMSToQueue<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object ReadSMSFromQueue()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object SendSMSFromQueue<T>(T entity)
         {
             throw new NotImplementedException();
