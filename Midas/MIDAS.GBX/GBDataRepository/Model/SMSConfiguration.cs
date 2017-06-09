@@ -20,5 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string AccountSid { get; set; }
         public string AuthToken { get; set; }
         public bool IsDeleted { get; set; }
+    
+        public virtual QueueType QueueType { get; set; }
     }
 }

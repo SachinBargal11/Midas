@@ -18,6 +18,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public QueueType()
         {
             this.AppMessageQueues = new HashSet<AppMessageQueue>();
+            this.SMSConfigurations = new HashSet<SMSConfiguration>();
         }
     
         public int Id { get; set; }
@@ -25,5 +26,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AppMessageQueue> AppMessageQueues { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SMSConfiguration> SMSConfigurations { get; set; }
     }
 }

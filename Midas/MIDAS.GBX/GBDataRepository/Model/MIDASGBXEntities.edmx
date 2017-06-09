@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -875,6 +875,22 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="RoomId" Type="int" />
           <Property Name="RoomTestId" Type="int" />
         </EntityType>
+        <EntityType Name="ProcedureCodeCompanyMapping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcedureCodeID" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="EffectiveFromDate" Type="date" />
+          <Property Name="EffectiveToDate" Type="date" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="Referral2">
           <Key>
             <PropertyRef Name="Id" />
@@ -1199,6 +1215,14 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="SlotDuration" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="id" />
@@ -1259,8 +1283,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="ToNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="FromNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ToNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Message" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="DeliveryDate" Type="datetime2" Precision="7" />
@@ -2545,6 +2569,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProcedureCodeCompanyMapping_Company_CompanyID">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="ProcedureCodeCompanyMapping" Type="Self.ProcedureCodeCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCodeCompanyMapping">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID">
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="1" />
+          <End Role="ProcedureCodeCompanyMapping" Type="Self.ProcedureCodeCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProcedureCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProcedureCodeCompanyMapping">
+              <PropertyRef Name="ProcedureCodeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Referral2_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="Referral2" Type="Self.Referral2" Multiplicity="*" />
@@ -2857,6 +2905,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SMSConfiguration_QueueType_QueueTypeId">
+          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
+          <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QueueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSConfiguration">
+              <PropertyRef Name="QueueTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SpecialityDetails_Specialty">
           <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
           <End Role="SpecialityDetails" Type="Self.SpecialityDetails" Multiplicity="*" />
@@ -2989,6 +3049,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserStatus_UserCompany_UserStatusID">
+          <End Role="UserStatus" Type="Self.UserStatus" Multiplicity="1" />
+          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserCompany">
+              <PropertyRef Name="UserStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_VisitDocuments_MidasDocuments_MidasDocumentId">
           <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="1" />
           <End Role="VisitDocuments" Type="Self.VisitDocuments" Multiplicity="*" />
@@ -3066,6 +3138,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PreferredAttorneyProvider" EntityType="Self.PreferredAttorneyProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredMedicalProvider" EntityType="Self.PreferredMedicalProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProcedureCode" EntityType="Self.ProcedureCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProcedureCodeCompanyMapping" EntityType="Self.ProcedureCodeCompanyMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Referral2" EntityType="Self.Referral2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReferralDocuments" EntityType="Self.ReferralDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReferralProcedureCodes" EntityType="Self.ReferralProcedureCodes" Schema="dbo" store:Type="Tables" />
@@ -3087,6 +3160,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStatus" EntityType="Self.UserStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppMessageQueue" EntityType="Self.AppMessageQueue" Schema="Messaging" store:Type="Tables" />
@@ -3525,6 +3599,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCodeCompanyMapping_Company_CompanyID" Association="Self.FK_ProcedureCodeCompanyMapping_Company_CompanyID">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="ProcedureCodeCompanyMapping" EntitySet="ProcedureCodeCompanyMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID" Association="Self.FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID">
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
+            <End Role="ProcedureCodeCompanyMapping" EntitySet="ProcedureCodeCompanyMapping" />
+          </AssociationSet>
           <AssociationSet Name="FK_Referral2_Case_CaseId" Association="Self.FK_Referral2_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
             <End Role="Referral2" EntitySet="Referral2" />
@@ -3629,6 +3711,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_SMSConfiguration_QueueType_QueueTypeId" Association="Self.FK_SMSConfiguration_QueueType_QueueTypeId">
+            <End Role="QueueType" EntitySet="QueueType" />
+            <End Role="SMSConfiguration" EntitySet="SMSConfiguration" />
+          </AssociationSet>
           <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
@@ -3673,12 +3759,17 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="User" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserStatus_UserCompany_UserStatusID" Association="Self.FK_UserStatus_UserCompany_UserStatusID">
+            <End Role="UserStatus" EntitySet="UserStatus" />
+            <End Role="UserCompany" EntitySet="UserCompany" />
+          </AssociationSet>
           <AssociationSet Name="FK_VisitDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId">
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3874,7 +3965,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsOriginator" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseCompanyMapping_Case_CaseId" FromRole="CaseCompanyMapping" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="CaseCompanyMapping" ToRole="Company" />
-          <Property Name="IsOriginator" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CaseDocument">
           <Key>
@@ -3983,6 +4073,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PreferredMedicalProviders" Relationship="Self.FK_PreferredMedicalProvider_Company_CompanyId" FromRole="Company" ToRole="PreferredMedicalProvider" />
           <NavigationProperty Name="PreferredMedicalProviders1" Relationship="Self.FK_PreferredMedicalProvider_Company_PrefMedProviderId" FromRole="Company" ToRole="PreferredMedicalProvider" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Company_CompanyId" FromRole="Company" ToRole="ProcedureCode" />
+          <NavigationProperty Name="ProcedureCodeCompanyMappings" Relationship="Self.FK_ProcedureCodeCompanyMapping_Company_CompanyID" FromRole="Company" ToRole="ProcedureCodeCompanyMapping" />
           <NavigationProperty Name="Referral2" Relationship="Self.FK_Referral2_Company_FromCompanyId" FromRole="Company" ToRole="Referral2" />
           <NavigationProperty Name="Referral21" Relationship="Self.FK_Referral2_Company_ToCompanyId" FromRole="Company" ToRole="Referral2" />
           <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
@@ -4750,7 +4841,26 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Room" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="ProcedureCode" ToRole="Room" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="ProcedureCode" ToRole="RoomTest" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_ProcedureCode_Speciality_SpecialityId" FromRole="ProcedureCode" ToRole="Specialty" />
+          <NavigationProperty Name="ProcedureCodeCompanyMappings" Relationship="Self.FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID" FromRole="ProcedureCode" ToRole="ProcedureCodeCompanyMapping" />
           <NavigationProperty Name="ReferralProcedureCodes" Relationship="Self.FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId" FromRole="ProcedureCode" ToRole="ReferralProcedureCodes" />
+        </EntityType>
+        <EntityType Name="ProcedureCodeCompanyMapping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProcedureCodeID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="EffectiveFromDate" Type="DateTime" Precision="0" />
+          <Property Name="EffectiveToDate" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_ProcedureCodeCompanyMapping_Company_CompanyID" FromRole="ProcedureCodeCompanyMapping" ToRole="Company" />
+          <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID" FromRole="ProcedureCodeCompanyMapping" ToRole="ProcedureCode" />
         </EntityType>
         <EntityType Name="Referral2">
           <Key>
@@ -5112,9 +5222,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsAccepted" Type="Boolean" Nullable="false" />
+          <Property Name="UserStatusID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
-          <Property Name="UserStatusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserStatu" Relationship="Self.FK_UserStatus_UserCompany_UserStatusID" FromRole="UserCompany" ToRole="UserStatus" />
         </EntityType>
         <EntityType Name="UserCompanyRole">
           <Key>
@@ -5148,6 +5259,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="SlotDuration" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="UserPersonalSettings" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="UserPersonalSettings" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserStatu">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserStatus_UserCompany_UserStatusID" FromRole="UserStatus" ToRole="UserCompany" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -5195,6 +5315,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QueueTypeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AppMessageQueues" Relationship="Self.FK_AppMessageQueue_QueueType_QueueTypeId" FromRole="QueueType" ToRole="AppMessageQueue" />
+          <NavigationProperty Name="SMSConfigurations" Relationship="Self.FK_SMSConfiguration_QueueType_QueueTypeId" FromRole="QueueType" ToRole="SMSConfiguration" />
         </EntityType>
         <EntityType Name="SMSConfiguration">
           <Key>
@@ -5206,6 +5327,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="AccountSid" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AuthToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="QueueType" Relationship="Self.FK_SMSConfiguration_QueueType_QueueTypeId" FromRole="SMSConfiguration" ToRole="QueueType" />
         </EntityType>
         <EntityType Name="SMSQueue">
           <Key>
@@ -5213,8 +5335,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="ToNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FromNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ToNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Message" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="DeliveryDate" Type="DateTime" Precision="7" />
@@ -5948,6 +6070,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="ProcedureCode">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCodeCompanyMapping_Company_CompanyID">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="ProcedureCodeCompanyMapping" Type="Self.ProcedureCodeCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCodeCompanyMapping">
+              <PropertyRef Name="CompanyID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6719,6 +6853,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID">
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="1" />
+          <End Role="ProcedureCodeCompanyMapping" Type="Self.ProcedureCodeCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProcedureCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProcedureCodeCompanyMapping">
+              <PropertyRef Name="ProcedureCodeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
           <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="1" />
           <End Role="ReferralProcedureCodes" Type="Self.ReferralProcedureCode" Multiplicity="*" />
@@ -6947,6 +7093,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserStatus_UserCompany_UserStatusID">
+          <End Role="UserStatus" Type="Self.UserStatu" Multiplicity="1" />
+          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserCompany">
+              <PropertyRef Name="UserStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AppMessageQueue_QueueType_QueueTypeId">
           <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
           <End Role="AppMessageQueue" Type="Self.AppMessageQueue" Multiplicity="*" />
@@ -6955,6 +7113,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AppMessageQueue">
+              <PropertyRef Name="QueueTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SMSConfiguration_QueueType_QueueTypeId">
+          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
+          <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QueueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSConfiguration">
               <PropertyRef Name="QueueTypeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -7018,6 +7188,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PreferredAttorneyProviders" EntityType="Self.PreferredAttorneyProvider" />
           <EntitySet Name="PreferredMedicalProviders" EntityType="Self.PreferredMedicalProvider" />
           <EntitySet Name="ProcedureCodes" EntityType="Self.ProcedureCode" />
+          <EntitySet Name="ProcedureCodeCompanyMappings" EntityType="Self.ProcedureCodeCompanyMapping" />
           <EntitySet Name="Referral2" EntityType="Self.Referral2" />
           <EntitySet Name="ReferralDocuments" EntityType="Self.ReferralDocument" />
           <EntitySet Name="ReferralProcedureCodes" EntityType="Self.ReferralProcedureCode" />
@@ -7039,6 +7210,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
           <EntitySet Name="UserPersonalSettings" EntityType="Self.UserPersonalSetting" />
+          <EntitySet Name="UserStatus" EntityType="Self.UserStatu" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocument" />
           <EntitySet Name="AppMessageQueues" EntityType="Self.AppMessageQueue" />
@@ -7285,6 +7457,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_ProcedureCode_Company_CompanyId" Association="Self.FK_ProcedureCode_Company_CompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCodeCompanyMapping_Company_CompanyID" Association="Self.FK_ProcedureCodeCompanyMapping_Company_CompanyID">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ProcedureCodeCompanyMapping" EntitySet="ProcedureCodeCompanyMappings" />
           </AssociationSet>
           <AssociationSet Name="FK_Referral2_Company_FromCompanyId" Association="Self.FK_Referral2_Company_FromCompanyId">
             <End Role="Company" EntitySet="Companies" />
@@ -7542,6 +7718,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID" Association="Self.FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID">
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
+            <End Role="ProcedureCodeCompanyMapping" EntitySet="ProcedureCodeCompanyMappings" />
+          </AssociationSet>
           <AssociationSet Name="FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
             <End Role="ReferralProcedureCodes" EntitySet="ReferralProcedureCodes" />
@@ -7618,12 +7798,20 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserStatus_UserCompany_UserStatusID" Association="Self.FK_UserStatus_UserCompany_UserStatusID">
+            <End Role="UserStatus" EntitySet="UserStatus" />
+            <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
           <AssociationSet Name="FK_AppMessageQueue_QueueType_QueueTypeId" Association="Self.FK_AppMessageQueue_QueueType_QueueTypeId">
             <End Role="QueueType" EntitySet="QueueTypes" />
             <End Role="AppMessageQueue" EntitySet="AppMessageQueues" />
           </AssociationSet>
+          <AssociationSet Name="FK_SMSConfiguration_QueueType_QueueTypeId" Association="Self.FK_SMSConfiguration_QueueType_QueueTypeId">
+            <End Role="QueueType" EntitySet="QueueTypes" />
+            <End Role="SMSConfiguration" EntitySet="SMSConfigurations" />
+          </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-          <Parameter Name="document_node" Mode="In" Type="String" />
+            <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
       </Schema>
@@ -7782,7 +7970,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="CaseCompanyMappings">
             <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyMapping">
               <MappingFragment StoreEntitySet="CaseCompanyMapping">
-                <ScalarProperty Name="IsOriginator" ColumnName="IsOriginator" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -8549,6 +8736,23 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProcedureCodeCompanyMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ProcedureCodeCompanyMapping">
+              <MappingFragment StoreEntitySet="ProcedureCodeCompanyMapping">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ProcedureCodeID" ColumnName="ProcedureCodeID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="EffectiveFromDate" ColumnName="EffectiveFromDate" />
+                <ScalarProperty Name="EffectiveToDate" ColumnName="EffectiveToDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Referral2">
             <EntityTypeMapping TypeName="MIDASGBXModel.Referral2">
               <MappingFragment StoreEntitySet="Referral2">
@@ -8849,7 +9053,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="UserCompanies">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserCompany">
               <MappingFragment StoreEntitySet="UserCompany">
-                <ScalarProperty Name="UserStatusID" ColumnName="UserStatusID" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
@@ -8859,6 +9062,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
+                <ScalarProperty Name="UserStatusID" ColumnName="UserStatusID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8891,6 +9095,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="SlotDuration" ColumnName="SlotDuration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStatus">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserStatu">
+              <MappingFragment StoreEntitySet="UserStatus">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8958,8 +9171,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="SMSQueue">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
                 <ScalarProperty Name="FromNumber" ColumnName="FromNumber" />
+                <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />

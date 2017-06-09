@@ -16,8 +16,8 @@ namespace MIDAS.GBX.DataRepository.Model
     {
         public int Id { get; set; }
         public int AppId { get; set; }
-        public string ToNumber { get; set; }
         public string FromNumber { get; set; }
+        public string ToNumber { get; set; }
         public string Message { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> DeliveryDate { get; set; }
