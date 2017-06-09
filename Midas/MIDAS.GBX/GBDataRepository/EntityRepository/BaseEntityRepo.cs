@@ -759,6 +759,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByObjectIdAndType(int objectId, string objectType)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetVisitsByPatientId(int PatientId)
         {
             throw new NotImplementedException();
@@ -774,7 +779,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual object GetBusySlotsByCalendarEvent(CalendarEvent CalEvent)
+        public virtual object GetBusySlotsByCalendarEvent(BO.CalendarEvent CalEvent)
         {
             throw new NotImplementedException();
         }

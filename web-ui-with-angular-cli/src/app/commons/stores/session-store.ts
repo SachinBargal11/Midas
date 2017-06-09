@@ -21,6 +21,7 @@ export class SessionStore {
     private __ACCOUNT_STORAGE_KEY__ = 'logged_account';
     private __CURRENT_COMPANY__ = 'current_company';
     private __ACCESS_TOKEN__ = 'access_token';
+    private __TOKEN_EXPIRES_AT__ = 'token_expires_at';
 
     public get session(): Session {
         return this._session;
@@ -35,8 +36,9 @@ export class SessionStore {
 
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
             let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
 
-            if (storedAccount && storedAccessToken) {
+            if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
@@ -78,7 +80,9 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
             this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
                 let accessToken = 'bearer ' + data.access_token;
-                this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
+                // let tokenExpiresAt = moment().add(data.expires_in - 10, 'seconds');
+                let tokenExpiresAt = moment().add(20, 'seconds');
+                this._authenticationService.authenticate(userId, password, forceLogin, accessToken, tokenExpiresAt).subscribe((account: Account) => {
                     if (!forceLogin) {
                         window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
                     } else {
@@ -117,6 +121,7 @@ export class SessionStore {
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
         window.localStorage.removeItem(this.__CURRENT_COMPANY__);
         window.localStorage.removeItem(this.__ACCESS_TOKEN__);
+        window.localStorage.removeItem(this.__TOKEN_EXPIRES_AT__);
     }
 
     authenticatePassword(userName, oldpassword) {
@@ -143,12 +148,14 @@ export class SessionStore {
     private _populateSession(account: Account) {
         this._session.account = account;
         this._session.accessToken = account.accessToken;
+        this._session.tokenExpiresAt = account.tokenExpiresAt;
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);
         this._session.currentCompany = company ? company : account.companies[0];
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(this._session.currentCompany));
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
         window.localStorage.setItem(this.__ACCESS_TOKEN__, account.accessToken);
+        window.localStorage.setItem(this.__TOKEN_EXPIRES_AT__, account.tokenExpiresAt);
     }
 
     private _resetSession() {

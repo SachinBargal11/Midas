@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
 using System.Web.Http.Cors;
+using System.Web.Configuration;
 
 namespace MIDAS.GBX.AncillaryWebAPI
 {
@@ -14,6 +15,8 @@ namespace MIDAS.GBX.AncillaryWebAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            if (System.Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
+                config.Filters.Add(new MidasAuthorize());
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

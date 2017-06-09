@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -3642,8 +3642,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3839,6 +3838,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsOriginator" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseCompanyMapping_Case_CaseId" FromRole="CaseCompanyMapping" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="CaseCompanyMapping" ToRole="Company" />
+          <Property Name="IsOriginator" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CaseDocument">
           <Key>
@@ -5076,10 +5076,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsAccepted" Type="Boolean" Nullable="false" />
-          <Property Name="UserStatusID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
-          <NavigationProperty Name="UserStatu" Relationship="Self.FK_UserStatus_UserCompany_UserStatusID" FromRole="UserCompany" ToRole="UserStatus" />
+          <Property Name="UserStatusID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="UserCompanyRole">
           <Key>
@@ -7551,7 +7550,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserCompany" EntitySet="UserCompanies" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
       </Schema>
@@ -7710,6 +7709,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="CaseCompanyMappings">
             <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyMapping">
               <MappingFragment StoreEntitySet="CaseCompanyMapping">
+                <ScalarProperty Name="IsOriginator" ColumnName="IsOriginator" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -8776,6 +8776,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="UserCompanies">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserCompany">
               <MappingFragment StoreEntitySet="UserCompany">
+                <ScalarProperty Name="UserStatusID" ColumnName="UserStatusID" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
