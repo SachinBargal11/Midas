@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using Novacode;
+using Aspose.Words;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Office.Interop.Word;
@@ -64,12 +65,16 @@ namespace MIDAS.GBX.DocumentManager
             }
             _template.SaveAs(tempDOCpath);
 
-            Microsoft.Office.Interop.Word.Document wordDocument;
+
+            Aspose.Words.Document doc = new Aspose.Words.Document(tempDOCpath);
+            doc.Save(tempPDFpath);
+            //doc.Remove();
+            /*Microsoft.Office.Interop.Word.Document wordDocument;
             Application appWord = new Application();
             wordDocument = appWord.Documents.Open(tempDOCpath);
             wordDocument.ExportAsFixedFormat(tempPDFpath, WdExportFormat.wdExportFormatPDF);
 
-            wordDocument.Close();
+            wordDocument.Close();*/
             ms.Flush();
             ms.Close();
 
