@@ -106,6 +106,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserPersonalSetting> UserPersonalSettings { get; set; }
+        public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }

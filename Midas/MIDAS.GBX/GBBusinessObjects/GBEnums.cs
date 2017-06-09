@@ -141,6 +141,17 @@ namespace MIDAS.GBX.BusinessObjects
         }
         #endregion
 
+        #region User Statu
+        public enum UserStatu
+        {
+            Pending = 1,
+            Accepted = 2,
+            Declined = 3,
+            Withdrawn = 4,
+            Resigned  = 5
+        }
+        #endregion
+
 
     }
 }

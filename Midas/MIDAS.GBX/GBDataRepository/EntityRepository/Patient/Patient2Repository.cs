@@ -341,7 +341,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Company ID For Patient 
+        #region GetByCompanyIdForAncillary Company ID For Patient 
         public override object GetByCompanyIdForAncillary(int CompanyId)
         {
             var patientList1 = _context.Patient2.Include("User")
