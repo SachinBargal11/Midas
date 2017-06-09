@@ -12,21 +12,21 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserCompany
+    public partial class ProcedureCodeCompanyMapping
     {
-        public int id { get; set; }
-        public int UserID { get; set; }
+        public int ID { get; set; }
+        public int ProcedureCodeID { get; set; }
         public int CompanyID { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public Nullable<System.DateTime> EffectiveFromDate { get; set; }
+        public Nullable<System.DateTime> EffectiveToDate { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public bool IsAccepted { get; set; }
-        public int UserStatusID { get; set; }
     
         public virtual Company Company { get; set; }
-        public virtual User User { get; set; }
-        public virtual UserStatu UserStatu { get; set; }
+        public virtual ProcedureCode ProcedureCode { get; set; }
     }
 }
