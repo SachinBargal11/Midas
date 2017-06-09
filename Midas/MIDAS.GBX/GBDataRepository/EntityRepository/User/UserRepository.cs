@@ -123,7 +123,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
                 user.UserCompanies.Where(p => p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                  .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, UserId = x.UserID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
+                                  .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, UserId = x.UserID, UserStatusID = (BO.GBEnums.UserStatu)x.UserStatusID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
                 boUser.UserCompanies = boUserCompany;
             }
 
@@ -283,11 +283,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (companyBO != null)
                 if (companyBO.ID > 0)
                 {
-                    Company company = _context.Companies.Where(p => p.id == companyBO.ID).FirstOrDefault<Company>();
+                    Company company = _context.Companies.Where(p => p.id == companyBO.ID 
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                     .FirstOrDefault<Company>();
                     if (company != null)
                     {
                         userCompanyDB.User = userDB;
                         userCompanyDB.Company = company;
+                        userCompanyDB.UserStatusID = 1;
                         userCompanyDB.IsAccepted = true;
                         invitationDB.Company = company;
                     }
@@ -772,9 +775,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
 
-            //var usercompanies = _context.UserCompanies.Where(p => p.UserID == userBO.ID
-            //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                                    .Select(p => p.CompanyID);            
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                                                
+            companyDB = _context.Companies.Where(p => p.id == companyBO.ID
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
 
             if (companyBO == null)
             {
@@ -785,60 +791,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
                 {
-                    companyDB = _context.Companies.Where(p => p.id == companyBO.ID
-                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .FirstOrDefault();
-
-                    if (companyDB.CompanyStatusTypeID == 2)
+                    if (companyDB.CompanyStatusTypeID == 2 && userCompany.UserStatusID == 2)
                     {
                         userDB.Password = PasswordHash.HashPassword(userBO.Password);
                         companyDB.CompanyStatusTypeID = 3;
                     }
+                    else if (companyDB.CompanyStatusTypeID == 3 && userCompany.UserStatusID == 1)
+                    {
+                        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                        userCompany.UserStatusID = 2;
+                    }
                 }
             }
-
-            _context.SaveChanges();
-
-
-
-            //if (userDB != null)
+            //if (companyBO == null)
             //{
-            //    if (companyDB.CompanyStatusTypeID == 2)
+            //    userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            //}
+            //else
+            //{
+            //    if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
+            //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
             //    {
-            //        userDB.Password = PasswordHash.HashPassword(userBO.Password);
-            //        companyDB.CompanyStatusTypeID = 3;
+            //        companyDB = _context.Companies.Where(p => p.id == companyBO.ID
+            //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                            .FirstOrDefault();
+
+            //        if (companyDB.CompanyStatusTypeID == 2)
+            //        {
+            //            userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            //            companyDB.CompanyStatusTypeID = 3;
+            //        }
             //    }
             //}
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
             userDB = _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>();
 
-
-            //#region Insert Invitation
-            //invitationDB.User = userCompanyDB.User;
-
-            //invitationDB.UniqueID = Guid.NewGuid();
-            //invitationDB.CreateDate = DateTime.UtcNow;
-            //invitationDB.CreateByUserID = companyBO.CreateByUserID;
-            //_dbInvitation.Add(invitationDB);
-            //_context.SaveChanges();
-            //#endregion
-
             BO.User acc_ = Convert<BO.User, User>(userDB);
-            //try
-            //{
-            //    #region Send Email
-            //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
-            //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
-            //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
-            //    objEmail.SendMail();
-            //    #endregion
-            //}
-            //catch (Exception ex)
-            //{
 
-            //}
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
         }
