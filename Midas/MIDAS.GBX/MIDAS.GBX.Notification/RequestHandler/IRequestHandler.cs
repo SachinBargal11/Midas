@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+
+namespace MIDAS.GBX.Notification.RequestHandler
+{
+    public interface IRequestHandler<T>
+    {
+        //HttpResponseMessage SendSMS(HttpRequestMessage request, T smsObject);
+        //HttpResponseMessage SendMultipleSMS(HttpRequestMessage request, T multipleSMSObject);
+
+        HttpResponseMessage AddSMSToQueue(HttpRequestMessage request, T smsObject);
+
+        HttpResponseMessage SendSMSFromQueue(HttpRequestMessage request, T smsObject);
+    }
+}
