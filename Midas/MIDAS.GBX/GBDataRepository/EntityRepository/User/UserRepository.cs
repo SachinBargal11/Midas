@@ -791,10 +791,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
                 {
-                    if (companyDB.CompanyStatusTypeID == 2 && userCompany.UserStatusID == 2)
+                    if (companyDB.CompanyStatusTypeID == 2 && userCompany.UserStatusID == 1)
                     {
                         userDB.Password = PasswordHash.HashPassword(userBO.Password);
                         companyDB.CompanyStatusTypeID = 3;
+                        userCompany.UserStatusID = 2; 
                     }
                     else if (companyDB.CompanyStatusTypeID == 3 && userCompany.UserStatusID == 1)
                     {

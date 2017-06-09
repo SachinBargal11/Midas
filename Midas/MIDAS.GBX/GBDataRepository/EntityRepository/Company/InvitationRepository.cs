@@ -43,6 +43,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boInvitation.InvitationID = invitation.InvitationID;
             boInvitation.User = boUser;
 
+            if (invitation.User.UserCompanies != null && invitation.User.UserCompanies.Count > 0)
+            {
+                List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
+                invitation.User.UserCompanies.Where(p => p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                  .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, UserId = x.UserID, UserStatusID = (BO.GBEnums.UserStatu)x.UserStatusID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
+                boInvitation.User.UserCompanies = boUserCompany;
+            }
+
+
+
             boCompany.ID = invitation.CompanyID;
             boInvitation.Company = boCompany;
 
@@ -75,7 +85,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.Invitation invitationBO = (BO.Invitation)(object)data;
             //Find Record By UniqueID
-            Invitation invitation = _context.Invitations.Where(p => p.UniqueID == invitationBO.UniqueID).FirstOrDefault<Invitation>();
+            Invitation invitation = _context.Invitations.Include("Company")
+                                                        .Include("User.UserCompanies")
+                                                        .Where(p => p.UniqueID == invitationBO.UniqueID).FirstOrDefault<Invitation>();
 
             if (invitation != null)
             {
@@ -90,7 +102,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "Invalid appkey or other parameters.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)Convert<BO.Invitation, Invitation>(invitation); ;
+            return (object)Convert<BO.Invitation, Invitation>(invitation);
         }
         #endregion
     }

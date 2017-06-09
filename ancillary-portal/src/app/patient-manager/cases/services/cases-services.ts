@@ -89,7 +89,7 @@ export class CaseService {
 
     getCasesByCompany(companyId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByCompanyId/' + companyId, {
+            return this._http.get(this._url + '/Case/getByCompanyIdForAncillary/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -287,14 +287,14 @@ export class CaseService {
         return <Observable<Case>>Observable.from(promise);
     }
 
-     downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+    downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
         let thefile = {};
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
                 .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
-                headers: this._headers
-            })
+                    headers: this._headers
+                })
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {

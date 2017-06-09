@@ -354,7 +354,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region Insert User Block
             userCompanyDB.IsAccepted = true;
             userCompanyDB.Company = companyDB;
-            userCompanyDB.UserStatusID = 2; //UserStatusID = 2 --- UserStatus Accepted
+            userCompanyDB.UserStatusID = 1; //UserStatusID = 1 --- UserStatus Pending
             userCompanyDB.CreateDate = companyBO.CreateDate;
             userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompany.Add(userCompanyDB);
