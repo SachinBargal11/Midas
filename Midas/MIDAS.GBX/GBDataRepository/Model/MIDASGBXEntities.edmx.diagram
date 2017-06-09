@@ -147,6 +147,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_PreferredMedicalProvider_Company_CompanyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PreferredMedicalProvider_Company_PrefMedProviderId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_Company_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCodeCompanyMapping_Company_CompanyID" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Company_FromCompanyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Company_ToCompanyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Schedule_Company_CompanyId" ManuallyRouted="false" />
@@ -184,6 +185,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Location_ToLocationId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Room_Location" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Patient2_MaritalStatusId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientDocuments_MidasDocuments_MidasDocumentId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_VisitDocuments_MidasDocuments_MidasDocumentId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Patient2_User_id" ManuallyRouted="false" />
@@ -211,6 +213,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_Room_SpecialityId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_RoomTest_RoomTestId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCode_Speciality_SpecialityId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_ReferralProcedureCodes_ProcedureCode_ProcedureCodeId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Room_ForRoomId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Referral2_Room_ToRoomId" ManuallyRouted="false" />
@@ -230,6 +233,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_UserStatus_UserCompany_UserStatusID" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

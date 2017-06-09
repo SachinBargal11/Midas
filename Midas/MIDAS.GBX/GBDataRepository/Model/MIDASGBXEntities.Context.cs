@@ -71,6 +71,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
         public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
+        public virtual DbSet<PatientDocument> PatientDocuments { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
@@ -85,6 +86,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
         public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
+        public virtual DbSet<ProcedureCodeCompanyMapping> ProcedureCodeCompanyMappings { get; set; }
         public virtual DbSet<Referral2> Referral2 { get; set; }
         public virtual DbSet<ReferralDocument> ReferralDocuments { get; set; }
         public virtual DbSet<ReferralProcedureCode> ReferralProcedureCodes { get; set; }
@@ -106,6 +108,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserPersonalSetting> UserPersonalSettings { get; set; }
+        public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }

@@ -141,8 +141,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
 
                         modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
-
-                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                        IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceRule);
+                        if (recPattern.Frequency != FrequencyType.None)
+                        {
+                            newEvent.RecurrenceRules.Add(recPattern);
+                        }
                     }
 
                     if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
@@ -177,8 +180,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
 
                         modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
-
-                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                        IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceException);
+                        if (recPattern.Frequency != FrequencyType.None)
+                        {
+                            newEvent.ExceptionRules.Add(recPattern);
+                        }
                     }
 
                     calendar.Events.Add(newEvent);
@@ -456,25 +462,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)freeSlots;
         }
 
-        /*public override object GetBusySlotsByCalendarEvent(CalendarEvent eachEvent)
+        public override object GetBusySlotsByCalendarEvent(BO.CalendarEvent CalEvent)
         {
             List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
 
-            if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
+            if (CalEvent.IsDeleted.HasValue == false || (CalEvent.IsDeleted.HasValue == true && CalEvent.IsDeleted.Value == false))
             {
                 var newEvent = new Event()
                 {
-                    Name = eachEvent.Name,
-                    Start = new CalDateTime(eachEvent.EventStart, "UTC"),
-                    End = new CalDateTime(eachEvent.EventEnd, "UTC"),
-                    Description = eachEvent.Description,
-                    IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
-                    Created = new CalDateTime(eachEvent.CreateDate)
+                    Name = CalEvent.Name,
+                    Start = new CalDateTime(CalEvent.EventStart.Value, "UTC"),
+                    End = new CalDateTime(CalEvent.EventEnd.Value, "UTC"),
+                    Description = CalEvent.Description,
+                    IsAllDay = CalEvent.IsAllDay.HasValue == true ? CalEvent.IsAllDay.Value : false,
+                    Created = new CalDateTime(CalEvent.CreateDate)
                 };
 
-                if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
+                if (String.IsNullOrWhiteSpace(CalEvent.RecurrenceRule) == false)
                 {
-                    var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                    var keyValuePair = CalEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
                     if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
                     {
                         for (int i = 0; i < keyValuePair.Length; i++)
@@ -508,9 +514,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
                 }
 
-                if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
+                if (String.IsNullOrWhiteSpace(CalEvent.RecurrenceException) == false)
                 {
-                    var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                    var keyValuePair = CalEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
                     if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
                     {
                         for (int i = 0; i < keyValuePair.Length; i++)
@@ -544,11 +550,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
                 }
 
+                Calendar calendar = new Calendar();
                 calendar.Events.Add(newEvent);
-            }
+
+                var Occurrences = calendar.GetOccurrences(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(3));
+
+                foreach (var eachOccurrences in Occurrences)
+                {
+                    BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
+                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.Date;
+                    FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
+                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachOccurrences.Period.StartTime.Value, EndTime = eachOccurrences.Period.EndTime.Value });
+                    freeSlots.Add(FreeSlotForDay);
+                }
+            }                
 
             return (object)freeSlots;
-        }*/
+        }
 
         public void Dispose()
         {

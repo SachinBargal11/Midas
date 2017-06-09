@@ -779,7 +779,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual object GetBusySlotsByCalendarEvent(CalendarEvent CalEvent)
+        public virtual object GetBusySlotsByCalendarEvent(BO.CalendarEvent CalEvent)
         {
             throw new NotImplementedException();
         }

@@ -354,6 +354,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region Insert User Block
             userCompanyDB.IsAccepted = true;
             userCompanyDB.Company = companyDB;
+            userCompanyDB.UserStatusID = 2; //UserStatusID = 2 --- UserStatus Accepted
             userCompanyDB.CreateDate = companyBO.CreateDate;
             userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompany.Add(userCompanyDB);
@@ -650,7 +651,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             return lstCompanies;
         }
-        #endregion
+        #endregion      
 
         public void Dispose()
         {
