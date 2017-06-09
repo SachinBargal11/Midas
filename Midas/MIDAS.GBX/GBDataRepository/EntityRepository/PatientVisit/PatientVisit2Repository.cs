@@ -681,6 +681,69 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             PatientVisit2 PatientVisit2DB = new PatientVisit2();
 
+            List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
+            currentEventSlots = calEventRepo.GetBusySlotsByCalendarEvent(CalendarEventBO) as List<BO.FreeSlots>;
+            if (currentEventSlots.Count > 0)
+            {
+                DateTime dtStartDate = currentEventSlots.Min(p => p.ForDate);
+                DateTime dtEndDate = currentEventSlots.Max(p => p.ForDate).AddDays(1);
+
+                List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
+
+                if (PatientVisit2BO.DoctorId != null && PatientVisit2BO.LocationId != null)
+                {
+                    freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                }
+                else if (PatientVisit2BO.RoomId != null && PatientVisit2BO.LocationId != null)
+                {
+                    freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                }
+
+                foreach (var eachDayEventSlot in currentEventSlots)
+                {
+                    DateTime ForDate = eachDayEventSlot.ForDate;
+                    foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
+                    {
+                        DateTime StartTime = eachEventSlot.StartTime;
+                        DateTime EndTime = eachEventSlot.EndTime;
+                        var StartAndEndTimesForDate = freeSlots.Where(p => p.ForDate == ForDate).Select(p => p.StartAndEndTimes).FirstOrDefault();
+                        if (StartAndEndTimesForDate.Count > 0)
+                        {
+                            var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();                            
+
+                            if (StartAndEndTimes.Count > 0)
+                            {
+                                DateTime? checkContinuation = null;
+                                foreach (var eachSlot in StartAndEndTimes.Distinct().OrderBy(p => p.StartTime))
+                                {
+                                    if (checkContinuation.HasValue == false)
+                                    {
+                                        checkContinuation = eachSlot.EndTime;
+                                    }
+                                    else
+                                    {
+                                        if (checkContinuation.Value != eachSlot.StartTime)
+                                        {
+                                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            else
+                            {
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
+                            }
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                }
+            }
+
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 bool IsEditMode = false;
