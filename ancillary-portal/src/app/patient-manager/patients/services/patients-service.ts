@@ -68,7 +68,7 @@ export class PatientsService {
     getPatients(): Observable<Patient[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/getPatientsByCompanyId/' + companyId, {
+            return this._http.get(this._url + '/Patient/getByCompanyIdForAncillary/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
