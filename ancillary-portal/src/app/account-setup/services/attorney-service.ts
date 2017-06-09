@@ -43,7 +43,7 @@ export class AttorneyMasterService {
 
     getAllAttorneyMasterByCompany(companyId: Number): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredAttorneyProvider/getPrefAttorneyProviderByCompanyId/' + companyId, {
+            return this._http.get(this._url + '/PreferredAncillaryProvider/getPrefAncillaryProviderByCompanyId/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {

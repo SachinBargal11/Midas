@@ -87,6 +87,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     documentUploadComplete(documents: Document[]) {
+
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({
@@ -111,7 +112,12 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+        if (error.message == 'Please Select document Type') {
+            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        }
+        else {
+            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+        }
     }
 
     getDocuments() {

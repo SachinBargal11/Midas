@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AmChartsModule } from "amcharts3-angular2";
+// import { AmChartsModule } from "amcharts3-angular2";
 
 import { AppComponent } from './app.component';
 
