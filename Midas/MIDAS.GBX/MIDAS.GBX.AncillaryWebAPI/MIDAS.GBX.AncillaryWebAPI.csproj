@@ -257,6 +257,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PasswordTokenController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientVisit2Controller.cs" />
     <Compile Include="Controllers\PreferredAncillaryProviderController.cs" />
