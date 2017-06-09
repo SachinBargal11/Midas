@@ -63,6 +63,22 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+    getVisitsByPatientId(patientId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisit/getByPatientId/' + patientId )
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
 
 
     getPatientVisitsByLocationId(locationId: number, patientId: number): Observable<PatientVisit[]> {

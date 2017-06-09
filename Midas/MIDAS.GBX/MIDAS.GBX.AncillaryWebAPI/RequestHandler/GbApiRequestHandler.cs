@@ -741,6 +741,20 @@ namespace MIDAS.GBX.AncillaryWebAPI
             }
         }
 
+        public HttpResponseMessage GetByCompanyIdForAncillary(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyIdForAncillary(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+
         public HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId)
         {
             var objResult = dataAccessManager.GetAllExcludeCompany(CompanyId);
@@ -1838,6 +1852,18 @@ namespace MIDAS.GBX.AncillaryWebAPI
         public HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId)
         {
             var objResult = dataAccessManager.GetByAncillaryId(AncillaryId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        public HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetUpdatedCompanyById(CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

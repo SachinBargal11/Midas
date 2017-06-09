@@ -1,5 +1,5 @@
 <h3 class="with-border">Patient Visits</h3>
-<section class="card">
+<!--<section class="card">
     <div class="card-block">
         <div class="row">
             <div class="col-lg-3">
@@ -8,8 +8,7 @@
                     <select [(ngModel)]="selectedLocationId" ng-model="filter.location" class="select2-arrow form-control" (change)="selectLocation()">
             <option value="0"> <b>-- Select Location --</b> </option>
             <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}} - {{location.location.name}} </option>                                       
-            <!--<option *ngFor="let location of locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       -->
-        </select>
+            </select>
 
                 </div>
             </div>
@@ -17,12 +16,10 @@
                 <div class="form-group">
                     <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0"></option>
-             <optgroup label="Select Doctor">
-                    <!--<option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       -->
+             <optgroup label="Select Doctor">                                     
                     <option data-type="1" data-specialityId="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>                                       
              </optgroup>
              <optgroup label="Select Room">
-                    <!--<option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> -->
                     <option data-type="2" data-testId="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>                                       
              </optgroup>
         </select>
@@ -30,7 +27,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>-->
 <p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer"
     [businessHours]="businessHours">
@@ -143,7 +140,7 @@
 
             <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
         </div>
-        <p-footer>
+        <p-footer *ngIf="selectedVisit">
             <div class="row">
                 <div class="col-md-4">
                     <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
@@ -151,6 +148,7 @@
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
                     <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
+                    <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
                 </div>
             </div>
         </p-footer>
@@ -159,7 +157,7 @@
 
 <p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <div *ngIf="selectedVisit">
+    <div *ngIf="selectedVisit && visitDialogVisible">
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
@@ -195,14 +193,13 @@
                 <loader [visible]="isSaveProgress"></loader>
             </button>
                             <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
-                            <button type="button" class="btn btn-danger" (click)="deletePatientAppointment()">Cancel Current Appointment </button>
                         </div>
                     </div>
                 </form>
             </p-tabPanel>
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
-                <app-document-upload [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)"
+                <app-document-upload [url]="visitUploadDocumentUrl" [providerId]="sessionStore.session.currentCompany.id" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)"
                     (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">

@@ -311,6 +311,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByCompanyIdForAncillary(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetAllExcludeCompany(int CompanyId)
         {
             throw new NotImplementedException();
@@ -754,6 +759,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByObjectIdAndType(int objectId, string objectType)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetVisitsByPatientId(int PatientId)
         {
             throw new NotImplementedException();
@@ -764,11 +774,19 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetUpdatedCompanyById(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
         public virtual Object AddSMSToQueue<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
+        public virtual object GetBusySlotsByCalendarEvent(BO.CalendarEvent CalEvent)
+        {
+            throw new NotImplementedException();
+        }
         public virtual Object SendSMSFromQueue<T>(T entity)
         {
             throw new NotImplementedException();

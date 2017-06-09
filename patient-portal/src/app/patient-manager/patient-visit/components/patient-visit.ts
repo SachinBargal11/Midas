@@ -112,7 +112,7 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
-    defaultView: string = 'agendaDay';
+    defaultView: string = 'month';
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
@@ -149,7 +149,11 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.owningEvent.recurrenceRule) {
             content = `<i class="fa fa-refresh"></i>`;
         }
+        if(event.eventWrapper.room == null) {
         content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
+        } else if(event.eventWrapper.doctor == null) {
+        content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
+        }
         element.find('.fc-content').html(content);
     }
 
@@ -180,6 +184,7 @@ export class PatientVisitComponent implements OnInit {
         private confirmationService: ConfirmationService
     ) {
         this.patientId = this.sessionStore.session.user.id;
+        this._progressBarService.show();
         this._patientsStore.fetchPatientById(this.patientId)
             .subscribe(
             (patient: Patient) => {
@@ -187,7 +192,7 @@ export class PatientVisitComponent implements OnInit {
                 this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
             },
             (error) => {
-                this._router.navigate(['../'], { relativeTo: this._route });
+                // this._router.navigate(['../'], { relativeTo: this._route });
                 this._progressBarService.hide();
             },
             () => {
@@ -226,7 +231,8 @@ export class PatientVisitComponent implements OnInit {
 
     ngOnInit() {
         // this.loadAllVisits();
-        
+        this.loadAllVisitsForPatientId();
+
         this.header = {
             left: 'prev,next today',
             center: 'title',
@@ -475,10 +481,43 @@ export class PatientVisitComponent implements OnInit {
             this.loadLocationVisits();
         }
     }
+    loadAllVisitsForPatientId() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getVisitsByPatientId(this.patientId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                this.events = this.getVisitOccurrences(visits);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification;
+                if (error.status == 0) {
+                    notification = new Notification({
+                        'title': 'Unable to load visits',
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                this._notificationsService.error('Oh no!', 'Unable to load visits');
+                } else {
+                    notification = new Notification({
+                        'title': error.message,
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                this._notificationsService.error('Oh no!', 'error.message');
+                }
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
-     loadAllVisits() {
+    loadAllVisits() {
         this._patientVisitsStore.getAllVisitsByPatientId(this.patientId)
-         .subscribe(
+            .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
                 console.log(this.events);
@@ -583,7 +622,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId,this.patientId)
+        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId, this.patientId)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -804,13 +843,14 @@ export class PatientVisitComponent implements OnInit {
         this.visitInfo = this.selectedVisit.visitDisplayString;
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            this.visitUploadDocumentUrl =  this._url + '/documentmanager/uploadtoblob';
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this.getDocuments();
             this.visitDialogVisible = true;
         } else {
             if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
                 this.confirmEditingEventOccurance();
             } else {
+                this.visitDialogVisible = false;
                 this.eventDialogVisible = true;
             }
         }
@@ -866,7 +906,7 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                this.loadAllVisitsForPatientId();
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
@@ -1003,6 +1043,37 @@ export class PatientVisitComponent implements OnInit {
     //     this.visitDialogVisible = false;
     // }
 
+    cancelAppointment() {
+        this._progressBarService.show();
+        let result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Appointment cancelled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.eventDialogVisible = false;
+                this.loadAllVisitsForPatientId();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
+            },
+            (error) => {
+                let errString = 'Unable to cancel Appointment!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._confirmationDialog.hide();
+    }
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
             this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
@@ -1016,7 +1087,7 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                this.loadAllVisitsForPatientId();
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
@@ -1072,7 +1143,7 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                this.loadAllVisitsForPatientId();
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
@@ -1129,7 +1200,7 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadVisits();
+                        this.loadAllVisitsForPatientId();
                         this._notificationsStore.addNotification(notification);
                     },
                     (error) => {
@@ -1177,7 +1248,7 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadVisits();
+                        this.loadAllVisitsForPatientId();
                         this._notificationsStore.addNotification(notification);
                         // this.event = null;
                     },
@@ -1203,7 +1274,7 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadVisits();
+                        this.loadAllVisitsForPatientId();
                         this._notificationsStore.addNotification(notification);
                     },
                     (error) => {
@@ -1232,7 +1303,7 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this._notificationsStore.addNotification(notification);
-                        this.loadVisits();
+                        this.loadAllVisitsForPatientId();
                     },
                     (error) => {
                         let errString = 'Unable to add event!';
@@ -1256,7 +1327,7 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadVisits();
+                        this.loadAllVisitsForPatientId();
                         this._notificationsStore.addNotification(notification);
                         // this.event = null;
                     },
@@ -1279,21 +1350,21 @@ export class PatientVisitComponent implements OnInit {
     }
 
     getDocuments() {
-        this._progressBarService.show();
+        // this._progressBarService.show();
         this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
             .subscribe(document => {
                 this.documents = document;
             },
 
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
-     documentUploadComplete(documents: Document[]) {
+    documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({
@@ -1302,7 +1373,7 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', currentDocument.message );
+                this._notificationsService.error('Oh No!', currentDocument.message);
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',

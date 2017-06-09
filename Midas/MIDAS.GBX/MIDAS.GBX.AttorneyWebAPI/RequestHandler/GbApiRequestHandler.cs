@@ -1807,5 +1807,51 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
+        public HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetUpdatedCompanyById(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        #region UpdateCompany
+        public HttpResponseMessage UpdateCompany(HttpRequestMessage request, T gbObject)
+        {
+            Signup signUPBO = (Signup)(object)gbObject;
+
+            if (signUPBO.company == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            else if (signUPBO.user == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+
+            var objResult = dataAccessManager.UpdateCompany(gbObject);
+            try
+            {
+                if (((GbObject)objResult).ID > 0)
+                {
+                    return request.CreateResponse(HttpStatusCode.Created, objResult);
+                }
+                else
+                {
+                    return request.CreateResponse(HttpStatusCode.Conflict, objResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        #endregion
+
     }
 }

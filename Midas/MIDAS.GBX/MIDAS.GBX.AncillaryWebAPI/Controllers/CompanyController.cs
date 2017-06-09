@@ -89,7 +89,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, account);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost]
         [Route("RegisterCompany")]
         [Route("Signup")]
@@ -103,7 +103,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 
         [HttpPost]
         [Route("ValidateInvitation")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public HttpResponseMessage ValidateInvitation([FromBody]Invitation data)
         {
             if (data != null)
@@ -111,6 +111,15 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             else
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getUpdatedCompanyById/{CompanyId}")]
+        public HttpResponseMessage GetUpdatedCompanyById(int CompanyId)
+        {
+            return requestHandler.GetUpdatedCompanyById(Request, CompanyId);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

@@ -80,9 +80,9 @@ namespace MIDAS.GBX.BusinessObjects
         }
         public void SendMail()
         {
-            var client = new SmtpClient("smtp.mailgun.org", 25)
+            var client = new SmtpClient("smtp.zoho.com", 587)
             {
-                Credentials = new NetworkCredential("postmaster@chartingview.com", "Abc123def"),
+                Credentials = new NetworkCredential("support@codearray.tech", "supp0rt@2017"),
                 EnableSsl = true,
             };
 
@@ -91,7 +91,7 @@ namespace MIDAS.GBX.BusinessObjects
             mail.Body = Body;
             mail.IsBodyHtml = true;
 
-            Task.Factory.StartNew(() => client.Send(mail)); 
+            Task.Factory.StartNew(() => client.Send(mail));
         }
     }
 }

@@ -23,8 +23,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("subscriptionType")]
         public GBEnums.SubsCriptionType? SubsCriptionType { get; set; }
 
-        [JsonProperty("companyStatusType")]
-        public GBEnums.CompanyStatusType CompanyStatusType { get; set; }
+        [JsonProperty("companyStatusTypeId")]
+        public GBEnums.CompanyStatusType CompanyStatusTypeID { get; set; }
 
         [JsonProperty("taxId")]
         public string TaxID { get; set; }
@@ -35,9 +35,6 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("location")]
         public List<Location> Locations { get; set; }
-
-        [JsonProperty("registrationComplete")]
-        public bool RegistrationComplete { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -63,5 +60,12 @@ namespace MIDAS.GBX.BusinessObjects
 
             return validations;
         }
+    }
+
+    public class UpdateCompany : GbObject
+    {
+        [JsonProperty("Signup")]
+        public Signup Signup { get; set; }
+
     }
 }

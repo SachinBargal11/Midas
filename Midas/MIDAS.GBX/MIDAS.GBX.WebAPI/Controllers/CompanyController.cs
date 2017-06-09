@@ -85,7 +85,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, account);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost]
         [Route("RegisterCompany")]
         [Route("Signup")]
@@ -97,6 +97,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "",ErrorLevel=ErrorLevel.Critical });
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("UpdateCompany")]
         public HttpResponseMessage UpdateCompany([FromBody]Signup data)
@@ -107,9 +108,18 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getUpdatedCompanyById/{CompanyId}")]
+        public HttpResponseMessage GetUpdatedCompanyById(int CompanyId)
+        {
+            return requestHandler.GetUpdatedCompanyById(Request, CompanyId);
+        }
+
+
         [HttpPost]
         [Route("ValidateInvitation")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public HttpResponseMessage ValidateInvitation([FromBody]Invitation data)
         {
             if (data != null)

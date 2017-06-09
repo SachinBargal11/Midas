@@ -182,4 +182,59 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("companyId")]
         public int? CompanyId { get; set; }
     }
+
+    public class mPatient2 : GbObject
+    {
+      
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("middleName")]
+        public string MiddleName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+        
+        [JsonProperty("gender")]
+        public GBEnums.Gender? Gender { get; set; }
+
+        [JsonProperty("maritalStatusId")]
+        public byte? MaritalStatusId { get; set; }
+
+        [JsonProperty("cellPhone")]
+        public string CellPhone { get; set; }
+
+        [JsonProperty("emailAddress")]
+        public string EmailAddress { get; set; }
+
+        [JsonProperty("homePhone")]
+        public string HomePhone { get; set; }
+
+        [JsonProperty("workPhone")]
+        public string WorkPhone { get; set; }
+
+        [JsonProperty("faxNo")]
+        public string FaxNo { get; set; }
+
+        [JsonProperty("address1")]
+        public string Address1 { get; set; }
+
+        [JsonProperty("address2")]
+        public string Address2 { get; set; }
+
+        [JsonProperty("city")]
+        public string City { get; set; }
+
+        [JsonProperty("state")]
+        public string State { get; set; }
+
+        [JsonProperty("zipCode")]
+        public string ZipCode { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
+
+
+    }
 }

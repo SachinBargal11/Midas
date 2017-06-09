@@ -50,8 +50,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("registrationComplete")]
-        public bool RegistrationComplete { get; set; }
+        [JsonProperty("companyStatusType")]
+        public int CompanyStatusType { get; set; }
 
         [JsonProperty("doctor")]
         public List<Doctor> Doctors { get; set; }

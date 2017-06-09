@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects.Common
 {    
-    public class UploadInfo
+    public class UploadInfo : GbObject
     {
         public string DocumentType { get; set; }
         public string ObjectType { get; set; }

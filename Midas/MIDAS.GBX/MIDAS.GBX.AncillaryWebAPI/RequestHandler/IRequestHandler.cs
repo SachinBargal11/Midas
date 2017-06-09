@@ -53,6 +53,7 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByCompanyIdForAncillary(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
@@ -135,7 +136,7 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
-        
+        HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
 
 
     }

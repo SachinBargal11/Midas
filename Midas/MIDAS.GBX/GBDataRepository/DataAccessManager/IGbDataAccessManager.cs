@@ -64,7 +64,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(string param1, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Update(T gbObject);
         Object Add(T gbObject);
-        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
+        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByCompanyIdForAncillary(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllExcludeCompany(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetConsentList(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByReferringCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -151,9 +152,10 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByPatientIdAndLocationId(int PatientId, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyAndDoctorId(int companyId, int doctorId);
         Object GetByDocumentId(int documentId);
+        Object GetByObjectIdAndType(int documentId, string objectType);
         Object GetVisitsByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByAncillaryId(int AncillaryId);
+        Object GetUpdatedCompanyById(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         
-
     }
 }

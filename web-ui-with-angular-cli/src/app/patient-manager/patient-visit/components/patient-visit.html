@@ -215,7 +215,7 @@
             </div>
         </div>
         <br>
-        <p-footer>
+        <p-footer *ngIf="selectedVisit">
             <div class="row">
                 <div class="col-md-4">
                     <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
@@ -223,6 +223,7 @@
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
                     <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
+                    <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
                 </div>
             </div>
         </p-footer>
@@ -237,10 +238,15 @@
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
-
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
-                        <div class="col-md-6">
+                        <div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>
+                        <div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+                            <div class="form-group">
+                                <label class="form-label">{{selectedVisit.notes}}
+                             </label>
+                            </div>
+                        </div>
+                        <div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
                                 <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
@@ -252,13 +258,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>
-                        <div class="col-md-6">
+                        <div class="col-md-1"><label class="form-label">Status<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>
+                        <div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+                            <div class="form-group">
+                                <label class="form-label">{{selectedVisit.visitStatusLabel}}
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">
                             <div class="form-group">
                                 <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
-                        <option value="2">Complete</option>
-                        <option value="4">No Show</option>
-                    </select>
+                                    <option value="2">Complete</option>
+                                    <option value="4">No Show</option>
+                                 </select>
                             </div>
                         </div>
                     </div>
@@ -275,15 +287,15 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                            <button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                                 <loader [visible]="isSaveProgress"></loader>
                             </button>
-                            <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
+                            <button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
                         </div>
                     </div>
                 </form>
             </p-tabPanel>
-            
+
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">

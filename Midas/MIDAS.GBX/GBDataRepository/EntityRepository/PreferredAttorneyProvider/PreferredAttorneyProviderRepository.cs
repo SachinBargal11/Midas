@@ -58,7 +58,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 boCompany.SubsCriptionType = null;
             }
-            //boCompany.RegistrationComplete = company.RegistrationComplete;
+            boCompany.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
             boCompany.IsDeleted = company.IsDeleted;
             boCompany.CreateByUserID = company.CreateByUserID;
             boCompany.UpdateByUserID = company.UpdateByUserID;
@@ -303,7 +303,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefAttProvider_CompanyDB.BlobStorageTypeId = 1;
-                //prefAttProvider_CompanyDB.RegistrationComplete = false;
+                prefAttProvider_CompanyDB.CompanyStatusTypeID = 1;
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
                 prefAttProvider_CompanyDB.UpdateByUserID = prefAttProviderCompanyBO.UpdateByUserID;
@@ -322,7 +322,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userDB.AddressId = prefAttProvider_CompanyDB.AddressId;
                 userDB.ContactInfoId = prefAttProvider_CompanyDB.ContactInfoID;
                 userDB.IsDeleted = false;
-                userDB.CreateByUserID = 0;
+                userDB.CreateByUserID = userBO.CreateByUserID;
                 userDB.CreateDate = DateTime.UtcNow;
 
                 _context.Users.Add(userDB);
@@ -376,12 +376,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.Invitations.Add(invitationDB);
             _context.SaveChanges();
             #endregion
+
             if (IsEditMode == false)
             {
                 try
                 {
-                    #region Send Email
-
                     #region Send Email
 
                     var CurrentUser = _context.Users.Where(p => p.id == prefAttProvider.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
@@ -392,18 +391,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         if (CurrentUser.UserType == 3)
                         {
-
-                            //var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                            // var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
                             var attorneyprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                             var attorneyprovider_user = _context.Users.Where(p => p.id == attorneyprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-
-
                             if (attorneyprovider_user != null)
                             {
-
                                 var PreferredAttorneyAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAttorneyAddByAttorney".ToUpper()).FirstOrDefault();                               
                                 if (PreferredAttorneyAddByAttorney == null)
                                 {
@@ -411,8 +402,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 }
                                 else
                                 {
-
-
                                     #region Send mail to attorney
                                     string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                     string msg1 = PreferredAttorneyAddByAttorney.EmailBody;
@@ -423,24 +412,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     BO.Email objEmail1 = new BO.Email { ToEmail = attorneyprovider_user.UserName, Subject = subject1, Body = message1 };
                                     objEmail1.SendMail();
                                     #endregion
-
-                                  
                                 }
-
                             }
-
-
                         }
                         else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
                         {                          
                             var attorneyprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                             var attorneyprovider_user = _context.Users.Where(p => p.id == attorneyprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-
-
                             if (attorneyprovider_user != null)
                             {
-
                                 var PreferredAttorneyAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAttorneyAddByProvider".ToUpper()).FirstOrDefault();
                                 if (PreferredAttorneyAddByProvider == null)
                                 {
@@ -448,8 +428,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 }
                                 else
                                 {
-
-
                                     #region Send mail to attorney
                                     string VarificationLink1 = "<a href='" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                     string msg1 = PreferredAttorneyAddByProvider.EmailBody;
@@ -460,16 +438,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     BO.Email objEmail1 = new BO.Email { ToEmail = attorneyprovider_user.UserName, Subject = subject1, Body = message1 };
                                     objEmail1.SendMail();
                                     #endregion
-
-
                                 }
-
                             }
                         }
                     }
-
-                   
-
                     #endregion
 
                     //var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
@@ -508,18 +480,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //        objEmail.SendMail();
                     //    }
                     //}
-
-                    #endregion
                 }
                 catch (Exception ex) { }
-
             }
             else
             {
                 #region Send Email
 
                 var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
-
                 var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                 if (userBO != null)
@@ -531,8 +499,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                       
-
                         //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                         string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'>http://www.patient.codearray.tk/#/account/login </a>";
                         string msg = mailTemplateDB.EmailBody;
@@ -544,9 +510,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         objEmail.SendMail();
                     }
                 }
-
                 #endregion
-
             }
             var result = _context.PreferredAttorneyProviders.Include("Company").Include("Company1")
                                                            .Where(p => p.Id == prefAttProvider.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -647,9 +611,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     prefAttProvider_CompanyDB.SubscriptionPlanType = null;
                 }
                 prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
-                prefAttProvider_CompanyDB.AddressId = prefAttProvider_CompanyDB.AddressId;
-                prefAttProvider_CompanyDB.ContactInfoID = prefAttProvider_CompanyDB.ContactInfoID;
-                //prefAttProvider_CompanyDB.RegistrationComplete = false;
+                prefAttProvider_CompanyDB.AddressId = prefAttProviderCompanyBO.AddressInfo.ID;
+                prefAttProvider_CompanyDB.ContactInfoID = prefAttProviderCompanyBO.ContactInfo.ID;
+                prefAttProvider_CompanyDB.CompanyStatusTypeID = System.Convert.ToByte(prefAttProviderCompanyBO.CompanyStatusTypeID);
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.UpdateByUserID = 0;
                 prefAttProvider_CompanyDB.UpdateDate = DateTime.UtcNow;

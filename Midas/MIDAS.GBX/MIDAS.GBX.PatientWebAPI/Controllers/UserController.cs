@@ -65,7 +65,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("ResetPassword")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public HttpResponseMessage ResetPassword([FromBody]AddUser data)
         {
             return adduserrequestHandler.ResetPassword(Request, data);
