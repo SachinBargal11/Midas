@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
@@ -12,8 +9,10 @@ namespace MIDAS.GBX.BusinessObjects
         public int UserId { get; set; }
         public int CompanyId { get; set; }
         public bool IsAccepted { get; set; }
+        public GBEnums.UserStatu UserStatusID { get; set; }
         public User User { get; set; }
         public Company Company { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();

@@ -424,6 +424,9 @@
     <Compile Include="Model\UserPersonalSetting.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\UserStatu.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\UserType.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
