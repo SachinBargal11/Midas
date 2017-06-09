@@ -147,6 +147,10 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   onBeforeSendEvent(event) {
+    if (this.isConsentDocumentOn) {
+      this.documentType = "consent";
+    }
+
     if (this.documentType != "") {
       let param: string;
       if (this.currentId == 2) {
