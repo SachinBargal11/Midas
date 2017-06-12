@@ -56,8 +56,18 @@ import { DocumentTypeService } from './services/document-type-service';
 
 import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
 
+import { AncillaryListComponent } from './components/ancillary-master/ancillary-master-list';
+import { AddAncillaryComponent } from './components/ancillary-master/add-ancillary-master';
 import { GeneralSettingStore } from './stores/general-settings-store';
 import { GeneralSettingService } from './services/general-settings-service';
+
+
+
+
+import { AncillaryMasterStore } from './stores/ancillary-store';
+import { AncillaryMasterService } from './services/ancillary-service';
+
+
 
 
 // AccountSettingShellComponent
@@ -90,7 +100,7 @@ import { GeneralSettingService } from './services/general-settings-service';
         AccountSettingShellComponent,
         ProcedureCodeComponent,
         DocumentTypeComponent,
-        AccountGeneralSettingComponent
+        AccountGeneralSettingComponent, AncillaryListComponent, AddAncillaryComponent
 
     ],
     providers: [
@@ -114,7 +124,7 @@ import { GeneralSettingService } from './services/general-settings-service';
         ProcedureCodeMasterStore,
         DocumentTypeStore,
         DocumentTypeService,
-        GeneralSettingStore, GeneralSettingService
+        GeneralSettingStore, GeneralSettingService, AncillaryMasterStore, AncillaryMasterService
     ]
 })
 export class AccountSetupModule { }
