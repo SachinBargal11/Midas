@@ -465,6 +465,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefMedProvider_CompanyDB.id;
                 UserCompanyDB.IsDeleted = false;
+                UserCompanyDB.UserStatusID = 1;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
                 UserCompanyDB.IsAccepted = true;

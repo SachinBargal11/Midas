@@ -331,6 +331,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefAttProvider_CompanyDB.id;
+                UserCompanyDB.UserStatusID = 1;
                 UserCompanyDB.IsDeleted = false;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
