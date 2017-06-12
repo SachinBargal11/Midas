@@ -43,15 +43,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By ID
+        #region Send SMS From Queue
         public override object SendSMSFromQueue<T>(T entity)
         {
             BO.SMSSend SMSSendBO = (BO.SMSSend)(object)entity;
-
-            //int AppId = SMSSendBO.AppId;
-            //var smsAccount = _context.SMSConfigurations.Where(p => p.AppId == AppId && p.IsDeleted == false)
-            //                                           .Select(p => new { p.AccountSid, p.AuthToken })
-            //                                           .FirstOrDefault();
 
             string accountSid = SMSSendBO.AccountSid;
             string authToken = SMSSendBO.AuthToken;            
@@ -95,11 +90,58 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        public override object testSMS(string test)
+        #region Send SMS List From Queue
+        public override object SendSMSListFromQueue<T>(List<T> entity)
         {
-            
-            return (object)test + " - " + DateTime.Now.ToString();
+            List<BO.SMSSend> SMSListSendBO = (List<BO.SMSSend>)(object)entity;
+            List<BO.SMSSend> SMSListSendBOResult = new List<BO.SMSSend>();
+
+            foreach (var eachSMS in SMSListSendBO)
+            {
+                string accountSid = eachSMS.AccountSid;
+                string authToken = eachSMS.AuthToken;
+
+                var FromNumber = new PhoneNumber(eachSMS.FromNumber);
+                var ToNumber = new PhoneNumber(eachSMS.ToNumber);
+
+                var Message = eachSMS.Message;
+
+                TwilioClient.Init(accountSid, authToken);
+
+                var message = MessageResource.Create(
+                    ToNumber,
+                    from: FromNumber,
+                    body: Message
+                );
+
+                SMSQueue SMSQueueDB = _context.SMSQueues.Where(p => p.Id == eachSMS.ID).FirstOrDefault();
+
+                if (message.Status == MessageResource.StatusEnum.Failed || message.Status == MessageResource.StatusEnum.Undelivered)
+                {
+                    SMSQueueDB.NumberOfAttempts += 1;
+                    SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
+
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    if (SMSQueueDB != null)
+                    {
+                        SMSQueueDB.DeliveryDate = message.DateSent;
+                        SMSQueueDB.NumberOfAttempts += 1;
+                        SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
+
+                        _context.SaveChanges();
+                    }
+                }
+
+                var result = Convert<BO.SMSSend, SMSQueue>(SMSQueueDB);
+                SMSListSendBOResult.Add(result);
+            }
+
+            return (object)SMSListSendBOResult;
         }
+        #endregion
 
         public void Dispose()
         {

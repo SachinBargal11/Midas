@@ -66,29 +66,25 @@ namespace MIDAS.GBX.NotificationService
 
                 HttpResponseMessage respMsg1 = client.GetAsync("midasNotificationAPI/SMSQueueReadWrite/readFromQueue").Result;
                 respMsg1.EnsureSuccessStatusCode();
-                var SMSSend = respMsg1.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
-                //var result = JsonConvert.SerializeObject(SMSSend);
-                //WriteLog.WriteLine(result);
-                WriteLog.WriteLine("");
-                WriteLog.WriteLine("");
+                var SMSListSend = respMsg1.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
 
-                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //WriteLog.WriteLine("");
 
-                //HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
-                //HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend, ).Result;
-                //HttpResponseMessage respMsg2 = client.PostAsJsonAsync<IEnumerable<BO.SMSSend>>("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend).Result;
+                //foreach (var item in SMSSend)
+                //{
+                //    var result = JsonConvert.SerializeObject(item);
+                //    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
 
-                foreach (var item in SMSSend)
+                //    respMsg2.EnsureSuccessStatusCode();
+                //    var result2 = respMsg2.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
+                //}
+                if (SMSListSend != null && SMSListSend.Count > 0)
                 {
-                    var result = JsonConvert.SerializeObject(item);
-                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
-
+                    var result = JsonConvert.SerializeObject(SMSListSend);
+                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/SendSMSList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
                     respMsg2.EnsureSuccessStatusCode();
-                    var result2 = respMsg2.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
+                    var result2 = respMsg2.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
                 }
-
-
-                
             }
             catch(Exception ex)
             {

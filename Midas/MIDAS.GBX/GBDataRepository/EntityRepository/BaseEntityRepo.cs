@@ -799,7 +799,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object testSMS(string test)
+        public virtual Object SendSMSListFromQueue<T>(List<T> entity)
         {
             throw new NotImplementedException();
         }

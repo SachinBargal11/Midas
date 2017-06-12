@@ -27,10 +27,10 @@ namespace MIDAS.GBX.Notification.Controllers
         }
 
         [HttpPost]
-        [Route("testSMS")]
-        public HttpResponseMessage testSMS(string test)
+        [Route("SendSMSList")]
+        public HttpResponseMessage SendSMSList([FromBody]List<SMSSend> smsObject)
         {
-            return requestHandlerSMS.testSMS(Request, test);
-        }
+            return requestHandlerSMS.SendSMSListFromQueue(Request, smsObject);
+        }        
     }
 }
