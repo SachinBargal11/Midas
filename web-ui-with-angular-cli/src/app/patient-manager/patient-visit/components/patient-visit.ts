@@ -895,7 +895,7 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.visitDialogVisible = false;
+        this.visitDialogVisible = true;
     }
 
     saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
