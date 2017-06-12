@@ -70,6 +70,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpGet]
+        [Route("getProcedureCodeExcludingAssigned/{specialtyOrTestId}/{companyId}")]
+        public HttpResponseMessage GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        {
+            return requestHandler.GetProcedureCodeExcludingAssigned(Request, specialtyOrTestId, companyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

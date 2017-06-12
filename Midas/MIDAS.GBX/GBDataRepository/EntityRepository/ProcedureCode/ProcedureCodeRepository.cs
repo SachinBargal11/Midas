@@ -190,6 +190,46 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Get ProcedureCode code excluding assigned
+        public override object GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        {
+
+            var procedureCodeDB = (from pc in _context.ProcedureCodes
+                                   where (pc.SpecialityId == specialtyOrTestId || pc.RoomTestId == specialtyOrTestId)
+                                         && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                         && !(from pm in _context.ProcedureCodeCompanyMappings where pm.CompanyID == companyId select pm.ProcedureCodeID).Contains(pc.Id)
+
+
+                                   select new
+                                   {
+                                       pc.Id,
+                                       pc.ProcedureCodeText,
+                                       pc.ProcedureCodeDesc
+                                   }
+                                   ).ToList();
+
+
+
+            List<BO.ProcedureCode> boProcedureCode = new List<BO.ProcedureCode>();
+
+            if (procedureCodeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //else
+            //{
+            //    foreach (var boProcedureCodeList in procedureCodeDB)
+            //    {
+            //        boProcedureCode.Add(Convert<BO.ProcedureCode, ProcedureCode>(boProcedureCodeList));
+            //    }
+            //}
+
+            return (object)procedureCodeDB;
+        }
+        #endregion
+
         #region Update
         public override object Save<T>(List<T> entities)
         {
