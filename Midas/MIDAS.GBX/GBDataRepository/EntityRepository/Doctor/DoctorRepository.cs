@@ -291,16 +291,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
                 doctorDB.DoctorSpecialities = lstDoctorSpecility;
-                
+
                 if (doctorDB.Id > 0)
                 {
                     //Find Doctor By ID
-                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorDB.Id).FirstOrDefault<Doctor>();
+                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorBO.user.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Doctor>();
 
-                    if (doctor != null)
+                    if (doctor == null)
                     {
+                        doctorDB = new Doctor();
+                    }
                         #region Doctor
-                        // doctorDB.Id = doctorBO.ID;
+                        doctorDB.Id = doctorBO.ID;
                         doctorDB.LicenseNumber = string.IsNullOrEmpty(doctorBO.LicenseNumber) ? doctor.LicenseNumber : doctorBO.LicenseNumber;
                         doctorDB.WCBAuthorization = string.IsNullOrEmpty(doctorBO.WCBAuthorization) ? doctor.WCBAuthorization : doctorBO.WCBAuthorization;
                         doctorDB.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
@@ -311,16 +313,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorDB.UpdateDate = doctorBO.UpdateDate;
                         doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                         doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
-                        #endregion
-                        // doctorDB = doctor;                                
-                        // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
-                        _context.Doctors.Add(doctorDB);
-                    }
-                    else
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { ErrorMessage = "Please pass valid doctor details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                    }
+                    #endregion
+                    // doctorDB = doctor;                                
+                    // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
+                    doctorDB = _context.Doctors.Add(doctorDB);
+                    
+                    //else
+                    //{
+                    //    dbContextTransaction.Rollback();
+                    //    return new BO.ErrorObject { ErrorMessage = "Please pass valid doctor details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    //}
                 }
                 else
                 {
