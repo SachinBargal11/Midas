@@ -11,6 +11,7 @@ export class MidasDocumentAdapter {
                 objectId: data.objectId,
                 documentPath: data.documentPath,
                 documentName: data.documentName,
+                documentType: data.documentType,
                 objectType: data.objectType,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,

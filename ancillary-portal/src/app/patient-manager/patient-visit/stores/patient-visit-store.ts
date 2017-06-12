@@ -341,7 +341,7 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
-     downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
+    downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.downloadDocumentForm(visitId, documentId).subscribe((consent: Consent[]) => {
                 this._consent.next(List(consent));
@@ -353,6 +353,17 @@ export class PatientVisitsStore {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
+    getByAncillaryId(companyId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getByAncillaryId(companyId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
 
 }
 

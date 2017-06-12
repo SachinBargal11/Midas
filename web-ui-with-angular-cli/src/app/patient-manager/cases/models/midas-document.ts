@@ -6,6 +6,7 @@ const MidasDocumentRecord = Record({
     objectId: 0,
     documentPath:'',
     documentName:'',
+    documentType: '',
     objectType:'',
     isDeleted: false,
     createByUserID: 0,
@@ -21,6 +22,7 @@ export class MidasDocument extends MidasDocumentRecord {
     objectId: number;
     documentPath:string;
     documentName:string;
+    documentType: string;
     objectType:string;
     isDeleted: boolean;
     createByUserID: number;

@@ -46,6 +46,7 @@ import { ReferringOfficeStore } from './cases/stores/referring-office-store';
 import { PatientRoutingModule } from './patient-manager-routes';
 import { AddCaseComponent } from './cases/components/add-case';
 import { CaseBasicComponent } from './cases/components/case-basic';
+import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
 import { CasesListComponent } from './cases/components/cases-list';
 import { InsuranceMappingComponent } from './cases/components/insurance-mapping';
 import { AssignInsuranceComponent } from './cases/components/assign-insurance';
@@ -177,7 +178,8 @@ import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
         PatientVisitListTreatingRoomComponent,
         PendingReferralsComponent,
         BillingInfoComponent,
-        PaymentListComponent
+        PaymentListComponent,
+        CaseBasicLabelComponent
 
 
     ],
