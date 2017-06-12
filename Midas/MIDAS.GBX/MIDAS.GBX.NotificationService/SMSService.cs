@@ -68,8 +68,6 @@ namespace MIDAS.GBX.NotificationService
                 respMsg1.EnsureSuccessStatusCode();
                 var SMSListSend = respMsg1.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
 
-                //WriteLog.WriteLine("");
-
                 //foreach (var item in SMSSend)
                 //{
                 //    var result = JsonConvert.SerializeObject(item);
