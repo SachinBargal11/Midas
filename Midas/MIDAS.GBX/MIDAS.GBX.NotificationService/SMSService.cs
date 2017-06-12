@@ -66,9 +66,9 @@ namespace MIDAS.GBX.NotificationService
 
                 HttpResponseMessage respMsg1 = client.GetAsync("midasNotificationAPI/SMSQueueReadWrite/readFromQueue").Result;
                 respMsg1.EnsureSuccessStatusCode();
-                var SMSSend = respMsg1.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
-                var result = JsonConvert.SerializeObject(SMSSend);
-                WriteLog.WriteLine(result);
+                var SMSSend = respMsg1.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
+                //var result = JsonConvert.SerializeObject(SMSSend);
+                //WriteLog.WriteLine(result);
                 WriteLog.WriteLine("");
                 WriteLog.WriteLine("");
 
@@ -76,10 +76,19 @@ namespace MIDAS.GBX.NotificationService
 
                 //HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
                 //HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend, ).Result;
-                HttpResponseMessage respMsg2 = client.PostAsJsonAsync<IEnumerable<BO.SMSSend>>("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend).Result;
+                //HttpResponseMessage respMsg2 = client.PostAsJsonAsync<IEnumerable<BO.SMSSend>>("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend).Result;
 
-                respMsg2.EnsureSuccessStatusCode();
-                var result2 = respMsg2.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
+                foreach (var item in SMSSend)
+                {
+                    var result = JsonConvert.SerializeObject(item);
+                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
+
+                    respMsg2.EnsureSuccessStatusCode();
+                    var result2 = respMsg2.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
+                }
+
+
+                
             }
             catch(Exception ex)
             {
