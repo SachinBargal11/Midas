@@ -8,6 +8,7 @@ using System.Web.Http;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.DocumentManager;
 using MIDAS.GBX.BusinessObjects.Common;
+using System.Configuration;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
@@ -98,7 +99,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             try
             {                
-                using (FileStream fileStream = new FileStream(filPath, FileMode.Open, FileAccess.Read))
+                using (FileStream fileStream = new FileStream(filPath.Replace(ConfigurationManager.AppSettings.Get("LOCAL_SERVER"), ConfigurationManager.AppSettings.Get("LOCAL_UPLOAD_PATH")), FileMode.Open, FileAccess.Read))
                 {
                     MemoryStream memStream = new MemoryStream();
                     memStream.SetLength(fileStream.Length);
@@ -112,7 +113,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                     if (!resDocumentPath.StatusCode.Equals(HttpStatusCode.Created) || ((ObjectContent)resDocumentPath.Content).Value.ToString().Equals(""))
                         return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Path not found", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
-                    string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString() + "/doc_" + uploadObject.CompanyId+".pdf";
+                    string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString() + "/doc_" + uploadObject.CompanyId + ".pdf";
                     HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, memStream, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
