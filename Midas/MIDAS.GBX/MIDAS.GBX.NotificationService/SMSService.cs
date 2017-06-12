@@ -13,6 +13,8 @@ using System.Net.Http;
 using MIDAS.GBX.BusinessObjects;
 using Newtonsoft.Json;
 using BO = MIDAS.GBX.BusinessObjects;
+using System.Net.Http.Headers;
+using System.Net.Http.Formatting;
 
 namespace MIDAS.GBX.NotificationService
 {
@@ -68,14 +70,21 @@ namespace MIDAS.GBX.NotificationService
                 var result = JsonConvert.SerializeObject(SMSSend);
                 WriteLog.WriteLine(result);
                 WriteLog.WriteLine("");
+                WriteLog.WriteLine("");
 
-                HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", new StringContent(result, Encoding.UTF8, "application/json")).Result;
+                //HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend, ).Result;
+                HttpResponseMessage respMsg2 = client.PostAsJsonAsync<IEnumerable<BO.SMSSend>>("midasNotificationAPI/SendNotificationFromQueue/sendSMS", SMSSend).Result;
+
                 respMsg2.EnsureSuccessStatusCode();
                 var result2 = respMsg2.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
             }
             catch(Exception ex)
             {
                 WriteLog.WriteLine(ex.ToString());
+                WriteLog.WriteLine("");
                 WriteLog.WriteLine("");
             }
         }

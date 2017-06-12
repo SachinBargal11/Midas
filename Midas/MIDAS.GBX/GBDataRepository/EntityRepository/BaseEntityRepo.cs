@@ -799,6 +799,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object testSMS(string test)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

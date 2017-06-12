@@ -48,13 +48,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.SMSSend SMSSendBO = (BO.SMSSend)(object)entity;
 
-            int AppId = SMSSendBO.AppId;
-            var smsAccount = _context.SMSConfigurations.Where(p => p.AppId == AppId && p.IsDeleted == false)
-                                                       .Select(p => new { p.AccountSid, p.AuthToken })
-                                                       .FirstOrDefault();
+            //int AppId = SMSSendBO.AppId;
+            //var smsAccount = _context.SMSConfigurations.Where(p => p.AppId == AppId && p.IsDeleted == false)
+            //                                           .Select(p => new { p.AccountSid, p.AuthToken })
+            //                                           .FirstOrDefault();
 
-            string accountSid = smsAccount.AccountSid;
-            string authToken = smsAccount.AuthToken;            
+            string accountSid = SMSSendBO.AccountSid;
+            string authToken = SMSSendBO.AuthToken;            
 
             var FromNumber = new PhoneNumber(SMSSendBO.FromNumber);
             var ToNumber = new PhoneNumber(SMSSendBO.ToNumber);
@@ -94,6 +94,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
+
+        public override object testSMS(string test)
+        {
+            
+            return (object)test + " - " + DateTime.Now.ToString();
+        }
 
         public void Dispose()
         {

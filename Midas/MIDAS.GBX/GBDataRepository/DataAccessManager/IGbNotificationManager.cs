@@ -12,5 +12,6 @@ namespace MIDAS.GBX.DataRepository
         Object ReadSMSFromQueue();
 
         Object SendSMSFromQueue(T smsObject);
+        Object testSMS(string test);
     }
 }

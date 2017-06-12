@@ -70,5 +70,23 @@ namespace MIDAS.GBX.Notification.RequestHandler
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage testSMS(HttpRequestMessage request, string test)
+        {
+            var objResult = notificationManager.testSMS(test);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }
