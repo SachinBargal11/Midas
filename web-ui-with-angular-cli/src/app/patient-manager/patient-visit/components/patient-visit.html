@@ -326,7 +326,11 @@
                             </a>
                         </ng-template>
                     </p-column>
-                    <p-column field="createDate" header="Document Type" [sortable]="true"></p-column>
+                    <p-column header="Document Type" [sortable]="true">
+                        <ng-template let-document="rowData.document" pTemplate="body">
+                            {{ document.documentType }}
+                        </ng-template>
+                    </p-column>
                     <p-column field="createDate" header="Created Date" [sortable]="true">
                         <ng-template let-document="rowData.document" pTemplate="body">
                             {{ document.createDate | dateTimeFormat }}

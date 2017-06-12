@@ -1320,8 +1320,13 @@ export class PatientVisitComponent implements OnInit {
         this.getDocuments();
     }
 
-    documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+     documentUploadError(error: Error) {
+        if (error.message == 'Please Select document Type') {
+            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        }
+        else {
+            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+        }
     }
 
     showDialog(currentCaseId: number) {

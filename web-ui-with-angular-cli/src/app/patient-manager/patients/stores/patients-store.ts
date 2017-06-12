@@ -7,6 +7,8 @@ import { PatientsService } from '../services/patients-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
+import { PatientDocument } from '../models/patient-document';
+import { PatientDocumentAdapter } from '../services/adapters/patient-document-adapter';
 
 @Injectable()
 export class PatientsStore {
@@ -204,6 +206,17 @@ export class PatientsStore {
             });
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
+    }
+
+      getDocumentsForPatientId(patientId: number): Observable<PatientDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.getDocumentsForPatientId(patientId).subscribe((documents: PatientDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
     }
 
 }
