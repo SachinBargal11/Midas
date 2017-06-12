@@ -8,6 +8,7 @@ import { AttorneyRoutes } from './components/AttorneyMaster/attorney-routes';
 import { InsuranceMasterRoutes } from './components/insurance-master/insurance-master-routes';
 import { MedicalProviderRoutes } from './components/medical-provider-master/medical-provider-routes';
 import { AccountSettingShellRoutes } from './components/account-setting/account-setting-routes';
+import { AncillaryRoutes } from './components/ancillary-master/ancillary-master-routes';
 
 let AccountSetupRoutes: Routes = [
     {
@@ -21,9 +22,7 @@ let AccountSetupRoutes: Routes = [
             ...AttorneyRoutes,
             ...InsuranceMasterRoutes,
             ...MedicalProviderRoutes,
-
-
-
+            ...AncillaryRoutes
         ],
         data: {
             breadcrumb: 'Account Setup'
