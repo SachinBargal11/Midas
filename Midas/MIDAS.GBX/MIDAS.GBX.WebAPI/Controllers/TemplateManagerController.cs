@@ -80,7 +80,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 if (templateTempPath != null && templateTempPath.ToString() != string.Empty)
                 {
                     template.TemplateName = templateName;
-                    template.TemplatePath = templateTempPath.ToString();
+                    template.TemplatePath = templateTempPath.ToString().Replace(ConfigurationManager.AppSettings.Get("LOCAL_UPLOAD_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_SERVER"));
                     template.TemplateText = "";
                 }
             }

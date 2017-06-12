@@ -27,7 +27,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             requestHandlerAddPatient = new GbApiRequestHandler<AddPatient>();
         }
 
-    
+
 
         [HttpGet]
         [Route("getByCompanyIdForAncillary/{CompanyId}")]
@@ -36,15 +36,24 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         {
             return requestHandlerPatient2.GetByCompanyIdForAncillary(Request, CompanyId);
         }
-  
+
         [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandlerPatient2.Delete(Request, id);
         }
+        
+        [HttpPost]
+        [Route("savePatient")]
+        //[AllowAnonymous]
+        public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
+        {
+            return requestHandlerPatient2.CreateGbObject(Request, patient2);
+        }
 
-       
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
