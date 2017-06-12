@@ -37,8 +37,7 @@ export class DocumentUploadComponent implements OnInit {
   // currentId: number = 0;
   documentTypes: DocumentType[];
   companyId: number = this._sessionStore.session.currentCompany.id;
-  documentType: string;
-  isDocumentSelected: boolean;
+  documentType: string = '';
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -60,6 +59,7 @@ export class DocumentUploadComponent implements OnInit {
   @Input() isdownloadTemplate: boolean = false;
   @Output() download: EventEmitter<Document> = new EventEmitter();
   @Input() inputCaseId: number;
+  isDocumentSelected: boolean;
 
   constructor(
     private _fb: FormBuilder,
