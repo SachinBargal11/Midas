@@ -137,6 +137,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
         HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
-        
+        HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId, string objectType);
     }
 }
