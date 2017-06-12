@@ -116,6 +116,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 id = id,
                 DocumentId = x.Id,
                 DocumentName = x.DocumentName,
+                DocumentType=x.DocumentType,
                 DocumentPath = x.DocumentPath + "/" + x.DocumentName
             }));
 
