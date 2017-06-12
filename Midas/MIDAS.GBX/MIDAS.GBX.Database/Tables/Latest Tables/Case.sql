@@ -93,3 +93,67 @@ GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Company_CreatedByCompanyId]
 GO
+
+
+
+
+--IF EXISTS
+--(
+--	SELECT	1
+--	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+--	WHERE	TABLE_SCHEMA = 'dbo'
+--	AND		TABLE_NAME = 'Case'
+--	AND		CONSTRAINT_NAME = 'FK_Case_Company_AttorneyId'
+--)
+--BEGIN
+--	ALTER TABLE [dbo].[Case]
+--	DROP CONSTRAINT FK_Case_Company_AttorneyId
+--END
+--GO
+
+--IF EXISTS
+--(
+--	SELECT	1
+--	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+--	WHERE	TABLE_SCHEMA = 'dbo'
+--	AND		TABLE_NAME = 'Case'
+--	AND		CONSTRAINT_NAME = 'FK_Case_Company_CreatedByCompanyId'
+
+--)
+--BEGIN
+--	ALTER TABLE [dbo].[Case]
+--	DROP CONSTRAINT FK_Case_Company_CreatedByCompanyId
+--END
+--GO
+
+--IF EXISTS
+--(
+--	SELECT	1
+--	FROM	INFORMATION_SCHEMA.COLUMNS
+--	WHERE	TABLE_SCHEMA = 'dbo'
+--	AND		TABLE_NAME = 'Case'
+--	AND     COLUMN_NAME = 'AttorneyId'
+--)
+--BEGIN
+--	ALTER TABLE [dbo].[Case]
+--	DROP COLUMN [AttorneyId]
+--END
+--GO
+
+
+
+--IF EXISTS
+--(
+--	SELECT	1
+--	FROM	INFORMATION_SCHEMA.COLUMNS
+--	WHERE	TABLE_SCHEMA = 'dbo'
+--	AND		TABLE_NAME = 'Case'
+--	AND    COLUMN_NAME = 'CreatedByCompanyId'
+--)
+--BEGIN
+--	ALTER TABLE [dbo].[Case]
+--	DROP COLUMN [CreatedByCompanyId]
+--END
+--GO
+
+
