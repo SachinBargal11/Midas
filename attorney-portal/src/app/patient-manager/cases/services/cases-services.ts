@@ -117,7 +117,7 @@ export class CaseService {
 
     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/get/' + caseId + '/case')
+            return this._http.get(this._url + '/documentmanager/get/' + caseId + '/case')
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {

@@ -10,6 +10,7 @@ export class DocumentAdapter {
             documentId: data.documentId,            
             documentPath: data.documentPath,
             documentName: data.documentName,
+            documentType: data.documentType,
             status: data.status,
             message: data.message,
             createByUserID: data.createbyuserID,
