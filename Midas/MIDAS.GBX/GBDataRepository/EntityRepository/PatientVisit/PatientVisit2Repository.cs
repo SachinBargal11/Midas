@@ -707,7 +707,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else if (PatientVisit2BO.RoomId != null && PatientVisit2BO.LocationId != null)
                 {
-                    freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    //freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    var result = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
+                    if (result is BO.ErrorObject)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        freeSlots = result as List<BO.FreeSlots>;
+                    }
                 }
 
                 foreach (var eachDayEventSlot in currentEventSlots)
