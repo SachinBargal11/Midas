@@ -55,6 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EMailService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EMailService.Designer.cs">
+      <DependentUpon>EMailService.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

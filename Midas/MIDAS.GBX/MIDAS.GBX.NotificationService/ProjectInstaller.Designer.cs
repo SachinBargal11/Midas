@@ -30,6 +30,7 @@
         {
             this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
             this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
+            this.serviceInstaller2 = new System.ServiceProcess.ServiceInstaller();
             // 
             // serviceProcessInstaller1
             // 
@@ -41,11 +42,16 @@
             // 
             this.serviceInstaller1.ServiceName = "MIDAS Notification - SMSService";
             // 
+            // serviceInstaller2
+            // 
+            this.serviceInstaller2.ServiceName = "MIDAS Notification - EMailService";
+            // 
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
             this.serviceProcessInstaller1,
-            this.serviceInstaller1});
+            this.serviceInstaller1,
+            this.serviceInstaller2});
 
         }
 
@@ -53,5 +59,6 @@
 
         private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
         private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller2;
     }
 }
