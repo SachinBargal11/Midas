@@ -8,6 +8,9 @@
 )
 GO
 
+ALTER TABLE [Messaging].[AppMessageQueue] ADD CONSTRAINT UK_AppMessageQueue_AppId UNIQUE ([AppId])
+GO
+
 ALTER TABLE [Messaging].[AppMessageQueue]  WITH CHECK ADD  CONSTRAINT [FK_AppMessageQueue_QueueType_QueueTypeId] FOREIGN KEY([QueueTypeId])
 	REFERENCES [Messaging].[QueueType] ([Id])
 GO

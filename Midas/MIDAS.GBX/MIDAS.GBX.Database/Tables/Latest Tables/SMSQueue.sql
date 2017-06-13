@@ -12,3 +12,10 @@
     CONSTRAINT [PK_SMSQueue] PRIMARY KEY ([Id])
 )
 GO
+
+ALTER TABLE [Messaging].[SMSQueue]  WITH CHECK ADD  CONSTRAINT [FK_SMSQueue_AppMessageQueue_AppId] FOREIGN KEY([AppId])
+	REFERENCES [Messaging].[AppMessageQueue] ([AppId])
+GO
+
+ALTER TABLE [Messaging].[SMSQueue] CHECK CONSTRAINT [FK_SMSQueue_AppMessageQueue_AppId]
+GO
