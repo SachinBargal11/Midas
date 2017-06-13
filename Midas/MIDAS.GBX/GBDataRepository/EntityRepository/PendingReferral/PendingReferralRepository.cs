@@ -85,7 +85,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                 boCase.PatientEmpInfoId = pendingReferral.PatientVisit2.Case.PatientEmpInfoId;
                                 boCase.CarrierCaseNo = pendingReferral.PatientVisit2.Case.CarrierCaseNo;
                                 boCase.CaseStatusId = pendingReferral.PatientVisit2.Case.CaseStatusId;
-                                boCase.AttorneyId = pendingReferral.PatientVisit2.Case.AttorneyId;
+                                //boCase.AttorneyId = pendingReferral.PatientVisit2.Case.AttorneyId;
 
                                 if (pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.Value == false))
                                  {

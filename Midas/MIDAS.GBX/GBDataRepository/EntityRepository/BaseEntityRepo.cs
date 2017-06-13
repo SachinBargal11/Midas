@@ -784,6 +784,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

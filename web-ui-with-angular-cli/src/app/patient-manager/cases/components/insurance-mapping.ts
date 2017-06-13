@@ -42,6 +42,8 @@ export class InsuranceMappingComponent implements OnInit {
     adjusters: Adjuster[] = [];
     isDeleteProgress: boolean = false;
     caseStatusId: number;
+    caseDetail: Case;
+    insurance: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -62,7 +64,17 @@ export class InsuranceMappingComponent implements OnInit {
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
+                    this.caseDetail = caseDetail;
                     this.caseStatusId = caseDetail.caseStatusId;
+                    // let matchedCompany = null;
+                    // matchedCompany = _.find(this.caseDetail.createdByCompanyId, (currentCompany: PendingReferral) => {
+                    //     return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                    // })
+                    if (caseDetail.createdByCompanyId == _sessionStore.session.currentCompany.id) {
+                        this.insurance = true;
+                    } else {
+                        this.insurance = false;
+                    }
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });

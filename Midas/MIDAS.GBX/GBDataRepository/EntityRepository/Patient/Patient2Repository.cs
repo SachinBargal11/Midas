@@ -80,7 +80,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
                             caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
                             caseBO.CaseStatusId = casemap.CaseStatusId;
-                            caseBO.AttorneyId = casemap.AttorneyId;
+                            //caseBO.AttorneyId = casemap.AttorneyId;
 
                             caseBO.IsDeleted = casemap.IsDeleted;
                             caseBO.CreateByUserID = casemap.CreateByUserID;

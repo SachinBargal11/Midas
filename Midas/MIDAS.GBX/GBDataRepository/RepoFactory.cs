@@ -297,6 +297,11 @@ namespace MIDAS.GBX
             {
                 repo = new PreferredAncillaryProviderRepository(context);
             }
+            else if (typeof(T) == typeof(BO.ProcedureCodeCompanyMapping))
+            {
+                repo = new ProcedureCodeCompanyMappingRepository(context);
+            }
+
             return repo;
         }
     }

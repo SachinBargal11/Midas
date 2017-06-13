@@ -425,7 +425,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAncProvider_CompanyDB.Name = prefAncillaryProviderCompanyBO.Name;
                 prefAncProvider_CompanyDB.Status = System.Convert.ToByte(prefAncillaryProviderCompanyBO.Status);
                 prefAncProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefAncillaryProviderCompanyBO.CompanyType);
-                prefAncProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAncillaryProviderCompanyBO.SubsCriptionType);
+             
                // prefAncProvider_CompanyDB.TaxID = prefAncillaryProviderCompanyBO.TaxID;
                 prefAncProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAncProvider_CompanyDB.ContactInfoID = ContactInfo.id;

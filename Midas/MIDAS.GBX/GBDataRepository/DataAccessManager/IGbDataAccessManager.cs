@@ -156,6 +156,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetVisitsByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByAncillaryId(int AncillaryId);
         Object GetUpdatedCompanyById(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        
+        Object GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int CompanyId);
+
     }
 }

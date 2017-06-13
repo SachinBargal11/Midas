@@ -33,6 +33,7 @@ export class AddPatientComponent implements OnInit {
     patientformControls;
     isCitiesLoading = false;
     isSavePatientProgress = false;
+    uploadedFiles: any[] = [];
 
     constructor(
         private _statesStore: StatesStore,
@@ -88,6 +89,16 @@ export class AddPatientComponent implements OnInit {
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+    }
+
+    onUpload(event) {
+
+        for(let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+
+          //this.msgs = [];
+        //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
     }
 
     savePatient() {

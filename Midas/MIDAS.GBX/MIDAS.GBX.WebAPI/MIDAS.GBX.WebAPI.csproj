@@ -291,6 +291,7 @@
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
     <Compile Include="Controllers\PreferredAncillaryProviderController.cs" />
     <Compile Include="Controllers\PreferredAttorneyProviderController.cs" />
+    <Compile Include="Controllers\ProcedureCodeCompanyMappingController.cs" />
     <Compile Include="Controllers\Referral2Controller.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\PatientVisit2Controller.cs" />
@@ -410,6 +411,7 @@
     <Folder Include="Views\Notification\" />
     <Folder Include="Views\OTP\" />
     <Folder Include="Views\PasswordToken\" />
+    <Folder Include="Views\ProcedureCodeCompanyMapping\" />
     <Folder Include="Views\RoomTest\" />
     <Folder Include="Views\Room\" />
     <Folder Include="Views\Schedule\" />

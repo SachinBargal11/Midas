@@ -31,6 +31,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseCompanyMappingBO.CaseId = caseCompanyMappings.CaseId;
             caseCompanyMappingBO.Company = new BO.Company();
             caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.id : 0;
+            caseCompanyMappingBO.IsOriginator = caseCompanyMappings.IsOriginator;
             caseCompanyMappingBO.Company.Name = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.Name : "";
             caseCompanyMappingBO.IsDeleted = caseCompanyMappings.IsDeleted;
             caseCompanyMappingBO.CreateByUserID = caseCompanyMappings.CreateByUserID;
@@ -105,8 +106,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     caseCompanyMappingDB.CaseId = CaseCompanyMappingBO.CaseId;
                     caseCompanyMappingDB.CompanyId = CaseCompanyMappingBO.Company.ID;
+                    caseCompanyMappingDB.IsOriginator = CaseCompanyMappingBO.IsOriginator;
 
-                    if (Add_CaseCompanyMappingDB == true)
+                if (Add_CaseCompanyMappingDB == true)
                     {
                         caseCompanyMappingDB = _context.CaseCompanyMappings.Add(caseCompanyMappingDB);
                     }

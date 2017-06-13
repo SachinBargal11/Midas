@@ -251,7 +251,7 @@ export class PatientVisitComponent implements OnInit {
         //     });
 
 
-        this._patientsStore.getPatientsWithOpenCases();
+        //this._patientsStore.getPatientsWithOpenCases();
     }
     isFormValid() {
         if (this.scheduledEventEditorValid && this.patientScheduleForm.valid) {
