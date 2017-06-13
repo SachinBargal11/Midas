@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5d45e6332af94554a9d9f0d8df4b2ee2" Name="Diagram1">
+      <Diagram DiagramId="ca449166851d4b01a761a155aef8c12a" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="74.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="75.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="11.25" PointY="71.625" IsExpanded="true" />

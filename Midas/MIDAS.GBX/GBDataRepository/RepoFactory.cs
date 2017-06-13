@@ -312,7 +312,7 @@ namespace MIDAS.GBX
             }
             else if (typeof(T) == typeof(BO.EMailQueue))
             {
-                repo = new SMSQueueReadWriteRepository(context);
+                repo = new EMailQueueReadWriteRepository(context);
             }
 
             return repo;

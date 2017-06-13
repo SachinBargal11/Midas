@@ -382,9 +382,6 @@
     <Compile Include="Model\ProcedureCodeCompanyMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ProcedureCodeCompanyMapping.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\QueueType.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
