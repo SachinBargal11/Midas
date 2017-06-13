@@ -219,4 +219,19 @@ export class PatientsStore {
         return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
     }
 
+     deleteDocument(patientDocument: PatientDocument): Observable<Patient> {
+        let patients = this._patients.getValue();
+        let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === patientDocument.patientId);
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.deleteDocument(patientDocument).subscribe((patient: PatientDocument) => {
+                this._patients.next(patients.delete(index));
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.from(promise);
+    }
+
+
 }

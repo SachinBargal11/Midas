@@ -19,7 +19,6 @@ export class AccountActivationComponent implements OnInit {
     isTokenValid: boolean = false;
     token: any;
     user: any;
-
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -62,12 +61,20 @@ export class AccountActivationComponent implements OnInit {
                         resultForUpdate.subscribe(
                             (companyMaster: Signup) => {
                                 this.companyMaster = companyMaster.originalResponse;
-                                if (this.companyMaster.signup.company.companyStatusTypeId == 2) {
+                                if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
+                                    if (this.user.userCompanies.userStatusID = 1) {
+                                        this.isUser = true;
+                                    }
+                                    else {
+                                        this._router.navigate(['/account/login']);
+                                    }
+                                }
+                                else if (this.companyMaster.signup.company.companyStatusTypeId == 2) {
                                     this.isUser = true;
                                 }
-                                else if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
-                                    this._router.navigate(['/account/login']);
-                                }
+                                // else if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
+                                //     this._router.navigate(['/account/login']);
+                                // }
                             },
                             (error) => {
                                 this._router.navigate(['../'], { relativeTo: this._route });
