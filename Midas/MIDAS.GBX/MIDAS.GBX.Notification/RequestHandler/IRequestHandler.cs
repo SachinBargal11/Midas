@@ -9,8 +9,8 @@ namespace MIDAS.GBX.Notification.RequestHandler
 {
     public interface IRequestHandler<T>
     {
-        HttpResponseMessage AddSMSToQueue(HttpRequestMessage request, T smsObject);
-        HttpResponseMessage ReadSMSFromQueue(HttpRequestMessage request);
+        HttpResponseMessage AddToQueue(HttpRequestMessage request, T smsObject);
+        HttpResponseMessage ReadFromQueue(HttpRequestMessage request);
 
         HttpResponseMessage SendSMSFromQueue(HttpRequestMessage request, T smsObject);
         HttpResponseMessage SendSMSListFromQueue(HttpRequestMessage request, List<T> smsObject);

@@ -8,8 +8,8 @@ namespace MIDAS.GBX.DataRepository
 {
     public interface IGbNotificationManager<T>
     {
-        Object AddSMSToQueue(T smsObject);
-        Object ReadSMSFromQueue();
+        Object AddToQueue(T smsObject);
+        Object ReadFromQueue();
 
         Object SendSMSFromQueue(T smsObject);
         Object SendSMSListFromQueue(List<T> smsObject);

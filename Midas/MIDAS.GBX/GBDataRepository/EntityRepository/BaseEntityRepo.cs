@@ -784,12 +784,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object AddSMSToQueue<T>(T entity)
+        public virtual Object AddToQueue<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object ReadSMSFromQueue()
+        public virtual Object ReadFromQueue()
         {
             throw new NotImplementedException();
         }

@@ -17,6 +17,7 @@
 	--[FileUploadPath] [NVARCHAR](250) NULL,
 	[IsTransportationRequired] [BIT] NOT NULL DEFAULT 0,
 	[TransportProviderId] [INT] NULL,
+    [AncillaryProviderId] [INT] NULL,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -105,3 +106,13 @@ GO
 ALTER TABLE [dbo].[PatientVisit2] ALTER COLUMN [IsTransportationRequired] [BIT] NOT NULL
 GO
 */
+
+ALTER TABLE [dbo].[PatientVisit2] ADD [AncillaryProviderId] [INT] NULL
+GO
+
+ALTER TABLE [dbo].[PatientVisit2]  WITH CHECK ADD  CONSTRAINT [FK_PatientVisit2_Company_AncillaryProviderId] FOREIGN KEY([AncillaryProviderId])
+	REFERENCES [dbo].[Company] ([Id])
+GO
+
+ALTER TABLE [dbo].[PatientVisit2] CHECK CONSTRAINT [FK_PatientVisit2_Company_AncillaryProviderId]
+GO

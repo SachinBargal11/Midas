@@ -23,14 +23,14 @@ namespace MIDAS.GBX.Notification.Controllers
         [Route("addToQueue")]
         public HttpResponseMessage AddToQueue([FromBody]SMSQueue smsObject)
         {
-            return requestHandlerSMS.AddSMSToQueue(Request, smsObject);
+            return requestHandlerSMS.AddToQueue(Request, smsObject);
         }
 
         [HttpGet]
         [Route("readFromQueue")]
         public HttpResponseMessage ReadFromQueue()
         {
-            return requestHandlerSMS.ReadSMSFromQueue(Request);
+            return requestHandlerSMS.ReadFromQueue(Request);
         }
     }
 }

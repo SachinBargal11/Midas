@@ -15,3 +15,10 @@
     CONSTRAINT [PK_EMailQueue] PRIMARY KEY ([Id])
 )
 GO
+
+ALTER TABLE [Messaging].[EMailQueue]  WITH CHECK ADD  CONSTRAINT [FK_EMailQueue_AppMessageQueue_AppId] FOREIGN KEY([AppId])
+	REFERENCES [Messaging].[AppMessageQueue] ([AppId])
+GO
+
+ALTER TABLE [Messaging].[EMailQueue] CHECK CONSTRAINT [FK_EMailQueue_AppMessageQueue_AppId]
+GO

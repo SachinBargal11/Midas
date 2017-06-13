@@ -39,7 +39,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By ID
-        public override object AddSMSToQueue<T>(T entity)
+        public override object AddToQueue<T>(T entity)
         {
             BO.SMSQueue SMSNotificationBO = (BO.SMSQueue)(object)entity;
 
@@ -59,7 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Read SMS From Queue
-        public override object ReadSMSFromQueue()
+        public override object ReadFromQueue()
         {
             //BO.SMSSend SMSSendBO = new BO.SMSSend();
 

@@ -18,12 +18,12 @@ namespace MIDAS.GBX.DataRepository
             this.dbContextProvider = dbContextProvider ?? new DBContextProvider();
         }
 
-        public object AddSMSToQueue(T smsObject)
+        public object AddToQueue(T smsObject)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.AddSMSToQueue(smsObject);
+                var gbdata = baseRepo.AddToQueue(smsObject);
 
                 return gbdata;
             }
@@ -38,12 +38,12 @@ namespace MIDAS.GBX.DataRepository
             }
         }
 
-        public object ReadSMSFromQueue()
+        public object ReadFromQueue()
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.ReadSMSFromQueue();
+                var gbdata = baseRepo.ReadFromQueue();
 
                 return gbdata;
             }
