@@ -19,6 +19,7 @@ import { ScannerService } from '../../../commons/services/scanner-service';
 import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Document } from '../../../commons/models/document';
+import { Case } from '../models/case';
 
 @Component({
     selector: 'case-documents',
@@ -36,7 +37,11 @@ export class CaseDocumentsUploadComponent implements OnInit {
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
     caseId: number;
-    
+    addConsentDialogVisible: boolean = false;
+    caseStatusId: number;
+    selectedCaseId: number;
+    // companyId: number;
+
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -51,7 +56,22 @@ export class CaseDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
-            this.url = `${this._url}/documentmanager/uploadtoblob`;
+            this.url = `${this._url}/documentmanager/uploadtonoproviderblob`;
+        });
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
     }
 
@@ -83,7 +103,19 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+        if (error.message == 'Please Select document Type') {
+            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        }
+        else {
+            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+        }
+    }
+
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+       this.selectedCaseId = currentCaseId;
+        // this.companyId = providerCompanyId;
     }
 
     getDocuments() {
@@ -101,7 +133,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
             });
     }
 
-     downloadPdf(documentId) {
+    downloadPdf(documentId) {
         this._progressBarService.show();
         this._casesStore.downloadDocumentForm(this.caseId, documentId)
             .subscribe(

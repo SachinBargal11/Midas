@@ -72,6 +72,8 @@ export class AddConsentComponent implements OnInit {
     signedDocumentPostRequestData: any = {};
     signedDocumentUploadUrl: string = '';
     changeCompneyConsenturl: SafeResourceUrl;
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -86,7 +88,8 @@ export class AddConsentComponent implements OnInit {
         private _scannerService: ScannerService,
         private _casesStore: CasesStore,
         private _sanitizer: DomSanitizer,
-        private _consentService: ConsentService
+        private _consentService: ConsentService,
+        public notificationsStore: NotificationsStore,
 
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -153,6 +156,11 @@ export class AddConsentComponent implements OnInit {
             }
         }, 250);
     }
+    showDialog(currentCaseId: number, providerCompanyId: number) {
+        this.addConsentDialogVisible = true;
+        this.caseId = currentCaseId;
+        this.companyId = providerCompanyId;
+    }
 
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
@@ -162,11 +170,21 @@ export class AddConsentComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Consent uploaded successfully',
+                    'type': 'ERROR',
+                    'createdAt': moment(),
+
+                });
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.loadConsentForm();
+        
             }
         });
-        this.loadConsentForm();
     }
 
     signedDocumentUploadComplete(document: Document) {
