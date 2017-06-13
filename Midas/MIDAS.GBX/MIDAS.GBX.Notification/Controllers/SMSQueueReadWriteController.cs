@@ -16,7 +16,7 @@ namespace MIDAS.GBX.Notification.Controllers
 
         public SMSQueueReadWriteController()
         {
-            requestHandlerSMS = new SMSRequestHandler<SMSQueue>();
+            requestHandlerSMS = new NotificationRequestHandler<SMSQueue>();
         }
 
         [HttpPost]

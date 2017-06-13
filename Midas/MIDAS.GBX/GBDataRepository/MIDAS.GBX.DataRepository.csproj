@@ -268,6 +268,9 @@
     <Compile Include="Model\DocumentNodeObjectMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\EMailConfiguration.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\EMailQueue.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

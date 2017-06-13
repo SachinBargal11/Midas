@@ -8,11 +8,11 @@ using MIDAS.GBX.DataRepository;
 
 namespace MIDAS.GBX.Notification.RequestHandler
 {
-    public class SMSRequestHandler<T> : IRequestHandler<T>
+    public class NotificationRequestHandler<T> : IRequestHandler<T>
     {
         private IGbNotificationManager<T> notificationManager;
 
-        public SMSRequestHandler()
+        public NotificationRequestHandler()
         {
             notificationManager = new GbNotificationManager<T>();
         }

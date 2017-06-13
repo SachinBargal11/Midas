@@ -11,18 +11,25 @@ namespace MIDAS.GBX.Notification.Controllers
     [RoutePrefix("midasNotificationAPI/EMailQueueReadWrite")]
     public class EMailQueueReadWriteController : ApiController
     {
-        private IRequestHandler<EMailQueue> requestHandlerSMS;
+        private IRequestHandler<EMailQueue> requestHandlerEMail;
 
         public EMailQueueReadWriteController()
         {
-            requestHandlerSMS = new SMSRequestHandler<EMailQueue>();
+            requestHandlerEMail = new NotificationRequestHandler<EMailQueue>();
         }
 
         [HttpPost]
         [Route("addToQueue")]
         public HttpResponseMessage AddToQueue([FromBody]EMailQueue emailObject)
         {
-            return requestHandlerSMS.AddToQueue(Request, emailObject);
+            return requestHandlerEMail.AddToQueue(Request, emailObject);
+        }
+
+        [HttpGet]
+        [Route("readFromQueue")]
+        public HttpResponseMessage ReadFromQueue()
+        {
+            return requestHandlerEMail.ReadFromQueue(Request);
         }
     }
 }

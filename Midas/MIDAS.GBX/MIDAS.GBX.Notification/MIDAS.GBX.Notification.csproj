@@ -265,7 +265,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="RequestHandler\IRequestHandler.cs" />
-    <Compile Include="RequestHandler\SMSRequestHandler.cs" />
+    <Compile Include="RequestHandler\NotificationRequestHandler.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

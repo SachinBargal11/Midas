@@ -1273,6 +1273,19 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="AppName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="QueueTypeId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="EMailConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppId" Type="int" Nullable="false" />
+          <Property Name="QueueTypeId" Type="int" Nullable="false" />
+          <Property Name="SmtpClient" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="SmtpClient_Port" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NetworkCredential_EMail" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="NetworkCredential_Pwd" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="EMailQueue">
           <Key>
             <PropertyRef Name="Id" />
@@ -1829,6 +1842,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="DocumentNodeObjectMapping">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_EMailConfiguration_AppMessageQueue_AppId' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_EMailConfiguration_AppMessageQueue_AppId" />-->
+        <Association Name="FK_EMailConfiguration_QueueType_QueueTypeId">
+          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
+          <End Role="EMailConfiguration" Type="Self.EMailConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QueueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailConfiguration">
+              <PropertyRef Name="QueueTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3205,6 +3233,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppMessageQueue" EntityType="Self.AppMessageQueue" Schema="Messaging" store:Type="Tables" />
+          <EntitySet Name="EMailConfiguration" EntityType="Self.EMailConfiguration" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="EMailQueue" EntityType="Self.EMailQueue" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="QueueType" EntityType="Self.QueueType" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="SMSConfiguration" EntityType="Self.SMSConfiguration" Schema="Messaging" store:Type="Tables" />
@@ -3384,6 +3413,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <AssociationSet Name="FK_DocumentNodeObjectMapping_Company" Association="Self.FK_DocumentNodeObjectMapping_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="DocumentNodeObjectMapping" EntitySet="DocumentNodeObjectMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMailConfiguration_QueueType_QueueTypeId" Association="Self.FK_EMailConfiguration_QueueType_QueueTypeId">
+            <End Role="QueueType" EntitySet="QueueType" />
+            <End Role="EMailConfiguration" EntitySet="EMailConfiguration" />
           </AssociationSet>
           <AssociationSet Name="FK_GeneralSettings_Company_CompanyId" Association="Self.FK_GeneralSettings_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
@@ -5364,6 +5397,20 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="QueueType" Relationship="Self.FK_AppMessageQueue_QueueType_QueueTypeId" FromRole="AppMessageQueue" ToRole="QueueType" />
         </EntityType>
+        <EntityType Name="EMailConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppId" Type="Int32" Nullable="false" />
+          <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SmtpClient" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SmtpClient_Port" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NetworkCredential_EMail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NetworkCredential_Pwd" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="QueueType" Relationship="Self.FK_EMailConfiguration_QueueType_QueueTypeId" FromRole="EMailConfiguration" ToRole="QueueType" />
+        </EntityType>
         <EntityType Name="EMailQueue">
           <Key>
             <PropertyRef Name="Id" />
@@ -5388,6 +5435,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QueueTypeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AppMessageQueues" Relationship="Self.FK_AppMessageQueue_QueueType_QueueTypeId" FromRole="QueueType" ToRole="AppMessageQueue" />
+          <NavigationProperty Name="EMailConfigurations" Relationship="Self.FK_EMailConfiguration_QueueType_QueueTypeId" FromRole="QueueType" ToRole="EMailConfiguration" />
           <NavigationProperty Name="SMSConfigurations" Relationship="Self.FK_SMSConfiguration_QueueType_QueueTypeId" FromRole="QueueType" ToRole="SMSConfiguration" />
         </EntityType>
         <EntityType Name="SMSConfiguration">
@@ -7190,6 +7238,18 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EMailConfiguration_QueueType_QueueTypeId">
+          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
+          <End Role="EMailConfiguration" Type="Self.EMailConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QueueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailConfiguration">
+              <PropertyRef Name="QueueTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SMSConfiguration_QueueType_QueueTypeId">
           <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
           <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
@@ -7288,6 +7348,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocument" />
           <EntitySet Name="AppMessageQueues" EntityType="Self.AppMessageQueue" />
+          <EntitySet Name="EMailConfigurations" EntityType="Self.EMailConfiguration" />
           <EntitySet Name="EMailQueues" EntityType="Self.EMailQueue" />
           <EntitySet Name="QueueTypes" EntityType="Self.QueueType" />
           <EntitySet Name="SMSConfigurations" EntityType="Self.SMSConfiguration" />
@@ -7880,6 +7941,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <AssociationSet Name="FK_AppMessageQueue_QueueType_QueueTypeId" Association="Self.FK_AppMessageQueue_QueueType_QueueTypeId">
             <End Role="QueueType" EntitySet="QueueTypes" />
             <End Role="AppMessageQueue" EntitySet="AppMessageQueues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EMailConfiguration_QueueType_QueueTypeId" Association="Self.FK_EMailConfiguration_QueueType_QueueTypeId">
+            <End Role="QueueType" EntitySet="QueueTypes" />
+            <End Role="EMailConfiguration" EntitySet="EMailConfigurations" />
           </AssociationSet>
           <AssociationSet Name="FK_SMSConfiguration_QueueType_QueueTypeId" Association="Self.FK_SMSConfiguration_QueueType_QueueTypeId">
             <End Role="QueueType" EntitySet="QueueTypes" />
@@ -9233,6 +9298,20 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="AppId" ColumnName="AppId" />
                 <ScalarProperty Name="AppName" ColumnName="AppName" />
                 <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMailConfigurations">
+            <EntityTypeMapping TypeName="MIDASGBXModel.EMailConfiguration">
+              <MappingFragment StoreEntitySet="EMailConfiguration">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AppId" ColumnName="AppId" />
+                <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
+                <ScalarProperty Name="SmtpClient" ColumnName="SmtpClient" />
+                <ScalarProperty Name="SmtpClient_Port" ColumnName="SmtpClient_Port" />
+                <ScalarProperty Name="NetworkCredential_EMail" ColumnName="NetworkCredential_EMail" />
+                <ScalarProperty Name="NetworkCredential_Pwd" ColumnName="NetworkCredential_Pwd" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

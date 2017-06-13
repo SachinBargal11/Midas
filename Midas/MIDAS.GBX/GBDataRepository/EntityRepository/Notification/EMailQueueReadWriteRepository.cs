@@ -67,6 +67,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Read SMS From Queue
+        public override object ReadFromQueue()
+        {
+            List<BO.EMailSend> SMSSendBO = (from eMailQ in _context.EMailQueues
+                                          join eMailC in _context.EMailConfigurations
+                                              on eMailQ.AppId equals eMailC.AppId
+                                          where eMailC.QueueTypeId == 1
+                                              && eMailQ.DeliveryDate.HasValue == false
+                                              && eMailQ.NumberOfAttempts < 5
+                                          select new BO.EMailSend
+                                          {
+                                              ID = eMailQ.Id,
+                                              AppId = eMailQ.AppId,
+                                              SmtpClient = eMailC.SmtpClient,
+                                              SmtpClient_Port = eMailC.SmtpClient_Port,
+                                              NetworkCredential_EMail = eMailC.NetworkCredential_EMail,
+                                              NetworkCredential_Pwd = eMailC.NetworkCredential_Pwd,
+                                              FromEmail = eMailQ.FromEmail,
+                                              ToEmail = eMailQ.ToEmail,
+                                              CcEmail = eMailQ.CcEmail,
+                                              BccEmail = eMailQ.BccEmail,
+                                              EMailSubject = eMailQ.EMailSubject,
+                                              EMailBody = eMailQ.EMailBody,
+                                              CreatedDate = eMailQ.CreatedDate,
+                                              DeliveryDate = eMailQ.DeliveryDate,
+                                              NumberOfAttempts = eMailQ.NumberOfAttempts,
+                                              //ResultObject = smsQ.ResultObject
+                                          }).ToList();
+
+            return (object)SMSSendBO;
+        }
+        #endregion
+
         public void Dispose()
         {
             //throw new NotImplementedException();

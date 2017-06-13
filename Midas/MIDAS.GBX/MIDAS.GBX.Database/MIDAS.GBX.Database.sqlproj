@@ -149,6 +149,7 @@
     <Build Include="Tables\Schema\Messaging.sql" />
     <Build Include="Tables\Latest Tables\SMSConfiguration.sql" />
     <Build Include="Tables\Latest Tables\EMailQueue.sql" />
+    <Build Include="Tables\Latest Tables\EMailConfiguration.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
