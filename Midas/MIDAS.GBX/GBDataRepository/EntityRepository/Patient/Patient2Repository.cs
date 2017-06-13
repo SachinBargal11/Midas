@@ -1284,6 +1284,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userCompany.CompanyID = AncillaryCompanyId;
             userCompany.UserID = PatientId;
+            userCompany.UserStatusID = 1;
             userCompany.IsAccepted = true;
 
             if (add_UserCompany)

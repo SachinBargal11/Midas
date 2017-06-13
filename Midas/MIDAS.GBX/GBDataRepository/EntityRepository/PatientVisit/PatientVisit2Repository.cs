@@ -963,11 +963,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     _context.SaveChanges();
 
-                    //int caseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
-                    //                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                    //                               .Select(p => p.Id)
-                    //                               .FirstOrDefault<int>();
-
                     if (PatientVisit2DB.PatientId.HasValue == true && PatientVisit2DB.CaseId.HasValue == true && PatientVisit2DB.AncillaryProviderId.HasValue == true)
                     {
                         using (Patient2Repository patientRepo = new Patient2Repository(_context))
