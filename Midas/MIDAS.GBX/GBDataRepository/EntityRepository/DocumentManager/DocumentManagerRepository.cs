@@ -237,6 +237,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
                     docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
                     break;
+                case EN.Constants.PatientType:
+                    PatientDocumentRepository PatientDocumentRepository = new PatientDocumentRepository(_context);
+                    docInfo = (BO.Document)PatientDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    break;
             }
             
             return docInfo;
