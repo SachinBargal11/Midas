@@ -104,6 +104,7 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IGbNotificationManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
+    <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
     <Compile Include="EntityRepository\Notification\EMailQueueReadWriteRepository.cs" />
     <Compile Include="EntityRepository\Notification\SendSMSRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="EntityRepository\PatientVisit\PatientVisit2Repository.cs" />
     <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
+    <Compile Include="EntityRepository\ProcedureCodeCompanyMapping\ProcedureCodeCompanyMappingRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCode\ProcedureCodeRepository.cs" />
     <Compile Include="EntityRepository\Referral\Referral2Repository.cs" />
     <Compile Include="EntityRepository\Referral\ReferralRepository.cs" />
@@ -375,6 +377,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProcedureCode.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ProcedureCodeCompanyMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProcedureCodeCompanyMapping.cs">

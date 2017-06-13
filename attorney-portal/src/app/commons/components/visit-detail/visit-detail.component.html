@@ -4,8 +4,14 @@
     <p-tabPanel header="Visit Details" [selected]="true">
       <form [formGroup]="visitDetailForm" (ngSubmit)="saveVisit()">
         <div class="row">
-          <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
-          <div class="col-md-6">
+          <div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>
+          <div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.notes}}
+                  </label>
+            </div>
+          </div>
+          <div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">
             <div class="form-group" [class.error]="visitDetailFormControls.notes && visitDetailFormControls.notes.touched && !visitDetailFormControls.notes.valid">
               <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
               <div class='error-list' *ngIf="visitDetailFormControls.notes && visitDetailFormControls.notes.touched && !visitDetailFormControls.notes.valid">
@@ -17,8 +23,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>
-          <div class="col-md-6">
+          <div class="col-md-1"><label class="form-label">Status<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>
+          <div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.visitStatusLabel}}
+                  </label>
+            </div>
+          </div>
+          <div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">
             <div class="form-group">
               <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
                 <option value="2">Complete</option>
@@ -29,10 +41,10 @@
         </div>
         <div class="row">
           <div class="col-md-4">
-            <button [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+            <button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
-            <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
+            <button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
           </div>
         </div>
       </form>
@@ -68,7 +80,11 @@
             </a>
           </ng-template>
         </p-column>
-        <p-column field="createDate" header="Document Type" [sortable]="true"></p-column>
+        <p-column header="Document Type" [sortable]="true">
+          <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.documentType }}
+          </ng-template>
+        </p-column>
         <p-column field="createDate" header="Created Date" [sortable]="true">
           <ng-template let-document="rowData.document" pTemplate="body">
             {{ document.createDate | dateTimeFormat }}

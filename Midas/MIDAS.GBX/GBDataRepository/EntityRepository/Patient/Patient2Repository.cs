@@ -78,9 +78,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.CaseTypeId = casemap.CaseTypeId;
                             caseBO.LocationId = casemap.LocationId;
                             caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
-                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;                          
+                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
                             caseBO.CaseStatusId = casemap.CaseStatusId;
-                            caseBO.AttorneyId = casemap.AttorneyId;
+                            //caseBO.AttorneyId = casemap.AttorneyId;
 
                             caseBO.IsDeleted = casemap.IsDeleted;
                             caseBO.CreateByUserID = casemap.CreateByUserID;
@@ -128,7 +128,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             boCase.Add(caseBO);
                         }
                     }
-                        
+
                 }
                 patientBO2.Cases = boCase;
             }
@@ -140,7 +140,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)patientBO2;
         }
 
-        public  T mConvert<T, U>(U entity)
+        public T mConvert<T, U>(U entity)
         {
             Patient2 patient2 = entity as Patient2;
 
@@ -151,7 +151,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             mPatientBO2.ID = patient2.Id;
             mPatientBO2.MaritalStatusId = patient2.MaritalStatusId;
-          
+
 
             if (patient2.IsDeleted.HasValue)
                 mPatientBO2.IsDeleted = patient2.IsDeleted.Value;
@@ -171,7 +171,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         mPatientBO2.Gender = (BO.GBEnums.Gender)patient2.User.Gender;
 
                     mPatientBO2.CreateByUserID = patient2.User.CreateByUserID;
-                   
+
                     if (patient2.User.IsDeleted.HasValue)
                         mPatientBO2.IsDeleted = System.Convert.ToBoolean(patient2.User.IsDeleted.Value);
                     if (patient2.User.UpdateByUserID.HasValue)
@@ -188,7 +188,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         mPatientBO2.WorkPhone = patient2.User.ContactInfo.WorkPhone;
                         mPatientBO2.FaxNo = patient2.User.ContactInfo.FaxNo;
                         mPatientBO2.CreateByUserID = patient2.User.ContactInfo.CreateByUserID;
-                                             
+
                     }
 
 
@@ -204,8 +204,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         mPatientBO2.Country = patient2.User.AddressInfo.Country;
 
                         mPatientBO2.CreateByUserID = patient2.User.AddressInfo.CreateByUserID;
-                                              
-                    }                   
+
+                    }
 
                 }
             }
@@ -280,7 +280,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         .Include("User.ContactInfo")
                                         .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
                                         .ToList<Patient2>();
-           
+
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -304,7 +304,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 .Include("Cases")
                                                 .Include("Cases.Referral2")
                                                 .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
-                                                .Any(p3=> p3.CompanyID== CompanyId)                                                                        
+                                                .Any(p3 => p3.CompanyID == CompanyId)
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                 .ToList<Patient2>();
 
@@ -337,11 +337,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 return lstpatients;
             }
-           
+
         }
         #endregion
 
-        #region Get By Company ID For Patient 
+        #region GetByCompanyIdForAncillary Company ID For Patient 
         public override object GetByCompanyIdForAncillary(int CompanyId)
         {
             var patientList1 = _context.Patient2.Include("User")
@@ -413,7 +413,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                .Include("Case.Patient2.User.ContactInfo")
                                                .Include("Case.Patient2.Cases")
                                                .Include("Case.Patient2.Cases.Referral2")
-                                               .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId 
+                                               .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .ToList<Referral2>();
 
@@ -452,7 +452,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                       .Include("User.AddressInfo")
                                       .Include("User.ContactInfo")
                                       .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
-                                      .Any(p3 => p3.CompanyID == CompanyId) 
+                                      .Any(p3 => p3.CompanyID == CompanyId)
                                       && (openCase.Contains(p.Id))
                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                       .ToList<Patient2>();
@@ -494,7 +494,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                      .Any(p3 => p3.CompanyID == CompanyId)
                                       && ((p.Cases.Count > 0 && openCase.Contains(p.Id) == false) || (p.Cases.Count <= 0))
                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                     .ToList<Patient2>();           
+                                     .ToList<Patient2>();
 
             if (acc == null)
             {
@@ -836,11 +836,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (UserCompanyDB == null)
                         {
                             UserCompanyDB = new UserCompany();
-                            add_UserCompany = true;                            
+                            add_UserCompany = true;
                         }
-                        
+
                         UserCompanyDB.CompanyID = userCompany.Company.ID;
                         UserCompanyDB.UserID = userCompany.UserId;
+                        UserCompanyDB.UserStatusID = 1;
                         UserCompanyDB.IsAccepted = true;
 
                         if (add_UserCompany)
@@ -936,7 +937,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         userDB.UserType = 1;
                         _context.Entry(userDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
-                                                
+
                         patientDB.Id = userDB.id;
                         patientDB.SSN = "N/A";
                         _context.Entry(patientDB).State = System.Data.Entity.EntityState.Added;
@@ -945,7 +946,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseDB.PatientId = patientDB.Id;
                         caseDB.LocationId = 0;
                         caseDB.CaseStatusId = 1;
-                        caseDB.CaseTypeId = 1;                        
+                        caseDB.CaseTypeId = 1;
                         _context.Entry(caseDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
@@ -1061,7 +1062,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-               
+
                     if (patient2.PatientFamilyMembers != null)
                     {
                         foreach (var item in patient2.PatientFamilyMembers)
@@ -1143,7 +1144,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == AttorneyCompanyId && p.IsAccepted == true 
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == AttorneyCompanyId && p.IsAccepted == true
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                     .FirstOrDefault();
 
@@ -1233,7 +1234,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //    }
 
                 //    #endregion
-                   
+
 
                 //}
                 //catch (Exception ex) { }

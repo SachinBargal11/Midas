@@ -1004,6 +1004,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId, string objectType)
+        {
+            var objResult = dataAccessManager.GetByObjectIdAndType(objectId, objectType);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByReferringUserId(HttpRequestMessage request, int UserId)
         {
             var objResult = dataAccessManager.GetByReferringUserId(UserId);
@@ -1894,6 +1907,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        
+        public HttpResponseMessage GetProcedureCodeExcludingAssigned(HttpRequestMessage request, int specialtyOrTestId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetProcedureCodeExcludingAssigned(specialtyOrTestId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
     }
 }

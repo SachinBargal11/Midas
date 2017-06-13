@@ -37,7 +37,7 @@ export class DocumentUploadComponent implements OnInit {
   // currentId: number = 0;
   documentTypes: DocumentType[];
   companyId: number = this._sessionStore.session.currentCompany.id;
-  documentType: string;
+  documentType: string = '';
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -59,6 +59,7 @@ export class DocumentUploadComponent implements OnInit {
   @Input() isdownloadTemplate: boolean = false;
   @Output() download: EventEmitter<Document> = new EventEmitter();
   @Input() inputCaseId: number;
+  isDocumentSelected: boolean;
 
   constructor(
     private _fb: FormBuilder,
@@ -146,18 +147,30 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   onBeforeSendEvent(event) {
-    let param: string;
-    if (this.currentId == 2) {
-      if (this.isConsentDocumentOn) {
-        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-      } else {
-        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
-      }
-    } else if (this.currentId == 3) {
-      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+    if (this.isConsentDocumentOn) {
+      this.documentType = "consent";
     }
-    event.xhr.setRequestHeader("inputjson", param);
-    event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+
+    if (this.documentType != "") {
+      let param: string;
+      if (this.currentId == 2) {
+        if (this.isConsentDocumentOn) {
+          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        } else {
+          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        }
+      } else if (this.currentId == 3) {
+        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else if (this.currentId == 1) {
+        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      }
+      event.xhr.setRequestHeader("inputjson", param);
+      event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+    else {
+      this.uploadError.emit(new Error('Please Select document Type'));
+      this.isDocumentSelected = false;
+    }
   }
 
   onFilesUploadComplete(event) {
@@ -166,10 +179,13 @@ export class DocumentUploadComponent implements OnInit {
       return DocumentAdapter.parseResponse(document);
     });
     this.uploadComplete.emit(documents);
+
   }
 
   onFilesUploadError(event) {
-    this.uploadError.emit(new Error('Unable to upload selected files.'));
+    if (this.isDocumentSelected) {
+      this.uploadError.emit(new Error('Unable to upload selected files.'));
+    }
   }
 
   uploadScannedDocuments() {

@@ -44,6 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 usercompanyBO.ID = usercompany.id;
                 usercompanyBO.UserId = usercompany.UserID;
                 usercompanyBO.CompanyId = usercompany.CompanyID;
+                usercompanyBO.UserStatusID = (BO.GBEnums.UserStatu)usercompany.UserStatusID;
                 usercompanyBO.IsAccepted = usercompany.IsAccepted;
 
                 if (usercompany.IsDeleted.HasValue)
@@ -149,7 +150,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
-
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
@@ -277,8 +277,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-
-
         #region Get User Company By ID
         public override Object Get(int id)
         {
@@ -294,7 +292,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get User Company By ID
+        #region Get User Company By UserId
         public override Object GetByUserId(int UserId)
         {
             BO.UserCompany acc_ = Convert<BO.UserCompany, UserCompany>(_context.UserCompanies.Include("User").Include("Company").Where(p => p.UserID == UserId).FirstOrDefault<UserCompany>());

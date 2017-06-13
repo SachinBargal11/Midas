@@ -382,11 +382,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (_context.Companies.Any(o => o.TaxID == prefAncProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+                //if (_context.Companies.Any(o => o.TaxID == prefAncProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
 
                 if (_context.Companies.Any(o => o.Name == prefAncProviderBO.company.Name && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
@@ -404,7 +404,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.User userBO = prefAncProviderBO.user;
                 BO.Role roleBO = prefAncProviderBO.role;
 
-                Company prefMedProvider_CompanyDB = new Company();
+                Company prefAncProvider_CompanyDB = new Company();
                 AddressInfo AddressInfo = new AddressInfo();
                 ContactInfo ContactInfo = new ContactInfo() { CellPhone = ContactInfoBO.CellPhone, EmailAddress = ContactInfoBO.EmailAddress };
 
@@ -414,32 +414,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.ContactInfoes.Add(ContactInfo);
                 _context.SaveChanges();
 
-                prefMedProvider_CompanyDB.Name = prefAncillaryProviderCompanyBO.Name;
-                prefMedProvider_CompanyDB.Status = System.Convert.ToByte(prefAncillaryProviderCompanyBO.Status);
-                prefMedProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefAncillaryProviderCompanyBO.CompanyType);
-                prefMedProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAncillaryProviderCompanyBO.SubsCriptionType);
-                prefMedProvider_CompanyDB.TaxID = prefAncillaryProviderCompanyBO.TaxID;
-                prefMedProvider_CompanyDB.AddressId = AddressInfo.id;
-                prefMedProvider_CompanyDB.ContactInfoID = ContactInfo.id;
-                prefMedProvider_CompanyDB.BlobStorageTypeId = 1;
-                //prefMedProvider_CompanyDB.RegistrationComplete = false;
-                prefMedProvider_CompanyDB.IsDeleted = false;
-                prefMedProvider_CompanyDB.CreateByUserID = prefAncillaryProviderCompanyBO.CreateByUserID;
-                prefMedProvider_CompanyDB.UpdateByUserID = prefAncillaryProviderCompanyBO.UpdateByUserID;
-                prefMedProvider_CompanyDB.CreateDate = DateTime.UtcNow;
+                if (prefAncillaryProviderCompanyBO.SubsCriptionType != null)
+                {
+                    prefAncProvider_CompanyDB.SubscriptionPlanType = System.Convert.ToByte(prefAncillaryProviderCompanyBO.SubsCriptionType);
+                }
+                else
+                {
+                    prefAncProvider_CompanyDB.SubscriptionPlanType = null;
+                }
+                prefAncProvider_CompanyDB.Name = prefAncillaryProviderCompanyBO.Name;
+                prefAncProvider_CompanyDB.Status = System.Convert.ToByte(prefAncillaryProviderCompanyBO.Status);
+                prefAncProvider_CompanyDB.CompanyType = System.Convert.ToByte(prefAncillaryProviderCompanyBO.CompanyType);
+             
+               // prefAncProvider_CompanyDB.TaxID = prefAncillaryProviderCompanyBO.TaxID;
+                prefAncProvider_CompanyDB.AddressId = AddressInfo.id;
+                prefAncProvider_CompanyDB.ContactInfoID = ContactInfo.id;
+                prefAncProvider_CompanyDB.BlobStorageTypeId = 1;
+                prefAncProvider_CompanyDB.CompanyStatusTypeID = 1;
+                prefAncProvider_CompanyDB.IsDeleted = false;
+                prefAncProvider_CompanyDB.CreateByUserID = prefAncillaryProviderCompanyBO.CreateByUserID;
+                prefAncProvider_CompanyDB.UpdateByUserID = prefAncillaryProviderCompanyBO.UpdateByUserID;
+                prefAncProvider_CompanyDB.CreateDate = DateTime.UtcNow;
 
-                _context.Companies.Add(prefMedProvider_CompanyDB);
+                _context.Companies.Add(prefAncProvider_CompanyDB);
                 _context.SaveChanges();
 
                 
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
                 userDB.UserName = userBO.UserName;
-                userDB.UserType = 2;
+                userDB.UserType = 5;
                 userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
                 userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
-                userDB.AddressId = prefMedProvider_CompanyDB.AddressId;
-                userDB.ContactInfoId = prefMedProvider_CompanyDB.ContactInfoID;
+                userDB.AddressId = prefAncProvider_CompanyDB.AddressId;
+                userDB.ContactInfoId = prefAncProvider_CompanyDB.ContactInfoID;
                 userDB.IsDeleted = false;
                 userDB.CreateByUserID = 0;
                 userDB.CreateDate = DateTime.UtcNow;
@@ -448,11 +456,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
               
                 UserCompanyDB.UserID = userDB.id;
-                UserCompanyDB.CompanyID = prefMedProvider_CompanyDB.id;
+                UserCompanyDB.CompanyID = prefAncProvider_CompanyDB.id;
                 UserCompanyDB.IsDeleted = false;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
                 UserCompanyDB.IsAccepted = true;
+                UserCompanyDB.UserStatusID = 1;
 
                 _context.UserCompanies.Add(UserCompanyDB);
                 _context.SaveChanges();
@@ -467,12 +476,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.UserCompanyRoles.Add(UserCompanyRoleDB);
                 _context.SaveChanges();
 
-                prefAncProvider.PrefAncillaryProviderId = prefMedProvider_CompanyDB.id;
+                prefAncProvider.PrefAncillaryProviderId = prefAncProvider_CompanyDB.id;
                 prefAncProvider.CompanyId = companyBO.ID;
                 prefAncProvider.IsCreated = true;
                 prefAncProvider.IsDeleted = false;
-                prefAncProvider.CreateByUserID = prefMedProvider_CompanyDB.CreateByUserID;
-                prefAncProvider.UpdateByUserID = prefMedProvider_CompanyDB.UpdateByUserID;
+                prefAncProvider.CreateByUserID = prefAncProvider_CompanyDB.CreateByUserID;
+                prefAncProvider.UpdateByUserID = prefAncProvider_CompanyDB.UpdateByUserID;
                 prefAncProvider.CreateDate = DateTime.UtcNow;
 
                 _context.PreferredAncillaryProviders.Add(prefAncProvider);

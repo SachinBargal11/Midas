@@ -6,6 +6,7 @@ import { CasesListComponent } from './components/cases-list';
 import { ShellComponent } from '../../commons/shell-component';
 import { CaseShellComponent } from './components/cases-shell';
 import { CaseBasicComponent } from './components/case-basic';
+import { CaseBasicLabelComponent } from './components/case-basic-label';
 import { ReferringOfficeListComponent } from './components/referring-office-list';
 import { PatientVisitListComponent } from './components/patient-visits-list';
 import { PatientVisitListShellComponent } from './components/patient-visit-list-shell';
@@ -104,6 +105,14 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'basic',
                         component: CaseBasicComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Basic'
+                        }
+                    },
+                    {
+                        path: 'basicLabel',
+                        component: CaseBasicLabelComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Basic'

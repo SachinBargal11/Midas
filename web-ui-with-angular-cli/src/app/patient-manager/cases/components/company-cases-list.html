@@ -14,7 +14,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-</div>
+    </div>
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [responsive]="true">-->
@@ -83,15 +83,18 @@
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
-            <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
-            <!--<div *ngIf="case.isSessionCompany(sessionStore.session.currentCompany.id)">-->
             <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id) && case.getInboundReferral(sessionStore.session.currentCompany.id)">
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
+                <!--<a *ngIf="case.createdByCompanyId == sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
+                <!--<a *ngIf="case.createdByCompanyId != sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>-->
+                <!--<a routerLink="{{case.id}}/basicLabel"></a>-->
             </div>
-            <!--</div>-->
-            <!--<div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id) || !case.isConsentReceived(sessionStore.session.currentCompany.id)">-->
-            <div *ngIf="case.isSessionCompany(sessionStore.session.currentCompany.id) ">
+            <!--<div *ngIf="case.isSessionCompany(sessionStore.session.currentCompany.id) ">-->
+            <div *ngIf="case.createdByCompanyId == sessionStore.session.currentCompany.id">
                 <a title="Edit" routerLink="{{case.patient.user.id}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            </div>
+            <div *ngIf="case.createdByCompanyId != sessionStore.session.currentCompany.id">
+                <a title="Edit" routerLink="{{case.patient.user.id}}/{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
         </ng-template>
     </p-column>

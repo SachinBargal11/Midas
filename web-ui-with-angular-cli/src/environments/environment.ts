@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
-  SERVICE_BASE_URL: 'http://medicalproviderapi.codearray.tk/midasapi'
+  // SERVICE_BASE_URL: 'http://medicalproviderapi.codearray.tk/midasapi'
+  SERVICE_BASE_URL: 'http://medicalproviderdevapi.codearray.tk/midasapi'
   // SERVICE_BASE_URL: 'http://localhost:65184/midasapi'
 };

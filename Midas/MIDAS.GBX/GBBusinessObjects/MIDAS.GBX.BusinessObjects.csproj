@@ -121,6 +121,7 @@
     <Compile Include="PatientVisit\PatientVisit2.cs" />
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Patient\PatientType.cs" />
+    <Compile Include="ProcedureCodeCompanyMapping\ProcedureCodeCompanyMapping.cs" />
     <Compile Include="ProcedureCode\ProcedureCode.cs" />
     <Compile Include="ReferralProcedureCode\ReferralProcedureCode.cs" />
     <Compile Include="Referral\MidasDocument.cs" />

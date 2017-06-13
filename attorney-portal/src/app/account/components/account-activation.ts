@@ -61,7 +61,15 @@ export class AccountActivationComponent implements OnInit {
                         resultForUpdate.subscribe(
                             (companyMaster: Signup) => {
                                 this.companyMaster = companyMaster.originalResponse;
-                                if (this.companyMaster.signup.company.companyStatusTypeId == 2) {
+                                if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
+                                    if (this.user.userStatusID = 1) {
+                                        this.isUser = true;
+                                    }
+                                    else {
+                                        this._router.navigate(['/account/login']);
+                                    }
+                                }
+                                else if (this.companyMaster.signup.company.companyStatusTypeId == 2) {
                                     this.isUser = true;
                                 }
                                 // else if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
@@ -170,7 +178,6 @@ export class AccountActivationComponent implements OnInit {
     }
 
     updateCompany() {
-        debugger;
         this.isPassChangeInProgress = true;
         let requestData;
         requestData = new Signup({
@@ -198,7 +205,6 @@ export class AccountActivationComponent implements OnInit {
         this._authenticationService.updateCompany(requestData)
             .subscribe(
             (response) => {
-                debugger;
                 this._notificationsService.success('Success', 'Your password has been set successfully!');
                 setTimeout(() => {
                     this._router.navigate(['/account/login']);

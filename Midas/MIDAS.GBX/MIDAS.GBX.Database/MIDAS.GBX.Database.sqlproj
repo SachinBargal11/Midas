@@ -142,6 +142,7 @@
     <Build Include="Tables\Latest Tables\GeneralSettings.sql" />
     <Build Include="Tables\Latest Tables\PreferredAttorneyProvider.sql" />
     <Build Include="Tables\Latest Tables\CaseCompanyConsentDocuments.sql" />
+    <Build Include="Tables\Latest Tables\PreferredAncillaryProvider.sql" />
     <Build Include="Tables\Latest Tables\AppMessageQueue.sql" />
     <Build Include="Tables\Latest Tables\QueueType.sql" />
     <Build Include="Tables\Latest Tables\SMSQueue.sql" />

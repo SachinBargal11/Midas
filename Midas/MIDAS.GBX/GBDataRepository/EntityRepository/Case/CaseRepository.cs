@@ -40,7 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.CaseStatusId = cases.CaseStatusId;
-            caseBO.AttorneyId = cases.AttorneyId;
+            //caseBO.AttorneyId = cases.AttorneyId;
 
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
@@ -192,55 +192,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.Referrals = BOListReferral;
             }
 
-            if(cases.Company != null)
-            {
-                BO.Company boCompany = new BO.Company();
+            //if(cases.Company != null)
+            //{
+            //    BO.Company boCompany = new BO.Company();
 
-                boCompany.ID = cases.Company.id;
-                boCompany.Name = cases.Company.Name;
-                boCompany.TaxID = cases.Company.TaxID;
-                boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company.Status;
-                boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company.CompanyType;
-                if (cases.Company.SubscriptionPlanType != null)
-                {
-                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
-                }
-                else
-                {
-                    boCompany.SubsCriptionType = null;
-                }
-                //boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
+            //    boCompany.ID = cases.Company.id;
+            //    boCompany.Name = cases.Company.Name;
+            //    boCompany.TaxID = cases.Company.TaxID;
+            //    boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company.Status;
+            //    boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company.CompanyType;
+            //    if (cases.Company.SubscriptionPlanType != null)
+            //    {
+            //        boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
+            //    }
+            //    else
+            //    {
+            //        boCompany.SubsCriptionType = null;
+            //    }
+            //    //boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
 
-                caseBO.Attorney = boCompany;
-            }
+            //    caseBO.Attorney = boCompany;
+            //}
 
-            if (cases.Company1 != null)
-            {
-                BO.Company boCompany = new BO.Company();
+            //if (cases.Company1 != null)
+            //{
+            //    BO.Company boCompany = new BO.Company();
 
-                boCompany.ID = cases.Company1.id;
-                boCompany.Name = cases.Company1.Name;
-                boCompany.TaxID = cases.Company1.TaxID;
-                boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company1.Status;
-                boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company1.CompanyType;
-                if(cases.Company1.SubscriptionPlanType != null)
-                {
-                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company1.SubscriptionPlanType;
-                }
-                else
-                {
-                    boCompany.SubsCriptionType = null;
-                }
+            //    boCompany.ID = cases.Company1.id;
+            //    boCompany.Name = cases.Company1.Name;
+            //    boCompany.TaxID = cases.Company1.TaxID;
+            //    boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company1.Status;
+            //    boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company1.CompanyType;
+            //    if(cases.Company1.SubscriptionPlanType != null)
+            //    {
+            //        boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company1.SubscriptionPlanType;
+            //    }
+            //    else
+            //    {
+            //        boCompany.SubsCriptionType = null;
+            //    }
                 
-                //boCompany.RegistrationComplete = cases.Company1.RegistrationComplete;
+            //    //boCompany.RegistrationComplete = cases.Company1.RegistrationComplete;
 
-                caseBO.CreatedByCompany = boCompany;
-            }
+            //    caseBO.CreatedByCompany = boCompany;
+            //}
 
-            caseBO.AttorneyId = cases.AttorneyId;
+            //caseBO.AttorneyId = cases.AttorneyId;
             //caseBO.Attorney = cases.Attorney;
             caseBO.caseSource = cases.CaseSource;
-            caseBO.CreatedByCompanyId = cases.CreatedByCompanyId;
+            //caseBO.CreatedByCompanyId = cases.CreatedByCompanyId;
             //caseBO.CreatedByCompany = cases.CreatedByCompany;
 
             return (T)(object)caseBO;
@@ -323,7 +323,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
                         caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
                         caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
-                        caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
+                       // caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
 
                         caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
                         caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
@@ -345,11 +345,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         //{
                         //    caseWithUserAndPatient.caseSource = eachCase.caseSource;
                         //}
-                        caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
-                        caseWithUserAndPatient.Attorney = eachCase.Attorney;
+                        //caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
+                        //caseWithUserAndPatient.Attorney = eachCase.Attorney;
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
-                        caseWithUserAndPatient.CreatedByCompanyId = eachCase.CreatedByCompanyId;
-                        caseWithUserAndPatient.CreatedByCompany = eachCase.CreatedByCompany;
+                        //caseWithUserAndPatient.CreatedByCompanyId = eachCase.CreatedByCompanyId;
+                        //caseWithUserAndPatient.CreatedByCompany = eachCase.CreatedByCompany;
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
@@ -560,9 +560,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral2")
-                                    .Include("Company")
-                                    .Include("Company1")
+                                    .Include("Referral2")                                    
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -758,12 +756,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //{
                     //    caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
                     //}
-                    caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
+                    //caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
                     caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
 
                     if (Add_caseDB == true)
                     {
-                        caseDB.CreatedByCompanyId = caseBO.CreatedByCompanyId; // This column need to be set only once while adding the record.
+                        //caseDB.CreatedByCompanyId = caseBO.CreatedByCompanyId; // This column need to be set only once while adding the record.
 
                         caseDB = _context.Cases.Add(caseDB);
                     }
@@ -813,9 +811,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("CompanyCaseConsentApprovals")
                                        .Include("CaseCompanyConsentDocuments")
                                        .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                       .Include("Referral2")
-                                       .Include("Company")
-                                       .Include("Company1")
+                                       .Include("Referral2")                                     
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
 
                 try
@@ -828,20 +824,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (CurrentUser != null)
                         {
-                            if (CurrentUser.UserType == 3)
+                            if (CurrentUser.UserType == 3) //UserType = 3 - Attorney
                             {
+                                //Get patient user associated with the case
+                                var patient = _context.Users
+                                    .Where(p => p.id == caseDB.PatientId
+                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                                var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                                 //var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
                                 //var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == medicalprovider && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                                 //var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                                var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+                                //var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
 
-                                var medicalprovider_user = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                //var medicalprovider_user = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                var medicalprovider_userdetail = (from cm in caseDB.CaseCompanyMappings
+                                                                  join uc in _context.UserCompanies on cm.CompanyId equals uc.CompanyID
+                                                                  join u in _context.Users on uc.UserID equals u.id
+                                                                  where cm.CaseId == caseDB.Id
+                                                                  && cm.IsOriginator == false
+                                                                  && cm.Company.CompanyType == 1 // CompanyType-1 =  Medical Provider
+                                                                  && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
+                                                                  && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
+                                                                  && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
+                                                                  && (u.UserType == 2 || u.UserType == 4) //UserType -2 = Medical Staff, 4- Doctor
+                                                                  select new
+                                                                  {
+                                                                      Email = u.UserName,
+                                                                      u.FirstName,
+                                                                      u.LastName
+                                                                  }).FirstOrDefault();
 
-
-                                if (medicalprovider_user != null && patient != null)
+                                if (medicalprovider_userdetail != null && patient != null)
                                 {
 
                                     var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplateUpdate".ToUpper()).FirstOrDefault();
@@ -860,9 +874,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg1 = medicalProviderTemplate.EmailBody;
                                         string subject1 = medicalProviderTemplate.EmailSubject;
 
-                                        string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, LoginLink1);
+                                        string message1 = string.Format(msg1, medicalprovider_userdetail.FirstName, CurrentUser.FirstName, LoginLink1);
 
-                                        BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                                        BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_userdetail.Email, Subject = subject1, Body = message1 };
                                         objEmail1.SendMail();
                                         #endregion
 
@@ -871,7 +885,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
-                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_userdetail.FirstName, LoginLink2);
 
                                         BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                         objEmail2.SendMail();
@@ -885,18 +899,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                             }
-                            else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
+                            else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4) //UserType = 2 -- Medical Provider Staff, UserType = 4 -- Doctor
                             {
 
-                                var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+                                //var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
 
-                                var attorney = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                //var attorney = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                                 var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                var attorneyProviderder_userdetail = (from cm in caseDB.CaseCompanyMappings
+                                                                      join uc in _context.UserCompanies on cm.CompanyId equals uc.CompanyID
+                                                                      join u in _context.Users on uc.UserID equals u.id
+                                                                      where cm.CaseId == caseDB.Id
+                                                                      && cm.IsOriginator == false
+                                                                      && cm.Company.CompanyType == 2 // CompanyType-2 =  Attorney provider
+                                                                      && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
+                                                                      && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
+                                                                      && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
+                                                                      && (u.UserType == 3) //UserType -3 = staff 
+                                                                      select new
+                                                                      {
+                                                                          Email = u.UserName,
+                                                                          u.FirstName,
+                                                                          u.LastName
+                                                                      }).FirstOrDefault();
 
 
-
-                                if (attorney != null && patient != null)
+                                if (attorneyProviderder_userdetail != null && patient != null)
                                 {
 
                                     //var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplate".ToUpper()).FirstOrDefault();
@@ -913,9 +942,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg = attorneyTemplate.EmailBody;
                                         string subject = attorneyTemplate.EmailSubject;
 
-                                        string message = string.Format(msg, attorney.FirstName, CurrentUser.FirstName, LoginLink);
+                                        string message = string.Format(msg, attorneyProviderder_userdetail.FirstName, CurrentUser.FirstName, LoginLink);
 
-                                        BO.Email objEmail = new BO.Email { ToEmail = attorney.UserName, Subject = subject, Body = message };
+                                        BO.Email objEmail = new BO.Email { ToEmail = attorneyProviderder_userdetail.Email, Subject = subject, Body = message };
                                         objEmail.SendMail();
                                         #endregion
 
@@ -924,7 +953,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
-                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorney.FirstName, LoginLink2);
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorneyProviderder_userdetail.FirstName, LoginLink2);
 
                                         BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                         objEmail2.SendMail();
@@ -954,12 +983,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 //var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == medicalprovider && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                                 //var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                                var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+                                //var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
 
-                                var medicalprovider_user = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                //var medicalprovider_user = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
 
-                                if (medicalprovider_user != null && patient != null)
+                                var medicalprovider_userdetail = (from cm in caseDB.CaseCompanyMappings
+                                                                  join uc in _context.UserCompanies on cm.CompanyId equals uc.CompanyID
+                                                                  join u in _context.Users on uc.UserID equals u.id
+                                                                  where cm.CaseId == caseDB.Id
+                                                                  && cm.IsOriginator == false
+                                                                  && cm.Company.CompanyType == 1 // CompanyType-1 =  Medical Provider
+                                                                  && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
+                                                                  && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
+                                                                  && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
+                                                                  && (u.UserType == 2 || u.UserType == 4) //UserType -2 = Medical Staff, 4- Doctor
+                                                                  select new
+                                                                  {
+                                                                      Email = u.UserName,
+                                                                      u.FirstName,
+                                                                      u.LastName
+                                                                  }).FirstOrDefault();
+
+                                if (medicalprovider_userdetail != null && patient != null)
                                 {
 
                                     var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplate".ToUpper()).FirstOrDefault();
@@ -978,9 +1024,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg1 = medicalProviderTemplate.EmailBody;
                                         string subject1 = medicalProviderTemplate.EmailSubject;
 
-                                        string message1 = string.Format(msg1, medicalprovider_user.FirstName, CurrentUser.FirstName, LoginLink1);
+                                        string message1 = string.Format(msg1, medicalprovider_userdetail.FirstName, CurrentUser.FirstName, LoginLink1);
 
-                                        BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_user.UserName, Subject = subject1, Body = message1 };
+                                        BO.Email objEmail1 = new BO.Email { ToEmail = medicalprovider_userdetail.Email, Subject = subject1, Body = message1 };
                                         objEmail1.SendMail();
                                         #endregion
 
@@ -989,7 +1035,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
-                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_user.FirstName, LoginLink2);
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, medicalprovider_userdetail.FirstName, LoginLink2);
 
                                         BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                         objEmail2.SendMail();
@@ -1006,15 +1052,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             else if (CurrentUser.UserType == 2 || CurrentUser.UserType == 4)
                             {
 
-                                var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
+                                //var userId = _context.UserCompanies.Where(p => p.CompanyID == caseDB.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
 
-                                var attorney = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                                //var attorney = _context.Users.Where(p => userId.Contains(p.id) && p.UserType == 3 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                                 var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
+                                var attorneyProviderder_userdetail = (from cm in caseDB.CaseCompanyMappings
+                                                                      join uc in _context.UserCompanies on cm.CompanyId equals uc.CompanyID
+                                                                      join u in _context.Users on uc.UserID equals u.id
+                                                                      where cm.CaseId == caseDB.Id
+                                                                      && cm.IsOriginator == false
+                                                                      && cm.Company.CompanyType == 2 // CompanyType-2 =  Attorney provider
+                                                                      && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
+                                                                      && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
+                                                                      && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
+                                                                      && (u.UserType == 3) //UserType -3 = staff 
+                                                                      select new
+                                                                      {
+                                                                          Email = u.UserName,
+                                                                          u.FirstName,
+                                                                          u.LastName
+                                                                      }).FirstOrDefault();
 
-
-                                if (attorney != null && patient != null)
+                                if (attorneyProviderder_userdetail != null && patient != null)
                                 {
 
                                     //var medicalProviderTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "MedicalProviderTemplate".ToUpper()).FirstOrDefault();
@@ -1031,9 +1092,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg = attorneyTemplate.EmailBody;
                                         string subject = attorneyTemplate.EmailSubject;
 
-                                        string message = string.Format(msg, attorney.FirstName, CurrentUser.FirstName, LoginLink);
+                                        string message = string.Format(msg, attorneyProviderder_userdetail.FirstName, CurrentUser.FirstName, LoginLink);
 
-                                        BO.Email objEmail = new BO.Email { ToEmail = attorney.UserName, Subject = subject, Body = message };
+                                        BO.Email objEmail = new BO.Email { ToEmail = attorneyProviderder_userdetail.Email, Subject = subject, Body = message };
                                         objEmail.SendMail();
                                         #endregion
 
@@ -1042,7 +1103,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
-                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorney.FirstName, LoginLink2);
+                                        string message2 = string.Format(msg2, patient.FirstName, CurrentUser.FirstName, attorneyProviderder_userdetail.FirstName, LoginLink2);
 
                                         BO.Email objEmail2 = new BO.Email { ToEmail = patient.UserName, Subject = subject2, Body = message2 };
                                         objEmail2.SendMail();

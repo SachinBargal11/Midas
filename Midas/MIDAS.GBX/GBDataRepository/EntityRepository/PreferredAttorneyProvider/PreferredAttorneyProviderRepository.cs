@@ -255,11 +255,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (string.IsNullOrEmpty(prefAttProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+                //if (string.IsNullOrEmpty(prefAttProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
 
                 if (_context.Companies.Any(o => o.Name == prefAttProviderBO.company.Name && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
@@ -303,8 +303,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 prefAttProvider_CompanyDB.AddressId = AddressInfo.id;
                 prefAttProvider_CompanyDB.ContactInfoID = ContactInfo.id;
                 prefAttProvider_CompanyDB.BlobStorageTypeId = 1;
-                prefAttProvider_CompanyDB.CompanyStatusTypeID = 1;
-                prefAttProvider_CompanyDB.IsDeleted = false;
+                prefAttProvider_CompanyDB.CompanyStatusTypeID = 1; // CompanyStatusTypeID = 1 -- RegistrationImcomplete
+                prefAttProvider_CompanyDB.IsDeleted = prefAttProviderCompanyBO.IsDeleted;
                 prefAttProvider_CompanyDB.CreateByUserID = prefAttProviderCompanyBO.CreateByUserID;
                 prefAttProvider_CompanyDB.UpdateByUserID = prefAttProviderCompanyBO.UpdateByUserID;
                 prefAttProvider_CompanyDB.CreateDate = DateTime.UtcNow;
@@ -331,6 +331,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefAttProvider_CompanyDB.id;
+                UserCompanyDB.UserStatusID = 1;
                 UserCompanyDB.IsDeleted = false;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
@@ -443,43 +444,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                     }
                     #endregion
-
-                    //var userId = _context.UserCompanies.Where(p => p.CompanyID == prefAttProvider.PrefAttorneyProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).ToList();
-
-                    //var userBO = _context.Users.Where(p => userId.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-
-                    //if (userBO != null)
-                    //{
-                    //    var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PrefAttorneyProviderCreated".ToUpper()).FirstOrDefault();
-                    //    if (mailTemplateDB == null)
-                    //    {
-                    //        return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //    else
-                    //    {
-                    //        #region Insert Invitation
-                    //        Invitation invitationDB = new Invitation();
-                    //        invitationDB.User = userDB;
-
-                    //        invitationDB_UniqueID = Guid.NewGuid();
-                    //        invitationDB.UniqueID = invitationDB_UniqueID;
-                    //        invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
-                    //        invitationDB.CreateDate = DateTime.UtcNow;
-                    //        invitationDB.CreateByUserID = userDB.id;
-                    //        _context.Invitations.Add(invitationDB);
-                    //        _context.SaveChanges();
-                    //        #endregion
-
-                    //        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                    //        string msg = mailTemplateDB.EmailBody;
-                    //        string subject = mailTemplateDB.EmailSubject;
-
-                    //        string message = string.Format(msg, userBO.FirstName, userBO.UserName, VerificationLink);
-
-                    //        BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = subject, Body = message };
-                    //        objEmail.SendMail();
-                    //    }
-                    //}
                 }
                 catch (Exception ex) { }
             }
@@ -564,12 +528,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (string.IsNullOrEmpty(prefAttProviderBO.company.TaxID) == false &&  _context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && o.id != prefAttProviderBO.company.ID
-                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+                //if (string.IsNullOrEmpty(prefAttProviderBO.company.TaxID) == false &&  _context.Companies.Any(o => o.TaxID == prefAttProviderBO.company.TaxID && o.id != prefAttProviderBO.company.ID
+                //    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
 
                 if (_context.Companies.Any(o => o.Name == prefAttProviderBO.company.Name && o.id != prefAttProviderBO.company.ID
                     && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
@@ -611,8 +575,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     prefAttProvider_CompanyDB.SubscriptionPlanType = null;
                 }
                 prefAttProvider_CompanyDB.TaxID = prefAttProviderCompanyBO.TaxID;
-                prefAttProvider_CompanyDB.AddressId = prefAttProviderCompanyBO.AddressInfo.ID;
-                prefAttProvider_CompanyDB.ContactInfoID = prefAttProviderCompanyBO.ContactInfo.ID;
+                //prefAttProvider_CompanyDB.AddressId = prefAttProviderCompanyBO.AddressInfo.ID;
+                prefAttProvider_CompanyDB.ContactInfoID = ContactInfoBO.ID;
                 prefAttProvider_CompanyDB.CompanyStatusTypeID = System.Convert.ToByte(prefAttProviderCompanyBO.CompanyStatusTypeID);
                 prefAttProvider_CompanyDB.IsDeleted = false;
                 prefAttProvider_CompanyDB.UpdateByUserID = 0;
@@ -649,8 +613,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
-                userDB.UserName = userBO.UserName;
-                userDB.UserType = 2;
+                userDB.UserType = 3;
                 userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
                 userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
                 userDB.AddressId = prefAttProvider_CompanyDB.AddressId;

@@ -81,7 +81,7 @@ export class SessionStore {
             this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
                 let accessToken = 'bearer ' + data.access_token;
                 // let tokenExpiresAt = moment().add(data.expires_in - 10, 'seconds');
-                let tokenExpiresAt = moment().add(20, 'seconds');
+                let tokenExpiresAt = moment().add(3600, 'seconds');
                 this._authenticationService.authenticate(userId, password, forceLogin, accessToken, tokenExpiresAt).subscribe((account: Account) => {
                     if (!forceLogin) {
                         window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));

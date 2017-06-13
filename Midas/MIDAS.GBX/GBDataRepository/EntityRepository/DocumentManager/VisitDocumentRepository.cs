@@ -57,6 +57,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             docInfo.DocumentId = midasdoc.Id;
             docInfo.DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName;
             docInfo.DocumentName = midasdoc.DocumentName;
+            docInfo.DocumentType = errMessage.Equals(string.Empty) ? midasdoc.DocumentType : string.Empty;
             docInfo.id = objectId;
 
             return (Object)docInfo;

@@ -390,11 +390,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (string.IsNullOrEmpty(prefMedProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+                //if (string.IsNullOrEmpty(prefMedProviderBO.company.TaxID) == false && _context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
 
                 if (_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
                 {
@@ -465,6 +465,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserCompanyDB.UserID = userDB.id;
                 UserCompanyDB.CompanyID = prefMedProvider_CompanyDB.id;
                 UserCompanyDB.IsDeleted = false;
+                UserCompanyDB.UserStatusID = 1;
                 UserCompanyDB.CreateByUserID = 0;
                 UserCompanyDB.CreateDate = DateTime.UtcNow;
                 UserCompanyDB.IsAccepted = true;
@@ -521,15 +522,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (CurrentUser.UserType == 3)
                     {
-                        //var patient = _context.Users.Where(p => p.id == caseDB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                       // var medicalprovider = _context.CaseCompanyMappings.Where(p => p.CaseId == caseDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CompanyId).FirstOrDefault();
                         var medicalprovider_UserId = _context.UserCompanies.Where(p => p.CompanyID == prefMedProvider.PrefMedProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID).FirstOrDefault();
                         var medicalprovider_user = _context.Users.Where(p => p.id == medicalprovider_UserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                         if (medicalprovider_user != null )
                         {
                             var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByAttorney".ToUpper()).FirstOrDefault();
-                            //var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
-                            //var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByAttorney".ToUpper()).FirstOrDefault();
                             if (PreferredMedicalAddByAttorney == null )
                             {
                                 return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -645,12 +642,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "No Record Found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                if (_context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && o.id != prefMedProviderBO.company.ID
-                    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+                //if (_context.Companies.Any(o => o.TaxID == prefMedProviderBO.company.TaxID && o.id != prefMedProviderBO.company.ID
+                //    && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                //{
+                //    dbContextTransaction.Rollback();
+                //    return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
 
                 if (_context.Companies.Any(o => o.Name == prefMedProviderBO.company.Name && o.id != prefMedProviderBO.company.ID
                     && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
@@ -693,8 +690,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 prefMedProvider_CompanyDB.TaxID = prefMedProviderCompanyBO.TaxID;
-                prefMedProvider_CompanyDB.AddressId = prefMedProviderCompanyBO.AddressInfo.ID;
-                prefMedProvider_CompanyDB.ContactInfoID = prefMedProviderCompanyBO.ContactInfo.ID;
+                //prefMedProvider_CompanyDB.AddressId = prefMedProviderCompanyBO.AddressInfo.ID;
+                prefMedProvider_CompanyDB.ContactInfoID = ContactInfoBO.ID;
                 prefMedProvider_CompanyDB.CompanyStatusTypeID = System.Convert.ToByte(prefMedProviderCompanyBO.CompanyStatusTypeID);
                 prefMedProvider_CompanyDB.IsDeleted = prefMedProviderCompanyBO.IsDeleted;
                 prefMedProvider_CompanyDB.CreateByUserID = prefMedProviderCompanyBO.CreateByUserID;
@@ -732,7 +729,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
-                userDB.UserName = userBO.UserName;
                 userDB.UserType = 2;
                 userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
                 userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));

@@ -49,8 +49,9 @@
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
-            <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
-            <a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
+            <a *ngIf="case.createdByCompanyId == sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <a *ngIf="case.createdByCompanyId != sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
         </ng-template>
     </p-column>
 </p-dataTable>
