@@ -22,11 +22,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             context.Configuration.ProxyCreationEnabled = false;
         }
 
+        #region Entity Conversion
+        public override T Convert<T, U>(U entity)
+        {
+            EMailQueue EMailQueueDB = entity as EMailQueue;
+
+            if (EMailQueueDB == null)
+                return default(T);
+
+            BO.EMailQueue EMailSendBO = new BO.EMailQueue();
+
+            EMailSendBO.ID = EMailQueueDB.Id;
+            EMailSendBO.AppId = EMailQueueDB.AppId;
+            EMailSendBO.FromEmail = EMailQueueDB.FromEmail;
+            EMailSendBO.ToEmail = EMailQueueDB.ToEmail;
+            EMailSendBO.CcEmail = EMailQueueDB.CcEmail;
+            EMailSendBO.BccEmail = EMailQueueDB.BccEmail;
+            EMailSendBO.EMailSubject = EMailQueueDB.EMailSubject;
+            EMailSendBO.EMailBody = EMailQueueDB.EMailBody;
+            EMailSendBO.CreatedDate = EMailQueueDB.CreatedDate;
+            EMailSendBO.DeliveryDate = EMailQueueDB.DeliveryDate;
+            EMailSendBO.NumberOfAttempts = EMailQueueDB.NumberOfAttempts;
+            EMailSendBO.ResultObject = EMailQueueDB.ResultObject;
+
+            return (T)(object)EMailSendBO;
+        }
+        #endregion
+
         #region Send EMail List From Queue
         public override object SendListFromQueue<T>(List<T> entity)
         {
             List<BO.EMailSend> EMailListSendBO = (List<BO.EMailSend>)(object)entity;
-            List<BO.EMailSend> EMailListSendBOResult = new List<BO.EMailSend>();
+            List<BO.EMailQueue> EMailListQueueBOResult = new List<BO.EMailQueue>();
 
             foreach (var eachEMail in EMailListSendBO)
             {
@@ -72,12 +99,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (EMailQueueDB != null)
                 {
-                    BO.EMailSend result = Convert<BO.EMailSend, EMailQueue>(EMailQueueDB);
-                    EMailListSendBOResult.Add(result);
+                    BO.EMailQueue result = Convert<BO.EMailQueue, EMailQueue>(EMailQueueDB);
+                    EMailListQueueBOResult.Add(result);
                 }                
             }
 
-            return (object)EMailListSendBOResult;
+            return (object)EMailListQueueBOResult;
         }
         #endregion
 
