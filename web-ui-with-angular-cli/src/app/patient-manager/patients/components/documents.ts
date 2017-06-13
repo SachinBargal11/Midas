@@ -136,85 +136,85 @@ export class DocumentsComponent implements OnInit {
     }
 
 
-    // downloadPdf(documentId) {
-    //     this._progressBarService.show();
-    //     this._casesStore.downloadDocumentForm(this.caseId, documentId)
-    //         .subscribe(
-    //         (response) => {
-    //             // this.document = document
-    //             // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-    //         },
-    //         (error) => {
-    //             let errString = 'Unable to download';
-    //             let notification = new Notification({
-    //                 'messages': 'Unable to download',
-    //                 'type': 'ERROR',
-    //                 'createdAt': moment()
-    //             });
-    //             this._progressBarService.hide();
-    //             //  this._notificationsStore.addNotification(notification);
-    //             this._notificationsService.error('Oh No!', 'Unable to download');
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    //     this._progressBarService.hide();
-    // }
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._casesStore.downloadDocumentForm(this.patientId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
 
-//     deleteDocument() {
-//         if (this.selectedDocumentList.length > 0) {
-//             this.confirmationService.confirm({
-//                 message: 'Do you want to delete this record?',
-//                 header: 'Delete Confirmation',
-//                 icon: 'fa fa-trash',
-//                 accept: () => {
+    deleteDocument() {
+        if (this.selectedDocumentList.length > 0) {
+            this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
 
-//                     this.selectedDocumentList.forEach(currentCase => {
-//                         this._progressBarService.show();
-//                         this.isDeleteProgress = true;
-//                         this._casesStore.deleteDocument(currentCase)
-//                             .subscribe(
-//                             (response) => {
-//                                 let notification = new Notification({
-//                                     'title': 'Record deleted successfully!',
-//                                     'type': 'SUCCESS',
-//                                     'createdAt': moment()
+                    this.selectedDocumentList.forEach(currentPatient => {
+                        this._progressBarService.show();
+                        this.isDeleteProgress = true;
+                        this._patientStore.deleteDocument(currentPatient)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Record deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
 
-//                                 });
-//                                 this.getDocuments();
-//                                 this._notificationsStore.addNotification(notification);
-//                                 this.selectedDocumentList = [];
-//                             },
-//                             (error) => {
-//                                 let errString = 'Unable to delete record';
-//                                 let notification = new Notification({
-//                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-//                                     'type': 'ERROR',
-//                                     'createdAt': moment()
-//                                 });
-//                                 this.selectedDocumentList = [];
-//                                 this._progressBarService.hide();
-//                                 this.isDeleteProgress = false;
-//                                 this._notificationsStore.addNotification(notification);
-//                                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-//                             },
-//                             () => {
-//                                 this._progressBarService.hide();
-//                                 this.isDeleteProgress = false;
-//                             });
-//                     });
-//                 }
-//             });
-//         } else {
-//             let notification = new Notification({
-//                 'title': 'select record to delete',
-//                 'type': 'ERROR',
-//                 'createdAt': moment()
-//             });
-//             this._notificationsStore.addNotification(notification);
-//             this._notificationsService.error('Oh No!', 'select record to delete');
-//         }
-//     }
+                                });
+                                this.getDocuments();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedDocumentList = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete record';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedDocumentList = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
+                    });
+                }
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
+    }
 }
 
 export interface TwainSource {

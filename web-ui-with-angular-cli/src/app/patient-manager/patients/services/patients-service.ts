@@ -238,7 +238,6 @@ export class PatientsService {
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
 
-
     assignPatientToAttorney(currentPatientId: Number, caseId: Number, attorneyId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Patient/associatePatientWithAttorneyCompany/' + currentPatientId + '/' + caseId + '/' + attorneyId, {
@@ -273,5 +272,22 @@ export class PatientsService {
         });
         return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
     }
+
+     deleteDocument(patientDocument: PatientDocument): Observable<PatientDocument> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/fileupload/delete/' + patientDocument.patientId  + '/' + patientDocument.document.documentId,  {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedPatientDocument: PatientDocument = null;
+                    parsedPatientDocument = PatientDocumentAdapter.parseResponse(data);
+                    resolve(parsedPatientDocument);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientDocument>>Observable.from(promise);
+    }
+
 }
 
