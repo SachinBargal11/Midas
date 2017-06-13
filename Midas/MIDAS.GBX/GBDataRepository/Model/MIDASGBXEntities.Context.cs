@@ -71,6 +71,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
         public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
+        public virtual DbSet<PatientDocument> PatientDocuments { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
@@ -111,6 +112,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<AppMessageQueue> AppMessageQueues { get; set; }
+        public virtual DbSet<EMailQueue> EMailQueues { get; set; }
         public virtual DbSet<QueueType> QueueTypes { get; set; }
         public virtual DbSet<SMSConfiguration> SMSConfigurations { get; set; }
         public virtual DbSet<SMSQueue> SMSQueues { get; set; }

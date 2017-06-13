@@ -266,6 +266,9 @@
     <Compile Include="Model\DocumentNodeObjectMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\EMailQueue.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Gender.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -327,6 +330,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientAccidentInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientDocument.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientEmpInfo.cs">
