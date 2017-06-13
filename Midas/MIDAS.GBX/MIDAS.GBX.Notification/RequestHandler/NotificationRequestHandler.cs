@@ -71,9 +71,9 @@ namespace MIDAS.GBX.Notification.RequestHandler
             }
         }
 
-        public HttpResponseMessage SendSMSListFromQueue(HttpRequestMessage request, List<T> smsObject)
+        public HttpResponseMessage SendListFromQueue(HttpRequestMessage request, List<T> notificationObject)
         {
-            var objResult = notificationManager.SendSMSListFromQueue(smsObject);
+            var objResult = notificationManager.SendListFromQueue(notificationObject);
 
             try
             {

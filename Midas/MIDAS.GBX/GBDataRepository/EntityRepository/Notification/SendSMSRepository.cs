@@ -91,7 +91,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Send SMS List From Queue
-        public override object SendSMSListFromQueue<T>(List<T> entity)
+        public override object SendListFromQueue<T>(List<T> entity)
         {
             List<BO.SMSSend> SMSListSendBO = (List<BO.SMSSend>)(object)entity;
             List<BO.SMSSend> SMSListSendBOResult = new List<BO.SMSSend>();

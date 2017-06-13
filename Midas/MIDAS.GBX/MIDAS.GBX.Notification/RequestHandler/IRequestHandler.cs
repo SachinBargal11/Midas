@@ -13,6 +13,6 @@ namespace MIDAS.GBX.Notification.RequestHandler
         HttpResponseMessage ReadFromQueue(HttpRequestMessage request);
 
         HttpResponseMessage SendSMSFromQueue(HttpRequestMessage request, T smsObject);
-        HttpResponseMessage SendSMSListFromQueue(HttpRequestMessage request, List<T> smsObject);
+        HttpResponseMessage SendListFromQueue(HttpRequestMessage request, List<T> notificationObject);
     }
 }

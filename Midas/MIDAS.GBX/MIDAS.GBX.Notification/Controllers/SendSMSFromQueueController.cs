@@ -30,7 +30,7 @@ namespace MIDAS.GBX.Notification.Controllers
         [Route("SendSMSList")]
         public HttpResponseMessage SendSMSList([FromBody]List<SMSSend> smsObject)
         {
-            return requestHandlerSMS.SendSMSListFromQueue(Request, smsObject);
-        }        
+            return requestHandlerSMS.SendListFromQueue(Request, smsObject);
+        }
     }
 }

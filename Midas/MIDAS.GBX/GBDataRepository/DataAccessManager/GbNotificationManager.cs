@@ -78,12 +78,12 @@ namespace MIDAS.GBX.DataRepository
             }
         }
 
-        public object SendSMSListFromQueue(List<T> smsObject)
+        public object SendListFromQueue(List<T> notificationObject)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.SendSMSListFromQueue(smsObject);
+                var gbdata = baseRepo.SendListFromQueue(notificationObject);
 
                 return gbdata;
             }

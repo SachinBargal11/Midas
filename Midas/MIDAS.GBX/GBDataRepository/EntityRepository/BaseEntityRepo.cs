@@ -804,7 +804,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object SendSMSListFromQueue<T>(List<T> entity)
+        public virtual Object SendListFromQueue<T>(List<T> entity)
         {
             throw new NotImplementedException();
         }

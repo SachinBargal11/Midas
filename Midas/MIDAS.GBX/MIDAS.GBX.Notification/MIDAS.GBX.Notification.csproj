@@ -252,6 +252,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EMailQueueReadWriteController.cs" />
+    <Compile Include="Controllers\SendEMailFromQueueController.cs" />
     <Compile Include="Controllers\SMSQueueReadWriteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SendSMSFromQueueController.cs" />
