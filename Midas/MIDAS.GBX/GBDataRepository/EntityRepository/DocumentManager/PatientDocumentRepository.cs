@@ -37,7 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
 
 
-                PatientDocument caseDoc = _context.PatientDocuments.Add(new PatientDocument()
+                PatientDocument patientDoc = _context.PatientDocuments.Add(new PatientDocument()
                 {
                     MidasDocumentId = midasdoc.Id,
                     PatientId = objectId,
@@ -45,7 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                     CreateDate = DateTime.UtcNow
                 });
-                _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
+                _context.Entry(patientDoc).State = System.Data.Entity.EntityState.Added;
                 _context.SaveChanges();
                 dbContextTransaction.Commit();
 
