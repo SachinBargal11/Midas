@@ -106,6 +106,7 @@
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
     <Compile Include="EntityRepository\Notification\EMailQueueReadWriteRepository.cs" />
+    <Compile Include="EntityRepository\Notification\SendEMailRepository.cs" />
     <Compile Include="EntityRepository\Notification\SendSMSRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
