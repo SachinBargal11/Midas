@@ -443,7 +443,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userDB.FirstName = userBO.FirstName;
                 userDB.LastName = userBO.LastName;
                 userDB.UserName = userBO.UserName;
-                userDB.UserType = 2;
+                userDB.UserType = 5;
                 userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
                 userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
                 userDB.AddressId = prefAncProvider_CompanyDB.AddressId;

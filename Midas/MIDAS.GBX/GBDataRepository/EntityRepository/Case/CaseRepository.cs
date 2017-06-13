@@ -560,9 +560,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral2")
-                                    .Include("Company")
-                                    .Include("Company1")
+                                    .Include("Referral2")                                    
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
