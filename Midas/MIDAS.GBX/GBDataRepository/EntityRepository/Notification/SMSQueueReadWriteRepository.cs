@@ -32,7 +32,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             SMSNotificationBO.FromNumber = SMSQueueDB.FromNumber;
             SMSNotificationBO.ToNumber = SMSQueueDB.ToNumber;
             SMSNotificationBO.Message = SMSQueueDB.Message;
-            SMSNotificationBO.CreatedDate = SMSQueueDB.CreatedDate;            
+            SMSNotificationBO.CreatedDate = SMSQueueDB.CreatedDate;
+            SMSNotificationBO.DeliveryDate = SMSQueueDB.DeliveryDate;
+            SMSNotificationBO.NumberOfAttempts = SMSQueueDB.NumberOfAttempts;
+            SMSNotificationBO.ResultObject = SMSQueueDB.ResultObject;
 
             return (T)(object)SMSNotificationBO;
         }

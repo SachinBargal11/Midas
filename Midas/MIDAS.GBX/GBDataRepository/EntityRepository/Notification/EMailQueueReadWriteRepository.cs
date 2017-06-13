@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BO = MIDAS.GBX.BusinessObjects;
 using System.Data.Linq;
 
-namespace MIDAS.GBX.DataRepository.EntityRepository.Notification
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class EMailQueueReadWriteRepository : BaseEntityRepo, IDisposable
     {
@@ -17,22 +17,52 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Notification
             context.Configuration.ProxyCreationEnabled = false;
         }
 
+        #region Entity Conversion
+        public override T Convert<T, U>(U entity)
+        {
+            EMailQueue EMailQueueDB = entity as EMailQueue;
+
+            if (EMailQueueDB == null)
+                return default(T);
+
+            BO.EMailQueue EMailQueueBO = new BO.EMailQueue();
+
+            EMailQueueBO.ID = EMailQueueDB.Id;
+            EMailQueueBO.AppId = EMailQueueDB.AppId;
+            EMailQueueBO.FromEmail = EMailQueueDB.FromEmail;
+            EMailQueueBO.ToEmail = EMailQueueDB.ToEmail;
+            EMailQueueBO.CcEmail = EMailQueueDB.CcEmail;
+            EMailQueueBO.BccEmail = EMailQueueDB.BccEmail;
+            EMailQueueBO.EMailSubject = EMailQueueDB.EMailSubject;
+            EMailQueueBO.EMailBody = EMailQueueDB.EMailBody;
+            EMailQueueBO.CreatedDate = EMailQueueDB.CreatedDate;
+            EMailQueueBO.DeliveryDate = EMailQueueDB.DeliveryDate;
+            EMailQueueBO.NumberOfAttempts = EMailQueueDB.NumberOfAttempts;
+            EMailQueueBO.ResultObject = EMailQueueDB.ResultObject;
+
+            return (T)(object)EMailQueueBO;
+        }
+        #endregion
+
         #region Add SMS To Queue
         public override object AddToQueue<T>(T entity)
         {
             BO.EMailQueue EMailQueueBO = (BO.EMailQueue)(object)entity;
 
-            SMSQueue SMSQueueDB = new SMSQueue();
-            SMSQueueDB.AppId = EMailQueueBO.AppId;
-            SMSQueueDB.FromNumber = EMailQueueBO.FromNumber;
-            SMSQueueDB.ToNumber = EMailQueueBO.ToNumber;
-            SMSQueueDB.Message = EMailQueueBO.Message;
-            SMSQueueDB.CreatedDate = DateTime.UtcNow;
+            EMailQueue EMailQueueDB = new EMailQueue();
+            EMailQueueDB.AppId = EMailQueueBO.AppId;
+            EMailQueueDB.FromEmail = EMailQueueBO.FromEmail;
+            EMailQueueDB.ToEmail = EMailQueueBO.ToEmail;
+            EMailQueueDB.CcEmail = EMailQueueBO.CcEmail;
+            EMailQueueDB.BccEmail = EMailQueueBO.BccEmail;
+            EMailQueueDB.EMailSubject = EMailQueueBO.EMailSubject;
+            EMailQueueDB.EMailBody = EMailQueueBO.EMailBody;
+            EMailQueueDB.CreatedDate = DateTime.UtcNow;
 
-            _context.SMSQueues.Add(SMSQueueDB);
+            _context.EMailQueues.Add(EMailQueueDB);
             _context.SaveChanges();
 
-            var res = Convert<BO.SMSQueue, SMSQueue>(SMSQueueDB);
+            var res = Convert<BO.EMailQueue, EMailQueue>(EMailQueueDB);
             return (object)res;
         }
         #endregion
