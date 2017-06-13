@@ -694,7 +694,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (PatientVisit2BO.DoctorId != null && PatientVisit2BO.LocationId != null)
                 {
-                    freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    //freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    var result = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
+                    if (result is BO.ErrorObject)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        freeSlots = result as List<BO.FreeSlots>;
+                    }
                 }
                 else if (PatientVisit2BO.RoomId != null && PatientVisit2BO.LocationId != null)
                 {
@@ -728,8 +737,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         {
                                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
                                         }
-                                    }
-                                    
+                                        else
+                                        {
+                                            checkContinuation = eachSlot.EndTime;
+                                        }
+                                    }                                    
                                 }
                             }
                             else
@@ -800,7 +812,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Calendar Event details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    if (dictionary.ContainsKey(patientUserName))
+                    if (string.IsNullOrWhiteSpace(patientUserName) == false && dictionary.ContainsKey(patientUserName))
                     {
                         if (CalendarEventDB.EventStart != CalendarEventBO.EventStart.Value) sendNotification = true;
                     }
@@ -932,36 +944,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisit2DB.LeaveEndDate = PatientVisit2BO.LeaveEndDate;
                     PatientVisit2DB.IsTransportationRequired = PatientVisit2BO.IsTransportationRequired;
                     PatientVisit2DB.TransportProviderId = PatientVisit2BO.TransportProviderId;
-                    PatientVisit2DB.AncillaryProviderId = PatientVisit2BO.AncillaryProviderId;
+                    PatientVisit2DB.AncillaryProviderId = PatientVisit2BO.AncillaryProviderId;                    
 
-                    int caseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                   .Select(p => p.Id)
-                                                   .FirstOrDefault<int>();
-
-                    using (Patient2Repository patientRepo = new Patient2Repository(_context))
-                    { 
-
-                        patientRepo.AssociatePatientWithAncillaryCompany((int)PatientVisit2BO.PatientId, caseId,(int)PatientVisit2BO.AncillaryProviderId);
-
+                    if (IsEditMode == false)
+                    {
+                        PatientVisit2DB.CreateByUserID = PatientVisit2BO.CreateByUserID;
+                        PatientVisit2DB.CreateDate = DateTime.UtcNow;
                     }
-
-                        if (IsEditMode == false)
-                        {
-                            PatientVisit2DB.CreateByUserID = PatientVisit2BO.CreateByUserID;
-                            PatientVisit2DB.CreateDate = DateTime.UtcNow;
-                        }
-                        else
-                        {
-                            PatientVisit2DB.UpdateByUserID = PatientVisit2BO.UpdateByUserID;
-                            PatientVisit2DB.UpdateDate = DateTime.UtcNow;
-                        }
+                    else
+                    {
+                        PatientVisit2DB.UpdateByUserID = PatientVisit2BO.UpdateByUserID;
+                        PatientVisit2DB.UpdateDate = DateTime.UtcNow;
+                    }
 
                     if (Add_PatientVisit2DB == true)
                     {
                         PatientVisit2DB = _context.PatientVisit2.Add(PatientVisit2DB);
                     }
                     _context.SaveChanges();
+
+                    //int caseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
+                    //                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    //                               .Select(p => p.Id)
+                    //                               .FirstOrDefault<int>();
+
+                    if (PatientVisit2DB.PatientId.HasValue == true && PatientVisit2DB.CaseId.HasValue == true && PatientVisit2DB.AncillaryProviderId.HasValue == true)
+                    {
+                        using (Patient2Repository patientRepo = new Patient2Repository(_context))
+                        {
+                            patientRepo.AssociatePatientWithAncillaryCompany(PatientVisit2DB.PatientId.Value, PatientVisit2DB.CaseId.Value, PatientVisit2BO.AncillaryProviderId.Value);
+                        }
+                    }                    
                 }
                 else
                 {
