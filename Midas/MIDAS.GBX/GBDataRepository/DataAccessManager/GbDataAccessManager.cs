@@ -188,7 +188,28 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
-        
+
+        public object GetReadOnly(int CaseId)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var refid = baseRepo.GetReadOnly(CaseId);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public object GetDocumentList(int id)
         {
             try
@@ -2393,6 +2414,26 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.AssociatePatientWithAttorneyCompany(PatientId, CaseId, AttorneyCompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociatePatientWithAncillaryCompany(PatientId, CaseId, AncillaryCompanyId);
 
                 return gbdata;
             }

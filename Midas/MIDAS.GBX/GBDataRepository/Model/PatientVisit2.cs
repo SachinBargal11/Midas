@@ -47,9 +47,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> LeaveEndDate { get; set; }
         public bool IsTransportationRequired { get; set; }
         public Nullable<int> TransportProviderId { get; set; }
+        public Nullable<int> AncillaryProviderId { get; set; }
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }
+        public virtual Company Company { get; set; }
         public virtual Doctor Doctor { get; set; }
         public virtual Location Location { get; set; }
         public virtual Patient2 Patient2 { get; set; }

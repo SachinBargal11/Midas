@@ -4,15 +4,17 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import * as RRule from 'rrule';
+import { AncillaryMasterStore } from '../../../account-setup/stores/ancillary-store';
+import { AncillaryMaster } from '../../../account-setup/models/ancillary-master';
 
 @Component({
     selector: 'scheduled-event-editor',
     templateUrl: './scheduled-event-editor.html'
 })
 
-
 export class ScheduledEventEditorComponent implements OnChanges {
     transportProviderId: number = 0;
+    allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
@@ -157,7 +159,8 @@ export class ScheduledEventEditorComponent implements OnChanges {
     }
 
     constructor(
-        private _fb: FormBuilder
+        private _fb: FormBuilder,
+        private _ancillaryMasterStore: AncillaryMasterStore,
     ) {
         this.scheduledEventEditorForm = this._fb.group({
             name: ['', Validators.required],
@@ -213,6 +216,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 this.isValid.emit(false);
             }
         });
+        this.loadPrefferdAncillaries();
     }
 
     ngOnChanges() {
@@ -220,6 +224,20 @@ export class ScheduledEventEditorComponent implements OnChanges {
         //     this.userProfile = BlankUserProfile;
         // }
         // console.log(changes._selectedEvent);
+    }
+
+    loadPrefferdAncillaries() {
+        // this._progressBarService.show();
+        this._ancillaryMasterStore.getAncillaryMasters()
+            .subscribe((allPrefferesAncillaries: AncillaryMaster[]) => {
+                this.allPrefferesAncillaries = allPrefferesAncillaries;
+            },
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
     }
 
     getEditedEvent(): ScheduledEvent {

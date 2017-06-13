@@ -59,8 +59,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isTransportationRequired")]
         public bool IsTransportationRequired { get; set; }
 
-        [JsonProperty("transportProviderId ")]
+        [JsonProperty("transportProviderId")]
         public int? TransportProviderId { get; set; }
+
+        [JsonProperty("ancillaryProviderId")]
+        public int? AncillaryProviderId { get; set; }
 
         [JsonProperty("leaveStartDate")]
         public DateTime? LeaveStartDate { get; set; }

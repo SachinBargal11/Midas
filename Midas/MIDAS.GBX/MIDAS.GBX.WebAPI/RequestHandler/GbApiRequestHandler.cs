@@ -1056,6 +1056,20 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId)
+        {
+            var objResult = dataAccessManager.GetReadOnly(CaseId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        
         public HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId)
         {
             var objResult = dataAccessManager.GetCurrentEmpByPatientId(PatientId);
@@ -1406,6 +1420,24 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage AssociatePatientWithAttorneyCompany(HttpRequestMessage request, int PatientId, int CaseId, int AttorneyCompanyId)
         {
             var objResult = dataAccessManager.AssociatePatientWithAttorneyCompany(PatientId, CaseId, AttorneyCompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId)
+        {
+            var objResult = dataAccessManager.AssociatePatientWithAncillaryCompany(PatientId, CaseId, AncillaryCompanyId);
 
             try
             {

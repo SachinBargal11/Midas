@@ -760,6 +760,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="LeaveEndDate" Type="datetime2" Precision="7" />
           <Property Name="IsTransportationRequired" Type="bit" Nullable="false" />
           <Property Name="TransportProviderId" Type="int" />
+          <Property Name="AncillaryProviderId" Type="int" />
         </EntityType>
         <EntityType Name="PatientVisitDiagnosisCodes">
           <Key>
@@ -2169,6 +2170,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientVisit2_Company_AncillaryProviderId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PatientVisit2">
+              <PropertyRef Name="AncillaryProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisit2_Doctor_DoctorId">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
@@ -3408,6 +3421,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Case" EntitySet="Case" />
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientVisit2_Company_AncillaryProviderId" Association="Self.FK_PatientVisit2_Company_AncillaryProviderId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="PatientVisit2" EntitySet="PatientVisit2" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisit2_Doctor_DoctorId" Association="Self.FK_PatientVisit2_Doctor_DoctorId">
             <End Role="Doctor" EntitySet="Doctor" />
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
@@ -3980,6 +3997,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
+          <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Company_AncillaryProviderId" FromRole="Company" ToRole="PatientVisit2" />
           <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Company_FromCompanyId" FromRole="Company" ToRole="PendingReferral" />
           <NavigationProperty Name="PreferredAncillaryProviders" Relationship="Self.FK_PreferredAncillaryProvider_Company_CompanyId" FromRole="Company" ToRole="PreferredAncillaryProvider" />
           <NavigationProperty Name="PreferredAncillaryProviders1" Relationship="Self.FK_PreferredAncillaryProvider_Company_PrefAncillaryProviderId" FromRole="Company" ToRole="PreferredAncillaryProvider" />
@@ -4606,8 +4624,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="LeaveEndDate" Type="DateTime" Precision="7" />
           <Property Name="IsTransportationRequired" Type="Boolean" Nullable="false" />
           <Property Name="TransportProviderId" Type="Int32" />
+          <Property Name="AncillaryProviderId" Type="Int32" />
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_PatientVisit2_CalendarEvent_CaseId" FromRole="PatientVisit2" ToRole="CalendarEvent" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisit2_Case_CaseId" FromRole="PatientVisit2" ToRole="Case" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_PatientVisit2_Company_AncillaryProviderId" FromRole="PatientVisit2" ToRole="Company" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="PatientVisit2" ToRole="Doctor" />
           <NavigationProperty Name="Location" Relationship="Self.FK_PatientVisit2_Location_LocationID" FromRole="PatientVisit2" ToRole="Location" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_PatientVisit2_Patient2_PatientId" FromRole="PatientVisit2" ToRole="Patient2" />
@@ -5837,6 +5857,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientVisit2_Company_AncillaryProviderId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PatientVisit2">
+              <PropertyRef Name="AncillaryProviderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7266,6 +7298,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Companies" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientVisit2_Company_AncillaryProviderId" Association="Self.FK_PatientVisit2_Company_AncillaryProviderId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="PatientVisit2" EntitySet="PatientVisit2" />
+          </AssociationSet>
           <AssociationSet Name="FK_PendingReferral_Company_FromCompanyId" Association="Self.FK_PendingReferral_Company_FromCompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="PendingReferral" EntitySet="PendingReferrals" />
@@ -8447,6 +8483,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="LeaveEndDate" ColumnName="LeaveEndDate" />
                 <ScalarProperty Name="IsTransportationRequired" ColumnName="IsTransportationRequired" />
                 <ScalarProperty Name="TransportProviderId" ColumnName="TransportProviderId" />
+                <ScalarProperty Name="AncillaryProviderId" ColumnName="AncillaryProviderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

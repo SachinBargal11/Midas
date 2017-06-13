@@ -62,7 +62,7 @@ export class AccountActivationComponent implements OnInit {
                             (companyMaster: Signup) => {
                                 this.companyMaster = companyMaster.originalResponse;
                                 if (this.companyMaster.signup.company.companyStatusTypeId == 3) {
-                                    if (this.user.UserStatusID = 1) {
+                                    if (this.user.userStatusID = 1) {
                                         this.isUser = true;
                                     }
                                     else {

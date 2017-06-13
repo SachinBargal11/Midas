@@ -173,7 +173,7 @@ export class PatientVisitService {
 
     getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/get/' + visitId + '/visit')
+            return this._http.get(this._url + '/documentmanager/get/' + visitId + '/visit')
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -414,7 +414,7 @@ export class PatientVisitService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+                .get(this._url + '/documentmanager/downloadfromnoproviderblob/' + documentId, {
                     headers: this._headers
                 })
                 .map(res => {
@@ -425,7 +425,7 @@ export class PatientVisitService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        window.location.assign(this._url + '/documentmanager/downloadfromnoproviderblob/' + documentId);
                         // return res.arrayBuffer();
                     }
                 })

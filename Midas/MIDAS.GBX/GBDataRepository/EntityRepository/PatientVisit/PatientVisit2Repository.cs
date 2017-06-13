@@ -67,6 +67,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.LeaveEndDate = patientVisit2.LeaveEndDate;
                 patientVisit2BO.IsTransportationRequired = patientVisit2.IsTransportationRequired;
                 patientVisit2BO.TransportProviderId = patientVisit2.TransportProviderId;
+                patientVisit2BO.AncillaryProviderId = patientVisit2.AncillaryProviderId;
 
                 patientVisit2BO.IsCancelled = patientVisit2.IsCancelled;
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
@@ -693,11 +694,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (PatientVisit2BO.DoctorId != null && PatientVisit2BO.LocationId != null)
                 {
-                    freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    //freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    var result = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
+                    if (result is BO.ErrorObject)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        freeSlots = result as List<BO.FreeSlots>;
+                    }
                 }
                 else if (PatientVisit2BO.RoomId != null && PatientVisit2BO.LocationId != null)
                 {
-                    freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    //freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                    var result = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
+                    if (result is BO.ErrorObject)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        freeSlots = result as List<BO.FreeSlots>;
+                    }
                 }
 
                 foreach (var eachDayEventSlot in currentEventSlots)
@@ -727,8 +746,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         {
                                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
                                         }
-                                    }
-                                    
+                                        else
+                                        {
+                                            checkContinuation = eachSlot.EndTime;
+                                        }
+                                    }                                    
                                 }
                             }
                             else
@@ -799,7 +821,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Calendar Event details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    if (dictionary.ContainsKey(patientUserName))
+                    if (string.IsNullOrWhiteSpace(patientUserName) == false && dictionary.ContainsKey(patientUserName))
                     {
                         if (CalendarEventDB.EventStart != CalendarEventBO.EventStart.Value) sendNotification = true;
                     }
@@ -887,8 +909,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Visit doesn't exists.", ErrorLevel = ErrorLevel.Error };
                     }
-
-                    //PatientVisit2DB.CalendarEventId = PatientVisit2BO.CalendarEventId.HasValue == false ? PatientVisit2DB.CalendarEventId : PatientVisit2BO.CalendarEventId.Value;
                     PatientVisit2DB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisit2BO.CalendarEventId.HasValue == true) ? PatientVisit2BO.CalendarEventId.Value : PatientVisit2DB.CalendarEventId);
 
                     if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == false && PatientVisit2BO.IsOutOfOffice == false)
@@ -916,32 +936,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
                     }
 
-                    //if (IsEditMode == false)
-                    //{
-                    //    int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
-                    //                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                    //                               .Select(p => p.Id)
-                    //                               .FirstOrDefault<int>();
-
-                    //    if (CaseId == 0)
-                    //    {
-                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "No open case exists for given patient.", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //    else if (PatientVisit2BO.CaseId.HasValue == true && PatientVisit2BO.CaseId.Value != CaseId)
-                    //    {
-                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case id dosent match with open case is for the given patient.", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //    else
-                    //    {
-                    //        PatientVisit2DB.CaseId = CaseId;
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
-                    //}
-
-
                     PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : (PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value);
                     PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : (PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value);
                     PatientVisit2DB.RoomId = PatientVisit2BO.RoomId;
@@ -959,6 +953,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisit2DB.LeaveEndDate = PatientVisit2BO.LeaveEndDate;
                     PatientVisit2DB.IsTransportationRequired = PatientVisit2BO.IsTransportationRequired;
                     PatientVisit2DB.TransportProviderId = PatientVisit2BO.TransportProviderId;
+                    PatientVisit2DB.AncillaryProviderId = PatientVisit2BO.AncillaryProviderId;                    
 
                     if (IsEditMode == false)
                     {
@@ -976,6 +971,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientVisit2DB = _context.PatientVisit2.Add(PatientVisit2DB);
                     }
                     _context.SaveChanges();
+
+                    if (PatientVisit2DB.PatientId.HasValue == true && PatientVisit2DB.CaseId.HasValue == true && PatientVisit2DB.AncillaryProviderId.HasValue == true)
+                    {
+                        using (Patient2Repository patientRepo = new Patient2Repository(_context))
+                        {
+                            patientRepo.AssociatePatientWithAncillaryCompany(PatientVisit2DB.PatientId.Value, PatientVisit2DB.CaseId.Value, PatientVisit2BO.AncillaryProviderId.Value);
+                        }
+                    }                    
                 }
                 else
                 {

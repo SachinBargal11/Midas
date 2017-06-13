@@ -112,6 +112,8 @@ import { PendingReferralStore } from './referals/stores/pending-referrals-stores
 import { AvailableSlotsService } from './referals/services/available-slots-service';
 import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
 
+import { AncillaryMasterStore } from '../account-setup/stores/ancillary-store';
+import { AncillaryMasterService } from '../account-setup/services/ancillary-service';
 
 @NgModule({
     imports: [
@@ -217,7 +219,7 @@ import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
         PendingReferralService,
         PendingReferralStore,
         AvailableSlotsService,
-        AvailableSlotsStore
+        AvailableSlotsStore, AncillaryMasterStore, AncillaryMasterService
     ]
 })
 export class PatientManagerModule { }

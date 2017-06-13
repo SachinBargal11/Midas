@@ -23,17 +23,6 @@
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
-    <p-column header="Consent Given">
-        <ng-template let-case="rowData" pTemplate="body">
-            <a *ngIf="case.isConsentReceived(CompanyId)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
-                <u>Yes</u>
-            </a>
-            <a *ngIf="!case.isConsentReceived(CompanyId)" (click)="showDialog(case.id)">
-                <u>No</u>
-            </a>
-        </ng-template>
-    </p-column>
-
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
