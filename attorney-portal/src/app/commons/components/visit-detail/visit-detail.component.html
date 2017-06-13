@@ -39,7 +39,7 @@
             </div>
           </div>
         </div>
-       <div class="row">
+        <div class="row">
           <div class="col-md-4">
             <button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!visitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
@@ -80,7 +80,11 @@
             </a>
           </ng-template>
         </p-column>
-        <p-column field="createDate" header="Document Type" [sortable]="true"></p-column>
+        <p-column header="Document Type" [sortable]="true">
+          <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.documentType }}
+          </ng-template>
+        </p-column>
         <p-column field="createDate" header="Created Date" [sortable]="true">
           <ng-template let-document="rowData.document" pTemplate="body">
             {{ document.createDate | dateTimeFormat }}

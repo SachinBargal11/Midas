@@ -1907,6 +1907,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        
+        public HttpResponseMessage GetProcedureCodeExcludingAssigned(HttpRequestMessage request, int specialtyOrTestId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetProcedureCodeExcludingAssigned(specialtyOrTestId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
     }
 }

@@ -3287,6 +3287,28 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
-        
+
+        public Object GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetProcedureCodeExcludingAssigned(specialtyOrTestId, companyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
     }
 }
