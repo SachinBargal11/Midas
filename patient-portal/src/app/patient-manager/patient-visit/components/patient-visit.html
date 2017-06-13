@@ -162,7 +162,14 @@
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                        <div class="col-md-1"><label class="form-label">Notes</label></div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">{{selectedVisit.notes}}
+                                    </label>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
                         <div class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
@@ -171,39 +178,43 @@
                                         <li *ngIf="patientVisitFormControls.notes.hasError('required')">Please enter Notes.</li>
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
+                            </div>-->
                     </div>
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>
+                        <div class="col-md-1"><label class="form-label">Status</label></div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
-                        <option value="2">Complete</option>
-                        <option value="4">No Show</option>
-                    </select>
+                                <label class="form-label">{{selectedVisit.visitStatusLabel}}
+                                </label>
                             </div>
                         </div>
+                        <!--<div class="col-md-6">
+                            <div class="form-group">
+                                <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
+                                    <option value="2">Complete</option>
+                                    <option value="4">No Show</option>
+                                </select>
+                            </div>
+                        </div>-->
                     </div>
-
-
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="col-md-6">
                             <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                <loader [visible]="isSaveProgress"></loader>
-            </button>
+                                <loader [visible]="isSaveProgress"></loader>
+                            </button>
                             <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
                         </div>
-                    </div>
+                    </div>-->
                 </form>
             </p-tabPanel>
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
-                <app-document-upload [url]="visitUploadDocumentUrl" [providerId]="sessionStore.session.currentCompany.id" [currentId]="3" [objectId]="selectedVisit.id" (uploadComplete)="documentUploadComplete($event)"
-                    (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
+                        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
+                            <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
+                        </a>
                     </h3>
                 </div>
                 <div class="ui-widget-header row">
@@ -215,11 +226,17 @@
                 <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
                     [globalFilter]="gb" [responsive]="true">
                     <header> List</header>
+                    <p-column selectionMode="multiple"></p-column>
                     <p-column header="Document Name">
                         <ng-template let-document="rowData" pTemplate="body">
                             <a (click)="downloadPdf(document.document.originalResponse.documentId)">
                                 <u>{{document.document.originalResponse.documentName}}</u>
                             </a>
+                        </ng-template>
+                    </p-column>
+                    <p-column header="Document Type" [sortable]="true">
+                        <ng-template let-document="rowData.document" pTemplate="body">
+                            {{ document.documentType }}
                         </ng-template>
                     </p-column>
                     <p-column field="createDate" header="Created Date" [sortable]="true">
@@ -228,6 +245,11 @@
                         </ng-template>
                     </p-column>
                 </p-dataTable>
+                <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+                    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+                    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
+                        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                </p-dialog>
             </p-tabPanel>
         </p-tabView>
     </div>

@@ -1,4 +1,4 @@
-<p-confirmDialog width="425"></p-confirmDialog>
+<!--<p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
     <h3 class="with-border">{{patientName}} Visits
     </h3>
@@ -12,9 +12,9 @@
 
 <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
     [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true">
-    <header>Patient Doctors Visits List</header>
+    <header>Patient Doctors Visits List</header>-->
     <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="eventStart" header="Visit Date" [sortable]="true">
+    <!--<p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
 
             {{visit.eventStart | dateTimeFormat}}
@@ -45,9 +45,9 @@
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a routerLink="{{visit.id}}/visit-note"><i class="glyphicon glyphicon-edit"></i></a>
+            <a routerLink="{{visit.id}}/visit-note"><i class="glyphicon glyphicon-edit"></i></a>-->
             <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
-        </ng-template>
+        <!--</ng-template>
     </p-column>
 </p-dataTable><br><br>
 
@@ -56,14 +56,14 @@
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Rooms Visits">
 </div>
-</div>
+</div>-->
 <!--<pre>{{visits | json}}</pre>-->
 
-<p-dataTable [value]="roomsVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+<!--<p-dataTable [value]="roomsVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
-    <header>Patient Rooms Visits List</header>
+    <header>Patient Rooms Visits List</header>-->
     <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="eventStart" header="Visit Date" [sortable]="true">
+    <!--<p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
 
             {{visit.eventStart | dateTimeFormat}}
@@ -88,8 +88,8 @@
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a routerLink="{{visit.id}}/visit-note"><i class="glyphicon glyphicon-edit"></i></a>
+            <a routerLink="{{visit.id}}/visit-note"><i class="glyphicon glyphicon-edit"></i></a>-->
             <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
-        </ng-template>
+        <!--</ng-template>
     </p-column>
-</p-dataTable>
+</p-dataTable>-->

@@ -47,7 +47,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentVisitId = parseInt(routeParams.visitId, 10);
             // this.url = `${this._url}/fileupload/multiupload/${this.currentVisitId}/visit`;
-            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtonoproviderblob';
             //this.url = this._url + '/fileupload/multiupload/'+ this.currentVisitId +'/visit';
             // this._progressBarService.show();
             // this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)

@@ -121,12 +121,12 @@ export class ConsentService {
 
     getConsetForm(CaseId: number, companyId: number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
+            // return this._http.get(this._url + '/documentmanager/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
             //changed on 11-4-2017
-            // return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
-            //fileupload/get/86/consent
+            // return this._http.get(this._url + '/documentmanager/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
+            //documentmanager/get/86/consent
 
             //changedapi on 13-4-2017 at 1pm
             return this._http.get(this._url + '/case/GetConsentList/' + CaseId).map(res => res.json())
