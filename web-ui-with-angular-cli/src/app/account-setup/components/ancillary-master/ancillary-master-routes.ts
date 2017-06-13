@@ -4,7 +4,7 @@ import { ValidateActiveSession } from '../../../commons/guards/validate-active-s
 import { AncillaryListComponent } from './ancillary-master-list';
 import { ShellComponent } from '../../../commons/shell-component';
 import { AddAncillaryComponent } from './add-ancillary-master';
-// import { EditMedicalProviderComponent } from './edit-medical-provider';
+import { EditAncillaryComponent } from './edit-ancillary-master';
 
 export const AncillaryRoutes: Routes = [
 
@@ -38,12 +38,12 @@ export const AncillaryRoutes: Routes = [
                 }
             },
             {
-                // path: 'edit/:id',
-                // component: EditMedicalProviderComponent,
-                // canActivate: [ValidateActiveSession],
-                // data: {
-                //     breadcrumb: 'Edit Medical Provider'
-                // }
+                path: 'edit/:id',
+                component: EditAncillaryComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Edit Ancillary'
+                }
             }
         ]
     }
