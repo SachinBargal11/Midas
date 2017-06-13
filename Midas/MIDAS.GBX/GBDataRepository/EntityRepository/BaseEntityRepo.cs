@@ -569,6 +569,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
         {
             throw new NotImplementedException();
