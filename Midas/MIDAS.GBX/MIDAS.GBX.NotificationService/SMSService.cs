@@ -79,7 +79,7 @@ namespace MIDAS.GBX.NotificationService
                 if (SMSListSend != null && SMSListSend.Count > 0)
                 {
                     var result = JsonConvert.SerializeObject(SMSListSend);
-                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendNotificationFromQueue/SendSMSList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
+                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendSMSFromQueue/SendSMSList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
                     respMsg2.EnsureSuccessStatusCode();
                     var result2 = respMsg2.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
                 }

@@ -17,9 +17,9 @@ namespace MIDAS.GBX.Notification.RequestHandler
             notificationManager = new GbNotificationManager<T>();
         }
 
-        public HttpResponseMessage AddToQueue(HttpRequestMessage request, T smsObject)
+        public HttpResponseMessage AddToQueue(HttpRequestMessage request, T notificationObject)
         {
-            var objResult = notificationManager.AddToQueue(smsObject);
+            var objResult = notificationManager.AddToQueue(notificationObject);
 
             try
             {

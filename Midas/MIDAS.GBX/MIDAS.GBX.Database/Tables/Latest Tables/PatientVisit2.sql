@@ -106,10 +106,10 @@ GO
 ALTER TABLE [dbo].[PatientVisit2] ALTER COLUMN [IsTransportationRequired] [BIT] NOT NULL
 GO
 */
-
+/*
 ALTER TABLE [dbo].[PatientVisit2] ADD [AncillaryProviderId] [INT] NULL
 GO
-
+*/
 ALTER TABLE [dbo].[PatientVisit2]  WITH CHECK ADD  CONSTRAINT [FK_PatientVisit2_Company_AncillaryProviderId] FOREIGN KEY([AncillaryProviderId])
 	REFERENCES [dbo].[Company] ([Id])
 GO

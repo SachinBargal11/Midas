@@ -254,7 +254,7 @@
     <Compile Include="Controllers\EMailQueueReadWriteController.cs" />
     <Compile Include="Controllers\SMSQueueReadWriteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SendNotificationFromQueueController.cs" />
+    <Compile Include="Controllers\SendSMSFromQueueController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

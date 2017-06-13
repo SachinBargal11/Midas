@@ -38,7 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By ID
+        #region Add SMS To Queue
         public override object AddToQueue<T>(T entity)
         {
             BO.SMSQueue SMSNotificationBO = (BO.SMSQueue)(object)entity;
@@ -96,7 +96,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
