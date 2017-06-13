@@ -188,7 +188,28 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
-        
+
+        public object GetReadOnly(int CaseId)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var refid = baseRepo.GetReadOnly(CaseId);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public object GetDocumentList(int id)
         {
             try

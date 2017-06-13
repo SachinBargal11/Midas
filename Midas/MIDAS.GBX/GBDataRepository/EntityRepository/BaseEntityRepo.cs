@@ -789,6 +789,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetReadOnly(int CaseId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

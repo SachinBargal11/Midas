@@ -1312,6 +1312,52 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get ReadOnly By Case Id
+        public override object GetReadOnly(int caseId)
+        {
+            
+
+            var CaseInfo = (from ca in _context.Cases
+                            join us in _context.Users on ca.PatientId equals us.id
+                            join ccm in _context.CaseCompanyMappings on ca.Id equals ccm.CaseId
+                            join co in _context.Companies on ccm.CompanyId equals co.id
+                            join ct in _context.CaseTypes on ca.CaseTypeId equals ct.Id
+                            join cs in _context.CaseStatus on ca.CaseStatusId equals cs.Id
+                            join lo in _context.Locations on ca.LocationId equals lo.id
+                            where ca.Id == caseId
+                                  && ccm.IsOriginator == true
+                            select new
+                            {
+                                CaseId = ca.Id,
+                                ca.PatientId,
+                                PatientName= us.FirstName+" " + us.MiddleName+" "+ us.LastName,
+                                ct.CaseTypeText,
+                                cs.CaseStatusText,
+                                LocationName = lo.Name,
+                                ca.CarrierCaseNo,
+                                CompanyName = co.Name,
+                                CaseSource = co.Name, 
+                                ca.CreateByUserID,
+                                ca.CreateDate,
+                                ca.UpdateByUserID,
+                                ca.UpdateDate
+
+
+                            }).FirstOrDefault();
+          
+
+            if (CaseInfo == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+              
+                return CaseInfo;
+            }
+        }
+        #endregion
+
         #region Get By Company Id for Ancillary
         public override object GetByCompanyIdForAncillary(int CompanyId)
         {
