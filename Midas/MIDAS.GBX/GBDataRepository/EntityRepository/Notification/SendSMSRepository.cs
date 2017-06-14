@@ -28,18 +28,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (SMSQueueDB == null)
                 return default(T);
 
-            BO.SMSSend SMSSendBO = new BO.SMSSend();
+            BO.SMSQueue SMSQueueBO = new BO.SMSQueue();
 
-            SMSSendBO.ID = SMSQueueDB.Id;
-            SMSSendBO.AppId = SMSQueueDB.AppId;
-            SMSSendBO.FromNumber = SMSQueueDB.FromNumber;
-            SMSSendBO.ToNumber = SMSQueueDB.ToNumber;
-            SMSSendBO.Message = SMSQueueDB.Message;
-            SMSSendBO.NumberOfAttempts = SMSQueueDB.NumberOfAttempts;
-            SMSSendBO.ResultObject = SMSQueueDB.ResultObject;
-            SMSSendBO.CreatedDate = SMSQueueDB.CreatedDate;
+            SMSQueueBO.ID = SMSQueueDB.Id;
+            SMSQueueBO.AppId = SMSQueueDB.AppId;
+            SMSQueueBO.FromNumber = SMSQueueDB.FromNumber;
+            SMSQueueBO.ToNumber = SMSQueueDB.ToNumber;
+            SMSQueueBO.Message = SMSQueueDB.Message;
+            SMSQueueBO.NumberOfAttempts = SMSQueueDB.NumberOfAttempts;            
+            SMSQueueBO.CreatedDate = SMSQueueDB.CreatedDate;
+            SMSQueueBO.DeliveryDate = SMSQueueDB.DeliveryDate;
+            SMSQueueBO.ResultObject = SMSQueueDB.ResultObject;
 
-            return (T)(object)SMSSendBO;
+            return (T)(object)SMSQueueBO;
         }
         #endregion
 
@@ -94,7 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object SendListFromQueue<T>(List<T> entity)
         {
             List<BO.SMSSend> SMSListSendBO = (List<BO.SMSSend>)(object)entity;
-            List<BO.SMSSend> SMSListSendBOResult = new List<BO.SMSSend>();
+            List<BO.SMSQueue> SMSListQueueBOResult = new List<BO.SMSQueue>();
 
             foreach (var eachSMS in SMSListSendBO)
             {
@@ -135,11 +136,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                var result = Convert<BO.SMSSend, SMSQueue>(SMSQueueDB);
-                SMSListSendBOResult.Add(result);
+                var result = Convert<BO.SMSQueue, SMSQueue>(SMSQueueDB);
+                SMSListQueueBOResult.Add(result);
             }
 
-            return (object)SMSListSendBOResult;
+            return (object)SMSListQueueBOResult;
         }
         #endregion
 

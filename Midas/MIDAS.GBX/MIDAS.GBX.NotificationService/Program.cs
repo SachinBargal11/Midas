@@ -17,7 +17,8 @@ namespace MIDAS.GBX.NotificationService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new SMSService()
+                new SMSService(),
+                new EMailService()
             };
             ServiceBase.Run(ServicesToRun);
         }

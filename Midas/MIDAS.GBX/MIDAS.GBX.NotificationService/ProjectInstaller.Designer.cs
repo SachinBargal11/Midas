@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
-            this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
-            this.serviceInstaller2 = new System.ServiceProcess.ServiceInstaller();
+            this.SMSService = new System.ServiceProcess.ServiceInstaller();
+            this.EMailService = new System.ServiceProcess.ServiceInstaller();
             // 
             // serviceProcessInstaller1
             // 
@@ -38,27 +38,27 @@
             this.serviceProcessInstaller1.Password = null;
             this.serviceProcessInstaller1.Username = null;
             // 
-            // serviceInstaller1
+            // SMSService
             // 
-            this.serviceInstaller1.ServiceName = "MIDAS Notification - SMSService";
+            this.SMSService.ServiceName = "MIDAS Notification - SMS Service";
             // 
-            // serviceInstaller2
+            // EMailService
             // 
-            this.serviceInstaller2.ServiceName = "MIDAS Notification - EMailService";
+            this.EMailService.ServiceName = "MIDAS Notification - EMail Service";
             // 
             // ProjectInstaller
             // 
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
             this.serviceProcessInstaller1,
-            this.serviceInstaller1,
-            this.serviceInstaller2});
+            this.SMSService,
+            this.EMailService});
 
         }
 
         #endregion
 
         private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller2;
+        private System.ServiceProcess.ServiceInstaller SMSService;
+        private System.ServiceProcess.ServiceInstaller EMailService;
     }
 }

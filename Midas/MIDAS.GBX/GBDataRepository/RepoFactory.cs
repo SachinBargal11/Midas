@@ -314,6 +314,10 @@ namespace MIDAS.GBX
             {
                 repo = new EMailQueueReadWriteRepository(context);
             }
+            else if (typeof(T) == typeof(BO.EMailSend))
+            {
+                repo = new SendEMailRepository(context);
+            }
 
             return repo;
         }

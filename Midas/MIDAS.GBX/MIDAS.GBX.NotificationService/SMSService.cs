@@ -21,7 +21,7 @@ namespace MIDAS.GBX.NotificationService
     public partial class SMSService : ServiceBase
     {
         Timer timer1 = null;
-        int timeDuration = 60000;
+        int timeDuration = 3 * 60 * 1000;
 
         public SMSService()
         {
@@ -34,10 +34,10 @@ namespace MIDAS.GBX.NotificationService
 
             try
             {
-                if (ConfigurationManager.AppSettings["TimeDurationInMinutes"] != null)
+                if (ConfigurationManager.AppSettings["TimeDurationInMinutes_SMS"] != null)
                 {
                     int timeDurationInMinutes;
-                    int.TryParse(Convert.ToString(ConfigurationManager.AppSettings["TimeDurationInMinutes"]), out timeDurationInMinutes);
+                    int.TryParse(Convert.ToString(ConfigurationManager.AppSettings["TimeDurationInMinutes_SMS"]), out timeDurationInMinutes);
                     if (timeDurationInMinutes > 0)
                     {
                         timeDuration = timeDurationInMinutes * 60 * 1000;
@@ -47,7 +47,7 @@ namespace MIDAS.GBX.NotificationService
                 this.timer1.Interval = timeDuration;
                 this.timer1.Elapsed += new ElapsedEventHandler(this.timer1_Tick);
                 this.timer1.Enabled = true;
-                WriteLog.WriteLine("SMS Window Service Started. Time Duration is: " + timeDuration.ToString());
+                WriteLog.WriteLine(this.ServiceName, "SMS Window Service Started. Time Duration is: " + timeDuration.ToString());
             }
             catch
             {
@@ -61,6 +61,12 @@ namespace MIDAS.GBX.NotificationService
                 HttpClient client = new HttpClient();
 
                 string BaseAddress = Convert.ToString(ConfigurationManager.AppSettings["BaseAddress"]);
+                BaseAddress = BaseAddress.TrimEnd("/".ToCharArray()) + "/";
+
+                if (BaseAddress.Trim() == "")
+                {
+                    throw new Exception("BaseAddress Missing in config.");
+                }
 
                 client.BaseAddress = new Uri(BaseAddress);
 
@@ -76,6 +82,7 @@ namespace MIDAS.GBX.NotificationService
                 //    respMsg2.EnsureSuccessStatusCode();
                 //    var result2 = respMsg2.Content.ReadAsAsync<IEnumerable<BO.SMSSend>>().Result;
                 //}
+
                 if (SMSListSend != null && SMSListSend.Count > 0)
                 {
                     var result = JsonConvert.SerializeObject(SMSListSend);
@@ -83,19 +90,21 @@ namespace MIDAS.GBX.NotificationService
                     respMsg2.EnsureSuccessStatusCode();
                     var result2 = respMsg2.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
                 }
+                else
+                {
+                    WriteLog.WriteLine(this.ServiceName, "Service Called: No SMS to be sent.");
+                }
             }
             catch(Exception ex)
             {
-                WriteLog.WriteLine(ex.ToString());
-                WriteLog.WriteLine("");
-                WriteLog.WriteLine("");
+                WriteLog.WriteLine(this.ServiceName, ex.ToString());
             }
         }
 
         protected override void OnStop()
         {
             this.timer1.Enabled = false;
-            WriteLog.WriteLine("SMS Window Service Stopped.");
+            WriteLog.WriteLine(this.ServiceName, "SMS Window Service Stopped.");
         }
     }
 }

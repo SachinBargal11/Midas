@@ -74,23 +74,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     mail.Body = eachEMail.EMailSubject;
                     mail.IsBodyHtml = true;
 
-                    //Task.Factory.StartNew(() => client.Send(mail));
-                    client.Send(mail);                    
-
-                    if (EMailQueueDB != null)
+                    try
                     {
-                        EMailQueueDB.DeliveryDate = DateTime.UtcNow;
-                        EMailQueueDB.NumberOfAttempts += 1;
-                        EMailQueueDB.ResultObject = "SUCCESS";
+                        //Task.Factory.StartNew(() => client.Send(mail));
+                        client.Send(mail);
 
-                        _context.SaveChanges();
+                        if (EMailQueueDB != null)
+                        {
+                            EMailQueueDB.DeliveryDate = DateTime.UtcNow;
+                            EMailQueueDB.NumberOfAttempts += 1;
+                            EMailQueueDB.ResultObject = "SUCCESS";
+
+                            _context.SaveChanges();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (EMailQueueDB != null)
+                        {
+                            EMailQueueDB.NumberOfAttempts += 1;
+                            EMailQueueDB.ResultObject = ex.ToString();
+
+                            _context.SaveChanges();
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     if (EMailQueueDB != null)
                     {
-                        EMailQueueDB.NumberOfAttempts += 1;
+                        //EMailQueueDB.NumberOfAttempts += 1;
                         EMailQueueDB.ResultObject = ex.ToString();
 
                         _context.SaveChanges();
