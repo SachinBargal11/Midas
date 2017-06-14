@@ -34,9 +34,10 @@ export class DocumentUploadComponent implements OnInit {
   scannedFileName: string = '';
   digitalForm: FormGroup;
   cosentFormUrl: SafeResourceUrl;
-  documentType: string;
+  documentType: string = '';
   companyId: number = this._sessionStore.session.currentCompany.id;
   documentTypes: DocumentType[];
+  isDocumentSelected: boolean;
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -59,7 +60,7 @@ export class DocumentUploadComponent implements OnInit {
   @Input() objectId: number;
   @Input() providerId: number;
   @Input() isdownloadTemplate: boolean = false;
-  
+
   constructor(
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
@@ -78,7 +79,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-     this.loadDocumentForObjectType(this.companyId, this.currentId);
+    this.loadDocumentForObjectType(this.companyId, this.currentId);
     if (this.signedDocumentPostRequestData) {
       this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
@@ -148,17 +149,29 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   onBeforeSendEvent(event) {
-    let param: string;
-    if (this.currentId == 2) {
-      if (this.isConsentDocumentOn) {
-        param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
-      } else {
-        param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
-      }
-    } else if (this.currentId == 3) {
-      param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
+    if (this.isConsentDocumentOn) {
+      this.documentType = "consent";
     }
-    event.xhr.setRequestHeader("inputjson", param);
+
+    if (this.documentType != "") {
+      let param: string;
+      if (this.currentId == 2) {
+        if (this.isConsentDocumentOn) {
+          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.providerId + '","ObjectId":"' + this.objectId + '"}';
+        } else {
+          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
+        }
+      } else if (this.currentId == 3) {
+        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
+      } else if (this.currentId == 1) {
+        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
+      }
+      event.xhr.setRequestHeader("inputjson", param);
+    }
+    else {
+      this.uploadError.emit(new Error('Please Select document Type'));
+      this.isDocumentSelected = false;
+    }
   }
 
 
@@ -170,8 +183,10 @@ export class DocumentUploadComponent implements OnInit {
     this.uploadComplete.emit(documents);
   }
 
-  onFilesUploadError(event) {
-    this.uploadError.emit(new Error('Unable to upload selected files.'));
+ onFilesUploadError(event) {
+    if (this.isDocumentSelected) {
+      this.uploadError.emit(new Error('Unable to upload selected files.'));
+    }
   }
 
   uploadScannedDocuments() {
@@ -233,7 +248,7 @@ export class DocumentUploadComponent implements OnInit {
     }
   }
 
- selectDocument(event) {
+  selectDocument(event) {
     let documentType = event.target.value;
     this.documentType = documentType;
   }
@@ -242,7 +257,7 @@ export class DocumentUploadComponent implements OnInit {
     // this._progressBarService.show();
     let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
       .subscribe(documentType => {
-          this.documentTypes = documentType;
+        this.documentTypes = documentType;
       },
       (error) => {
         // this._progressBarService.hide();

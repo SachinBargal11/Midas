@@ -14,7 +14,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-</div>
+    </div>
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
@@ -38,20 +38,26 @@
 
     <p-column header="Case Source" [sortable]="true">
         <ng-template let-case="rowData" pTemplate="body">
-            <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+            <!--<div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.caseSource}}
             </div>
             <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.createdByCompany.name}}
-            </div>
+            </div>-->
         </ng-template>
     </p-column>
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
-            <a *ngIf="case.createdByCompanyId == sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-            <a *ngIf="case.createdByCompanyId != sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a *ngIf="case.caseStatusId == 2" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>-->
+            <!--<a *ngIf="(case.caseStatusId == 1) && case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <a *ngIf="(case.caseStatusId != 1) || (!case.caseLabelEditable(sessionStore.session.currentCompany.id))" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>-->
+            <a *ngIf="case.caseStatusId == 2" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+            <div *ngIf="case.caseStatusId == 1">
+            <a *ngIf="case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <a *ngIf="!case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+            </div>
         </ng-template>
     </p-column>
 </p-dataTable>

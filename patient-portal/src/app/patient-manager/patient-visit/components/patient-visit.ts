@@ -135,7 +135,8 @@ export class PatientVisitComponent implements OnInit {
     patientName: string;
     patient: Patient;
     visitId: number;
-
+    addConsentDialogVisible: boolean = false;
+    selectedCaseId: number;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -843,7 +844,7 @@ export class PatientVisitComponent implements OnInit {
         this.visitInfo = this.selectedVisit.visitDisplayString;
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtonoproviderblob';
             this.getDocuments();
             this.visitDialogVisible = true;
         } else {
@@ -1388,7 +1389,17 @@ export class PatientVisitComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+          if (error.message == 'Please Select document Type') {
+            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        }
+        else {
+            this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+        }
+    }
+    
+     showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
     }
 
     downloadPdf(documentId) {

@@ -1,17 +1,18 @@
-<!--<h3 class="with-border">View Case</h3>
+<h3 class="with-border">View Case</h3>
+<div *ngIf="caseLabel">
 <div class="row">
     <div class="col-lg-4">
         <label class="form-label"> Patient Name
                             </label>
         <div class="form-group">
-            <label class="form-label">{{patientName}}
+            <label class="form-label">{{caseLabel.patient}}
                 </label>
         </div>
     </div>
     <div class="col-lg-4">
         <label class="form-label"> Case Type</label>
         <div class="form-group">
-            <label class="form-label">{{caseDetail.caseTypeId}}
+            <label class="form-label">{{caseLabel.caseTypeText}}
                         </label>
         </div>
     </div>
@@ -19,7 +20,7 @@
         <label class="form-label"> Case Status
                             </label>
         <div class="form-group">
-            <label class="form-label">{{caseDetail.caseStatusId}}
+            <label class="form-label">{{caseLabel.caseStatusText}}
                         </label>
         </div>
     </div>
@@ -29,7 +30,7 @@
         <label class="form-label"> Location
                             </label>
         <div class="form-group">
-            <label class="form-label">{{caseDetail.locationId}}
+            <label class="form-label">{{caseLabel.locationName}}
                         </label>
         </div>
     </div>
@@ -37,7 +38,7 @@
         <label class="form-label"> Carrier Case Number
                             </label>
         <div class="form-group">
-            <label class="form-label">{{caseDetail.carrierCaseNo}}
+            <label class="form-label">{{caseLabel.carrierCaseNo}}
                         </label>
         </div>
     </div>
@@ -45,7 +46,7 @@
         <label class="form-label">Attorney                              
                             </label>
         <div class="form-group">
-            <label class="form-label">{{caseDetail.attorneyId}}
+            <label class="form-label">{{caseLabel.companyName}}
                         </label>
         </div>
     </div>
@@ -55,9 +56,9 @@
         <label class="form-label"> Case Source
                             </label>
         <div class="form-group">
-            <label class="form-label">{{caseDetail.caseSource}}
+            <label class="form-label">{{caseLabel.caseSource}}
                  </label>
         </div>
     </div>
-</div>-->
-Hello Case read only
+</div>
+</div>

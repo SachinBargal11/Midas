@@ -2408,12 +2408,52 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object AssociatePatientWithCompany(int PatientId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociatePatientWithCompany(PatientId, CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         public Object AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.AssociatePatientWithAttorneyCompany(PatientId, CaseId, AttorneyCompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociatePatientWithAncillaryCompany(PatientId, CaseId, AncillaryCompanyId);
 
                 return gbdata;
             }
