@@ -5,9 +5,11 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
 import { Case } from '../models/case';
+import { CaseLabel } from '../models/case-label';
 import { CaseDocument } from '../models/case-document';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseAdapter } from './adapters/case-adapter';
+import { CaseLabelAdapter } from './adapters/case-label-adapters';
 import { CaseDocumentAdapter } from './adapters/case-document-adapters';
 import { Document } from '../../../commons/models/document';
 import * as _ from 'underscore';
@@ -47,6 +49,27 @@ export class CaseService {
 
         });
         return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
+    getCaseReadOnly(caseId: Number): Observable<CaseLabel> {
+        let promise: Promise<CaseLabel> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/case/getReadOnly/' + caseId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let caseLabel = null;
+                    if (data) {
+                        caseLabel = CaseLabelAdapter.parseResponse(data);
+                        resolve(caseLabel);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<CaseLabel>>Observable.fromPromise(promise);
     }
 
     getOpenCaseForPatient(patientId: Number): Observable<Case[]> {
@@ -210,12 +233,12 @@ export class CaseService {
     addCase(caseDetail: Case): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
-            let caseCompanyMapping = [{
-                company: {
-                    id: this._sessionStore.session.currentCompany.id
-                }
-            }];
-            caseRequestData.caseCompanyMapping = caseCompanyMapping;
+            // let caseCompanyMapping = [{
+            //     company: {
+            //         id: this._sessionStore.session.currentCompany.id
+            //     }
+            // }];
+            // caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
