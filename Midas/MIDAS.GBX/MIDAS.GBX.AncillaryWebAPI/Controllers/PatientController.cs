@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using MIDAS.GBX.BusinessObjects;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace MIDAS.GBX.AncillaryWebAPI.Controllers
@@ -52,7 +43,13 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
 
-
+        [HttpGet]
+        [Route("getPatientsByCompanyId/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
+        {
+            return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
+        }
 
         protected override void Dispose(bool disposing)
         {

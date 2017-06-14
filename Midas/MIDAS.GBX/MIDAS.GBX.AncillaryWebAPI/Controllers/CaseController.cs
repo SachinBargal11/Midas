@@ -31,7 +31,15 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         {
             return requestHandler.GetByCompanyIdForAncillary(Request, CompanyId);
         }
-      
+
+        [HttpGet]
+        [Route("getByCompanyId/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetGbObjects(Request, CompanyId);
+        }
+
         [HttpGet]
         //[HttpDelete]
         [Route("Delete/{id}")]
