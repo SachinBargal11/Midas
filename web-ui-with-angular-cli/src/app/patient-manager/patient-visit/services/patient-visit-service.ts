@@ -246,7 +246,7 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    addPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {      
+    addPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise: Promise<PatientVisit> = new Promise((resolve, reject) => {
             let requestData = _.extend(patientVisitDetail.toJS(), {
                 calendarEvent: _.extend(patientVisitDetail.calendarEvent.toJS(), {
@@ -256,8 +256,8 @@ export class PatientVisitService {
                     recurrenceException: ''
                 })
             });
-            requestData.createByUserID=this._sessionStore.session.account.user.id;
-            requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
+            requestData.createByUserID = this._sessionStore.session.account.user.id;
+            // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
@@ -286,7 +286,7 @@ export class PatientVisitService {
                     }).join(',')
                 })
             };
-            requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
+            // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -314,7 +314,7 @@ export class PatientVisitService {
                     }).join(',')
                 })
             });
-            requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
+            // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
