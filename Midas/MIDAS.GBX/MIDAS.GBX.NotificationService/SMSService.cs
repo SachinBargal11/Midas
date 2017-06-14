@@ -70,7 +70,7 @@ namespace MIDAS.GBX.NotificationService
 
                 client.BaseAddress = new Uri(BaseAddress);
 
-                HttpResponseMessage respMsg1 = client.GetAsync("midasNotificationAPI/SMSQueueReadWrite/readFromQueue").Result;
+                HttpResponseMessage respMsg1 = client.GetAsync("midasNotificationAPI/SMSQueue/readFromQueue").Result;
                 respMsg1.EnsureSuccessStatusCode();
                 var SMSListSend = respMsg1.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
 
@@ -86,7 +86,7 @@ namespace MIDAS.GBX.NotificationService
                 if (SMSListSend != null && SMSListSend.Count > 0)
                 {
                     var result = JsonConvert.SerializeObject(SMSListSend);
-                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendSMSFromQueue/SendSMSList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
+                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendSMS/SendSMSList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
                     respMsg2.EnsureSuccessStatusCode();
                     var result2 = respMsg2.Content.ReadAsAsync<List<BO.SMSSend>>().Result;
                 }

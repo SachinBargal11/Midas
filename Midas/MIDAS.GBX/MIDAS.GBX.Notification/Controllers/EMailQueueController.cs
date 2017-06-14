@@ -8,12 +8,12 @@ using System.Net.Http;
 using System.Web.Http;
 namespace MIDAS.GBX.Notification.Controllers
 {
-    [RoutePrefix("midasNotificationAPI/EMailQueueReadWrite")]
-    public class EMailQueueReadWriteController : ApiController
+    [RoutePrefix("midasNotificationAPI/EMailQueue")]
+    public class EMailQueueController : ApiController
     {
         private IRequestHandler<EMailQueue> requestHandlerEMail;
 
-        public EMailQueueReadWriteController()
+        public EMailQueueController()
         {
             requestHandlerEMail = new NotificationRequestHandler<EMailQueue>();
         }

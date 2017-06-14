@@ -105,7 +105,7 @@
     <Compile Include="DataAccessManager\IGbNotificationManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
-    <Compile Include="EntityRepository\Notification\EMailQueueReadWriteRepository.cs" />
+    <Compile Include="EntityRepository\Notification\EMailQueueRepository.cs" />
     <Compile Include="EntityRepository\Notification\SendEMailRepository.cs" />
     <Compile Include="EntityRepository\Notification\SendSMSRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
@@ -145,7 +145,7 @@
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
-    <Compile Include="EntityRepository\Notification\SMSQueueReadWriteRepository.cs" />
+    <Compile Include="EntityRepository\Notification\SMSQueueRepository.cs" />
     <Compile Include="EntityRepository\PendingReferral\PendingReferralRepository.cs" />
     <Compile Include="EntityRepository\PreferredAttorneyProvider\PreferredAttorneyProviderRepository.cs" />
     <Compile Include="EntityRepository\PreferredMedicalProvider\PreferredMedicalProviderRepository.cs" />

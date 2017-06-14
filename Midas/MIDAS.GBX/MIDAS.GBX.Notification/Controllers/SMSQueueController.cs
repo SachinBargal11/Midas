@@ -9,12 +9,12 @@ using System.Web.Http;
 
 namespace MIDAS.GBX.Notification.Controllers
 {
-    [RoutePrefix("midasNotificationAPI/SMSQueueReadWrite")]
-    public class SMSQueueReadWriteController : ApiController
+    [RoutePrefix("midasNotificationAPI/SMSQueue")]
+    public class SMSQueueController : ApiController
     {
         private IRequestHandler<SMSQueue> requestHandlerSMS;
 
-        public SMSQueueReadWriteController()
+        public SMSQueueController()
         {
             requestHandlerSMS = new NotificationRequestHandler<SMSQueue>();
         }

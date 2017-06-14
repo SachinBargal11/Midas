@@ -9,12 +9,12 @@ using MIDAS.GBX.Notification.RequestHandler;
 
 namespace MIDAS.GBX.Notification.Controllers
 {
-    [RoutePrefix("midasNotificationAPI/SendSMSFromQueue")]
-    public class SendSMSFromQueueController : ApiController
+    [RoutePrefix("midasNotificationAPI/SendSMS")]
+    public class SendSMSController : ApiController
     {
         private IRequestHandler<SMSSend> requestHandlerSMS;
 
-        public SendSMSFromQueueController()
+        public SendSMSController()
         {
             requestHandlerSMS = new NotificationRequestHandler<SMSSend>();
         }

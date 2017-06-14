@@ -251,11 +251,11 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\EMailQueueReadWriteController.cs" />
-    <Compile Include="Controllers\SendEMailFromQueueController.cs" />
-    <Compile Include="Controllers\SMSQueueReadWriteController.cs" />
+    <Compile Include="Controllers\EMailQueueController.cs" />
+    <Compile Include="Controllers\SendEMailController.cs" />
+    <Compile Include="Controllers\SMSQueueController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SendSMSFromQueueController.cs" />
+    <Compile Include="Controllers\SendSMSController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -70,14 +70,14 @@ namespace MIDAS.GBX.NotificationService
 
                 client.BaseAddress = new Uri(BaseAddress);
 
-                HttpResponseMessage respMsg1 = client.GetAsync("midasNotificationAPI/EMailQueueReadWrite/readFromQueue").Result;
+                HttpResponseMessage respMsg1 = client.GetAsync("midasNotificationAPI/EMailQueue/readFromQueue").Result;
                 respMsg1.EnsureSuccessStatusCode();
                 var EMailListSend = respMsg1.Content.ReadAsAsync<List<BO.EMailSend>>().Result;
 
                 if (EMailListSend != null && EMailListSend.Count > 0)
                 {
                     var result = JsonConvert.SerializeObject(EMailListSend);
-                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendEMailFromQueue/SendEMailList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
+                    HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendEMail/SendEMailList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
                     respMsg2.EnsureSuccessStatusCode();
                     var result2 = respMsg2.Content.ReadAsAsync<List<BO.EMailQueue>>().Result;
                 }

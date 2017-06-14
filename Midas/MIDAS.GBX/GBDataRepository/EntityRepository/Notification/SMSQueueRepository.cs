@@ -10,9 +10,9 @@ using System.Data.Linq;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class SMSQueueReadWriteRepository : BaseEntityRepo, IDisposable
+    internal class SMSQueueRepository : BaseEntityRepo, IDisposable
     {
-        public SMSQueueReadWriteRepository(MIDASGBXEntities context) : base(context)
+        public SMSQueueRepository(MIDASGBXEntities context) : base(context)
         {
             context.Configuration.ProxyCreationEnabled = false;
         }
