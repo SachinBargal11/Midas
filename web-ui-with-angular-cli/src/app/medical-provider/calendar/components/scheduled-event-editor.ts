@@ -13,7 +13,7 @@ import { AncillaryMaster } from '../../../account-setup/models/ancillary-master'
 })
 
 export class ScheduledEventEditorComponent implements OnChanges {
-    transportProviderId: number = 0;
+    ancillaryProviderId: number = 0;
     allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
     private _selectedEvent: ScheduledEvent;
@@ -205,7 +205,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 recur_monthday: [],
                 recur_weekday: []
             }),
-            transportProviderId: [''],
+            ancillaryProviderId: [''],
             referredBy: ['']
         });
         this.scheduledEventEditorFormControls = this.scheduledEventEditorForm.controls;
@@ -355,7 +355,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             // eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).endOf('day') : moment(this.eventStartAsDate).add(this.duration, 'minutes'),
             // isAllDay: scheduledEventEditorFormValues.isAllDay,
             recurrenceRule: recurrenceRule ? recurrenceRule : null,
-            transportProviderId: parseInt(scheduledEventEditorFormValues.transportProviderId)
+            ancillaryProviderId: parseInt(scheduledEventEditorFormValues.ancillaryProviderId)
         }));
     }
 

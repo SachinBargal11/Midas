@@ -191,16 +191,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
 
-        #region Get ProcedureCode code excluding assigned
-        public override object GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        #region Get ProcedureCode by specialty excluding assigned
+        public override object GetProcedureCodeBySpecialtyExcludingAssigned(int specialtyId, int companyId)
         {
 
             var procedureCodeDB = (from pc in _context.ProcedureCodes
-                                   where (pc.SpecialityId == specialtyOrTestId || pc.RoomTestId == specialtyOrTestId)
+                                   where pc.SpecialityId == specialtyId
                                          && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                          && !(from pm in _context.ProcedureCodeCompanyMappings where pm.CompanyID == companyId select pm.ProcedureCodeID).Contains(pc.Id)
-
-
                                    select new
                                    {
                                        pc.Id,
@@ -209,7 +207,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                    }
                                    ).ToList();
 
+            List<BO.ProcedureCode> boProcedureCode = new List<BO.ProcedureCode>();
 
+            if (procedureCodeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+    
+            return (object)procedureCodeDB;
+        }
+        #endregion
+
+        #region Get ProcedureCode by room excluding assigned
+        public override object GetProcedureCodeByRoomTestExcludingAssigned(int roomTestId, int companyId)
+        {
+
+            var procedureCodeDB = (from pc in _context.ProcedureCodes
+                                   where pc.RoomTestId == roomTestId
+                                         && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                         && !(from pm in _context.ProcedureCodeCompanyMappings
+                                              where pm.CompanyID == companyId
+                                                    &&(pm.IsDeleted.HasValue == false || (pm.IsDeleted.HasValue == true && pm.IsDeleted.Value == false))
+                                              select pm.ProcedureCodeID).Contains(pc.Id)
+                                   select new
+                                   {
+                                       pc.Id,
+                                       pc.ProcedureCodeText,
+                                       pc.ProcedureCodeDesc
+                                   }
+                                   ).ToList();
 
             List<BO.ProcedureCode> boProcedureCode = new List<BO.ProcedureCode>();
 
@@ -217,14 +243,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-
-            //else
-            //{
-            //    foreach (var boProcedureCodeList in procedureCodeDB)
-            //    {
-            //        boProcedureCode.Add(Convert<BO.ProcedureCode, ProcedureCode>(boProcedureCodeList));
-            //    }
-            //}
 
             return (object)procedureCodeDB;
         }

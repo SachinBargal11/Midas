@@ -536,9 +536,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             bool add_UserCompany = false;
             bool sendEmail = false;
             Guid invitationDB_UniqueID = Guid.NewGuid();
-            BO.AttorneyMaster addAttorneyBO = new BO.AttorneyMaster();
-            BO.User userBO = addAttorneyBO.User;
-
 
             var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
@@ -565,6 +562,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userCompany.CompanyID = CompanyId;
             userCompany.UserID = DoctorId;
+            userCompany.UserStatusID = 1;
             userCompany.IsAccepted = true;
 
             if (add_UserCompany)

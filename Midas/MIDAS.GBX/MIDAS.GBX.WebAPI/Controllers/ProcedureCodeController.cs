@@ -71,10 +71,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getProcedureCodeExcludingAssigned/{specialtyOrTestId}/{companyId}")]
-        public HttpResponseMessage GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        [Route("getProcedureCodeBySpecialtyExcludingAssigned/{specialtyId}/{companyId}")]
+        public HttpResponseMessage GetProcedureCodeBySpecialtyExcludingAssigned(int specialtyId, int companyId)
         {
-            return requestHandler.GetProcedureCodeExcludingAssigned(Request, specialtyOrTestId, companyId);
+            return requestHandler.GetProcedureCodeBySpecialtyExcludingAssigned(Request, specialtyId, companyId);
+        }
+
+        [HttpGet]
+        [Route("getProcedureCodeByRoomTestExcludingAssigned/{roomTestId}/{companyId}")]
+        public HttpResponseMessage GetProcedureCodeByRoomTestExcludingAssigned(int roomTestId, int companyId)
+        {
+            return requestHandler.GetProcedureCodeByRoomTestExcludingAssigned(Request, roomTestId, companyId);
         }
 
         protected override void Dispose(bool disposing)

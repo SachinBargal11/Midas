@@ -125,6 +125,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company ID 
+        public override object GetByCompanyId(int CompanyId)
+        {
+                      
+            var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
+                                     join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                     where pccm.CompanyID == CompanyId
+                                           && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                           && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                     select new
+                                     {
+                                         pc.ProcedureCodeText,
+                                         pc.ProcedureCodeDesc,
+                                         pc.Amount
+                                     }).ToList();
+
+            if (procedureCodeInfo == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {             
+                return procedureCodeInfo;
+            }
+        }
+        #endregion
+
         #region Delete
         public override object Delete(int id)
         {

@@ -41,7 +41,7 @@ const PatientVisitRecord = Record({
     isOutOfOffice: false,
     leaveStartDate: null,
     leaveEndDate: null,
-    transportProviderId: 0,
+    ancillaryProviderId: 0,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -78,7 +78,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     isOutOfOffice: boolean;
     leaveStartDate: moment.Moment;
     leaveEndDate: moment.Moment;
-    transportProviderId: number;
+    ancillaryProviderId: number;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
