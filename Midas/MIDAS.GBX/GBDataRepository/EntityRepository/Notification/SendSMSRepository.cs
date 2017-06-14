@@ -128,7 +128,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (SMSQueueDB != null)
                     {
-                        SMSQueueDB.DeliveryDate = message.DateSent;
+                        SMSQueueDB.DeliveryDate = message.DateSent.HasValue ? message.DateSent : message.DateUpdated;
                         SMSQueueDB.NumberOfAttempts += 1;
                         SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
 
