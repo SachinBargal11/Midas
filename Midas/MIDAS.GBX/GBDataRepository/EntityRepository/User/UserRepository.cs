@@ -330,6 +330,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.SaveChanges();
 
+                if(userDB != null)
+                {
+                    var doctor = _context.Doctors.Where(p => p.Id == userDB.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if(doctor != null)
+                    {
+                        doctor.IsDeleted = true;
+                        _context.SaveChanges();
+                    }
+                }
+
                 if (usr != null)
                 {
                     #region User                    
@@ -422,6 +432,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 userCompanyDB.CreateDate = DateTime.UtcNow;
                 userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
+                userCompanyDB.UserStatusID = 1;
                 _dbUserCompany.Add(userCompanyDB);
                 _context.SaveChanges();
             }

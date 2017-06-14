@@ -86,19 +86,7 @@ export class CasesListComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe((cases:Case[]) => {
-            //     this.cases = cases; 
-            // },
-            // (error) => {
-            //     this._progressBarService.hide();
-            // },
-            // () => {
-            //     this._progressBarService.hide();
-            // });
-            let openCases: Case[] = _.filter(cases, (currentCase: Case) => {
-                    return currentCase.caseStatusId == 1;
-                });
-
-                this.cases = openCases; 
+                this.cases = cases; 
             },
             (error) => {
                 this._progressBarService.hide();
@@ -106,17 +94,39 @@ export class CasesListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+
+            // let openCases: Case[] = _.filter(cases, (currentCase: Case) => {
+            //         return currentCase.caseStatusId == 1;
+            //     });
+
+            // let matchingLabelCase: Case[] = _.filter(openCases, (currentCase: Case) => {
+            //     currentCase.CaseCompanyMapping.forEach(currentCaseCompanyMapping => {
+            //         if((currentCaseCompanyMapping.isOriginator == true) && (currentCaseCompanyMapping.company.id)){
+
+            //         }
+            //     });
+            //         return currentCase;
+            //     });    
+
+            //     this.cases = openCases; 
+            // },
+            // (error) => {
+            //     this._progressBarService.hide();
+            // },
+            // () => {
+            //     this._progressBarService.hide();
+            // });
     }
 
-    isCurrentUser(userId): boolean {
-        let isCurrentUser: boolean = false;
-        _.forEach(this.cases, (currentCase: Case) => {
-            if (currentCase.createByUserID === userId) {
-                isCurrentUser = true;
-            }
-        });
-        return isCurrentUser;
-    }
+    // isCurrentUser(userId): boolean {
+    //     let isCurrentUser: boolean = false;
+    //     _.forEach(this.cases, (currentCase: Case) => {
+    //         if (currentCase.createByUserID === userId) {
+    //             isCurrentUser = true;
+    //         }
+    //     });
+    //     return isCurrentUser;
+    // }
 
     // isCreatedByCompany(companyId): boolean {
     //     let isCreatedByCompany: boolean = false;
