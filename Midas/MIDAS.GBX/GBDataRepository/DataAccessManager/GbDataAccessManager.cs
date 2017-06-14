@@ -3309,12 +3309,34 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetProcedureCodeExcludingAssigned(int specialtyOrTestId, int companyId)
+        public Object GetProcedureCodeBySpecialtyExcludingAssigned(int specialtyId, int companyId)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetProcedureCodeExcludingAssigned(specialtyOrTestId, companyId);
+                var gbdata = baseRepo.GetProcedureCodeBySpecialtyExcludingAssigned(specialtyId, companyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetProcedureCodeByRoomTestExcludingAssigned(int roomTestId, int companyId)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetProcedureCodeByRoomTestExcludingAssigned(roomTestId, companyId);
 
                 return gbdata;
             }

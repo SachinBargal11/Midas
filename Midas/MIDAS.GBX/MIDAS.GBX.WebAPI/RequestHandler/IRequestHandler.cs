@@ -139,6 +139,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
         HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId, string objectType);
-        HttpResponseMessage GetProcedureCodeExcludingAssigned(HttpRequestMessage request, int specialtyOrTestId, int CompanyId);
+        HttpResponseMessage GetProcedureCodeBySpecialtyExcludingAssigned(HttpRequestMessage request, int specialtyId, int CompanyId);
+        HttpResponseMessage GetProcedureCodeByRoomTestExcludingAssigned(HttpRequestMessage request, int roomTestId, int CompanyId);
     }
 }
