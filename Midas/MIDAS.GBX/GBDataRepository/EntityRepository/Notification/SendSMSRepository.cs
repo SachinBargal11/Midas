@@ -45,50 +45,50 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Send SMS From Queue
-        public override object SendSMSFromQueue<T>(T entity)
-        {
-            BO.SMSSend SMSSendBO = (BO.SMSSend)(object)entity;
+        //public override object SendSMSFromQueue<T>(T entity)
+        //{
+        //    BO.SMSSend SMSSendBO = (BO.SMSSend)(object)entity;
 
-            string accountSid = SMSSendBO.AccountSid;
-            string authToken = SMSSendBO.AuthToken;            
+        //    string accountSid = SMSSendBO.AccountSid;
+        //    string authToken = SMSSendBO.AuthToken;            
 
-            var FromNumber = new PhoneNumber(SMSSendBO.FromNumber);
-            var ToNumber = new PhoneNumber(SMSSendBO.ToNumber);
+        //    var FromNumber = new PhoneNumber(SMSSendBO.FromNumber);
+        //    var ToNumber = new PhoneNumber(SMSSendBO.ToNumber);
 
-            var Message = SMSSendBO.Message;
+        //    var Message = SMSSendBO.Message;
 
-            TwilioClient.Init(accountSid, authToken);
+        //    TwilioClient.Init(accountSid, authToken);
 
-            var message = MessageResource.Create(
-                ToNumber,
-                from: FromNumber,
-                body: Message
-            );
+        //    var message = MessageResource.Create(
+        //        ToNumber,
+        //        from: FromNumber,
+        //        body: Message
+        //    );
 
-            SMSQueue SMSQueueDB = _context.SMSQueues.Where(p => p.Id == SMSSendBO.ID).FirstOrDefault();
+        //    SMSQueue SMSQueueDB = _context.SMSQueues.Where(p => p.Id == SMSSendBO.ID).FirstOrDefault();
 
-            if (message.Status == MessageResource.StatusEnum.Failed || message.Status == MessageResource.StatusEnum.Undelivered)
-            {
-                SMSQueueDB.NumberOfAttempts += 1;
-                SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
+        //    if (message.Status == MessageResource.StatusEnum.Failed || message.Status == MessageResource.StatusEnum.Undelivered)
+        //    {
+        //        SMSQueueDB.NumberOfAttempts += 1;
+        //        SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
 
-                _context.SaveChanges();
-            }
-            else
-            {
-                if (SMSQueueDB != null)
-                {
-                    SMSQueueDB.DeliveryDate = message.DateSent;
-                    SMSQueueDB.NumberOfAttempts += 1;
-                    SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
+        //        _context.SaveChanges();
+        //    }
+        //    else
+        //    {
+        //        if (SMSQueueDB != null)
+        //        {
+        //            SMSQueueDB.DeliveryDate = message.DateSent;
+        //            SMSQueueDB.NumberOfAttempts += 1;
+        //            SMSQueueDB.ResultObject = JsonConvert.SerializeObject(message);
 
-                    _context.SaveChanges();
-                }
-            }
+        //            _context.SaveChanges();
+        //        }
+        //    }
 
-            var res = Convert<BO.SMSSend, SMSQueue>(SMSQueueDB);
-            return (object)res;
-        }
+        //    var res = Convert<BO.SMSSend, SMSQueue>(SMSQueueDB);
+        //    return (object)res;
+        //}
         #endregion
 
         #region Send SMS List From Queue

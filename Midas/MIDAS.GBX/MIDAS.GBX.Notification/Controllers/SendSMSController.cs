@@ -19,12 +19,12 @@ namespace MIDAS.GBX.Notification.Controllers
             requestHandlerSMS = new NotificationRequestHandler<SMSSend>();
         }
 
-        [HttpPost]
-        [Route("sendSMS")]
-        public HttpResponseMessage SendSMS([FromBody]SMSSend smsObject)
-        {
-            return requestHandlerSMS.SendSMSFromQueue(Request, smsObject);
-        }
+        //[HttpPost]
+        //[Route("sendSMS")]
+        //public HttpResponseMessage SendSMS([FromBody]SMSSend smsObject)
+        //{
+        //    return requestHandlerSMS.SendSMSFromQueue(Request, smsObject);
+        //}
 
         [HttpPost]
         [Route("sendSMSList")]
