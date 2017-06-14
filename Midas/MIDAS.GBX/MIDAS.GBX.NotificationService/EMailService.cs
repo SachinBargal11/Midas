@@ -80,6 +80,11 @@ namespace MIDAS.GBX.NotificationService
                     HttpResponseMessage respMsg2 = client.PostAsync("midasNotificationAPI/SendEMail/SendEMailList", new StringContent(result, Encoding.UTF8, "application/json")).Result;
                     respMsg2.EnsureSuccessStatusCode();
                     var result2 = respMsg2.Content.ReadAsAsync<List<BO.EMailQueue>>().Result;
+
+                    int TotalCount = result2.Count;
+                    int EMailSentSuccess = result2.Where(p => p.DeliveryDate.HasValue == true).Count();
+
+                    WriteLog.WriteLine(this.ServiceName, string.Format("Service Called: EMail send ({0} of {1}).", EMailSentSuccess, TotalCount));
                 }
                 else
                 {

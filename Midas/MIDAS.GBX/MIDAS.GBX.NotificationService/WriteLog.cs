@@ -14,7 +14,7 @@ namespace MIDAS.GBX.NotificationService
             StreamWriter sw = null;
             try
             {
-                sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\" + ServiceName + "LogFile.txt", true);
+                sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\" + ServiceName + " - LogFile.txt", true);
                 sw.WriteLine(DateTime.Now.ToString() + ": " + ex.ToString());
                 sw.WriteLine("-------------------------------------------------------");
                 sw.WriteLine("");
@@ -32,7 +32,7 @@ namespace MIDAS.GBX.NotificationService
             StreamWriter sw = null;
             try
             {
-                sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\" + ServiceName + "LogFile.txt", true);
+                sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\" + ServiceName + " - LogFile.txt", true);
                 sw.WriteLine(DateTime.Now.ToString() + ": " + message);
                 sw.WriteLine("-------------------------------------------------------");
                 sw.WriteLine("");
