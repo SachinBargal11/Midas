@@ -16,21 +16,17 @@
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
     </div>
 </div>
-<!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
-[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [responsive]="true">-->
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
         <ng-template let-currentUser="rowData" pTemplate="body">
-            <div *ngIf="currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
-                <a title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
-            <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}--></a>
-            </div>
-            <div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
+            <!--<div *ngIf="currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">-->
+            <a title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}</a>
+            <!--<div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
                 <a (click)="showDialog(currentUser.id)">{{currentUser.patient.user.displayName}}</a>
-            </div>
+            </div>-->
         </ng-template>
     </p-column>
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
@@ -46,55 +42,25 @@
             </a>
         </ng-template>
     </p-column>
-
-    <!--<p-column header="Case Source" field="caseSource"> </p-column>-->
     <p-column header="Case Source" [sortable]="true">
-        <ng-template let-case="rowData" pTemplate="body">
-            <!--<div *ngIf="isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.caseSource}}
-            </div>
-            <div *ngIf="!isCurrentUser(sessionStore.session.account.user.id)">
-                {{currentUser.createdByCompany.name}}
-            </div>-->
+        <!--<ng-template let-case="rowData" pTemplate="body">
             <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.caseSource}}
             </div>
             <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.createdByCompany.name}}
             </div>
-        </ng-template>
+        </ng-template>-->
     </p-column>
-
-    <!--<p-column header="Referral Status">
-        <ng-template let-case="rowData" pTemplate="body">
-            <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals">
-                <u>Inbound</u>
-            </a>
-            <a *ngIf="case.getOutboundReferral(sessionStore.session.currentCompany.id) && !case.getInboundReferral(sessionStore.session.currentCompany.id)"
-                routerLink="/patient-manager/referrals/outbound-referrals">
-                <u>Outbound</u>
-            </a>
-            <a *ngIf="!case.getInboundReferral(sessionStore.session.currentCompany.id)">
-                <u></u>
-            </a>
-          
-        </ng-template>
-    </p-column>-->
-
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id) && case.getInboundReferral(sessionStore.session.currentCompany.id)">
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
-                <!--<a *ngIf="case.createdByCompanyId == sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
-                <!--<a *ngIf="case.createdByCompanyId != sessionStore.session.currentCompany.id" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>-->
-                <!--<a routerLink="{{case.id}}/basicLabel"></a>-->
             </div>
-            <!--<div *ngIf="case.isSessionCompany(sessionStore.session.currentCompany.id) ">-->
-            <div *ngIf="case.createdByCompanyId == sessionStore.session.currentCompany.id">
-                <a title="Edit" routerLink="{{case.patient.user.id}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-            </div>
-            <div *ngIf="case.createdByCompanyId != sessionStore.session.currentCompany.id">
-                <a title="Edit" routerLink="{{case.patient.user.id}}/{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+            <a *ngIf="case.caseStatusId == 2" routerLink="{{case.patient.user.id}}/{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+            <div *ngIf="case.caseStatusId == 1">
+                <a *ngIf="case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.patient.user.id}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+                <a *ngIf="!case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.patient.user.id}}/{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
         </ng-template>
     </p-column>
@@ -102,7 +68,6 @@
 
 <p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
     <div *ngIf="selectedCaseId">
         <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="selectedCaseId" [isConsentDocumentOn]="true"
             [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"

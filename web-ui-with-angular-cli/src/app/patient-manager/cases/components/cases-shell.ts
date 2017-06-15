@@ -6,6 +6,8 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { Patient } from '../../patients/models/patient';
 import { Case } from '../models/case';
 import { SessionStore } from '../../../commons/stores/session-store';
+import * as _ from 'underscore';
+import { CaseCompanyMapping } from '../models/caseCompanyMapping';
 
 @Component({
     selector: 'cases-shell',
@@ -58,11 +60,19 @@ export class CaseShellComponent implements OnInit {
                     this.caseDetail = caseDetail;
                     this.caseStatus = caseDetail.caseStatusLabel;
                     this.caseType = caseDetail.caseTypeLabel;
-                    if(caseDetail.createdByCompanyId == sessionStore.session.currentCompany.id){
-                       this.caseEditableLabel = true;
-                    }else{
-                       this.caseEditableLabel = false;
-                    }
+                    // if(this.caseDetail.caseStatusId != 2){
+                    //    _.forEach(this.caseDetail.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
+                    //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === sessionStore.session.currentCompany.id)) {
+                    //         this.caseEditableLabel = true;
+                    //     }else{
+                    //         this.caseEditableLabel = false;
+                    //     }
+                    // });
+                    // }else{
+                    //     this.caseEditableLabel = false
+                    // }
+                   
+                    
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });

@@ -118,13 +118,13 @@ export class Case extends CaseRecord {
         return isCaseLabelEditable;
     }
 
-    isCreatedByCompany(companyId): boolean {
-        let isCreatedByCompany: boolean = false;
-        if (this.createdByCompany.id === companyId) {
-            isCreatedByCompany = true;
-        }
-        return isCreatedByCompany;
-    }
+    // isCreatedByCompany(companyId): boolean {
+    //     let isCreatedByCompany: boolean = false;
+    //     if (this.createdByCompany.id === companyId) {
+    //         isCreatedByCompany = true;
+    //     }
+    //     return isCreatedByCompany;
+    // }
 
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
