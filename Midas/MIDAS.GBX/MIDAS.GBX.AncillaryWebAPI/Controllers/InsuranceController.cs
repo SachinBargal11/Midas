@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using MIDAS.GBX.BusinessObjects;
+﻿using MIDAS.GBX.BusinessObjects;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,24 +10,26 @@ using System.Web.Http;
 
 namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 {
-    [RoutePrefix("midasancillaryapi/Case")]
+    [RoutePrefix("midasancillaryapi/PatientInsuranceInfo")]
 
-    public class CaseController : ApiController
+    public class InsuranceController : ApiController
     {
-        private IRequestHandler<Case> requestHandler;
+        private IRequestHandler<PatientInsuranceInfo> requestHandler;
 
-        public CaseController()
+        public InsuranceController()
         {
-            requestHandler = new GbApiRequestHandler<Case>();
+            requestHandler = new GbApiRequestHandler<PatientInsuranceInfo>();
         }
 
+        // GET: api/Organizations/5
         [HttpGet]
-        [Route("getByCompanyIdForAncillary/{CompanyId}")]
+        [Route("get/{id}")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetByCompanyIdForAncillary(int CompanyId)
+        public HttpResponseMessage Get(int id)
         {
-            return requestHandler.GetByCompanyIdForAncillary(Request, CompanyId);
+            return requestHandler.GetObject(Request, id);
         }
+
 
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]
@@ -41,19 +40,19 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByCompanyId/{CompanyId}")]
+        [Route("isInsuranceInfoAdded/{PatientId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetByCompanyId(int CompanyId)
+        public HttpResponseMessage IsInsuranceInfoAdded(int PatientId)
         {
-            return requestHandler.GetGbObjects(Request, CompanyId);
+            return requestHandler.IsInsuranceInfoAdded(Request, PatientId);
         }
 
-        [HttpGet]
-        [Route("getByPatientIdAndCompanyId/{PatientId}/{CompanyId}")]
+        [HttpPost]
+        [Route("save")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetByPatientId(int PatientId, int CompanyId)
+        public HttpResponseMessage Post([FromBody]PatientInsuranceInfo data)
         {
-            return requestHandler.GetGbObjects2(Request, PatientId, CompanyId);
+            return requestHandler.CreateGbObject(Request, data);
         }
 
         [HttpGet]
@@ -64,6 +63,8 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         {
             return requestHandler.Delete(Request, id);
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

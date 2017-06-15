@@ -503,7 +503,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Is existing User
         public override Object Get(string user)
         {
-            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            var acc = _context.Users.Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
             if (acc == null)
             {
                 return false;

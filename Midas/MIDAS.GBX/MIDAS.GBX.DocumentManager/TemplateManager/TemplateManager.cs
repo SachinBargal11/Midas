@@ -44,24 +44,27 @@ namespace MIDAS.GBX.DocumentManager
 
             DocX _template = DocX.Load(ms);
 
-            foreach (string key in templateKeywords.Keys)
+            if (templateKeywords != null  && templateKeywords.Keys.Count > 0)
             {
-                if (key.ToLower().Equals("{signature}"))
+                foreach (string key in templateKeywords.Keys)
                 {
-                    using (FileStream imageFile = new FileStream(tempIMGpath, FileMode.Create))
+                    if (key.ToLower().Equals("{signature}"))
                     {
-                        byte[] bytes = System.Convert.FromBase64String(templateKeywords[key].Replace("data:image/jpeg;base64,", string.Empty));
-                        imageFile.Write(bytes, 0, bytes.Length);
-                        imageFile.Flush(); imageFile.Dispose();
+                        using (FileStream imageFile = new FileStream(tempIMGpath, FileMode.Create))
+                        {
+                            byte[] bytes = System.Convert.FromBase64String(templateKeywords[key].Replace("data:image/jpeg;base64,", string.Empty));
+                            imageFile.Write(bytes, 0, bytes.Length);
+                            imageFile.Flush(); imageFile.Dispose();
+                        }
+                        Novacode.Image img = _template.AddImage(tempIMGpath);
+                        Picture pic1 = img.CreatePicture();
+                        Novacode.Paragraph p1 = _template.InsertParagraph();
+                        p1.InsertPicture(pic1);
+                        _template.ReplaceText(key, "");
                     }
-                    Novacode.Image img = _template.AddImage(tempIMGpath);
-                    Picture pic1 = img.CreatePicture();
-                    Novacode.Paragraph p1 = _template.InsertParagraph();
-                    p1.InsertPicture(pic1);
-                    _template.ReplaceText(key, "");
+                    else
+                    { _template.ReplaceText(key, templateKeywords[key]); }
                 }
-                else
-                { _template.ReplaceText(key, templateKeywords[key]); }
             }
             _template.SaveAs(tempDOCpath);
 

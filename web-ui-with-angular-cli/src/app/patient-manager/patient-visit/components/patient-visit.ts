@@ -1104,6 +1104,7 @@ export class PatientVisitComponent implements OnInit {
         } else {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
         }
+        debugger;
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: leaveEvent ? null : patientScheduleFormValues.patientId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
@@ -1111,7 +1112,7 @@ export class PatientVisitComponent implements OnInit {
             isOutOfOffice: this.isGoingOutOffice,
             leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
             leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
-            transportProviderId: updatedEvent ? updatedEvent.transportProviderId : 0,
+            ancillaryProviderId: updatedEvent ? updatedEvent.ancillaryProviderId : 0,
             notes: patientScheduleFormValues.notes,
             patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : [],
             createByUserID: this.sessionStore.session.account.user.id
@@ -1320,7 +1321,7 @@ export class PatientVisitComponent implements OnInit {
         this.getDocuments();
     }
 
-     documentUploadError(error: Error) {
+    documentUploadError(error: Error) {
         if (error.message == 'Please Select document Type') {
             this._notificationsService.error('Oh No!', 'Please Select document Type');
         }

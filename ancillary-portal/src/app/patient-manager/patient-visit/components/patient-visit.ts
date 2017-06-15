@@ -150,7 +150,7 @@ export class PatientVisitComponent implements OnInit {
             content = `<i class="fa fa-refresh"></i>`;
         }
         if (event.eventWrapper.room == null) {
-            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
         } else if (event.eventWrapper.doctor == null) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
         }

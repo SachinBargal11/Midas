@@ -60,6 +60,7 @@ export class CasesListComponent implements OnInit {
 
     ) {
         this.url = `${this._url}/documentmanager/uploadtoblob`;
+       
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
@@ -82,7 +83,7 @@ export class CasesListComponent implements OnInit {
         this.loadCases();
     }
 
-    loadCases() {
+    loadCases() {    
         this._progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
@@ -118,7 +119,7 @@ export class CasesListComponent implements OnInit {
     //     });
     //     return isCreatedByCompany;
     // }
-    
+
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
@@ -182,59 +183,59 @@ export class CasesListComponent implements OnInit {
             this._progressBarService.hide();
         });
     }
-    consentAvailable(case1: Case) {
-        // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {
-        //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
-        // });
-        if (case1.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
-                // if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {
-                //     return this.consentRecived = 'Yes';
-                // } else if (currentConsent.companyId !== this.sessionStore.session.currentCompany.id){
-                //     return this.consentRecived = 'No';
-                // }
-            });
-            if (consentAvailable) {
-                return this.consentRecived = 'Yes';
-            } else {
-                return this.consentRecived = 'No';
-            }
-        } else {
-            return this.consentRecived = 'No';
-        }
-    }
+    // consentAvailable(case1: Case) {
+    //     // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {
+    //     //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
+    //     // });
+    //     if (case1.companyCaseConsentApproval.length > 0) {
+    //         let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
+    //             return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
+    //             // if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {
+    //             //     return this.consentRecived = 'Yes';
+    //             // } else if (currentConsent.companyId !== this.sessionStore.session.currentCompany.id){
+    //             //     return this.consentRecived = 'No';
+    //             // }
+    //         });
+    //         if (consentAvailable) {
+    //             return this.consentRecived = 'Yes';
+    //         } else {
+    //             return this.consentRecived = 'No';
+    //         }
+    //     } else {
+    //         return this.consentRecived = 'No';
+    //     }
+    // }
 
-    referralAvailable(case1: any) {
-        let referralOutBound;
-        let referralInBound;
-        let referralInBoundOutBound;
-        if (case1.referral.length > 0) {
+    // referralAvailable(case1: any) {
+    //     let referralOutBound;
+    //     let referralInBound;
+    //     let referralInBoundOutBound;
+    //     if (case1.referral.length > 0) {
 
-            referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
-                return currentReferral.referredToCompanyId === this.sessionStore.session.currentCompany.id;
-            });
-            referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
-                return currentReferral.referringCompanyId === this.sessionStore.session.currentCompany.id;
-            });
-            if (referralInBound && referralOutBound) {
-                return this.referralRecived = 'InBound/OutBound';
-            }
-            else if (referralInBound) {
-                return this.referralRecived = 'InBound';
-            }
-            else if (referralOutBound) {
-                return this.referralRecived = 'OutBound';
-            }
-            else {
-                return this.referralRecived = '';
-            }
-        } else {
-            return this.referralRecived = '';
-        }
+    //         referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
+    //             return currentReferral.referredToCompanyId === this.sessionStore.session.currentCompany.id;
+    //         });
+    //         referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
+    //             return currentReferral.referringCompanyId === this.sessionStore.session.currentCompany.id;
+    //         });
+    //         if (referralInBound && referralOutBound) {
+    //             return this.referralRecived = 'InBound/OutBound';
+    //         }
+    //         else if (referralInBound) {
+    //             return this.referralRecived = 'InBound';
+    //         }
+    //         else if (referralOutBound) {
+    //             return this.referralRecived = 'OutBound';
+    //         }
+    //         else {
+    //             return this.referralRecived = '';
+    //         }
+    //     } else {
+    //         return this.referralRecived = '';
+    //     }
 
 
-    }
+    // }
 
 
     loadCasesLazy(event: LazyLoadEvent) {
