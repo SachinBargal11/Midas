@@ -933,7 +933,7 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.visitDialogVisible = false;
+        this.visitDialogVisible = true;
     }
 
     // saveReferral(inputProcedureCodes: Procedure[]) {
@@ -965,7 +965,7 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.visitDialogVisible = false;
+        this.visitDialogVisible = true;
     }
 
     cancelAppointment() {

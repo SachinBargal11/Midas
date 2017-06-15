@@ -1327,10 +1327,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             join us in _context.Users on ca.PatientId equals us.id
                             join ccm in _context.CaseCompanyMappings on ca.Id equals ccm.CaseId
                             join co in _context.Companies on ccm.CompanyId equals co.id
+
+                            join ccm2 in _context.CaseCompanyMappings on ca.Id equals ccm2.CaseId  // For  attorney or medical provider company
+                            join co2 in _context.Companies on ccm2.CompanyId equals co2.id  //   For  attorney or medical provider company
+
                             join ct in _context.CaseTypes on ca.CaseTypeId equals ct.Id
                             join cs in _context.CaseStatus on ca.CaseStatusId equals cs.Id
-                            join lo in _context.Locations on ca.LocationId equals lo.id                            
+                            join lo in _context.Locations on ca.LocationId equals lo.id
                             where ca.Id == caseId
+                                  && ccm2.IsOriginator == false  // For  attorney or medical provider company
                                   && ccm.IsOriginator == true
                                   && (ca.IsDeleted.HasValue == false || (ca.IsDeleted.HasValue == true && ca.IsDeleted.Value == false))
                                   && (us.IsDeleted.HasValue == false || (us.IsDeleted.HasValue == true && us.IsDeleted.Value == false))
@@ -1342,13 +1347,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             select new
                             {
                                 CaseId = ca.Id,
+                                OriginatorCompanyId =ccm.CompanyId,
                                 ca.PatientId,
-                                PatientName= us.FirstName+" " + us.MiddleName+" "+ us.LastName,
+                                PatientName = us.FirstName +" "+ us.MiddleName +" "+ us.LastName,
                                 ct.CaseTypeText,
                                 cs.CaseStatusText,
                                 LocationName = lo.Name,
                                 ca.CarrierCaseNo,
-                                CompanyName = co.Name,  
+                                CompanyName = ccm.CompanyId == companyId? co2.Name:co.Name , 
                                 CaseSource = referredBy !=null? referredBy : (ccm.CompanyId == companyId ? ca.CaseSource: co.Name),
                                 ca.CreateByUserID,
                                 ca.CreateDate,
