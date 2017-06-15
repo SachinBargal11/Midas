@@ -51,6 +51,14 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
         }
 
+        [HttpGet]
+        [Route("getPatientById/{id}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetPatientById2(int id)
+        {
+            return requestHandlerPatient2.GetObject(Request, id);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
