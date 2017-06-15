@@ -47,12 +47,11 @@
         </ng-template>
     </p-column>
 
-    <p-column styleClass="actions-cell" header="Actions">
+    <!--<p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
-            <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
         </ng-template>
-    </p-column>
+    </p-column>-->
 </p-dataTable>
 
 <p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
