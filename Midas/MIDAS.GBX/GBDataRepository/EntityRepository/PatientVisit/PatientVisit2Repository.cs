@@ -533,13 +533,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         .Include("Specialty")
                                                                         .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                                                         .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
-                                                                        .Where(p => p.TransportProviderId == AncillaryId
+                                                                        .Where(p => p.AncillaryProviderId == AncillaryId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
 
             if (lstPatientVisit == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id and Doctor Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
