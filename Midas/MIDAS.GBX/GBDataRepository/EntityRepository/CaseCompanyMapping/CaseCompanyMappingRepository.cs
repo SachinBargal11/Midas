@@ -109,11 +109,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (Add_CaseCompanyMappingDB == true)
                 {
                     caseCompanyMappingDB.IsOriginator = CaseCompanyMappingBO.IsOriginator;
-                }
-                    
-
-                if (Add_CaseCompanyMappingDB == true)
-                {
+                
                     caseCompanyMappingDB = _context.CaseCompanyMappings.Add(caseCompanyMappingDB);
                 }
 
