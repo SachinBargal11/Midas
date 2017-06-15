@@ -804,7 +804,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetReadOnly(int CaseId)
+        public virtual Object GetReadOnly(int CaseId,int companyId)
         {
             throw new NotImplementedException();
         }
