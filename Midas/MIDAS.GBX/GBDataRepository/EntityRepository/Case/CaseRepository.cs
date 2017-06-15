@@ -1313,9 +1313,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get ReadOnly By Case Id
-        public override object GetReadOnly(int caseId)
+        public override object GetReadOnly(int caseId,int companyId)
         {
-            
+
+            var referredBy = (from re in _context.Referral2
+                              join co in _context.Companies on re.FromCompanyId equals co.id
+                              where re.CaseId == caseId && re.ToCompanyId == companyId
+                                    && (re.IsDeleted.HasValue == false || (re.IsDeleted.HasValue == true && re.IsDeleted.Value == false))
+                                    && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
+                              select co.Name).FirstOrDefault();
 
             var CaseInfo = (from ca in _context.Cases
                             join us in _context.Users on ca.PatientId equals us.id
@@ -1323,9 +1329,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             join co in _context.Companies on ccm.CompanyId equals co.id
                             join ct in _context.CaseTypes on ca.CaseTypeId equals ct.Id
                             join cs in _context.CaseStatus on ca.CaseStatusId equals cs.Id
-                            join lo in _context.Locations on ca.LocationId equals lo.id
+                            join lo in _context.Locations on ca.LocationId equals lo.id                            
                             where ca.Id == caseId
                                   && ccm.IsOriginator == true
+                                  && (ca.IsDeleted.HasValue == false || (ca.IsDeleted.HasValue == true && ca.IsDeleted.Value == false))
+                                  && (us.IsDeleted.HasValue == false || (us.IsDeleted.HasValue == true && us.IsDeleted.Value == false))
+                                  && (ccm.IsDeleted.HasValue == false || (ccm.IsDeleted.HasValue == true && ccm.IsDeleted.Value == false))
+                                  && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
+                                  && (ct.IsDeleted.HasValue == false || (ct.IsDeleted.HasValue == true && ct.IsDeleted.Value == false))
+                                  && (cs.IsDeleted.HasValue == false || (cs.IsDeleted.HasValue == true && cs.IsDeleted.Value == false))
+                                  && (lo.IsDeleted.HasValue == false || (lo.IsDeleted.HasValue == true && lo.IsDeleted.Value == false))
                             select new
                             {
                                 CaseId = ca.Id,
@@ -1335,8 +1348,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 cs.CaseStatusText,
                                 LocationName = lo.Name,
                                 ca.CarrierCaseNo,
-                                CompanyName = co.Name,
-                                CaseSource = co.Name, 
+                                CompanyName = co.Name,  
+                                CaseSource = referredBy !=null? referredBy : (ccm.CompanyId == companyId ? ca.CaseSource: co.Name),
                                 ca.CreateByUserID,
                                 ca.CreateDate,
                                 ca.UpdateByUserID,
@@ -1422,7 +1435,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int CompanyId, int DoctorId)
         {
             var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
-            //var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
+            
             var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 

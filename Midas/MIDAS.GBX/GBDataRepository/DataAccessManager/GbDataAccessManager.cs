@@ -189,13 +189,13 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public object GetReadOnly(int CaseId)
+        public object GetReadOnly(int CaseId,int companyId)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
-                var refid = baseRepo.GetReadOnly(CaseId);
+                var refid = baseRepo.GetReadOnly(CaseId, companyId);
 
                 return refid;
             }

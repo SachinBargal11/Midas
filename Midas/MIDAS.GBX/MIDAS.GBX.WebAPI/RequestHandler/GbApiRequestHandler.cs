@@ -1056,9 +1056,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId)
+        public HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId, int companyId)
         {
-            var objResult = dataAccessManager.GetReadOnly(CaseId);
+            var objResult = dataAccessManager.GetReadOnly(CaseId,companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
