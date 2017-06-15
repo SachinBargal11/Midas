@@ -1,4 +1,3 @@
-
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -10,29 +9,30 @@ import { Referral } from './referral';
 import { PendingReferral } from '../../referals/models/pending-referral';
 import { Patient } from '../../patients/models/patient';
 import { CaseDocument } from './case-document';
+import { CaseCompanyMapping } from './caseCompanyMapping';
 
 const CaseRecord = Record({
     id: 0,
     patientId: 0,
-    patient: null,
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
-    companies: null,
-    caseCompanyConsentDocument: null,
-    companyCaseConsentApproval: null,
-    referral: null,
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
-    // transportation: true,
     caseStatusId: CaseStatus.OPEN,
-    attorneyId: 0,
+    companyCaseConsentApproval: null,
+    referral: null,
+    patient: null,
+    caseCompanyConsentDocument: null,
+    caseSource: '',
     isDeleted: false,
     createByUserID: 0,
-    createDate: null,
     updateByUserID: 0,
+    createDate: null,
     updateDate: null,
-    caseSource: '',
+    caseCompanyMapping: null,
+    // companies: null,
+    attorneyId: 0,
     createdByCompanyId: 0,
     createdByCompany: null
 
@@ -41,26 +41,26 @@ const CaseRecord = Record({
 export class Case extends CaseRecord {
 
     id: number;
-    patient: Patient;
     patientId: number;
     caseName: string;
     caseTypeId: CaseType;
-    companies: Company[];
-    caseCompanyConsentDocument: CaseDocument[];
-    companyCaseConsentApproval: Consent[];
-    referral: PendingReferral[];
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;
-    // transportation: boolean;
     caseStatusId: CaseStatus;
-    attorneyId: number;
+    companyCaseConsentApproval: Consent[];
+    referral: PendingReferral[];
+    patient: Patient;
+    caseCompanyConsentDocument: CaseDocument[];
+    caseSource: string;
     isDeleted: boolean;
     createByUserID: number;
-    createDate: moment.Moment;
     updateByUserID: number;
+    createDate: moment.Moment;
     updateDate: moment.Moment;
-    caseSource: string;
+    caseCompanyMapping: CaseCompanyMapping[];
+    // companies: Company[];
+    attorneyId: number;
     createdByCompanyId: Number;
     createdByCompany: Company;
     constructor(props) {
@@ -108,6 +108,16 @@ export class Case extends CaseRecord {
         return isConsentReceived;
     }
 
+    caseLabelEditable(companyId): boolean {
+        let isCaseLabelEditable: boolean = false;
+        _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
+            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)){
+            isCaseLabelEditable = true;
+            }
+        });
+        return isCaseLabelEditable;
+    }
+
     isCreatedByCompany(companyId): boolean {
         let isCreatedByCompany: boolean = false;
         if (this.createdByCompany.id === companyId) {
@@ -134,13 +144,13 @@ export class Case extends CaseRecord {
         });
         return isOutboundReferral;
     }
-    isSessionCompany(companyId): boolean {
-        let isSessionCompany: boolean = false;
-        _.forEach(this.companies, (currentCompany: any) => {
-            if (currentCompany.id === companyId) {
-                isSessionCompany = true;
-            }
-        });
-        return isSessionCompany;
-    }
+    // isSessionCompany(companyId): boolean {
+    //     let isSessionCompany: boolean = false;
+    //     _.forEach(this.companies, (currentCompany: any) => {
+    //         if (currentCompany.id === companyId) {
+    //             isSessionCompany = true;
+    //         }
+    //     });
+    //     return isSessionCompany;
+    // }
 }

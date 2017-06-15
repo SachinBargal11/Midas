@@ -100,7 +100,7 @@ export class CaseService {
 
     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/get/' + caseId + '/case')
+            return this._http.get(this._url + '/documentmanager/get/' + caseId + '/case')
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -294,7 +294,7 @@ export class CaseService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+                .get(this._url + '/documentmanager/downloadfromnoproviderblob/' + documentId, {
                 headers: this._headers
             })
                 .map(res => {
@@ -305,7 +305,7 @@ export class CaseService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        window.location.assign(this._url + '/documentmanager/downloadfromnoproviderblob/' + documentId);
                         // return res.arrayBuffer();
                     }
                 })

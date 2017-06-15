@@ -98,9 +98,9 @@ import { DocumentsUploadComponent } from './cases/components/documents';
 import { ReferralService } from './cases/services/referral-service';
 import { ReferralStore } from './cases/stores/referral-store';
 
-
-
-
+import { VisitShellComponent } from './cases/components/visit-shell';
+import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
+import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
 
 @NgModule({
     imports: [
@@ -158,7 +158,10 @@ import { ReferralStore } from './cases/stores/referral-store';
         AssignInsuranceComponent, 
         EditConsentComponent, 
         PatientVisitComponent, 
-        DocumentsUploadComponent
+        DocumentsUploadComponent,
+        VisitShellComponent,
+        PatientVisitListDoctorComponent,
+        PatientVisitListTreatingRoomComponent,
     ],
     providers: [
         PatientsService,

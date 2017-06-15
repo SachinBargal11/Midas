@@ -73,6 +73,19 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
+        public HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId)
+        {
+            var objResult = dataAccessManager.GetReadOnly(CaseId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, List<T> gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);

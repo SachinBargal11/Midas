@@ -5,6 +5,7 @@ const DocumentRecord = Record({
     documentId: 0,
     documentPath: '',
     documentName: '',
+    documentType: '',
     status: '',
     message: '',
     isDeleted: false,
@@ -20,6 +21,7 @@ export class Document extends DocumentRecord {
     documentId: number;
     documentPath: string;
     documentName: string;
+    documentType: string;
     status: string;
     message: string;
     isDeleted: boolean;

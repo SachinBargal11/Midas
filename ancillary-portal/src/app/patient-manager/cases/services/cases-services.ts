@@ -89,7 +89,7 @@ export class CaseService {
 
     getCasesByCompany(companyId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByCompanyIdForAncillary/' + companyId, {
+            return this._http.get(this._url + '/Case/getByCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())

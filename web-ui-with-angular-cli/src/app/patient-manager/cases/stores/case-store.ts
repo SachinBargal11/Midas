@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Case } from '../models/case';
+import { CaseLabel } from '../models/case-label';
 import { CaseService } from '../services/cases-services';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -45,6 +46,18 @@ export class CasesStore {
             });
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
+
+    getCaseReadOnly(caseId: number): Observable<CaseLabel> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCaseReadOnly(caseId).subscribe((caseLabel: CaseLabel) => {
+                // this._cases.next(List(cases));
+                resolve(caseLabel);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<CaseLabel>>Observable.fromPromise(promise);
     }
 
 

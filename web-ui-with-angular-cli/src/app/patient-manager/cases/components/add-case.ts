@@ -161,6 +161,7 @@ export class AddCaseComponent implements OnInit {
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;
+        let caseCompanyMapping;
         let caseDetail: Case = new Case({
             // patientId: this.patientId,
             patientId: (this.patientId) ? this.patientId : parseInt(this.idPatient),
@@ -171,12 +172,22 @@ export class AddCaseComponent implements OnInit {
             locationId: caseFormValues.locationId,
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.attorneyId,
+            // attorneyId: caseFormValues.attorneyId,
             caseSource: caseFormValues.caseSource,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
-            createdByCompanyId: this._sessionStore.session.currentCompany.id
-
+            createdByCompanyId: this._sessionStore.session.currentCompany.id,
+            caseCompanyMapping:  [{
+                company: {  
+                    id: caseFormValues.attorneyId
+                }
+            },
+                {  
+                  isOriginator: 'true',
+                  company: {  
+                    id: this._sessionStore.session.currentCompany.id
+                }
+                }]
         });
 
         this._progressBarService.show();

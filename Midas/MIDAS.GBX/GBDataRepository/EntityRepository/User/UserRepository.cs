@@ -330,6 +330,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.SaveChanges();
 
+                if(userDB != null)
+                {
+                    var doctor = _context.Doctors.Where(p => p.Id == userDB.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if(doctor != null)
+                    {
+                        doctor.IsDeleted = true;
+                        _context.SaveChanges();
+                    }
+                }
+
                 if (usr != null)
                 {
                     #region User                    
@@ -422,6 +432,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 userCompanyDB.CreateDate = DateTime.UtcNow;
                 userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
+                userCompanyDB.UserStatusID = 1;
                 _dbUserCompany.Add(userCompanyDB);
                 _context.SaveChanges();
             }
@@ -492,7 +503,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Is existing User
         public override Object Get(string user)
         {
-            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            var acc = _context.Users.Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
             if (acc == null)
             {
                 return false;

@@ -27,7 +27,7 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 export class PatientEmployerComponent implements OnInit {
     cellPhone: string;
-    title:string;
+    title: string;
     faxNo: string;
     states: any[];
     cities: any[];
@@ -129,10 +129,12 @@ export class PatientEmployerComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+             
+            
+
     }
 
     save() {
-
         this.isSaveEmployerProgress = true;
         let employerformValues = this.employerform.value;
         let result;
@@ -172,7 +174,8 @@ export class PatientEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/profile/viewall']);
+                    this._router.navigate(['/patient-manager/profile/employer']);
+                    
                 },
                 (error) => {
                     let errString = 'Unable to update employer.';
@@ -202,7 +205,7 @@ export class PatientEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/profile/viewall']);
+                    this._router.navigate(['/patient-manager/profile/employer']);
                 },
                 (error) => {
                     let errString = 'Unable to add employer.';
