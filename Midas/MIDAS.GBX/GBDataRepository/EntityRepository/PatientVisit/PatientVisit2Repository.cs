@@ -682,89 +682,96 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             PatientVisit2 PatientVisit2DB = new PatientVisit2();
 
-            List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
-            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
-            currentEventSlots = calEventRepo.GetBusySlotsByCalendarEvent(CalendarEventBO) as List<BO.FreeSlots>;
-            if (currentEventSlots.Count > 0)
+
+
+            if (CalendarEventBO != null)
             {
-                DateTime dtStartDate = currentEventSlots.Min(p => p.ForDate);
-                DateTime dtEndDate = currentEventSlots.Max(p => p.ForDate).AddDays(1);
-
-                List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
-
-                if (PatientVisit2BO.DoctorId != null && PatientVisit2BO.LocationId != null)
+                List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+                CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
+                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEvent(CalendarEventBO) as List<BO.FreeSlots>;
+                if (currentEventSlots.Count > 0)
                 {
-                    //freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
-                    var result = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
-                    if (result is BO.ErrorObject)
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        freeSlots = result as List<BO.FreeSlots>;
-                    }
-                }
-                else if (PatientVisit2BO.RoomId != null && PatientVisit2BO.LocationId != null)
-                {
-                    //freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
-                    var result = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
-                    if (result is BO.ErrorObject)
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        freeSlots = result as List<BO.FreeSlots>;
-                    }
-                }
+                    DateTime dtStartDate = currentEventSlots.Min(p => p.ForDate);
+                    DateTime dtEndDate = currentEventSlots.Max(p => p.ForDate).AddDays(1);
 
-                foreach (var eachDayEventSlot in currentEventSlots)
-                {
-                    DateTime ForDate = eachDayEventSlot.ForDate;
-                    foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
+                    List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
+
+                    if (PatientVisit2BO.DoctorId != null && PatientVisit2BO.LocationId != null)
                     {
-                        DateTime StartTime = eachEventSlot.StartTime;
-                        DateTime EndTime = eachEventSlot.EndTime;
-                        var StartAndEndTimesForDate = freeSlots.Where(p => p.ForDate == ForDate).Select(p => p.StartAndEndTimes).FirstOrDefault();
-                        if (StartAndEndTimesForDate.Count > 0)
+                        //freeSlots = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                        var result = calEventRepo.GetFreeSlotsForDoctorByLocationId(PatientVisit2BO.DoctorId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
+                        if (result is BO.ErrorObject)
                         {
-                            var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();                            
+                            return result;
+                        }
+                        else
+                        {
+                            freeSlots = result as List<BO.FreeSlots>;
+                        }
+                    }
+                    else if (PatientVisit2BO.RoomId != null && PatientVisit2BO.LocationId != null)
+                    {
+                        //freeSlots = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate) as List<BO.FreeSlots>;
+                        var result = calEventRepo.GetFreeSlotsForRoomByLocationId(PatientVisit2BO.RoomId.Value, PatientVisit2BO.LocationId.Value, dtStartDate, dtEndDate);
+                        if (result is BO.ErrorObject)
+                        {
+                            return result;
+                        }
+                        else
+                        {
+                            freeSlots = result as List<BO.FreeSlots>;
+                        }
+                    }
 
-                            if (StartAndEndTimes.Count > 0)
+                    foreach (var eachDayEventSlot in currentEventSlots)
+                    {
+                        DateTime ForDate = eachDayEventSlot.ForDate;
+                        foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
+                        {
+                            DateTime StartTime = eachEventSlot.StartTime;
+                            DateTime EndTime = eachEventSlot.EndTime;
+                            var StartAndEndTimesForDate = freeSlots.Where(p => p.ForDate == ForDate).Select(p => p.StartAndEndTimes).FirstOrDefault();
+                            if (StartAndEndTimesForDate.Count > 0)
                             {
-                                DateTime? checkContinuation = null;
-                                foreach (var eachSlot in StartAndEndTimes.Distinct().OrderBy(p => p.StartTime))
+                                var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();
+
+                                if (StartAndEndTimes.Count > 0)
                                 {
-                                    if (checkContinuation.HasValue == false)
+                                    DateTime? checkContinuation = null;
+                                    foreach (var eachSlot in StartAndEndTimes.Distinct().OrderBy(p => p.StartTime))
                                     {
-                                        checkContinuation = eachSlot.EndTime;
-                                    }
-                                    else
-                                    {
-                                        if (checkContinuation.Value != eachSlot.StartTime)
-                                        {
-                                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
-                                        }
-                                        else
+                                        if (checkContinuation.HasValue == false)
                                         {
                                             checkContinuation = eachSlot.EndTime;
                                         }
-                                    }                                    
+                                        else
+                                        {
+                                            if (checkContinuation.Value != eachSlot.StartTime)
+                                            {
+                                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                            else
+                                            {
+                                                checkContinuation = eachSlot.EndTime;
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
                                 }
                             }
                             else
                             {
-                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
                             }
-                        }
-                        else
-                        {
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "The doctor or room is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
                         }
                     }
                 }
             }
+
+
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
