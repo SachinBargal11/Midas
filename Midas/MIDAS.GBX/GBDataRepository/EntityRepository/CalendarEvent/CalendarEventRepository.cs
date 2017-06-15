@@ -510,8 +510,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
-
-                    newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                    IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceRule);
+                    if (recPattern.Frequency != FrequencyType.None)
+                    {
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                    }
                 }
 
                 if (String.IsNullOrWhiteSpace(CalEvent.RecurrenceException) == false)
@@ -546,8 +549,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
-
-                    newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                    IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceException);
+                    if (recPattern.Frequency != FrequencyType.None)
+                    {
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                    }
                 }
 
                 Calendar calendar = new Calendar();
@@ -558,9 +564,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 foreach (var eachOccurrences in Occurrences)
                 {
                     BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
-                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.Date;
+                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(270).Date;
                     FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
-                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachOccurrences.Period.StartTime.Value, EndTime = eachOccurrences.Period.EndTime.Value });
+                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(270), EndTime = eachOccurrences.Period.EndTime.AsSystemLocal.AddMinutes(270) });
                     freeSlots.Add(FreeSlotForDay);
                 }
             }                
