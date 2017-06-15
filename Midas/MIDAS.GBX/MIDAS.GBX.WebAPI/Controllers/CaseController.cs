@@ -103,11 +103,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getReadOnly/{CaseId}")]
+        [Route("getReadOnly/{CaseId}/{CompanyId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetReadOnly(int CaseId)
+        public HttpResponseMessage GetReadOnly(int CaseId,int CompanyId)
         {
-            return requestHandler.GetReadOnly(Request, CaseId);
+            return requestHandler.GetReadOnly(Request, CaseId, CompanyId);
         }
 
         [HttpGet]

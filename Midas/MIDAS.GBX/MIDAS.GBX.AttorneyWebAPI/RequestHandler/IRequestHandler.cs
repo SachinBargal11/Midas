@@ -28,7 +28,7 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId);
+        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId,int companyId);
         HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
         HttpResponseMessage GenerateToken(HttpRequestMessage request,int userId);
         HttpResponseMessage ValidateToken(HttpRequestMessage request,string tokenId);
