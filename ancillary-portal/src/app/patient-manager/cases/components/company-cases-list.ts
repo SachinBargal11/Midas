@@ -100,6 +100,7 @@ export class CompanyCasesComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+        this._progressBarService.hide();
     }
 
     isCurrentUser(userId): boolean {
@@ -222,7 +223,7 @@ export class CompanyCasesComponent implements OnInit {
             }
         }, 250);
     }
-    
+
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({

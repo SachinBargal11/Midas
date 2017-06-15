@@ -44,13 +44,13 @@ export class AncillaryListComponent implements OnInit {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
 
-            //  this.loadAncillaryMasters();
+            this.loadAncillaryMasters();
         });
 
     }
     ngOnInit() {
         //this.loadAllAncillaries();
-        // this.loadAncillaryMasters();
+        this.loadAncillaryMasters();
     }
     loadAllAncillaries() {
         this._progressBarService.show();
