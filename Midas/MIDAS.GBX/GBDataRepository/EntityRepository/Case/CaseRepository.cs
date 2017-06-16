@@ -40,13 +40,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.CaseStatusId = cases.CaseStatusId;
-            //caseBO.AttorneyId = cases.AttorneyId;
 
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
             caseBO.UpdateByUserID = cases.UpdateByUserID;
-            //caseBO.caseSource = !string.IsNullOrEmpty(cases.CaseSource) ? cases.CaseSource : (cases.AttorneyId > 0 ? _context.Companies.Where(p => p.id == cases.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault().Name : "");
-
 
             if (cases.PatientEmpInfo != null)
             {
@@ -73,6 +70,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (cases.CaseCompanyMappings != null)
             {
+                caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
+
                 List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                 foreach (var casemap in cases.CaseCompanyMappings)
                 {
@@ -87,6 +86,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                     }
                 }
+
                 caseBO.CaseCompanyMappings = boCaseCompanyMapping;
             }
 
@@ -192,99 +192,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.Referrals = BOListReferral;
             }
 
-            //if(cases.Company != null)
-            //{
-            //    BO.Company boCompany = new BO.Company();
-
-            //    boCompany.ID = cases.Company.id;
-            //    boCompany.Name = cases.Company.Name;
-            //    boCompany.TaxID = cases.Company.TaxID;
-            //    boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company.Status;
-            //    boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company.CompanyType;
-            //    if (cases.Company.SubscriptionPlanType != null)
-            //    {
-            //        boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company.SubscriptionPlanType;
-            //    }
-            //    else
-            //    {
-            //        boCompany.SubsCriptionType = null;
-            //    }
-            //    //boCompany.RegistrationComplete = cases.Company.RegistrationComplete;
-
-            //    caseBO.Attorney = boCompany;
-            //}
-
-            //if (cases.Company1 != null)
-            //{
-            //    BO.Company boCompany = new BO.Company();
-
-            //    boCompany.ID = cases.Company1.id;
-            //    boCompany.Name = cases.Company1.Name;
-            //    boCompany.TaxID = cases.Company1.TaxID;
-            //    boCompany.Status = (BO.GBEnums.AccountStatus)cases.Company1.Status;
-            //    boCompany.CompanyType = (BO.GBEnums.CompanyType)cases.Company1.CompanyType;
-            //    if(cases.Company1.SubscriptionPlanType != null)
-            //    {
-            //        boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)cases.Company1.SubscriptionPlanType;
-            //    }
-            //    else
-            //    {
-            //        boCompany.SubsCriptionType = null;
-            //    }
-                
-            //    //boCompany.RegistrationComplete = cases.Company1.RegistrationComplete;
-
-            //    caseBO.CreatedByCompany = boCompany;
-            //}
-
-            //caseBO.AttorneyId = cases.AttorneyId;
-            //caseBO.Attorney = cases.Attorney;
             caseBO.caseSource = cases.CaseSource;
-            //caseBO.CreatedByCompanyId = cases.CreatedByCompanyId;
-            //caseBO.CreatedByCompany = cases.CreatedByCompany;
 
             return (T)(object)caseBO;
         }
-        #endregion
-
-
-
-        #region Entity Conversion ConvertWithPatient
-        //public T ConvertWithPatient<T, U>(U entity)
-        //{
-        //    Patient2 patient2 = entity as Patient2;
-
-        //    if (patient2 == null)
-        //        return default(T);
-
-        //    BO.Patient2 patientBO2 = new BO.Patient2();
-
-        //    patientBO2.ID = patient2.Id;
-
-        //    BO.User boUser = new BO.User();
-        //    using (UserRepository cmp = new UserRepository(_context))
-        //    {
-        //        boUser = cmp.Convert<BO.User, User>(patient2.User);
-        //        patientBO2.User = boUser;
-        //    }
-
-        //    if (patient2.Cases != null)
-        //    {
-        //        patientBO2.Cases = new List<BO.Case>();
-
-        //        foreach (var eachCase in patient2.Cases)
-        //        {
-        //            patientBO2.Cases.Add(Convert<BO.Case, Case>(eachCase));
-        //        }
-        //    }
-
-        //    //Common 
-        //    patientBO2.IsDeleted = patient2.IsDeleted;
-        //    patientBO2.CreateByUserID = patient2.CreateByUserID;
-        //    patientBO2.UpdateByUserID = patient2.UpdateByUserID;
-
-        //    return (T)(object)patientBO2;
-        //}
         #endregion
 
         #region Entity Conversion ConvertToCaseWithUserAndPatient
@@ -299,7 +210,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (patient2.User != null && patient2.Cases != null)
             {
-                //foreach (var eachCase in patient2.Cases)
                 foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
                 {
                     if (eachCase.CaseCompanyMappings.Any(p => p.Company != null && p.Company.ID == CompanyId) == true
@@ -323,33 +233,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
                         caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
                         caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
-                       // caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
 
                         caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
                         caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
                         caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
 
                         caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
-
-                        //var company = new Company();
-                        //if (eachCase.AttorneyId > 0)
-                        //{
-                        //    company = _context.Companies.Where(p => p.id == eachCase.AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                        //}
-
-                        //if (eachCase.AttorneyId > 0)
-                        //{
-                        //    caseWithUserAndPatient.caseSource = company.Name;
-                        //}
-                        //else
-                        //{
-                        //    caseWithUserAndPatient.caseSource = eachCase.caseSource;
-                        //}
-                        //caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
-                        //caseWithUserAndPatient.Attorney = eachCase.Attorney;
+                                                
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
-                        //caseWithUserAndPatient.CreatedByCompanyId = eachCase.CreatedByCompanyId;
-                        //caseWithUserAndPatient.CreatedByCompany = eachCase.CreatedByCompany;
+
+                        caseWithUserAndPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
@@ -432,7 +325,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (patient2.User != null && patient2.Cases != null)
             {
-                //foreach (var eachCase in patient2.Cases)
                 foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
                 {
                     if (eachCase.CaseCompanyMappings.Any(p => p.Company != null && p.Company.ID == CompanyId) == true
@@ -456,7 +348,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithPatient.UpdateByUserID = eachCase.UpdateByUserID;
                                                                    
                         caseWithPatient.caseSource = eachCase.caseSource;
-                                                           
+
+                        caseWithPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
+
+
                         lstCaseWithPatient.Add(caseWithPatient);
                     }
                 }
