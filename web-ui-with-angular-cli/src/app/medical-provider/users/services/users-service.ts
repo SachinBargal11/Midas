@@ -4,7 +4,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { UserAdapter } from './adapters/user-adapter';
 import { UserType } from '../../../commons/models/enums/user-type';
 import { User } from '../../../commons/models/user';
@@ -72,8 +72,8 @@ export class UsersService {
     // getUsers(accountId: number): Observable<AccountDetail[]> {
     //     let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {
     //         return this._http.get(this._url + '/Account/Get/' + accountId, {
-            //     headers: this._headers
-            // }).map(res => res.json())
+    //     headers: this._headers
+    // }).map(res => res.json())
     //             .subscribe((data: any) => {
     //                 let users = (<Object[]>data.users).map((userData: any) => {
     //                     return UserAdapter.parseResponse(userData);
@@ -253,6 +253,26 @@ export class UsersService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
 
+    }
+
+    GetIsExistingUser(UserName: string, SSN: string): Observable<User[]> {      
+        let promise: Promise<User[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/user/GetIsExistingUser/' + UserName + '/' + SSN, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((userData: Array<Object>) => {
+                    // let parsedUser: User[] = null;
+                    // parsedUser = UserAdapter.parseResponse(userData);
+                    // resolve(parsedUser);
+                        let parsedUser = (<Object[]>userData).map((data: any) => {
+                            return UserAdapter.parseResponse(data);
+                        });
+                        resolve(parsedUser);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<User[]>>Observable.fromPromise(promise);
     }
 
 }

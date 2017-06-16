@@ -65,6 +65,8 @@ import { UserSettingService } from './commons/services/user-setting-service';
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
+import { AssociateUserService } from './commons/services/associate-user-service';
+import { AssociateUserStore } from './commons/stores/associate-user-store';
 // import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
@@ -126,7 +128,9 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     UserSettingStore,
     UserSettingService,
     MedicalProviderMasterService,
-    MedicalProviderMasterStore
+    MedicalProviderMasterStore,
+    AssociateUserService,
+    AssociateUserStore
   ],
   bootstrap: [AppComponent]
 })

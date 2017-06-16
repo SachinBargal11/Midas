@@ -29,6 +29,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
 import { AddMedicalProviderComponent } from '../account-setup/components/medical-provider-master/add-medical-provider';
 import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
+import { AssociateUsersComponent } from '../commons/components/associate-users/associate-users-component';
 
 import {
   AccordionModule,
@@ -95,7 +96,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
-    DateTimeFormatPipe,    
+    DateTimeFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -111,7 +112,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ProcedureComponent,
     ReferralsComponent,
     AddMedicalProviderComponent,
-    VisitDetailComponent
+    VisitDetailComponent,
+    AssociateUsersComponent
   ],
   exports: [
     CommonModule,
@@ -163,7 +165,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ProcedureComponent,
     ReferralsComponent,
     AddMedicalProviderComponent,
-    VisitDetailComponent
+    VisitDetailComponent,
+    AssociateUsersComponent
   ]
 })
 export class CommonsModule { }
