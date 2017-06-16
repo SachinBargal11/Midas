@@ -280,13 +280,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-
         public virtual Object Get()
         {
             throw new NotImplementedException();
         }
 
         public virtual Object Get(string param1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetIsExistingUser(string User, string SSN)
         {
             throw new NotImplementedException();
         }

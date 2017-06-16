@@ -121,10 +121,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         
         [HttpGet]
-        [Route("IsExisting/{user}")]
-        public HttpResponseMessage IsExisting(string User)
+        [Route("getIsExistingUser/{User}/{SSN}")]
+        public HttpResponseMessage GetIsExistingUser(string User, string SSN)
         {
-            return requestHandler.GetObjects(Request, User);
+            return requestHandler.GetIsExistingUser(Request, User,SSN);
         }
 
         [HttpPost]

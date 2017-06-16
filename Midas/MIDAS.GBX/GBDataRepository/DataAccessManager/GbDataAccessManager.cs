@@ -1276,6 +1276,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetIsExistingUser(string User, string SSN, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetIsExistingUser(User, SSN);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        
+
         public object Update(T data)
         {
             try
