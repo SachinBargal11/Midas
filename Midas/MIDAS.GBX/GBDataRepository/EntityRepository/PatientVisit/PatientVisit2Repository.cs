@@ -1612,15 +1612,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By PatientId And LocationId
         public override object GetByPatientIdAndLocationId(int PatientId, int LocationId)
         {
-            int caseId = _context.Cases.Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
+            var caseList = _context.Cases.Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .Select(p => p.Id).FirstOrDefault();
+                                      .ToList<Case>();
 
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
-                                                                        .Where(p => ((p.CaseId.HasValue == true) && (caseId > 0) && (p.CaseId.Value == caseId))
-                                                                                && (LocationId <= 0 || p.LocationId == LocationId)
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                        .ToList<PatientVisit2>();
+            List<PatientVisit2> lstPatientVisit = new List<PatientVisit2>();
+            if (caseList != null)
+            {
+                foreach (var item in caseList)
+                {
+                    var lstPatientVisitDB = _context.PatientVisit2.Include("CalendarEvent")
+                                                                      .Where(p => ((p.CaseId.HasValue == true) && (item.Id > 0) && (p.CaseId.Value == item.Id))
+                                                                              && (LocationId <= 0 || p.LocationId == LocationId)
+                                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                             .ToList<PatientVisit2>();
+
+                    lstPatientVisitDB.ForEach(pv => lstPatientVisit.Add(pv));
+
+                }
+
+
+
+            }
+
+
 
             if (lstPatientVisit == null)
             {
@@ -1639,16 +1654,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Location For PatientId
         public override object GetLocationForPatientId(int PatientId)
         {
-            int caseId = _context.Cases.Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
+            var caseList = _context.Cases.Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .Select(p => p.Id).FirstOrDefault();
+                                       .ToList<Case>();
 
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
-                                                                        .Include("Location")
-                                                                        .Include("Location.Company")
-                                                                        .Where(p => ((p.CaseId.HasValue == true) && (caseId > 0) && (p.CaseId.Value == caseId))
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                        .ToList<PatientVisit2>();
+            List<PatientVisit2> lstPatientVisit = new List<PatientVisit2>();
+            foreach (var item in caseList)
+            {
+                var lstPatientVisitDb = _context.PatientVisit2.Include("CalendarEvent")
+                                                                      .Include("Location")
+                                                                      .Include("Location.Company")
+                                                                      .Where(p => ((p.CaseId.HasValue == true) && (item.Id > 0) && (p.CaseId.Value == item.Id))
+                                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .ToList<PatientVisit2>();
+
+                lstPatientVisitDb.ForEach(pv => lstPatientVisit.Add(pv));
+            }
+
 
 
             IEnumerable<Location> Locations = lstPatientVisit.Select(p => p.Location).ToList().Distinct();
@@ -1671,6 +1693,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
+
 
         #region Delete
         public override object Delete(int id)

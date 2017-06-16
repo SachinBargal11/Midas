@@ -586,26 +586,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    if (IsEditMode == false && caseBO.CaseStatusId.HasValue == true && caseBO.CaseStatusId.Value == 1)
-                    {
-                        bool ExistingOpenCase = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.CaseStatusId == 1
-                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
-                        if (ExistingOpenCase == true)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot add another open case.", ErrorLevel = ErrorLevel.Error };
-                        }
-                    }
-                    else if (IsEditMode == true && caseBO.CaseStatusId.HasValue == true && caseBO.CaseStatusId.Value == 1)
-                    {
-                        bool ExistinAnotherOpenCase = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.CaseStatusId == 1 && p.Id != caseBO.ID
-                                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
-                        if (ExistinAnotherOpenCase == true)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot update this as open case.", ErrorLevel = ErrorLevel.Error };
-                        }
-                    }
+                    //if (IsEditMode == false && caseBO.CaseStatusId.HasValue == true && caseBO.CaseStatusId.Value == 1)
+                    //{
+                    //    bool ExistingOpenCase = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.CaseStatusId == 1
+                    //                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                    //    if (ExistingOpenCase == true)
+                    //    {
+                    //        dbContextTransaction.Rollback();
+                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot add another open case.", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //}
+                    //else if (IsEditMode == true && caseBO.CaseStatusId.HasValue == true && caseBO.CaseStatusId.Value == 1)
+                    //{
+                    //    bool ExistinAnotherOpenCase = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.CaseStatusId == 1 && p.Id != caseBO.ID
+                    //                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                    //    if (ExistinAnotherOpenCase == true)
+                    //    {
+                    //        dbContextTransaction.Rollback();
+                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot update this as open case.", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //}
                     if (IsEditMode == true)
                     {
                         bool matchCaseAndPatient = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.Id == caseBO.ID
