@@ -1,3 +1,4 @@
+import { Session } from '../../../commons/models/session';
 import { CaseLabel } from '../models/case-label';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
@@ -22,6 +23,7 @@ import { NotificationsService } from 'angular2-notifications';
 
 export class CaseBasicLabelComponent implements OnInit {
     caseId: number;
+    companyId:number;
     caseLabel: CaseLabel;
 
     constructor(
@@ -35,10 +37,11 @@ export class CaseBasicLabelComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+        this.companyId = sessionStore.session.currentCompany.id;
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
-            let result = this._casesStore.getCaseReadOnly(this.caseId);
+            let result = this._casesStore.getCaseReadOnly(this.caseId, this.companyId);
             result.subscribe(
                 (caseLabel: CaseLabel) => {
                     this.caseLabel = caseLabel;

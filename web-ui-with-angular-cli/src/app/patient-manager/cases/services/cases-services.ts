@@ -51,9 +51,9 @@ export class CaseService {
         return <Observable<Case>>Observable.fromPromise(promise);
     }
 
-    getCaseReadOnly(caseId: Number): Observable<CaseLabel> {
+    getCaseReadOnly(caseId: Number,companyId): Observable<CaseLabel> {
         let promise: Promise<CaseLabel> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/case/getReadOnly/' + caseId, {
+            return this._http.get(this._url + '/case/getReadOnly/' + caseId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

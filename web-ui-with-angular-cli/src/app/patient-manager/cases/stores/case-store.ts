@@ -48,9 +48,9 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-    getCaseReadOnly(caseId: number): Observable<CaseLabel> {
+    getCaseReadOnly(caseId: number,companyId:number): Observable<CaseLabel> {
         let promise = new Promise((resolve, reject) => {
-            this._casesService.getCaseReadOnly(caseId).subscribe((caseLabel: CaseLabel) => {
+            this._casesService.getCaseReadOnly(caseId,companyId).subscribe((caseLabel: CaseLabel) => {
                 // this._cases.next(List(cases));
                 resolve(caseLabel);
             }, error => {

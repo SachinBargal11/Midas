@@ -89,19 +89,7 @@ export class CompanyCasesComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getCasesByCompany()
            .subscribe((cases:Case[]) => {
-            //     this.cases = cases;
-            // },
-            // (error) => {
-            //     this._progressBarService.hide();
-            // },
-            // () => {
-            //     this._progressBarService.hide();
-            // });
-            let openCases: Case[] = _.filter(cases, (currentCase: Case) => {
-                    return currentCase.caseStatusId == 1;
-                });
-
-                this.cases = openCases; 
+                this.cases = cases;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -109,6 +97,18 @@ export class CompanyCasesComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+            // let openCases: Case[] = _.filter(cases, (currentCase: Case) => {
+            //         return currentCase.caseStatusId == 1;
+            //     });
+
+            //     this.cases = openCases; 
+            // },
+            // (error) => {
+            //     this._progressBarService.hide();
+            // },
+            // () => {
+            //     this._progressBarService.hide();
+            // });
             
     }
 
