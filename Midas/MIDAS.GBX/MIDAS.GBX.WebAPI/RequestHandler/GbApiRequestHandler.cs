@@ -669,6 +669,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetIsExistingUser(HttpRequestMessage request, string User, string SSN)
+        {
+            var objResult = dataAccessManager.GetIsExistingUser(User, SSN);
+            try
+            {
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath)
         {
             var objResult = dataAccessManager.AddUploadedFileData(id, FileUploadPath);

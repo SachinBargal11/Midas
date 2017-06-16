@@ -500,17 +500,42 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Is existing User
-        public override Object Get(string user)
+        #region GetIsExistingUser by UserName or SSN
+        public override Object GetIsExistingUser(string User, string SSN)
         {
-            var acc = _context.Users.Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
-            if (acc == null)
+            //var ssn = _context.Patient2.Where(p => p.SSN == SSN
+            //                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                             .ToList()
+            //                                             .Select(p => p.Id);
+
+            //var acc = _context.Users.Where(p => p.UserName == User
+            //                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            //                                                || ssn.Contains(p.id))
+            //                                                .ToList();
+            var user = from u in _context.Users
+                       where (u.Patient2.SSN == SSN
+                       && (u.Patient2.IsDeleted.HasValue == false || (u.Patient2.IsDeleted.HasValue == true && u.Patient2.IsDeleted.Value == false)))
+                       || (u.UserName == User
+                       && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false)))
+                       select
+                       (
+                       u
+                       );
+            var acc = user.ToList();
+
+
+            if (acc == null || acc.Count <= 0)
             {
-                return false;
+                return new BO.ErrorObject { ErrorMessage = "No record found for this User Name.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
-                return true;
+                List<BO.User> lstUser = new List<BO.User>();
+                foreach (User item in acc)
+                {
+                    lstUser.Add(Convert<BO.User, User>(item));
+                }
+                return lstUser;
             }
 
         }
