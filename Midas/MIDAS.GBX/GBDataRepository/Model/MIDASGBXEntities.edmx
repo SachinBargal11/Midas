@@ -154,7 +154,7 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="IsOriginator" Type="bit" Nullable="false" />
-          <Property Name="AddedByCompanyId" Type="int" Nullable="false" />
+          <Property Name="AddedByCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="CaseDocuments">
           <Key>
@@ -1532,7 +1532,7 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CaseCompanyMapping_Company_AddedByCompanyId">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="CaseCompanyMapping" Type="Self.CaseCompanyMapping" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
@@ -4051,7 +4051,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsOriginator" Type="Boolean" Nullable="false" />
-          <Property Name="AddedByCompanyId" Type="Int32" Nullable="false" />
+          <Property Name="AddedByCompanyId" Type="Int32" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseCompanyMapping_Case_CaseId" FromRole="CaseCompanyMapping" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CaseCompanyMapping_Company_AddedByCompanyId" FromRole="CaseCompanyMapping" ToRole="Company" />
           <NavigationProperty Name="Company1" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="CaseCompanyMapping" ToRole="Company" />
@@ -5903,7 +5903,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CaseCompanyMapping_Company_AddedByCompanyId">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="CaseCompanyMapping" Type="Self.CaseCompanyMapping" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
