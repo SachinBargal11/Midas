@@ -986,6 +986,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         casecompanymappingDB.CompanyId = (int)addpatient.CompanyId;
                         casecompanymappingDB.CaseId = caseDB.Id;
+                        casecompanymappingDB.IsOriginator = true;
+                        casecompanymappingDB.AddedByCompanyId = (int)addpatient.CompanyId;
                         _context.Entry(casecompanymappingDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
@@ -1247,6 +1249,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             caseCompanyMap.CaseId = CaseId;
             caseCompanyMap.CompanyId = AttorneyCompanyId;
+            //caseCompanyMap.AddedByCompanyId = AddedByCompanyId; Need to modify API parameters to have additional AddedByCompanyId
 
             if (add_CaseCompanyMap)
             {
@@ -1377,6 +1380,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             caseCompanyMap.CaseId = CaseId;
             caseCompanyMap.CompanyId = AncillaryCompanyId;
+            //caseCompanyMap.AddedByCompanyId = AddedByCompanyId; Need to modify API parameters to have additional AddedByCompanyId
 
             if (add_CaseCompanyMap)
             {

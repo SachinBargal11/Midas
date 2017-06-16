@@ -565,7 +565,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 Patient2 patient2DB = new Patient2();
                 Location locationDB = new Location();
-                CaseCompanyMapping caseCompanyMappingDB = new CaseCompanyMapping();
 
                 bool IsEditMode = false;
                 IsEditMode = (caseBO != null && caseBO.ID > 0) ? true : false;

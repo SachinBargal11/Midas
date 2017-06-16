@@ -23,8 +23,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public bool IsOriginator { get; set; }
+        public int AddedByCompanyId { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
     }
 }

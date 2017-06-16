@@ -15,6 +15,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isOriginator")]
         public bool IsOriginator { get; set; }
 
+        [JsonProperty("addedByCompanyId")]
+        public int AddedByCompanyId { get; set; }
+
         //[JsonProperty("companyId")]
         //public int CompanyId { get; set; }
 
