@@ -203,7 +203,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                    {
                                        pc.Id,
                                        pc.ProcedureCodeText,
-                                       pc.ProcedureCodeDesc
+                                       pc.ProcedureCodeDesc,
+                                       pc.Amount
                                    }
                                    ).ToList();
 
@@ -233,7 +234,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                    {
                                        pc.Id,
                                        pc.ProcedureCodeText,
-                                       pc.ProcedureCodeDesc
+                                       pc.ProcedureCodeDesc,
+                                       pc.Amount
                                    }
                                    ).ToList();
 

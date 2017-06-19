@@ -32,6 +32,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseCompanyMappingBO.Company = new BO.Company();
             caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.id : 0;
             caseCompanyMappingBO.IsOriginator = caseCompanyMappings.IsOriginator;
+            caseCompanyMappingBO.AddedByCompanyId = caseCompanyMappings.AddedByCompanyId;
             caseCompanyMappingBO.Company.Name = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.Name : "";
             caseCompanyMappingBO.IsDeleted = caseCompanyMappings.IsDeleted;
             caseCompanyMappingBO.CreateByUserID = caseCompanyMappings.CreateByUserID;
@@ -57,9 +58,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.CaseCompanyMapping> lstCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
             CaseCompanyMapping caseCompanyMappingDB = new CaseCompanyMapping();
 
-            //bool IsEditMode = false;
-            //IsEditMode = (CaseCompanyMappingBO != null && CaseCompanyMappingBO.ID > 0) ? true : false;
-
             #region CaseCompanyMapping
             if (CaseCompanyMappingBO != null)
             {
@@ -68,56 +66,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case company mapping.", ErrorLevel = ErrorLevel.Error };
                 }
 
-                bool Add_CaseCompanyMappingDB = false;
-                //caseCompanyMappingDB = _context.CaseCompanyMappings.Where(p => p.Id == CaseCompanyMappingBO.ID
-                //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                //                                                    .FirstOrDefault();
+                //bool Add_CaseCompanyMappingDB = false;
+
                 caseCompanyMappingDB = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseCompanyMappingBO.CaseId && p.CompanyId==CaseCompanyMappingBO.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                .FirstOrDefault();
+                                                                   .FirstOrDefault();
 
                 if (caseCompanyMappingDB == null)
                 {
                     caseCompanyMappingDB = new CaseCompanyMapping();
-                    Add_CaseCompanyMappingDB = true;
-                }
-                //else if (caseCompanyMappingDB == null && CaseCompanyMappingBO.ID > 0)
-                //{
-                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case company mapping.", ErrorLevel = ErrorLevel.Error };
-                //}
+                    //Add_CaseCompanyMappingDB = true;                
 
-                //if (Add_CaseCompanyMappingDB == true)
-                //{
-                //    if (_context.CaseCompanyMappings.Any(p => p.CaseId == CaseCompanyMappingBO.CaseId && p.CompanyId == CaseCompanyMappingBO.CompanyId
-                //                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
-                //    {
-                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case Company Mapping already exists.", ErrorLevel = ErrorLevel.Error };
-                //    }
-                //}
-                //else
-                //{
-                //    if (_context.CaseCompanyMappings.Any(p => p.CaseId == CaseCompanyMappingBO.CaseId && p.CompanyId == CaseCompanyMappingBO.CompanyId
-                //                                           && p.Id != CaseCompanyMappingBO.ID
-                //                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
-                //    {
-                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case Company Mapping already exists.", ErrorLevel = ErrorLevel.Error };
-                //    }
-                //}
-
-                caseCompanyMappingDB.CaseId = CaseCompanyMappingBO.CaseId;
-                caseCompanyMappingDB.CompanyId = CaseCompanyMappingBO.Company.ID;
-
-                if (Add_CaseCompanyMappingDB == true)
-                {
+                    caseCompanyMappingDB.CaseId = CaseCompanyMappingBO.CaseId;
+                    caseCompanyMappingDB.CompanyId = CaseCompanyMappingBO.Company.ID;                
                     caseCompanyMappingDB.IsOriginator = CaseCompanyMappingBO.IsOriginator;
-                
-                    caseCompanyMappingDB = _context.CaseCompanyMappings.Add(caseCompanyMappingDB);
-                }
+                    caseCompanyMappingDB.AddedByCompanyId = CaseCompanyMappingBO.AddedByCompanyId;
 
-                _context.SaveChanges();
+                    caseCompanyMappingDB = _context.CaseCompanyMappings.Add(caseCompanyMappingDB);
+
+                    _context.SaveChanges();
+                }
             }
             else
             {
-                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case company mapping...", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case company mapping.", ErrorLevel = ErrorLevel.Error };
             }
 
             _context.SaveChanges();

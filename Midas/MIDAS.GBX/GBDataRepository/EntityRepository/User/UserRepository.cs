@@ -524,7 +524,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = user.ToList();
 
 
-            if (acc == null || acc.Count <= 0)
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this User Name.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -811,19 +811,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
 
-            var userCompany = _context.UserCompanies.Where(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                                                                
-            companyDB = _context.Companies.Where(p => p.id == companyBO.ID
-                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .FirstOrDefault();
-
             if (companyBO == null)
             {
                 userDB.Password = PasswordHash.HashPassword(userBO.Password);
             }
             else
             {
+                var userCompany = _context.UserCompanies.Where(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                companyDB = _context.Companies.Where(p => p.id == companyBO.ID
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
+
                 if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
                 {
@@ -840,30 +840,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
             }
-            //if (companyBO == null)
-            //{
-            //    userDB.Password = PasswordHash.HashPassword(userBO.Password);
-            //}
-            //else
-            //{
-            //    if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
-            //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
-            //    {
-            //        companyDB = _context.Companies.Where(p => p.id == companyBO.ID
-            //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                            .FirstOrDefault();
-
-            //        if (companyDB.CompanyStatusTypeID == 2)
-            //        {
-            //            userDB.Password = PasswordHash.HashPassword(userBO.Password);
-            //            companyDB.CompanyStatusTypeID = 3;
-            //        }
-            //    }
-            //}
 
             _context.SaveChanges();
 
-            userDB = _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>();
+            userDB = _context.Users.Where(p => p.id == userBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
 
             BO.User acc_ = Convert<BO.User, User>(userDB);
 

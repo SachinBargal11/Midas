@@ -38,6 +38,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByCompanyAndSpecialtyId/{companyId}/{specialtyId}")]
+        public HttpResponseMessage GetByCompanyAndSpecialtyId(int companyId, int specialtyId)
+        {
+            return requestHandler.GetGbObjects(Request, companyId, specialtyId);
+        }
+
+        [HttpGet]
+        [Route("getByCompanyAndRoomTestId/{companyId}/{roomTestId}")]
+        public HttpResponseMessage GetByCompanyAndRoomTestId(int companyId, int roomTestId)
+        {
+            return requestHandler.GetGbObjects2(Request, companyId, roomTestId);
+        }
+
+
         [HttpDelete]
         [HttpGet]
         [Route("Delete/{id}")]
