@@ -52,6 +52,8 @@ export class AddUserComponent implements OnInit {
     isExist: boolean = false;
     users: User[];
     isPatientOrDoctor: string = 'doctor';
+    userCompany: User;
+    isuserCompany: boolean = false;
     constructor(
         private _statesStore: StatesStore,
         private _userService: UsersService,
@@ -233,8 +235,20 @@ export class AddUserComponent implements OnInit {
                 .subscribe((users: User[]) => {
                     this.users = users;
                     if (this.users.length > 0) {
-                        this.isExist = true;
-                        this.displayExistPopup = true;
+                        _.forEach(users, (currentUser: User) => {
+                            this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
+                            if (!this.isuserCompany) {
+                                this.isExist = true;
+                                this.displayExistPopup = true;
+                            }
+                            else {
+                                let errString = 'User Already exists.';
+                                this.isSaveUserProgress = false;
+                                this._notificationsService.error('Oh No!', 'User Already exists');
+                                this._progressBarService.hide();
+                            }
+                        });
+
                     }
                     else {
                         doctorDetail = new Doctor({
@@ -341,8 +355,7 @@ export class AddUserComponent implements OnInit {
 
     }
 
-    checkForExist(userName, SSN) {
-        debugger;
+    checkForExist(userName, SSN) {     
         this._usersStore.resetStore();
         this._usersStore.GetIsExistingUser(userName, null)
             .subscribe((users: User[]) => {

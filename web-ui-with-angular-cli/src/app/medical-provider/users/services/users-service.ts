@@ -265,7 +265,7 @@ export class UsersService {
                     // parsedUser = UserAdapter.parseResponse(userData);
                     // resolve(parsedUser);
                     let parsedUser = (<Object[]>userData).map((data: any) => {
-                        return UserAdapter.parseResponse(data);
+                        return UserAdapter.parseUserExistResponse(data);
                     });
                     resolve(parsedUser);
                 }, (error) => {
