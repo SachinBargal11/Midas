@@ -16,7 +16,8 @@ import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { StatesStore } from '../../../commons/stores/states-store';
-
+import { UsersStore } from '../../../medical-provider/users/stores/users-store';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'add-patient',
@@ -34,7 +35,12 @@ export class AddPatientComponent implements OnInit {
     isCitiesLoading = false;
     isSavePatientProgress = false;
     uploadedFiles: any[] = [];
-
+    displayExistPopup: boolean = false;
+    isExist: boolean = false;
+    users: User[];
+    isPatientOrDoctor: string = 'patient';
+    isuserCompany: boolean = false;
+    isAlreadyUser: boolean = false;
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -44,7 +50,8 @@ export class AddPatientComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        public usersStore: UsersStore
     ) {
         this.patientform = this.fb.group({
             userInfo: this.fb.group({
@@ -65,7 +72,7 @@ export class AddPatientComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', AppValidators.emailValidator],
+                alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
                 preferredCommunication: ['']
             }),
@@ -83,6 +90,8 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        //  this.checkForExist('satish.k@codearray.tech', '  ');
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
@@ -93,86 +102,136 @@ export class AddPatientComponent implements OnInit {
 
     onUpload(event) {
 
-        for(let file of event.files) {
+        for (let file of event.files) {
             this.uploadedFiles.push(file);
         }
 
-          //this.msgs = [];
+        //this.msgs = [];
         //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
     }
 
     savePatient() {
-        this.isSavePatientProgress = true;
-        let patientFormValues = this.patientform.value;
-        let result;
-        let patient = new Patient({
-            ssn: patientFormValues.userInfo.ssn,
-            weight: patientFormValues.userInfo.weight,
-            height: patientFormValues.userInfo.height,
-            dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
-            maritalStatusId: patientFormValues.userInfo.maritalStatusId,
-            createByUserId: this._sessionStore.session.account.user.id,
-            companyId: this._sessionStore.session.currentCompany.id,
-            user: new User({
-                dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
-                firstName: patientFormValues.userInfo.firstname,
-                middleName: patientFormValues.userInfo.middlename,
-                lastName: patientFormValues.userInfo.lastname,
-                userType: UserType.PATIENT,
-                userName: patientFormValues.contact.email,
-                createByUserId: this._sessionStore.session.account.user.id,
-                gender: patientFormValues.userInfo.gender,
-                contact: new Contact({
-                    cellPhone: patientFormValues.contact.cellPhone ? patientFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                    emailAddress: patientFormValues.contact.email,
-                    faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
-                    homePhone: patientFormValues.contact.homePhone,
-                    workPhone: patientFormValues.contact.workPhone,
-                    officeExtension: patientFormValues.contact.officeExtension,
-                    alternateEmail: patientFormValues.contact.alternateEmail,
-                    preferredCommunication: patientFormValues.contact.preferredCommunication,
-                    createByUserId: this._sessionStore.session.account.user.id
-                }),
-                address: new Address({
-                    address1: patientFormValues.address.address1,
-                    address2: patientFormValues.address.address2,
-                    city: patientFormValues.address.city,
-                    country: patientFormValues.address.country,
-                    state: patientFormValues.address.state,
-                    zipCode: patientFormValues.address.zipCode,
-                    createByUserId: this._sessionStore.session.account.user.id
-                })
-            })
-        });
-        this._progressBarService.show();
-        result = this._patientsStore.addPatient(patient);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Patient added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patients']);
-            },
-            (error) => {
-                let errString = 'Unable to add patient.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSavePatientProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                this.isSavePatientProgress = false;
-                this._progressBarService.hide();
-            });
+        //this.isExist = this.checkForExist(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn);
 
+        this.usersStore.GetIsExistingUser(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn)
+            .subscribe((users: User[]) => {
+                this.users = users;
+                if (this.users.length > 0) {
+                    _.forEach(users, (currentUser: User) => {
+                        this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
+                        if (!this.isuserCompany) {
+                            this.isExist = true;
+                            this.displayExistPopup = true;
+                        }
+                        else {
+                            let errString = 'User Already exists.';
+                            this._notificationsService.error('Oh No!', 'User Already exists');
+                            this._progressBarService.hide();
+                        }
+                    });
+
+                }
+                else {
+                    this.isSavePatientProgress = true;
+                    let patientFormValues = this.patientform.value;
+                    let result;
+                    let patient = new Patient({
+                        ssn: patientFormValues.userInfo.ssn,
+                        weight: patientFormValues.userInfo.weight,
+                        height: patientFormValues.userInfo.height,
+                        dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
+                        maritalStatusId: patientFormValues.userInfo.maritalStatusId,
+                        createByUserId: this._sessionStore.session.account.user.id,
+                        companyId: this._sessionStore.session.currentCompany.id,
+                        user: new User({
+                            dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
+                            firstName: patientFormValues.userInfo.firstname,
+                            middleName: patientFormValues.userInfo.middlename,
+                            lastName: patientFormValues.userInfo.lastname,
+                            userType: UserType.PATIENT,
+                            userName: patientFormValues.contact.email,
+                            createByUserId: this._sessionStore.session.account.user.id,
+                            gender: patientFormValues.userInfo.gender,
+                            contact: new Contact({
+                                cellPhone: patientFormValues.contact.cellPhone ? patientFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                                emailAddress: patientFormValues.contact.email,
+                                faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                                homePhone: patientFormValues.contact.homePhone,
+                                workPhone: patientFormValues.contact.workPhone,
+                                officeExtension: patientFormValues.contact.officeExtension,
+                                alternateEmail: patientFormValues.contact.alternateEmail,
+                                preferredCommunication: patientFormValues.contact.preferredCommunication,
+                                createByUserId: this._sessionStore.session.account.user.id
+                            }),
+                            address: new Address({
+                                address1: patientFormValues.address.address1,
+                                address2: patientFormValues.address.address2,
+                                city: patientFormValues.address.city,
+                                country: patientFormValues.address.country,
+                                state: patientFormValues.address.state,
+                                zipCode: patientFormValues.address.zipCode,
+                                createByUserId: this._sessionStore.session.account.user.id
+                            })
+                        })
+                    });
+                    this._progressBarService.show();
+                    result = this._patientsStore.addPatient(patient);
+                    result.subscribe(
+                        (response) => {
+                            let notification = new Notification({
+                                'title': 'Patient added successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+                            });
+                            this._notificationsStore.addNotification(notification);
+                            this._router.navigate(['/patient-manager/patients']);
+                        },
+                        (error) => {
+                            let errString = 'Unable to add patient.';
+                            let notification = new Notification({
+                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                'type': 'ERROR',
+                                'createdAt': moment()
+                            });
+                            this.isSavePatientProgress = false;
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            this._progressBarService.hide();
+                        },
+                        () => {
+                            this.isSavePatientProgress = false;
+                            this._progressBarService.hide();
+                        });
+                }
+            },
+            (error) => { });
     }
 
+    // checkForExist(userName, SSN) {
+    //             debugger;
+    //             this.usersStore.GetIsExistingUser(userName, SSN)
+    //                 .subscribe((users: User[]) => {
+    //                     this.users = users;
+    //                     if (this.users.length > 0) {
+    //                         this.isExist = true;
+    //                         _.forEach(users, (currentUser: User) => {
+    //                             this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
+    //                             if (!this.isuserCompany) {
+    //                                 this.displayExistPopup = true;
+    //                             }
+    //                             else {
+    //                                 this.isAlreadyUser = true;
+    //                                 this.displayExistPopup = false;
+    //                                 let errString = 'User Already exists.';
+    //                                 this.isSavePatientProgress = false;
+    //                                 this._notificationsService.error('Oh No!', 'User Already exists');
+    //                                 this._progressBarService.hide();
+    //                             }
+    //                         });
+    //                     }
+    //                 },
+    //                 (error) => { }
+    //                 );
+    //             return this.isExist;
+    //         }
 }

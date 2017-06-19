@@ -417,3 +417,6 @@
     </button>
     <a [routerLink]="['/medical-provider/users']" class="btn btn-secondary">Cancel</a>
 </form>
+<div *ngIf="doctorRole">
+    <app-associate-user *ngIf="isExist" [existUsers]="users" [isPatientOrDoctor]="isPatientOrDoctor"> </app-associate-user>
+</div>
