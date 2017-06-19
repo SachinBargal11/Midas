@@ -201,7 +201,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                          && !(from pm in _context.ProcedureCodeCompanyMappings where pm.CompanyID == companyId select pm.ProcedureCodeID).Contains(pc.Id)
                                    select new
                                    {
-                                       pc.Id,
+                                       ProcedureCodeId = pc.Id,
                                        pc.ProcedureCodeText,
                                        pc.ProcedureCodeDesc,
                                        pc.Amount
@@ -232,7 +232,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                               select pm.ProcedureCodeID).Contains(pc.Id)
                                    select new
                                    {
-                                       pc.Id,
+                                       ProcedureCodeId = pc.Id,
                                        pc.ProcedureCodeText,
                                        pc.ProcedureCodeDesc,
                                        pc.Amount

@@ -164,7 +164,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                      select new
                                      {
-                                         pc.Id,
+                                         pccm.ID,
+                                         ProcedureCodeId = pc.Id,
                                          pc.ProcedureCodeText,
                                          pc.ProcedureCodeDesc,
                                          pccm.Amount
@@ -193,7 +194,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                      select new
                                      {
-                                         pc.Id,
+                                         pccm.ID,
+                                         ProcedureCodeId = pc.Id,
                                          pc.ProcedureCodeText,
                                          pc.ProcedureCodeDesc,
                                          pccm.Amount
