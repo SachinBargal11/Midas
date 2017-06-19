@@ -524,7 +524,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = user.ToList();
 
 
-            if (acc == null || acc.Count <= 0)
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this User Name.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
