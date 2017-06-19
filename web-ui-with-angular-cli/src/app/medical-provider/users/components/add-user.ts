@@ -48,7 +48,10 @@ export class AddUserComponent implements OnInit {
     isCitiesLoading = false;
     doctorRole = false;
     doctorFlag: boolean = false;
-
+    displayExistPopup: boolean = false;
+    isExist: boolean = false;
+    users: User[];
+    isPatientOrDoctor: string = 'doctor';
     constructor(
         private _statesStore: StatesStore,
         private _userService: UsersService,
@@ -97,7 +100,7 @@ export class AddUserComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', [AppValidators.emailValidator]],
+                alternateEmail: ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
@@ -149,13 +152,10 @@ export class AddUserComponent implements OnInit {
         return model;
     }
 
-
     saveUser() {
         let result;
         let userFormValues = this.userform.value;
         let doctorSpecialities = [];
-
-
         let roles = [];
         let input = this.selectedRole;
         for (let i = 0; i < input.length; ++i) {
@@ -193,85 +193,167 @@ export class AddUserComponent implements OnInit {
                     zipCode: userFormValues.address.zipCode,
                 })
             });
+            this._progressBarService.show();
+            this.isSaveUserProgress = true;
             result = this._usersStore.addUser(userDetail);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'User added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._router.navigate(['/medical-provider/users']);
+                },
+                (error) => {
+                    let errString = 'Unable to add User.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this.isSaveUserProgress = false;
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this.isSaveUserProgress = false;
+                    this._progressBarService.hide();
+                });
         }
         else {
+            let doctorDetail;
             let selectedSpeciality = userFormValues.doctor.speciality;
             selectedSpeciality.forEach(element => {
                 doctorSpecialities.push({ 'id': parseInt(element) });
             });
+            this._usersStore.GetIsExistingUser(userFormValues.contact.email, null)
+                .subscribe((users: User[]) => {
+                    this.users = users;
+                    if (this.users.length > 0) {
+                        this.isExist = true;
+                        this.displayExistPopup = true;
+                    }
+                    else {
+                        doctorDetail = new Doctor({
+                            licenseNumber: userFormValues.doctor.licenseNumber,
+                            wcbAuthorization: userFormValues.doctor.wcbAuthorization,
+                            wcbRatingCode: userFormValues.doctor.wcbRatingCode,
+                            npi: userFormValues.doctor.npi,
+                            taxType: userFormValues.doctor.taxType,
+                            // title: 'Dr',
+                            title: userFormValues.doctor.title,
+                            doctorSpecialities: doctorSpecialities,
+                            isCalendarPublic: userFormValues.doctor.isCalendarPublic,
+                            user: new User({
+                                firstName: userFormValues.userInfo.firstname,
+                                lastName: userFormValues.userInfo.lastname,
+                                userType: UserType.STAFF,
+                                roles: roles,
+                                userName: userFormValues.contact.email,
+                                contact: new Contact({
+                                    cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                                    emailAddress: userFormValues.contact.email,
+                                    faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                                    homePhone: userFormValues.contact.homePhone,
+                                    workPhone: userFormValues.contact.workPhone,
+                                    // officeExtension: userFormValues.officeExtension,
+                                    // alternateEmail: userFormValues.alternateEmail,
+                                    // preferredCommunication: userFormValues.preferredCommunication,
 
-            let doctorDetail = new Doctor({
-                licenseNumber: userFormValues.doctor.licenseNumber,
-                wcbAuthorization: userFormValues.doctor.wcbAuthorization,
-                wcbRatingCode: userFormValues.doctor.wcbRatingCode,
-                npi: userFormValues.doctor.npi,
-                taxType: userFormValues.doctor.taxType,
-                // title: 'Dr',
-                title: userFormValues.doctor.title,
-                doctorSpecialities: doctorSpecialities,
-                isCalendarPublic: userFormValues.doctor.isCalendarPublic,
-                user: new User({
-                    firstName: userFormValues.userInfo.firstname,
-                    lastName: userFormValues.userInfo.lastname,
-                    userType: UserType.STAFF,
-                    roles: roles,
-                    userName: userFormValues.contact.email,
-                    contact: new Contact({
-                        cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                        emailAddress: userFormValues.contact.email,
-                        faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
-                        homePhone: userFormValues.contact.homePhone,
-                        workPhone: userFormValues.contact.workPhone,
-                        // officeExtension: userFormValues.officeExtension,
-                        // alternateEmail: userFormValues.alternateEmail,
-                        // preferredCommunication: userFormValues.preferredCommunication,
+                                }),
+                                address: new Address({
+                                    address1: userFormValues.address.address1,
+                                    address2: userFormValues.address.address2,
+                                    city: userFormValues.address.city,
+                                    country: userFormValues.address.country,
+                                    state: userFormValues.address.state,
+                                    zipCode: userFormValues.address.zipCode,
+                                })
+                            })
+                        });
+                        this._progressBarService.show();
+                        this.isSaveUserProgress = true;
+                        result = this._doctorsStore.addDoctor(doctorDetail);
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'User added successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this._notificationsStore.addNotification(notification);
+                                this._router.navigate(['/medical-provider/users']);
+                            },
+                            (error) => {
+                                let errString = 'Unable to add User.';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.isSaveUserProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                                this._progressBarService.hide();
+                            },
+                            () => {
+                                this.isSaveUserProgress = false;
+                                this._progressBarService.hide();
+                            });
+                    }
 
-                    }),
-                    address: new Address({
-                        address1: userFormValues.address.address1,
-                        address2: userFormValues.address.address2,
-                        city: userFormValues.address.city,
-                        country: userFormValues.address.country,
-                        state: userFormValues.address.state,
-                        zipCode: userFormValues.address.zipCode,
-                    })
-                })
-            });
-            result = this._doctorsStore.addDoctor(doctorDetail);
+                },
+                (error) => { });
         }
-        this._progressBarService.show();
-        this.isSaveUserProgress = true;
+
 
         // result = this._usersStore.addUser(userDetail);
         // result = this._doctorsStore.addDoctor(doctorDetail);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'User added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medical-provider/users']);
-            },
-            (error) => {
-                let errString = 'Unable to add User.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSaveUserProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                this.isSaveUserProgress = false;
-                this._progressBarService.hide();
-            });
+        // result.subscribe(
+        //     (response) => {
+        //         let notification = new Notification({
+        //             'title': 'User added successfully!',
+        //             'type': 'SUCCESS',
+        //             'createdAt': moment()
+        //         });
+        //         this._notificationsStore.addNotification(notification);
+        //         this._router.navigate(['/medical-provider/users']);
+        //     },
+        //     (error) => {
+        //         let errString = 'Unable to add User.';
+        //         let notification = new Notification({
+        //             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+        //             'type': 'ERROR',
+        //             'createdAt': moment()
+        //         });
+        //         this.isSaveUserProgress = false;
+        //         this._notificationsStore.addNotification(notification);
+        //         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+        //         this._progressBarService.hide();
+        //     },
+        //     () => {
+        //         this.isSaveUserProgress = false;
+        //         this._progressBarService.hide();
+        //     });
 
+    }
+
+    checkForExist(userName, SSN) {
+        debugger;
+        this._usersStore.resetStore();
+        this._usersStore.GetIsExistingUser(userName, null)
+            .subscribe((users: User[]) => {
+                this.users = users;
+                if (this.users.length > 0) {
+                    this.isExist = true;
+                }
+            },
+            (error) => { }
+            );
+        return this.isExist;
     }
 
 }
