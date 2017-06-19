@@ -255,7 +255,7 @@ export class UsersService {
 
     }
 
-    GetIsExistingUser(UserName: string, SSN: string): Observable<User[]> {      
+    GetIsExistingUser(UserName: string, SSN: string): Observable<User[]> {
         let promise: Promise<User[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/user/GetIsExistingUser/' + UserName + '/' + SSN, {
                 headers: this._headers
@@ -264,10 +264,10 @@ export class UsersService {
                     // let parsedUser: User[] = null;
                     // parsedUser = UserAdapter.parseResponse(userData);
                     // resolve(parsedUser);
-                        let parsedUser = (<Object[]>userData).map((data: any) => {
-                            return UserAdapter.parseResponse(data);
-                        });
-                        resolve(parsedUser);
+                    let parsedUser = (<Object[]>userData).map((data: any) => {
+                        return UserAdapter.parseUserExistResponse(data);
+                    });
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });

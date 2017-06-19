@@ -198,7 +198,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var procedureCodeDB = (from pc in _context.ProcedureCodes
                                    where pc.SpecialityId == specialtyId
                                          && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
-                                         && !(from pm in _context.ProcedureCodeCompanyMappings where pm.CompanyID == companyId select pm.ProcedureCodeID).Contains(pc.Id)
+                                         && !(from pm in _context.ProcedureCodeCompanyMappings where pm.CompanyID == companyId 
+                                                   && (pm.IsDeleted.HasValue == false || (pm.IsDeleted.HasValue == true && pm.IsDeleted.Value == false)) select pm.ProcedureCodeID).Contains(pc.Id)
                                    select new
                                    {
                                        ProcedureCodeId = pc.Id,

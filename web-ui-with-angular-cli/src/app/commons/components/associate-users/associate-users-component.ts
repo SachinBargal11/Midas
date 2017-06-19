@@ -9,7 +9,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { DocumentUploadService } from '../../../commons/services/document-upload-service';
 import { SignatureFieldComponent } from '../../../commons/components/signature-field/signature-field.component';
-import { ConsentService } from '../../../patient-manager/cases/services/consent-service';
+// import { ConsentService } from '../../../patient-manager/cases/services/consent-service';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
@@ -32,6 +32,8 @@ export class AssociateUsersComponent implements OnInit {
 
     displayExistPopup: boolean = true;
     private _url = `${environment.SERVICE_BASE_URL}`;
+    selectedUsers: User = null;
+    isSaveProgress = false;
 
     @Input() existUsers: User[];
     @Input() isPatientOrDoctor: string;
@@ -43,7 +45,7 @@ export class AssociateUsersComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _documentUploadService: DocumentUploadService,
         private _progressBarService: ProgressBarService,
-        private _consentService: ConsentService,
+        // private _consentService: ConsentService,
         private _sessionStore: SessionStore,
         private _router: Router,
         private _associateUserStore: AssociateUserStore,
@@ -58,46 +60,70 @@ export class AssociateUsersComponent implements OnInit {
     }
 
     ngOnInit() {
-
         // alert(this.existUsers);
         // alert(this.isPatientOrDoctor);
+        //this.selectedUsers = this.existUsers;
     }
 
-    associateUser(id) {
+    associateUser() {
         let result;
-        //  alert(this.isPatientOrDoctor);
-        if (this.isPatientOrDoctor == 'patient') {
-            result = this._associateUserStore.associatePatientWithCompany(id, this._sessionStore.session.account.user.id);
-        }
-        else if (this.isPatientOrDoctor == 'doctor') {
-            result = this._associateUserStore.associateDoctorWithCompany(id, this._sessionStore.session.account.user.id);
-        }
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'User Associated successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
+        if (this.selectedUsers != null) {
+            //  alert(this.isPatientOrDoctor);
+            if (this.isPatientOrDoctor == 'patient') {
+                result = this._associateUserStore.associatePatientWithCompany(this.selectedUsers.id, this._sessionStore.session.currentCompany.id);
+            }
+            else if (this.isPatientOrDoctor == 'doctor') {
+                result = this._associateUserStore.associateDoctorWithCompany(this.selectedUsers.id, this._sessionStore.session.currentCompany.id);
+            }
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'User has been Associated successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.success('User has been Associated successfully!.');
+
+                    this.displayExistPopup = false;
+                    if (this.isPatientOrDoctor == 'patient') {
+                        this._router.navigate(['/patient-manager/patients']);
+                    }
+                    else if (this.isPatientOrDoctor == 'doctor') {
+                        this._router.navigate(['/medical-provider/users']);
+                    }
+                },
+                (error) => {
+                    let errString = 'Unable to Associate user.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    //  this.isSaveProgress = false;
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this._progressBarService.hide();
+                },
+                () => {
+                    // this.isSaveProgress = false;
+                    this._progressBarService.hide();
                 });
-                this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['../'], { relativeTo: this._route });
-            },
-            (error) => {
-                let errString = 'Unable to Associate user.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                //  this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                // this.isSaveProgress = false;
-                this._progressBarService.hide();
+        }
+        else {
+            let notification = new Notification({
+                'title': 'select user to associate',
+                'type': 'ERROR',
+                'createdAt': moment()
             });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select user to associate');
+        }
     }
 
+    // close() {
+    //     this.displayExistPopup = false;
+    //     this.isSaveProgress = false;
+    //     this._progressBarService.hide();
+    // }
 }

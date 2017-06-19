@@ -7,7 +7,7 @@ import { UserRole } from './user-role';
 import { UserType } from './enums/user-type';
 import { Gender } from './enums/Gender';
 import { RoleType } from './enums/roles';
-
+import { Company } from '../../account/models/company';
 const UserRecord = Record({
     id: 0,
     // name: '',
@@ -26,6 +26,7 @@ const UserRecord = Record({
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
+    companies: [],
     // createDate: null, //Moment
     // updateDate: null //Moment
 });
@@ -49,6 +50,7 @@ export class User extends UserRecord {
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
+    companies: Company[];
     // createDate: moment.Moment;
     // updateDate: moment.Moment;
 
@@ -99,6 +101,15 @@ export class User extends UserRecord {
                 return 'Others';
 
         }
+    }
+    isSessionCompany(companyId): boolean {      
+        let isSessionCompany: boolean = false;
+        _.forEach(this.companies, (currentCompany: any) => {
+            if (currentCompany.companyId === companyId) {
+                isSessionCompany = true;
+            }
+        });
+        return isSessionCompany;
     }
 
 }

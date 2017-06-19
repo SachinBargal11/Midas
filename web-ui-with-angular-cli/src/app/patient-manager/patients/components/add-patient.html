@@ -368,3 +368,46 @@
                 </button>
     <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
 </form>
+
+<!--<p-dialog header="Exisiting Users" [(visible)]="displayExistPopup" [minWidth]="600" [width]="1200" [height]="450" modal="modal"
+    width="300" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
+    <p>
+        <p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
+            [globalFilter]="gb" [responsive]="true">
+            <header>Existing Patients</header>
+            <p-column header="Email" value="asddadadsd" [sortable]="true"></p-column>
+
+            <p-column field="user.displayName" header="Name">
+                <ng-template let-currentPatient="rowData" pTemplate="body">
+                    <div *ngIf="currentPatient.isSessionCompany(sessionStore.session.currentCompany.id)">
+                        <a title="Edit" routerLink="{{currentPatient.user.id}}/viewall">{{currentPatient.user.displayName}}</a>
+                    </div>
+                    <div *ngIf="!currentPatient.isSessionCompany(sessionStore.session.currentCompany.id)">
+                        <a (click)="showMsg()">{{currentPatient.user.displayName}}</a>
+                    </div>
+                </ng-template>
+            </p-column>
+            <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true">
+                <ng-template let-currentPatient="rowData" pTemplate="body">
+                    {{currentPatient.user.contact.cellPhone | phoneFormat}}
+                </ng-template>
+            </p-column>
+            <p-column field="user.contact.emailAddress" header="Email" [sortable]="true"></p-column>
+            <p-column styleClass="actions-cell" header="Actions">
+                <ng-template let-patient="rowData" pTemplate="body">
+                    <div>
+                        <a title="Associate"><i class="glyphicon glyphicon-edit"></i></a>
+                    </div>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+
+    </p>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="displayExistPopup=false" label="Cancel"></button>
+        </div>
+    </p-footer>
+</p-dialog>-->
+
+<app-associate-user *ngIf="isExist" [existUsers]="users" [isPatientOrDoctor]="isPatientOrDoctor"> </app-associate-user>
