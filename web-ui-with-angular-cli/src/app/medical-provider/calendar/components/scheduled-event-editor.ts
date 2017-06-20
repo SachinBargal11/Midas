@@ -20,7 +20,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
-    // isAllDay: boolean;
+    isAllDay: boolean;
     repeatType: string = '7';
 
     // Daily 
@@ -69,7 +69,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
             this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-            // this.isAllDay = this._selectedEvent.isAllDay;
+            this.isAllDay = this._selectedEvent.isAllDay;
 
             if (this._selectedEvent.recurrenceRule) {
                 let options = this._selectedEvent.recurrenceRule.options;
@@ -150,7 +150,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
             this.eventEndAsDate = null;
-            // this.isAllDay = false;
+            this.isAllDay = false;
         }
     }
 
@@ -169,7 +169,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             duration: ['', Validators.required],
             // eventEndDate: ['', Validators.required],
             // eventEndTime: [''],
-            // isAllDay: [],
+            isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({
                 end: [],

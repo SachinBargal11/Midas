@@ -81,9 +81,13 @@ export class DocumentsComponent implements OnInit {
         this.getDocuments();
     }
 
-    showDialog(currentPatientId: number) {
+    showDialog() {
         this.addConsentDialogVisible = true;
-        this.selectedPatientId = currentPatientId;
+        this.selectedPatientId = this.currentPatientId;
+    }
+    handleAddConsentDialogHide() {
+        this.addConsentDialogVisible = false;
+        this.selectedPatientId = null;        
     }
 
     documentUploadComplete(documents: Document[]) {
