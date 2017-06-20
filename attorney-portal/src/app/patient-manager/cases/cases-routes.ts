@@ -29,6 +29,7 @@ import { PatientVisitListTreatingRoomComponent } from './components/treatingroom
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 import { BillingInfoComponent } from './components/billing';
 import { PaymentListComponent } from './components/payment-list';
+import { CaseBasicLabelComponent } from './components/case-basic-label';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -99,6 +100,14 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'basic',
                         component: CaseBasicComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Basic'
+                        }
+                    },
+                    {
+                        path: 'basicLabel',
+                        component: CaseBasicLabelComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Basic'

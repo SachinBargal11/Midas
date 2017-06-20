@@ -9,19 +9,27 @@ import { ConsentAdapter } from './consent-adapter';
 import { CaseDocumentAdapter } from './case-document-adapters';
 import { Referral } from '../../models/referral';
 import { ReferralAdapter } from './referral-adapter';
+import { CaseCompanyMapping } from '../../models/caseCompanyMapping';
+import { CaseCompanyMappingAdapter } from './caseCompanyMapping-adapters';
 
 export class CaseAdapter {
     static parseResponse(data: any): Case {
 
         let patient_case = null;
-        let companies: Company[] = [];
+        // let companies: Company[] = [];
+        let caseCompanyMapping: CaseCompanyMapping[] = [];
         let companyCaseConsentApproval: Consent[] = [];
         let caseCompanyConsentDocument: CaseDocument[] = [];
         let referral: Referral[] = [];
         if (data) {
+            // if (data.caseCompanyMapping) {
+            //     for (let company of data.caseCompanyMapping) {
+            //         companies.push(CompanyAdapter.parseResponse(company.company));
+            //     }
+            // }
             if (data.caseCompanyMapping) {
-                for (let company of data.caseCompanyMapping) {
-                    companies.push(CompanyAdapter.parseResponse(company.company));
+                for (let caseMapping of data.caseCompanyMapping) {
+                    caseCompanyMapping.push(CaseCompanyMappingAdapter.parseResponse(caseMapping));
                 }
             }
             if (data.caseCompanyConsentDocument) {
@@ -46,7 +54,8 @@ export class CaseAdapter {
                 patient: PatientAdapter.parseResponse(data.patient2),
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
-                companies: companies,
+                caseCompanyMapping: caseCompanyMapping,
+                // companies: companies,
                 caseCompanyConsentDocument: caseCompanyConsentDocument,
                 companyCaseConsentApproval: companyCaseConsentApproval,
                 // referral:referral,
@@ -65,6 +74,7 @@ export class CaseAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
+                orignatorCompanyId: data.orignatorCompanyId,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
@@ -73,14 +83,20 @@ export class CaseAdapter {
 
     static parseCaseComapnyResponse(data: any): Case {
         let patient_case = null;
-        let companies: Company[] = [];
+        // let companies: Company[] = [];
+        let caseCompanyMapping: CaseCompanyMapping[] = [];
         let companyCaseConsentApproval: Consent[] = [];
         let referral: Referral[] = [];
         let caseCompanyConsentDocument: CaseDocument[] = [];
         if (data) {
+            // if (data.caseCompanyMapping) {
+            //     for (let company of data.caseCompanyMapping) {
+            //         companies.push(CompanyAdapter.parseResponse(company.company));
+            //     }
+            // }
             if (data.caseCompanyMapping) {
-                for (let company of data.caseCompanyMapping) {
-                    companies.push(CompanyAdapter.parseResponse(company.company));
+                for (let caseMapping of data.caseCompanyMapping) {
+                    caseCompanyMapping.push(CaseCompanyMappingAdapter.parseResponse(caseMapping));
                 }
             }
             if (data.caseCompanyConsentDocument) {
@@ -107,7 +123,8 @@ export class CaseAdapter {
                 }),
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
-                companies: companies,
+                // companies: companies,
+                caseCompanyMapping: caseCompanyMapping,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
@@ -124,6 +141,7 @@ export class CaseAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
+                orignatorCompanyId:data.orignatorCompanyId,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }

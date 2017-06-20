@@ -180,13 +180,15 @@ export class AddCaseComponent implements OnInit {
             caseCompanyMapping:  [{
                 company: {  
                     id: caseFormValues.attorneyId
-                }
+                },
+                addedByCompanyId:this._sessionStore.session.currentCompany.id
             },
                 {  
                   isOriginator: 'true',
                   company: {  
                     id: this._sessionStore.session.currentCompany.id
-                }
+                },
+                addedByCompanyId:this._sessionStore.session.currentCompany.id
                 }]
         });
 
