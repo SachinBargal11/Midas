@@ -67,10 +67,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseBO.Patient2 = boPatient2;
                 }
             }
-
+            
             if (cases.CaseCompanyMappings != null)
             {
                 caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
+                caseBO.OrignatorCompanyName = cases.CaseCompanyMappings.Where(p2 => p2.IsOriginator == true).Select(p3 => p3.Company.Name).FirstOrDefault();
+               
 
                 List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                 foreach (var casemap in cases.CaseCompanyMappings)
@@ -243,6 +245,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
 
                         caseWithUserAndPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
+                        caseWithUserAndPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company).FirstOrDefault().ToString(); //
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
@@ -350,6 +353,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithPatient.caseSource = eachCase.caseSource;
 
                         caseWithPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
+                        caseWithPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company).FirstOrDefault().ToString();
 
 
                         lstCaseWithPatient.Add(caseWithPatient);
@@ -1210,20 +1214,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetReadOnly(int caseId,int companyId)
         {
 
-            var referredBy = (from re in _context.Referral2
-                              join co in _context.Companies on re.FromCompanyId equals co.id
-                              where re.CaseId == caseId && re.ToCompanyId == companyId
-                                    && (re.IsDeleted.HasValue == false || (re.IsDeleted.HasValue == true && re.IsDeleted.Value == false))
-                                    && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
-                              select co.Name).FirstOrDefault();
+            //var referredBy = (from re in _context.Referral2
+            //                  join co in _context.Companies on re.FromCompanyId equals co.id
+            //                  where re.CaseId == caseId && re.ToCompanyId == companyId
+            //                        && (re.IsDeleted.HasValue == false || (re.IsDeleted.HasValue == true && re.IsDeleted.Value == false))
+            //                        && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
+            //                  select co.Name).FirstOrDefault();
 
             var CaseInfo = (from ca in _context.Cases
                             join us in _context.Users on ca.PatientId equals us.id
                             join ccm in _context.CaseCompanyMappings on ca.Id equals ccm.CaseId
-                            join co in _context.Companies on ccm.CompanyId equals co.id
+                            join co in _context.Companies on ccm.AddedByCompanyId equals co.id
 
                             join ccm2 in _context.CaseCompanyMappings on ca.Id equals ccm2.CaseId  // For  attorney or medical provider company
-                            join co2 in _context.Companies on ccm2.CompanyId equals co2.id  //   For  attorney or medical provider company
+                            join co2 in _context.Companies on ccm2.AddedByCompanyId equals co2.id  //   For  attorney or medical provider company
 
                             join ct in _context.CaseTypes on ca.CaseTypeId equals ct.Id
                             join cs in _context.CaseStatus on ca.CaseStatusId equals cs.Id
@@ -1248,8 +1252,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 cs.CaseStatusText,
                                 LocationName = lo.Name,
                                 ca.CarrierCaseNo,
-                                CompanyName = ccm.CompanyId == companyId? co2.Name:co.Name , 
-                                CaseSource = referredBy !=null? referredBy : (ccm.CompanyId == companyId ? ca.CaseSource: co.Name),
+                                CompanyName = ccm.AddedByCompanyId == companyId? co2.Name : co.Name ,
+                                //CaseSource = referredBy !=null? referredBy : (ccm.CompanyId == companyId ? ca.CaseSource: co.Name),
+                                CaseSource =  ccm.AddedByCompanyId == companyId ? ca.CaseSource : co.Name,
                                 ca.CreateByUserID,
                                 ca.CreateDate,
                                 ca.UpdateByUserID,
