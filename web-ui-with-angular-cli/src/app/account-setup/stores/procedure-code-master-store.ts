@@ -31,7 +31,7 @@ export class ProcedureCodeMasterStore {
 
     getBySpecialityAndCompanyId(specialityId: number, companyId: number): Observable<Procedure[]> {
         let promise = new Promise((resolve, reject) => {
-            this._procedureCodeMasterService.getProceduresBySpecialityAndCompanyId(specialityId, companyId).subscribe((procedures: Procedure[]) => {
+            this._procedureCodeMasterService.getProcedureCodeBySpecialtyExcludingAssigned(specialityId, companyId).subscribe((procedures: Procedure[]) => {
                 this._procedure.next(List(procedures));
                 resolve(procedures);
             }, error => {
@@ -43,7 +43,7 @@ export class ProcedureCodeMasterStore {
 
     getByRoomTestAndCompanyId(roomTestId: number, companyId: number): Observable<Procedure[]> {
         let promise = new Promise((resolve, reject) => {
-            this._procedureCodeMasterService.getProceduresByRoomTestAndCompanyId(roomTestId, companyId).subscribe((procedures: Procedure[]) => {
+            this._procedureCodeMasterService.getProcedureCodeByRoomTestExcludingAssigned(roomTestId, companyId).subscribe((procedures: Procedure[]) => {
                 this._procedure.next(List(procedures));
                 resolve(procedures);
             }, error => {
@@ -69,6 +69,42 @@ export class ProcedureCodeMasterStore {
         return <Observable<Procedure[]>>Observable.from(promise);
     }
 
+    getProceduresByCompanyAndSpecialtyId(specialityId: number, companyId: number): Observable<Procedure[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.getProceduresByCompanyAndSpecialtyId(specialityId, companyId).subscribe((procedures: Procedure[]) => {
+                // this._procedure.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
 
+    getProceduresByCompanyAndRoomTestId(roomTestId: number, companyId: number): Observable<Procedure[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.getProceduresByCompanyAndRoomTestId(roomTestId, companyId).subscribe((procedures: Procedure[]) => {
+                // this._procedure.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+    deleteProcedureMapping(procedure: Procedure) : Observable<Procedure> {
+        let proceduresMap = this._procedure.getValue();
+        let index = proceduresMap.findIndex((currentprocedureMapping: Procedure) => currentprocedureMapping.id === procedure.id);
+        let promise = new Promise((resolve, reject) => {
+            this._procedureCodeMasterService.deleteProcedureMapping(procedure).subscribe((procedure: Procedure) => {
+                    this._procedure.next(proceduresMap.delete(index));
+                    resolve(procedure);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure>>Observable.from(promise);
+    }
 
 }

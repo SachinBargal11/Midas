@@ -12,12 +12,12 @@ export class ProcedureAdapter {
         if (data) {
             procedure = new Procedure({
                 id: data.id,
-                procedureCodeId: data.id,
+                procedureCodeId: data.procedureCodeId,
                 specialityId: data.specialityId,
                 roomId: data.roomId,
                 roomTestId: data.roomTestId,
                 companyId: data.companyId,
-                amount: data.amount,
+                amount: data.amount ? data.amount : null,
                 procedureCodeText: data.procedureCodeText,
                 procedureCodeDesc: data.procedureCodeDesc,
                 company: CompanyAdapter.parseResponse(data.company),

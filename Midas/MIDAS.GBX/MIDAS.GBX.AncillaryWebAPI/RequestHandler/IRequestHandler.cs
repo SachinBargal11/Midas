@@ -27,7 +27,8 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage DeleteObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage Login(HttpRequestMessage request, T gbObject);        
+        HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage UpdateCompany(HttpRequestMessage request, T gbObject);
 
         HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
         HttpResponseMessage GenerateToken(HttpRequestMessage request,int userId);

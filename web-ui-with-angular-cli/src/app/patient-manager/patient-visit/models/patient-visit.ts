@@ -41,7 +41,7 @@ const PatientVisitRecord = Record({
     isOutOfOffice: false,
     leaveStartDate: null,
     leaveEndDate: null,
-    ancillaryProviderId: 0,
+    ancillaryProviderId: null,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,

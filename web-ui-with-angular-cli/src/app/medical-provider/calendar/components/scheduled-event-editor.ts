@@ -13,7 +13,7 @@ import { AncillaryMaster } from '../../../account-setup/models/ancillary-master'
 })
 
 export class ScheduledEventEditorComponent implements OnChanges {
-    ancillaryProviderId: number = 0;
+    ancillaryProviderId: number = null;
     allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
     private _selectedEvent: ScheduledEvent;

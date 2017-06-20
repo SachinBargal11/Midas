@@ -17,7 +17,7 @@ const ScheduledEventRecord = Record({
     recurrenceException: [],
     isAllDay: false,
     isCancelled: false,
-    ancillaryProviderId: 0,
+    ancillaryProviderId: null,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
