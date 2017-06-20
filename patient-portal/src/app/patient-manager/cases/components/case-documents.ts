@@ -112,9 +112,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
 
-    showDialog(currentCaseId: number) {
+    showDialog() {
         this.addConsentDialogVisible = true;
-       this.selectedCaseId = currentCaseId;
+       this.selectedCaseId = this.currentCaseId;
         // this.companyId = providerCompanyId;
     }
 

@@ -106,6 +106,9 @@ export class CasesListComponent implements OnInit {
         this.addConsentDialogVisible = true;
         this.caseId = currentCaseId;
     }
+    handleAddConsentDialogHide() {
+        this.addConsentDialogVisible = false;        
+    }
 
      documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {

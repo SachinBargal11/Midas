@@ -35,10 +35,14 @@
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
     <div>
-        <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
+        <!--<app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
             [signedDocumentUploadUrl]="signedDocumentUploadUrl" (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)"
             (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
             (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)">
+        </app-document-upload>-->
+        <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
+            [url]="url" (uploadComplete)="documentUploadComplete($event)"
+            (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true">
         </app-document-upload>
     </div>
 </p-dialog>

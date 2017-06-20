@@ -522,7 +522,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Ancillary Id
         public override object GetByAncillaryId(int AncillaryId)
         {
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Location").Include("Location.Company")
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Location")
+                                                                        .Include("Location.Company")
+                                                                        .Include("Location.ContactInfo")
                                                                         .Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")

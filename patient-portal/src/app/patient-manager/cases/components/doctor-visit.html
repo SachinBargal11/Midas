@@ -56,7 +56,7 @@
 </p-dataTable><br>
 <button type="submit" class="btn btn-success sign-up btn-sm" (click)="bill()">Create Bill</button>
 
-<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleAddConsentDialogHide()" header="{{visitInfo}}" [(visible)]="addConsentDialogVisible"
+<p-dialog [width]="1200" [height]="500" header="{{visitInfo}}" [(visible)]="addConsentDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
    <app-document-upload  [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="" (uploadComplete)="documentUploadComplete($event)" 
    (uploadError)="documentUploadError($event)"></app-document-upload>

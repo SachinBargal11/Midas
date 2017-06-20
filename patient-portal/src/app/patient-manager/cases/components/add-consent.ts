@@ -156,10 +156,11 @@ export class AddConsentComponent implements OnInit {
             }
         }, 250);
     }
-    showDialog(currentCaseId: number, providerCompanyId: number) {
+    showDialog() {
         this.addConsentDialogVisible = true;
-        this.caseId = currentCaseId;
-        this.companyId = providerCompanyId;
+        this.caseId = this.caseId;
+        // this.companyId = providerCompanyId;
+        this.companyId = this._sessionStore.session.currentCompany.id;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -250,7 +251,7 @@ export class AddConsentComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-    downloadTemplate() {
+    downloadTemplate(event) {
         this._progressBarService.show();
         this._consentStore.downloadTemplate(this.caseId, this.selectedCompany)
             .subscribe(
