@@ -30,7 +30,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseCompanyMappingBO.ID = caseCompanyMappings.Id;
             caseCompanyMappingBO.CaseId = caseCompanyMappings.CaseId;
             caseCompanyMappingBO.Company = new BO.Company();
-            caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.id : 0;
+            caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.CompanyId : 0;
             caseCompanyMappingBO.IsOriginator = caseCompanyMappings.IsOriginator;
             caseCompanyMappingBO.AddedByCompanyId = caseCompanyMappings.AddedByCompanyId;
             caseCompanyMappingBO.Company.Name = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.Name : "";
