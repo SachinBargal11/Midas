@@ -36,7 +36,7 @@
     </p-column>
 </p-dataTable>
 
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+<p-dialog [minWidth]="600" [width]="1200" [(visible)]="addConsentDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
     <app-document-upload [url]="url" [currentId]="2" [objectId]="caseId" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
