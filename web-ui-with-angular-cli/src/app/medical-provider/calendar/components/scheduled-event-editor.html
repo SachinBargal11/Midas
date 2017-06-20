@@ -101,7 +101,7 @@
                     <option value="2">Private Vehicle</option>
                 </select>-->
                 <select type="text" formControlName="ancillaryProviderId" [(ngModel)]="ancillaryProviderId" class="form-control" placeholder="">
-                             <option value="0">No Transport</option>
+                             <option value="null">No Transport</option>
                               <option *ngFor="let provider of allPrefferesAncillaries" value="{{provider.prefferedProvider.id}}">{{provider.prefferedProvider.name}} </option>
                         
                  </select>

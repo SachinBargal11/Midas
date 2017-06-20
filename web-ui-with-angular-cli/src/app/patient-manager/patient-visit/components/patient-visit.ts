@@ -1112,7 +1112,7 @@ export class PatientVisitComponent implements OnInit {
             isOutOfOffice: this.isGoingOutOffice,
             leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
             leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
-            ancillaryProviderId: updatedEvent ? updatedEvent.ancillaryProviderId : 0,
+            ancillaryProviderId: updatedEvent ? updatedEvent.ancillaryProviderId : null,
             notes: patientScheduleFormValues.notes,
             patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : [],
             createByUserID: this.sessionStore.session.account.user.id
