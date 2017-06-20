@@ -13,6 +13,7 @@ using Ical.Net.DataTypes;
 using Ical.Net.Serialization.iCalendar.Serializers;
 using Ical.Net.Serialization;
 using Ical.Net.Interfaces.DataTypes;
+using System.Configuration;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -20,10 +21,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     {
         private DbSet<CalendarEvent> _dbCalendarEvent;
 
+        private int UTCAdjustment_Minutes = 0;
+
         public CalendarEventRepository(MIDASGBXEntities context) : base(context)
         {
             _dbCalendarEvent = context.Set<CalendarEvent>();
             context.Configuration.ProxyCreationEnabled = false;
+
+            if (ConfigurationManager.AppSettings["UTCAdjustment_Minutes"] != null)
+            {
+                int.TryParse(ConfigurationManager.AppSettings["UTCAdjustment_Minutes"], out UTCAdjustment_Minutes);
+            }
         }
 
         #region Validate Entities
@@ -231,7 +239,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(270), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(270) })
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes) })
                                                     .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
 
                 foreach (var eachEventTime in EventTimes)
@@ -426,7 +434,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(270), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(270) })
+                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes) })
                                                     .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
 
                 foreach (var eachEventTime in EventTimes)
@@ -564,9 +572,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 foreach (var eachOccurrences in Occurrences)
                 {
                     BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
-                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(270).Date;
+                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes).Date;
                     FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
-                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(270), EndTime = eachOccurrences.Period.EndTime.AsSystemLocal.AddMinutes(270) });
+                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes), EndTime = eachOccurrences.Period.EndTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes) });
                     freeSlots.Add(FreeSlotForDay);
                 }
             }                
