@@ -33,6 +33,7 @@ const CaseRecord = Record({
     caseCompanyMapping: null,
     // companies: null,
     attorneyId: 0,
+    orignatorCompanyId:0,
     createdByCompanyId: 0,
     createdByCompany: null
 
@@ -61,7 +62,8 @@ export class Case extends CaseRecord {
     caseCompanyMapping: CaseCompanyMapping[];
     // companies: Company[];
     attorneyId: number;
-    createdByCompanyId: Number;
+    orignatorCompanyId:number;    
+    createdByCompanyId: number;
     createdByCompany: Company;
     constructor(props) {
         super(props);
@@ -118,13 +120,13 @@ export class Case extends CaseRecord {
         return isCaseLabelEditable;
     }
 
-    // isCreatedByCompany(companyId): boolean {
-    //     let isCreatedByCompany: boolean = false;
-    //     if (this.createdByCompany.id === companyId) {
-    //         isCreatedByCompany = true;
-    //     }
-    //     return isCreatedByCompany;
-    // }
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.orignatorCompanyId === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
+    }
 
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
@@ -144,13 +146,13 @@ export class Case extends CaseRecord {
         });
         return isOutboundReferral;
     }
-    // isSessionCompany(companyId): boolean {
-    //     let isSessionCompany: boolean = false;
-    //     _.forEach(this.companies, (currentCompany: any) => {
-    //         if (currentCompany.id === companyId) {
-    //             isSessionCompany = true;
-    //         }
-    //     });
-    //     return isSessionCompany;
-    // }
+    isSessionCompany(companyId): boolean {
+        let isSessionCompany: boolean = false;
+        // _.forEach(this.companies, (currentCompany: any) => {
+            if (this.orignatorCompanyId === companyId) {
+                isSessionCompany = true;
+            }
+        // });
+        return isSessionCompany;
+    }
 }

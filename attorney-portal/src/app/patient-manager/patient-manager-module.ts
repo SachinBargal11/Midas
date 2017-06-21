@@ -110,6 +110,7 @@ import { PendingReferralService } from './referals/services/pending-referrals-se
 import { PendingReferralStore } from './referals/stores/pending-referrals-stores';
 import { AvailableSlotsService } from './referals/services/available-slots-service';
 import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
+import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
 
 
 @NgModule({
@@ -177,7 +178,8 @@ import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
         PatientVisitListTreatingRoomComponent,
         PendingReferralsComponent,
         BillingInfoComponent,
-        PaymentListComponent
+        PaymentListComponent,
+        CaseBasicLabelComponent
 
 
     ],

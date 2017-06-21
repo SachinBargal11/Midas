@@ -22,9 +22,9 @@
             <div *ngIf="patientName">
 
                 <div class="form-group">
-                    <!--<input type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">-->
-                    <label class="form-label"> {{patientName}}
-                            </label>
+                    <input disabled type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">
+                    <!--<label class="form-label"> {{patientName}}
+                            </label>-->
                 </div>
             </div>
             <div *ngIf="!patientName">

@@ -194,13 +194,27 @@ export class AddCaseComponent implements OnInit {
             locationId: caseFormValues.locationId,
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.providerId,
+            caseSource: caseFormValues.caseSource,
+            // attorneyId: caseFormValues.providerId,
             // caseStatus: caseFormValues.caseStatus,
             // transportation: caseFormValues.transportation,
             //transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
-            createdByCompanyId: this._sessionStore.session.currentCompany.id
+            createdByCompanyId: this._sessionStore.session.currentCompany.id,
+            caseCompanyMapping:  [{
+                company: {  
+                    id: caseFormValues.providerId
+                },
+                addedByCompanyId:this._sessionStore.session.currentCompany.id
+            },
+                {  
+                  isOriginator: 'true',
+                  company: {  
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                addedByCompanyId:this._sessionStore.session.currentCompany.id
+                }]
         });
 
         this._progressBarService.show();

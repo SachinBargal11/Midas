@@ -67,7 +67,8 @@ export class CaseAdapter {
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
-                // createdByCompanyId: data.createdByCompanyId,
+                createdByCompanyId: data.createdByCompanyId,
+                orignatorCompanyId:data.orignatorCompanyId,
                 // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
@@ -133,7 +134,8 @@ export class CaseAdapter {
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
             caseSource: data.caseSource,
-            // createdByCompanyId: data.createdByCompanyId,
+            createdByCompanyId: data.createdByCompanyId,
+            orignatorCompanyId:data.orignatorCompanyId,
             // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
 
 

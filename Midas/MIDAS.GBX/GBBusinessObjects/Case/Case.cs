@@ -56,6 +56,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("orignatorCompanyId")]
         public int OrignatorCompanyId { get; set; }
+
+        [JsonProperty("orignatorCompanyName")]
+        public string OrignatorCompanyName { get; set; }
     }
 
     public class mCase : GbObject
@@ -166,6 +169,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("orignatorCompanyId")]
         public int OrignatorCompanyId { get; set; }
+
+        [JsonProperty("orignatorCompanyName")]
+        public string OrignatorCompanyName { get; set; }
     }
 
     public class mCaseWithUserAndPatient : GbObject
@@ -242,5 +248,8 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("orignatorCompanyId")]
         public int OrignatorCompanyId { get; set; }
+
+        [JsonProperty("orignatorCompanyName")]
+        public string OrignatorCompanyName { get; set; }
     }
 }
