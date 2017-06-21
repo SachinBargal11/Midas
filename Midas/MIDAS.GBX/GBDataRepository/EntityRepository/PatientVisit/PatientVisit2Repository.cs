@@ -1327,6 +1327,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (PatientVisit2DB != null)
                 {
                     PatientVisit2DB = _context.PatientVisit2.Include("CalendarEvent")
+                                                            .Include("Location")
                                                             .Include("Patient2").Include("Patient2.User").Include("Patient2.User.UserCompanies")
                                                             .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                                             .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
