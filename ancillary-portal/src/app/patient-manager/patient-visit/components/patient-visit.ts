@@ -831,7 +831,7 @@ export class PatientVisitComponent implements OnInit {
         return patientVisit;
     }
 
-    handleEventClick(event) {
+    handleEventClick(event) {       
         let clickedEventInstance: ScheduledEventInstance = event.calEvent;
         let scheduledEventForInstance: ScheduledEvent = clickedEventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(clickedEventInstance.eventWrapper);
@@ -844,7 +844,7 @@ export class PatientVisitComponent implements OnInit {
         });
         this.visitInfo = this.selectedVisit.visitDisplayString;
         this.providerName = this.selectedVisit.originalResponse.location.company.name;
-        //this.providerContactNo = this.selectedVisit.originalResponse.contactInfo.name;
+        this.providerContactNo = this.selectedVisit.originalResponse.location.contactInfo.cellPhone;
         this.doctorName = this.selectedVisit.originalResponse.doctor.user.firstName + ' ' + this.selectedVisit.originalResponse.doctor.user.lastName;
         this.doctorLocation = this.selectedVisit.originalResponse.location.name;
 
