@@ -1253,45 +1253,60 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //                  select co.Name).FirstOrDefault();
 
             var CaseInfo = (from ca in _context.Cases
-                            join us in _context.Users on ca.PatientId equals us.id
                             join ccm in _context.CaseCompanyMappings on ca.Id equals ccm.CaseId
-                            join co in _context.Companies on ccm.AddedByCompanyId equals co.id
-
-                            join ccm2 in _context.CaseCompanyMappings on ca.Id equals ccm2.CaseId  // For  attorney or medical provider company
-                            join co2 in _context.Companies on ccm2.AddedByCompanyId equals co2.id  //   For  attorney or medical provider company
-
+                            join us in _context.Users on ca.PatientId equals us.id
                             join ct in _context.CaseTypes on ca.CaseTypeId equals ct.Id
                             join cs in _context.CaseStatus on ca.CaseStatusId equals cs.Id
                             join lo in _context.Locations on ca.LocationId equals lo.id
-                            where ca.Id == caseId
-                                  && ccm2.IsOriginator == false  // For  attorney or medical provider company
-                                  && ccm.IsOriginator == true
-                                  && (ca.IsDeleted.HasValue == false || (ca.IsDeleted.HasValue == true && ca.IsDeleted.Value == false))
-                                  && (us.IsDeleted.HasValue == false || (us.IsDeleted.HasValue == true && us.IsDeleted.Value == false))
-                                  && (ccm.IsDeleted.HasValue == false || (ccm.IsDeleted.HasValue == true && ccm.IsDeleted.Value == false))
+                            join ccm2 in _context.CaseCompanyMappings on ca.Id equals ccm2.CaseId  // For  attorney or medical provider company
+                            join ccm_CS in _context.CaseCompanyMappings on ca.Id equals ccm_CS.CaseId  // For  attorney or medical provider company
+                            join co_CS in _context.Companies on ccm_CS.AddedByCompanyId equals co_CS.id
+
+                            //join co in _context.Companies on ccm.AddedByCompanyId equals co.id                            
+                            //join co2 in _context.Companies on ccm2.AddedByCompanyId equals co2.id  //   For  attorney or medical provider company
+
+                            
+                            
+                            
+                            where ca.Id == caseId && (ca.IsDeleted.HasValue == false || (ca.IsDeleted.HasValue == true && ca.IsDeleted.Value == false))
+                                    && ccm.IsOriginator == true && (ccm.IsDeleted.HasValue == false || (ccm.IsDeleted.HasValue == true && ccm.IsDeleted.Value == false))
+                                    
+                                    && (us.IsDeleted.HasValue == false || (us.IsDeleted.HasValue == true && us.IsDeleted.Value == false))
+                                    && (ct.IsDeleted.HasValue == false || (ct.IsDeleted.HasValue == true && ct.IsDeleted.Value == false))
+                                    && (cs.IsDeleted.HasValue == false || (cs.IsDeleted.HasValue == true && cs.IsDeleted.Value == false))
+                                    && (lo.IsDeleted.HasValue == false || (lo.IsDeleted.HasValue == true && lo.IsDeleted.Value == false))
+
+                                    && ccm2.IsOriginator == false && (ccm2.IsDeleted.HasValue == false || (ccm2.IsDeleted.HasValue == true && ccm2.IsDeleted.Value == false)) // For  attorney or medical provider company
+                                    && ccm_CS.CompanyId == companyId && (ccm_CS.IsDeleted.HasValue == false || (ccm_CS.IsDeleted.HasValue == true && ccm_CS.IsDeleted.Value == false))
+                                    && (co_CS.IsDeleted.HasValue == false || (co_CS.IsDeleted.HasValue == true && co_CS.IsDeleted.Value == false))
+
+
+
+
                                   && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
-                                  && (ct.IsDeleted.HasValue == false || (ct.IsDeleted.HasValue == true && ct.IsDeleted.Value == false))
-                                  && (cs.IsDeleted.HasValue == false || (cs.IsDeleted.HasValue == true && cs.IsDeleted.Value == false))
-                                  && (lo.IsDeleted.HasValue == false || (lo.IsDeleted.HasValue == true && lo.IsDeleted.Value == false))
+                                  
+                                  
                             select new
                             {
                                 CaseId = ca.Id,
-                                OriginatorCompanyId =ccm.CompanyId,
+                                OriginatorCompanyId = ccm.CompanyId,
                                 ca.PatientId,
-                                PatientName = us.FirstName +" "+ us.MiddleName +" "+ us.LastName,
+                                PatientName = us.FirstName + " " + us.MiddleName + " " + us.LastName,
                                 ct.CaseTypeText,
                                 cs.CaseStatusText,
                                 LocationName = lo.Name,
                                 ca.CarrierCaseNo,
-                                CompanyName = ccm.AddedByCompanyId == companyId? co2.Name : co.Name ,
-                                //CaseSource = referredBy !=null? referredBy : (ccm.CompanyId == companyId ? ca.CaseSource: co.Name),
-                                CaseSource =  ccm.AddedByCompanyId == companyId ? ca.CaseSource : co.Name,
+
+                                //CompanyName = ccm.AddedByCompanyId == companyId ? co2.Name : co.Name ,
+                                CompanyName = "",
+
+                                CaseSource = ccm.CompanyId == companyId ? ca.CaseSource : co_CS.Name,
+                                //CaseSource =  ccm.AddedByCompanyId == companyId ? ca.CaseSource : co.Name,
+
                                 ca.CreateByUserID,
                                 ca.CreateDate,
                                 ca.UpdateByUserID,
                                 ca.UpdateDate
-
-
                             }).FirstOrDefault();
           
 
