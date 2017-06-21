@@ -70,7 +70,7 @@ export class InsuranceMappingComponent implements OnInit {
                     // matchedCompany = _.find(this.caseDetail.createdByCompanyId, (currentCompany: PendingReferral) => {
                     //     return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
                     // })
-                    if (caseDetail.createdByCompanyId == _sessionStore.session.currentCompany.id) {
+                    if (caseDetail.orignatorCompanyId == _sessionStore.session.currentCompany.id) {
                         this.insurance = true;
                     } else {
                         this.insurance = false;

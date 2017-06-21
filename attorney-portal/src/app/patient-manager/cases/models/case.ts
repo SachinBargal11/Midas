@@ -34,10 +34,11 @@ const CaseRecord = Record({
     caseSource: null,
     createdByCompanyId: 0,
     createdByCompany: null,
-    orignatorCompanyId:0,
+    orignatorCompanyId: 0,
     caseCompanyMapping: null,
-    
-   
+    orignatorCompanyName: ''
+
+
 });
 
 export class Case extends CaseRecord {
@@ -66,7 +67,8 @@ export class Case extends CaseRecord {
     createdByCompanyId: number;
     createdByCompany: Company;
     caseCompanyMapping: CaseCompanyMapping[];
-    orignatorCompanyId:number;
+    orignatorCompanyId: number;
+    orignatorCompanyName: string;
     constructor(props) {
         super(props);
     }
@@ -122,14 +124,14 @@ export class Case extends CaseRecord {
     caseLabelEditable(companyId): boolean {
         let isCaseLabelEditable: boolean = false;
         _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)){
-            isCaseLabelEditable = true;
+            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
+                isCaseLabelEditable = true;
             }
         });
         return isCaseLabelEditable;
     }
 
-    
+
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
         _.forEach(this.referral, (currentReferral: Referral) => {
@@ -148,12 +150,12 @@ export class Case extends CaseRecord {
         });
         return isOutboundReferral;
     }
-     isSessionCompany(companyId): boolean {
+    isSessionCompany(companyId): boolean {
         let isSessionCompany: boolean = false;
         // _.forEach(this.companies, (currentCompany: any) => {
-            if (this.orignatorCompanyId === companyId) {
-                isSessionCompany = true;
-            }
+        if (this.orignatorCompanyId === companyId) {
+            isSessionCompany = true;
+        }
         // });
         return isSessionCompany;
     }

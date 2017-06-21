@@ -75,6 +75,7 @@ export class CaseAdapter {
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
                 orignatorCompanyId: data.orignatorCompanyId,
+                orignatorCompanyName:data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
@@ -142,6 +143,7 @@ export class CaseAdapter {
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
                 orignatorCompanyId:data.orignatorCompanyId,
+                orignatorCompanyName:data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
