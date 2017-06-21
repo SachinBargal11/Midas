@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   //SERVICE_BASE_URL: 'http://ancillaryapi.codearray.tk/midasancillaryapi'
-  SERVICE_BASE_URL: 'http://ancillarydevapi.codearray.tk/midasancillaryapi'
+  // SERVICE_BASE_URL: 'http://ancillarydevapi.codearray.tk/midasancillaryapi'
   //SERVICE_BASE_URL: 'http://localhost:51995/midasancillaryapi'
+  SERVICE_BASE_URL: 'http://caserver:7008/midasancillaryapi'
 };
