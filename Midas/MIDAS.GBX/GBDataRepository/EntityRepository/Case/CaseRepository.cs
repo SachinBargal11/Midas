@@ -486,6 +486,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
