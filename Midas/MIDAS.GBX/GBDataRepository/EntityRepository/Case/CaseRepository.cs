@@ -70,9 +70,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             
             if (cases.CaseCompanyMappings != null)
             {
-                caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
-                caseBO.OrignatorCompanyName = cases.CaseCompanyMappings.Where(p2 => p2.IsOriginator == true).Select(p3 => p3.Company.Name).FirstOrDefault();
-               
+                //caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
+                //caseBO.OrignatorCompanyName = cases.CaseCompanyMappings.Where(p2 => p2.IsOriginator == true).Select(p3 => p3.Company.Name).FirstOrDefault();
+                
 
                 List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                 foreach (var casemap in cases.CaseCompanyMappings)
@@ -87,6 +87,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
+
+                    if (casemap.IsOriginator == true)
+                    {
+                        caseBO.OrignatorCompanyId = casemap.CompanyId;
+                        caseBO.OrignatorCompanyName = casemap.Company.Name;
+
+                        if (casemap.Company.CompanyType == 1)
+                        {
+                            caseBO.MedicalProviderId = casemap.CompanyId;
+                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.CompanyId == 2).Select(p => p.CompanyId).FirstOrDefault();
+                        }
+                        else if (casemap.Company.CompanyType == 2)
+                        {
+                            caseBO.AttorneyProviderId = casemap.CompanyId;
+                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId).Select(p => p.CompanyId).FirstOrDefault();
+                        }
+                    }
+
+                    //if (casemap.Company.CompanyType == 2)
+                    //{
+                    //    caseBO.AttorneyProviderId = casemap.CompanyId;
+                    //}
                 }
 
                 caseBO.CaseCompanyMappings = boCaseCompanyMapping;
@@ -245,7 +267,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
 
                         caseWithUserAndPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
-                        caseWithUserAndPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company).FirstOrDefault().ToString(); //
+                        //caseWithUserAndPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company.Name).FirstOrDefault();
+                        caseWithUserAndPatient.OrignatorCompanyName = eachCase.OrignatorCompanyName;
+
+                        caseWithUserAndPatient.MedicalProviderId = eachCase.MedicalProviderId;
+                        caseWithUserAndPatient.AttorneyProviderId = eachCase.AttorneyProviderId;
+
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
@@ -353,8 +380,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithPatient.caseSource = eachCase.caseSource;
 
                         caseWithPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
-                        caseWithPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company).FirstOrDefault().ToString();
+                        //caseWithPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company.Name).FirstOrDefault();
+                        caseWithPatient.OrignatorCompanyName = eachCase.OrignatorCompanyName;
 
+                        caseWithPatient.MedicalProviderId = eachCase.MedicalProviderId;
+                        caseWithPatient.AttorneyProviderId = eachCase.AttorneyProviderId;
 
                         lstCaseWithPatient.Add(caseWithPatient);
                     }
