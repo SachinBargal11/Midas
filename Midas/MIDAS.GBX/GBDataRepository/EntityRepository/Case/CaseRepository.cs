@@ -1287,7 +1287,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
 
-                                  && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
+                                  //&& (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
                                   
                                   
                             select new
