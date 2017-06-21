@@ -42,9 +42,9 @@
             <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.caseSource}}
             </div>
-            <!--<div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
-                {{case.createdByCompany.name}}
-            </div>-->
+            <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+                {{case.orignatorCompanyName}}
+            </div>
         </ng-template>
     </p-column>
 
