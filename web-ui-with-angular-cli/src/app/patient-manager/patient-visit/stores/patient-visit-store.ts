@@ -189,16 +189,16 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
-    updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
+    updatePatientVisitDetail(patientVisit: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.updatePatientVisitDetail(patientVisitDetail).subscribe((updatedPatientVisit: PatientVisit) => {
+            this._patientVisitsService.updatePatientVisitDetail(patientVisit).subscribe((updatedPatientVisit: PatientVisit) => {
                 let patientVisitDetail: List<PatientVisit> = this._patientVisits.getValue();
                 let index = patientVisitDetail.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.id === updatedPatientVisit.id);
                 patientVisitDetail = patientVisitDetail.update(index, function () {
                     return updatedPatientVisit;
                 });
-                // this._patientVisits.next(patientVisitDetail);
-                resolve(patientVisitDetail);
+                this._patientVisits.next(patientVisitDetail);
+                resolve(updatedPatientVisit);
             }, error => {
                 reject(error);
             });

@@ -826,7 +826,6 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveVisit() {
-
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
@@ -837,6 +836,7 @@ export class PatientVisitComponent implements OnInit {
         let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
+                this.selectedVisit = response;
                 let notification = new Notification({
                     'title': 'Event updated successfully!',
                     'type': 'SUCCESS',
@@ -858,8 +858,9 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.visitDialogVisible = false;
+        this.visitDialogVisible = true;
     }
+    
     saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
@@ -1104,7 +1105,6 @@ export class PatientVisitComponent implements OnInit {
         } else {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
         }
-        debugger;
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: leaveEvent ? null : patientScheduleFormValues.patientId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
