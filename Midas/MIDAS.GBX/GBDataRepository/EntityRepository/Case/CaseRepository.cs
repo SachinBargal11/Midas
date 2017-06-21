@@ -91,14 +91,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (casemap.IsOriginator == true)
                     {
                         caseBO.OrignatorCompanyId = casemap.CompanyId;
-                        caseBO.OrignatorCompanyName = casemap.Company.Name;
+                        caseBO.OrignatorCompanyName = (casemap.Company != null) ? casemap.Company.Name : "";
 
-                        if (casemap.Company1.CompanyType == 1)
+                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 1)
                         {
                             caseBO.MedicalProviderId = casemap.CompanyId;
                             caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 2).Select(p => p.CompanyId).FirstOrDefault();
                         }
-                        else if (casemap.Company1.CompanyType == 2)
+                        else if (casemap.Company1 != null && casemap.Company1.CompanyType == 2)
                         {
                             caseBO.AttorneyProviderId = casemap.CompanyId;
                             caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 1).Select(p => p.CompanyId).FirstOrDefault();
