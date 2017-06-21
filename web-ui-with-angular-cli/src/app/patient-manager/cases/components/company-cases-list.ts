@@ -303,14 +303,16 @@ export class CompanyCasesComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Consent uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         // this.getDocuments();
+        this.loadCasesCheckingDoctor();
     }
 
     documentUploadError(error: Error) {

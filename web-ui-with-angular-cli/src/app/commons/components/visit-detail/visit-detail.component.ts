@@ -206,7 +206,7 @@ export class VisitDetailComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
