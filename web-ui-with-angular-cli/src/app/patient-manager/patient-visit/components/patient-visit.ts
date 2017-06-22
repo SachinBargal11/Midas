@@ -278,7 +278,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForSpeciality(specialityId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
+        let result = this._procedureStore.getPrefferedProceduresBySpecialityId(specialityId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -300,7 +300,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+        let result = this._procedureStore.getPrefferedProceduresByRoomTestId(roomTestId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -826,7 +826,6 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveVisit() {
-
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
@@ -837,6 +836,7 @@ export class PatientVisitComponent implements OnInit {
         let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
+                this.selectedVisit = response;
                 let notification = new Notification({
                     'title': 'Event updated successfully!',
                     'type': 'SUCCESS',
@@ -844,6 +844,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Event updated successfully');
             },
             (error) => {
                 let errString = 'Unable to update event!';
@@ -858,8 +859,9 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.visitDialogVisible = false;
+        this.visitDialogVisible = true;
     }
+    
     saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
@@ -881,6 +883,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Diagnosis codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save diagnosis codes!';
@@ -902,9 +905,10 @@ export class PatientVisitComponent implements OnInit {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
+        procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // inputProcedureCodes.forEach(currentProcedureCode => {
+        //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        // });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitProcedureCodes: procedureCodes
@@ -919,6 +923,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Procedure codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save procedure codes!';
@@ -950,6 +955,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Referral saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
@@ -1104,7 +1110,6 @@ export class PatientVisitComponent implements OnInit {
         } else {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
         }
-        debugger;
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: leaveEvent ? null : patientScheduleFormValues.patientId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
@@ -1310,7 +1315,7 @@ export class PatientVisitComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);

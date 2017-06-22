@@ -29,13 +29,15 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.taxId.touched && !userformControls.taxId.valid">
-                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid"
-                                        minlength="10" />
+                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid" minlength="10"
+                                        />
                                         <div class='error-list' *ngIf="userformControls.taxId.touched && !userformControls.taxId.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.taxId.hasError('required')">Tax Id is required.</li>
-											<li *ngIf="userformControls.taxId.hasError('minlength')">Tax Id should be minimum {{userformControls.taxId.errors.minlength.requiredLength}} characters.</li>
-											<li *ngIf="userformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{userformControls.taxId.errors.maxlength.requiredLength}} characters.</li>
+                                                <li *ngIf="userformControls.taxId.hasError('minlength')">Tax Id should be minimum {{userformControls.taxId.errors.minlength.requiredLength}}
+                                                    characters.</li>
+                                                <li *ngIf="userformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{userformControls.taxId.errors.maxlength.requiredLength}}
+                                                    characters.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -81,11 +83,12 @@
                                         <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
                                              <option value="">-Select company type-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="Billing">Billing</option>
-                                             <!--<option value="Medical Provider">Medical Provider</option>
-                                             <option value="PI\BI Firm">PI\BI Firm</option>
-                                             <option value="Collection Firm">Collection Firm</option>
-                                             <option value="Transportation">Transportation</option>-->
+                                             <option value="1">MedicalProvider</option>
+                                             <option value="2">Attorney</option>
+                                             <option value="3">Billing</option>
+                                             <option value="4">Funding</option>
+                                             <option value="5">Collection</option>
+                                             <option value="6">Ancillary</option>
                                          </select>
                                         <div class='error-list' *ngIf="userformControls.companyType.touched && !userformControls.companyType.valid">
                                             <ul>
@@ -100,7 +103,7 @@
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid">
                                         <p-inputMask mask="999-999-9999" formControlName="phoneNo" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid"
-                                            placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
                                         <!--<input formControlName="phoneNo" type="text" class="form-control" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid" />-->
                                         <div class='error-list' *ngIf="userformControls.phoneNo.touched && !userformControls.phoneNo.valid">
                                             <ul>

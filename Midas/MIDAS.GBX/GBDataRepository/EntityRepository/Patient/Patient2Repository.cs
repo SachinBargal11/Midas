@@ -1451,6 +1451,49 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region AddPatientProfileDocument
+        public override object AddPatientProfileDocument(int PatientId, int DocumentId)
+        {
+
+            var midasDocument = _context.MidasDocuments.Where(p => p.Id == DocumentId 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
+            if(midasDocument == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this DocumentId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            midasDocument.ObjectId = PatientId;
+
+            //_context.MidasDocuments.Add(midasDocument);
+
+            var patientDocument = _context.PatientDocuments.Where(p => p.PatientId == PatientId 
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault();
+            if (patientDocument == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this PatientId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            patientDocument.PatientId = PatientId;
+            patientDocument.MidasDocumentId = midasDocument.Id;
+            patientDocument.DocumentName = midasDocument.DocumentName;
+            patientDocument.DocumentType = midasDocument.DocumentType;
+
+            _context.PatientDocuments.Add(patientDocument);
+
+            _context.SaveChanges();
+
+            var PatientDocumentDB = _context.PatientDocuments
+                                              .Where(p => p.Id == patientDocument.Id
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .FirstOrDefault<PatientDocument>();
+
+            return (object)PatientDocumentDB;
+        }
+        #endregion
+
 
         public void Dispose()
         {

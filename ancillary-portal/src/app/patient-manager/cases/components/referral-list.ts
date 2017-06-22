@@ -85,6 +85,7 @@ export class ReferralListComponent implements OnInit {
     selectedSpecialityId: number;
     selectedTestId: number;
     isSaveProgress = false;
+    isAvailableSlotsSavingInProgress = false;
 
     preferredMedical: PrefferedMedicalProvider[];
     medicalProvider: PrefferedMedicalProvider[];
@@ -105,8 +106,8 @@ export class ReferralListComponent implements OnInit {
     availableSlotsDialogVisible: boolean = false;
     availableSlots: AvailableSlot[] = [];
     locations: LocationDetails[] = [];
-    // specialityId = 0;
-    // roomTestId = 0;
+    specialityId = 0;
+    roomTestId = 0;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,

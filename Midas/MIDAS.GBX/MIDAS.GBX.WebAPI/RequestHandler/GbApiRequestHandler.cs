@@ -2001,6 +2001,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage AddPatientProfileDocument(HttpRequestMessage request, int PatientId, int DocumentId)
+        {
+            var objResult = dataAccessManager.AddPatientProfileDocument(PatientId, DocumentId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
     }
 }

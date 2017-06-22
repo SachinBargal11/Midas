@@ -3,12 +3,16 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { NotificationsService } from 'angular2-notifications';
+import { Notification } from '../../../commons/models/notification';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
+import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SelectItem } from 'primeng/primeng';
 import { ProgressBarService } from '../../services/progress-bar-service';
 import { Procedure } from '../../models/procedure';
 import { ProcedureStore } from '../../stores/procedure-store';
 import { PatientVisit } from '../../../patient-manager/patient-visit/models/patient-visit';
 import { SessionStore } from '../../stores/session-store';
+import { PatientVisitsStore } from '../../../patient-manager/patient-visit/stores/patient-visit-store';
 
 @Component({
   selector: 'app-procedure',
@@ -29,9 +33,11 @@ export class ProcedureComponent implements OnInit {
 
   constructor(
     private _notificationsService: NotificationsService,
+    private _notificationsStore: NotificationsStore,
     private fb: FormBuilder,
     private _progressBarService: ProgressBarService,
     private _procedureStore: ProcedureStore,
+    private _patientVisitsStore: PatientVisitsStore,
     public sessionStore: SessionStore
   ) {
     // this.procedureForm = this.fb.group({
@@ -48,6 +54,13 @@ export class ProcedureComponent implements OnInit {
     this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
 
     this.checkVisitForCompany();
+  }
+  loadProcedures() {
+    if (this.selectedVisit.specialtyId) {
+      this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
+    } else if (this.selectedVisit.roomId) {
+      this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
+    }   
   }
 
   checkVisitForCompany() {
@@ -104,6 +117,7 @@ export class ProcedureComponent implements OnInit {
 
   saveProcedures() {
     this.save.emit(this.selectedProcedures);
+    this.loadProcedures();
   }
 
   deleteProcedureCode() {

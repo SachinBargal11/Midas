@@ -1,4 +1,4 @@
 <div class="box-typical box-typical-padding">
-    <patient-nav></patient-nav>
+    <patient-nav *ngIf="sessionStore.session.user"></patient-nav>
     <router-outlet></router-outlet>
 </div>

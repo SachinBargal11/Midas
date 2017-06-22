@@ -75,7 +75,10 @@ export class CaseAdapter {
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
                 orignatorCompanyId: data.orignatorCompanyId,
-                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
+                orignatorCompanyName: data.orignatorCompanyName,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
+                attorneyProviderId: data.attorneyProviderId,
+                medicalProviderId: data.medicalProviderId
             });
         }
         return patient_case;
@@ -141,8 +144,11 @@ export class CaseAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
-                orignatorCompanyId:data.orignatorCompanyId,
-                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
+                orignatorCompanyId: data.orignatorCompanyId,
+                orignatorCompanyName: data.orignatorCompanyName,
+                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
+                attorneyProviderId: data.attorneyProviderId,
+                medicalProviderId: data.medicalProviderId
             });
         }
         return patient_case;

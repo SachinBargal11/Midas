@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   // SERVICE_BASE_URL: 'http://attorneyapi.codearray.tk/midasattorneyapi'
-  SERVICE_BASE_URL: 'http://attorneydevapi.codearray.tk/midasattorneyapi'
-  // SERVICE_BASE_URL: 'http://caserver:7003/midasattorneyapi'
+  // SERVICE_BASE_URL: 'http://attorneydevapi.codearray.tk/midasattorneyapi'
+  SERVICE_BASE_URL: 'http://caserver:7003/midasattorneyapi'
 };

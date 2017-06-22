@@ -70,13 +70,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             
             if (cases.CaseCompanyMappings != null)
             {
-                caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
-                caseBO.OrignatorCompanyName = cases.CaseCompanyMappings.Where(p2 => p2.IsOriginator == true).Select(p3 => p3.Company.Name).FirstOrDefault();
-               
+                //caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
+                //caseBO.OrignatorCompanyName = cases.CaseCompanyMappings.Where(p2 => p2.IsOriginator == true).Select(p3 => p3.Company.Name).FirstOrDefault();
+                
 
                 List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                 foreach (var casemap in cases.CaseCompanyMappings)
-                {
+                {                  
                     if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
                     {
                         if (casemap != null)
@@ -87,6 +87,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
+
+                    if (casemap.IsOriginator == true)
+                    {
+                        caseBO.OrignatorCompanyId = casemap.CompanyId;
+                        caseBO.OrignatorCompanyName = (casemap.Company != null) ? casemap.Company.Name : "";
+
+                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 1)
+                        {
+                            caseBO.MedicalProviderId = casemap.CompanyId;
+                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 2).Select(p => p.CompanyId).FirstOrDefault();
+                        }
+                        else if (casemap.Company1 != null && casemap.Company1.CompanyType == 2)
+                        {
+                            caseBO.AttorneyProviderId = casemap.CompanyId;
+                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 1).Select(p => p.CompanyId).FirstOrDefault();
+                        }
+                    }
+
+                    //if (casemap.Company.CompanyType == 2)
+                    //{
+                    //    caseBO.AttorneyProviderId = casemap.CompanyId;
+                    //}
                 }
 
                 caseBO.CaseCompanyMappings = boCaseCompanyMapping;
@@ -245,7 +267,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.caseSource = eachCase.caseSource;
 
                         caseWithUserAndPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
-                        caseWithUserAndPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company).FirstOrDefault().ToString(); //
+                        //caseWithUserAndPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company.Name).FirstOrDefault();
+                        caseWithUserAndPatient.OrignatorCompanyName = eachCase.OrignatorCompanyName;
+
+                        caseWithUserAndPatient.MedicalProviderId = eachCase.MedicalProviderId;
+                        caseWithUserAndPatient.AttorneyProviderId = eachCase.AttorneyProviderId;
+
 
                         List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                         foreach (var item in eachCase.CaseCompanyMappings)
@@ -353,8 +380,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithPatient.caseSource = eachCase.caseSource;
 
                         caseWithPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
-                        caseWithPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company).FirstOrDefault().ToString();
+                        //caseWithPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company.Name).FirstOrDefault();
+                        caseWithPatient.OrignatorCompanyName = eachCase.OrignatorCompanyName;
 
+                        caseWithPatient.MedicalProviderId = eachCase.MedicalProviderId;
+                        caseWithPatient.AttorneyProviderId = eachCase.AttorneyProviderId;
 
                         lstCaseWithPatient.Add(caseWithPatient);
                     }
@@ -429,6 +459,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
@@ -456,6 +487,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
@@ -487,6 +519,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
@@ -533,6 +566,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
@@ -706,6 +740,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("PatientEmpInfo.ContactInfo")
                                        .Include("CaseCompanyMappings")
                                        .Include("CaseCompanyMappings.Company")
+                                       .Include("CaseCompanyMappings.Company1")
                                        .Include("CompanyCaseConsentApprovals")
                                        .Include("CaseCompanyConsentDocuments")
                                        .Include("CaseCompanyConsentDocuments.MidasDocument")
@@ -1222,45 +1257,70 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //                  select co.Name).FirstOrDefault();
 
             var CaseInfo = (from ca in _context.Cases
+
+                            join ccm_Ori in _context.CaseCompanyMappings on ca.Id equals ccm_Ori.CaseId
+                            join co_Ori in _context.Companies on ccm_Ori.CompanyId equals co_Ori.id
+
                             join us in _context.Users on ca.PatientId equals us.id
-                            join ccm in _context.CaseCompanyMappings on ca.Id equals ccm.CaseId
-                            join co in _context.Companies on ccm.AddedByCompanyId equals co.id
-
-                            join ccm2 in _context.CaseCompanyMappings on ca.Id equals ccm2.CaseId  // For  attorney or medical provider company
-                            join co2 in _context.Companies on ccm2.AddedByCompanyId equals co2.id  //   For  attorney or medical provider company
-
                             join ct in _context.CaseTypes on ca.CaseTypeId equals ct.Id
                             join cs in _context.CaseStatus on ca.CaseStatusId equals cs.Id
                             join lo in _context.Locations on ca.LocationId equals lo.id
-                            where ca.Id == caseId
-                                  && ccm2.IsOriginator == false  // For  attorney or medical provider company
-                                  && ccm.IsOriginator == true
-                                  && (ca.IsDeleted.HasValue == false || (ca.IsDeleted.HasValue == true && ca.IsDeleted.Value == false))
-                                  && (us.IsDeleted.HasValue == false || (us.IsDeleted.HasValue == true && us.IsDeleted.Value == false))
-                                  && (ccm.IsDeleted.HasValue == false || (ccm.IsDeleted.HasValue == true && ccm.IsDeleted.Value == false))
-                                  && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
-                                  && (ct.IsDeleted.HasValue == false || (ct.IsDeleted.HasValue == true && ct.IsDeleted.Value == false))
-                                  && (cs.IsDeleted.HasValue == false || (cs.IsDeleted.HasValue == true && cs.IsDeleted.Value == false))
-                                  && (lo.IsDeleted.HasValue == false || (lo.IsDeleted.HasValue == true && lo.IsDeleted.Value == false))
+
+                            //join ccm_Att in _context.CaseCompanyMappings on ca.Id equals ccm_Att.CaseId  // For  attorney
+                            //join co_Att in _context.Companies on ccm_Att.CompanyId equals co_Att.id
+
+                            join ccm_CS in _context.CaseCompanyMappings on ca.Id equals ccm_CS.CaseId  // For  attorney or medical provider company
+                            join co_CS in _context.Companies on ccm_CS.CompanyId equals co_CS.id //m changes AddedByCompanyId to companyid
+
+                            //join co in _context.Companies on ccm.AddedByCompanyId equals co.id                            
+                            //join co2 in _context.Companies on ccm2.AddedByCompanyId equals co2.id  //   For  attorney or medical provider company
+
+
+
+
+                            where ca.Id == caseId && (ca.IsDeleted.HasValue == false || (ca.IsDeleted.HasValue == true && ca.IsDeleted.Value == false))
+
+                                    && ccm_Ori.IsOriginator == true && (ccm_Ori.IsDeleted.HasValue == false || (ccm_Ori.IsDeleted.HasValue == true && ccm_Ori.IsDeleted.Value == false))
+                                    && (co_Ori.IsDeleted.HasValue == false || (co_Ori.IsDeleted.HasValue == true && co_Ori.IsDeleted.Value == false))
+
+                                    && (us.IsDeleted.HasValue == false || (us.IsDeleted.HasValue == true && us.IsDeleted.Value == false))
+                                    && (ct.IsDeleted.HasValue == false || (ct.IsDeleted.HasValue == true && ct.IsDeleted.Value == false))
+                                    && (cs.IsDeleted.HasValue == false || (cs.IsDeleted.HasValue == true && cs.IsDeleted.Value == false))
+                                    && (lo.IsDeleted.HasValue == false || (lo.IsDeleted.HasValue == true && lo.IsDeleted.Value == false))
+
+                                    //&& ccm_Att.IsOriginator == false && ccm_Att.AddedByCompanyId == ccm_Ori.CompanyId && (ccm_Att.IsDeleted.HasValue == false || (ccm_Att.IsDeleted.HasValue == true && ccm_Att.IsDeleted.Value == false)) // For  attorney or medical provider company
+                                    //&& co_Att.CompanyType == 2 && (co_Att.IsDeleted.HasValue == false || (co_Att.IsDeleted.HasValue == true && co_Att.IsDeleted.Value == false))
+
+                                    && ccm_CS.IsOriginator == false && (ccm_CS.IsDeleted.HasValue == false || (ccm_CS.IsDeleted.HasValue == true && ccm_CS.IsDeleted.Value == false))
+                                    && (co_CS.IsDeleted.HasValue == false || (co_CS.IsDeleted.HasValue == true && co_CS.IsDeleted.Value == false))
+
+
+
+
+                            //&& (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
+
+
                             select new
                             {
                                 CaseId = ca.Id,
-                                OriginatorCompanyId =ccm.CompanyId,
+                                OriginatorCompanyId = ccm_Ori.CompanyId,
                                 ca.PatientId,
-                                PatientName = us.FirstName +" "+ us.MiddleName +" "+ us.LastName,
+                                PatientName = us.FirstName + " " + us.MiddleName + " " + us.LastName,
                                 ct.CaseTypeText,
                                 cs.CaseStatusText,
                                 LocationName = lo.Name,
                                 ca.CarrierCaseNo,
-                                CompanyName = ccm.AddedByCompanyId == companyId? co2.Name : co.Name ,
-                                //CaseSource = referredBy !=null? referredBy : (ccm.CompanyId == companyId ? ca.CaseSource: co.Name),
-                                CaseSource =  ccm.AddedByCompanyId == companyId ? ca.CaseSource : co.Name,
+
+                                 CompanyName = ccm_Ori.CompanyId == companyId ? co_CS.Name : co_Ori.Name ,
+                                //CompanyName = "", // ccm_Ori.CompanyId == companyId && co_Ori.CompanyType == 1 ? co_Att.Name : (ccm_Ori.CompanyId == companyId && co_Ori.CompanyType == 2 ? "" : ""),
+
+                                CaseSource = ccm_Ori.CompanyId == companyId ? ca.CaseSource : co_Ori.Name,
+                                //CaseSource =  ccm.AddedByCompanyId == companyId ? ca.CaseSource : co.Name,
+
                                 ca.CreateByUserID,
                                 ca.CreateDate,
                                 ca.UpdateByUserID,
                                 ca.UpdateDate
-
-
                             }).FirstOrDefault();
           
 
@@ -1318,6 +1378,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var acc = _context.Cases.Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")

@@ -144,5 +144,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId, string objectType);
         HttpResponseMessage GetProcedureCodeBySpecialtyExcludingAssigned(HttpRequestMessage request, int specialtyId, int CompanyId);
         HttpResponseMessage GetProcedureCodeByRoomTestExcludingAssigned(HttpRequestMessage request, int roomTestId, int CompanyId);
+        HttpResponseMessage AddPatientProfileDocument(HttpRequestMessage request, int PatietnId, int DocumentId);
     }
 }

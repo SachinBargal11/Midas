@@ -206,7 +206,7 @@ export class VisitDetailComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
@@ -244,6 +244,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Event updated successfully');
                 // this.uploadComplete.emit(documents);
             },
             (error) => {
@@ -283,6 +284,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Diagnosis codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save diagnosis codes!';
@@ -297,16 +299,17 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.closePatientVisitDialog();
+        // this.closePatientVisitDialog();
     }
 
     saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
         let visitDetailFormValues = this.visitDetailForm.value;
         let updatedVisit: PatientVisit;
         let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
+        procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // inputProcedureCodes.forEach(currentProcedureCode => {
+        //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        // });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitProcedureCodes: procedureCodes
@@ -321,6 +324,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Procedure codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save procedure codes!';
@@ -335,7 +339,7 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.closePatientVisitDialog();
+        // this.closePatientVisitDialog();
     }
 
     saveReferral(inputVisitReferrals: VisitReferral[]) {
@@ -350,6 +354,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Referral saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save Referral.';

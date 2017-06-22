@@ -3414,5 +3414,26 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object AddPatientProfileDocument(int PatientId, int DocumentId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AddPatientProfileDocument(PatientId, DocumentId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        
+
     }
 }
