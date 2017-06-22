@@ -29,17 +29,10 @@
             </div>
             <div *ngIf="!patientName">
                 <div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                    <!--<select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
-                        placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                            <option value="0">-Select -</option>
-                            <option *ngFor="let patient of patientsWithoutCase" value="{{patient.id}}">{{patient.user.firstName}} {{patient.user.lastName}}</option>
-                        </select>-->
-            <p-dropdown [options]="patientsWithoutCase" formControlName="patientId" [(ngModel)]="idPatient" (onChange)="selectPatient($event)" [style]="{'width':'100%'}" filter="filter" 
-            [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid"></p-dropdown>
-                    <div class='error-list' *ngIf="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                        <ul>
-                            <li *ngIf="caseformControls.patientId.hasError('required')">Patient is required.</li>
-                        </ul>
+                    <p-dropdown [options]="patientsWithoutCase" formControlName="patientId" [(ngModel)]="idPatient" (onChange)="selectPatient($event)"
+                        [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                    <div class='error-list' *ngIf="caseformControls.patientId.dirty && idPatient==''">
+                        <span class="color-red">Patient is required.</span>
                     </div>
                 </div>
             </div>
