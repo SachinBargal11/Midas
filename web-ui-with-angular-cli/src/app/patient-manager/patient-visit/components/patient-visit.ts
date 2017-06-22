@@ -903,9 +903,10 @@ export class PatientVisitComponent implements OnInit {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
+        procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // inputProcedureCodes.forEach(currentProcedureCode => {
+        //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        // });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitProcedureCodes: procedureCodes
