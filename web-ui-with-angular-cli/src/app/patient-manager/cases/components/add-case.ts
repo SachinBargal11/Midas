@@ -154,7 +154,7 @@ export class AddCaseComponent implements OnInit {
                 // this.patientsWithoutCase = patients;
             this.patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
                 return {
-                    label: `${currPatient.user.firstName} - ${currPatient.user.lastName}`,
+                    label: `${currPatient.user.firstName} ${currPatient.user.lastName}`,
                     value: currPatient.id
                 };
             })
