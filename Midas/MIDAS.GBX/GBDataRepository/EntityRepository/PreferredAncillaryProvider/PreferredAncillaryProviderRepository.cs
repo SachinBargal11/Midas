@@ -527,7 +527,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (ancillaryprovider_user != null )
                         {
 
-                            var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByAttorney".ToUpper()).FirstOrDefault();
+                            var PreferredMedicalAddByAttorney = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAncillaryAddByAttorney".ToUpper()).FirstOrDefault();
                             //var attorneyTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AttorneyTemplate".ToUpper()).FirstOrDefault();
                             //var patientCaseTemplate = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientCaseTemplateByAttorney".ToUpper()).FirstOrDefault();
                             if (PreferredMedicalAddByAttorney == null )
@@ -538,8 +538,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             {
 
 
-                                #region Send mail to medical provider
-                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("MedicalProviderVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                #region Send mail to anillary provider
+                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("AncillaryVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AncillaryVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                 string msg1 = PreferredMedicalAddByAttorney.EmailBody;
                                 string subject1 = PreferredMedicalAddByAttorney.EmailSubject;
 
@@ -577,7 +577,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (ancillaryprovider_user != null)
                         {
 
-                            var PreferredMedicalAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredMedicalAddByProvider".ToUpper()).FirstOrDefault();
+                            var PreferredMedicalAddByProvider = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PreferredAncillaryAddByMedProvider".ToUpper()).FirstOrDefault();
                            
                             if (PreferredMedicalAddByProvider == null)
                             {
@@ -587,8 +587,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             {
 
 
-                                #region Send mail to medical provider
-                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                                #region Send mail to ancillary provider
+                                string VarificationLink1 = "<a href='" + Utility.GetConfigValue("AncillaryVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AncillaryVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                                 string msg1 = PreferredMedicalAddByProvider.EmailBody;
                                 string subject1 = PreferredMedicalAddByProvider.EmailSubject;
 
