@@ -741,7 +741,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                   join u in _context.Users on uc.UserID equals u.id
                                                                   where cm.CaseId == caseDB.Id
                                                                   && cm.IsOriginator == false
-                                                                  && cm.Company.CompanyType == 1 // CompanyType-1 =  Medical Provider
+                                                                  && cm.Company1.CompanyType == 1 // CompanyType-1 =  Medical Provider
                                                                   && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
                                                                   && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
                                                                   && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
@@ -810,7 +810,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                       join u in _context.Users on uc.UserID equals u.id
                                                                       where cm.CaseId == caseDB.Id
                                                                       && cm.IsOriginator == false
-                                                                      && cm.Company.CompanyType == 2 // CompanyType-2 =  Attorney provider
+                                                                      && cm.Company1.CompanyType == 2 // CompanyType-2 =  Attorney provider
                                                                       && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
                                                                       && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
                                                                       && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
@@ -891,7 +891,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                   join u in _context.Users on uc.UserID equals u.id
                                                                   where cm.CaseId == caseDB.Id
                                                                   && cm.IsOriginator == false
-                                                                  && cm.Company.CompanyType == 1 // CompanyType-1 =  Medical Provider
+                                                                  && cm.Company1.CompanyType == 1 // CompanyType-1 =  Medical Provider
                                                                   && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
                                                                   && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
                                                                   && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))
@@ -961,7 +961,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                       join u in _context.Users on uc.UserID equals u.id
                                                                       where cm.CaseId == caseDB.Id
                                                                       && cm.IsOriginator == false
-                                                                      && cm.Company.CompanyType == 2 // CompanyType-2 =  Attorney provider
+                                                                      && cm.Company1.CompanyType == 2 // CompanyType-2 =  Attorney provider
                                                                       && (cm.IsDeleted.HasValue == false || (cm.IsDeleted.HasValue == true && cm.IsDeleted.Value == false))
                                                                       && (uc.IsDeleted.HasValue == false || (uc.IsDeleted.HasValue == true && uc.IsDeleted.Value == false))
                                                                       && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false))

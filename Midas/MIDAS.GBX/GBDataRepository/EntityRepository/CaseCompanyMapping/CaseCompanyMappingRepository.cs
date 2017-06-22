@@ -94,9 +94,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.SaveChanges();
             #endregion
 
-            caseCompanyMappingDB = _context.CaseCompanyMappings.Include("Company").Where(p => p.Id == caseCompanyMappingDB.Id 
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                .FirstOrDefault<CaseCompanyMapping>();
+            caseCompanyMappingDB = _context.CaseCompanyMappings.Include(casecomp=>casecomp.Company1).Include(casecomp => casecomp.Company)
+                                                               .Where(p => p.Id == caseCompanyMappingDB.Id
+                                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                               .FirstOrDefault<CaseCompanyMapping>();
 
             var res = Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(caseCompanyMappingDB);
 

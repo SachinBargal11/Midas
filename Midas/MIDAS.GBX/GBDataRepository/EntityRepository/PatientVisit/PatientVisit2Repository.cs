@@ -985,7 +985,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         using (Patient2Repository patientRepo = new Patient2Repository(_context))
                         {
-                            patientRepo.AssociatePatientWithAncillaryCompany(PatientVisit2DB.PatientId.Value, PatientVisit2DB.CaseId.Value, PatientVisit2BO.AncillaryProviderId.Value);
+                            patientRepo.AssociatePatientWithAncillaryCompany(PatientVisit2DB.PatientId.Value, PatientVisit2DB.CaseId.Value, PatientVisit2BO.AncillaryProviderId.Value, PatientVisit2BO.AddedByCompanyId);
                         }
                     }                    
                 }
