@@ -37,7 +37,7 @@ export class AddCaseComponent implements OnInit {
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
-    idPatient: any = 0;
+    idPatient: any = '';
     patient: Patient;
     patientName: string;
     patients: Patient[];
@@ -151,9 +151,10 @@ export class AddCaseComponent implements OnInit {
     selectPatient(event) {
         let currentPatient: number = parseInt(event.value);
         let idPatient = parseInt(event.value);
-        let result = this._employerStore.getCurrentEmployer(currentPatient);
-        result.subscribe((employer) => { this.employer = employer; }, null);
-        console.log(this.employer)
+        if (event.value != '') {
+            let result = this._employerStore.getCurrentEmployer(currentPatient);
+            result.subscribe((employer) => { this.employer = employer; }, null);
+        }
     }
 
 
@@ -176,12 +177,18 @@ export class AddCaseComponent implements OnInit {
         this._patientsStore.getPatientsWithNoCase()
             .subscribe(patients => {
                 // this.patientsWithoutCase = patients;
-                this.patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
+                // this.idPatient = patients[0].id;
+                let defaultLabel: any[] = [{
+                    label: '-Select Patient-',
+                    value: ''
+                }]
+                let patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
                     return {
-                        label: `${currPatient.user.firstName} ${currPatient.user.lastName}`,
+                        label: `${currPatient.user.firstName}  ${currPatient.user.lastName}`,
                         value: currPatient.id
                     };
                 })
+                this.patientsWithoutCase = _.union(defaultLabel, patientsWithoutCase);
             },
             (error) => {
                 this._progressBarService.hide();
