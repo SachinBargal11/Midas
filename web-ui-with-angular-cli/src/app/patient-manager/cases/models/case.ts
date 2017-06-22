@@ -33,10 +33,12 @@ const CaseRecord = Record({
     caseCompanyMapping: null,
     // companies: null,
     attorneyId: 0,
-    orignatorCompanyId:0,
+    orignatorCompanyId: 0,
     createdByCompanyId: 0,
-    orignatorCompanyName:'',
-    createdByCompany: null
+    orignatorCompanyName: '',
+    createdByCompany: null,
+    attorneyProviderId: 0,
+    medicalProviderId: 0
 
 });
 
@@ -63,10 +65,12 @@ export class Case extends CaseRecord {
     caseCompanyMapping: CaseCompanyMapping[];
     // companies: Company[];
     attorneyId: number;
-    orignatorCompanyId:number;    
+    orignatorCompanyId: number;
     createdByCompanyId: number;
     createdByCompany: Company;
-    orignatorCompanyName:string;
+    orignatorCompanyName: string;
+    attorneyProviderId: number;
+    medicalProviderId: number;
     constructor(props) {
         super(props);
     }
@@ -115,8 +119,8 @@ export class Case extends CaseRecord {
     caseLabelEditable(companyId): boolean {
         let isCaseLabelEditable: boolean = false;
         _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)){
-            isCaseLabelEditable = true;
+            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
+                isCaseLabelEditable = true;
             }
         });
         return isCaseLabelEditable;
@@ -151,9 +155,9 @@ export class Case extends CaseRecord {
     isSessionCompany(companyId): boolean {
         let isSessionCompany: boolean = false;
         // _.forEach(this.companies, (currentCompany: any) => {
-            if (this.orignatorCompanyId === companyId) {
-                isSessionCompany = true;
-            }
+        if (this.orignatorCompanyId === companyId) {
+            isSessionCompany = true;
+        }
         // });
         return isSessionCompany;
     }

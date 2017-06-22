@@ -68,8 +68,10 @@ export class CaseAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
-                orignatorCompanyId:data.orignatorCompanyId,
-                orignatorCompanyName:data.orignatorCompanyName
+                orignatorCompanyId: data.orignatorCompanyId,
+                orignatorCompanyName: data.orignatorCompanyName,
+                attorneyProviderId: data.attorneyProviderId,
+                medicalProviderId: data.medicalProviderId
                 // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
@@ -84,65 +86,67 @@ export class CaseAdapter {
         let referral: Referral[] = [];
         let caseCompanyConsentDocument: CaseDocument[] = [];
         if (data) {
-        //     if (data.caseCompanyMapping) {
-        //         for (let company of data.caseCompanyMapping) {
-        //             companies.push(CompanyAdapter.parseResponse(company.company));
-        //         }
-        // }
-        if (data.caseCompanyMapping) {
+            //     if (data.caseCompanyMapping) {
+            //         for (let company of data.caseCompanyMapping) {
+            //             companies.push(CompanyAdapter.parseResponse(company.company));
+            //         }
+            // }
+            if (data.caseCompanyMapping) {
                 for (let caseMapping of data.caseCompanyMapping) {
                     caseCompanyMapping.push(CaseCompanyMappingAdapter.parseResponse(caseMapping));
                 }
             }
-        if (data.caseCompanyConsentDocument) {
-            for (let consentDocument of data.caseCompanyConsentDocument) {
-                caseCompanyConsentDocument.push(CaseDocumentAdapter.parseResponse(consentDocument));
-            }
-        }
-        if (data.companyCaseConsentApproval) {
-            for (let consent of data.companyCaseConsentApproval) {
-                companyCaseConsentApproval.push(ConsentAdapter.parseResponse(consent));
-            }
-        }
-        patient_case = new Case({
-            id: data.caseId,
-            patient: PatientAdapter.parseResponse({
-                id: data.id,
-                user: {
-                    id: data.userId,
-                    firstName: data.firstName,
-                    middleName: data.middleName,
-                    lastName: data.lastName,
-                    userName: data.userName
+            if (data.caseCompanyConsentDocument) {
+                for (let consentDocument of data.caseCompanyConsentDocument) {
+                    caseCompanyConsentDocument.push(CaseDocumentAdapter.parseResponse(consentDocument));
                 }
-            }),
-            caseName: data.caseName,
-            caseTypeId: data.caseTypeId,
-            // companies: companies,
-            caseCompanyMapping: caseCompanyMapping,
-            locationId: data.locationId,
-            carrierCaseNo: data.carrierCaseNo,
-            transportation: data.transportation ? true : false,
-            caseStatusId: data.caseStatusId,
-            attorneyId: data.attorneyId,
-            patientEmpInfoId: data.patientEmpInfoId,
-            caseCompanyConsentDocument: caseCompanyConsentDocument,
-            companyCaseConsentApproval: companyCaseConsentApproval,
-            referral: data.referral,
-            isDeleted: data.isDeleted ? true : false,
-            createByUserID: data.createbyuserID,
-            createDate: data.createDate ? moment.utc(data.createDate) : null,
-            updateByUserID: data.updateByUserID,
-            updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-            caseSource: data.caseSource,
-            createdByCompanyId: data.createdByCompanyId,
-            orignatorCompanyId:data.orignatorCompanyId,
-            orignatorCompanyName:data.orignatorCompanyName
-            // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
+            }
+            if (data.companyCaseConsentApproval) {
+                for (let consent of data.companyCaseConsentApproval) {
+                    companyCaseConsentApproval.push(ConsentAdapter.parseResponse(consent));
+                }
+            }
+            patient_case = new Case({
+                id: data.caseId,
+                patient: PatientAdapter.parseResponse({
+                    id: data.id,
+                    user: {
+                        id: data.userId,
+                        firstName: data.firstName,
+                        middleName: data.middleName,
+                        lastName: data.lastName,
+                        userName: data.userName
+                    }
+                }),
+                caseName: data.caseName,
+                caseTypeId: data.caseTypeId,
+                // companies: companies,
+                caseCompanyMapping: caseCompanyMapping,
+                locationId: data.locationId,
+                carrierCaseNo: data.carrierCaseNo,
+                transportation: data.transportation ? true : false,
+                caseStatusId: data.caseStatusId,
+                attorneyId: data.attorneyId,
+                patientEmpInfoId: data.patientEmpInfoId,
+                caseCompanyConsentDocument: caseCompanyConsentDocument,
+                companyCaseConsentApproval: companyCaseConsentApproval,
+                referral: data.referral,
+                isDeleted: data.isDeleted ? true : false,
+                createByUserID: data.createbyuserID,
+                createDate: data.createDate ? moment.utc(data.createDate) : null,
+                updateByUserID: data.updateByUserID,
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                caseSource: data.caseSource,
+                createdByCompanyId: data.createdByCompanyId,
+                orignatorCompanyId: data.orignatorCompanyId,
+                orignatorCompanyName: data.orignatorCompanyName,
+                attorneyProviderId: data.attorneyProviderId,
+                medicalProviderId: data.medicalProviderId
+                // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
 
 
-        });
-    }
+            });
+        }
         return patient_case;
     }
 }
