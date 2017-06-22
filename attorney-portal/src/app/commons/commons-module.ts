@@ -50,7 +50,8 @@ import {
   TabViewModule,
   LightboxModule,
   ListboxModule,
-  CarouselModule
+  CarouselModule,
+  DropdownModule
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -83,7 +84,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     LightboxModule,
     ListboxModule,
     CarouselModule,
-    SignaturePadModule
+    SignaturePadModule,
+    DropdownModule
   ],
   declarations: [
     LimitPipe,
@@ -160,7 +162,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ProcedureComponent,
     ReferralsComponent,
     AddMedicalProviderComponent,
-    VisitDetailComponent
+    VisitDetailComponent,
+    DropdownModule
   ]
 })
 export class CommonsModule { }

@@ -130,7 +130,7 @@
     </form>
     <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
         <div *ngIf="selectedVisit">
-            <div class="row" *ngIf="!selectedVisit.id">
+            <!--<div class="row" *ngIf="!selectedVisit.id">
                 <div *ngIf="selectedOption == 1" class="col-md-4">
                     <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true" label="Going out office"></p-checkbox>
                 </div>
@@ -141,7 +141,7 @@
             <br>
             <div *ngIf="isGoingOutOffice">
                 <leave-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="leaveEventEditorValid = $event"></leave-event-editor>
-            </div>
+            </div>-->
             <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
                 <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
                 <div class="col-md-4">

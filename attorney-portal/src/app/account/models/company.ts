@@ -5,7 +5,7 @@ const CompanyRecord = Record({
     id: 0,
     name: '',
     taxId: '',
-    companyType: CompanyType.NONE,
+    companyType: CompanyType.MEDICALPROVIDER,
     subscriptionType: 0,
     companyStatusTypeId: 0
 });

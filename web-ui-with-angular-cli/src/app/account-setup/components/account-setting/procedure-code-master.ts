@@ -33,7 +33,7 @@ export class ProcedureCodeComponent implements OnInit {
     procedureForm: FormGroup;
     procedures: Procedure[];
     savedProcedures: Procedure[];
-    selectedProceduresCodes: Procedure[];
+    selectedProceduresCodes: Procedure[] = [];
     selectedProceduresForCompanyStored: Procedure[];
     selectedProceduresForCompany: Procedure[];
     selectedProcedures: Procedure[];

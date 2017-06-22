@@ -36,7 +36,9 @@ const CaseRecord = Record({
     createdByCompany: null,
     orignatorCompanyId: 0,
     caseCompanyMapping: null,
-    orignatorCompanyName: ''
+    orignatorCompanyName: '',
+    attorneyProviderId:0,
+    medicalProviderId:0
 
 
 });
@@ -69,6 +71,8 @@ export class Case extends CaseRecord {
     caseCompanyMapping: CaseCompanyMapping[];
     orignatorCompanyId: number;
     orignatorCompanyName: string;
+    attorneyProviderId:number;
+    medicalProviderId:number;
     constructor(props) {
         super(props);
     }

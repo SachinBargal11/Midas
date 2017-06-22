@@ -22,6 +22,8 @@ import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import * as _ from 'underscore';
 import { Account } from '../../../account/models/account';
+import {SelectItem} from 'primeng/primeng'
+
 @Component({
     selector: 'add-case',
     templateUrl: './add-case.html'
@@ -34,13 +36,15 @@ export class AddCaseComponent implements OnInit {
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
-    idPatient: any = 0;
+    idPatient: any = '';
     patient: Patient;
     patientName: string;
     patients: Patient[];
-    patientsWithoutCase: Patient[];
+    // patientsWithoutCase: Patient[];
+    patientsWithoutCase: SelectItem[] = [];
     attorneys: Attorney[];
     attorneyId: number = 0;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -136,18 +140,31 @@ export class AddCaseComponent implements OnInit {
     }
 
     selectPatient(event) {
-        let currentPatient: number = parseInt(event.target.value);
-        let idPatient = parseInt(event.target.value);
+        let currentPatient: number = parseInt(event.value);
+        let idPatient = parseInt(event.value);
+        if (event.value != '') {
         let result = this._employerStore.getCurrentEmployer(currentPatient);
         result.subscribe((employer) => { this.employer = employer; }, null);
-        console.log(this.employer)
+        }
     }
 
     loadPatientsWithoutCase() {
         this._progressBarService.show();
         this._patientsStore.getPatientsWithNoCase()
             .subscribe(patients => {
-                this.patientsWithoutCase = patients;
+                // this.patientsWithoutCase = patients;
+                // this.idPatient = patients[0].id;
+                let defaultLabel: any[] = [{
+                    label: '-Select Patient-',
+                    value: ''
+                }]
+            let patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
+                return {
+                    label: `${currPatient.user.firstName}  ${currPatient.user.lastName}`,
+                    value: currPatient.id
+                };
+            })
+            this.patientsWithoutCase = _.union(defaultLabel, patientsWithoutCase);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -170,7 +187,7 @@ export class AddCaseComponent implements OnInit {
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: caseFormValues.locationId,
-            patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
+            patientEmpInfoId: this.employer ? this.employer.id ? this.employer.id : null : null,
             caseStatusId: caseFormValues.caseStatusId,
             // attorneyId: caseFormValues.attorneyId,
             caseSource: caseFormValues.caseSource,

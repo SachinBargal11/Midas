@@ -96,6 +96,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AddPatientProfileDocument(int PatientId, int DocumentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object AddUploadedFileData(int id, string FileUploadPath)
         {
             throw new NotImplementedException();
@@ -578,7 +583,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId)
+        public virtual Object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId)
         {
             throw new NotImplementedException();
         }

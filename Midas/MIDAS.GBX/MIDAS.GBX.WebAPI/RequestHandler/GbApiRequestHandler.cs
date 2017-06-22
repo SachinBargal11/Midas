@@ -1471,9 +1471,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId)
+        public HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId)
         {
-            var objResult = dataAccessManager.AssociatePatientWithAncillaryCompany(PatientId, CaseId, AncillaryCompanyId);
+            var objResult = dataAccessManager.AssociatePatientWithAncillaryCompany(PatientId, CaseId, AncillaryCompanyId, AddedByCompanyId);
 
             try
             {
@@ -2001,6 +2001,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage AddPatientProfileDocument(HttpRequestMessage request, int PatientId, int DocumentId)
+        {
+            var objResult = dataAccessManager.AddPatientProfileDocument(PatientId, DocumentId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
     }
 }

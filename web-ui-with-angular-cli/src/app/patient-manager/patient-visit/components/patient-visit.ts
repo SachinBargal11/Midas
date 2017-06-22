@@ -278,7 +278,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForSpeciality(specialityId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
+        let result = this._procedureStore.getPrefferedProceduresBySpecialityId(specialityId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -300,7 +300,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+        let result = this._procedureStore.getPrefferedProceduresByRoomTestId(roomTestId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -844,6 +844,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Event updated successfully');
             },
             (error) => {
                 let errString = 'Unable to update event!';
@@ -882,6 +883,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Diagnosis codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save diagnosis codes!';
@@ -903,9 +905,10 @@ export class PatientVisitComponent implements OnInit {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
+        procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // inputProcedureCodes.forEach(currentProcedureCode => {
+        //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        // });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientVisitProcedureCodes: procedureCodes
@@ -920,6 +923,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Procedure codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save procedure codes!';
@@ -951,6 +955,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Referral saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
