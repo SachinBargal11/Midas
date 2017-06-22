@@ -278,7 +278,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForSpeciality(specialityId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
+        let result = this._procedureStore.getPrefferedProceduresBySpecialityId(specialityId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -300,7 +300,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+        let result = this._procedureStore.getPrefferedProceduresByRoomTestId(roomTestId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
