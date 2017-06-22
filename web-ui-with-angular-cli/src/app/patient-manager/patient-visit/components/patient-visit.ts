@@ -844,6 +844,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Event updated successfully');
             },
             (error) => {
                 let errString = 'Unable to update event!';
@@ -882,6 +883,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Diagnosis codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save diagnosis codes!';
@@ -921,6 +923,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Procedure codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save procedure codes!';
@@ -952,6 +955,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.loadVisits();
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Referral saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save Referral.';

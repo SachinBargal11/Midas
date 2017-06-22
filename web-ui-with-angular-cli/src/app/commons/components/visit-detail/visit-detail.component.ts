@@ -244,6 +244,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Event updated successfully');
                 // this.uploadComplete.emit(documents);
             },
             (error) => {
@@ -283,6 +284,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Diagnosis codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save diagnosis codes!';
@@ -297,7 +299,7 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.closePatientVisitDialog();
+        // this.closePatientVisitDialog();
     }
 
     saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
@@ -322,6 +324,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Procedure codes saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save procedure codes!';
@@ -336,7 +339,7 @@ export class VisitDetailComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        this.closePatientVisitDialog();
+        // this.closePatientVisitDialog();
     }
 
     saveReferral(inputVisitReferrals: VisitReferral[]) {
@@ -351,6 +354,7 @@ export class VisitDetailComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Referral saved successfully');
             },
             (error) => {
                 let errString = 'Unable to save Referral.';
