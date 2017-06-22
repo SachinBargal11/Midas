@@ -1311,8 +1311,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 LocationName = lo.Name,
                                 ca.CarrierCaseNo,
 
-                                //CompanyName = ccm.AddedByCompanyId == companyId ? co2.Name : co.Name ,
-                                CompanyName = "", // ccm_Ori.CompanyId == companyId && co_Ori.CompanyType == 1 ? co_Att.Name : (ccm_Ori.CompanyId == companyId && co_Ori.CompanyType == 2 ? "" : ""),
+                                 CompanyName = ccm_Ori.CompanyId == companyId ? co_CS.Name : co_Ori.Name ,
+                                //CompanyName = "", // ccm_Ori.CompanyId == companyId && co_Ori.CompanyType == 1 ? co_Att.Name : (ccm_Ori.CompanyId == companyId && co_Ori.CompanyType == 2 ? "" : ""),
 
                                 CaseSource = ccm_Ori.CompanyId == companyId ? ca.CaseSource : co_Ori.Name,
                                 //CaseSource =  ccm.AddedByCompanyId == companyId ? ca.CaseSource : co.Name,
