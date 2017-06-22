@@ -58,7 +58,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object GeneratePasswordLink(T gbObject);
         Object ValidatePassword(T gbObject);
 
-
+        Object AddPatientProfileDocument(int PatientId, int DocumentId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        
         Object Get(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllCompanyAndLocation(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get(string param1, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

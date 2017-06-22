@@ -96,6 +96,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AddPatientProfileDocument(int PatientId, int DocumentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object AddUploadedFileData(int id, string FileUploadPath)
         {
             throw new NotImplementedException();
