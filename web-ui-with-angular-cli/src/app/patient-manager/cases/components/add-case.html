@@ -15,12 +15,12 @@
                 </div>
             </div>
         </div>-->
+
         <div class="col-lg-4">
             <label class="form-label"> Patient Name
                                 <span class="color-red">*</span>
                             </label>
             <div *ngIf="patientName">
-
                 <div class="form-group">
                     <input disabled type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">
                     <!--<label class="form-label"> {{patientName}}
@@ -29,11 +29,13 @@
             </div>
             <div *ngIf="!patientName">
                 <div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                    <select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
+                    <!--<select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
                         placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                             <option value="0">-Select -</option>
                             <option *ngFor="let patient of patientsWithoutCase" value="{{patient.id}}">{{patient.user.firstName}} {{patient.user.lastName}}</option>
-                        </select>
+                        </select>-->
+            <p-dropdown [options]="patientsWithoutCase" formControlName="patientId" [(ngModel)]="idPatient" (onChange)="selectPatient($event)" [style]="{'width':'100%'}" filter="filter" 
+            [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid"></p-dropdown>
                     <div class='error-list' *ngIf="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                         <ul>
                             <li *ngIf="caseformControls.patientId.hasError('required')">Patient is required.</li>

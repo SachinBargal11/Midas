@@ -22,6 +22,8 @@ import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import * as _ from 'underscore';
 import { Account } from '../../../account/models/account';
+import {SelectItem} from 'primeng/primeng'
+
 @Component({
     selector: 'add-case',
     templateUrl: './add-case.html'
@@ -38,9 +40,11 @@ export class AddCaseComponent implements OnInit {
     patient: Patient;
     patientName: string;
     patients: Patient[];
-    patientsWithoutCase: Patient[];
+    // patientsWithoutCase: Patient[];
+    patientsWithoutCase: SelectItem[] = [];
     attorneys: Attorney[];
     attorneyId: number = 0;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -136,8 +140,8 @@ export class AddCaseComponent implements OnInit {
     }
 
     selectPatient(event) {
-        let currentPatient: number = parseInt(event.target.value);
-        let idPatient = parseInt(event.target.value);
+        let currentPatient: number = parseInt(event.value);
+        let idPatient = parseInt(event.value);
         let result = this._employerStore.getCurrentEmployer(currentPatient);
         result.subscribe((employer) => { this.employer = employer; }, null);
         console.log(this.employer)
@@ -147,7 +151,13 @@ export class AddCaseComponent implements OnInit {
         this._progressBarService.show();
         this._patientsStore.getPatientsWithNoCase()
             .subscribe(patients => {
-                this.patientsWithoutCase = patients;
+                // this.patientsWithoutCase = patients;
+            this.patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
+                return {
+                    label: `${currPatient.user.firstName} - ${currPatient.user.lastName}`,
+                    value: currPatient.id
+                };
+            })
             },
             (error) => {
                 this._progressBarService.hide();
