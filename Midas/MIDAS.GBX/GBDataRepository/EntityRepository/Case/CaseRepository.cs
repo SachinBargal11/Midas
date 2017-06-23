@@ -1405,17 +1405,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
-            var acc = _context.Patient2.Include("User").Include("Cases")
+            var patientList1 = _context.Patient2.Include("User").Include("Cases")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
-            if (acc == null)
+
+            var referralList = _context.Referral2.Include("Case")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.Patient2.User")
+                                               .Include("Case.Patient2.User.UserCompanies")
+                                               .Include("Case.Patient2.User.AddressInfo")
+                                               .Include("Case.Patient2.User.ContactInfo")
+                                               .Include("Case.Patient2.Cases")
+                                               .Include("Case.Patient2.Cases.Referral2")
+                                               .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
+
+            if (patientList1 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-                foreach (Patient2 eachPatient in acc)
+                foreach (Patient2 eachPatient in patientList1.Union(patientList2).Distinct())
                 {
                     lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
                 }
