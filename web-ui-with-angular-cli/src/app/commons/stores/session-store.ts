@@ -160,7 +160,7 @@ export class SessionStore {
 
     private _resetSession() {
         this.session.account = null;
-        this.session.currentCompany = null;
+        // this.session.currentCompany = null;
         this.session.accessToken = null;
         this.userLogoutEvent.emit(null);
     }

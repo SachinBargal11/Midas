@@ -96,12 +96,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (casemap.Company1 != null && casemap.Company1.CompanyType == 1)
                         {
                             caseBO.MedicalProviderId = casemap.CompanyId;
-                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 2).Select(p => p.CompanyId).FirstOrDefault();
+                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && (p.Company1 !=null && p.Company1.CompanyType == 2)).Select(p => p.CompanyId).FirstOrDefault();
                         }
                         else if (casemap.Company1 != null && casemap.Company1.CompanyType == 2)
                         {
                             caseBO.AttorneyProviderId = casemap.CompanyId;
-                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 1).Select(p => p.CompanyId).FirstOrDefault();
+                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && (p.Company1 != null && p.Company1.CompanyType == 1)).Select(p => p.CompanyId).FirstOrDefault();
                         }
                     }
 
@@ -169,6 +169,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                 caseCompanyConsentDocument.MidasDocument = boMidasDocument;
                             }
+                        }
+
+                        if (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.Company.IsDeleted.Value == false))
+                        {
+                            BO.Company boCompany = new BO.Company();
+                            boCompany.ID = eachcaseCompanyConsentDocument.Company.id;
+                            boCompany.Name = eachcaseCompanyConsentDocument.Company.Name;
+                            boCompany.TaxID = eachcaseCompanyConsentDocument.Company.TaxID;
+                            boCompany.Status = (BO.GBEnums.AccountStatus)eachcaseCompanyConsentDocument.Company.Status;
+                            boCompany.CompanyType = (BO.GBEnums.CompanyType)eachcaseCompanyConsentDocument.Company.CompanyType;
+
+                            caseCompanyConsentDocument.Company = boCompany;
                         }
                         boCaseCompanyConsentDocument.Add(caseCompanyConsentDocument);
                     }
@@ -803,7 +815,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                         #region Send mail to medical provider
-                                        string LoginLink1 = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                                        string LoginLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderLoginLink") + "'> '" + Utility.GetConfigValue("MedicalProviderLoginLink") + "' </a>";
                                         string msg1 = medicalProviderTemplate.EmailBody;
                                         string subject1 = medicalProviderTemplate.EmailSubject;
 
@@ -814,7 +826,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='" + Utility.GetConfigValue("PatientLoginLink") + "'> '" + Utility.GetConfigValue("PatientLoginLink") + "' </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -871,7 +883,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     else
                                     {
                                         #region Send mail to attorney
-                                        string LoginLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                                        string LoginLink = "<a href='" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "'> '" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "' </a>";
                                         string msg = attorneyTemplate.EmailBody;
                                         string subject = attorneyTemplate.EmailSubject;
 
@@ -882,7 +894,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='" + Utility.GetConfigValue("PatientLoginLink") + "'> '" + Utility.GetConfigValue("PatientLoginLink") + "' </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -953,7 +965,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                         #region Send mail to medical provider
-                                        string LoginLink1 = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                                        string LoginLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderLoginLink") + "'> '" + Utility.GetConfigValue("MedicalProviderLoginLink") + "' </a>";
                                         string msg1 = medicalProviderTemplate.EmailBody;
                                         string subject1 = medicalProviderTemplate.EmailSubject;
 
@@ -964,7 +976,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='" + Utility.GetConfigValue("PatientLoginLink") + "'> '" + Utility.GetConfigValue("PatientLoginLink") + "' </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -1021,7 +1033,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     else
                                     {
                                         #region Send mail to attorney
-                                        string LoginLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                                        string LoginLink = "<a href='" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "'> '" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "' </a>";
                                         string msg = attorneyTemplate.EmailBody;
                                         string subject = attorneyTemplate.EmailSubject;
 
@@ -1032,7 +1044,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='"+ Utility.GetConfigValue("PatientLoginLink") + "'> '"+Utility.GetConfigValue("PatientLoginLink")+"' </a>";
+                                        // "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>"
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -1405,17 +1418,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
-            var acc = _context.Patient2.Include("User").Include("Cases")
+            var patientList1 = _context.Patient2.Include("User").Include("Cases")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
-            if (acc == null)
+
+            var referralList = _context.Referral2.Include("Case")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.Patient2.User")
+                                               .Include("Case.Patient2.User.UserCompanies")
+                                               .Include("Case.Patient2.User.AddressInfo")
+                                               .Include("Case.Patient2.User.ContactInfo")
+                                               .Include("Case.Patient2.Cases")
+                                               .Include("Case.Patient2.Cases.Referral2")
+                                               .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral2>();
+
+            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
+
+            if (patientList1 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-                foreach (Patient2 eachPatient in acc)
+                foreach (Patient2 eachPatient in patientList1.Union(patientList2).Distinct())
                 {
                     lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
                 }
