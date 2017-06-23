@@ -492,6 +492,16 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object Get1(int param1, int param2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Get3(int param1, int param2)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetByCaseAndCompanyId(int caseId, int companyId)
         {
             throw new NotImplementedException();
