@@ -96,12 +96,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (casemap.Company1 != null && casemap.Company1.CompanyType == 1)
                         {
                             caseBO.MedicalProviderId = casemap.CompanyId;
-                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 2).Select(p => p.CompanyId).FirstOrDefault();
+                            caseBO.AttorneyProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && (p.Company1 !=null && p.Company1.CompanyType == 2)).Select(p => p.CompanyId).FirstOrDefault();
                         }
                         else if (casemap.Company1 != null && casemap.Company1.CompanyType == 2)
                         {
                             caseBO.AttorneyProviderId = casemap.CompanyId;
-                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && p.Company1.CompanyType == 1).Select(p => p.CompanyId).FirstOrDefault();
+                            caseBO.MedicalProviderId = cases.CaseCompanyMappings.Where(p => p.AddedByCompanyId == casemap.CompanyId && (p.Company1 != null && p.Company1.CompanyType == 1)).Select(p => p.CompanyId).FirstOrDefault();
                         }
                     }
 
