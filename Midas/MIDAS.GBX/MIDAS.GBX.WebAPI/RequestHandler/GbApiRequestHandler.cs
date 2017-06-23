@@ -1218,6 +1218,32 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage Get1(HttpRequestMessage request, int param1, int param2)
+        {
+            var objResult = dataAccessManager.Get1(param1, param2);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage Get3(HttpRequestMessage request, int param1, int param2)
+        {
+            var objResult = dataAccessManager.Get3(param1, param2);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByCaseAndCompanyId(HttpRequestMessage request, int caseId, int companyId)
         {
             var objResult = dataAccessManager.GetByCaseAndCompanyId(caseId, companyId);

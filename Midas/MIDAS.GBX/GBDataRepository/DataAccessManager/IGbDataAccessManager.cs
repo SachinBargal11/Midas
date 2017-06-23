@@ -103,6 +103,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCaseAndCompanyId(int caseId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Get1(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Get3(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object DismissPendingReferral(int PendingReferralId, int userId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object GetByLocationAndPatientId(int LocationId, int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

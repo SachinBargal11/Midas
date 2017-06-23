@@ -803,7 +803,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                         #region Send mail to medical provider
-                                        string LoginLink1 = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                                        string LoginLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderLoginLink") + "'> '" + Utility.GetConfigValue("MedicalProviderLoginLink") + "' </a>";
                                         string msg1 = medicalProviderTemplate.EmailBody;
                                         string subject1 = medicalProviderTemplate.EmailSubject;
 
@@ -814,7 +814,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='" + Utility.GetConfigValue("PatientLoginLink") + "'> '" + Utility.GetConfigValue("PatientLoginLink") + "' </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -871,7 +871,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     else
                                     {
                                         #region Send mail to attorney
-                                        string LoginLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                                        string LoginLink = "<a href='" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "'> '" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "' </a>";
                                         string msg = attorneyTemplate.EmailBody;
                                         string subject = attorneyTemplate.EmailSubject;
 
@@ -882,7 +882,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='" + Utility.GetConfigValue("PatientLoginLink") + "'> '" + Utility.GetConfigValue("PatientLoginLink") + "' </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -953,7 +953,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                                         #region Send mail to medical provider
-                                        string LoginLink1 = "<a href='http://medicalprovider.codearray.tk/#/account/login'> http://medicalprovider.codearray.tk/#/account/login </a>";
+                                        string LoginLink1 = "<a href='" + Utility.GetConfigValue("MedicalProviderLoginLink") + "'> '" + Utility.GetConfigValue("MedicalProviderLoginLink") + "' </a>";
                                         string msg1 = medicalProviderTemplate.EmailBody;
                                         string subject1 = medicalProviderTemplate.EmailSubject;
 
@@ -964,7 +964,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='" + Utility.GetConfigValue("PatientLoginLink") + "'> '" + Utility.GetConfigValue("PatientLoginLink") + "' </a>";
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
@@ -1021,7 +1021,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     else
                                     {
                                         #region Send mail to attorney
-                                        string LoginLink = "<a href='http://attorney.codearray.tk/#/account/login'> http://attorney.codearray.tk/#/account/login </a>";
+                                        string LoginLink = "<a href='" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "'> '" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "' </a>";
                                         string msg = attorneyTemplate.EmailBody;
                                         string subject = attorneyTemplate.EmailSubject;
 
@@ -1032,7 +1032,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #endregion
 
                                         #region Send mail to patient
-                                        string LoginLink2 = "<a href='http://www.patient.codearray.tk/#/account/login'> http://www.patient.codearray.tk/#/account/login </a>";
+                                        string LoginLink2 = "<a href='"+ Utility.GetConfigValue("PatientLoginLink") + "'> '"+Utility.GetConfigValue("PatientLoginLink")+"' </a>";
+                                        // "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>"
                                         string msg2 = patientCaseTemplate.EmailBody;
                                         string subject2 = patientCaseTemplate.EmailSubject;
 
