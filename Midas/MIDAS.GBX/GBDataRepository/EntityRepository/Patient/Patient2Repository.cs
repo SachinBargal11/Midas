@@ -1321,7 +1321,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region AssociatePatientWithAncillaryCompany
-        public override object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId)
+        public override object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId)
         {
             bool add_UserCompany = false;
             bool add_CaseCompanyMap = false;
@@ -1380,7 +1380,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             caseCompanyMap.CaseId = CaseId;
             caseCompanyMap.CompanyId = AncillaryCompanyId;
-            //caseCompanyMap.AddedByCompanyId = AddedByCompanyId; Need to modify API parameters to have additional AddedByCompanyId
+            caseCompanyMap.AddedByCompanyId = AddedByCompanyId; //Need to modify API parameters to have additional AddedByCompanyId
 
             if (add_CaseCompanyMap)
             {
