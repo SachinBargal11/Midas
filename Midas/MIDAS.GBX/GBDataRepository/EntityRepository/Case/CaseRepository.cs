@@ -170,6 +170,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 caseCompanyConsentDocument.MidasDocument = boMidasDocument;
                             }
                         }
+
+                        if (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.Company.IsDeleted.Value == false))
+                        {
+                            BO.Company boCompany = new BO.Company();
+                            boCompany.ID = eachcaseCompanyConsentDocument.Company.id;
+                            boCompany.Name = eachcaseCompanyConsentDocument.Company.Name;
+                            boCompany.TaxID = eachcaseCompanyConsentDocument.Company.TaxID;
+                            boCompany.Status = (BO.GBEnums.AccountStatus)eachcaseCompanyConsentDocument.Company.Status;
+                            boCompany.CompanyType = (BO.GBEnums.CompanyType)eachcaseCompanyConsentDocument.Company.CompanyType;
+
+                            caseCompanyConsentDocument.Company = boCompany;
+                        }
                         boCaseCompanyConsentDocument.Add(caseCompanyConsentDocument);
                     }
                 }
