@@ -55,6 +55,18 @@ export class ProcedureStore {
         });
         return <Observable<Procedure[]>>Observable.fromPromise(promise);
     }
+    getPreferredProceduresBySpecialityIdForVisit(specialityId: number): Observable<Procedure[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._procedureService.getPreferredProceduresBySpecialityIdForVisit(specialityId,companyId).subscribe((procedures: Procedure[]) => {
+                this._procedures.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
     
     getProceduresByRoomTestId(roomTestId: number): Observable<Procedure[]> {
         let promise = new Promise((resolve, reject) => {
@@ -71,6 +83,18 @@ export class ProcedureStore {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._procedureService.getPrefferedProceduresByRoomTestId(roomTestId,companyId).subscribe((procedures: Procedure[]) => {
+                this._procedures.next(List(procedures));
+                resolve(procedures);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+    getPrefferedProceduresByRoomTestIdForVisit(roomTestId: number): Observable<Procedure[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._procedureService.getPrefferedProceduresByRoomTestIdForVisit(roomTestId,companyId).subscribe((procedures: Procedure[]) => {
                 this._procedures.next(List(procedures));
                 resolve(procedures);
             }, error => {
