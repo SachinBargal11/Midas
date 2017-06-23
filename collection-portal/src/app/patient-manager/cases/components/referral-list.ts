@@ -85,6 +85,9 @@ export class ReferralListComponent implements OnInit {
     selectedSpecialityId: number;
     selectedTestId: number;
     isSaveProgress = false;
+    isAvailableSlotsSavingInProgress = false;
+    specialityId;
+    roomTestId;
 
     preferredMedical: PrefferedMedicalProvider[];
     medicalProvider: PrefferedMedicalProvider[];
