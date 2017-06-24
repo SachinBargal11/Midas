@@ -1458,7 +1458,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var company1 = _context.CaseCompanyMappings.Where(p => p.CaseId == caseId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .Select(p => p.Company)
+                                                       .Select(p => p.Company1)
                                                        .Include("CompanyType1")
                                                        .ToList();
            
