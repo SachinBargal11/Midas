@@ -332,11 +332,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if(userDB != null)
                 {
-                    var doctor = _context.Doctors.Where(p => p.Id == userDB.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                    if(doctor != null)
+                    if (addUserBO.role.Where(x => (int)x.RoleType == 3).Count() == 0)                        
                     {
-                        doctor.IsDeleted = true;
-                        _context.SaveChanges();
+                        var doctor = _context.Doctors.Where(p => p.Id == userDB.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                        if (doctor != null)
+                        {
+                            doctor.IsDeleted = true;
+                            _context.SaveChanges();
+                        }
                     }
                 }
 
