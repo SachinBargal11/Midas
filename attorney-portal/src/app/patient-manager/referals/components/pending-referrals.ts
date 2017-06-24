@@ -53,6 +53,7 @@ export class PendingReferralsComponent implements OnInit {
     selectedMedicalProviderId: number = 0;
     availableSlotsDialogVisible: boolean = false;
     availableSlots: AvailableSlot[] = [];
+    selectedReferrals: any[];
 
     constructor(
         private _router: Router,
@@ -91,6 +92,7 @@ export class PendingReferralsComponent implements OnInit {
             });
 
     }
+    dismiss() {}
 
     loadPreferredCompanyDoctorsAndRoomByCompanyId(companyId: number) {
         this._progressBarService.show();

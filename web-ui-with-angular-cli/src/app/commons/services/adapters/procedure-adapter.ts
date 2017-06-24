@@ -33,4 +33,18 @@ export class ProcedureAdapter {
         }
         return procedure;
     }
+    static parsePreferredResponse(data: any): Procedure {
+
+        let procedure = null;
+        if (data) {
+            procedure = new Procedure({
+                id: data.procedureCodeId,
+                procedureCodeId: data.procedureCodeId,
+                procedureCodeText: data.procedureCodeText,
+                procedureCodeDesc: data.procedureCodeDesc,
+                amount: data.amount ? data.amount : null
+            });
+        }
+        return procedure;
+    }
 }

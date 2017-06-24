@@ -278,7 +278,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForSpeciality(specialityId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getPrefferedProceduresBySpecialityId(specialityId);
+        let result = this._procedureStore.getPreferredProceduresBySpecialityIdForVisit(specialityId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -300,7 +300,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        let result = this._procedureStore.getPrefferedProceduresByRoomTestId(roomTestId);
+        let result = this._procedureStore.getPrefferedProceduresByRoomTestIdForVisit(roomTestId);
         result.subscribe(
             (procedures: Procedure[]) => {
                 // this.procedures = procedures;
@@ -905,13 +905,13 @@ export class PatientVisitComponent implements OnInit {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
         let procedureCodes = [];
-        procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
         // inputProcedureCodes.forEach(currentProcedureCode => {
         //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
         // });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientVisitProcedureCodes: procedureCodes
+            patientVisitProcedureCodes: inputProcedureCodes
         }));
         let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(

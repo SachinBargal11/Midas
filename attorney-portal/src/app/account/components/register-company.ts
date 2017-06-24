@@ -74,7 +74,7 @@ export class RegisterCompanyComponent implements OnInit {
                 userName: registercompanyformValues.email,
                 firstName: registercompanyformValues.firstName,
                 lastName: registercompanyformValues.lastName,
-                userType: UserType.STAFF,
+                userType: UserType.ATTORNEY,
                 contact: new Contact({
                     cellPhone: registercompanyformValues.phoneNo.replace(/\-/g, ''),
                     emailAddress: registercompanyformValues.email

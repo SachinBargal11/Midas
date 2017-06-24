@@ -19,6 +19,8 @@ export class ProcedureComponent implements OnInit {
   procedures: Procedure[];
   selectedProcedures: Procedure[];
   selectedProceduresToDelete: Procedure[];
+  isDeleteProgress = false;
+  isSaveProgress = false;
 
   @Input() selectedVisit: PatientVisit;
   @Output() save: EventEmitter<Procedure[]> = new EventEmitter();

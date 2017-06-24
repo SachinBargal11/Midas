@@ -306,13 +306,13 @@ export class VisitDetailComponent implements OnInit {
         let visitDetailFormValues = this.visitDetailForm.value;
         let updatedVisit: PatientVisit;
         let procedureCodes = [];
-        procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
         // inputProcedureCodes.forEach(currentProcedureCode => {
         //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
         // });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientVisitProcedureCodes: procedureCodes
+            patientVisitProcedureCodes: inputProcedureCodes
         }));
         this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
