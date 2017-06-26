@@ -25,14 +25,18 @@ export class Company extends CompanyRecord {
     // tslint:disable-next-line:member-ordering
     static getLabel(companyType: CompanyType): string {
         switch (companyType) {
-            case CompanyType.MEDICAL_PROVIDER:
+            case CompanyType.MEDICALPROVIDER:
                 return 'Medical Provider';
-            case CompanyType.PI_BI_FIRM:
+            case CompanyType.ATTORNEY:
                 return 'Attorney Provider';
-            case CompanyType.COLLECTION_FIRM:
-                return 'Collection';
-            case CompanyType.TRANSPORTATION:
-                return 'Transportation';
+            case CompanyType.BILLING:
+                return 'Billing Provider';
+            case CompanyType.FUNDING:
+                return 'Funding Provider';
+            case CompanyType.COLLECTION:
+                return 'Collection Provider';
+            case CompanyType.ANCILLARY:
+                return 'Ancillary Provider';
         }
     }
 
