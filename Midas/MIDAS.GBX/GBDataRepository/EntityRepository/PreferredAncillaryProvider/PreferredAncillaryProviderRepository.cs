@@ -910,7 +910,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         //#endregion
 
         #region Associate Medical Provider With Company
-        public override object AssociateMedicalProviderWithCompany(int PrefMedProviderId, int CompanyId)
+        public override object AssociateAncillaryProviderWithCompany(int PrefAncillaryProviderId, int CompanyId)
         {
             Company CompanyDB = _context.Companies.Where(p => p.id == CompanyId
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -921,39 +921,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
-            Company PrefMedProviderCompanyDB = _context.Companies.Where(p => p.id == PrefMedProviderId
+            Company PrefAncillaryProviderCompanyDB = _context.Companies.Where(p => p.id == PrefAncillaryProviderId
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                    .FirstOrDefault();
 
-            if (PrefMedProviderCompanyDB == null)
+            if (PrefAncillaryProviderCompanyDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "PrefMedProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+                return new BO.ErrorObject { ErrorMessage = "PrefAncillaryProvider Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
-            var preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == PrefMedProviderId && p.CompanyId == CompanyId 
+            var preferredAncillaryProviderDB = _context.PreferredAncillaryProviders.Where(p => p.PrefAncillaryProviderId == PrefAncillaryProviderId && p.CompanyId == CompanyId 
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                .FirstOrDefault();
 
-            bool IsAddPreferredMedicalProvider = false;
-            if (preferredMedicalProviderDB == null)
+            bool IsAddPreferredAncillaryProvider = false;
+            if (preferredAncillaryProviderDB == null)
             {
-                preferredMedicalProviderDB = new PreferredMedicalProvider();
-                IsAddPreferredMedicalProvider = true;
+                preferredAncillaryProviderDB = new PreferredAncillaryProvider();
+                IsAddPreferredAncillaryProvider = true;
             }
 
-            preferredMedicalProviderDB.PrefMedProviderId = PrefMedProviderId;
-            preferredMedicalProviderDB.CompanyId = CompanyId;
-            preferredMedicalProviderDB.IsCreated = false;
-            preferredMedicalProviderDB.IsDeleted = false;
+            preferredAncillaryProviderDB.PrefAncillaryProviderId = PrefAncillaryProviderId;
+            preferredAncillaryProviderDB.CompanyId = CompanyId;
+            preferredAncillaryProviderDB.IsCreated = false;
+            preferredAncillaryProviderDB.IsDeleted = false;
 
-            if (IsAddPreferredMedicalProvider == true)
+            if (IsAddPreferredAncillaryProvider == true)
             {
-                _context.PreferredMedicalProviders.Add(preferredMedicalProviderDB);
+                _context.PreferredAncillaryProviders.Add(preferredAncillaryProviderDB);
             }
 
             _context.SaveChanges();
 
-            BO.PreferredMedicalProvider acc_ = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(preferredMedicalProviderDB);
+            BO.PreferredAncillarProvider acc_ = Convert<BO.PreferredAncillarProvider, PreferredAncillaryProvider>(preferredAncillaryProviderDB);
 
             if (acc_ == null)
             {
@@ -1022,21 +1022,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Delete(int id)
         {
 
-            PreferredMedicalProvider preferredMedicalProviderDB = new PreferredMedicalProvider();
+            PreferredAncillaryProvider preferredAncillaryProviderDB = new PreferredAncillaryProvider();
 
-            preferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+            preferredAncillaryProviderDB = _context.PreferredAncillaryProviders.Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
 
-            if (preferredMedicalProviderDB != null)
+            if (preferredAncillaryProviderDB != null)
             {
-                preferredMedicalProviderDB.IsDeleted = true;
+                preferredAncillaryProviderDB.IsDeleted = true;
                 _context.SaveChanges();
             }
             else
             {
-                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Medical provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Ancillary provider details dosen't exists.", ErrorLevel = ErrorLevel.Error };
             }
 
-            var res = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(preferredMedicalProviderDB);
+            var res = Convert<BO.PreferredAncillarProvider, PreferredAncillaryProvider>(preferredAncillaryProviderDB);
             return (object)res;
         }
         #endregion

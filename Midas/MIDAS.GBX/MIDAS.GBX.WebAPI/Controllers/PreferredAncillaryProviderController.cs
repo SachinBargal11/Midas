@@ -86,7 +86,19 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetPrefAncillaryProviderByCompanyId(Request, CompanyId);
         }
 
+        [HttpGet]
+        [Route("associateAncillaryProviderWithCompany/{PrefAncillaryProviderId}/{CompanyId}")]
+        public HttpResponseMessage AssociateAncillaryProviderWithCompany(int PrefAncillaryProviderId, int CompanyId)
+        {
+            return requestHandler.AssociateAncillaryProviderWithCompany(Request, PrefAncillaryProviderId, CompanyId);            
+        }
 
+        [HttpGet]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
+        }
 
         protected override void Dispose(bool disposing)
         {
