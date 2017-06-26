@@ -24,12 +24,14 @@ const CaseRecord = Record({
     carrierCaseNo: '',
     transportation: true,
     caseStatusId: CaseStatus.OPEN,
-    attorneyId: 0,
+    // attorneyId: 0,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    attorneyProviderId: 0,
+    medicalProviderId: 0,
 });
 
 export class Case extends CaseRecord {
@@ -48,12 +50,14 @@ export class Case extends CaseRecord {
     carrierCaseNo: string;
     transportation: boolean;
     caseStatusId: CaseStatus;
-    attorneyId: number;
+    // attorneyId: number;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+     attorneyProviderId:number;
+    medicalProviderId:number;
 
     constructor(props) {
         super(props);
@@ -92,14 +96,14 @@ export class Case extends CaseRecord {
     }
     isConsentReceived(companyId): boolean {
         let isConsentReceived: boolean = false;
-        if(this.companyCaseConsentApproval.length>0){
-        _.forEach(this.companyCaseConsentApproval, (currentConsent: Consent) => {
-            if (currentConsent.companyId === companyId) {
-                isConsentReceived = true;
-            }
-        });
-        return isConsentReceived;
-        }        
+        if (this.companyCaseConsentApproval.length > 0) {
+            _.forEach(this.companyCaseConsentApproval, (currentConsent: Consent) => {
+                if (currentConsent.companyId === companyId) {
+                    isConsentReceived = true;
+                }
+            });
+            return isConsentReceived;
+        }
         return isConsentReceived;
 
     }

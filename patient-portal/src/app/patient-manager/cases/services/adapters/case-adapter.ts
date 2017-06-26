@@ -54,13 +54,15 @@ export class CaseAdapter {
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
                 caseStatusId: data.caseStatusId,
-                attorneyId: data.attorneyId,
+                // attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                medicalProviderId:data.medicalProviderId,
+                attorneyProviderId:data.attorneyProviderId
             });
         }
         return patient_case;
@@ -107,7 +109,7 @@ export class CaseAdapter {
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
                 caseStatusId: data.caseStatusId,
-                attorneyId: data.attorneyId,
+                // attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,
                 caseCompanyConsentDocument: caseCompanyConsentDocument,
                 companyCaseConsentApproval: companyCaseConsentApproval,
@@ -116,7 +118,9 @@ export class CaseAdapter {
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                medicalProviderId:data.medicalProviderId,
+                attorneyProviderId:data.attorneyProviderId
             });
         }
         return patient_case;
