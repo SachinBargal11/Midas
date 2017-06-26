@@ -41,10 +41,10 @@ export class AncillaryMasterStore {
         return <Observable<Account[]>>Observable.fromPromise(promise);
     }
 
-    assignProviders(id: number): Observable<AncillaryMaster> {
+    assignAncillary(id: number): Observable<AncillaryMaster> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._ancillaryMasterService.assignProviders(id, companyId).subscribe((provider: AncillaryMaster) => {
+            this._ancillaryMasterService.assignAncillary(id, companyId).subscribe((provider: AncillaryMaster) => {
                 resolve(provider);
             }, error => {
                 reject(error);

@@ -87,51 +87,6 @@ export class AncillaryListComponent implements OnInit {
         }, 250);
     }
 
-    selectProviders(event) {
-        let currentProviderId = parseInt(event.target.value);
-        this.currentProviderId = currentProviderId;
-    }
-
-    assignAncillary() {
-        if (this.currentProviderId !== 0) {
-            let result;
-            result = this._ancillaryMasterStore.assignProviders(this.currentProviderId);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Provider assigned successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this.loadAllAncillaries();
-                    this.loadAncillaryMasters();
-                    this.currentProviderId = 0;
-                },
-                (error) => {
-                    let errString = 'Unable to assign Provider.';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                },
-                () => {
-                });
-
-        } else {
-            let notification = new Notification({
-                'title': 'Select provider to assign to company',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select provider to assign to company');
-        }
-    }
-
     deleteAncillary() {
         if (this.selectedProviders.length > 0) {
             this.confirmationService.confirm({
