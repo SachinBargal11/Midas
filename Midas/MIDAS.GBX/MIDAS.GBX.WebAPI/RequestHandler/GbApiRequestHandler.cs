@@ -1597,7 +1597,21 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage AssociateAncillaryProviderWithCompany(HttpRequestMessage request, int PreAncillaryProviderId, int CompanyId)
+        {
+            var objResult = dataAccessManager.AssociateAncillaryProviderWithCompany(PreAncillaryProviderId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
         
+
         public HttpResponseMessage GetAllMedicalProviderExcludeAssigned(HttpRequestMessage request, int CompanyId)
         {
             var objResult = dataAccessManager.GetAllMedicalProviderExcludeAssigned(CompanyId);
