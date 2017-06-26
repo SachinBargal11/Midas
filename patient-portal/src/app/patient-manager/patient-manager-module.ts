@@ -101,6 +101,8 @@ import { ReferralStore } from './cases/stores/referral-store';
 import { VisitShellComponent } from './cases/components/visit-shell';
 import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
+import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
+import { VisitReferralService } from './patient-visit/services/visit-referral-service';
 
 @NgModule({
     imports: [
@@ -195,7 +197,9 @@ import { PatientVisitListTreatingRoomComponent } from './cases/components/treati
         PatientVisitsStore,
         PatientVisitService,
         ReferralService,
-        ReferralStore
+        ReferralStore,
+        VisitReferralStore,
+        VisitReferralService
     ]
 })
 export class PatientManagerModule { }

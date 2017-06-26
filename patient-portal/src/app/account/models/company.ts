@@ -25,6 +25,8 @@ export class Company extends CompanyRecord {
     // tslint:disable-next-line:member-ordering
     static getLabel(companyType: CompanyType): string {
         switch (companyType) {
+            case CompanyType.NONE:
+                return 'None';
             case CompanyType.MEDICALPROVIDER:
                 return 'Medical Provider';
             case CompanyType.ATTORNEY:

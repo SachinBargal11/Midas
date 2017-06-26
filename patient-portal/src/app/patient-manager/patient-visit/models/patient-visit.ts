@@ -12,6 +12,8 @@ import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Location } from '../../../medical-provider/locations/models/location';
 import { Patient } from '../../../patient-manager/patients/models/patient';
+import { Procedure } from '../../../commons/models/procedure';
+import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 
 const PatientVisitRecord = Record({
     id: 0,
@@ -34,9 +36,12 @@ const PatientVisitRecord = Record({
     visitStatusId: VisitStatus.SCHEDULED,
     visitType: 0,
     calendarEvent: null,
+    patientVisitProcedureCodes: [],
+    patientVisitDiagnosisCodes: [],
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
+    originalResponse: null,
     createDate: null, //Moment
     updateDate: null //Moment
 });
@@ -64,11 +69,14 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     visitStatusId: VisitStatus;
     visitType: number;
     calendarEvent: ScheduledEvent;
+    patientVisitProcedureCodes: Procedure[];
+    patientVisitDiagnosisCodes: DiagnosisCode[];
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    originalResponse: any;
 
     constructor(props) {
         super(props);
@@ -128,7 +136,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
             }
         }
 
-        if(this.eventStart) {
+        if (this.eventStart) {
             visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
         }
 

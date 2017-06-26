@@ -1,0 +1,41 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<!--<br>
+<div *ngIf="sessionStore.isOnlyDoctorRole()">
+  <div class="col-lg-6">
+    <select class="form-control select-list" (change)="searchDiagnosis($event)">
+      <option value="">-Select Diagnosis Type-</option>
+      <option *ngFor="let diagnosisType of diagnosisTypes" value="{{diagnosisType.id}}">{{diagnosisType.diagnosisTypeText}}</option>
+  </select>
+    <br>
+    <p-listbox [options]="diagnosisCodes" [(ngModel)]="selectedDiagnosisCodes" multiple="multiple" styleClass="list-control"
+      checkbox="checkbox" filter="filter"></p-listbox>
+  </div>
+</div>-->
+
+<div class="col-lg-6">
+  <h3 class="with-border">Selected Diagnosis</h3>
+  <div class="ui-widget-header row">
+    <!--<div class="col-lg-6 input-group">
+      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+      <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+    </div>-->
+    <div class="col-lg-6">
+      <!--<a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="deleteDiagnosis()">
+        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Diagnosis </span>
+        <loader [visible]="isDeleteProgress"></loader>
+      </a>-->
+    </div>
+  </div>
+  <p-dataTable [value]="selectedDiagnosisCodes" [(selection)]="selectedDiagnosis" [rows]="10" [paginator]="true" [globalFilter]="gb"
+    [responsive]="true">
+    <header>Diagnosis codes</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="diagnosisCodeText" header="Diagnosis Code" [sortable]="true"></p-column>
+    <p-column field="diagnosisCodeDesc" header="Description" [sortable]="true"></p-column>
+  </p-dataTable>
+  <br>
+  <!--<button class="btn btn-success sign-up" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="saveDiagnosisCodes()">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>-->
+
+</div>
