@@ -176,7 +176,7 @@ export class AddConsentComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Consent uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment(),
 
                 });
