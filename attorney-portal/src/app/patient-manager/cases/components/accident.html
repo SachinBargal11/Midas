@@ -37,7 +37,7 @@
                             <!--<div class="form-group">
                                 <input disabled type="text" class="form-control" [ngModel]="accidentDate" formControlName="doa">
                             </div>-->
-                            <label class="form-label">{{accidentDate}}</label>
+                            <label class="form-label">{{accidentDateLabel}}</label>
                         </div>
                         <div *ngIf="caseViewedByOriginator && (caseStatusId === 1)">
                             <label class="form-label">Date of Accident
@@ -66,7 +66,7 @@
                             <!--<div class="form-group">
                                 <input disabled type="text" class="form-control" [ngModel]="dateOfAdmission" formControlName="dot">
                             </div>-->
-                            <label class="form-label">{{dateOfAdmission}}</label>
+                            <label class="form-label">{{dateOfAdmissionLabel}}</label>
                         </div>
                         <div *ngIf="caseViewedByOriginator && (caseStatusId === 1)">
                             <label class="form-label">Date of Admission

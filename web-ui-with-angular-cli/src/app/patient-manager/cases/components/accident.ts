@@ -27,6 +27,8 @@ export class AccidentInfoComponent implements OnInit {
     states: any[];
     dateOfAdmission: Date;
     accidentDate: Date;
+    dateOfAdmissionLabel: string;
+    accidentDateLabel: string;
     maxDate: Date;
     cities: any[];
     accidents: Accident[];
@@ -80,9 +82,14 @@ export class AccidentInfoComponent implements OnInit {
                         this.dateOfAdmission = this.currentAccident.dateOfAdmission
                             ? this.currentAccident.dateOfAdmission.toDate()
                             : null;
+
+                        this.dateOfAdmissionLabel = this.currentAccident.dateOfAdmission.format('MMM Do YY');
+
                         this.accidentDate = this.currentAccident.accidentDate
                             ? this.currentAccident.accidentDate.toDate()
                             : null;
+                            
+                        this.accidentDateLabel = this.currentAccident.accidentDate.format('MMM Do YY');
 
                         if (this.currentAccident.accidentAddress.state || this.currentAccident.hospitalAddress.state) {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
