@@ -33,6 +33,7 @@ export class AccidentInfoComponent implements OnInit {
     currentAccident: Accident;
     accidentCities: any[];
     patientId: number;
+    patientTypeId: string;
     caseId: number;
     selectedCity = '';
     selectedAccidentCity = '';
@@ -46,7 +47,7 @@ export class AccidentInfoComponent implements OnInit {
     hospAddId: number;
     caseDetail: Case;
     caseStatusId: number;
-    caseViewedByOriginator:boolean = false;
+    caseViewedByOriginator: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -70,6 +71,7 @@ export class AccidentInfoComponent implements OnInit {
                     this.accidents = accidents;
                     if (this.accidents.length > 0) {
                         this.currentAccident = this.accidents[0];
+                        this.patientTypeId = String(this.currentAccident.patientTypeId);
                     }
                     // this.currentAccident = _.find(this.accidents, (accident) => {
                     //     return accident.isCurrentAccident;
@@ -110,10 +112,10 @@ export class AccidentInfoComponent implements OnInit {
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
-                    if(caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id){
-                    this.caseViewedByOriginator = false;
-                    }else{
-                    this.caseViewedByOriginator = true;
+                    if (caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id) {
+                        this.caseViewedByOriginator = false;
+                    } else {
+                        this.caseViewedByOriginator = true;
                     }
                     this.caseStatusId = caseDetail.caseStatusId;
                 },
@@ -168,7 +170,7 @@ export class AccidentInfoComponent implements OnInit {
         let accidentformValues = this.accidentform.value;
         let addResult;
         let result;
-      
+
         let accident = new Accident({
 
             caseId: this.caseId,

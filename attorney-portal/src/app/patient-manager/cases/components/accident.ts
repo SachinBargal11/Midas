@@ -31,6 +31,7 @@ export class AccidentInfoComponent implements OnInit {
     cities: any[];
     accidents: Accident[];
     currentAccident: Accident;
+    patientTypeId: string;
     accidentCities: any[];
     patientId: number;
     caseId: number;
@@ -70,6 +71,7 @@ export class AccidentInfoComponent implements OnInit {
                     this.accidents = accidents;
                     if (this.accidents.length > 0) {
                         this.currentAccident = this.accidents[0];
+                        this.patientTypeId = String(this.currentAccident.patientTypeId);
                     }
                     // this.currentAccident = _.find(this.accidents, (accident) => {
                     //     return accident.isCurrentAccident;
