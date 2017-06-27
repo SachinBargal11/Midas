@@ -46,6 +46,7 @@ export class AccidentInfoComponent implements OnInit {
     hospAddId: number;
     caseDetail: Case;
     caseStatusId: number;
+    caseViewedByOriginator:boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -109,6 +110,11 @@ export class AccidentInfoComponent implements OnInit {
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
+                    if(caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id){
+                    this.caseViewedByOriginator = false;
+                    }else{
+                    this.caseViewedByOriginator = true;
+                    }
                     this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {
