@@ -7,7 +7,7 @@ import { AddPatientComponent } from './patients/components/add-patient';
 // import { AppointmentsComponent } from './patients/components/appointments';
 // import { BalancesComponent } from './patients/components/balances';
 import { DemographicsComponent } from './patients/components/demographics';
-// import { DocumentsComponent } from './patients/components/documents';
+import { DocumentsComponent } from './patients/components/documents';
 import { PatientBasicComponent } from './patients/components/patient-basic';
 import { PatientNavComponent } from './patients/components/patient-nav-bar';
 import { PatientsListComponent } from './patients/components/patients-list';
@@ -119,7 +119,7 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
         // AppointmentsComponent,
         // BalancesComponent,
         DemographicsComponent,
-        // DocumentsComponent,
+        DocumentsComponent,
         PatientBasicComponent,
         PatientNavComponent,
         PatientsListComponent,

@@ -13,7 +13,7 @@ import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientBasicComponent } from './patients/components/patient-basic';
 import { DemographicsComponent } from './patients/components/demographics';
 // import { BalancesComponent } from './components/balances';
-// import { DocumentsComponent } from './components/documents';
+import { DocumentsComponent } from './patients/components/documents';
 // import { AppointmentsComponent } from './components/appointments';
 import { ShellComponent } from '../commons/shell-component';
 import { AddFamilyMemberComponent } from './patients/components/add-family-member';
@@ -142,6 +142,14 @@ let PatientManagerRoutes: Routes = [
                                 }
                             }
                         ]
+                    },
+                    {
+                        path: 'documents',
+                        component: DocumentsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Documents'
+                        }
                     },
                     {
                         path: 'employer',
