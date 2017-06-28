@@ -316,7 +316,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.ContactInfo")
                                                  .Include("Case.Patient2.Cases")
                                                  .Include("Case.Patient2.Cases.Referral2")
-                                                 .Where(p => p.FromCompanyId == CompanyId
+                                                 .Where(p => (p.FromCompanyId == CompanyId || p.ToCompanyId == CompanyId)
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                         && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
                                                         && (p.Case.Patient2.IsDeleted.HasValue == false || (p.Case.Patient2.IsDeleted.HasValue == true && p.Case.Patient2.IsDeleted.Value == false)))
