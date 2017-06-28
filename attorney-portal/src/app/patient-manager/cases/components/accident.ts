@@ -26,11 +26,14 @@ import { Case } from '../models/case';
 export class AccidentInfoComponent implements OnInit {
     states: any[];
     dateOfAdmission: Date;
+    dateOfAdmissionLabel:string;
     accidentDate: Date;
+    accidentDateLabel: string;
     maxDate: Date;
     cities: any[];
     accidents: Accident[];
     currentAccident: Accident;
+    patientTypeId: string;
     accidentCities: any[];
     patientId: number;
     caseId: number;
@@ -46,6 +49,7 @@ export class AccidentInfoComponent implements OnInit {
     hospAddId: number;
     caseDetail: Case;
     caseStatusId: number;
+    caseViewedByOriginator:boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -69,6 +73,7 @@ export class AccidentInfoComponent implements OnInit {
                     this.accidents = accidents;
                     if (this.accidents.length > 0) {
                         this.currentAccident = this.accidents[0];
+                        this.patientTypeId = String(this.currentAccident.patientTypeId);
                     }
                     // this.currentAccident = _.find(this.accidents, (accident) => {
                     //     return accident.isCurrentAccident;
@@ -77,9 +82,14 @@ export class AccidentInfoComponent implements OnInit {
                         this.dateOfAdmission = this.currentAccident.dateOfAdmission
                             ? this.currentAccident.dateOfAdmission.toDate()
                             : null;
+
+                       this.dateOfAdmissionLabel =  this.currentAccident.dateOfAdmission.format('MMM Do YY');
+
                         this.accidentDate = this.currentAccident.accidentDate
                             ? this.currentAccident.accidentDate.toDate()
                             : null;
+                            
+                        this.accidentDateLabel = this.currentAccident.accidentDate.format('MMM Do YY');
 
                         if (this.currentAccident.accidentAddress.state || this.currentAccident.hospitalAddress.state) {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
@@ -109,6 +119,11 @@ export class AccidentInfoComponent implements OnInit {
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
+                    if(caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id){
+                    this.caseViewedByOriginator = false;
+                    }else{
+                    this.caseViewedByOriginator = true;
+                    }
                     this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {

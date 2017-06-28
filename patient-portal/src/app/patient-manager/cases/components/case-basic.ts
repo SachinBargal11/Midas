@@ -94,14 +94,19 @@ export class CaseBasicComponent implements OnInit {
 
         });
         this.caseform = this.fb.group({
-            // caseName: [''],
+           // caseName: [''],
             patientId: [{ value: '', disabled: true }],
-            caseTypeId: ['', Validators.required],
-            carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // caseTypeId: ['', Validators.required],
+            caseTypeId: [{ value: '', disabled: true } ],
+            // carrierCaseNo: [''],
+            carrierCaseNo: [{ value: '', disabled: true }],
+            // locationId: ['', Validators.required],
+            locationId: [{ value: '', disabled: true }],
             // patientEmpInfoId: ['', Validators.required],
-            caseStatusId: ['', Validators.required],
-            attorneyId: [''],
+            // caseStatusId: ['', Validators.required],
+            caseStatusId: [{ value: '', disabled: true }],
+            // attorneyId: [''],
+            attorneyId: [{ value: '', disabled: true }],
             // transportation: [true, Validators.required],
         });
 
@@ -113,8 +118,8 @@ export class CaseBasicComponent implements OnInit {
             .subscribe(locations => this.locations = locations);
         // this._employerStore.getCurrentEmployer(this.patientId)
         //     .subscribe(employer => this.employer = employer);
-        // this._attorneyMasterStore.getAttorneyMasters()
-        //     .subscribe(attorneys => this.attorneys = attorneys);
+        this._attorneyMasterStore.getAttorneyMasters()
+            .subscribe(attorneys => this.attorneys = attorneys);
     }
 
     saveCase() {

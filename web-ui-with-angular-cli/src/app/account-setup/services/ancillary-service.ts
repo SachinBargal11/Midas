@@ -45,9 +45,9 @@ export class AncillaryMasterService {
         return <Observable<Account[]>>Observable.fromPromise(promise);
     }
 
-    assignProviders(currentProviderId: Number, companyId: Number): Observable<AncillaryMaster> {
+    assignAncillary(currentProviderId: Number, companyId: Number): Observable<AncillaryMaster> {
         let promise: Promise<AncillaryMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId, {
+            return this._http.get(this._url + '/PreferredAncillaryProvider/associateAncillaryProviderWithCompany/' + currentProviderId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -115,7 +115,7 @@ export class AncillaryMasterService {
     deleteMedicalProvider(AncillaryMaster: AncillaryMaster): Observable<AncillaryMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/Delete/' + AncillaryMaster.id, {
+            return this._http.get(this._url + '/PreferredAncillaryProvider/Delete/' + AncillaryMaster.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

@@ -130,7 +130,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
 
                 // this.visits = matchingVisits.reverse();
                 let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.doctor != null;
+                    return currentVisit.doctor != null && currentVisit.specialty != null;
                 });
                 this.doctorsVisits = matchingDoctorVisits.reverse();
 
@@ -170,9 +170,9 @@ export class PatientVisitListDoctorComponent implements OnInit {
             });
     }
 
-    showDialog(currentCaseId: number) {
-        this.addConsentDialogVisible = true;
-        this.selectedCaseId = currentCaseId;
+   showDialog(visitId: number) {
+        this.fetchPatientVisit(visitId);
+        this.selectedVisitId = visitId;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -188,7 +188,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);

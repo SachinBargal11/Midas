@@ -49,4 +49,24 @@ export class Accident extends AccidentRecord {
         super(props);
     }
 
+
+    get patientTypeLabel(): string {
+        return Accident.getPatientTypeLabel(this.patientTypeId);
+    }
+   
+    static getPatientTypeLabel(patientType:PatientType): string {
+        switch (patientType) {
+            case PatientType.BICYCLIST:
+                return 'Bicyclist';
+            case PatientType.DRIVER:
+                return 'Driver';
+            case PatientType.PASSENGER:
+                return 'Passenger';
+            case PatientType.PEDESTRAIN:
+                return 'Pedestrain';
+            case PatientType.OD:
+                return 'OD';
+        }
+    }
+
 }

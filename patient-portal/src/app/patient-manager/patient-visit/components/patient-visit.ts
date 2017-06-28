@@ -45,11 +45,13 @@ import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
 import { ProcedureStore } from '../../../commons/stores/procedure-store';
-// import { VisitReferralStore } from '../stores/visit-referral-store';
-// import { VisitReferral } from '../models/visit-referral';
+import { VisitReferralStore } from '../stores/visit-referral-store';
+import { VisitReferral } from '../models/visit-referral';
 
 import { Location } from '../../../medical-provider/locations/models/location';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
+import { Procedure } from '../../../commons/models/procedure';
+import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 
 @Component({
     selector: 'patient-visit',
@@ -137,6 +139,8 @@ export class PatientVisitComponent implements OnInit {
     visitId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    procedures: Procedure[];
+    selectedProcedures: Procedure[];
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -150,10 +154,10 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.owningEvent.recurrenceRule) {
             content = `<i class="fa fa-refresh"></i>`;
         }
-        if(event.eventWrapper.room == null) {
-        content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
-        } else if(event.eventWrapper.doctor == null) {
-        content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
+        if (event.eventWrapper.room == null) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
+        } else if (event.eventWrapper.doctor == null) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
         }
         element.find('.fc-content').html(content);
     }
@@ -181,7 +185,7 @@ export class PatientVisitComponent implements OnInit {
         private _roomsService: RoomsService,
         private _specialityService: SpecialityService,
         // private _procedureStore: ProcedureStore,
-        // private _visitReferralStore: VisitReferralStore,
+        private _visitReferralStore: VisitReferralStore,
         private confirmationService: ConfirmationService
     ) {
         this.patientId = this.sessionStore.session.user.id;
@@ -499,14 +503,14 @@ export class PatientVisitComponent implements OnInit {
                         'type': 'ERROR',
                         'createdAt': moment()
                     });
-                this._notificationsService.error('Oh no!', 'Unable to load visits');
+                    this._notificationsService.error('Oh no!', 'Unable to load visits');
                 } else {
                     notification = new Notification({
                         'title': error.message,
                         'type': 'ERROR',
                         'createdAt': moment()
                     });
-                this._notificationsService.error('Oh no!', 'error.message');
+                    this._notificationsService.error('Oh no!', 'error.message');
                 }
                 this._notificationsStore.addNotification(notification);
                 this._progressBarService.hide();
@@ -925,124 +929,115 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
-    // saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
-    //     let patientVisitFormValues = this.patientVisitForm.value;
-    //     let updatedVisit: PatientVisit;
-    //     let diagnosisCodes = [];
-    //     inputDiagnosisCodes.forEach(currentDiagnosisCode => {
-    //         diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
-    //     });
 
-    //     updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-    //         patientVisitDiagnosisCodes: diagnosisCodes
-    //     }));
-    //     let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
-    //     result.subscribe(
-    //         (response) => {
-    //             let notification = new Notification({
-    //                 'title': 'Diagnosis codes saved successfully!',
-    //                 'type': 'SUCCESS',
-    //                 'createdAt': moment()
-    //             });
-    //             this.loadVisits();
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         (error) => {
-    //             let errString = 'Unable to save diagnosis codes!';
-    //             let notification = new Notification({
-    //                 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                 'type': 'ERROR',
-    //                 'createdAt': moment()
-    //             });
-    //             this._progressBarService.hide();
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    //     this.visitDialogVisible = false;
-    // }
-    // saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
-    //     let patientVisitFormValues = this.patientVisitForm.value;
-    //     let updatedVisit: PatientVisit;
-    //     let procedureCodes = [];
-    //     inputProcedureCodes.forEach(currentProcedureCode => {
-    //         procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-    //     });
+    saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit;
+        let diagnosisCodes = [];
+        inputDiagnosisCodes.forEach(currentDiagnosisCode => {
+            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+        });
 
-    //     updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-    //         patientVisitProcedureCodes: procedureCodes
-    //     }));
-    //     let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
-    //     result.subscribe(
-    //         (response) => {
-    //             let notification = new Notification({
-    //                 'title': 'Procedure codes saved successfully!',
-    //                 'type': 'SUCCESS',
-    //                 'createdAt': moment()
-    //             });
-    //             this.loadVisits();
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         (error) => {
-    //             let errString = 'Unable to save procedure codes!';
-    //             let notification = new Notification({
-    //                 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                 'type': 'ERROR',
-    //                 'createdAt': moment()
-    //             });
-    //             this._progressBarService.hide();
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    //     this.visitDialogVisible = false;
-    // }
-    // saveReferral(inputProcedureCodes: Procedure[]) {
-    //     let patientVisitFormValues = this.patientVisitForm.value;
-    //     let procedureCodes = [];
-    //     inputProcedureCodes.forEach(currentProcedureCode => {
-    //         procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-    //     });
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitDiagnosisCodes: diagnosisCodes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Diagnosis codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save diagnosis codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
 
-    //     let visitReferralDetail = new VisitReferral({
-    //         patientVisitId: this.selectedVisit.id,
-    //         fromCompanyId: this.sessionStore.session.currentCompany.id,
-    //         fromLocationId: this.selectedLocationId,
-    //         fromDoctorId: this.selectedOption === 1 ? this.selectedDoctorId : null,
-    //         forSpecialtyId: this.selectedOption === 1 ? this.selectedSpecialityId: null,
-    //         forRoomId: this.selectedOption === 2 ? this.selectedRoomId : null,
-    //         forRoomTestId: this.selectedOption === 2 ? this.selectedTestId : null,
-    //         isReferralCreated: true,
-    //         pendingReferralProcedureCode: procedureCodes
-    //     });
-    //     let result = this._visitReferralStore.saveVisitReferral(visitReferralDetail);
-    //     result.subscribe(
-    //         (response) => {
-    //             let notification = new Notification({
-    //                 'title': 'Referral saved successfully.',
-    //                 'type': 'SUCCESS',
-    //                 'createdAt': moment()
-    //             });
-    //             this.loadVisits();
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         (error) => {
-    //             let errString = 'Unable to save Referral.';
-    //             let notification = new Notification({
-    //                 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                 'type': 'ERROR',
-    //                 'createdAt': moment()
-    //             });
-    //             this._progressBarService.hide();
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    //     this.visitDialogVisible = false;
-    // }
+    saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit;
+        let procedureCodes = [];
+        // procedureCodes = _.union(inputProcedureCodes, this.selectedVisit.patientVisitProcedureCodes)
+        // inputProcedureCodes.forEach(currentProcedureCode => {
+        //     procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        // });
+
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitProcedureCodes: inputProcedureCodes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Procedure codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Procedure codes saved successfully');
+            },
+            (error) => {
+                let errString = 'Unable to save procedure codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = true;
+    }
+    saveReferral(inputVisitReferrals: VisitReferral[]) {
+        let result;
+        let patientVisitFormValues = this.patientVisitForm.value;
+        result = this._visitReferralStore.saveVisitReferral(inputVisitReferrals);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Referral saved successfully.',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Referral saved successfully');
+            },
+            (error) => {
+                let errString = 'Unable to save Referral.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error(ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = true;
+    }
 
     cancelAppointment() {
         this._progressBarService.show();
@@ -1075,6 +1070,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this._confirmationDialog.hide();
     }
+
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
             this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
@@ -1167,12 +1163,12 @@ export class PatientVisitComponent implements OnInit {
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         // let leaveEvent: LeaveEvent;
-        // let procedureCodes = [];
-        // if (this.selectedProcedures) {
-        //     this.selectedProcedures.forEach(currentProcedureCode => {
-        //         procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        //     });
-        // }
+        let procedureCodes = [];
+        if (this.selectedProcedures) {
+            this.selectedProcedures.forEach(currentProcedureCode => {
+                procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+            });
+        }
         // if (!this.isGoingOutOffice) {
         //     updatedEvent = this._scheduledEventEditorComponent.getEditedEvent();
         // } else {
@@ -1186,7 +1182,7 @@ export class PatientVisitComponent implements OnInit {
             // leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
             // leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null,
             // transportProviderId: updatedEvent ? updatedEvent.transportProviderId : 0,
-            // patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : []
+            patientVisitProcedureCodes: this.selectedProcedures ? procedureCodes : []
         }));
         if (updatedVisit.id) {
             if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {
@@ -1378,7 +1374,7 @@ export class PatientVisitComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
@@ -1389,15 +1385,15 @@ export class PatientVisitComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-          if (error.message == 'Please Select document Type') {
+        if (error.message == 'Please Select document Type') {
             this._notificationsService.error('Oh No!', 'Please Select document Type');
         }
         else {
             this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
         }
     }
-    
-     showDialog(currentCaseId: number) {
+
+    showDialog(currentCaseId: number) {
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
     }
@@ -1481,6 +1477,7 @@ export class PatientVisitComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
     }
+
 
     // addNewPatient() {
     //     if (!this.isAddNewPatient) {

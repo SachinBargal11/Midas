@@ -23,6 +23,10 @@ import { DocumentUploadComponent } from '../commons/components/document-upload/d
 
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
+import { ProcedureComponent } from './components/procedure/procedure.component';
+import { ReferralsComponent } from './components/referrals/referrals.component';
+import { DiagnosisComponent } from './components/diagnosis/diagnosis.component';
+import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
 
 
 import {
@@ -95,8 +99,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
-    SignatureFieldComponent
+    SignatureFieldComponent,
+    ProcedureComponent,
+    ReferralsComponent,
+    DiagnosisComponent,
+    VisitDetailComponent
   ],
+
   exports: [
     CommonModule,
     FormsModule,
@@ -138,7 +147,11 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     GrowlModule,
     TabViewModule,
     LightboxModule,ListboxModule,
-    SignatureFieldComponent
+    SignatureFieldComponent,
+    ProcedureComponent,
+    ReferralsComponent,
+    DiagnosisComponent,
+    VisitDetailComponent
   ]
 })
 export class CommonsModule { }
