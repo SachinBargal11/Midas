@@ -1379,6 +1379,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();

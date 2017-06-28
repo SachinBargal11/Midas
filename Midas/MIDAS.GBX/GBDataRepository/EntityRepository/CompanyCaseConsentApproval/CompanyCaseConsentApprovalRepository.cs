@@ -105,8 +105,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (caseCompanyMapping == null)
                 {
                     caseCompanyMapping = new CaseCompanyMapping();
+
+                    caseCompanyMapping.CaseId = companyCaseConsentApprovalBO.CaseId.Value;
                     caseCompanyMapping.CompanyId = companyCaseConsentApprovalBO.CompanyId;
-                    caseCompanyMapping.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+
+                    caseCompanyMapping.IsOriginator = false; // companyCaseConsentApprovalBO.IsOriginator;
+                    caseCompanyMapping.AddedByCompanyId = companyCaseConsentApprovalBO.CompanyId;
+
                     caseCompanyMapping = _context.CaseCompanyMappings.Add(caseCompanyMapping);
                     _context.SaveChanges();
                 }

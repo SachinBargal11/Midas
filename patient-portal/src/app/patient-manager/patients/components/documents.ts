@@ -12,74 +12,72 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Observable } from 'rxjs/Rx';
 import { FileUpload, FileUploadModule } from 'primeng/primeng';
-import { CaseDocument } from '../models/case-document';
+import { PatientDocument } from '../models/patient-document';
 import { CasesStore } from '../../cases/stores/case-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
-import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
+import { PatientDocumentAdapter } from '../services/adapters/patient-document-adapter'
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Document } from '../../../commons/models/document';
-import { Case } from '../models/case';
+import { Patient } from '../models/patient';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
-    selector: 'case-documents',
-    templateUrl: './case-documents.html'
+    selector: 'documents',
+    templateUrl: './documents.html'
 })
 
 @Injectable()
-export class CaseDocumentsUploadComponent implements OnInit {
+export class DocumentsComponent implements OnInit {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     selectedDocumentList = [];
-    currentCaseId: number;
-    documents: CaseDocument[] = [];
+    currentPatientId: number;
+    documents: PatientDocument[] = [];
     url;
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
-    caseId: number;
+    patientId: number;
     addConsentDialogVisible: boolean = false;
-    caseStatusId: number;
     selectedCaseId: number;
-    // companyId: number;
+    selectedPatientId: number;
 
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
         private _casesStore: CasesStore,
+        private _patientStore: PatientsStore,
         private _caseService: CaseService,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _scannerService: ScannerService,
         private confirmationService: ConfirmationService,
-
+        public sessionStore: SessionStore,
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.currentCaseId = parseInt(routeParams.caseId, 10);
-            this.url = `${this._url}/documentmanager/uploadtonoproviderblob`;
-        });
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        this.patientId = this.sessionStore.session.user.id;
+        // this.currentPatientId = parseInt(routeParams.patientId);
+        // this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
+        this.url = `${this._url}/documentmanager/uploadtonoproviderblob`;
     }
 
     ngOnInit() {
         this.getDocuments();
     }
 
+    showDialog() {
+        this.addConsentDialogVisible = true;
+        this.selectedPatientId = this.currentPatientId;
+    }
+    handleAddConsentDialogHide() {
+        this.addConsentDialogVisible = false;
+        this.selectedPatientId = null;
+    }
+
     documentUploadComplete(documents: Document[]) {
+
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({
@@ -112,16 +110,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
         }
     }
 
-
-    showDialog() {
-        this.addConsentDialogVisible = true;
-        this.selectedCaseId = this.currentCaseId;
-        // this.companyId = providerCompanyId;
-    }
-
     getDocuments() {
         this._progressBarService.show();
-        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
+        this._patientStore.getDocumentsForPatientId(this.patientId)
             .subscribe(document => {
                 this.documents = document;
             },
@@ -134,9 +125,10 @@ export class CaseDocumentsUploadComponent implements OnInit {
             });
     }
 
+
     downloadPdf(documentId) {
         this._progressBarService.show();
-        this._casesStore.downloadDocumentForm(this.caseId, documentId)
+        this._casesStore.downloadDocumentForm(this.patientId, documentId)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -159,66 +151,64 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-    deleteDocument() {
-        if (this.selectedDocumentList.length > 0) {
-            this.confirmationService.confirm({
-                message: 'Do you want to delete this record?',
-                header: 'Delete Confirmation',
-                icon: 'fa fa-trash',
-                accept: () => {
+    // deleteDocument() {
+    //     if (this.selectedDocumentList.length > 0) {
+    //         this.confirmationService.confirm({
+    //             message: 'Do you want to delete this record?',
+    //             header: 'Delete Confirmation',
+    //             icon: 'fa fa-trash',
+    //             accept: () => {
 
-                    this.selectedDocumentList.forEach(currentCase => {
-                        this._progressBarService.show();
-                        this.isDeleteProgress = true;
-                        this._casesStore.deleteDocument(currentCase)
-                            .subscribe(
-                            (response) => {
-                                let notification = new Notification({
-                                    'title': 'record deleted successfully!',
-                                    'type': 'SUCCESS',
-                                    'createdAt': moment()
+    //                 this.selectedDocumentList.forEach(currentPatient => {
+    //                     this._progressBarService.show();
+    //                     this.isDeleteProgress = true;
+    //                     this._patientStore.deleteDocument(currentPatient)
+    //                         .subscribe(
+    //                         (response) => {
+    //                             let notification = new Notification({
+    //                                 'title': 'Record deleted successfully!',
+    //                                 'type': 'SUCCESS',
+    //                                 'createdAt': moment()
 
-                                });
-                                this.getDocuments();
-                                this._notificationsStore.addNotification(notification);
-                                this.selectedDocumentList = [];
-                            },
-                            (error) => {
-                                let errString = 'Unable to delete record';
-                                let notification = new Notification({
-                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                    'type': 'ERROR',
-                                    'createdAt': moment()
-                                });
-                                this.selectedDocumentList = [];
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                                this._notificationsStore.addNotification(notification);
-                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            },
-                            () => {
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                            });
-                    });
-                }
-            });
-        } else {
-            let notification = new Notification({
-                'title': 'select record to delete',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select record to delete');
-        }
-    }
+    //                             });
+    //                             this.getDocuments();
+    //                             this._notificationsStore.addNotification(notification);
+    //                             this.selectedDocumentList = [];
+    //                         },
+    //                         (error) => {
+    //                             let errString = 'Unable to delete record';
+    //                             let notification = new Notification({
+    //                                 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+    //                                 'type': 'ERROR',
+    //                                 'createdAt': moment()
+    //                             });
+    //                             this.selectedDocumentList = [];
+    //                             this._progressBarService.hide();
+    //                             this.isDeleteProgress = false;
+    //                             this._notificationsStore.addNotification(notification);
+    //                             this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    //                         },
+    //                         () => {
+    //                             this._progressBarService.hide();
+    //                             this.isDeleteProgress = false;
+    //                         });
+    //                 });
+    //             }
+    //         });
+    //     } else {
+    //         let notification = new Notification({
+    //             'title': 'select record to delete',
+    //             'type': 'ERROR',
+    //             'createdAt': moment()
+    //         });
+    //         this._notificationsStore.addNotification(notification);
+    //         this._notificationsService.error('Oh No!', 'select record to delete');
+    //     }
+    // }
 }
 
 export interface TwainSource {
     idx: number;
     name: string;
 }
-
-
 
