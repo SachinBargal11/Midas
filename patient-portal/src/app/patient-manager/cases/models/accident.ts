@@ -17,6 +17,7 @@ const AccidentRecord = Record({
     patientTypeId: PatientType.BICYCLIST,
     additionalPatients: '',
     isCurrentAccident: true,
+    medicalReportNumber:'',
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
@@ -39,12 +40,32 @@ export class Accident extends AccidentRecord {
     additionalPatients: string;
     isCurrentAccident: boolean;
     createByUserID: number;
+    medicalReportNumber:string;
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
 
     constructor(props) {
         super(props);
+    }
+
+       get patientTypeLabel(): string {
+        return Accident.getPatientTypeLabel(this.patientTypeId);
+    }
+   
+    static getPatientTypeLabel(patientType:PatientType): string {
+        switch (patientType) {
+            case PatientType.BICYCLIST:
+                return 'Bicyclist';
+            case PatientType.DRIVER:
+                return 'Driver';
+            case PatientType.PASSENGER:
+                return 'Passenger';
+            case PatientType.PEDESTRAIN:
+                return 'Pedestrain';
+            case PatientType.OD:
+                return 'OD';
+        }
     }
 
 }
