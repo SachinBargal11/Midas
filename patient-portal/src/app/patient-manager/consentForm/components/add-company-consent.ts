@@ -86,7 +86,7 @@ export class AddCompanyConsentComponent implements OnInit {
             //     .subscribe((patient: Patient) => {
             //         this.patient = patient;
             //         this.companyId = patient.companyId;
-                    this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+                    this.url = `${this._url}/documentmanager/uploadtoblob`
 
                 // },
                 // (error) => {

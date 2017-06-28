@@ -6,7 +6,7 @@ import { PatientsShellComponent } from './components/patients-shell';
 import { PatientBasicComponent } from './components/patient-basic';
 import { DemographicsComponent } from './components/demographics';
 // import { BalancesComponent } from './components/balances';
-// import { DocumentsComponent } from './components/documents';
+import { DocumentsComponent } from './components/documents';
 // import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 import { ShellComponent } from '../../commons/shell-component';
@@ -130,6 +130,14 @@ export const PatientsShellRoutes: Routes = [
                         }
                     }
                 ]
+            },
+            {
+                path: 'documents',
+                component: DocumentsComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Documents'
+                }
             },
             {
                 path: 'employer',

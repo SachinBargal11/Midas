@@ -109,8 +109,7 @@ export class AddConsentComponent implements OnInit {
             .subscribe((company) => {
                 this.companies = company,
                     this.selectedCompany = this.companies[0].id,
-                    this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
-
+                    this.url = `${this._url}/documentmanager/uploadtoblob`;
                 this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
                 this.signedDocumentPostRequestData = {
                     companyId: this.selectedCompany,
@@ -123,7 +122,7 @@ export class AddConsentComponent implements OnInit {
     selectcompany(event) {
         // this.selectedcompany = 0;
         this.currentCompany = parseInt(event.target.value);
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
         this.signedDocumentPostRequestData = {
             companyId: this.currentCompany,
@@ -159,8 +158,8 @@ export class AddConsentComponent implements OnInit {
     showDialog() {
         this.addConsentDialogVisible = true;
         this.caseId = this.caseId;
-        // this.companyId = providerCompanyId;
-        this.companyId = this._sessionStore.session.currentCompany.id;
+        this.companyId = this.selectedCompany;
+        // this.companyId = this._sessionStore.session.currentCompany.id;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -183,7 +182,7 @@ export class AddConsentComponent implements OnInit {
                 this.notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this.loadConsentForm();
-        
+                this.addConsentDialogVisible = false;
             }
         });
     }
