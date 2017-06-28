@@ -97,6 +97,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();
@@ -114,7 +115,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     showDialog() {
         this.addConsentDialogVisible = true;
-       this.selectedCaseId = this.currentCaseId;
+        this.selectedCaseId = this.currentCaseId;
         // this.companyId = providerCompanyId;
     }
 
