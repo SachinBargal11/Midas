@@ -13,6 +13,8 @@ import { AncillaryMaster } from '../../../account-setup/models/ancillary-master'
 })
 
 export class ScheduledEventEditorComponent implements OnChanges {
+    // timeZoneOffset = new Date().getTimezoneOffset();
+    // timezone = moment.tz.guess();
     ancillaryProviderId: number = null;
     allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
@@ -349,8 +351,11 @@ export class ScheduledEventEditorComponent implements OnChanges {
         }
         return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
             name: scheduledEventEditorFormValues.name,
+            // eventStart: moment(this.eventStartAsDate).toLocaleString(),
             eventStart: moment(this.eventStartAsDate),
+            // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes').toLocaleString(),
             eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+            timezone: this.eventStartAsDate.getTimezoneOffset(),
             // eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
             // eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).endOf('day') : moment(this.eventStartAsDate).add(this.duration, 'minutes'),
             // isAllDay: scheduledEventEditorFormValues.isAllDay,
