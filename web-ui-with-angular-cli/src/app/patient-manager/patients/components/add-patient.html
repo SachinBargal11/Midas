@@ -135,14 +135,18 @@
                 <div class="col-lg-4">
                     <label class="form-label">Patient Photo
                             </label>
-                    <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"
+                    <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"
                         maxFileSize="1000000">
                         <ng-template pTemplate type="content">
                             <ul *ngIf="uploadedFiles.length">
                                 <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
                             </ul>
                         </ng-template>
-                    </p-fileUpload>
+                    </p-fileUpload>-->
+                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
+                    <ul *ngIf="selectedFiles.length">
+                        <li *ngFor="let file of selectedFiles">{{file.name}} - {{file.size}} bytes</li>
+                    </ul>
                 </div>
             </div><br>
         </div>
