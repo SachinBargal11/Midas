@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -573,6 +573,15 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="NotifyContacts">
+          <Key>
+            <PropertyRef Name="ContactId" />
+          </Key>
+          <Property Name="ContactId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContactName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="OTP">
           <Key>
@@ -3160,6 +3169,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
         <Function Name="midas_sp_get_document_path" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="document_node" Type="nvarchar(max)" Mode="In" />
         </Function>
+        <Function Name="sp_CaseGetReadOnly" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CaseId" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="MIDASGBXModelStoreContainer">
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
@@ -3201,6 +3214,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MidasDocuments" EntityType="Self.MidasDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotifyContacts" EntityType="Self.NotifyContacts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient2" EntityType="Self.Patient2" Schema="dbo" store:Type="Tables" />
@@ -4564,6 +4578,15 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Company" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Notification" ToRole="Company" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Notification_Location_LocationId" FromRole="Notification" ToRole="Location" />
+        </EntityType>
+        <EntityType Name="NotifyContact">
+          <Key>
+            <PropertyRef Name="ContactId" />
+          </Key>
+          <Property Name="ContactId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="OTP">
           <Key>
@@ -7335,6 +7358,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatu" />
           <EntitySet Name="MidasDocuments" EntityType="Self.MidasDocument" />
           <EntitySet Name="Notifications" EntityType="Self.Notification" />
+          <EntitySet Name="NotifyContacts" EntityType="Self.NotifyContact" />
           <EntitySet Name="OTPs" EntityType="Self.OTP" />
           <EntitySet Name="PasswordTokens" EntityType="Self.PasswordToken" />
           <EntitySet Name="Patient2" EntityType="Self.Patient2" />
@@ -7989,7 +8013,28 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
             <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASGBXModel.sp_CaseGetReadOnly_Result)">
+            <Parameter Name="CaseId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_CaseGetReadOnly_Result">
+          <Property Type="Int32" Name="CaseId" Nullable="false" />
+          <Property Type="Int32" Name="PatientId" Nullable="false" />
+          <Property Type="Int32" Name="OriginatorCompanyId" Nullable="true" />
+          <Property Type="String" Name="OriginatorCompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PatientName" Nullable="true" MaxLength="152" />
+          <Property Type="String" Name="CaseTypeText" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CaseStatusText" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LocationName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="CarrierCaseNo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CaseSource" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CreateByUserID" Nullable="false" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" />
+          <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
+          <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8590,6 +8635,16 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotifyContacts">
+            <EntityTypeMapping TypeName="MIDASGBXModel.NotifyContact">
+              <MappingFragment StoreEntitySet="NotifyContacts">
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9416,6 +9471,27 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="midas_sp_get_document_path" FunctionName="MIDASGBXModel.Store.midas_sp_get_document_path" />
+          <FunctionImportMapping FunctionImportName="sp_CaseGetReadOnly" FunctionName="MIDASGBXModel.Store.sp_CaseGetReadOnly">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MIDASGBXModel.sp_CaseGetReadOnly_Result">
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="OriginatorCompanyId" ColumnName="OriginatorCompanyId" />
+                <ScalarProperty Name="OriginatorCompanyName" ColumnName="OriginatorCompanyName" />
+                <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+                <ScalarProperty Name="CaseTypeText" ColumnName="CaseTypeText" />
+                <ScalarProperty Name="CaseStatusText" ColumnName="CaseStatusText" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="CarrierCaseNo" ColumnName="CarrierCaseNo" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CaseSource" ColumnName="CaseSource" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
