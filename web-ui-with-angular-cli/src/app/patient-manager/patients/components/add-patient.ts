@@ -41,6 +41,7 @@ export class AddPatientComponent implements OnInit {
     isPatientOrDoctor: string = 'patient';
     isuserCompany: boolean = false;
     isAlreadyUser: boolean = false;
+    selectedFiles: any[] = [];
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -108,6 +109,9 @@ export class AddPatientComponent implements OnInit {
 
         //this.msgs = [];
         //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
+    }
+    myUploader(event) {
+        this.selectedFiles = event.files;
     }
 
     savePatient() {

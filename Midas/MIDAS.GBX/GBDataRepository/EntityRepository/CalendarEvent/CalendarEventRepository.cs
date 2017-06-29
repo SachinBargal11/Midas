@@ -102,11 +102,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 SlotDuration = 30;
             }
 
-            Calendar calendar = new Calendar();
+            //Calendar calendar = new Calendar();
+            Dictionary<HashSet<Occurrence>, string> Occurrences = new Dictionary<HashSet<Occurrence>, string>();
             foreach (var eachEvent in CalendarEvents)
             {
                 if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
                 {
+                    Calendar calendar = new Calendar();
                     var newEvent = new Event()
                     {
                         Name = eachEvent.Name,
@@ -196,10 +198,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     calendar.Events.Add(newEvent);
+                    HashSet<Occurrence> newEventOccurrences = new HashSet<Occurrence>();
+                    newEventOccurrences = calendar.GetOccurrences(StartDate, EndDate);
+
+                    Occurrences.Add(newEventOccurrences, eachEvent.TimeZone);
                 }
             }
-
-            var Occurrences = calendar.GetOccurrences(StartDate, EndDate);
+            
+            //var Occurrences = calendar.GetOccurrences(StartDate, EndDate);
 
             List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
 
@@ -238,9 +244,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, SlotDuration, 0)) });
                 }
 
-                var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes) })
-                                                    .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
+                List<BO.StartAndEndTime> EventTimes = new List<BO.StartAndEndTime>();
+
+                foreach (var eachOccurrences in Occurrences)
+                {
+                    string TimeZone = eachOccurrences.Value;
+                    int intTimeZone = 0;
+                    int.TryParse(TimeZone, out intTimeZone);
+
+                    intTimeZone = intTimeZone * -1;
+
+                    HashSet<Occurrence> newEventOccurrences = eachOccurrences.Key;
+
+                    EventTimes.AddRange(newEventOccurrences.Where(p => p.Period.StartTime.AddMinutes(intTimeZone).Date == eachEventDay)
+                                                           .Select(p => new BO.StartAndEndTime {
+                                                               StartTime = p.Period.StartTime.AddMinutes(intTimeZone).Value,
+                                                               EndTime = p.Period.EndTime.AddMinutes(intTimeZone).Value
+                                                           })
+                                                           .ToList().Distinct().OrderBy(p => p.StartTime).ToList());
+                }                
 
                 foreach (var eachEventTime in EventTimes)
                 {
@@ -303,11 +325,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 SlotDuration = 30;
             }
 
-            Calendar calendar = new Calendar();
+            //Calendar calendar = new Calendar();
+            Dictionary<HashSet<Occurrence>, string> Occurrences = new Dictionary<HashSet<Occurrence>, string>();
             foreach (var eachEvent in CalendarEvents)
             {
                 if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
                 {
+                    Calendar calendar = new Calendar();
                     var newEvent = new Event()
                     {
                         Name = eachEvent.Name,
@@ -391,10 +415,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     calendar.Events.Add(newEvent);
+                    HashSet<Occurrence> newEventOccurrences = new HashSet<Occurrence>();
+                    newEventOccurrences = calendar.GetOccurrences(StartDate, EndDate);
+
+                    Occurrences.Add(newEventOccurrences, eachEvent.TimeZone);
                 }
             }
 
-            var Occurrences = calendar.GetOccurrences(StartDate, EndDate);
+            //var Occurrences = calendar.GetOccurrences(StartDate, EndDate);
 
             List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
 
@@ -433,9 +461,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     StartAndEndTimeSlots.Add(new BO.StartAndEndTimeSlots() { StartTime = i, EndTime = i.Add(new TimeSpan(0, SlotDuration, 0)) });
                 }
 
-                var EventTimes = Occurrences.Where(p => p.Period.StartTime.AsSystemLocal.Date == eachEventDay)
-                                                    .Select(p => new BO.StartAndEndTime { StartTime = p.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes), EndTime = p.Period.EndTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes) })
-                                                    .ToList().Distinct().OrderBy(p => p.StartTime).ToList();
+                List<BO.StartAndEndTime> EventTimes = new List<BO.StartAndEndTime>();
+
+                foreach (var eachOccurrences in Occurrences)
+                {
+                    string TimeZone = eachOccurrences.Value;
+                    int intTimeZone = 0;
+                    int.TryParse(TimeZone, out intTimeZone);
+
+                    intTimeZone = intTimeZone * -1;
+
+                    HashSet<Occurrence> newEventOccurrences = eachOccurrences.Key;
+
+                    EventTimes.AddRange(newEventOccurrences.Where(p => p.Period.StartTime.AddMinutes(intTimeZone).Date == eachEventDay)
+                                                .Select(p => new BO.StartAndEndTime {
+                                                    StartTime = p.Period.StartTime.AddMinutes(intTimeZone).Value,
+                                                    EndTime = p.Period.EndTime.AddMinutes(intTimeZone).Value
+                                                })
+                                                .ToList().Distinct().OrderBy(p => p.StartTime).ToList());
+                }
 
                 foreach (var eachEventTime in EventTimes)
                 {
@@ -569,12 +613,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 var Occurrences = calendar.GetOccurrences(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(3));
 
+                int intTimeZone = 0;
+                int.TryParse(CalEvent.TimeZone, out intTimeZone);
+
+                intTimeZone = intTimeZone * -1;
+
                 foreach (var eachOccurrences in Occurrences)
                 {
                     BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
-                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes).Date;
+                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.AddMinutes(intTimeZone).Date;
+
                     FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
-                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() { StartTime = eachOccurrences.Period.StartTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes), EndTime = eachOccurrences.Period.EndTime.AsSystemLocal.AddMinutes(UTCAdjustment_Minutes) });
+
+                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime() {
+                        StartTime = eachOccurrences.Period.StartTime.AddMinutes(intTimeZone).Value,
+                        EndTime = eachOccurrences.Period.EndTime.AddMinutes(intTimeZone).Value
+                    });
+
                     freeSlots.Add(FreeSlotForDay);
                 }
             }                
