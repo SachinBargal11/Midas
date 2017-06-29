@@ -67,6 +67,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
         public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<NotifyContact> NotifyContacts { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
@@ -126,6 +127,19 @@ namespace MIDAS.GBX.DataRepository.Model
                 new ObjectParameter("document_node", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("midas_sp_get_document_path", document_nodeParameter);
+        }
+    
+        public virtual ObjectResult<sp_CaseGetReadOnly_Result> sp_CaseGetReadOnly(Nullable<int> caseId, Nullable<int> companyId)
+        {
+            var caseIdParameter = caseId.HasValue ?
+                new ObjectParameter("CaseId", caseId) :
+                new ObjectParameter("CaseId", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_CaseGetReadOnly_Result>("sp_CaseGetReadOnly", caseIdParameter, companyIdParameter);
         }
     }
 }
