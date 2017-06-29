@@ -21,17 +21,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     {
         private DbSet<CalendarEvent> _dbCalendarEvent;
 
-        private int UTCAdjustment_Minutes = 0;
+        //private int UTCAdjustment_Minutes = 0;
 
         public CalendarEventRepository(MIDASGBXEntities context) : base(context)
         {
             _dbCalendarEvent = context.Set<CalendarEvent>();
             context.Configuration.ProxyCreationEnabled = false;
 
-            if (ConfigurationManager.AppSettings["UTCAdjustment_Minutes"] != null)
-            {
-                int.TryParse(ConfigurationManager.AppSettings["UTCAdjustment_Minutes"], out UTCAdjustment_Minutes);
-            }
+            //if (ConfigurationManager.AppSettings["UTCAdjustment_Minutes"] != null)
+            //{
+            //    int.TryParse(ConfigurationManager.AppSettings["UTCAdjustment_Minutes"], out UTCAdjustment_Minutes);
+            //}
         }
 
         #region Validate Entities
