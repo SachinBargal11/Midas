@@ -74,10 +74,10 @@ export class CaseBasicComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this.progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
+            let result = this._casesStore.getCaseReadOnly(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
-                    this.caseDetail = caseDetail;
+                    this.caseDetail = caseDetail[0];
                     // this._locationsStore.fetchLocationById(this.caseDetail.locationId)
                     // .subscribe(
                     //     (locationDetail: LocationDetails) => {
@@ -118,8 +118,8 @@ export class CaseBasicComponent implements OnInit {
             .subscribe(locations => this.locations = locations);
         // this._employerStore.getCurrentEmployer(this.patientId)
         //     .subscribe(employer => this.employer = employer);
-        this._attorneyMasterStore.getAttorneyMasters()
-            .subscribe(attorneys => this.attorneys = attorneys);
+        // this._attorneyMasterStore.getAttorneyMasters()
+        //     .subscribe(attorneys => this.attorneys = attorneys);
     }
 
     saveCase() {
