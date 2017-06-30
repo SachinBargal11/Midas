@@ -24,6 +24,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public string CarrierCaseNo { get; set; }
         public string CompanyName { get; set; }
         public string CaseSource { get; set; }
+        public string MedicalProvider { get; set; }
+        public string AttorneyProvider { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
