@@ -7,6 +7,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
+/*
 CREATE PROCEDURE [dbo].[sp_CaseGetReadOnly]
 (
     @CaseId         INT,
@@ -94,3 +95,4 @@ BEGIN
 END
 
 GO
+*/
