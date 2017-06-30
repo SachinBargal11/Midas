@@ -1273,7 +1273,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var CaseReadOnly = _context.sp_CaseGetReadOnly(caseId, companyId);
 
-            return CaseReadOnly;
+            if (CaseReadOnly != null && CaseReadOnly.Count() > 0)
+            {
+                return CaseReadOnly.FirstOrDefault();
+            }
+            else
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //return CaseReadOnly;
 
             //var CaseInfo = (from ca in _context.Cases
 
