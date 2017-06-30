@@ -48,6 +48,19 @@ export class CaseService {
         return <Observable<Case>>Observable.fromPromise(promise);
     }
 
+    getCaseReadOnly(caseId: Number): Observable<Case> {
+        let promise: Promise<Case> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getReadOnly/' + caseId + '/0').map(res => res.json())
+                .subscribe((data: any) => {
+                        resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
     getCases(patientId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Case/getByPatientId/' + patientId)
