@@ -11,7 +11,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 {
    [TestClass]
     public class CompanyControllerTest
-{
+{/*
        [TestMethod]
        public void SignupTest()
        {
@@ -326,7 +326,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            //company.ID = 200;
            //controller.Get(company);
        }
-
+*/
 }
 
 }

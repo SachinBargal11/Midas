@@ -12,7 +12,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 {
     [TestClass]
     public class SpecialityControllerTest
-    {
+    {/*
         [TestMethod]
         public void AddTest()
         {
@@ -68,5 +68,5 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 
             controller.IsUnique(speciality);
         }
-    }
+    */}
 }

@@ -12,7 +12,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 {
     [TestClass]
     public class PasswordTokenControllerTest
-    {
+    {/*
         [TestMethod]
         public void AddTest()
         {
@@ -79,7 +79,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             controller.ValidatePassword(password);
         }
 
-
+        */
 
 
     }

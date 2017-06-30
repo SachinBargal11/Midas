@@ -11,7 +11,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 {
     [TestClass]
     public class LocationControllerTest
-    {
+    {/*
         [TestMethod]
         public void GetLocationTest()
         {
@@ -256,6 +256,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 
             controller.IsUnique(Loc);
         }
-
+        */
     }
 }

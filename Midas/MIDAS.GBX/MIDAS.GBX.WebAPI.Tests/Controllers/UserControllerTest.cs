@@ -11,7 +11,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 {
     [TestClass]
     public class UserControllerTest
-    {
+    {/*
         [TestMethod]
         public void SigninTest()
         {
@@ -148,5 +148,5 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
         {
             
         }
-    }
+    */}
 }

@@ -11,7 +11,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 {
     [TestClass]
     public class OTPControllerTest
-    {
+    {/*
         [TestMethod]
         public void AddTest()
         {
@@ -168,6 +168,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             
             controller.ValidateOTP(validate);
         }
-
+        */
     }
 }

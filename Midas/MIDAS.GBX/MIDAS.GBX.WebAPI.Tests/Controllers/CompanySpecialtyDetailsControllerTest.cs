@@ -12,7 +12,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
     [TestClass]
     public class CompanySpecialtyDetailsControllerTest
     {
-
+        /*
         [TestMethod]
         public void GetAllTest()
         {
@@ -61,5 +61,5 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
 
             controller.Get(CSDetails);
         }
-    }
+    */}
 }
