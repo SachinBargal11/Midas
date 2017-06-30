@@ -144,8 +144,8 @@
                         </ng-template>
                     </p-fileUpload>-->
                     <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
-                    <ul *ngIf="selectedFiles.length">
-                        <li *ngFor="let file of selectedFiles">{{file.name}} - {{file.size}} bytes</li>
+                    <ul *ngIf="files.length">
+                        <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
                     </ul>
                 </div>
             </div><br>
