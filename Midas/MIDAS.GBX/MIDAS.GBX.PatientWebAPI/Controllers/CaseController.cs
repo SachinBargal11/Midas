@@ -89,6 +89,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getReadOnly/{CaseId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetReadOnly(int CaseId, int CompanyId)
+        {
+            return requestHandler.GetReadOnly(Request, CaseId, CompanyId);
+        }
+
+        [HttpGet]
         //[HttpDelete]
         [Route("Delete/{id}")]
         //[AllowAnonymous]
