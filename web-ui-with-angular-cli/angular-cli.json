@@ -31,6 +31,7 @@
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/moment/min/moment.min.js",
+        "../node_modules/moment-timezone/builds/moment-timezone.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.js",
         "./Resources/dynamsoft.webtwain.initiate.js",
         "./Resources/dynamsoft.webtwain.config.js"
