@@ -23,3 +23,12 @@ GO
 
 --ALTER TABLE [dbo].[CalendarEvent] ADD [IsCancelled] [bit] NULL DEFAULT 0
 --GO
+--ALTER TABLE [dbo].[CalendarEvent] ALTER COLUMN [EventStart] [datetime] NOT NULL
+--GO
+--ALTER TABLE [dbo].[CalendarEvent] ALTER COLUMN [EventEnd] [datetime] NOT NULL
+--GO
+
+--ALTER TABLE [dbo].[CalendarEvent] ALTER COLUMN [EventStart] [datetime2](7) NOT NULL
+--GO
+--ALTER TABLE [dbo].[CalendarEvent] ALTER COLUMN [EventEnd] [datetime2](7) NOT NULL
+--GO
