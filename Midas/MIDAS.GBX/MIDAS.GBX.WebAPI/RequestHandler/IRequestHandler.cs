@@ -55,7 +55,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetIsExistingUser(HttpRequestMessage request, string User, string SSN);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
-        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId,int companyId);        
+        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId,int companyId);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
