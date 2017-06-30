@@ -56,7 +56,7 @@
     <p-column header="File Name">
         <ng-template let-document="rowData" pTemplate="body">
             <u>
-                <a style="color: blue" (click)="downloadPdf(document.document.originalResponse.midasDocumentId)">{{document.document.originalResponse.documentName}}</a>
+                <a style="color: blue" (click)="downloadPdf(document.document.originalResponse)">{{document.document.originalResponse.documentName}}</a>
 </u>
 </ng-template>
 </p-column>

@@ -134,8 +134,8 @@ export class ListCompanyConsentComponent implements OnInit {
         caseDocuments.forEach(caseDocument => {
             // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
             this.progressBarService.show();
-            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
-                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+            if (caseDocument.document.originalResponse.companyId === companyId) {
+                this._consentStore.downloadConsentForm(companyId, caseDocument.document.originalResponse.midasDocumentId)
                     .subscribe(
                     (response) => {
                         // this.document = document

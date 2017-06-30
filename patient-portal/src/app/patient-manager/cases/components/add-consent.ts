@@ -224,9 +224,9 @@ export class AddConsentComponent implements OnInit {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    downloadPdf(documentId) {
+    downloadPdf(document) {
         this._progressBarService.show();
-        this._consentStore.downloadConsentForm(this.caseId, documentId)
+        this._consentStore.downloadConsentForm(document.companyId, document.midasDocumentId)
             .subscribe(
             (response) => {
                 // this.document = document
