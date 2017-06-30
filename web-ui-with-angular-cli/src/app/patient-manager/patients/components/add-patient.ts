@@ -18,6 +18,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { UsersStore } from '../../../medical-provider/users/stores/users-store';
 import * as _ from 'underscore';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'add-patient',
@@ -41,7 +42,10 @@ export class AddPatientComponent implements OnInit {
     isPatientOrDoctor: string = 'patient';
     isuserCompany: boolean = false;
     isAlreadyUser: boolean = false;
-    selectedFiles: any[] = [];
+    files: any[] = [];
+    method: string = 'POST';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    url;
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -91,7 +95,7 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         //  this.checkForExist('satish.k@codearray.tech', '  ');
         let today = new Date();
         let currentDate = today.getDate();
@@ -111,7 +115,23 @@ export class AddPatientComponent implements OnInit {
         //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
     }
     myUploader(event) {
-        this.selectedFiles = event.files;
+        this.files = event.files;
+    }
+    uploadProfileImage(patientId: number) {
+        let xhr = new XMLHttpRequest(),
+            formData = new FormData();
+
+        for (let i = 0; i < this.files.length; i++) {
+            formData.append(this.files[i].name, this.files[i], this.files[i].name);
+        }
+
+        xhr.open(this.method, this.url, true);
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"personal", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+
+        xhr.withCredentials = false;
+
+        xhr.send(formData);
     }
 
     savePatient() {
@@ -124,8 +144,8 @@ export class AddPatientComponent implements OnInit {
                     _.forEach(users, (currentUser: User) => {
                         this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
                         if (!this.isuserCompany) {
-                            this.isExist = true;
-                            this.displayExistPopup = true;
+                            // this.isExist = true;
+                            // this.displayExistPopup = true;
                         }
                         else {
                             let errString = 'User Already exists.';
@@ -182,6 +202,7 @@ export class AddPatientComponent implements OnInit {
                     result = this._patientsStore.addPatient(patient);
                     result.subscribe(
                         (response) => {
+                            this.uploadProfileImage(response.id);
                             let notification = new Notification({
                                 'title': 'Patient added successfully!',
                                 'type': 'SUCCESS',
