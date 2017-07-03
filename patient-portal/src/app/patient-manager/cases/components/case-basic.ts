@@ -77,7 +77,7 @@ export class CaseBasicComponent implements OnInit {
             let result = this._casesStore.getCaseReadOnly(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
-                    this.caseDetail = caseDetail[0];
+                    this.caseDetail = caseDetail;
                     // this._locationsStore.fetchLocationById(this.caseDetail.locationId)
                     // .subscribe(
                     //     (locationDetail: LocationDetails) => {

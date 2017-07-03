@@ -180,9 +180,9 @@ export class ConsentStore {
     }
 
 
-    downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+    downloadConsentForm(companyId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
-            this._ConsentFormService.downloadConsentForm(CaseId, documentId).subscribe((consent: Consent[]) => {
+            this._ConsentFormService.downloadConsentForm(companyId, documentId).subscribe((consent: Consent[]) => {
                 this._Consent.next(List(consent));
                 resolve(consent);
             }, error => {

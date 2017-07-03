@@ -320,7 +320,8 @@ export class PendingReferralsComponent implements OnInit {
             locationId: this.selectedLocationId,
             calendarEvent: new ScheduledEvent({
                 eventStart: slotDetail.start,
-                eventEnd: slotDetail.end
+                eventEnd: slotDetail.end,
+                timezone: slotDetail.start.toDate().getTimezoneOffset(),
             })
         });
         return patientVisit;
