@@ -127,11 +127,14 @@ export class Case extends CaseRecord {
 
     caseLabelEditable(companyId): boolean {
         let isCaseLabelEditable: boolean = false;
-        _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
-                isCaseLabelEditable = true;
-            }
-        });
+        // _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
+        //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
+        //         isCaseLabelEditable = true;
+        //     }
+        // });
+        if (this.orignatorCompanyId == companyId) {
+             return isCaseLabelEditable = true;
+        }
         return isCaseLabelEditable;
     }
 
