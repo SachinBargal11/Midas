@@ -1271,7 +1271,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //                        && (co.IsDeleted.HasValue == false || (co.IsDeleted.HasValue == true && co.IsDeleted.Value == false))
             //                  select co.Name).FirstOrDefault();
 
-            var CaseReadOnly = _context.sp_CaseGetReadOnly(caseId, companyId);
+            var CaseReadOnly1 = _context.sp_CaseGetReadOnly(caseId, companyId);
+            var CaseReadOnly = CaseReadOnly1.ToList();
 
             if (CaseReadOnly != null && CaseReadOnly.Count() > 0)
             {
