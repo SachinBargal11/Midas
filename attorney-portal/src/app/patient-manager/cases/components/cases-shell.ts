@@ -61,13 +61,20 @@ export class CaseShellComponent implements OnInit {
                     this.caseStatus = caseDetail.caseStatusLabel;
                     this.caseType = caseDetail.caseTypeLabel;
                     if(this.caseDetail.caseStatusId != 2){
-                       _.forEach(this.caseDetail.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-                        if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === sessionStore.session.currentCompany.id)) {
-                            this.caseEditableLabel = true;
-                        }else{
-                            this.caseEditableLabel = false;
-                        }
-                    });
+                    //    _.forEach(this.caseDetail.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
+                    //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === sessionStore.session.currentCompany.id)) {
+                    //         this.caseEditableLabel = true;
+                    //     }else{
+                    //         this.caseEditableLabel = false;
+                    //     }
+                    // });
+                    if(caseDetail.orignatorCompanyId == sessionStore.session.currentCompany.id){
+                        this.caseEditableLabel = true;
+                    }
+                    else
+                    {
+                        this.caseEditableLabel = false;
+                    }
                     }else{
                         this.caseEditableLabel = false
                     }
