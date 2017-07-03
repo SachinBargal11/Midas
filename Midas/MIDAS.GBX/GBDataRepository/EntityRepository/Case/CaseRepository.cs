@@ -1513,31 +1513,68 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var company1 = _context.CaseCompanyMappings.Where(p => openCases.Contains(p.CaseId)
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .Select(p => p.Company1)
-                                                       .Include("CompanyType1");
+                                                       .Select(p => /*p.Company1*/new
+                                                       {
+                                                           p.Company1.id,
+                                                           p.Company1.Status,
+                                                           p.Company1.Name,
+                                                           p.Company1.CompanyType,
+                                                           //p.Company1.SubscriptionPlanType,
+                                                           //p.Company1.CompanyStatusTypeID,
+                                                           //p.Company1.TaxID,
+                                                           p.Company1.IsDeleted,
+                                                           //p.Company1.CreateByUserID,
+                                                           //p.Company1.CreateDate,
+                                                           //p.Company1.UpdateByUserID,
+                                                           //p.Company1.UpdateDate,
+
+                                                           companyType1 = new { p.Company1.CompanyType1.id, p.Company1.CompanyType1.Name, p.Company1.CompanyType1.IsDeleted },
+
+                                                           p.CaseId
+                                                       });
+            //.Include("CompanyType1");
 
             var company2 = _context.Referral2.Where(p => openCases.Contains(p.CaseId)
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .Select(p => p.Company1)
-                                             .Include("CompanyType1");
+                                             .Select(p => /*p.Company1*/new
+                                             {
+                                                 p.Company1.id,
+                                                 p.Company1.Status,
+                                                 p.Company1.Name,
+                                                 p.Company1.CompanyType,
+                                                 //p.Company1.SubscriptionPlanType,
+                                                 //p.Company1.CompanyStatusTypeID,
+                                                 //p.Company1.TaxID,
+                                                 p.Company1.IsDeleted,
+                                                 //p.Company1.CreateByUserID,
+                                                 //p.Company1.CreateDate,
+                                                 //p.Company1.UpdateByUserID,
+                                                 //p.Company1.UpdateDate,
+
+                                                 companyType1 = new { p.Company1.CompanyType1.id, p.Company1.CompanyType1.Name, p.Company1.CompanyType1.IsDeleted },
+
+                                                 p.CaseId
+                                             });
+                                             //.Include("CompanyType1");
 
             if (company1 == null && company2 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            List<BO.Company> lstcompany = new List<BO.Company>();
+            //List<BO.Company> lstcompany = new List<BO.Company>();
 
-            foreach (var item in company1.Union(company2).Distinct())
-            {
-                BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
-                if (boCompany != null)
-                {
-                    lstcompany.Add(boCompany);
-                }
-            }
+            //foreach (var item in company1.Union(company2).Distinct())
+            //{
+            //    BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
+            //    if (boCompany != null)
+            //    {
+            //        lstcompany.Add(boCompany);
+            //    }
+            //}
 
-            return (object)lstcompany;
+            //return (object)lstcompany;
+            return company1.Union(company2).Distinct().ToList();
         }
         #endregion
 
