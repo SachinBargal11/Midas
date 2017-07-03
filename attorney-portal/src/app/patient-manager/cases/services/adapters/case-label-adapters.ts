@@ -17,6 +17,7 @@ export class CaseLabelAdapter {
                 locationName:data.locationName,
                 carrierCaseNo:data.carrierCaseNo,
                 companyName:data.companyName,
+                medicalProvider:data.medicalProvider,
                 caseSource: data.caseSource,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
