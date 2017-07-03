@@ -833,6 +833,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetOpenCaseCompaniesByPatientId(int PatientId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

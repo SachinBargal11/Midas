@@ -1504,6 +1504,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetCaseCompanies
+        public override object GetOpenCaseCompaniesByPatientId(int PatientId)
+        {
+            var openCases = _context.Cases.Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                          .Select(p => p.Id);
+
+            var company1 = _context.CaseCompanyMappings.Where(p => openCases.Contains(p.CaseId)
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .Select(p => p.Company1)
+                                                       .Include("CompanyType1");
+
+            var company2 = _context.Referral2.Where(p => openCases.Contains(p.CaseId)
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .Select(p => p.Company1)
+                                             .Include("CompanyType1");
+
+            if (company1 == null && company2 == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Company> lstcompany = new List<BO.Company>();
+
+            foreach (var item in company1.Union(company2).Distinct())
+            {
+                BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
+                if (boCompany != null)
+                {
+                    lstcompany.Add(boCompany);
+                }
+            }
+
+            return (object)lstcompany;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
