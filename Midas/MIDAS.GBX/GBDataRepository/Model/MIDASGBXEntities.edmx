@@ -53,22 +53,6 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="AuditTableMapping">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TableName" Type="nvarchar" MaxLength="250" />
-          <Property Name="AuditInsert" Type="bit" Nullable="false" />
-          <Property Name="AuditUpdate" Type="bit" Nullable="false" />
-          <Property Name="AuditDelete" Type="bit" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="TriggerName" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="BlobStorage">
           <Key>
             <PropertyRef Name="Id" />
@@ -267,6 +251,7 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="InitialCode" Type="nvarchar" MaxLength="250" />
           <Property Name="ReEvalCode" Type="nvarchar" MaxLength="250" />
+          <Property Name="MandatoryProcCode" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyStatusType">
           <Key>
@@ -362,6 +347,22 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="IsCalendarPublic" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DoctorCaseConsentApproval">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DoctorId" Type="int" Nullable="false" />
+          <Property Name="CaseId" Type="int" />
+          <Property Name="ConsentReceived" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="Patientid" Type="int" />
+          <Property Name="FileName" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
             <PropertyRef Name="id" />
@@ -405,7 +406,7 @@
           <Property Name="ISCUSTOMTYPE" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'MIDASGBXDEV.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DocumentNodes">
           <Key>
             <PropertyRef Name="id" />
@@ -890,14 +891,14 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="ProcedureCodeDesc" Type="nvarchar" MaxLength="250" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="Amount" Type="money" />
+          <Property Name="SpecialityId" Type="int" />
+          <Property Name="RoomId" Type="int" />
+          <Property Name="RoomTestId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="SpecialityId" Type="int" />
-          <Property Name="RoomId" Type="int" />
-          <Property Name="RoomTestId" Type="int" />
         </EntityType>
         <EntityType Name="ProcedureCodeCompanyMapping">
           <Key>
@@ -1113,7 +1114,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="MandatoryProcCode" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -1274,77 +1274,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="DocumentType" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="AppMessageQueue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="AppName" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="QueueTypeId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EMailConfiguration">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="QueueTypeId" Type="int" Nullable="false" />
-          <Property Name="SmtpClient" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="SmtpClient_Port" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="NetworkCredential_EMail" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="NetworkCredential_Pwd" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EMailQueue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="FromEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ToEmail" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="CcEmail" Type="nvarchar" MaxLength="500" />
-          <Property Name="BccEmail" Type="nvarchar" MaxLength="500" />
-          <Property Name="EMailSubject" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="EMailBody" Type="nvarchar" MaxLength="4000" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="DeliveryDate" Type="datetime2" Precision="7" />
-          <Property Name="NumberOfAttempts" Type="int" Nullable="false" />
-          <Property Name="ResultObject" Type="nvarchar" MaxLength="4000" />
-        </EntityType>
-        <EntityType Name="QueueType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="QueueTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SMSConfiguration">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="QueueTypeId" Type="int" Nullable="false" />
-          <Property Name="AccountSid" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="AuthToken" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SMSQueue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AppId" Type="int" Nullable="false" />
-          <Property Name="FromNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ToNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Message" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="DeliveryDate" Type="datetime2" Precision="7" />
-          <Property Name="NumberOfAttempts" Type="int" Nullable="false" />
-          <Property Name="ResultObject" Type="nvarchar" MaxLength="4000" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK_AddressInfo_State_StateCode" />-->
@@ -1393,18 +1322,6 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="AdjusterMaster">
               <PropertyRef Name="InsuranceMasterId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AppMessageQueue_QueueType_QueueTypeId">
-          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
-          <End Role="AppMessageQueue" Type="Self.AppMessageQueue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QueueType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AppMessageQueue">
-              <PropertyRef Name="QueueTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1795,6 +1712,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorCaseConsentApproval_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
+          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DoctorCaseConsentApproval">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DoctorCaseConsentApproval">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DoctorLocationSchedule_Doctor">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
           <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
@@ -1867,24 +1808,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_EMailConfiguration_AppMessageQueue_AppId' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_EMailConfiguration_AppMessageQueue_AppId" />-->
-        <Association Name="FK_EMailConfiguration_QueueType_QueueTypeId">
-          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
-          <End Role="EMailConfiguration" Type="Self.EMailConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QueueType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EMailConfiguration">
-              <PropertyRef Name="QueueTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_EMailQueue_AppMessageQueue_AppId' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_EMailQueue_AppMessageQueue_AppId" />-->
         <Association Name="FK_GeneralSettings_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="GeneralSettings" Type="Self.GeneralSettings" Multiplicity="*" />
@@ -2098,6 +2021,18 @@ warning 6035: The relationship 'FK_EMailQueue_AppMessageQueue_AppId' has columns
             </Principal>
             <Dependent Role="PatientDocuments">
               <PropertyRef Name="MidasDocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientDocuments_Patient2_PatientId">
+          <End Role="Patient2" Type="Self.Patient2" Multiplicity="1" />
+          <End Role="PatientDocuments" Type="Self.PatientDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientDocuments">
+              <PropertyRef Name="PatientId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2629,6 +2564,18 @@ warning 6035: The relationship 'FK_EMailQueue_AppMessageQueue_AppId' has columns
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProcedureCode_Roomt_RoomId">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProcedureCode_RoomTest_RoomTestId">
           <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="0..1" />
           <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
@@ -2989,24 +2936,6 @@ warning 6035: The relationship 'FK_EMailQueue_AppMessageQueue_AppId' has columns
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_SMSConfiguration_AppMessageQueue_AppId' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_SMSConfiguration_AppMessageQueue_AppId" />-->
-        <Association Name="FK_SMSConfiguration_QueueType_QueueTypeId">
-          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
-          <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QueueType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SMSConfiguration">
-              <PropertyRef Name="QueueTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <!--Errors Found During Generation:
-warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
-        <Association Name="FK_SMSQueue_AppMessageQueue_AppId" />-->
         <Association Name="FK_SpecialityDetails_Specialty">
           <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
           <End Role="SpecialityDetails" Type="Self.SpecialityDetails" Multiplicity="*" />
@@ -3139,18 +3068,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserStatus_UserCompany_UserStatusID">
-          <End Role="UserStatus" Type="Self.UserStatus" Multiplicity="1" />
-          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserStatus">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserCompany">
-              <PropertyRef Name="UserStatusID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_VisitDocuments_MidasDocuments_MidasDocumentId">
           <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="1" />
           <End Role="VisitDocuments" Type="Self.VisitDocuments" Multiplicity="*" />
@@ -3177,7 +3094,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attorney" EntityType="Self.Attorney" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AuditTableMapping" EntityType="Self.AuditTableMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BlobStorage" EntityType="Self.BlobStorage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BlobStorageType" EntityType="Self.BlobStorageType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalendarEvent" EntityType="Self.CalendarEvent" Schema="dbo" store:Type="Tables" />
@@ -3199,6 +3115,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="DiagnosisCode" EntityType="Self.DiagnosisCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiagnosisType" EntityType="Self.DiagnosisType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DoctorCaseConsentApproval" EntityType="Self.DoctorCaseConsentApproval" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpecialities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DocumentNodeObjectMapping" EntityType="Self.DocumentNodeObjectMapping" Schema="dbo" store:Type="Tables" />
@@ -3259,12 +3176,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="UserStatus" EntityType="Self.UserStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocuments" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AppMessageQueue" EntityType="Self.AppMessageQueue" Schema="Messaging" store:Type="Tables" />
-          <EntitySet Name="EMailConfiguration" EntityType="Self.EMailConfiguration" Schema="Messaging" store:Type="Tables" />
-          <EntitySet Name="EMailQueue" EntityType="Self.EMailQueue" Schema="Messaging" store:Type="Tables" />
-          <EntitySet Name="QueueType" EntityType="Self.QueueType" Schema="Messaging" store:Type="Tables" />
-          <EntitySet Name="SMSConfiguration" EntityType="Self.SMSConfiguration" Schema="Messaging" store:Type="Tables" />
-          <EntitySet Name="SMSQueue" EntityType="Self.SMSQueue" Schema="Messaging" store:Type="Tables" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DocumentNodes].[id] AS [id], 
@@ -3288,10 +3199,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <AssociationSet Name="FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" Association="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId">
             <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AppMessageQueue_QueueType_QueueTypeId" Association="Self.FK_AppMessageQueue_QueueType_QueueTypeId">
-            <End Role="QueueType" EntitySet="QueueType" />
-            <End Role="AppMessageQueue" EntitySet="AppMessageQueue" />
           </AssociationSet>
           <AssociationSet Name="FK_Attorney_User_id" Association="Self.FK_Attorney_User_id">
             <End Role="User" EntitySet="User" />
@@ -3421,6 +3328,14 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="User" EntitySet="User" />
             <End Role="Doctor" EntitySet="Doctor" />
           </AssociationSet>
+          <AssociationSet Name="FK_DoctorCaseConsentApproval_Case_CaseId" Association="Self.FK_DoctorCaseConsentApproval_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
+            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApproval" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId" Association="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApproval" />
+          </AssociationSet>
           <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
             <End Role="Doctor" EntitySet="Doctor" />
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
@@ -3444,10 +3359,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <AssociationSet Name="FK_DocumentNodeObjectMapping_Company" Association="Self.FK_DocumentNodeObjectMapping_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="DocumentNodeObjectMapping" EntitySet="DocumentNodeObjectMapping" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EMailConfiguration_QueueType_QueueTypeId" Association="Self.FK_EMailConfiguration_QueueType_QueueTypeId">
-            <End Role="QueueType" EntitySet="QueueType" />
-            <End Role="EMailConfiguration" EntitySet="EMailConfiguration" />
           </AssociationSet>
           <AssociationSet Name="FK_GeneralSettings_Company_CompanyId" Association="Self.FK_GeneralSettings_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
@@ -3519,6 +3430,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           </AssociationSet>
           <AssociationSet Name="FK_PatientDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId">
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+            <End Role="PatientDocuments" EntitySet="PatientDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientDocuments_Patient2_PatientId" Association="Self.FK_PatientDocuments_Patient2_PatientId">
+            <End Role="Patient2" EntitySet="Patient2" />
             <End Role="PatientDocuments" EntitySet="PatientDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientEmpInfo_AddressInfo_EmpAddressId" Association="Self.FK_PatientEmpInfo_AddressInfo_EmpAddressId">
@@ -3697,6 +3612,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="Room" EntitySet="Room" />
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Roomt_RoomId" Association="Self.FK_ProcedureCode_Roomt_RoomId">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProcedureCode_RoomTest_RoomTestId" Association="Self.FK_ProcedureCode_RoomTest_RoomTestId">
             <End Role="RoomTest" EntitySet="RoomTest" />
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
@@ -3817,10 +3736,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_SMSConfiguration_QueueType_QueueTypeId" Association="Self.FK_SMSConfiguration_QueueType_QueueTypeId">
-            <End Role="QueueType" EntitySet="QueueType" />
-            <End Role="SMSConfiguration" EntitySet="SMSConfiguration" />
-          </AssociationSet>
           <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
@@ -3864,10 +3779,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <AssociationSet Name="FK_UserPersonalSettings_User_UserId" Association="Self.FK_UserPersonalSettings_User_UserId">
             <End Role="User" EntitySet="User" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserStatus_UserCompany_UserStatusID" Association="Self.FK_UserStatus_UserCompany_UserStatusID">
-            <End Role="UserStatus" EntitySet="UserStatus" />
-            <End Role="UserCompany" EntitySet="UserCompany" />
           </AssociationSet>
           <AssociationSet Name="FK_VisitDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId">
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
@@ -3944,22 +3855,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="User" Relationship="Self.FK_Attorney_User_id" FromRole="Attorney" ToRole="User" />
         </EntityType>
-        <EntityType Name="AuditTableMapping">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TableName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="AuditInsert" Type="Boolean" Nullable="false" />
-          <Property Name="AuditUpdate" Type="Boolean" Nullable="false" />
-          <Property Name="AuditDelete" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="TriggerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="BlobStorage">
           <Key>
             <PropertyRef Name="Id" />
@@ -4028,6 +3923,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Case_CaseId" FromRole="Case" ToRole="CaseCompanyMapping" />
           <NavigationProperty Name="CaseInsuranceMappings" Relationship="Self.FK_CaseInsuranceMapping_Case_CaseId" FromRole="Case" ToRole="CaseInsuranceMapping" />
           <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="CompanyCaseConsentApproval" />
+          <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="PatientAccidentInfoes" Relationship="Self.FK_PatientAccidentInfo_Case_CaseId" FromRole="Case" ToRole="PatientAccidentInfo" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Case_CaseId" FromRole="Case" ToRole="PatientVisit2" />
           <NavigationProperty Name="Referral2" Relationship="Self.FK_Referral2_Case_CaseId" FromRole="Case" ToRole="Referral2" />
@@ -4224,6 +4120,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="InitialCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ReEvalCode" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MandatoryProcCode" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="CompanySpecialtyDetails" ToRole="Company" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="CompanySpecialtyDetails" ToRole="Specialty" />
         </EntityType>
@@ -4337,12 +4234,31 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsCalendarPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
+          <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor_DoctorID" FromRole="Doctor" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit2" />
           <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Doctor_FromDoctorId" FromRole="Doctor" ToRole="PendingReferral" />
           <NavigationProperty Name="Referral2" Relationship="Self.FK_Referral2_Doctor_FromDoctorId" FromRole="Doctor" ToRole="Referral2" />
           <NavigationProperty Name="Referral21" Relationship="Self.FK_Referral2_Doctor_ToDoctorId" FromRole="Doctor" ToRole="Referral2" />
+        </EntityType>
+        <EntityType Name="DoctorCaseConsentApproval">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DoctorId" Type="Int32" Nullable="false" />
+          <Property Name="CaseId" Type="Int32" />
+          <Property Name="ConsentReceived" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="Patientid" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="DoctorCaseConsentApproval" ToRole="Case" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId" FromRole="DoctorCaseConsentApproval" ToRole="Doctor" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -4634,6 +4550,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient2_PatientId" FromRole="Patient2" ToRole="Case" />
           <NavigationProperty Name="MaritalStatu" Relationship="Self.FK_Patient2_MaritalStatusId" FromRole="Patient2" ToRole="MaritalStatus" />
           <NavigationProperty Name="User" Relationship="Self.FK_Patient2_User_id" FromRole="Patient2" ToRole="User" />
+          <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_Patient2_PatientId" FromRole="Patient2" ToRole="PatientDocuments" />
           <NavigationProperty Name="PatientEmpInfoes" Relationship="Self.FK_PatientEmpInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientEmpInfo" />
           <NavigationProperty Name="PatientFamilyMembers" Relationship="Self.FK_PatientFamilyMembers_Patient2_PatientId" FromRole="Patient2" ToRole="PatientFamilyMembers" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientInsuranceInfo" />
@@ -4681,6 +4598,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_PatientDocuments_MidasDocuments_MidasDocumentId" FromRole="PatientDocuments" ToRole="MidasDocuments" />
+          <NavigationProperty Name="Patient2" Relationship="Self.FK_PatientDocuments_Patient2_PatientId" FromRole="PatientDocuments" ToRole="Patient2" />
         </EntityType>
         <EntityType Name="PatientEmpInfo">
           <Key>
@@ -4959,18 +4877,19 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="ProcedureCodeDesc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SpecialityId" Type="Int32" />
+          <Property Name="RoomId" Type="Int32" />
+          <Property Name="RoomTestId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="SpecialityId" Type="Int32" />
-          <Property Name="RoomId" Type="Int32" />
-          <Property Name="RoomTestId" Type="Int32" />
           <NavigationProperty Name="Company" Relationship="Self.FK_ProcedureCode_Company_CompanyId" FromRole="ProcedureCode" ToRole="Company" />
           <NavigationProperty Name="PatientVisitProcedureCodes" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="ProcedureCode" ToRole="PatientVisitProcedureCodes" />
           <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" FromRole="ProcedureCode" ToRole="PendingReferralProcedureCodes" />
           <NavigationProperty Name="Room" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="ProcedureCode" ToRole="Room" />
+          <NavigationProperty Name="Room1" Relationship="Self.FK_ProcedureCode_Roomt_RoomId" FromRole="ProcedureCode" ToRole="Room" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="ProcedureCode" ToRole="RoomTest" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_ProcedureCode_Speciality_SpecialityId" FromRole="ProcedureCode" ToRole="Specialty" />
           <NavigationProperty Name="ProcedureCodeCompanyMappings" Relationship="Self.FK_ProcedureCodeCompanyMapping_ProcedureCode_ProcedureCodeID" FromRole="ProcedureCode" ToRole="ProcedureCodeCompanyMapping" />
@@ -5116,6 +5035,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Room_RoomId" FromRole="Room" ToRole="PatientVisit2" />
           <NavigationProperty Name="PendingReferrals" Relationship="Self.FK_PendingReferral_Room_ForRoomId" FromRole="Room" ToRole="PendingReferral" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="Room" ToRole="ProcedureCode" />
+          <NavigationProperty Name="ProcedureCodes1" Relationship="Self.FK_ProcedureCode_Roomt_RoomId" FromRole="Room" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referral2" Relationship="Self.FK_Referral2_Room_ForRoomId" FromRole="Room" ToRole="Referral2" />
           <NavigationProperty Name="Referral21" Relationship="Self.FK_Referral2_Room_ToRoomId" FromRole="Room" ToRole="Referral2" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
@@ -5245,7 +5165,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="MandatoryProcCode" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="SpecialtyDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="State">
@@ -5357,7 +5276,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="UserStatusID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
-          <NavigationProperty Name="UserStatu" Relationship="Self.FK_UserStatus_UserCompany_UserStatusID" FromRole="UserCompany" ToRole="UserStatus" />
         </EntityType>
         <EntityType Name="UserCompanyRole">
           <Key>
@@ -5399,7 +5317,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserStatus_UserCompany_UserStatusID" FromRole="UserStatus" ToRole="UserCompany" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -5429,83 +5346,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_VisitDocuments_MidasDocuments_MidasDocumentId" FromRole="VisitDocuments" ToRole="MidasDocuments" />
-        </EntityType>
-        <EntityType Name="AppMessageQueue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="AppName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="QueueType" Relationship="Self.FK_AppMessageQueue_QueueType_QueueTypeId" FromRole="AppMessageQueue" ToRole="QueueType" />
-        </EntityType>
-        <EntityType Name="EMailConfiguration">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
-          <Property Name="SmtpClient" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SmtpClient_Port" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NetworkCredential_EMail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NetworkCredential_Pwd" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="QueueType" Relationship="Self.FK_EMailConfiguration_QueueType_QueueTypeId" FromRole="EMailConfiguration" ToRole="QueueType" />
-        </EntityType>
-        <EntityType Name="EMailQueue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="FromEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ToEmail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CcEmail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="BccEmail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EMailSubject" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EMailBody" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="DeliveryDate" Type="DateTime" Precision="7" />
-          <Property Name="NumberOfAttempts" Type="Int32" Nullable="false" />
-          <Property Name="ResultObject" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="QueueType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QueueTypeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AppMessageQueues" Relationship="Self.FK_AppMessageQueue_QueueType_QueueTypeId" FromRole="QueueType" ToRole="AppMessageQueue" />
-          <NavigationProperty Name="EMailConfigurations" Relationship="Self.FK_EMailConfiguration_QueueType_QueueTypeId" FromRole="QueueType" ToRole="EMailConfiguration" />
-          <NavigationProperty Name="SMSConfigurations" Relationship="Self.FK_SMSConfiguration_QueueType_QueueTypeId" FromRole="QueueType" ToRole="SMSConfiguration" />
-        </EntityType>
-        <EntityType Name="SMSConfiguration">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
-          <Property Name="AccountSid" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AuthToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="QueueType" Relationship="Self.FK_SMSConfiguration_QueueType_QueueTypeId" FromRole="SMSConfiguration" ToRole="QueueType" />
-        </EntityType>
-        <EntityType Name="SMSQueue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppId" Type="Int32" Nullable="false" />
-          <Property Name="FromNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ToNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Message" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="DeliveryDate" Type="DateTime" Precision="7" />
-          <Property Name="NumberOfAttempts" Type="Int32" Nullable="false" />
-          <Property Name="ResultObject" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DocumentNode">
           <Key>
@@ -5849,6 +5689,18 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CompanyCaseConsentApproval">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DoctorCaseConsentApproval_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
+          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DoctorCaseConsentApproval">
               <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
@@ -6441,6 +6293,18 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DoctorCaseConsentApproval">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DoctorLocationSchedule_Doctor">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
           <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
@@ -6741,6 +6605,18 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientDocuments_Patient2_PatientId">
+          <End Role="Patient2" Type="Self.Patient2" Multiplicity="1" />
+          <End Role="PatientDocuments" Type="Self.PatientDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientDocuments">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientEmpInfo_Patient2_PatientId">
           <End Role="Patient2" Type="Self.Patient2" Multiplicity="1" />
           <End Role="PatientEmpInfo" Type="Self.PatientEmpInfo" Multiplicity="*" />
@@ -6994,6 +6870,18 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProcedureCode_Room_SpecialityId">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_Roomt_RoomId">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
           <ReferentialConstraint>
@@ -7269,59 +7157,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserStatus_UserCompany_UserStatusID">
-          <End Role="UserStatus" Type="Self.UserStatu" Multiplicity="1" />
-          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserStatus">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserCompany">
-              <PropertyRef Name="UserStatusID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AppMessageQueue_QueueType_QueueTypeId">
-          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
-          <End Role="AppMessageQueue" Type="Self.AppMessageQueue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QueueType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AppMessageQueue">
-              <PropertyRef Name="QueueTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EMailConfiguration_QueueType_QueueTypeId">
-          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
-          <End Role="EMailConfiguration" Type="Self.EMailConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QueueType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EMailConfiguration">
-              <PropertyRef Name="QueueTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SMSConfiguration_QueueType_QueueTypeId">
-          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
-          <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QueueType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SMSConfiguration">
-              <PropertyRef Name="QueueTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="MIDASGBXEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="AdjusterMasters" EntityType="Self.AdjusterMaster" />
           <EntitySet Name="Attorneys" EntityType="Self.Attorney" />
-          <EntitySet Name="AuditTableMappings" EntityType="Self.AuditTableMapping" />
           <EntitySet Name="BlobStorages" EntityType="Self.BlobStorage" />
           <EntitySet Name="BlobStorageTypes" EntityType="Self.BlobStorageType" />
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvent" />
@@ -7343,6 +7182,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="DiagnosisCodes" EntityType="Self.DiagnosisCode" />
           <EntitySet Name="DiagnosisTypes" EntityType="Self.DiagnosisType" />
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+          <EntitySet Name="DoctorCaseConsentApprovals" EntityType="Self.DoctorCaseConsentApproval" />
           <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpeciality" />
           <EntitySet Name="DocumentNodeObjectMappings" EntityType="Self.DocumentNodeObjectMapping" />
@@ -7403,12 +7243,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <EntitySet Name="UserStatus" EntityType="Self.UserStatu" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
           <EntitySet Name="VisitDocuments" EntityType="Self.VisitDocument" />
-          <EntitySet Name="AppMessageQueues" EntityType="Self.AppMessageQueue" />
-          <EntitySet Name="EMailConfigurations" EntityType="Self.EMailConfiguration" />
-          <EntitySet Name="EMailQueues" EntityType="Self.EMailQueue" />
-          <EntitySet Name="QueueTypes" EntityType="Self.QueueType" />
-          <EntitySet Name="SMSConfigurations" EntityType="Self.SMSConfiguration" />
-          <EntitySet Name="SMSQueues" EntityType="Self.SMSQueue" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
@@ -7521,6 +7355,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
           <AssociationSet Name="FK_CompanyCaseConsentApproval_Case_CaseId" Association="Self.FK_CompanyCaseConsentApproval_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="CompanyCaseConsentApproval" EntitySet="CompanyCaseConsentApprovals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorCaseConsentApproval_Case_CaseId" Association="Self.FK_DoctorCaseConsentApproval_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientAccidentInfo_Case_CaseId" Association="Self.FK_PatientAccidentInfo_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
@@ -7718,6 +7556,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="User" EntitySet="Users" />
             <End Role="Doctor" EntitySet="Doctors" />
           </AssociationSet>
+          <AssociationSet Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId" Association="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
+          </AssociationSet>
           <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
@@ -7818,6 +7660,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="User" EntitySet="Users" />
             <End Role="Patient2" EntitySet="Patient2" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientDocuments_Patient2_PatientId" Association="Self.FK_PatientDocuments_Patient2_PatientId">
+            <End Role="Patient2" EntitySet="Patient2" />
+            <End Role="PatientDocuments" EntitySet="PatientDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientEmpInfo_Patient2_PatientId" Association="Self.FK_PatientEmpInfo_Patient2_PatientId">
             <End Role="Patient2" EntitySet="Patient2" />
             <End Role="PatientEmpInfo" EntitySet="PatientEmpInfoes" />
@@ -7903,6 +7749,10 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_ProcedureCode_Room_SpecialityId" Association="Self.FK_ProcedureCode_Room_SpecialityId">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Roomt_RoomId" Association="Self.FK_ProcedureCode_Roomt_RoomId">
             <End Role="Room" EntitySet="Rooms" />
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
           </AssociationSet>
@@ -7994,22 +7844,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
             <End Role="User" EntitySet="Users" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserStatus_UserCompany_UserStatusID" Association="Self.FK_UserStatus_UserCompany_UserStatusID">
-            <End Role="UserStatus" EntitySet="UserStatus" />
-            <End Role="UserCompany" EntitySet="UserCompanies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AppMessageQueue_QueueType_QueueTypeId" Association="Self.FK_AppMessageQueue_QueueType_QueueTypeId">
-            <End Role="QueueType" EntitySet="QueueTypes" />
-            <End Role="AppMessageQueue" EntitySet="AppMessageQueues" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EMailConfiguration_QueueType_QueueTypeId" Association="Self.FK_EMailConfiguration_QueueType_QueueTypeId">
-            <End Role="QueueType" EntitySet="QueueTypes" />
-            <End Role="EMailConfiguration" EntitySet="EMailConfigurations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SMSConfiguration_QueueType_QueueTypeId" Association="Self.FK_SMSConfiguration_QueueType_QueueTypeId">
-            <End Role="QueueType" EntitySet="QueueTypes" />
-            <End Role="SMSConfiguration" EntitySet="SMSConfigurations" />
-          </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
             <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
@@ -8091,23 +7925,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AuditTableMappings">
-            <EntityTypeMapping TypeName="MIDASGBXModel.AuditTableMapping">
-              <MappingFragment StoreEntitySet="AuditTableMapping">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="TableName" ColumnName="TableName" />
-                <ScalarProperty Name="AuditInsert" ColumnName="AuditInsert" />
-                <ScalarProperty Name="AuditUpdate" ColumnName="AuditUpdate" />
-                <ScalarProperty Name="AuditDelete" ColumnName="AuditDelete" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="TriggerName" ColumnName="TriggerName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8321,6 +8138,7 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="InitialCode" ColumnName="InitialCode" />
                 <ScalarProperty Name="ReEvalCode" ColumnName="ReEvalCode" />
+                <ScalarProperty Name="MandatoryProcCode" ColumnName="MandatoryProcCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8422,6 +8240,23 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="IsCalendarPublic" ColumnName="IsCalendarPublic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DoctorCaseConsentApprovals">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorCaseConsentApproval">
+              <MappingFragment StoreEntitySet="DoctorCaseConsentApproval">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="ConsentReceived" ColumnName="ConsentReceived" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Patientid" ColumnName="Patientid" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8974,14 +8809,14 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="ProcedureCodeDesc" ColumnName="ProcedureCodeDesc" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="SpecialityId" ColumnName="SpecialityId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="RoomTestId" ColumnName="RoomTestId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="SpecialityId" ColumnName="SpecialityId" />
-                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="RoomTestId" ColumnName="RoomTestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9210,7 +9045,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="MandatoryProcCode" ColumnName="MandatoryProcCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9382,83 +9216,6 @@ warning 6035: The relationship 'FK_SMSQueue_AppMessageQueue_AppId' has columns t
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AppMessageQueues">
-            <EntityTypeMapping TypeName="MIDASGBXModel.AppMessageQueue">
-              <MappingFragment StoreEntitySet="AppMessageQueue">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="AppName" ColumnName="AppName" />
-                <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EMailConfigurations">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EMailConfiguration">
-              <MappingFragment StoreEntitySet="EMailConfiguration">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
-                <ScalarProperty Name="SmtpClient" ColumnName="SmtpClient" />
-                <ScalarProperty Name="SmtpClient_Port" ColumnName="SmtpClient_Port" />
-                <ScalarProperty Name="NetworkCredential_EMail" ColumnName="NetworkCredential_EMail" />
-                <ScalarProperty Name="NetworkCredential_Pwd" ColumnName="NetworkCredential_Pwd" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EMailQueues">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EMailQueue">
-              <MappingFragment StoreEntitySet="EMailQueue">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
-                <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
-                <ScalarProperty Name="CcEmail" ColumnName="CcEmail" />
-                <ScalarProperty Name="BccEmail" ColumnName="BccEmail" />
-                <ScalarProperty Name="EMailSubject" ColumnName="EMailSubject" />
-                <ScalarProperty Name="EMailBody" ColumnName="EMailBody" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
-                <ScalarProperty Name="NumberOfAttempts" ColumnName="NumberOfAttempts" />
-                <ScalarProperty Name="ResultObject" ColumnName="ResultObject" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="QueueTypes">
-            <EntityTypeMapping TypeName="MIDASGBXModel.QueueType">
-              <MappingFragment StoreEntitySet="QueueType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="QueueTypeName" ColumnName="QueueTypeName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SMSConfigurations">
-            <EntityTypeMapping TypeName="MIDASGBXModel.SMSConfiguration">
-              <MappingFragment StoreEntitySet="SMSConfiguration">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
-                <ScalarProperty Name="AccountSid" ColumnName="AccountSid" />
-                <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SMSQueues">
-            <EntityTypeMapping TypeName="MIDASGBXModel.SMSQueue">
-              <MappingFragment StoreEntitySet="SMSQueue">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AppId" ColumnName="AppId" />
-                <ScalarProperty Name="FromNumber" ColumnName="FromNumber" />
-                <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
-                <ScalarProperty Name="NumberOfAttempts" ColumnName="NumberOfAttempts" />
-                <ScalarProperty Name="ResultObject" ColumnName="ResultObject" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -30,7 +30,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
-        public virtual DbSet<AuditTableMapping> AuditTableMappings { get; set; }
         public virtual DbSet<BlobStorage> BlobStorages { get; set; }
         public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
@@ -52,6 +51,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
@@ -112,12 +112,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
-        public virtual DbSet<AppMessageQueue> AppMessageQueues { get; set; }
-        public virtual DbSet<EMailConfiguration> EMailConfigurations { get; set; }
-        public virtual DbSet<EMailQueue> EMailQueues { get; set; }
-        public virtual DbSet<QueueType> QueueTypes { get; set; }
-        public virtual DbSet<SMSConfiguration> SMSConfigurations { get; set; }
-        public virtual DbSet<SMSQueue> SMSQueues { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)

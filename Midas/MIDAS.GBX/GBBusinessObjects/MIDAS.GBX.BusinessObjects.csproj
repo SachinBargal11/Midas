@@ -55,6 +55,7 @@
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
     <Compile Include="Company\CompanyType.cs" />
     <Compile Include="InsuranceType\InsuranceType.cs" />
+    <Compile Include="PatientDocument\PatientDocument.cs" />
     <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
     <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />

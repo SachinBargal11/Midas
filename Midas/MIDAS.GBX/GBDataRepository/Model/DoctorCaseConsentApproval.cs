@@ -12,18 +12,21 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class AuditTableMapping
+    public partial class DoctorCaseConsentApproval
     {
         public int Id { get; set; }
-        public string TableName { get; set; }
-        public bool AuditInsert { get; set; }
-        public bool AuditUpdate { get; set; }
-        public bool AuditDelete { get; set; }
+        public int DoctorId { get; set; }
+        public Nullable<int> CaseId { get; set; }
+        public string ConsentReceived { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string TriggerName { get; set; }
+        public Nullable<int> Patientid { get; set; }
+        public string FileName { get; set; }
+    
+        public virtual Case Case { get; set; }
+        public virtual Doctor Doctor { get; set; }
     }
 }
