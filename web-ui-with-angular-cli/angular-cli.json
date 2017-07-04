@@ -26,7 +26,8 @@
         "../node_modules/primeng/resources/themes/bootstrap/theme.css",
         "./assets/theme/css/main.source.css",
         "../node_modules/fullcalendar/dist/fullcalendar.css",
-        "styles/styles.scss"
+        "styles/styles.scss",
+        "styles/style.css"        
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
