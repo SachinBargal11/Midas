@@ -140,7 +140,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+            var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo.InsuranceType")
+                                    .Include("PatientInsuranceInfo.InsuranceMaster")
                                     .Include("AdjusterMaster")
                                     .Where(p => p.CaseId == CaseId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
