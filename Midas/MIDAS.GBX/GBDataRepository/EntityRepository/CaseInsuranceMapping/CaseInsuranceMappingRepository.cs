@@ -218,11 +218,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                        .ToList<CaseInsuranceMapping>();
 
-                    CaseInsuranceMapping_Existing.ForEach(p => p.AdjusterMasterId = caseInsuranceMappingBO.Mappings
-                                                                                                          .Where(p2 => p2.PatientInsuranceInfo.ID == p.PatientInsuranceInfoId)
-                                                                                                                    .Select(p2 => p2.AdjusterMaster.ID)
-                                                                                                                    .FirstOrDefault<int>()
-                                                                                                                );
+                    foreach (var item in CaseInsuranceMapping_Existing)
+                    {
+                        int AdjusterMasterID = 0;
+                        AdjusterMasterID = caseInsuranceMappingBO.Mappings.Where(p => p.PatientInsuranceInfo.ID == item.PatientInsuranceInfoId)
+                                                                          .Select(p2 => p2.AdjusterMaster.ID)
+                                                                          .FirstOrDefault();
+
+                        if (AdjusterMasterID > 0)
+                        {
+                            item.AdjusterMasterId = AdjusterMasterID;
+                        }
+                    }
+
+                    //CaseInsuranceMapping_Existing.ForEach(p => p.AdjusterMasterId = caseInsuranceMappingBO.Mappings
+                    //                                                                                      .Where(p2 => p2.PatientInsuranceInfo.ID == p.PatientInsuranceInfoId)
+                    //                                                                                                .Select(p2 => p2.AdjusterMaster.ID)
+                    //                                                                                                .FirstOrDefault()
+                    //                                                                                            );
                     _context.SaveChanges();
                 }                
 

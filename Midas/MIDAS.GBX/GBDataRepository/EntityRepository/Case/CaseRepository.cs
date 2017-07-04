@@ -1529,6 +1529,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                            //p.Company1.UpdateDate,
 
                                                            companyType1 = new { p.Company1.CompanyType1.id, p.Company1.CompanyType1.Name, p.Company1.CompanyType1.IsDeleted },
+                                                           CompanyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
+                                                                                                            && ccca.CompanyId == p.Company1.id
+                                                                                                            && (ccca.IsDeleted.HasValue == false || (ccca.IsDeleted.HasValue == true && ccca.IsDeleted.Value == false)))
+                                                                                                         .Select(ccca => new {
+                                                                                                             ccca.Id, ccca.CaseId, ccca. CompanyId, ccca.ConsentGivenTypeId, ccca.IsDeleted
+                                                                                                         })
+                                                                                                         .FirstOrDefault(),
+                                                           CaseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
+                                                                                                            && cccd.CompanyId == p.Company1.id
+                                                                                                            && (cccd.IsDeleted.HasValue == false || (cccd.IsDeleted.HasValue == true && cccd.IsDeleted.Value == false)))
+                                                                                                          .Select(cccd => new {
+                                                                                                              cccd.Id, cccd.CaseId, cccd.CompanyId, cccd.DocumentName, cccd.DocumentType, cccd.MidasDocumentId, cccd.IsDeleted
+                                                                                                          })
+                                                                                                          .FirstOrDefault(),
 
                                                            p.CaseId
                                                        });
@@ -1552,6 +1566,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  //p.Company1.UpdateDate,
 
                                                  companyType1 = new { p.Company1.CompanyType1.id, p.Company1.CompanyType1.Name, p.Company1.CompanyType1.IsDeleted },
+                                                 CompanyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
+                                                                                                            && ccca.CompanyId == p.Company1.id
+                                                                                                            && (ccca.IsDeleted.HasValue == false || (ccca.IsDeleted.HasValue == true && ccca.IsDeleted.Value == false)))
+                                                                                                         .Select(ccca => new {
+                                                                                                             ccca.Id,
+                                                                                                             ccca.CaseId,
+                                                                                                             ccca.CompanyId,
+                                                                                                             ccca.ConsentGivenTypeId,
+                                                                                                             ccca.IsDeleted
+                                                                                                         })
+                                                                                                         .FirstOrDefault(),
+                                                 CaseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
+                                                                                                  && cccd.CompanyId == p.Company1.id
+                                                                                                  && (cccd.IsDeleted.HasValue == false || (cccd.IsDeleted.HasValue == true && cccd.IsDeleted.Value == false)))
+                                                                                                          .Select(cccd => new {
+                                                                                                              cccd.Id,
+                                                                                                              cccd.CaseId,
+                                                                                                              cccd.CompanyId,
+                                                                                                              cccd.DocumentName,
+                                                                                                              cccd.DocumentType,
+                                                                                                              cccd.MidasDocumentId,
+                                                                                                              cccd.IsDeleted
+                                                                                                          })
+                                                                                                          .FirstOrDefault(),
 
                                                  p.CaseId
                                              });
