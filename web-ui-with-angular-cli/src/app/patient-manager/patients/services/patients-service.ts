@@ -289,5 +289,10 @@ export class PatientsService {
         return <Observable<PatientDocument>>Observable.from(promise);
     }
 
+    getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        return `${this._url}/documentmanager/downloadfromblob/${companyId}/${documentId}`;
+    }
+
 }
 
