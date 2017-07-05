@@ -226,7 +226,7 @@ export class AddConsentComponent implements OnInit {
 
     downloadPdf(document) {
         this._progressBarService.show();
-        this._consentStore.downloadConsentForm(document.companyId, document.midasDocumentId)
+        this._consentStore.downloadConsentForm(document.midasDocumentId,document.companyId)
             .subscribe(
             (response) => {
                 // this.document = document

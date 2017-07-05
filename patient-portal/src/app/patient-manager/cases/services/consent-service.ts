@@ -222,7 +222,7 @@ export class ConsentService {
         return <Observable<ConsentAdapter>>Observable.fromPromise(promise);
     }
 
-    downloadConsentForm(companyId: Number, documentId: Number): Observable<Consent[]> {
+    downloadConsentForm(documentId: Number, companyId: Number): Observable<Consent[]> {
         let thefile = {};
         //   let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
