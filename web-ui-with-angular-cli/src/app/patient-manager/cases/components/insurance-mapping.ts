@@ -32,12 +32,10 @@ export class InsuranceMappingComponent implements OnInit {
     patientId: number;
     caseId: number;
     insurances: Insurance[] = [];
-    // insurances: Insurance[] = [];
     insurancesArr: SelectItem[] = [];
     adjustersArr: SelectItem[];
-    insuranceMapping: InsuranceMapping[];
+    insuranceMapping: InsuranceMapping;
     selectedInsurances: InsuranceMapping[];
-    // selectedInsurances: string[] = [];
     selectedInsurance: string[] = [];
     adjusters: Adjuster[] = [];
     isDeleteProgress: boolean = false;
@@ -66,10 +64,6 @@ export class InsuranceMappingComponent implements OnInit {
                 (caseDetail: Case) => {
                     this.caseDetail = caseDetail;
                     this.caseStatusId = caseDetail.caseStatusId;
-                    // let matchedCompany = null;
-                    // matchedCompany = _.find(this.caseDetail.createdByCompanyId, (currentCompany: PendingReferral) => {
-                    //     return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-                    // })
                     if (caseDetail.orignatorCompanyId == _sessionStore.session.currentCompany.id) {
                         this.insurance = true;
                     } else {
@@ -90,34 +84,11 @@ export class InsuranceMappingComponent implements OnInit {
             this._progressBarService.show();
 
             let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
-            let fetchInsurances = this._insuranceStore.getInsurances(this.patientId);
-            let fetchAdjusters = this._adjusterMasterStore.getAdjusterMasters();
-
-            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings, fetchAdjusters])
-                .subscribe((results) => {
-                    let insurances = results[0];
-                    this.insuranceMapping = results[1];
-                    let mappings: Mapping[] = results[1].mappings;
-                    this.adjusters = results[2];
-
-                    this.adjustersArr = _.map(this.adjusters, (currentAdjuster: Adjuster) => {
-                        return {
-                            label: `${currentAdjuster.firstName} - ${currentAdjuster.lastName}`,
-                            value: currentAdjuster.id.toString()
-                        };
+                fetchInsuranceMappings.subscribe((result) => {
+                    this.insuranceMapping = result;
+                    this.insurances = _.map(this.insuranceMapping.mappings, (currentMapping: any) => {
+                        return currentMapping.patientInsuranceInfo;
                     });
-
-                    let insuranceDetails: Insurance[] = _.map(mappings, (currentInsurance: any) => {
-                        return currentInsurance.patientInsuranceInfo;
-                    });
-                    insuranceDetails.forEach(insurance => {
-                        this._insuranceStore.fetchInsuranceById(insurance.id)
-                            .subscribe((insurance: Insurance) => {
-                                this.insurances.push(insurance);
-                            });
-                    });
-                    // this.insurances = insuranceDetails.reverse();
-                    // this.insurances = mappings.reverse();
                 },
                 (error) => {
                     this._progressBarService.hide();
