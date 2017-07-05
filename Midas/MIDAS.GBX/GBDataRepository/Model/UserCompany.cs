@@ -27,6 +27,5 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual Company Company { get; set; }
         public virtual User User { get; set; }
-        public virtual UserStatu UserStatu { get; set; }
     }
 }

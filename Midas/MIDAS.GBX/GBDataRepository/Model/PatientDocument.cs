@@ -26,5 +26,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public string DocumentType { get; set; }
     
         public virtual MidasDocument MidasDocument { get; set; }
+        public virtual Patient2 Patient2 { get; set; }
     }
 }

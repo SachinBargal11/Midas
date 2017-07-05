@@ -61,6 +61,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
+            if (patient2.PatientDocuments != null)
+            {
+                List<BO.PatientDocument> boPatientDocuments = new List<BO.PatientDocument>();
+                foreach (var item in patient2.PatientDocuments)
+                {
+                    if (item != null)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+
+                            BO.PatientDocument boPatientDocument = new BO.PatientDocument();                           
+                          
+                            boPatientDocument.ID = item.Id;
+                            boPatientDocument.PatientId = item.PatientId;
+                            boPatientDocument.MidasDocumentId = item.MidasDocumentId;
+                            boPatientDocument.DocumentName = item.DocumentName;
+                            boPatientDocument.DocumentType = item.DocumentType;
+
+                            boPatientDocuments.Add(boPatientDocument);
+                        }
+                    }
+
+                }
+                patientBO2.PatientDocuments = boPatientDocuments;
+            }
+
             if (patient2.Cases != null)
             {
                 List<BO.Case> boCase = new List<BO.Case>();
@@ -557,6 +583,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.ContactInfo")
                                        .Include("Cases")
                                        .Include("Cases.Referral2")
+                                       .Include("PatientDocuments")
+
                                        .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                        .FirstOrDefault<Patient2>();
 
