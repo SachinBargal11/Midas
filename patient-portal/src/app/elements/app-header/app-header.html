@@ -1,5 +1,6 @@
 <header class="site-header">
 	<div class="container-fluid">
+		<!--<a class="navbar-brand" href="#"><img src="assets/theme/img/logo.png" alt="PA" /></a>-->
 		<a href="#" class="site-logo" style="color: white;">PA
         </a>
 		<button class="hamburger hamburger--htla" (click)="onLeftBurgerClick()"> <!-- Toggle mobile menu -->
@@ -11,7 +12,7 @@
 					<div class="dropdown dropdown-notification notif">
 						<a (click)="showNotifications()" class="header-alarm" [class.active]="notificationsStore.recentlyAdded" [class.swing]="notificationsStore.highlightAddition"
 							[class.animated]="notificationsStore.highlightAddition">
-							<i class="font-icon-alarm"></i>
+							<i class="fa fa-bell" style="color: #fff" aria-hidden="true"></i>
 						</a>
 					</div>
 					

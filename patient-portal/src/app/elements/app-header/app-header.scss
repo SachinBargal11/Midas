@@ -5,12 +5,13 @@
 
 .site-header
 {
-    height: 50px;
+    height: 60px;
     padding-top: 5px;
     .site-header-collapsed
     {
         margin-right: -110px;
         @media (max-width: 991px) {
+        width: 330px;
             .dropdown {
                 &.open {
                     .dropdown-menu {
@@ -34,10 +35,12 @@
         a
         {
             line-height: 30px;
-            color: #adb7be;
+            color: #fff;
+            opacity: 0.7;
             &.active
             {
-                color:#00a8ff;
+                color:#fff;
+                opacity: 1;
             }
         }
     }
