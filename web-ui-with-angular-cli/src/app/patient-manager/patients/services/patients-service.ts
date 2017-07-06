@@ -290,8 +290,7 @@ export class PatientsService {
     }
 
     getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
-        let companyId = this._sessionStore.session.currentCompany.id;
-        return `${this._url}/documentmanager/downloadfromblob/${companyId}/${documentId}`;
+        return `${this._url}/documentmanager/downloadfromnoproviderblob/${documentId}`;
     }
 
 }

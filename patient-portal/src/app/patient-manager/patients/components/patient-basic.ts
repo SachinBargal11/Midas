@@ -109,6 +109,7 @@ export class PatientBasicComponent implements OnInit {
         console.log(documentId)
         this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
     }
+    
     onFilesUploadError(event) {
         let even = event;
     }
