@@ -19,7 +19,9 @@ import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Observable } from 'rxjs/Rx';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { PatientsService } from '../services/patients-service'
+import { PatientsService } from '../services/patients-service';
+import { environment } from '../../../../environments/environment';
+import { ConsentService } from '../../cases/services/consent-service';
 
 @Component({
     selector: 'basic',
@@ -43,6 +45,11 @@ export class PatientBasicComponent implements OnInit {
     isSavePatientProgress = false;
     imageLink: SafeResourceUrl;
     documentId: number;
+    files: any[] = [];
+    method: string = 'POST';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    url;
+    uploadedFiles: any[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -55,6 +62,7 @@ export class PatientBasicComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _sanitizer: DomSanitizer,
         private _casesStore: CasesStore,
+        private _consentService: ConsentService,
         private _patientsService: PatientsService
     ) {
 
@@ -111,9 +119,53 @@ export class PatientBasicComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
     }
 
+    onBeforeSendEvent(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+
+    onFilesUploadComplete(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadError(event) {
+        let even = event;
+    }
+
+    // uploadProfileImage(event) {
+    //     this.files = event.srcElement.files;
+    //     let xhr = new XMLHttpRequest(),
+    //         formData = new FormData();
+
+    //     for (let i = 0; i < this.files.length; i++) {
+    //         formData.append(this.files[i].name, this.files[i], this.files[i].name);
+    //     }
+    //     xhr.open(this.method, this.url, true);
+    //     xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+    //     xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+
+    //     xhr.withCredentials = false;
+
+    //     xhr.send(formData);
+
+    //     // xhr.onreadystatechange = function () {
+    //     //     if (xhr.readyState == 4 && xhr.status == 201) {
+    //     //         if (xhr.readyState === 4) {
+    //     //             var response = JSON.parse(xhr.responseText);
+    //     //             if (xhr.status === 201 && response[0].status === 'Success') {
+    //     //                 console.log('successful');
+    //     //             } else {
+    //     //                 console.log('failed');
+    //     //             }
+    //     //         }
+    //     //     }
+    //     // }
+    // }
 
     savePatient() {
         this.isSavePatientProgress = true;
