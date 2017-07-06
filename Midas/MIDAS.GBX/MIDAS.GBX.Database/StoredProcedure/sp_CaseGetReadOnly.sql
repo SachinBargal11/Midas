@@ -7,6 +7,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
+/*
 CREATE PROCEDURE [dbo].[sp_CaseGetReadOnly]
 (
     @CaseId         INT,
@@ -92,5 +93,5 @@ BEGIN
             AND (tblCase.[IsDeleted] IS NULL OR tblCase.[IsDeleted] = 0)
             AND (tblUser.[IsDeleted] IS NULL OR tblUser.[IsDeleted] = 0);
 END
-
+*/
 GO
