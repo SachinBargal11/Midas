@@ -2,13 +2,13 @@
     <div class="mobile-menu-left-overlay" (click)="hideLeftMobileMenu()"></div>
     <nav class="side-menu side-menu-compact">
         <ul class="side-menu-list">
-            <li class="grey" [routerLinkActive]="['opened']">
+            <li [routerLinkActive]="['opened']">
                 <a [routerLink]="['/medical-provider/locations']">
                     <i class="fa fa-map-marker"></i>
                     <span class="lbl">Locations</span>
                 </a>
             </li>
-            <li class="grey" [routerLinkActive]="['opened']">
+            <li [routerLinkActive]="['opened']">
                 <a [routerLink]="['/medical-provider/users']">
                     <i class="fa fa-users"></i>
                     <span class="lbl">Users</span>
@@ -20,7 +20,7 @@
                     <span class="lbl">Calendar</span>
                 </a>
             </li>-->
-            <li class="grey" [routerLinkActive]="['opened']">
+            <li [routerLinkActive]="['opened']">
                 <a [routerLink]="['/medical-provider/reports']">
                     <i class="fa fa-line-chart"></i>
                     <span class="lbl">Reports</span>
