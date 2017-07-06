@@ -13,6 +13,10 @@ import { Notification } from '../../../commons/models/notification';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { User } from '../../../commons/models/user';
 import * as _ from 'underscore';
+import { environment } from '../../../../environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PatientsService } from '../services/patients-service';
+import { PatientDocument } from '../models/patient-document';
 
 @Component({
     selector: 'basic',
@@ -32,36 +36,50 @@ export class PatientBasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSavePatientProgress = false;
+    files: any[] = [];
+    method: string = 'POST';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    url;
+    uploadedFiles: any[] = [];
+    imageLink: SafeResourceUrl;
 
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
+        private _sessionStore: SessionStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _patientsStore: PatientsStore
+        private _patientsStore: PatientsStore,
+        private _sanitizer: DomSanitizer,
+        private _patientsService: PatientsService
     ) {
         // this._route.parent.params.subscribe((params: any) => {
-            // this.patientId = parseInt(params.patientId, 10);
-            this.patientId = this.sessionStore.session.user.id;
-            this.progressBarService.show();
-            let result = this._patientsStore.getPatientById(this.patientId);
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patientInfo = patient;
-                    this.dateOfBirth = this.patientInfo.user.dateOfBirth
-                        ? this.patientInfo.user.dateOfBirth.toDate()
-                        : null;
-                },
-                (error) => {
-                    // this._router.navigate(['/patient-manager/profile/viewall']);
-                    this.progressBarService.hide();
-                },
-                () => {
-                    this.progressBarService.hide();
-                });
+        // this.patientId = parseInt(params.patientId, 10);
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
+        let result = this._patientsStore.getPatientById(this.patientId);
+        result.subscribe(
+            (patient: Patient) => {
+                this.patientInfo = patient;
+                _.forEach(this.patientInfo.patientDocuments, (currentPatientDocument: PatientDocument) => {
+                    if (currentPatientDocument.document.documentType == 'profile') {
+                        this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
+                    }
+                })
+                this.dateOfBirth = this.patientInfo.user.dateOfBirth
+                    ? this.patientInfo.user.dateOfBirth.toDate()
+                    : null;
+            },
+            (error) => {
+                // this._router.navigate(['/patient-manager/profile/viewall']);
+                this.progressBarService.hide();
+            },
+            () => {
+                this.progressBarService.hide();
+            });
 
         // });
         this.basicform = this.fb.group({
@@ -77,8 +95,23 @@ export class PatientBasicComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
     }
 
+    onBeforeSendEvent(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        // event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+
+    onFilesUploadComplete(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadError(event) {
+        let even = event;
+    }
 
     savePatient() {
         this.isSavePatientProgress = true;

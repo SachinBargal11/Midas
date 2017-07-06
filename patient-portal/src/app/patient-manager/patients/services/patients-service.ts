@@ -21,6 +21,7 @@ export class PatientsService {
 
     constructor(
         private _http: Http,
+        private _sessionStore: SessionStore,
         public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
@@ -209,5 +210,9 @@ export class PatientsService {
         });
         return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
     }
-}
 
+     getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        return `${this._url}/documentmanager/downloadfromblob/${companyId}/${documentId}`;
+    }
+}
