@@ -22,7 +22,8 @@ import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import * as _ from 'underscore';
 import { Account } from '../../../account/models/account';
-import {SelectItem} from 'primeng/primeng'
+import { SelectItem } from 'primeng/primeng'
+import { CaseCompanyMapping } from "../../cases/models/caseCompanyMapping";
 
 @Component({
     selector: 'add-case',
@@ -143,8 +144,8 @@ export class AddCaseComponent implements OnInit {
         let currentPatient: number = parseInt(event.value);
         let idPatient = parseInt(event.value);
         if (event.value != '') {
-        let result = this._employerStore.getCurrentEmployer(currentPatient);
-        result.subscribe((employer) => { this.employer = employer; }, null);
+            let result = this._employerStore.getCurrentEmployer(currentPatient);
+            result.subscribe((employer) => { this.employer = employer; }, null);
         }
     }
 
@@ -158,13 +159,13 @@ export class AddCaseComponent implements OnInit {
                     label: '-Select Patient-',
                     value: ''
                 }]
-            let patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
-                return {
-                    label: `${currPatient.user.firstName}  ${currPatient.user.lastName}`,
-                    value: currPatient.id
-                };
-            })
-            this.patientsWithoutCase = _.union(defaultLabel, patientsWithoutCase);
+                let patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
+                    return {
+                        label: `${currPatient.user.firstName}  ${currPatient.user.lastName}`,
+                        value: currPatient.id
+                    };
+                })
+                this.patientsWithoutCase = _.union(defaultLabel, patientsWithoutCase);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -178,7 +179,30 @@ export class AddCaseComponent implements OnInit {
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;
-        let caseCompanyMapping;
+        let caseCompanyMapping: any[] = [];
+        if (caseFormValues.attorneyId) {
+            caseCompanyMapping = [{
+                company: {
+                    id: caseFormValues.attorneyId
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            },
+            {
+                isOriginator: 'true',
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            }]
+        } else {
+            caseCompanyMapping = [{
+                isOriginator: 'true',
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            }]
+        }
         let caseDetail: Case = new Case({
             // patientId: this.patientId,
             patientId: (this.patientId) ? this.patientId : parseInt(this.idPatient),
@@ -194,19 +218,7 @@ export class AddCaseComponent implements OnInit {
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
             createdByCompanyId: this._sessionStore.session.currentCompany.id,
-            caseCompanyMapping:  [{
-                company: {  
-                    id: caseFormValues.attorneyId
-                },
-                addedByCompanyId:this._sessionStore.session.currentCompany.id
-            },
-                {  
-                  isOriginator: 'true',
-                  company: {  
-                    id: this._sessionStore.session.currentCompany.id
-                },
-                addedByCompanyId:this._sessionStore.session.currentCompany.id
-                }]
+            caseCompanyMapping: caseCompanyMapping
         });
 
         this._progressBarService.show();

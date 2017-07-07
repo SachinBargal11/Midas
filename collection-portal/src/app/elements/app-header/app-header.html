@@ -1,5 +1,6 @@
 <header class="site-header">
 	<div class="container-fluid">
+		<!--<a class="navbar-brand" href="#"><img src="assets/theme/img/logo.png" alt="PA" /></a>-->
 		<a href="#" class="site-logo" style="color: white;">CO
         </a>
 
@@ -12,7 +13,7 @@
 					<div class="dropdown dropdown-notification notif">
 						<a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded" [class.swing]="_notificationsStore.highlightAddition"
 						 [class.animated]="_notificationsStore.highlightAddition">
-							<i class="font-icon-alarm"></i>
+							<i class="fa fa-bell" style="color: #fff" aria-hidden="true"></i>
 						</a>
 					</div>
 

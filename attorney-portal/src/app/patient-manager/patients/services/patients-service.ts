@@ -237,5 +237,10 @@ export class PatientsService {
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
+    
+    getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
+        return `${this._url}/documentmanager/downloadfromnoproviderblob/${documentId}`;
+    }
+
 }
 

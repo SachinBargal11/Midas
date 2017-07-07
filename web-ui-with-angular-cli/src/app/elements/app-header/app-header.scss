@@ -11,6 +11,7 @@
     {
         margin-right: -110px;
         @media (max-width: 991px) {
+        width: 330px;
             .dropdown {
                 &.open {
                     .dropdown-menu {

@@ -117,6 +117,7 @@ export class AddPatientComponent implements OnInit {
     myUploader(event) {
         this.files = event.files;
     }
+    
     uploadProfileImage(patientId: number) {
         let xhr = new XMLHttpRequest(),
             formData = new FormData();
@@ -126,7 +127,7 @@ export class AddPatientComponent implements OnInit {
         }
 
         xhr.open(this.method, this.url, true);
-        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"personal", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
         xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
 
         xhr.withCredentials = false;

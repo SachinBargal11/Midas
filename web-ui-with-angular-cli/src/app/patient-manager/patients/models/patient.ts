@@ -1,3 +1,4 @@
+import { PatientDocument } from './patient-document';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { Record } from 'immutable';
@@ -15,6 +16,7 @@ const PatientRecord = Record({
     maritalStatusId: MaritalStatus.SINGLE,
     dateOfFirstTreatment: moment(),
     companies: [],
+    patientDocuments: [],
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -33,6 +35,7 @@ export class Patient extends PatientRecord {
     maritalStatusId: MaritalStatus;
     dateOfFirstTreatment: moment.Moment;
     companies: Company[];
+    patientDocuments: PatientDocument[];
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

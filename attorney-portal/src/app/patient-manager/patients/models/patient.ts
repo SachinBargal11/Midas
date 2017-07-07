@@ -4,6 +4,7 @@ import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { Company } from '../../../account/models/company';
 import { MaritalStatus } from './enums/marital-status';
+import { PatientDocument } from './patient-document';
 
 const PatientRecord = Record({
     id: 0,
@@ -15,6 +16,7 @@ const PatientRecord = Record({
     maritalStatusId: MaritalStatus.SINGLE,
     dateOfFirstTreatment: moment(),
     companies: [],
+    patientDocuments: [],
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -33,6 +35,7 @@ export class Patient extends PatientRecord {
     maritalStatusId: MaritalStatus;
     dateOfFirstTreatment: moment.Moment;
     companies: Company[];
+    patientDocuments: PatientDocument[];
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
