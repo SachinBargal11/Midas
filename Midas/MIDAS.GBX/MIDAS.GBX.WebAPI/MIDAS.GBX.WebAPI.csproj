@@ -447,9 +447,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <ExcludeFilesFromDeployment>
-       Web.config;Web.Debug.config;Web.Release.config
-    </ExcludeFilesFromDeployment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.PatientWebAPI|AnyCPU'">
     <OutputPath>bin\</OutputPath>
