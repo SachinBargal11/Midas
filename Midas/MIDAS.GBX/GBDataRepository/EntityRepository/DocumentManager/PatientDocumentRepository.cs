@@ -25,6 +25,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
+                if (documentType.ToLower() == "profile")
+                {
+                    var patientProfileDocumemnts = _context.MidasDocuments.Where(mid => mid.ObjectId == objectId &&
+                                                                          mid.DocumentType == documentType &&
+                                                                          (mid.IsDeleted.HasValue == false || (mid.IsDeleted.HasValue == true && mid.IsDeleted.Value == false)));
+                    patientProfileDocumemnts.ToList().ForEach(ppd => ppd.IsDeleted = true);
+                    _context.SaveChanges();
+                }
+
                 MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
                 {
                     ObjectType = documentType.ToUpper().Equals(EN.Constants.ConsentType) ? string.Concat(EN.Constants.ConsentType, "_" + companyId) : objectType,
