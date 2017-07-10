@@ -15,7 +15,7 @@
   "private": true,
   "dependencies": {
     "@amcharts/amcharts3-angular": "^1.2.1",
-    "@angular/animations": "^4.2.3",
+    "@angular/animations": "4.2.3",
     "@angular/common": "4.2.3",
     "@angular/compiler": "4.2.3",
     "@angular/core": "4.2.3",
@@ -79,6 +79,6 @@
     "protractor": "~5.1.2",
     "ts-node": "3.0.6",
     "tslint": "^5.4.3",
-    "typescript": "^2.1.6"
+    "typescript": "2.1.6"
   }
 }
