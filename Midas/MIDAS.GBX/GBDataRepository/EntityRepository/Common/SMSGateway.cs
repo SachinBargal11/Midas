@@ -16,6 +16,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             string accountSid = ConfigurationManager.AppSettings.Get("TWILIO_ACCOUNT_ID");      //-- Account SID from twilio.com/console : AC48ba9355b0bae1234caa9e29dc73b407                            
             string authToken = ConfigurationManager.AppSettings.Get("TWILIO_AUTH_TOKEN");       //-- bAuth Token from twilio.com/console : 74b9f9f1c60c200d28b8c5b22968e65f
+
+            //Get Country Code for Telephone prefix the phoneNumber
+            string CountryCode = ConfigurationManager.AppSettings.Get("TelephoneCountryCode");
+            if (string.IsNullOrWhiteSpace(CountryCode) == false)
+            {
+                phoneNumber = CountryCode + phoneNumber;
+            }
+
             TwilioClient.Init(accountSid, authToken);
             var message = MessageResource.Create(
                 new PhoneNumber(phoneNumber),
