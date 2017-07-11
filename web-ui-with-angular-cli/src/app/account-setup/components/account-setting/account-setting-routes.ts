@@ -13,7 +13,7 @@ export const AccountSettingShellRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'account-setting/general-settings'
+        redirectTo: 'account-setting'
     },
     {
         path: 'account-setting',
@@ -23,6 +23,11 @@ export const AccountSettingShellRoutes: Routes = [
             breadcrumb: 'Account Setting'
         },
         children: [
+            {
+                path: '',
+                redirectTo: 'general-settings',
+                pathMatch: 'full'
+            },
             {
                 path: 'general-settings',
                 component: AccountGeneralSettingComponent,
