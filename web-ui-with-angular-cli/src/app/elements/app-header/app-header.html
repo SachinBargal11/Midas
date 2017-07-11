@@ -60,10 +60,10 @@
 							</a>
 						</div>
 						<div  *ngIf="sessionStore.session.currentCompany" class="dropdown" dropdown>
-						<label class="form-label">	<a dropdownToggle class="btn dropdown-toggle" id="dd-header-add" data-toggle="dropdown" aria-haspopup="true"
+						<a dropdownToggle class="btn dropdown-toggle" id="dd-header-add" data-toggle="dropdown" aria-haspopup="true"
 							 aria-expanded="false">
 							{{sessionStore.session.currentCompany.name}}
-						</a></label>
+						</a>
 							<div class="dropdown-menu" aria-labelledby="dd-header-add">
 								<a *ngFor="let company of sessionStore.session.companies" class="dropdown-item" href="#" (click)="sessionStore.selectCurrentCompany($event, company.id)">{{company.name}}</a>
 							</div>
