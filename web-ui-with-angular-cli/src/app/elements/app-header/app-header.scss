@@ -2,7 +2,11 @@
 //     height: 50px;
 //     padding-top: 5px;
 // }
-
+@media (max-width: 767px) {
+    .site-header .site-header-content {
+        width: inherit;
+    }
+}
 .site-header
 {
     height: 60px;
@@ -43,5 +47,11 @@
                 opacity: 1;
             }
         }
-    }
+    }    
+}
+.site-header .dropdown .btn.dropdown-toggle {
+                background-color: #fff;
+                border-color: #fff;
+                color: #59c09d;
+                opacity: 0.7;
 }
