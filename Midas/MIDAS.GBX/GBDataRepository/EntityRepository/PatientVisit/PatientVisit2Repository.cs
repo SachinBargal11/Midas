@@ -780,15 +780,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 bool IsEditMode = false;
                 bool IsAddModeCalendarEvent = false;
                 IsEditMode = (PatientVisit2BO != null && PatientVisit2BO.ID > 0) ? true : false;
+                string patientContactNumber = null;
+                User patientuser = null;
 
                 if (PatientVisit2BO.PatientId == null && PatientVisit2BO.ID > 0)
                 {
                     var patientvisitData = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).Select(p => new { p.PatientId, p.CaseId }).FirstOrDefault();
-                    patientUserName = _context.Users.Where(usr => usr.id == patientvisitData.PatientId).Select(p => p.UserName).FirstOrDefault();
+                    //patientUserName = _context.Users.Where(usr => usr.id == patientvisitData.PatientId).Select(p => p.UserName).FirstOrDefault();
+                    patientuser =  _context.Users.Where(usr => usr.id == patientvisitData.PatientId).FirstOrDefault();
+                }
+                else if (PatientVisit2BO.PatientId != null && PatientVisit2BO.PatientId > 0)
+                {
+                    //patientUserName = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).Select(p => p.UserName).FirstOrDefault();
+                    patientuser = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).FirstOrDefault();
                 }
 
-                if (PatientVisit2BO.PatientId != null && PatientVisit2BO.PatientId > 0)
-                    patientUserName = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).Select(p => p.UserName).FirstOrDefault();
+                if (patientuser != null)
+                {
+                    patientUserName = patientuser.UserName;
+                    patientContactNumber = patientuser.ContactInfo.CellPhone;
+                }                
 
                 if (IsEditMode == false)
                 {
@@ -877,10 +888,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             //    body: "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault()
                             //    );
 
-                            string to = dictionary[patientUserName];
-                            string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                            //string to = dictionary[patientUserName];
+                            if (patientContactNumber != null && patientContactNumber != string.Empty)
+                            {
+                                string to = patientContactNumber;
+                                string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
 
-                            string msgid = SMSGateway.SendSMS(to, body);
+                                string msgid = SMSGateway.SendSMS(to, body);
+                            }                            
                         }
                     }
                     catch (Exception) { }
@@ -1100,7 +1115,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     ContactInfo contact = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
                     Patient2 patient = _context.Patient2.Where(p => p.Id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
+                    string doctorContactNumber = null;
+
                     User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    doctorContactNumber = doctor_user.ContactInfo.CellPhone;
 
                     if (currentUser != null)
                     {
@@ -1147,10 +1165,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #region send SMS notification 
                                         try
                                         {
-                                            string to = dictionary[patientUserName];
-                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                            string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
-                                            string msgid = SMSGateway.SendSMS(to, body);
+                                            if (patientContactNumber != null && patientContactNumber != string.Empty)
+                                            {
+                                                //string to = dictionary[patientUserName];
+                                                string to = patientContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }                                            
                                         }
                                         catch (Exception) { }
                                         #endregion
@@ -1194,10 +1216,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #region send SMS notification 
                                         try
                                         {
-                                            string to = dictionary[patientUserName];
-                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                            string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
-                                            string msgid = SMSGateway.SendSMS(to, body);
+                                            if (patientContactNumber != null && patientContactNumber != string.Empty)
+                                            {
+                                                //string to = dictionary[patientUserName];
+                                                string to = patientContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }                                            
                                         }
                                         catch (Exception) { }
                                         #endregion
@@ -1254,10 +1280,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #region send SMS notification 
                                         try
                                         {
-                                            string to = doctor.User.UserName;
-                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                            string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
-                                            string msgid = SMSGateway.SendSMS(to, body);
+                                            if (doctorContactNumber != null && doctorContactNumber != string.Empty)
+                                            {
+                                                //string to = doctor.User.UserName;
+                                                string to = doctorContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }                                            
                                         }
                                         catch (Exception) { }
                                         #endregion
@@ -1301,10 +1331,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         #region send SMS notification 
                                         try
                                         {
-                                            string to = doctor.User.UserName;
-                                            //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                            string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
-                                            string msgid = SMSGateway.SendSMS(to, body);
+                                            if (doctorContactNumber != null && doctorContactNumber != string.Empty)
+                                            {
+                                                //string to = doctor.User.UserName;
+                                                string to = doctorContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }                                            
                                         }
                                         catch (Exception) { }
                                         #endregion
