@@ -787,12 +787,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     var patientvisitData = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).Select(p => new { p.PatientId, p.CaseId }).FirstOrDefault();
                     //patientUserName = _context.Users.Where(usr => usr.id == patientvisitData.PatientId).Select(p => p.UserName).FirstOrDefault();
-                    patientuser =  _context.Users.Where(usr => usr.id == patientvisitData.PatientId).FirstOrDefault();
+                    patientuser =  _context.Users.Where(usr => usr.id == patientvisitData.PatientId).Include("ContactInfo").FirstOrDefault();
                 }
                 else if (PatientVisit2BO.PatientId != null && PatientVisit2BO.PatientId > 0)
                 {
                     //patientUserName = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).Select(p => p.UserName).FirstOrDefault();
-                    patientuser = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).FirstOrDefault();
+                    patientuser = _context.Users.Where(usr => usr.id == PatientVisit2BO.PatientId).Include("ContactInfo").FirstOrDefault();
                 }
 
                 if (patientuser != null)
@@ -1117,7 +1117,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     string doctorContactNumber = null;
 
-                    User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Include("ContactInfo").FirstOrDefault();
                     doctorContactNumber = doctor_user.ContactInfo.CellPhone;
 
                     if (currentUser != null)
