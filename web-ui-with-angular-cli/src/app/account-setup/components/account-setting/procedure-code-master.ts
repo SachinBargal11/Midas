@@ -261,12 +261,12 @@ export class ProcedureCodeComponent implements OnInit {
                     (response) => {
 
                         let notification = new Notification({
-                            'title': 'Procedure code amount updated successfully!!',
+                            'title': 'Procedure code amount updated successfully',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
                         this._notificationsStore.addNotification(notification);
-                        this._notificationsService.success('Welcome!', 'Procedure code amount updated successfully!.');
+                        this._notificationsService.success('Success!', 'Procedure code amount updated successfully');
                         this.selProcedureCodes = [];
                         this.selectedProcedures = [];
                         this.selectedProceduresCodes = [];

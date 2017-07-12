@@ -721,50 +721,50 @@ export class PatientVisitComponent implements OnInit {
         return canScheduleAppointement;
     }
 
-    handleDayClick(event) {
-        let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
+    // handleDayClick(event) {
+    //     let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
-        if (canScheduleAppointement) {
+    //     if (canScheduleAppointement) {
 
-            // Potential Refactoring for creating visit
-            let selectedDoctor: Doctor = null;
-            let selectedRoom: Room = null;
-            if (this.selectedOption === 1) {
-                _.each(this.doctorLocationSchedules, (currentSchedule: {
-                    doctorLocationSchedule: DoctorLocationSchedule,
-                    speciality: DoctorSpeciality
-                }) => {
-                    if (currentSchedule.doctorLocationSchedule.doctor.id == this.selectedDoctorId) {
-                        selectedDoctor = currentSchedule.doctorLocationSchedule.doctor;
-                    }
-                });
-            } else {
-                _.each(this.rooms, (currentRoom: Room) => {
-                    if (currentRoom.id == this.selectedRoomId) {
-                        selectedRoom = currentRoom;
-                    }
-                });
-            }
+    //         // Potential Refactoring for creating visit
+    //         let selectedDoctor: Doctor = null;
+    //         let selectedRoom: Room = null;
+    //         if (this.selectedOption === 1) {
+    //             _.each(this.doctorLocationSchedules, (currentSchedule: {
+    //                 doctorLocationSchedule: DoctorLocationSchedule,
+    //                 speciality: DoctorSpeciality
+    //             }) => {
+    //                 if (currentSchedule.doctorLocationSchedule.doctor.id == this.selectedDoctorId) {
+    //                     selectedDoctor = currentSchedule.doctorLocationSchedule.doctor;
+    //                 }
+    //             });
+    //         } else {
+    //             _.each(this.rooms, (currentRoom: Room) => {
+    //                 if (currentRoom.id == this.selectedRoomId) {
+    //                     selectedRoom = currentRoom;
+    //                 }
+    //             });
+    //         }
 
-            this.selectedVisit = new PatientVisit({
-                locationId: this.selectedLocationId,
-                doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
-                doctor: selectedDoctor,
-                roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
-                room: selectedRoom,
-                calendarEvent: new ScheduledEvent({
-                    name: '',
-                    eventStart: event.date.clone().local(),
-                    eventEnd: event.date.clone().local().add(30, 'minutes'),
-                    timezone: '',
-                    isAllDay: false
-                })
-            });
-            this.visitInfo = this.selectedVisit.visitDisplayString;
-            this.eventDialogVisible = true;
-            this._cd.detectChanges();
-        }
-    }
+    //         this.selectedVisit = new PatientVisit({
+    //             locationId: this.selectedLocationId,
+    //             doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+    //             doctor: selectedDoctor,
+    //             roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
+    //             room: selectedRoom,
+    //             calendarEvent: new ScheduledEvent({
+    //                 name: '',
+    //                 eventStart: event.date.clone().local(),
+    //                 eventEnd: event.date.clone().local().add(30, 'minutes'),
+    //                 timezone: '',
+    //                 isAllDay: false
+    //             })
+    //         });
+    //         this.visitInfo = this.selectedVisit.visitDisplayString;
+    //         this.eventDialogVisible = true;
+    //         this._cd.detectChanges();
+    //     }
+    // }
 
     private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
