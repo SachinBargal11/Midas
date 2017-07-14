@@ -28,6 +28,7 @@
     "@angular/upgrade": "4.2.6",
     "@types/jquery": "^2.0.40",
     "@types/moment": "^2.13.0",
+    "@types/ng-file-upload": "^12.2.1",
     "@types/rrule": "^2.1.6",
     "angular2-notifications": "^0.7.4",
     "angular2-signaturepad": "^2.4.0",
