@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="87f56d93a0664a45a8d6beeb693e98ea" Name="Diagram1">
+        <EntityTypeShape EntityType="CAIdentityServerModel.Client" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.ClientAllowedCorsOrigin" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.ClientPostLogoutRedirectURI" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.ClientRedirectURI" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.ClientScope" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.Scope" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.ScopeClaim" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="CAIdentityServerModel.ScopeSecret" Width="1.5" PointX="8" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__ClientAll__Clien__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__ClientPos__Clien__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__ClientRed__Clien__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__ClientSco__Clien__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__ScopeClai__Scope__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="CAIdentityServerModel.FK__ScopeSecr__Scope__45F365D3" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
