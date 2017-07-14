@@ -91,29 +91,22 @@ export class AddAncillaryComponent implements OnInit {
         this.currentProviderId = currentProviderId;
     }
 
-    assignMedicalProvider() {
+    assignAncillary() {
         if (this.currentProviderId !== 0) {
             let result;
-            result = this._ancillaryMasterStore.assignProviders(this.currentProviderId);
+            result = this._ancillaryMasterStore.assignAncillary(this.currentProviderId);
             result.subscribe(
                 (response) => {
                     let notification = new Notification({
-                        'title': 'Ancillary Servicer assigned successfully!',
+                        'title': 'Ancillary Service assigned successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
                     this.loadAllAncillaries();
                     this.currentProviderId = 0;
-                    // this._router.navigate(['/account-setup/medical-provider-master']);
-                    if (!this.inputCancel) {
-                        setTimeout(() => {
-                            this._router.navigate(['../'], { relativeTo: this._route });
-                        }, 3000);
-                    }
-                    else {
-                        this.closeDialog();
-                    }
+                    this._router.navigate(['../'], { relativeTo: this._route });
+
                 },
                 (error) => {
                     let errString = 'Unable to assign Ancillary Service.';

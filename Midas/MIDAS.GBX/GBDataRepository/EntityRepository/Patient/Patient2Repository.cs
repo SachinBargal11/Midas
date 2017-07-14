@@ -61,6 +61,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
+            if (patient2.PatientDocuments != null)
+            {
+                List<BO.PatientDocument> boPatientDocuments = new List<BO.PatientDocument>();
+                foreach (var item in patient2.PatientDocuments)
+                {
+                    if (item != null)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+
+                            BO.PatientDocument boPatientDocument = new BO.PatientDocument();                           
+                          
+                            boPatientDocument.ID = item.Id;
+                            boPatientDocument.PatientId = item.PatientId;
+                            boPatientDocument.MidasDocumentId = item.MidasDocumentId;
+                            boPatientDocument.DocumentName = item.DocumentName;
+                            boPatientDocument.DocumentType = item.DocumentType;
+
+                            boPatientDocuments.Add(boPatientDocument);
+                        }
+                    }
+
+                }
+                patientBO2.PatientDocuments = boPatientDocuments;
+            }
+
             if (patient2.Cases != null)
             {
                 List<BO.Case> boCase = new List<BO.Case>();
@@ -316,7 +342,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.ContactInfo")
                                                  .Include("Case.Patient2.Cases")
                                                  .Include("Case.Patient2.Cases.Referral2")
-                                                 .Where(p => p.FromCompanyId == CompanyId
+                                                 .Where(p => (p.FromCompanyId == CompanyId || p.ToCompanyId == CompanyId)
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                         && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
                                                         && (p.Case.Patient2.IsDeleted.HasValue == false || (p.Case.Patient2.IsDeleted.HasValue == true && p.Case.Patient2.IsDeleted.Value == false)))
@@ -557,6 +583,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.ContactInfo")
                                        .Include("Cases")
                                        .Include("Cases.Referral2")
+                                       .Include("PatientDocuments")
+
                                        .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                        .FirstOrDefault<Patient2>();
 
@@ -1321,7 +1349,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region AssociatePatientWithAncillaryCompany
-        public override object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId)
+        public override object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId)
         {
             bool add_UserCompany = false;
             bool add_CaseCompanyMap = false;
@@ -1380,7 +1408,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             caseCompanyMap.CaseId = CaseId;
             caseCompanyMap.CompanyId = AncillaryCompanyId;
-            //caseCompanyMap.AddedByCompanyId = AddedByCompanyId; Need to modify API parameters to have additional AddedByCompanyId
+            caseCompanyMap.AddedByCompanyId = AddedByCompanyId; //Need to modify API parameters to have additional AddedByCompanyId
 
             if (add_CaseCompanyMap)
             {
@@ -1448,6 +1476,49 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var res = Convert<BO.Patient2, Patient2>(PatientDB);
             return (object)res;
 
+        }
+        #endregion
+
+        #region AddPatientProfileDocument
+        public override object AddPatientProfileDocument(int PatientId, int DocumentId)
+        {
+
+            var midasDocument = _context.MidasDocuments.Where(p => p.Id == DocumentId 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
+            if(midasDocument == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this DocumentId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            midasDocument.ObjectId = PatientId;
+
+            //_context.MidasDocuments.Add(midasDocument);
+
+            var patientDocument = _context.PatientDocuments.Where(p => p.PatientId == PatientId 
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault();
+            if (patientDocument == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this PatientId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            patientDocument.PatientId = PatientId;
+            patientDocument.MidasDocumentId = midasDocument.Id;
+            patientDocument.DocumentName = midasDocument.DocumentName;
+            patientDocument.DocumentType = midasDocument.DocumentType;
+
+            _context.PatientDocuments.Add(patientDocument);
+
+            _context.SaveChanges();
+
+            var PatientDocumentDB = _context.PatientDocuments
+                                              .Where(p => p.Id == patientDocument.Id
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .FirstOrDefault<PatientDocument>();
+
+            return (object)PatientDocumentDB;
         }
         #endregion
 

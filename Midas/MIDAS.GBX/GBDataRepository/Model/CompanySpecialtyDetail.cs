@@ -33,6 +33,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string InitialCode { get; set; }
         public string ReEvalCode { get; set; }
+        public bool MandatoryProcCode { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual Specialty Specialty { get; set; }

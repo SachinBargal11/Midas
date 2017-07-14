@@ -94,7 +94,7 @@ export class PatientVisitComponent implements OnInit {
     /* Dialog Visibilities */
     eventDialogVisible: boolean = false;
     visitDialogVisible: boolean = false;
-
+    patientInfoDialogVisible: boolean = false;
     /* Form Controls */
     private scheduledEventEditorValid: boolean = false;
     // private leaveEventEditorValid: boolean = false;
@@ -135,7 +135,11 @@ export class PatientVisitComponent implements OnInit {
     patientName: string;
     patient: Patient;
     visitId: number;
-
+    patientInfo: Patient;
+    providerName: string;
+    providerContactNo: string;
+    doctorName: string;
+    doctorLocation: string;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -229,7 +233,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.loadAllVisits();
+        // this.loadAllVisits();       
         this.loadAllVisitsForPatientId();
 
         this.header = {
@@ -756,8 +760,7 @@ export class PatientVisitComponent implements OnInit {
         //     });
         //     this.visitInfo = this.selectedVisit.visitDisplayString;
         //     this.eventDialogVisible = true;
-        //     this._cd.detectChanges();
-        // }
+        //}
     }
 
     private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {
@@ -828,7 +831,7 @@ export class PatientVisitComponent implements OnInit {
         return patientVisit;
     }
 
-    handleEventClick(event) {
+    handleEventClick(event) {       
         let clickedEventInstance: ScheduledEventInstance = event.calEvent;
         let scheduledEventForInstance: ScheduledEvent = clickedEventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(clickedEventInstance.eventWrapper);
@@ -840,19 +843,27 @@ export class PatientVisitComponent implements OnInit {
             this.patientScheduleForm.controls[key].updateValueAndValidity();
         });
         this.visitInfo = this.selectedVisit.visitDisplayString;
-        if (clickedEventInstance.isInPast) {
-            // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            this.getDocuments();
-            this.visitDialogVisible = true;
-        } else {
-            if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
-                this.confirmEditingEventOccurance();
-            } else {
-                this.visitDialogVisible = false;
-                this.eventDialogVisible = true;
-            }
-        }
+        this.providerName = this.selectedVisit.originalResponse.location.company.name;
+        this.providerContactNo = this.selectedVisit.originalResponse.location.contactInfo.cellPhone;
+        this.doctorName = this.selectedVisit.originalResponse.doctor.user.firstName + ' ' + this.selectedVisit.originalResponse.doctor.user.lastName;
+        this.doctorLocation = this.selectedVisit.originalResponse.location.name;
+
+        this.patientInfoDialogVisible = true;
+        this.getPatientInfo(this.selectedVisit.patientId);
+
+        // if (clickedEventInstance.isInPast) {
+        //     // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+        //     // this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
+        //     // this.getDocuments();
+        //     this.visitDialogVisible = true;
+        // } else {
+        //     if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
+        //         this.confirmEditingEventOccurance();
+        //     } else {
+        //         this.visitDialogVisible = false;
+        //         this.eventDialogVisible = true;
+        //     }
+        // }
     }
 
     private _createVisitInstanceForASeries(seriesEvent: ScheduledEvent, instanceStart: moment.Moment, instanceEnd: moment.Moment): PatientVisit {
@@ -1529,4 +1540,20 @@ export class PatientVisitComponent implements OnInit {
     //             this._progressBarService.hide();
     //         });
     // }
+
+
+    getPatientInfo(patientId) {
+        let result = this._patientsStore.fetchPatientById(patientId);
+        result.subscribe(
+            (patient: Patient) => {
+                this.patientInfo = patient;
+            },
+            (error) => {
+                // this._router.navigate(['/patient-manager/patients']);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 }

@@ -16,6 +16,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import * as _ from 'underscore';
+import { SessionStore } from '../../../commons/stores/session-store';
 import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
@@ -54,6 +55,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
+        public sessionStore: SessionStore,
         private _patientVisitStore: PatientVisitsStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -84,7 +86,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
         });
 
           this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+            this.patientId = this.sessionStore.session.user.id;
              this._progressBarService.show();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(

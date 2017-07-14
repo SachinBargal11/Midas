@@ -10,10 +10,12 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseAdapter } from './adapters/case-adapter';
 import { CaseDocumentAdapter } from './adapters/case-document-adapters';
 import { Document } from '../../../commons/models/document';
-import { Company } from '../../../account/models/company';
-import { CompanyAdapter } from '../../../account/services/adapters/company-adapter';
+// import { Company } from '../../../account/models/company';
+// import { CompanyAdapter } from '../../../account/services/adapters/company-adapter';
 import * as _ from 'underscore';
 import { Consent } from '../models/consent';
+import { CompanyConsent } from '../models/company-consent';
+import { CompanyConsentAdapter } from './adapters/company-consent-adapter'
 
 @Injectable()
 export class CaseService {
@@ -40,6 +42,19 @@ export class CaseService {
                     } else {
                         reject(new Error('NOT_FOUND'));
                     }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
+    getCaseReadOnly(caseId: Number): Observable<Case> {
+        let promise: Promise<Case> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getReadOnly/' + caseId + '/0').map(res => res.json())
+                .subscribe((data: any) => {
+                        resolve(data);
                 }, (error) => {
                     reject(error);
                 });
@@ -132,20 +147,36 @@ export class CaseService {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
-    getCaseCompanies(caseId: number): Observable<Company[]> {
-        let promise: Promise<Company[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getCaseCompanies/' + caseId)
+    // getCaseCompanies(caseId: number): Observable<Company[]> {
+    //     let promise: Promise<Company[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/Case/getCaseCompanies/' + caseId)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let companies = (<Object[]>data).map((data: any) => {
+    //                 return CompanyAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(companies);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<Company[]>>Observable.fromPromise(promise);
+    // }
+
+    getCaseCompanies(patientId: number): Observable<CompanyConsent[]> {
+        let promise: Promise<CompanyConsent[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/GetOpenCaseCompaniesByPatientId/' + patientId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let companies = (<Object[]>data).map((data: any) => {
-                    return CompanyAdapter.parseResponse(data);
+                    return CompanyConsentAdapter.parseResponse(data);
                     });
                     resolve(companies);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Company[]>>Observable.fromPromise(promise);
+        return <Observable<CompanyConsent[]>>Observable.fromPromise(promise);
     }
 
      getDocumentForCaseId(caseId: number): Observable<Case> {

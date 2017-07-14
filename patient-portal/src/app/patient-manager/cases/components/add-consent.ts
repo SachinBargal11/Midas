@@ -109,8 +109,7 @@ export class AddConsentComponent implements OnInit {
             .subscribe((company) => {
                 this.companies = company,
                     this.selectedCompany = this.companies[0].id,
-                    this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
-
+                    this.url = `${this._url}/documentmanager/uploadtoblob`;
                 this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
                 this.signedDocumentPostRequestData = {
                     companyId: this.selectedCompany,
@@ -123,7 +122,7 @@ export class AddConsentComponent implements OnInit {
     selectcompany(event) {
         // this.selectedcompany = 0;
         this.currentCompany = parseInt(event.target.value);
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
         this.signedDocumentPostRequestData = {
             companyId: this.currentCompany,
@@ -156,10 +155,11 @@ export class AddConsentComponent implements OnInit {
             }
         }, 250);
     }
-    showDialog(currentCaseId: number, providerCompanyId: number) {
+    showDialog() {
         this.addConsentDialogVisible = true;
-        this.caseId = currentCaseId;
-        this.companyId = providerCompanyId;
+        this.caseId = this.caseId;
+        this.companyId = this.selectedCompany;
+        // this.companyId = this._sessionStore.session.currentCompany.id;
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -175,14 +175,14 @@ export class AddConsentComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Consent uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment(),
 
                 });
                 this.notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Consent uploaded successfully');
                 this.loadConsentForm();
-        
+                this.addConsentDialogVisible = false;
             }
         });
     }
@@ -224,9 +224,9 @@ export class AddConsentComponent implements OnInit {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    downloadPdf(documentId) {
+    downloadPdf(document) {
         this._progressBarService.show();
-        this._consentStore.downloadConsentForm(this.caseId, documentId)
+        this._consentStore.downloadConsentForm(document.midasDocumentId,document.companyId)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -250,7 +250,7 @@ export class AddConsentComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-    downloadTemplate() {
+    downloadTemplate(event) {
         this._progressBarService.show();
         this._consentStore.downloadTemplate(this.caseId, this.selectedCompany)
             .subscribe(

@@ -17,6 +17,10 @@ export class PaymentListComponent {
     verificationDialogVisible: boolean = false;
     verficationScanUploadDialogVisible: boolean = false;
     denialScanUploadDialogVisible: boolean = false;
+    selectedPayment: any[];
+    PrefferedBilling: any[];
+    maxDate;
+    isSaveProgress = false;
 
 
     constructor(
@@ -68,4 +72,6 @@ export class PaymentListComponent {
     showDenialUploadDialog() {
         this.denialScanUploadDialogVisible = true;
     }
+    saveDenial() {}
+    saveVerification() {}
 }

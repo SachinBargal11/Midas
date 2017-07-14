@@ -12,6 +12,8 @@ import { CaseDocumentAdapter } from './adapters/case-document-adapters';
 import { Document } from '../../../commons/models/document';
 import * as _ from 'underscore';
 import { Consent } from '../models/consent';
+import { CaseLabelAdapter } from './adapters/case-label-adapters';
+import { CaseLabel } from '../models/case-label';
 
 @Injectable()
 export class CaseService {
@@ -44,6 +46,27 @@ export class CaseService {
 
         });
         return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
+     getCaseReadOnly(caseId: Number,companyId): Observable<CaseLabel> {
+        let promise: Promise<CaseLabel> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/case/getReadOnly/' + caseId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let caseLabel = null;
+                    if (data) {
+                        caseLabel = CaseLabelAdapter.parseResponse(data);
+                        resolve(caseLabel);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<CaseLabel>>Observable.fromPromise(promise);
     }
 
     getOpenCaseForPatient(patientId: Number): Observable<Case[]> {
@@ -194,12 +217,12 @@ export class CaseService {
     addCase(caseDetail: Case): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
-            let caseCompanyMapping = [{
-                company: {
-                    id: this._sessionStore.session.currentCompany.id
-                }
-            }];
-            caseRequestData.caseCompanyMapping = caseCompanyMapping;
+            // let caseCompanyMapping = [{
+            //     company: {
+            //         id: this._sessionStore.session.currentCompany.id
+            //     }
+            // }];
+            // caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })

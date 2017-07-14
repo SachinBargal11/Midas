@@ -13,6 +13,8 @@ import { AncillaryMaster } from '../../../account-setup/models/ancillary-master'
 })
 
 export class ScheduledEventEditorComponent implements OnChanges {
+    // timeZoneOffset = new Date().getTimezoneOffset();
+    // timezone = moment.tz.guess();
     ancillaryProviderId: number = null;
     allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
@@ -20,7 +22,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
-    // isAllDay: boolean;
+    isAllDay: boolean;
     repeatType: string = '7';
 
     // Daily 
@@ -69,7 +71,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
             this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-            // this.isAllDay = this._selectedEvent.isAllDay;
+            this.isAllDay = this._selectedEvent.isAllDay;
 
             if (this._selectedEvent.recurrenceRule) {
                 let options = this._selectedEvent.recurrenceRule.options;
@@ -150,7 +152,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
             this.eventEndAsDate = null;
-            // this.isAllDay = false;
+            this.isAllDay = false;
         }
     }
 
@@ -169,7 +171,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
             duration: ['', Validators.required],
             // eventEndDate: ['', Validators.required],
             // eventEndTime: [''],
-            // isAllDay: [],
+            isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({
                 end: [],
@@ -349,8 +351,11 @@ export class ScheduledEventEditorComponent implements OnChanges {
         }
         return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
             name: scheduledEventEditorFormValues.name,
+            // eventStart: moment(this.eventStartAsDate).toLocaleString(),
             eventStart: moment(this.eventStartAsDate),
+            // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes').toLocaleString(),
             eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+            timezone: this.eventStartAsDate.getTimezoneOffset(),
             // eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
             // eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).endOf('day') : moment(this.eventStartAsDate).add(this.duration, 'minutes'),
             // isAllDay: scheduledEventEditorFormValues.isAllDay,

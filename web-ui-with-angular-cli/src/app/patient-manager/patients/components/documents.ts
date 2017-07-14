@@ -81,9 +81,13 @@ export class DocumentsComponent implements OnInit {
         this.getDocuments();
     }
 
-    showDialog(currentPatientId: number) {
+    showDialog() {
         this.addConsentDialogVisible = true;
-        this.selectedPatientId = currentPatientId;
+        this.selectedPatientId = this.currentPatientId;
+    }
+    handleAddConsentDialogHide() {
+        this.addConsentDialogVisible = false;
+        this.selectedPatientId = null;        
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -100,7 +104,7 @@ export class DocumentsComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);

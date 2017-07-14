@@ -43,7 +43,7 @@
                 {{case.caseSource}}
             </div>
             <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
-                {{case.createdByCompany.name}}
+                {{case.orignatorCompanyName}}
             </div>
         </ng-template>
     </p-column>
@@ -51,11 +51,16 @@
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
-            <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id) ">
+            <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)">
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
-            <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
-                <a title="Edit" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+           <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
+                <!--<a title="Edit" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
+                <a *ngIf="case.caseStatusId == 2" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+                <div *ngIf="case.caseStatusId == 1">
+                    <a *ngIf="case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+                    <a *ngIf="!case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+                </div>
             </div>
         </ng-template>
     </p-column>

@@ -26,6 +26,7 @@ export class DignosisComponent implements OnInit {
   diagnosisCodes: SelectItem[] = [];
   selectedDiagnosisCodes: DiagnosisCode[];
   selectedDiagnosis: DiagnosisCode[];
+  diagnosisTypeId: number;
 
   @Input() selectedVisit: PatientVisit;
   @Input() routeFrom: number;
@@ -69,6 +70,7 @@ export class DignosisComponent implements OnInit {
 
   searchDiagnosis(event) {
     let currentDiagnosisTypeId = event.target.value;
+    this.diagnosisTypeId = currentDiagnosisTypeId;
     if (currentDiagnosisTypeId !== '') {
       this.loadAllDiagnosisCodesForType(currentDiagnosisTypeId);
     } else {
@@ -112,6 +114,7 @@ export class DignosisComponent implements OnInit {
     // });
     // this.saveComplete.emit(diagnosisCodes);
     this.save.emit(this.selectedDiagnosisCodes);
+    this.loadAllDiagnosisCodesForType(this.diagnosisTypeId);
   }
 
   deleteDiagnosis() {

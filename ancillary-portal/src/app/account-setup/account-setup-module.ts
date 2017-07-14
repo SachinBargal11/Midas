@@ -60,6 +60,7 @@ import { GeneralSettingStore } from './stores/general-settings-store';
 import { GeneralSettingService } from './services/general-settings-service';
 import { AncillaryListComponent } from './components/ancillary-master/ancillary-master-list';
 import { AddAncillaryComponent } from './components/ancillary-master/add-ancillary-master';
+import { EditAncillaryComponent } from './components/ancillary-master/edit-ancillary-master';
 
 import { AncillaryMasterStore } from './stores/ancillary-store';
 import { AncillaryMasterService } from './services/ancillary-service';
@@ -95,7 +96,7 @@ import { AncillaryMasterService } from './services/ancillary-service';
         AccountSettingShellComponent,
         ProcedureCodeComponent,
         DocumentTypeComponent,
-        AccountGeneralSettingComponent, AncillaryListComponent, AddAncillaryComponent
+        AccountGeneralSettingComponent, AncillaryListComponent, AddAncillaryComponent, EditAncillaryComponent
 
     ],
     providers: [

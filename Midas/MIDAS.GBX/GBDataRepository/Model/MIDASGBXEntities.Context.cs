@@ -30,7 +30,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
-        public virtual DbSet<AuditTableMapping> AuditTableMappings { get; set; }
         public virtual DbSet<BlobStorage> BlobStorages { get; set; }
         public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
@@ -52,6 +51,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
@@ -67,6 +67,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
         public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<NotifyContact> NotifyContacts { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
@@ -111,12 +112,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
-        public virtual DbSet<AppMessageQueue> AppMessageQueues { get; set; }
-        public virtual DbSet<EMailConfiguration> EMailConfigurations { get; set; }
-        public virtual DbSet<EMailQueue> EMailQueues { get; set; }
-        public virtual DbSet<QueueType> QueueTypes { get; set; }
-        public virtual DbSet<SMSConfiguration> SMSConfigurations { get; set; }
-        public virtual DbSet<SMSQueue> SMSQueues { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
@@ -126,6 +121,19 @@ namespace MIDAS.GBX.DataRepository.Model
                 new ObjectParameter("document_node", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("midas_sp_get_document_path", document_nodeParameter);
+        }
+    
+        public virtual ObjectResult<sp_CaseGetReadOnly_Result> sp_CaseGetReadOnly(Nullable<int> caseId, Nullable<int> companyId)
+        {
+            var caseIdParameter = caseId.HasValue ?
+                new ObjectParameter("CaseId", caseId) :
+                new ObjectParameter("CaseId", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_CaseGetReadOnly_Result>("sp_CaseGetReadOnly", caseIdParameter, companyIdParameter);
         }
     }
 }

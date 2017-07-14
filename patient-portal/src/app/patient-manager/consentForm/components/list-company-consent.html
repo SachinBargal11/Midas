@@ -14,13 +14,22 @@
     <!--<p-column selectionMode="multiple"></p-column>-->
     <p-column field="name" header="Company Name"></p-column>
     <p-column field="companyTypeLabel" header="Company Type"></p-column>
-    <p-column header="Case Id">
-        <ng-template pTemplate="body">
+    <p-column field="caseId" header="Case Id">
+        <!--<ng-template pTemplate="body">
             {{caseId}}
-        </ng-template>
+        </ng-template>-->
     </p-column>
     <p-column header="Consent Given">
         <ng-template let-company="rowData" pTemplate="body">
+            <div *ngIf="company.isConsentReceived()" (click)="downloadConsent(company.caseCompanyConsentDocument.midasDocumentId, company.id)">
+                <u>Yes</u>
+            </div>
+            <div *ngIf="!company.isConsentReceived()" (click)="showDialog(company.caseId,company.id)">
+                <u>No</u>
+            </div>
+        </ng-template>
+    </p-column>
+    <!--<ng-template let-company="rowData" pTemplate="body">
             <div *ngFor="let case of cases">
                 <a *ngIf="case.isConsentReceived(company.id)" (click)="downloadConsent(case.caseCompanyConsentDocument, company.id)">
                     <u>Yes</u>
@@ -29,19 +38,17 @@
                     <u>No</u>
                 </a>
             </div>
-        </ng-template>
-    </p-column>
+        </ng-template> -->
+    <!--</p-column>-->
     <!--<p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>-->
 </p-dataTable>
 
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+<p-dialog [minWidth]="600" [width]="1200" [(visible)]="addConsentDialogVisible" [responsive]="true" showEffect="fade" [modal]="false"
+    [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
     <div>
-        <app-document-upload [currentId]="2" [objectId]="caseId" [providerId]= "companyId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData"
-            [signedDocumentUploadUrl]="signedDocumentUploadUrl" (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)"
-            (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
-            (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)">
+        <app-document-upload [currentId]="2" [objectId]="caseId" [providerId]="companyId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
+            [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true">
         </app-document-upload>
     </div>
 </p-dialog>

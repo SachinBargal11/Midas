@@ -12,6 +12,7 @@ export class ProcedureAdapter {
         if (data) {
             procedure = new Procedure({
                 id: data.id,
+                procedureCodeId: data.procedureCodeId,
                 specialityId: data.specialityId,
                 roomId: data.roomId,
                 roomTestId: data.roomTestId,
@@ -28,6 +29,20 @@ export class ProcedureAdapter {
                 updateByUserId: data.updateByUserId,
                 createDate: moment(data.createDate), // Moment
                 updateDate: moment(data.updateDate) // Moment
+            });
+        }
+        return procedure;
+    }
+    static parsePreferredResponse(data: any): Procedure {
+
+        let procedure = null;
+        if (data) {
+            procedure = new Procedure({
+                id: data.procedureCodeId,
+                procedureCodeId: data.procedureCodeId,
+                procedureCodeText: data.procedureCodeText,
+                procedureCodeDesc: data.procedureCodeDesc,
+                amount: data.amount ? data.amount : null
             });
         }
         return procedure;

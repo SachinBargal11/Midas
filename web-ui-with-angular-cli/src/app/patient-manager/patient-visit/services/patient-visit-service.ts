@@ -1,3 +1,4 @@
+import { Procedure } from '../../../commons/models/procedure';
 import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Injectable } from '@angular/core';
@@ -257,6 +258,7 @@ export class PatientVisitService {
                 })
             });
             requestData.createByUserID = this._sessionStore.session.account.user.id;
+            requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
             // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
@@ -316,6 +318,7 @@ export class PatientVisitService {
             });
             // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
+            requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -354,6 +357,11 @@ export class PatientVisitService {
     updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             let requestData = patientVisitDetail.toJS();
+            let procedures = _.map(requestData.patientVisitProcedureCodes, (currentProcedure: Procedure) => {
+                return { 'procedureCodeId': currentProcedure.id };
+            })
+            requestData.patientVisitProcedureCodes = procedures;
+            requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
             requestData = _.omit(requestData, 'calendarEvent');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers

@@ -28,14 +28,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public string ProcedureCodeDesc { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public Nullable<decimal> Amount { get; set; }
+        public Nullable<int> SpecialityId { get; set; }
+        public Nullable<int> RoomId { get; set; }
+        public Nullable<int> RoomTestId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> SpecialityId { get; set; }
-        public Nullable<int> RoomId { get; set; }
-        public Nullable<int> RoomTestId { get; set; }
     
         public virtual Company Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -43,6 +43,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
         public virtual Room Room { get; set; }
+        public virtual Room Room1 { get; set; }
         public virtual RoomTest RoomTest { get; set; }
         public virtual Specialty Specialty { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

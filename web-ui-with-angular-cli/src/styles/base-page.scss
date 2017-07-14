@@ -126,6 +126,7 @@ body {
 .breadcrumb {
     background: transparent;
     margin-bottom: 0;
+    font-size: 14px;
 }
 
 .table {
@@ -171,6 +172,63 @@ body {
     color: red;
 }
 
+.with-side-menu-compact .page-content {
+    padding-top: inherit;
+}
+.form-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+}
+
 .site-header {
-    background-color: darkolivegreen;
+    background-color: #59c09d;
+    .site-header-collapsed {
+        background: #59c09d;
+    }
+}
+// .site-header {
+//     background-color: darkolivegreen;
+// }
+
+.site-header .header-alarm {
+    opacity: 0.7;
+}
+
+.btn.btn-add {
+    background-color: #59c09d;
+    border-color: #59c09d;
+}
+
+.side-menu.side-menu-compact {
+    width: 80px;
+}
+.side-menu.side-menu-compact .side-menu-list a {
+    color: #222;
+}
+.side-menu.side-menu-compact .side-menu-list .lbl {
+    font-size: 12px;
+}
+.side-menu.side-menu-compact .side-menu-list .fa {
+    font-size: 22px;
+    min-height: 10px;
+}
+.side-menu-list li.opened {
+    background: #e5e5e5;
+}
+// .side-menu-list li {
+//     line-height: 2px;
+// }
+
+.hamburger span {
+    background: #e5e5e5;
+    opacity: 0.7;
+}
+.hamburger span:before, .hamburger span:after {
+    background-color: #e5e5e5;
+    opacity: 0.7;
+}
+.site-header .burger-right i {
+    color: #e5e5e5;
+    opacity: 0.7;
 }

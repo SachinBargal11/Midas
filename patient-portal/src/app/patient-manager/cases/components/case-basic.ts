@@ -74,7 +74,7 @@ export class CaseBasicComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this.progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
+            let result = this._casesStore.getCaseReadOnly(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseDetail = caseDetail;
@@ -94,14 +94,19 @@ export class CaseBasicComponent implements OnInit {
 
         });
         this.caseform = this.fb.group({
-            // caseName: [''],
+           // caseName: [''],
             patientId: [{ value: '', disabled: true }],
-            caseTypeId: ['', Validators.required],
-            carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // caseTypeId: ['', Validators.required],
+            caseTypeId: [{ value: '', disabled: true } ],
+            // carrierCaseNo: [''],
+            carrierCaseNo: [{ value: '', disabled: true }],
+            // locationId: ['', Validators.required],
+            locationId: [{ value: '', disabled: true }],
             // patientEmpInfoId: ['', Validators.required],
-            caseStatusId: ['', Validators.required],
-            attorneyId: [''],
+            // caseStatusId: ['', Validators.required],
+            caseStatusId: [{ value: '', disabled: true }],
+            // attorneyId: [''],
+            attorneyId: [{ value: '', disabled: true }],
             // transportation: [true, Validators.required],
         });
 

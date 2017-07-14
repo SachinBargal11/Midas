@@ -5,10 +5,10 @@
     <progress-bar *ngIf="progressBarService.counter > 0"></progress-bar>
     <notification *ngIf="sessionStore.session.user"></notification>
     <div class="page-content">
-        <div class="container-fluid">
+        <!--<div class="container-fluid">-->
             <breadcrumb *ngIf="sessionStore.session.user && sessionStore.session.isAuthenticated"></breadcrumb>
             <router-outlet></router-outlet>
-        </div>
+        <!--</div>-->
     </div>
 </div>
 <simple-notifications [options]="options"></simple-notifications>

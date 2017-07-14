@@ -30,7 +30,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseCompanyMappingBO.ID = caseCompanyMappings.Id;
             caseCompanyMappingBO.CaseId = caseCompanyMappings.CaseId;
             caseCompanyMappingBO.Company = new BO.Company();
-            caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.id : 0;
+            caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.CompanyId : 0;
             caseCompanyMappingBO.IsOriginator = caseCompanyMappings.IsOriginator;
             caseCompanyMappingBO.AddedByCompanyId = caseCompanyMappings.AddedByCompanyId;
             caseCompanyMappingBO.Company.Name = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.Name : "";
@@ -94,9 +94,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.SaveChanges();
             #endregion
 
-            caseCompanyMappingDB = _context.CaseCompanyMappings.Include("Company").Where(p => p.Id == caseCompanyMappingDB.Id 
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                .FirstOrDefault<CaseCompanyMapping>();
+            caseCompanyMappingDB = _context.CaseCompanyMappings.Include(casecomp=>casecomp.Company1).Include(casecomp => casecomp.Company)
+                                                               .Where(p => p.Id == caseCompanyMappingDB.Id
+                                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                               .FirstOrDefault<CaseCompanyMapping>();
 
             var res = Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(caseCompanyMappingDB);
 

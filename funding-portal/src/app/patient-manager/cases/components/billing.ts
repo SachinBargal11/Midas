@@ -20,6 +20,10 @@ export class BillingInfoComponent implements OnInit {
     denialDialogVisible: boolean = false;
     verficationScanUploadDialogVisible: boolean = false;
     scanUploadDialogVisible: boolean = false;
+    selectedBilling: any[] = [];
+    PrefferedBilling: any[] = [];
+    maxDate;
+    isSaveProgress = false;
 
     constructor(
         private fb: FormBuilder,
@@ -96,4 +100,6 @@ export class BillingInfoComponent implements OnInit {
     closePostDialogVisible() {
         this.postDialogVisible = false;
     }
+    saveDenial() {}
+    saveVerification() {}
 }

@@ -11,6 +11,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseDocument } from '../models/case-document';
 import { Document } from '../../../commons/models/document';
 import { Consent } from '../models/consent';
+import { CompanyConsent } from '../models/company-consent';
 
 @Injectable()
 export class CasesStore {
@@ -47,6 +48,18 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+
+    getCaseReadOnly(caseId: number): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCaseReadOnly(caseId).subscribe((cases: Case) => {
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
     getCasesByCompany(): Observable<Case[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
@@ -59,6 +72,7 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+    
     getCasesByCompanyAndDoctorId(): Observable<Case[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
@@ -71,7 +85,6 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
-
     //this is for case consent list.
     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise = new Promise((resolve, reject) => {
@@ -94,18 +107,29 @@ export class CasesStore {
         });
         return <Observable<Case>>Observable.fromPromise(promise);
     }
-    getCaseCompanies(caseId: number): Observable<Company[]> {
+    // getCaseCompanies(caseId: number): Observable<Company[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._casesService.getCaseCompanies(caseId).subscribe((company: Company[]) => {
+    //             resolve(company);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Company[]>>Observable.fromPromise(promise);
+    // }
+
+    //this is for compney consent list.
+    getCaseCompanies(patientId: number): Observable<CompanyConsent[]> {
         let promise = new Promise((resolve, reject) => {
-            this._casesService.getCaseCompanies(caseId).subscribe((company: Company[]) => {
+            this._casesService.getCaseCompanies(patientId).subscribe((company: CompanyConsent[]) => {
                 resolve(company);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Company[]>>Observable.fromPromise(promise);
+        return <Observable<CompanyConsent[]>>Observable.fromPromise(promise);
     }
 
-    //this is for compney consent list.
     getDocumentForCompneyCaseId(patientId: number): Observable<Case[]> {
         let promise = new Promise((resolve, reject) => {
             this._casesService.getDocumentForCompneyCaseId(patientId).subscribe((document: Case[]) => {
@@ -138,8 +162,6 @@ export class CasesStore {
     //     });
     //     return <Observable<CaseDocument[]>>Observable.from(promise);
     // }
-
-
 
     findCaseById(id: number) {
         let cases = this._cases.getValue();

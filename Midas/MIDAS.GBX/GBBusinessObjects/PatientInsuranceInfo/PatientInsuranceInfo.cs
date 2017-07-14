@@ -66,6 +66,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("insuranceMaster")]
         public InsuranceMaster InsuranceMaster { get; set; }
 
+       
+        [JsonProperty(" InsuranceType")]
+         public InsuranceType InsuranceType { get; set; }
     }
 
     public class mPatientInsuranceInfo : GbObject

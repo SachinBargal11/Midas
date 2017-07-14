@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { MaritalStatus } from './enums/marital-status';
+import { PatientDocument } from './patient-document';
 
 const PatientRecord = Record({
     id: 0,
@@ -16,7 +17,8 @@ const PatientRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null, 
+    patientDocuments: [],
 });
 
 export class Patient extends PatientRecord {
@@ -34,6 +36,7 @@ export class Patient extends PatientRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+    patientDocuments: PatientDocument[];
 
     constructor(props) {
         super(props);

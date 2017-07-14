@@ -86,7 +86,7 @@ export class AddCompanyConsentComponent implements OnInit {
             //     .subscribe((patient: Patient) => {
             //         this.patient = patient;
             //         this.companyId = patient.companyId;
-                    this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+                    this.url = `${this._url}/documentmanager/uploadtoblob`
 
                 // },
                 // (error) => {
@@ -132,6 +132,14 @@ export class AddCompanyConsentComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
             }
         });
         this.getDocuments();

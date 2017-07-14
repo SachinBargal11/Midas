@@ -25,6 +25,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
+        HttpResponseMessage GetByPatientVisitId(HttpRequestMessage request, int patientVisitId);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
@@ -64,7 +65,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId,string objectType);
         HttpResponseMessage GetVisitsByPatientId(HttpRequestMessage request, int PatientId);
-        
-
+        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId, int companyId);
+        HttpResponseMessage GetOpenCaseCompaniesByPatientId(HttpRequestMessage request, int PatientId);
     }
 }

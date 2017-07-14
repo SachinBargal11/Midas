@@ -182,6 +182,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company ID and Specialty For Visit
+        public override object Get1(int CompanyId, int SpecialtyId)
+        {
+
+            var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
+                                     join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                     where pccm.CompanyID == CompanyId
+                                           && pc.SpecialityId == SpecialtyId
+                                           && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                           && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                     select new
+                                     {
+                                         pc.Id,
+                                         pc.ProcedureCodeText,
+                                         pc.ProcedureCodeDesc,
+                                         pccm.Amount
+                                     }).ToList();
+
+            if (procedureCodeInfo == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                return procedureCodeInfo;
+            }
+        }
+        #endregion
+
         #region Get By Company ID and RoomTest
         public override object Get2(int CompanyId, int RoomTestId)
         {
@@ -196,6 +225,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                      {
                                          pccm.ID,
                                          ProcedureCodeId = pc.Id,
+                                         pc.ProcedureCodeText,
+                                         pc.ProcedureCodeDesc,
+                                         pccm.Amount
+                                     }).ToList();
+
+            if (procedureCodeInfo == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                return procedureCodeInfo;
+            }
+        }
+        #endregion
+
+        #region Get By Company ID and RoomTest Visit
+        public override object Get3(int CompanyId, int RoomTestId)
+        {
+
+            var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
+                                     join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                     where pccm.CompanyID == CompanyId
+                                           && pc.RoomTestId == RoomTestId
+                                           && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                           && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                     select new
+                                     {
+                                         pc.Id,
                                          pc.ProcedureCodeText,
                                          pc.ProcedureCodeDesc,
                                          pccm.Amount

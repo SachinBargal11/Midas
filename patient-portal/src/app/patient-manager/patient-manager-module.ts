@@ -7,7 +7,7 @@ import { AddPatientComponent } from './patients/components/add-patient';
 // import { AppointmentsComponent } from './patients/components/appointments';
 // import { BalancesComponent } from './patients/components/balances';
 import { DemographicsComponent } from './patients/components/demographics';
-// import { DocumentsComponent } from './patients/components/documents';
+import { DocumentsComponent } from './patients/components/documents';
 import { PatientBasicComponent } from './patients/components/patient-basic';
 import { PatientNavComponent } from './patients/components/patient-nav-bar';
 import { PatientsListComponent } from './patients/components/patients-list';
@@ -101,6 +101,8 @@ import { ReferralStore } from './cases/stores/referral-store';
 import { VisitShellComponent } from './cases/components/visit-shell';
 import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
+import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
+import { VisitReferralService } from './patient-visit/services/visit-referral-service';
 
 @NgModule({
     imports: [
@@ -117,7 +119,7 @@ import { PatientVisitListTreatingRoomComponent } from './cases/components/treati
         // AppointmentsComponent,
         // BalancesComponent,
         DemographicsComponent,
-        // DocumentsComponent,
+        DocumentsComponent,
         PatientBasicComponent,
         PatientNavComponent,
         PatientsListComponent,
@@ -195,7 +197,9 @@ import { PatientVisitListTreatingRoomComponent } from './cases/components/treati
         PatientVisitsStore,
         PatientVisitService,
         ReferralService,
-        ReferralStore
+        ReferralStore,
+        VisitReferralStore,
+        VisitReferralService
     ]
 })
 export class PatientManagerModule { }

@@ -8,6 +8,9 @@ import { environment } from '../../../../environments/environment';
 import { Patient } from '../models/patient';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { PatientAdapter } from './adapters/patient-adapter';
+import { PatientDocument } from '../models/patient-document';
+import { PatientDocumentAdapter } from '../services/adapters/patient-document-adapter';
+
 
 @Injectable()
 export class PatientsService {
@@ -18,6 +21,7 @@ export class PatientsService {
 
     constructor(
         private _http: Http,
+        private _sessionStore: SessionStore,
         public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
@@ -187,5 +191,27 @@ export class PatientsService {
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
-}
 
+     getDocumentsForPatientId(patientId: number): Observable<PatientDocument[]> {
+        let promise: Promise<PatientDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/documentmanager/get/' + patientId + '/patient', {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return PatientDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientDocument[]>>Observable.fromPromise(promise);
+    }
+
+     getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
+        return `${this._url}/documentmanager/downloadfromnoproviderblob/${documentId}`;
+    }
+}

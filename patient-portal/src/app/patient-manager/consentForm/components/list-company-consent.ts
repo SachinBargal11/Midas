@@ -20,7 +20,7 @@ import { environment } from '../../../../environments/environment';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ReferralStore } from '../../cases/stores/referral-store';
 import { Referral } from '../../cases/models/referral';
-import { Company } from '../../../account/models/company';
+import { CompanyConsent } from '../../../patient-manager/cases/models/company-consent';
 import { Document } from '../../../commons/models/document';
 
 @Component({
@@ -43,7 +43,7 @@ export class ListCompanyConsentComponent implements OnInit {
     patientId: number;
     patient: Patient;
     referrals: Referral[];
-    companies: Company[];
+    companies: CompanyConsent[];
     companyCaseConsentApproval: Consent[];
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
@@ -91,8 +91,8 @@ export class ListCompanyConsentComponent implements OnInit {
                 this.cases = cases;
                 this.caseId = cases[0].id;
                 this.companyCaseConsentApproval = cases[0].companyCaseConsentApproval;
-                this._casesStore.getCaseCompanies(this.caseId)
-                    .subscribe((companies: Company[]) => {
+                this._casesStore.getCaseCompanies(this.patientId)
+                    .subscribe((companies: CompanyConsent[]) => {
                         this.companies = companies;
                     })
                 // this._referralStore.getReferralsByCaseId(cases[0].id)
@@ -115,9 +115,9 @@ export class ListCompanyConsentComponent implements OnInit {
             });
     }
 
-    showDialog(currentCaseId: number, providerCompanyId: number) {
+    showDialog(CaseId: number, providerCompanyId: number) {
         this.addConsentDialogVisible = true;
-        this.caseId = currentCaseId;
+        this.caseId = CaseId;
         this.companyId = providerCompanyId;
     }
 
@@ -130,12 +130,13 @@ export class ListCompanyConsentComponent implements OnInit {
         }, 250);
     }
 
-    downloadConsent(caseDocuments: CaseDocument[], companyId: number) {
-        caseDocuments.forEach(caseDocument => {
+    downloadConsent(documentId:number, companyId: number) {
+        // caseDocuments.forEach(caseDocument => {
             // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
             this.progressBarService.show();
-            if (caseDocument.document.originalResponse.companyId === this.sessionStore.session.currentCompany.id) {
-                this._consentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+            // if (caseDocument.document.originalResponse.companyId === companyId) {
+                // this._consentStore.downloadConsentForm(companyId, caseDocument.document.originalResponse.midasDocumentId)
+                 this._consentStore.downloadConsentForm(documentId, companyId)
                     .subscribe(
                     (response) => {
                         // this.document = document
@@ -155,9 +156,7 @@ export class ListCompanyConsentComponent implements OnInit {
                     () => {
                         this.progressBarService.hide();
                     });
-            }
             this.progressBarService.hide();
-        });
     }
 
     deleteConsentForm() {
@@ -217,7 +216,7 @@ export class ListCompanyConsentComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Consent uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment(),
 
                 });

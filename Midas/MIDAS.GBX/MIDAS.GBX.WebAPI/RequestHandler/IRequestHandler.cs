@@ -55,7 +55,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetIsExistingUser(HttpRequestMessage request, string User, string SSN);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
-        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId,int companyId);        
+        HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId,int companyId);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
@@ -84,6 +84,8 @@ namespace MIDAS.GBX.WebAPI
 
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
+        HttpResponseMessage Get1(HttpRequestMessage request, int param1, int param2);
+        HttpResponseMessage Get3(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetByCaseAndCompanyId(HttpRequestMessage request, int caseId, int companyId);
         HttpResponseMessage DismissPendingReferral(HttpRequestMessage request, int PendingReferralId, int userId);       
         HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
@@ -103,12 +105,13 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
         HttpResponseMessage AssociatePatientWithCompany(HttpRequestMessage request, int PatientId, int CompanyId);
         HttpResponseMessage AssociatePatientWithAttorneyCompany(HttpRequestMessage request, int PatientId, int CaseId, int AttorneyCompanyId);
-        HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId);
+        HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId);
         HttpResponseMessage DisassociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
         HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
         HttpResponseMessage GetBySpecialtyAndCompanyId(HttpRequestMessage request, int specialtyId, int companyId);
         HttpResponseMessage GetByUserAndCompanyId(HttpRequestMessage request, int userId, int companyId);
         HttpResponseMessage AssociateMedicalProviderWithCompany(HttpRequestMessage request, int PrefMedProviderId, int CompanyId);
+        HttpResponseMessage AssociateAncillaryProviderWithCompany(HttpRequestMessage request, int PrefAncillaryProviderId, int CompanyId);
         HttpResponseMessage GetAllMedicalProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByPrefMedProviderId(HttpRequestMessage request, int PrefMedProviderId);
         HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(HttpRequestMessage request, int CompanyId, int SpecialityId, int RoomTestId);
@@ -144,5 +147,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId, string objectType);
         HttpResponseMessage GetProcedureCodeBySpecialtyExcludingAssigned(HttpRequestMessage request, int specialtyId, int CompanyId);
         HttpResponseMessage GetProcedureCodeByRoomTestExcludingAssigned(HttpRequestMessage request, int roomTestId, int CompanyId);
+        HttpResponseMessage AddPatientProfileDocument(HttpRequestMessage request, int PatietnId, int DocumentId);
     }
 }

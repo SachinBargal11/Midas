@@ -8,13 +8,11 @@ export class MappingAdapter {
 
         let mapping = null;
         if (data) {
-            data.forEach(mappingData => {
                 mapping = new Mapping({
-                    id: mappingData.id,
-                    patientInsuranceInfo: InsuranceAdapter.parseResponse(mappingData.patientInsuranceInfo),
-                    adjusterMaster: AdjusterAdapter.parseResponse(mappingData.adjusterMaster)
+                    id: data.id,
+                    patientInsuranceInfo: InsuranceAdapter.parseResponse(data.patientInsuranceInfo),
+                    adjusterMaster: AdjusterAdapter.parseResponse(data.adjusterMaster)
                 });
-            });
         }
         return mapping;
     }

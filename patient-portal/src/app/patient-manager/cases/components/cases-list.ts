@@ -106,6 +106,9 @@ export class CasesListComponent implements OnInit {
         this.addConsentDialogVisible = true;
         this.caseId = currentCaseId;
     }
+    handleAddConsentDialogHide() {
+        this.addConsentDialogVisible = false;        
+    }
 
      documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
@@ -120,7 +123,7 @@ export class CasesListComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Consent uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this.notificationsStore.addNotification(notification);

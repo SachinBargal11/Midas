@@ -143,6 +143,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
+            if (InsuranceInfos.InsuranceType != null)
+            {
+                if (InsuranceInfos.InsuranceType.IsDeleted.HasValue == false || (InsuranceInfos.InsuranceType.IsDeleted.HasValue == true && InsuranceInfos.InsuranceType.IsDeleted.Value == false))
+                {
+                    BO.InsuranceType boInsuranceType = new BO.InsuranceType();
+                   
+                        boInsuranceType.InsuranceTypeText = InsuranceInfos.InsuranceType.InsuranceTypeText;
+                        insuranceBO.InsuranceType = boInsuranceType;                    
+                }
+            }
+
 
             insuranceBO.IsDeleted = InsuranceInfos.IsDeleted;
             insuranceBO.CreateByUserID = InsuranceInfos.CreateByUserID;

@@ -753,7 +753,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             {
                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
             }
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
             ////METHOD TO GENERATE REFFERAL DOCUMENT AND SAVE IN MIDASDOCUMENTS/CASEDOCUMENTS TABLE
             var result = this.GenerateReferralDocument(referralDB.Id);

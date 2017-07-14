@@ -8,7 +8,8 @@
       "root": "src",
       "outDir": "dist",
       "assets": [
-        "assets","Resources"
+        "assets",
+        "Resources"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -25,21 +26,24 @@
         "../node_modules/primeng/resources/themes/bootstrap/theme.css",
         "./assets/theme/css/main.source.css",
         "../node_modules/fullcalendar/dist/fullcalendar.css",
-        "styles/styles.scss"
+        "styles/fonts.css",
+        "styles/styles.scss",
+        "styles/style.css"        
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
+        "./assets/tether.min.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.js",
         "./Resources/dynamsoft.webtwain.initiate.js",
         "./Resources/dynamsoft.webtwain.config.js"
-        ],
-     "environmentSource": "environments/environment.ts",
-     "environments": {
-  "dev": "environments/environment.ts",
-  "prod": "environments/environment.prod.ts"
-}
-
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
     }
   ],
   "addons": [],

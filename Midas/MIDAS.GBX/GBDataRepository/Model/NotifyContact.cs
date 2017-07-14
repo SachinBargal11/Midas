@@ -12,17 +12,11 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class EMailConfiguration
+    public partial class NotifyContact
     {
-        public int Id { get; set; }
-        public int AppId { get; set; }
-        public int QueueTypeId { get; set; }
-        public string SmtpClient { get; set; }
-        public string SmtpClient_Port { get; set; }
-        public string NetworkCredential_EMail { get; set; }
-        public string NetworkCredential_Pwd { get; set; }
-        public bool IsDeleted { get; set; }
-    
-        public virtual QueueType QueueType { get; set; }
+        public int ContactId { get; set; }
+        public string ContactName { get; set; }
+        public string ContactNo { get; set; }
+        public System.DateTime AddedOn { get; set; }
     }
 }

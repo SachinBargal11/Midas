@@ -21,6 +21,9 @@ import { Patient } from '../../patients/models/patient';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import { Account } from '../../../account/models/account';
+import { SelectItem } from 'primeng/primeng';
+import * as _ from 'underscore';
+
 @Component({
     selector: 'add-case',
     templateUrl: './add-case.html'
@@ -34,14 +37,16 @@ export class AddCaseComponent implements OnInit {
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
-    idPatient: any = 0;
+    idPatient: any = '';
     patient: Patient;
     patientName: string;
     patients: Patient[];
-    patientsWithoutCase: Patient[];
+    // patientsWithoutCase: Patient[];
+    patientsWithoutCase: SelectItem[] = [];
     allProviders: Account[];
     currentProviderId: number = 0;
     providerId: number = 0;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -144,11 +149,12 @@ export class AddCaseComponent implements OnInit {
 
 
     selectPatient(event) {
-        let currentPatient: number = parseInt(event.target.value);
-        let idPatient = parseInt(event.target.value);
-        let result = this._employerStore.getCurrentEmployer(currentPatient);
-        result.subscribe((employer) => { this.employer = employer; }, null);
-        console.log(this.employer)
+        let currentPatient: number = parseInt(event.value);
+        let idPatient = parseInt(event.value);
+        if (event.value != '') {
+            let result = this._employerStore.getCurrentEmployer(currentPatient);
+            result.subscribe((employer) => { this.employer = employer; }, null);
+        }
     }
 
 
@@ -170,7 +176,19 @@ export class AddCaseComponent implements OnInit {
         this._progressBarService.show();
         this._patientsStore.getPatientsWithNoCase()
             .subscribe(patients => {
-                this.patientsWithoutCase = patients;
+                // this.patientsWithoutCase = patients;
+                // this.idPatient = patients[0].id;
+                let defaultLabel: any[] = [{
+                    label: '-Select Patient-',
+                    value: ''
+                }]
+                let patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
+                    return {
+                        label: `${currPatient.user.firstName}  ${currPatient.user.lastName}`,
+                        value: currPatient.id
+                    };
+                })
+                this.patientsWithoutCase = _.union(defaultLabel, patientsWithoutCase);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -194,13 +212,27 @@ export class AddCaseComponent implements OnInit {
             locationId: caseFormValues.locationId,
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.providerId,
+            caseSource: caseFormValues.caseSource,
+            // attorneyId: caseFormValues.providerId,
             // caseStatus: caseFormValues.caseStatus,
             // transportation: caseFormValues.transportation,
             //transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
-            createdByCompanyId: this._sessionStore.session.currentCompany.id
+            createdByCompanyId: this._sessionStore.session.currentCompany.id,
+            caseCompanyMapping: [{
+                company: {
+                    id: caseFormValues.providerId
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            },
+            {
+                isOriginator: 'true',
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            }]
         });
 
         this._progressBarService.show();

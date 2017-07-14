@@ -8,6 +8,7 @@ import { Consent } from './consent';
 import { Referral } from './referral';
 import { Patient } from '../../patients/models/patient';
 import { CaseDocument } from './case-document';
+import { CaseCompanyMapping } from './caseCompanyMapping';
 
 const CaseRecord = Record({
     id: 0,
@@ -15,7 +16,7 @@ const CaseRecord = Record({
     patient: null,
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
-    companies: null,
+    // companies: null,
     caseCompanyConsentDocument: null,
     companyCaseConsentApproval: null,
     referral: null,
@@ -32,7 +33,14 @@ const CaseRecord = Record({
     updateDate: null,
     caseSource: null,
     createdByCompanyId: 0,
-    createdByCompany: null
+    createdByCompany: null,
+    orignatorCompanyId: 0,
+    caseCompanyMapping: null,
+    orignatorCompanyName: '',
+    attorneyProviderId:0,
+    medicalProviderId:0
+
+
 });
 
 export class Case extends CaseRecord {
@@ -42,7 +50,7 @@ export class Case extends CaseRecord {
     patientId: number;
     caseName: string;
     caseTypeId: CaseType;
-    companies: Company[];
+    // companies: Company[];
     caseCompanyConsentDocument: CaseDocument[];
     companyCaseConsentApproval: Consent[];
     referral: Referral[];
@@ -58,8 +66,13 @@ export class Case extends CaseRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     caseSource: string;
-    createdByCompanyId: Number;
+    createdByCompanyId: number;
     createdByCompany: Company;
+    caseCompanyMapping: CaseCompanyMapping[];
+    orignatorCompanyId: number;
+    orignatorCompanyName: string;
+    attorneyProviderId:number;
+    medicalProviderId:number;
     constructor(props) {
         super(props);
     }
@@ -106,12 +119,26 @@ export class Case extends CaseRecord {
     }
     isCreatedByCompany(companyId): boolean {
         let isCreatedByCompany: boolean = false;
-        if (this.createdByCompany.id === companyId) {
+        if (this.orignatorCompanyId === companyId) {
             isCreatedByCompany = true;
         }
         return isCreatedByCompany;
     }
-    
+
+    caseLabelEditable(companyId): boolean {
+        let isCaseLabelEditable: boolean = false;
+        // _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
+        //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
+        //         isCaseLabelEditable = true;
+        //     }
+        // });
+        if (this.orignatorCompanyId == companyId) {
+             return isCaseLabelEditable = true;
+        }
+        return isCaseLabelEditable;
+    }
+
+
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
         _.forEach(this.referral, (currentReferral: Referral) => {
@@ -132,11 +159,11 @@ export class Case extends CaseRecord {
     }
     isSessionCompany(companyId): boolean {
         let isSessionCompany: boolean = false;
-        _.forEach(this.companies, (currentCompany: any) => {
-            if (currentCompany.id === companyId) {
-                isSessionCompany = true;
-            }
-        });
+        // _.forEach(this.companies, (currentCompany: any) => {
+        if (this.orignatorCompanyId === companyId) {
+            isSessionCompany = true;
+        }
+        // });
         return isSessionCompany;
     }
 

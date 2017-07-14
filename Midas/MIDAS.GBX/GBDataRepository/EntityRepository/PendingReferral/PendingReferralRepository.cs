@@ -984,7 +984,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             }
                             else if (pendingReferralDB == null && item.ID <= 0)
                             {
-                                pendingReferralDB = _context.PendingReferrals.Where(p => p.PatientVisitId == item.PatientVisitId && p.ForSpecialtyId == item.ForSpecialtyId
+                                pendingReferralDB = _context.PendingReferrals.Where(p => p.PatientVisitId == item.PatientVisitId && p.ForSpecialtyId == item.ForSpecialtyId && p.ForRoomTestId == item.ForRoomTestId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                              .FirstOrDefault();
                                 if (pendingReferralDB == null)

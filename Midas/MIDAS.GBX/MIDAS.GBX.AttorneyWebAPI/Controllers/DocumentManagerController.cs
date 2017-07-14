@@ -8,6 +8,8 @@ using System.Web.Http;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.DocumentManager;
 using MIDAS.GBX.BusinessObjects.Common;
+using System;
+using System.Text.RegularExpressions;
 
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
@@ -90,12 +92,12 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             try
             {
-                uploadObject = (UploadInfo)Common.Utility.GetJSONObject(Request.Headers.GetValues("inputjson").FirstOrDefault<string>());                
+                uploadObject = (UploadInfo)Common.Utility.GetJSONObject(Request.Headers.GetValues("inputjson").FirstOrDefault<string>());
             }
             catch { return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid JSON Input.", errorObject = "", ErrorLevel = ErrorLevel.Error }); }
 
             try
-            {                
+            {
                 using (FileStream fileStream = new FileStream(filPath, FileMode.Open, FileAccess.Read))
                 {
                     MemoryStream memStream = new MemoryStream();
@@ -110,7 +112,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                     if (!resDocumentPath.StatusCode.Equals(HttpStatusCode.Created) || ((ObjectContent)resDocumentPath.Content).Value.ToString().Equals(""))
                         return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Path not found", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
-                    string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString() + "/doc_" + uploadObject.CompanyId+".pdf";
+                    string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString() + "/doc_" + uploadObject.CompanyId + ".pdf";
                     HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, memStream, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
@@ -122,6 +124,65 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                         return resBlob;
                     else
                         documentList.Add(new Document { Status = "Failed", DocumentName = "/doc_" + uploadObject.CompanyId + ".pdf" });
+                }
+            }
+            catch { return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "System Error.", errorObject = "", ErrorLevel = ErrorLevel.Error }); }
+
+            var res = (object)documentList;
+            if (res != null) return Request.CreateResponse(HttpStatusCode.Created, res);
+            else return Request.CreateResponse(HttpStatusCode.NotFound, res);
+        }
+
+        [HttpPost]
+        [Route("uploadtonoproviderblob")]
+        public async Task<HttpResponseMessage> UploadToNoProviderBlob()
+        {
+            try
+            {
+                uploadObject = (UploadInfo)Common.Utility.GetJSONObject(Request.Headers.GetValues("inputjson").FirstOrDefault<string>());
+                //uploadObject = Common.Utility.GetJSONObject("{ \"ObjectType\":\"case\",\"DocumentType\":\"consent\",\"CompanyId\":\"16\", \"ObjectId\":\"86\"}");
+            }
+            catch { return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid JSON Input.", errorObject = "", ErrorLevel = ErrorLevel.Error }); }
+
+            try
+            {
+                if (!Request.Content.IsMimeMultipartContent("form-data"))
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "File input is not proper.", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+                if (string.IsNullOrEmpty(uploadObject.DocumentType) || uploadObject.DocumentType.ToUpper().Equals("UNDEFINED"))
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Document Type missing.", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+                var streamProvider = new MultipartMemoryStreamProvider();
+                await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+                List<HttpContent> streamContent = streamProvider.Contents.ToList();
+
+                int companyId = Convert.ToInt16(((ObjectContent)requestHandler.GetByObjectIdAndType(Request, uploadObject.ObjectId, uploadObject.ObjectType).Content).Value);
+                if (companyId == 0)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this case company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+                HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyId);
+                if (serviceProvider == null)
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this case company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+                HttpResponseMessage resDocumentPath = requestHandler.GetGbObjects(Request, uploadObject);
+                if (!resDocumentPath.StatusCode.Equals(HttpStatusCode.Created) || ((ObjectContent)resDocumentPath.Content).Value.ToString().Equals(""))
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Path not found", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+                foreach (HttpContent ctnt in streamContent)
+                {
+                    string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
+                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, companyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
+
+                    if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
+                    {
+                        uploadObject.BlobPath = ((ObjectContent)resBlob.Content).Value.ToString();
+                        documentList.Add((Document)((ObjectContent)requestHandler.CreateGbObject(Request, uploadObject).Content).Value);
+                    }
+                    else if (resBlob.StatusCode.Equals(HttpStatusCode.NotFound))
+                        return resBlob;
+                    else
+                        documentList.Add(new Document { Status = "Failed", DocumentName = ctnt.Headers.ContentDisposition.FileName });
                 }
             }
             catch { return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "System Error.", errorObject = "", ErrorLevel = ErrorLevel.Error }); }
@@ -146,10 +207,31 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return blobhandler.DownloadFromBlob(Request, companyid, ((ObjectContent)documentPath.Content).Value.ToString(), ((ObjectContent)serviceProvider.Content).Value.ToString());
         }
 
+        [HttpGet]
+        [Route("downloadfromnoproviderblob/{documentid}")]
+        public HttpResponseMessage DownlodFromNoProviderBlob(int documentid)
+        {
+            int companyId = 0;
+            HttpResponseMessage documentPath = requestHandler.GetByDocumentId(Request, documentid);
+            if (documentPath == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "No document found", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            if (Regex.IsMatch(((ObjectContent)documentPath.Content).Value.ToString(), @"company-[0-9]*"))
+                companyId = Convert.ToInt16(((Regex.Match(((ObjectContent)documentPath.Content).Value.ToString(), @"company-[0-9]*"))).Value.Split('-')[1]);
+            else
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyId);
+            if (serviceProvider == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            return blobhandler.DownloadFromBlob(Request, companyId, ((ObjectContent)documentPath.Content).Value.ToString(), ((ObjectContent)serviceProvider.Content).Value.ToString());
+        }
+
         [HttpPost]
         [Route("mergePDFs")]
         public HttpResponseMessage MergeDocuments([FromBody]MergePDF data)
-        {            
+        {
             HttpResponseMessage res = new HttpResponseMessage();
             res = requestHandler1.GetGbObjects(Request, data);
 
@@ -163,7 +245,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, res);
             else
             {
-                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, data.CompanyId, ((ObjectContent)res.Content).Value, blobPath+"/" + data.MergedDocumentName, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, data.CompanyId, ((ObjectContent)res.Content).Value, blobPath + "/" + data.MergedDocumentName, ((ObjectContent)serviceProvider.Content).Value.ToString());
                 if (res1.StatusCode.Equals(HttpStatusCode.Created) || res1.StatusCode.Equals(HttpStatusCode.OK))
                 {
                     uploadObject = new UploadInfo();

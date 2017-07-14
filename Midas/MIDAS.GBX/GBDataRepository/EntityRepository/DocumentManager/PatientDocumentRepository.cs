@@ -3,6 +3,7 @@ using MIDAS.GBX.EntityRepository;
 using System;
 using System.IO;
 using BO = MIDAS.GBX.BusinessObjects;
+using System.Linq;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -24,6 +25,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
+                if (documentType.ToLower() == "profile")
+                {
+                    var patientProfileDocumemnts = _context.MidasDocuments.Where(mid => mid.ObjectId == objectId &&
+                                                                          mid.DocumentType == documentType &&
+                                                                          (mid.IsDeleted.HasValue == false || (mid.IsDeleted.HasValue == true && mid.IsDeleted.Value == false)));
+                    patientProfileDocumemnts.ToList().ForEach(ppd => ppd.IsDeleted = true);
+                    _context.SaveChanges();
+                }
+
                 MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
                 {
                     ObjectType = documentType.ToUpper().Equals(EN.Constants.ConsentType) ? string.Concat(EN.Constants.ConsentType, "_" + companyId) : objectType,
@@ -47,8 +57,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 });
                 _context.Entry(patientDoc).State = System.Data.Entity.EntityState.Added;
                 _context.SaveChanges();
-                dbContextTransaction.Commit();
 
+                //Code to update User Info with ImageLink from midasdoc.DocumentPath
+                if (patientDoc.DocumentType.ToLower() == "profile".ToLower())
+                {
+                    int PatientId = midasdoc.ObjectId;
+                    string ImageLink = midasdoc.DocumentPath;
+
+                    var patientUser = _context.Users.Where(p => p.id == PatientId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .FirstOrDefault();
+
+                    if (patientUser != null)
+                    {
+                        patientUser.ImageLink = ImageLink;
+                        _context.SaveChanges();
+                    }
+                }
+
+                dbContextTransaction.Commit();
 
                 docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
                 docInfo.Message = errDesc;

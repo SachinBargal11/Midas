@@ -2,6 +2,8 @@ import { Patient } from '../../models/patient';
 import { Company } from '../../../../account/models/company';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 import { UserAdapter } from '../../../../medical-provider/users/services/adapters/user-adapter';
+import { PatientDocumentAdapter } from './patient-document-adapter';
+import { PatientDocument } from '../../models/patient-document';
 import * as moment from 'moment';
 
 export class PatientAdapter {
@@ -9,11 +11,18 @@ export class PatientAdapter {
 
         let patient: Patient = null;
         let companies: Company[] = [];
+        let patientDocuments: PatientDocument[] = [];
         if (data) {
             if (data.user.userCompanies) {
                 for (let company of data.user.userCompanies) {
                     // companies.push(CompanyAdapter.parseResponse(company));
                     companies.push(company);
+                }
+            }
+            if (data.patientDocuments) {
+                for (let patientDocument of data.patientDocuments) {
+                    patientDocuments.push(PatientDocumentAdapter.parseResponse(patientDocument));
+                    // patientDocuments.push(patientDocument);
                 }
             }
             patient = new Patient({
@@ -26,6 +35,7 @@ export class PatientAdapter {
                 user: UserAdapter.parseResponse(data.user),
                 companyId: data.companyId,
                 companies: companies,
+                patientDocuments: patientDocuments,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,

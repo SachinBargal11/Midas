@@ -49,9 +49,9 @@
 </p-dataTable><br>
 <button type="submit" class="btn btn-success sign-up btn-sm" (click)="bill()">Create Bill</button>
 
-<!--<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>
     </div>
-</p-dialog>-->
+</p-dialog>

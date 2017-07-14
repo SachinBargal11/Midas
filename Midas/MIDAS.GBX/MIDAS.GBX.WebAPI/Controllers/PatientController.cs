@@ -185,6 +185,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandlerPatient2.AssociatePatientWithCompany(Request, PatientId, CompanyId);
         }
 
+        [HttpGet]
+        [Route("addPatientProfileDocument/{PatientId}/{DocumentId}")]
+        public HttpResponseMessage AddPatientProfileDocument(int PatientId, int DocumentId)
+        {
+            return requestHandlerPatient2.AddPatientProfileDocument(Request, PatientId, DocumentId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

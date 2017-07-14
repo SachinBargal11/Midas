@@ -16,6 +16,10 @@ import * as _ from 'underscore';
 import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Observable } from 'rxjs/Rx';
+import { PatientDocument } from '../models/patient-document';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PatientsService } from '../services/patients-service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'basic',
@@ -24,7 +28,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class PatientBasicComponent implements OnInit {
     caseDetail: Case[];
-    referredToMe:boolean = false;
+    referredToMe: boolean = false;
     patientId: number;
     patientInfo: Patient;
     dateOfBirth: Date;
@@ -37,6 +41,9 @@ export class PatientBasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSavePatientProgress = false;
+    imageLink: SafeResourceUrl;
+    url;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
 
     constructor(
         private fb: FormBuilder,
@@ -47,29 +54,37 @@ export class PatientBasicComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
-        private _casesStore: CasesStore
+        private _casesStore: CasesStore,
+        private _sanitizer: DomSanitizer,
+        private _patientsService: PatientsService
+
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
             this._progressBarService.show();
             let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             let result = this._patientsStore.fetchPatientById(this.patientId);
-             Observable.forkJoin([caseResult, result])
+            Observable.forkJoin([caseResult, result])
                 .subscribe(
                 (results) => {
                     this.caseDetail = results[0];
-                     if (this.caseDetail.length > 0) {
+                    if (this.caseDetail.length > 0) {
                         this.caseDetail[0].referral.forEach(element => {
-                          if(element.referredToCompanyId == _sessionStore.session.currentCompany.id){
-                            this.referredToMe = true;
-                          }else{
-                             this.referredToMe = false;
-                          }
+                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
+                                this.referredToMe = true;
+                            } else {
+                                this.referredToMe = false;
+                            }
                         })
                     } else {
-                      this.referredToMe = false;
+                        this.referredToMe = false;
                     }
                     this.patientInfo = results[1];
+                    _.forEach(this.patientInfo.patientDocuments, (currentPatientDocument: PatientDocument) => {
+                        if (currentPatientDocument.document.documentType == 'profile') {
+                            this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
+                        }
+                    })
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth
                         ? this.patientInfo.user.dateOfBirth.toDate()
                         : null;
@@ -94,9 +109,24 @@ export class PatientBasicComponent implements OnInit {
         this.basicformControls = this.basicform.controls;
     }
 
-    ngOnInit() {
+    ngOnInit() { 
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
     }
 
+    onBeforeSendEvent(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        // event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+
+    onFilesUploadComplete(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadError(event) {
+        let even = event;
+    }
 
     savePatient() {
         this.isSavePatientProgress = true;

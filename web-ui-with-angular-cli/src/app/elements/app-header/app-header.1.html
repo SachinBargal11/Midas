@@ -1,0 +1,98 @@
+<header class="site-header">
+	<div class="container-fluid">
+		<a href="#" class="site-logo" style="color: white;">MP
+        </a>
+
+		<button class="hamburger hamburger--htla" (click)="onLeftBurgerClick()">
+            <span>toggle menu</span>
+        </button>
+		<div class="site-header-content">
+			<div class="site-header-content-in">
+				<div class="site-header-shown" *ngIf="sessionStore.session.user">
+					<div class="dropdown dropdown-notification notif">
+						<a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded" [class.swing]="_notificationsStore.highlightAddition"
+						 [class.animated]="_notificationsStore.highlightAddition">
+							<i class="font-icon-alarm"></i>
+						</a>
+					</div>
+
+					<div class="dropdown user-menu" dropdown>
+						<button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
+						 aria-expanded="false">
+							  <img src="assets/theme/img/avatar.png" alt="">
+                            <!--Welcome ,<b> {{ sessionStore.session.user.displayName }} </b>-->
+                        </button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
+							<!--<div class="dropdown-header">Company</div>
+							<span class="dropdown-item">{{sessionStore.session.currentCompany.name}}</span>
+							<div class="dropdown-divider"></div>-->
+							<a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>{{ sessionStore.session.user.displayName }}</a>
+							<div class="dropdown-divider"></div>
+							<a (click)="changePassword()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-edit"></span>Change Password</a>
+							<a (click)="showSettingsDialog()" class="dropdown-item"><span class="font-icon glyphicon font-icon-player-settings"></span>User Setting</a>
+
+							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
+						</div>
+					</div>
+					<button type="button" class="burger-right" (click)="onBurgerClick()"><i class="font-icon-menu-addl"></i></button>
+				</div>
+				<!--<div style="float: right;">
+					<select class="form-control" [ngModel]="sessionStore.session.currentCompany.id" (change)="sessionStore.selectCurrentCompany($event)">
+							<option *ngFor="let company of sessionStore.session.companies" [value]="company.id">{{company.name}}</option>
+					</select>
+				</div>-->
+				<div class="mobile-menu-right-overlay" (click)="hideMobileMenu()"></div>
+				<div class="site-header-collapsed">
+					<div class="site-header-collapsed-in">
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Dashboard
+							</a>
+						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/patient-manager']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Case Manager
+							</a>
+						</div>
+						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
+							<a [routerLink]="['/medical-provider']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Medical Office Manager
+							</a>
+						</div>
+						<!--<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/doctors']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Doctors
+							</a>
+						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/medical-facilities']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Medical Facilities
+							</a>
+						</div>-->
+						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
+							<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Account Setup
+							</a>
+						</div>
+						<div  *ngIf="sessionStore.session.currentCompany" class="dropdown" dropdown>
+							<button dropdownToggle class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
+							 aria-expanded="false">
+							{{sessionStore.session.currentCompany.name}}
+						</button>
+							<div class="dropdown-menu" aria-labelledby="dd-header-add">
+								<a *ngFor="let company of sessionStore.session.companies" class="dropdown-item" href="#" (click)="sessionStore.selectCurrentCompany($event, company.id)">{{company.name}}</a>
+							</div>
+						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/event']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
+                                Feed
+							</a>
+						</div>
+					</div>
+					<!--.site-header-collapsed-in-->
+				</div>
+				<!--.site-header-collapsed-->
+			</div>
+		</div>
+	</div>
+</header>

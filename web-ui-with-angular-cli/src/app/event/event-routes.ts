@@ -18,9 +18,6 @@ export const eventRoutes: Routes = [
         path: '',
         component: EventShellComponent,
         canActivate: [ValidateActiveSession],
-        data: {
-            breadcrumb: 'Event'
-        },
         children: [
             {
                 path: '',
@@ -29,11 +26,17 @@ export const eventRoutes: Routes = [
             },
             {
                 path: 'event',
-                component: EventComponent
+                component: EventComponent,
+                data: {
+                    breadcrumb: 'Event'
+                }
             },
             {
                 path: 'addEvent',
-                component: AddEventComponent
+                component: AddEventComponent,
+                data: {
+                    breadcrumb: 'Add Event'
+                }
             }
         ]
     }

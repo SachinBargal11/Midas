@@ -120,7 +120,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
 
                 // this.visits = matchingVisits.reverse();
                 let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.doctor != null;
+                    return currentVisit.doctor != null && currentVisit.specialtyId != null;
                 });
                 this.doctorsVisits = matchingDoctorVisits.reverse();
 

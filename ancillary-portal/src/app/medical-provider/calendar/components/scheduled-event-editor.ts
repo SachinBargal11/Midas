@@ -18,7 +18,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
-    // isAllDay: boolean;
+    isAllDay: boolean;
     repeatType: string = '7';
 
     // Daily 

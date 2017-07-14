@@ -253,7 +253,9 @@ export class PendingReferralsComponent implements OnInit {
                 header: 'Confirmation',
                 icon: 'fa fa-question-circle',
                 accept: () => {
-                    // this.selectedLocationId = 0;
+                    if(this.selectedOption == 1){
+                    this.selectedLocationId = 0;
+                    } 
                     this.availableSlotsDialogVisible = true;
                     let startDate: moment.Moment = moment();
                     let endDate: moment.Moment = moment().add(7, 'days');
@@ -318,7 +320,8 @@ export class PendingReferralsComponent implements OnInit {
             locationId: this.selectedLocationId,
             calendarEvent: new ScheduledEvent({
                 eventStart: slotDetail.start,
-                eventEnd: slotDetail.end
+                eventEnd: slotDetail.end,
+                timezone: slotDetail.start.toDate().getTimezoneOffset(),
             })
         });
         return patientVisit;

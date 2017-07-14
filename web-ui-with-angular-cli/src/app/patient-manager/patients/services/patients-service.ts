@@ -289,5 +289,9 @@ export class PatientsService {
         return <Observable<PatientDocument>>Observable.from(promise);
     }
 
+    getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
+        return `${this._url}/documentmanager/downloadfromnoproviderblob/${documentId}`;
+    }
+
 }
 

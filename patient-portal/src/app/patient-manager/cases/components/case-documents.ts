@@ -92,11 +92,12 @@ export class CaseDocumentsUploadComponent implements OnInit {
             } else if (currentDocument.status == 'Success') {
                 let notification = new Notification({
                     'title': 'Document uploaded successfully',
-                    'type': 'ERROR',
+                    'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();
@@ -112,9 +113,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
 
-    showDialog(currentCaseId: number) {
+    showDialog() {
         this.addConsentDialogVisible = true;
-       this.selectedCaseId = currentCaseId;
+        this.selectedCaseId = this.currentCaseId;
         // this.companyId = providerCompanyId;
     }
 

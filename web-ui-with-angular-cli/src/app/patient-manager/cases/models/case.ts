@@ -33,8 +33,12 @@ const CaseRecord = Record({
     caseCompanyMapping: null,
     // companies: null,
     attorneyId: 0,
+    orignatorCompanyId: 0,
     createdByCompanyId: 0,
-    createdByCompany: null
+    orignatorCompanyName: '',
+    createdByCompany: null,
+    attorneyProviderId: 0,
+    medicalProviderId: 0
 
 });
 
@@ -61,8 +65,12 @@ export class Case extends CaseRecord {
     caseCompanyMapping: CaseCompanyMapping[];
     // companies: Company[];
     attorneyId: number;
-    createdByCompanyId: Number;
+    orignatorCompanyId: number;
+    createdByCompanyId: number;
     createdByCompany: Company;
+    orignatorCompanyName: string;
+    attorneyProviderId: number;
+    medicalProviderId: number;
     constructor(props) {
         super(props);
     }
@@ -110,21 +118,24 @@ export class Case extends CaseRecord {
 
     caseLabelEditable(companyId): boolean {
         let isCaseLabelEditable: boolean = false;
-        _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
-            if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)){
-            isCaseLabelEditable = true;
-            }
-        });
+        // _.forEach(this.caseCompanyMapping, (currentCaseCompanyMapping: CaseCompanyMapping) => {
+        //     if (currentCaseCompanyMapping.isOriginator == true && (currentCaseCompanyMapping.company.id === companyId)) {
+        //         isCaseLabelEditable = true;
+        //     }
+        // });
+        if (this.orignatorCompanyId == companyId) {
+             return isCaseLabelEditable = true;
+        }
         return isCaseLabelEditable;
     }
 
-    // isCreatedByCompany(companyId): boolean {
-    //     let isCreatedByCompany: boolean = false;
-    //     if (this.createdByCompany.id === companyId) {
-    //         isCreatedByCompany = true;
-    //     }
-    //     return isCreatedByCompany;
-    // }
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.orignatorCompanyId === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
+    }
 
     getInboundReferral(companyId): boolean {
         let isInboundReferral: boolean = false;
@@ -144,13 +155,13 @@ export class Case extends CaseRecord {
         });
         return isOutboundReferral;
     }
-    // isSessionCompany(companyId): boolean {
-    //     let isSessionCompany: boolean = false;
-    //     _.forEach(this.companies, (currentCompany: any) => {
-    //         if (currentCompany.id === companyId) {
-    //             isSessionCompany = true;
-    //         }
-    //     });
-    //     return isSessionCompany;
-    // }
+    isSessionCompany(companyId): boolean {
+        let isSessionCompany: boolean = false;
+        // _.forEach(this.companies, (currentCompany: any) => {
+        if (this.orignatorCompanyId === companyId) {
+            isSessionCompany = true;
+        }
+        // });
+        return isSessionCompany;
+    }
 }
