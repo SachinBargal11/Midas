@@ -10,11 +10,11 @@
                     <label class="form-label"> Company Code
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="addInsuranceMasterForm.controls.companyCode.touched && !addInsuranceMasterForm.controls.companyCode.valid">
-                        <input formControlName="companyCode" type="text" class="form-control" placeholder="" [class.error]="!addInsuranceMasterForm.controls.companyCode.valid">
-                        <div class='error-list' *ngIf="addInsuranceMasterForm.controls.companyCode.touched && !addInsuranceMasterForm.controls.companyCode.valid">
+                    <div class="form-group" [class.error]="addInsuranceMasterFormControls.companyCode.touched && !addInsuranceMasterFormControls.companyCode.valid">
+                        <input formControlName="companyCode" type="text" class="form-control" placeholder="" [class.error]="!addInsuranceMasterFormControls.companyCode.valid">
+                        <div class='error-list' *ngIf="addInsuranceMasterFormControls.companyCode.touched && !addInsuranceMasterFormControls.companyCode.valid">
                             <ul>
-                                <li *ngIf="addInsuranceMasterForm.controls.companyCode.hasError('required')">Company Code is required.</li>
+                                <li *ngIf="addInsuranceMasterFormControls.companyCode.hasError('required')">Company Code is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -23,11 +23,11 @@
                     <label class="form-label"> Company Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="addInsuranceMasterForm.controls.companyName.touched && !addInsuranceMasterForm.controls.companyName.valid">
-                        <input formControlName="companyName" type="text" class="form-control" placeholder="" [class.error]="!addInsuranceMasterForm.controls.companyName.valid">
-                        <div class='error-list' *ngIf="addInsuranceMasterForm.controls.companyName.touched && !addInsuranceMasterForm.controls.companyName.valid">
+                    <div class="form-group" [class.error]="addInsuranceMasterFormControls.companyName.touched && !addInsuranceMasterFormControls.companyName.valid">
+                        <input formControlName="companyName" type="text" class="form-control" placeholder="" [class.error]="!addInsuranceMasterFormControls.companyName.valid">
+                        <div class='error-list' *ngIf="addInsuranceMasterFormControls.companyName.touched && !addInsuranceMasterFormControls.companyName.valid">
                             <ul>
-                                <li *ngIf="addInsuranceMasterForm.controls.companyName.hasError('required')">Company Name is required.</li>
+                                <li *ngIf="addInsuranceMasterFormControls.companyName.hasError('required')">Company Name is required.</li>
                             </ul>
                         </div>
                     </div>
