@@ -127,6 +127,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetIsExistingUser(Request, User,SSN);
         }
 
+        [HttpGet]
+        [Route("checkIsExistingUser/{User}")]
+        public HttpResponseMessage CheckIsExistingUser(string User)
+        {
+            return requestHandler.GetObjects(Request, User);
+        }
+
         [HttpPost]
         [Route("ResetPassword")]
         [AllowAnonymous]

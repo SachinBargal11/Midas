@@ -545,6 +545,42 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region CheckIsExistingUser by UserName
+        public override Object Get(string User)
+        {                     
+            var acc = from u in _context.Users
+                       join ut in _context.UserTypes on u.UserType equals ut.id
+                       where (u.UserName == User
+                       && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false)))
+                       select new
+                       {
+                           IsExisting = true,
+                           IsDoctor = u.UserType == 4 ? true:false,
+                           Message = "User already exist as a "+ut.Name 
+                       };
+
+            var user = acc.SingleOrDefault();         
+
+            //var acc = user.ToList();
+
+            if (user == null)
+            {
+                return new
+                {
+                    IsExisting = false,
+                    IsDoctor =  false,
+                    Message = "User does not exist"
+                };
+             }
+            else
+            {
+               
+                return user;
+            }
+
+        }
+        #endregion
+
         #region Login
         public override Object Login<T>(T entity)
         {
