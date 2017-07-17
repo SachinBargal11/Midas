@@ -210,6 +210,7 @@
     <Build Include="Tables\Latest Tables\CaseCompanyConsentDocuments.sql" />
     <Build Include="Tables\Latest Tables\PreferredAncillaryProvider.sql" />
     <Build Include="StoredProcedure\sp_CaseGetReadOnly.sql" />
+    <Build Include="Tables\Latest Tables\DoctorTaxType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
