@@ -1276,10 +1276,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
 
-            var attorneyCompany = _context.CaseCompanyMappings.Include("Company")
-                                                         .Where(p => p.CaseId == CaseId && p.Company.CompanyType == 2
+            var attorneyCompany = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId //&& p.Company.CompanyType == 2
                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                         .Select(p => p.Company).FirstOrDefault();
+                                                           .Include("Company")
+                                                           .Where(p => p.Company1.CompanyType == 2)
+                                                           .Select(p => p.Company1)
+                                                         //.Select(p => p.Company).FirstOrDefault();
+                                                         .FirstOrDefault();
+
+            //var attorneyCompany = _context.CaseCompanyMappings.Include("Company")
+            //                                                  .Where(p => p.CaseId == CaseId && p.Company.CompanyType == 2
+            //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                  .Select(p => p.Company1)
+            //                                                  .FirstOrDefault();
 
             if (attorneyCompany != null)
             {
