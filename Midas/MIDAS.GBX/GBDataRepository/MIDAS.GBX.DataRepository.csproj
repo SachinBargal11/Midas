@@ -274,6 +274,9 @@
     <Compile Include="Model\CompanyCaseConsentApproval.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CompanyICDTypeCode.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CompanySpecialtyDetail.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -317,6 +320,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GeneralSetting.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ICDTypeCode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\InsuranceMaster.cs">
@@ -506,13 +512,11 @@
     <Compile Include="RepoFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config">
-      <SubType>Designer</SubType>
-    </None>
     <EntityDeploy Include="Model\MIDASGBXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </None>

@@ -12,28 +12,26 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class DiagnosisCode
+    public partial class ICDTypeCode
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DiagnosisCode()
+        public ICDTypeCode()
         {
-            this.PatientVisitDiagnosisCodes = new HashSet<PatientVisitDiagnosisCode>();
+            this.CompanyICDTypeCodes = new HashSet<CompanyICDTypeCode>();
+            this.DiagnosisCodes = new HashSet<DiagnosisCode>();
         }
     
         public int Id { get; set; }
-        public int DiagnosisTypeId { get; set; }
-        public string DiagnosisCodeText { get; set; }
-        public string DiagnosisCodeDesc { get; set; }
+        public string Code { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
+        public int CreatedByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdatedByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int ICDTypeCodeID { get; set; }
     
-        public virtual DiagnosisType DiagnosisType { get; set; }
-        public virtual ICDTypeCode ICDTypeCode { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
+        public virtual ICollection<CompanyICDTypeCode> CompanyICDTypeCodes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
     }
 }

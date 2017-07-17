@@ -43,6 +43,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
+        public virtual DbSet<CompanyICDTypeCode> CompanyICDTypeCodes { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual DbSet<CompanyStatusType> CompanyStatusTypes { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
@@ -57,6 +58,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
+        public virtual DbSet<ICDTypeCode> ICDTypeCodes { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
