@@ -1,11 +1,12 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NotificationsService } from 'angular2-notifications';
 
+import { ConfigService, configServiceFactory } from './config-service';
 import { AppComponent } from './app.component';
 import { NoContentComponent } from './no-content-component';
 import { AppRoutingModule } from './app.routes';
@@ -66,6 +67,13 @@ import { DiagnosisStore } from './commons/stores/diagnosis-store';
     EventModule
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configServiceFactory,
+      deps: [ConfigService],
+      multi: true
+    },
+    ConfigService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ValidateActiveSession,
     ValidateInActiveSession,

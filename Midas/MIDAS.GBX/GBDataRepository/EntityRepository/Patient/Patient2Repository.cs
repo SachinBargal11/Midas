@@ -71,8 +71,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                         {
 
-                            BO.PatientDocument boPatientDocument = new BO.PatientDocument();                           
-                          
+                            BO.PatientDocument boPatientDocument = new BO.PatientDocument();
+
                             boPatientDocument.ID = item.Id;
                             boPatientDocument.PatientId = item.PatientId;
                             boPatientDocument.MidasDocumentId = item.MidasDocumentId;
@@ -1228,6 +1228,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             bool add_CaseCompanyMap = false;
             bool sendEmail = false;
             Guid invitationDB_UniqueID = Guid.NewGuid();
+            int AddedByCompanyId = 0;
 
             var company = _context.Companies.Where(p => p.id == AttorneyCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
@@ -1236,12 +1237,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
+            var IsOriginator = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.IsOriginator).FirstOrDefault();
+
+            if (IsOriginator == true)
+            {
+                AddedByCompanyId = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.IsOriginator == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.CompanyId).FirstOrDefault();
+            }
+
             var Patient = _context.Patient2.Where(p => p.Id == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
             if (Patient == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+
 
             var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == AttorneyCompanyId && p.IsAccepted == true
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -1264,28 +1273,47 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.UserCompanies.Add(userCompany);
             }
 
-            var caseCompanyMap = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.CompanyId == AttorneyCompanyId
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                             .FirstOrDefault();
 
-            if (caseCompanyMap == null)
+            var attorneyCompany = _context.CaseCompanyMappings.Include("Company")
+                                                         .Where(p => p.CaseId == CaseId && p.Company.CompanyType == 2
+                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .Select(p => p.Company).ToList();
+
+            if (attorneyCompany != null)
             {
-                caseCompanyMap = new CaseCompanyMapping();
-                add_CaseCompanyMap = true;
-                sendEmail = true;
+                foreach (var item in attorneyCompany)
+                {
+                    if (item != null)
+                    {
+                        item.IsDeleted = true;
+                        _context.SaveChanges();
+                    }
+                }
             }
-
-            caseCompanyMap.CaseId = CaseId;
-            caseCompanyMap.CompanyId = AttorneyCompanyId;
-            //caseCompanyMap.AddedByCompanyId = AddedByCompanyId; Need to modify API parameters to have additional AddedByCompanyId
-
-            if (add_CaseCompanyMap)
+            else
             {
-                _context.CaseCompanyMappings.Add(caseCompanyMap);
+                var caseCompanyMap = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.CompanyId == AttorneyCompanyId
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .FirstOrDefault();
+
+                if (caseCompanyMap == null)
+                {
+                    caseCompanyMap = new CaseCompanyMapping();
+                    add_CaseCompanyMap = true;
+                    sendEmail = true;
+                }
+
+                caseCompanyMap.CaseId = CaseId;
+                caseCompanyMap.CompanyId = AttorneyCompanyId;
+                caseCompanyMap.AddedByCompanyId = AddedByCompanyId;// Need to modify API parameters to have additional AddedByCompanyId
+
+                if (add_CaseCompanyMap)
+                {
+                    _context.CaseCompanyMappings.Add(caseCompanyMap);
+                }
+
+                _context.SaveChanges();
             }
-
-            _context.SaveChanges();
-
             var PatientDB = _context.Patient2.Include("User")
                                              .Include("User.UserCompanies")
                                              .Include("User.AddressInfo")
@@ -1356,7 +1384,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             bool sendEmail = false;
             Guid invitationDB_UniqueID = Guid.NewGuid();
 
-            var company = _context.Companies.Where(p => p.id == AncillaryCompanyId 
+            var company = _context.Companies.Where(p => p.id == AncillaryCompanyId
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                          .FirstOrDefault();
             if (company == null)
@@ -1364,7 +1392,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var Patient = _context.Patient2.Where(p => p.Id == PatientId 
+            var Patient = _context.Patient2.Where(p => p.Id == PatientId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .FirstOrDefault();
             if (Patient == null)
@@ -1372,8 +1400,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId 
-                                                                        && p.CompanyID == AncillaryCompanyId 
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId
+                                                                        && p.CompanyID == AncillaryCompanyId
                                                                         && p.IsAccepted == true
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                 .FirstOrDefault();
@@ -1483,11 +1511,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object AddPatientProfileDocument(int PatientId, int DocumentId)
         {
 
-            var midasDocument = _context.MidasDocuments.Where(p => p.Id == DocumentId 
+            var midasDocument = _context.MidasDocuments.Where(p => p.Id == DocumentId
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .FirstOrDefault();
 
-            if(midasDocument == null)
+            if (midasDocument == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this DocumentId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -1496,7 +1524,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             //_context.MidasDocuments.Add(midasDocument);
 
-            var patientDocument = _context.PatientDocuments.Where(p => p.PatientId == PatientId 
+            var patientDocument = _context.PatientDocuments.Where(p => p.PatientId == PatientId
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .FirstOrDefault();
             if (patientDocument == null)
