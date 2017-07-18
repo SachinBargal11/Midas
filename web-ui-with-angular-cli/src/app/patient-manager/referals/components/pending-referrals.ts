@@ -231,10 +231,10 @@ export class PendingReferralsComponent implements OnInit {
     assign() {
         let shouldAppointVisit: boolean = true;
         if (this.selectedReferrals === null) {
-            this._notificationsService.alert('Oh No!', 'Please Select Referral!');
+            this._notificationsService.alert('Oh No!', 'Please select referral!');
             shouldAppointVisit = false;
         } else if (this.selectedReferrals === null) {
-            this._notificationsService.alert('Oh No!', 'Please Select Medical Office!');
+            this._notificationsService.alert('Oh No!', 'Please select medical office!');
             shouldAppointVisit = false;
         } else if (this.selectedOption === 3) {
             shouldAppointVisit = false;
@@ -354,7 +354,7 @@ export class PendingReferralsComponent implements OnInit {
                 return this._pendingReferralService.associateReferralWithVisit(patientVisit, referral).toPromise();
             }).then((associationResponse: any) => {
                 let notification = new Notification({
-                    'title': 'Referral with Visit created successfully!',
+                    'title': 'Referral with visit created successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -511,7 +511,7 @@ export class PendingReferralsComponent implements OnInit {
                 this.selectedMode = 0;
             },
             (error) => {
-                let errString = 'Unable to save Referral.';
+                let errString = 'Unable to save referral.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -605,7 +605,7 @@ export class PendingReferralsComponent implements OnInit {
                             .subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Pending Referral deleted successfully!',
+                                    'title': 'Pending referral deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
@@ -615,7 +615,7 @@ export class PendingReferralsComponent implements OnInit {
                                 this.selectedReferrals = null;
                             },
                             (error) => {
-                                let errString = 'Unable to delete Pending Referrals';
+                                let errString = 'Unable to delete pending referrals';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',
@@ -636,12 +636,12 @@ export class PendingReferralsComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Pending referral to dismiss',
+                'title': 'Select pending referral to dismiss',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Pending referral to dismiss');
+            this._notificationsService.error('Oh No!', 'Select pending referral to dismiss');
         }
     }
 
