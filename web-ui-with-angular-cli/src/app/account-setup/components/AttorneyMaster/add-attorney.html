@@ -17,16 +17,16 @@
     </header>
     <div class="card-block">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <label class="form-label">Attorney-List
                     <span class="color-red">*</span>
                 </label>
                 <div class="form-group">
                     <p-dropdown [options]="allAttorneys" [(ngModel)]="currentAttorneyId"
                         [style]="{'width':'100%'}" filter="filter"></p-dropdown>
-                    <div class='error-list' *ngIf="currentAttorneyId==''">
+                    <!--<div class='error-list' *ngIf="currentAttorneyId==''">
                         <span class="color-red">Attorney is required.</span>
-                    </div>
+                    </div>-->
                 </div>
                 <!--<div class="form-group">
                     <select type="text" [(ngModel)]="currentAttorneyId" class="form-control" placeholder="" (change)="selectAttorney($event)">
