@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CAIdentityServerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CAIdentityServerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="Id" />
@@ -13,7 +13,7 @@
           <Property Name="ClientId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ClientName" Type="varchar" MaxLength="256" Nullable="false" />
           <Property Name="Flow" Type="tinyint" Nullable="false" />
-          <Property Name="ClientUri" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ClientUri" Type="varchar" MaxLength="255" />
           <Property Name="RequireConsent" Type="bit" Nullable="false" />
           <Property Name="AllowRememberConsent" Type="bit" Nullable="false" />
           <Property Name="AccessTokenLifetime" Type="int" Nullable="false" />
@@ -59,6 +59,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClientID" Type="int" Nullable="false" />
           <Property Name="ScopeName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientSecret">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="SecretValue" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="Scope">
           <Key>
@@ -137,6 +145,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ClientSec__Clien__48CFD27E">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientSecret" Type="Self.ClientSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSecret">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ScopeClai__Scope__36B12243">
           <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
           <End Role="ScopeClaim" Type="Self.ScopeClaim" Multiplicity="*" />
@@ -167,6 +187,7 @@
           <EntitySet Name="ClientPostLogoutRedirectURI" EntityType="Self.ClientPostLogoutRedirectURI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientRedirectURI" EntityType="Self.ClientRedirectURI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientScope" EntityType="Self.ClientScope" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientSecret" EntityType="Self.ClientSecret" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Scope" EntityType="Self.Scope" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScopeClaim" EntityType="Self.ScopeClaim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScopeSecret" EntityType="Self.ScopeSecret" Schema="dbo" store:Type="Tables" />
@@ -186,6 +207,10 @@
             <End Role="Client" EntitySet="Client" />
             <End Role="ClientScope" EntitySet="ClientScope" />
           </AssociationSet>
+          <AssociationSet Name="FK__ClientSec__Clien__48CFD27E" Association="Self.FK__ClientSec__Clien__48CFD27E">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientSecret" EntitySet="ClientSecret" />
+          </AssociationSet>
           <AssociationSet Name="FK__ScopeClai__Scope__36B12243" Association="Self.FK__ScopeClai__Scope__36B12243">
             <End Role="Scope" EntitySet="Scope" />
             <End Role="ScopeClaim" EntitySet="ScopeClaim" />
@@ -195,8 +220,7 @@
             <End Role="ScopeSecret" EntitySet="ScopeSecret" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CAIdentityServerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -208,7 +232,7 @@
           <Property Name="ClientId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ClientName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Flow" Type="Byte" Nullable="false" />
-          <Property Name="ClientUri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClientUri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="RequireConsent" Type="Boolean" Nullable="false" />
           <Property Name="AllowRememberConsent" Type="Boolean" Nullable="false" />
           <Property Name="AccessTokenLifetime" Type="Int32" Nullable="false" />
@@ -226,6 +250,7 @@
           <NavigationProperty Name="ClientPostLogoutRedirectURIs" Relationship="Self.FK__ClientPos__Clien__3D5E1FD2" FromRole="Client" ToRole="ClientPostLogoutRedirectURI" />
           <NavigationProperty Name="ClientRedirectURIs" Relationship="Self.FK__ClientRed__Clien__3A81B327" FromRole="Client" ToRole="ClientRedirectURI" />
           <NavigationProperty Name="ClientScopes" Relationship="Self.FK__ClientSco__Clien__4316F928" FromRole="Client" ToRole="ClientScope" />
+          <NavigationProperty Name="ClientSecrets" Relationship="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" FromRole="Client" ToRole="ClientSecret" />
         </EntityType>
         <EntityType Name="ClientAllowedCorsOrigin">
           <Key>
@@ -401,7 +426,33 @@
             <End Role="Scope" EntitySet="Scopes" />
             <End Role="ScopeSecret" EntitySet="ScopeSecrets" />
           </AssociationSet>
+          <EntitySet Name="ClientSecrets" EntityType="CAIdentityServerModel.ClientSecret" />
+          <AssociationSet Name="FK__ClientSec__Clien__48CFD27E" Association="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientSecret" EntitySet="ClientSecrets" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ClientSecret">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="SecretValue" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" FromRole="ClientSecret" ToRole="Client" />
+        </EntityType>
+        <Association Name="FK__ClientSec__Clien__48CFD27E">
+          <End Type="CAIdentityServerModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="CAIdentityServerModel.ClientSecret" Role="ClientSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSecret">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -497,6 +548,15 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ScopeID" ColumnName="ScopeID" />
                 <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientSecrets">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ClientSecret">
+              <MappingFragment StoreEntitySet="ClientSecret">
+                <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

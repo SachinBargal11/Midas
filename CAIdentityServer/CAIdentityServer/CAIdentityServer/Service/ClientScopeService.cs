@@ -12,30 +12,43 @@ namespace CAIdentityServer.Service
         {
             Models.CAIdentityServerEntitiesModel context = new Models.CAIdentityServerEntitiesModel();
 
-            List<Client> clients = context.Clients.Where(c => c.IsEnabled == true).Select(d => new Client
-            {
-                ClientId = d.ClientId,
-                ClientName = d.ClientName,
-                Flow = (Flows)d.Flow,
-                ClientUri = d.ClientUri,
-                RequireConsent = d.RequireConsent,
-                AllowRememberConsent = d.AllowRememberConsent,
-                AccessTokenLifetime = d.AccessTokenLifetime,
-                AccessTokenType = (AccessTokenType)d.AccessTokenType,
-                AuthorizationCodeLifetime = d.AuthorizationCodeLifetime,
-                IdentityTokenLifetime = d.IdentityTokenLifetime,
-                RefreshTokenUsage = (TokenUsage)d.RefreshTokenUsage,
-                RefreshTokenExpiration = (TokenExpiration)d.RefreshTokenExpiration,
-                AbsoluteRefreshTokenLifetime = d.AbsoluteRefreshTokenLifetime,
-                SlidingRefreshTokenLifetime = d.SlidingRefreshTokenLifetime,
-                UpdateAccessTokenClaimsOnRefresh = d.UpdateAccessTokenClaimsOnRefresh,
-                RequireSignOutPrompt = d.RequireSignOutPrompt,
-                RedirectUris = d.ClientRedirectURIs.Select(r => r.URL).ToList(),
-                PostLogoutRedirectUris = d.ClientPostLogoutRedirectURIs.Select(r => r.URL).ToList(),
-                AllowedCorsOrigins = d.ClientAllowedCorsOrigins.Select(r => r.URL).ToList(),
-                AllowedScopes = d.ClientScopes.Select(r => r.ScopeName).ToList(),
+            List<Client> clients = new List<Client>();
 
-            }).ToList();
+            foreach (Models.Client clientitem in context.Clients.ToList())
+            {
+                Client client = new Client();
+
+                client.ClientId = clientitem.ClientId;
+                client.ClientName = clientitem.ClientName;
+                client.Flow = (Flows)clientitem.Flow;
+                if (clientitem.ClientUri != null || clientitem.ClientUri != string.Empty)
+                {
+                    client.ClientUri = clientitem.ClientUri;
+                }
+                client.RequireConsent = clientitem.RequireConsent;
+                client.AllowRememberConsent = clientitem.AllowRememberConsent;
+                client.AccessTokenLifetime = clientitem.AccessTokenLifetime;
+                client.AccessTokenType = (AccessTokenType)clientitem.AccessTokenType;
+                client.AuthorizationCodeLifetime = clientitem.AuthorizationCodeLifetime;
+                client.IdentityTokenLifetime = clientitem.IdentityTokenLifetime;
+                client.RefreshTokenUsage = (TokenUsage)clientitem.RefreshTokenUsage;
+                client.RefreshTokenExpiration = (TokenExpiration)clientitem.RefreshTokenExpiration;
+                client.AbsoluteRefreshTokenLifetime = clientitem.AbsoluteRefreshTokenLifetime;
+                client.SlidingRefreshTokenLifetime = clientitem.SlidingRefreshTokenLifetime;
+                client.UpdateAccessTokenClaimsOnRefresh = clientitem.UpdateAccessTokenClaimsOnRefresh;
+                client.RequireSignOutPrompt = clientitem.RequireSignOutPrompt;
+                client.RedirectUris = clientitem.ClientRedirectURIs.Select(r => r.URL).ToList();
+                client.PostLogoutRedirectUris = clientitem.ClientPostLogoutRedirectURIs.Select(r => r.URL).ToList();
+                client.AllowedCorsOrigins = clientitem.ClientAllowedCorsOrigins.Select(r => r.URL).ToList();
+                client.AllowedScopes = clientitem.ClientScopes.Select(r => r.ScopeName).ToList();
+
+                foreach (Models.ClientSecret clientsecret in clientitem.ClientSecrets)
+                {
+                    client.ClientSecrets.Add(new Secret(clientsecret.SecretValue.Sha256()));
+                }
+
+                clients.Add(client);
+            }
 
             return clients;
         }
