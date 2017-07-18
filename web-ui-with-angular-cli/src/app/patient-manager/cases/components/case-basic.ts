@@ -22,6 +22,7 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 @Component({
     selector: 'case-basic',
@@ -43,6 +44,8 @@ export class CaseBasicComponent implements OnInit {
     patientName: string;
     // transportation: any;
     attorneyId: number = 0;
+    currentAttorneyId: number;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -57,7 +60,8 @@ export class CaseBasicComponent implements OnInit {
         private _attorneyMasterStore: AttorneyMasterStore,
         private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private confirmationService: ConfirmationService,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -83,6 +87,7 @@ export class CaseBasicComponent implements OnInit {
                     this.employer = results[2];
                     this.attorneys = results[3];
                     this.caseDetail = results[4];
+                    this.currentAttorneyId = this.caseDetail.attorneyProviderId;
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
 
                     // if (this.caseDetail.attorneyId != null) {
@@ -140,7 +145,6 @@ export class CaseBasicComponent implements OnInit {
     ngOnInit() {
     }
 
-
     attorneyChange(event) {
         this.attorneyId = parseInt(event.target.value);
         // if (this.attorneyId > 0) {
@@ -149,6 +153,17 @@ export class CaseBasicComponent implements OnInit {
         // else {
         //     this.caseform.get("caseSource").enable();
         // }
+        this.confirmationService.confirm({
+            message: 'Changing attorney from a case will revoke all the permissions from old assigned attorney.Please confirm if you want to proceed?',
+            header: 'Change Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+                this.currentAttorneyId = this.attorneyId;
+            },
+             reject: () => {
+                 this.currentAttorneyId = this.caseDetail.attorneyProviderId;
+             }
+        });
     }
 
     casesourceChange(event) {
@@ -218,8 +233,6 @@ export class CaseBasicComponent implements OnInit {
                         });
                 }
 
-
-
                 let notification = new Notification({
                     'title': 'Case updated successfully!',
                     'type': 'SUCCESS',
@@ -245,7 +258,5 @@ export class CaseBasicComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-
     }
-
 }
