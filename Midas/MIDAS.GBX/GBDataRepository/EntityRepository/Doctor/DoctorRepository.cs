@@ -44,7 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             doctorBO.WcbRatingCode = doctor.WcbRatingCode;
             doctorBO.NPI = doctor.NPI;
             doctorBO.Title = doctor.Title;
-            doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxType;
+            doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxTypeId;
 
             if (doctor.IsDeleted.HasValue)
                 doctorBO.IsDeleted = doctor.IsDeleted.Value;
@@ -148,7 +148,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             doctorBO.WcbRatingCode = doctor.WcbRatingCode;
             doctorBO.NPI = doctor.NPI;
             doctorBO.Title = doctor.Title;
-            doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxType;
+            doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxTypeId;
 
             if (doctor.IsDeleted.HasValue)
                 doctorBO.IsDeleted = doctor.IsDeleted.Value;
@@ -308,7 +308,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorDB.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
                         doctorDB.NPI = string.IsNullOrEmpty(doctorBO.NPI) ? doctor.NPI : doctorBO.NPI;
                         doctorDB.Title = string.IsNullOrEmpty(doctorBO.Title) ? doctor.Title : doctorBO.Title;
-                        doctorDB.TaxType = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxType) : System.Convert.ToByte(doctorBO.TaxType);
+                        doctorDB.TaxTypeId = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxTypeId) : System.Convert.ToByte(doctorBO.TaxType);
                         doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
                         doctorDB.UpdateDate = doctorBO.UpdateDate;
                         doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
@@ -331,7 +331,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB.WcbRatingCode = doctorBO.WcbRatingCode;
                     doctorDB.NPI = doctorBO.NPI;
                     doctorDB.Title = doctorBO.Title;
-                    doctorDB.TaxType = System.Convert.ToByte(doctorBO.TaxType);
+                    doctorDB.TaxTypeId = System.Convert.ToByte(doctorBO.TaxType);
                     doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
                     doctorDB.UpdateDate = doctorBO.UpdateDate;
                     doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;

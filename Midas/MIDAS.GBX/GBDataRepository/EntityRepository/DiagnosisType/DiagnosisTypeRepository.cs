@@ -37,7 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             diagnosisTypeBO.ID = diagnosisType.Id;
             diagnosisTypeBO.DiagnosisTypeText = diagnosisType.DiagnosisTypeText;
-            diagnosisTypeBO.CompanyId = diagnosisType.CompanyId;
+            //diagnosisTypeBO.CompanyId = diagnosisType.CompanyId;
 
             if (diagnosisType.IsDeleted.HasValue)
                 diagnosisTypeBO.IsDeleted = diagnosisType.IsDeleted.Value;

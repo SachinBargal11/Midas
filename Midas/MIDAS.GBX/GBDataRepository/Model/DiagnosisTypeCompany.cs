@@ -12,26 +12,18 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ICDTypeCode
+    public partial class DiagnosisTypeCompany
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ICDTypeCode()
-        {
-            this.CompanyICDTypeCodes = new HashSet<CompanyICDTypeCode>();
-            this.DiagnosisTypes = new HashSet<DiagnosisType>();
-        }
-    
         public int Id { get; set; }
-        public string Code { get; set; }
+        public Nullable<int> DiagnosisTypeID { get; set; }
+        public Nullable<int> CompanyID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreatedByUserID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdatedByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompanyICDTypeCode> CompanyICDTypeCodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisType> DiagnosisTypes { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual DiagnosisType DiagnosisType { get; set; }
     }
 }

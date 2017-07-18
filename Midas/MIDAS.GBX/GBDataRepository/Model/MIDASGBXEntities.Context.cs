@@ -50,11 +50,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
+        public virtual DbSet<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
+        public virtual DbSet<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
+        public virtual DbSet<DoctorTaxType> DoctorTaxTypes { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }

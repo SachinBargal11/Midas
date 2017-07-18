@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DiagnosisCode()
         {
+            this.DiagnosisCodeCompanies = new HashSet<DiagnosisCodeCompany>();
             this.PatientVisitDiagnosisCodes = new HashSet<PatientVisitDiagnosisCode>();
         }
     
@@ -29,10 +30,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int ICDTypeCodeID { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual DiagnosisType DiagnosisType { get; set; }
-        public virtual ICDTypeCode ICDTypeCode { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
     }
