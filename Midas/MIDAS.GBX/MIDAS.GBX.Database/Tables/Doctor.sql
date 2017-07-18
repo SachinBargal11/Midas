@@ -37,17 +37,17 @@ GO
 */
 
 
-ALTER TABLE [dbo].[Doctor] ADD [TaxTypeId] [TINYINT] NULL
-GO
-UPDATE [dbo].[Doctor] SET [TaxTypeId] = [TaxType]
-GO
-ALTER TABLE [dbo].[Doctor] DROP COLUMN [TaxType]
-GO
+--ALTER TABLE [dbo].[Doctor] ADD [TaxTypeId] [TINYINT] NULL
+--GO
+--UPDATE [dbo].[Doctor] SET [TaxTypeId] = [TaxType]
+--GO
+--ALTER TABLE [dbo].[Doctor] DROP COLUMN [TaxType]
+--GO
 
-ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_User] FOREIGN KEY([UserID])
-REFERENCES [dbo].[DoctorTaxType] ([id])
-GO
+--ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_User] FOREIGN KEY([UserID])
+--REFERENCES [dbo].[DoctorTaxType] ([id])
+--GO
 
-ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_User]
-GO
+--ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_User]
+--GO
 

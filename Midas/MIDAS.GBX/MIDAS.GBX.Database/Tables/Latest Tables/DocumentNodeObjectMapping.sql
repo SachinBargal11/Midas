@@ -15,6 +15,5 @@ ALTER TABLE [dbo].[DocumentNodeObjectMapping] CHECK CONSTRAINT [FK_DocumentNodeO
 GO
 */
 
---ALTER TABLE [MIDASGBXDEV].[dbo].[DocumentNodeObjectMapping]
---ALTER COLUMN ChildNode NVARCHAR(50) not null;
+--ALTER TABLE [dbo].[DocumentNodeObjectMapping] ALTER COLUMN [ChildNode] NVARCHAR(50) NOT NULL
 
