@@ -31,7 +31,7 @@ export class AccidentInfoComponent implements OnInit {
     accidentDateLabel: string;
     maxDate: Date;
     cities: any[];
-    accidents: Accident[];
+    accidents: Accident[] = [];
     currentAccident: Accident;
     accidentCities: any[];
     patientId: number;

@@ -151,7 +151,8 @@ export class AddCaseComponent implements OnInit {
 
     loadPatientsWithoutCase() {
         this._progressBarService.show();
-        this._patientsStore.getPatientsWithNoCase()
+        // this._patientsStore.getPatientsWithNoCase()
+        this._patientsStore.getPatients()
             .subscribe(patients => {
                 // this.patientsWithoutCase = patients;
                 // this.idPatient = patients[0].id;

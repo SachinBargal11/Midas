@@ -112,7 +112,7 @@ export class ProcedureService {
     }
     getPrefferedProceduresByRoomTestIdForVisit(roomTestId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + roomTestId, {
+            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndRoomTestId/' + companyId + '/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())

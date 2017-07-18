@@ -17,6 +17,7 @@ export class CaseLabelAdapter {
                 locationName:data.locationName,
                 carrierCaseNo:data.carrierCaseNo,
                 companyName:data.companyName,
+                attorneyProvider:data.attorneyProvider,
                 medicalProvider:data.medicalProvider,
                 caseSource: data.caseSource,
                 createByUserID: data.createbyuserID,

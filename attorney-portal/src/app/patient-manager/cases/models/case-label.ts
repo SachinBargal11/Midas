@@ -14,6 +14,7 @@ const CaseLabelRecord = Record({
     carrierCaseNo: '',
     companyName: '',
     caseSource: '',
+    attorneyProvider:'',
     medicalProvider:'',
     createByUserID: 0,
     updateByUserID: 0,
@@ -32,6 +33,7 @@ export class CaseLabel extends CaseLabelRecord {
     caseStatusText: string;
     locationName: string;
     companyName: string;
+    attorneyProvider:string;
     medicalProvider:string;
     carrierCaseNo: string;
     createByUserID: number;

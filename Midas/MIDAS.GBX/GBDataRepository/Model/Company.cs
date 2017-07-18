@@ -21,10 +21,10 @@ namespace MIDAS.GBX.DataRepository.Model
             this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
             this.CaseCompanyMappings1 = new HashSet<CaseCompanyMapping>();
+            this.DiagnosisTypeCompanies = new HashSet<DiagnosisTypeCompany>();
+            this.DiagnosisCodeCompanies = new HashSet<DiagnosisCodeCompany>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
-            this.DiagnosisCodes = new HashSet<DiagnosisCode>();
-            this.DiagnosisTypes = new HashSet<DiagnosisType>();
             this.DocumentNodeObjectMappings = new HashSet<DocumentNodeObjectMapping>();
             this.GeneralSettings = new HashSet<GeneralSetting>();
             this.Invitations = new HashSet<Invitation>();
@@ -73,6 +73,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual CompanyStatusType CompanyStatusType { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
@@ -81,10 +85,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisType> DiagnosisTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

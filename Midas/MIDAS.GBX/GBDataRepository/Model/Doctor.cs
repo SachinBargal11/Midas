@@ -31,7 +31,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public string WCBAuthorization { get; set; }
         public string WcbRatingCode { get; set; }
         public string NPI { get; set; }
-        public Nullable<byte> TaxType { get; set; }
         public string Title { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
@@ -39,7 +38,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public bool IsCalendarPublic { get; set; }
+        public Nullable<byte> TaxTypeId { get; set; }
     
+        public virtual DoctorTaxType DoctorTaxType { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
