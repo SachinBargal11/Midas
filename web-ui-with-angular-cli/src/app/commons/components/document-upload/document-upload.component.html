@@ -14,16 +14,10 @@
             <input type="radio" value="3" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Electronic Signature Form
         </label>
     </div>
-    <div class="form-check  form-check-inline" *ngIf="!isConsentDocumentOn && currentId != 1">
+    <div class="form-check  form-check-inline" *ngIf="!isConsentDocumentOn">
         <select class="select2-arrow form-control" (change)="selectDocument($event)">
         <option value="">-Select document type-</option>
         <option *ngFor="let currentDocumentType of documentTypes" value="{{currentDocumentType.documentType}}">{{currentDocumentType.documentType}}</option>
-        </select>
-    </div>
-    <div class="form-check  form-check-inline" *ngIf="!isConsentDocumentOn && currentId == 1">
-        <select class="select2-arrow form-control" (change)="selectDocument($event)">
-        <option value="">-Select document type-</option>
-        <option value="{{documentTypes[0].documentType}}">{{documentTypes[0].documentType}}</option>
         </select>
     </div>
     <div class="form-check  form-check-inline" *ngIf="isdownloadTemplate">

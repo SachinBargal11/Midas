@@ -255,8 +255,11 @@ export class DocumentUploadComponent implements OnInit {
   loadDocumentForObjectType(companyId: number, currentId: number) {
     // this._progressBarService.show();
     let result = this._documentUploadService.getDocumentObjectType(companyId, currentId)
-      .subscribe(documentType => {
-        this.documentTypes = documentType;
+      .subscribe((documentType: DocumentType[]) => {
+        let dt = _.reject(documentType, (currentDocument: any) => {
+          return currentDocument.documentType == 'profile';
+        })
+        this.documentTypes = dt;
       },
       (error) => {
         // this._progressBarService.hide();
