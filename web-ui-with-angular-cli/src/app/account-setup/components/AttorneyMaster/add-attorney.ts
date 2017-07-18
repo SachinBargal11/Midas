@@ -104,7 +104,7 @@ export class AddAttorneyComponent implements OnInit {
         result = this._attorneyMasterStore.addAttorney(attorney);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Medical provider has been registered successfully!.');
+                this._notificationsService.success('Welcome!', 'Attorney company has been registered successfully!.');
                 if (!this.inputCancel) {
                     setTimeout(() => {
                         this._router.navigate(['../'], { relativeTo: this._route });

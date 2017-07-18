@@ -149,8 +149,8 @@ export class AddPatientComponent implements OnInit {
                             // this.displayExistPopup = true;
                         }
                         else {
-                            let errString = 'User Already exists.';
-                            this._notificationsService.error('Oh No!', 'User Already exists');
+                            let errString = 'User already exists.';
+                            this._notificationsService.error('Oh No!', 'User already exists');
                             this._progressBarService.hide();
                         }
                     });

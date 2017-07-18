@@ -137,7 +137,7 @@ export class UserSettingsComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'User Setting added successfully!',
+                    'title': 'User setting added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -145,7 +145,7 @@ export class UserSettingsComponent implements OnInit {
                 this._router.navigate(['/dashboard']);
             },
             (error) => {
-                let errString = 'Unable to add User Setting.';
+                let errString = 'Unable to add user setting.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

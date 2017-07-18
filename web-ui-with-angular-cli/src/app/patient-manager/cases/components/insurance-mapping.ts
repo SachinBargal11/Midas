@@ -142,7 +142,7 @@ export class InsuranceMappingComponent implements OnInit {
                         this.selectedInsurances = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete Insurance ';
+                        let errString = 'Unable to delete insurance ';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -163,12 +163,12 @@ export class InsuranceMappingComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Insurances to delete',
+                'title': 'Select insurances to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Insurances to delete');
+            this._notificationsService.error('Oh No!', 'Select insurances to delete');
         }
     }
 

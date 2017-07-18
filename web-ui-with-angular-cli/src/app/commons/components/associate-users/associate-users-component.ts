@@ -78,12 +78,12 @@ export class AssociateUsersComponent implements OnInit {
             result.subscribe(
                 (response) => {
                     let notification = new Notification({
-                        'title': 'User has been Associated successfully!',
+                        'title': 'User has been associated successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._notificationsService.success('User has been Associated successfully!.');
+                    this._notificationsService.success('User has been associated successfully!.');
 
                     this.displayExistPopup = false;
                     if (this.isPatientOrDoctor == 'patient') {
@@ -94,7 +94,7 @@ export class AssociateUsersComponent implements OnInit {
                     }
                 },
                 (error) => {
-                    let errString = 'Unable to Associate user.';
+                    let errString = 'Unable to associate user.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -112,12 +112,12 @@ export class AssociateUsersComponent implements OnInit {
         }
         else {
             let notification = new Notification({
-                'title': 'select user to associate',
+                'title': 'Select user to associate',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select user to associate');
+            this._notificationsService.error('Oh No!', 'Select user to associate');
         }
     }
 
