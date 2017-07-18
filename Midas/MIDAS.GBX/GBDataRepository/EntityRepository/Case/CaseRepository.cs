@@ -40,6 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.CaseStatusId = cases.CaseStatusId;
+            caseBO.ClaimFileNumber = cases.ClaimFileNumber;
 
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
@@ -271,6 +272,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
                         caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
                         caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
+                        caseWithUserAndPatient.ClaimFileNumber = eachCase.ClaimFileNumber;
 
                         caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
                         caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
@@ -392,6 +394,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithPatient.UpdateByUserID = eachCase.UpdateByUserID;
                                                                    
                         caseWithPatient.caseSource = eachCase.caseSource;
+                        caseWithPatient.ClaimFileNumber = eachCase.ClaimFileNumber;
 
                         caseWithPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
                         //caseWithPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company.Name).FirstOrDefault();
@@ -688,6 +691,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
+                    caseDB.ClaimFileNumber = IsEditMode == true && caseBO.ClaimFileNumber.HasValue == false ? caseDB.ClaimFileNumber : caseBO.ClaimFileNumber.Value;
                     caseDB.CreateByUserID = IsEditMode == true && caseBO.CreateByUserID == 0 ? caseDB.CreateByUserID : caseBO.CreateByUserID;
                     caseDB.UpdateByUserID = IsEditMode == true && caseBO.UpdateByUserID == 0 ? caseDB.UpdateByUserID : caseBO.UpdateByUserID;
                     //if (!string.IsNullOrEmpty(caseBO.caseSource))
