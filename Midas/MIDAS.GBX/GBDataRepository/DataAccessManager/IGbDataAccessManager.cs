@@ -167,5 +167,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetProcedureCodeBySpecialtyExcludingAssigned(int specialtyId, int CompanyId);
         Object GetProcedureCodeByRoomTestExcludingAssigned(int roomTestId, int CompanyId);
         Object GetOpenCaseCompaniesByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetICDTypeCodeByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+
     }
 }

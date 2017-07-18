@@ -301,6 +301,10 @@ namespace MIDAS.GBX
             {
                 repo = new ProcedureCodeCompanyMappingRepository(context);
             }
+            else if (typeof(T) == typeof(BO.CompanyICDTypeCode))
+            {
+                repo = new ICDTypeCodeRepository(context);
+            }
 
             return repo;
         }

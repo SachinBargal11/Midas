@@ -21,6 +21,14 @@ namespace MIDAS.GBX.BusinessObjects
 
         //public Company Company { get; set; }
 
+        [Required]
+        [JsonProperty("iCDTypeCodeID")]
+        public int ICDTypeCodeID { get; set; }
+
+        [Required]
+        [JsonProperty("iCDTypeCode")]
+        public ICDTypeCode ICDTypeCode { get; set; }
+
         public List<DiagnosisCode> DiagnosisCodes { get; set; }
     }
 
