@@ -555,13 +555,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                        select new
                        {
                            IsExisting = true,
-                           IsDoctor = u.UserType == 4 ? true:false,
-                           Message = "User already exist as a "+ut.Name 
+                           //IsDoctor = u.UserType == 4 ? true : false,
+                           IsDoctor = _context.Doctors.Any(p => p.Id == u.id
+                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                           Message = "User already exist as a " + ut.Name 
                        };
 
-            var user = acc.SingleOrDefault();         
+            var user = acc.FirstOrDefault();
 
-            //var acc = user.ToList();
 
             if (user == null)
             {
@@ -574,7 +575,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
              }
             else
             {
-               
                 return user;
             }
 
