@@ -131,12 +131,12 @@ export class AttorneyMasterListComponent implements OnInit {
                 });
         } else {
             let notification = new Notification({
-                'title': 'select attorney to assign to company',
+                'title': 'Select attorney to assign to company',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select attorney to assign to company');
+            this._notificationsService.error('Oh No!', 'Select attorney to assign to company');
         }
 
     }
@@ -187,12 +187,12 @@ export class AttorneyMasterListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select attorney to delete',
+                'title': 'Select attorney to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select attorney to delete');
+            this._notificationsService.error('Oh No!', 'Select attorney to delete');
         }
 
     }

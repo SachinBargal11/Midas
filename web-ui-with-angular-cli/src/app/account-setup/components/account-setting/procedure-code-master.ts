@@ -321,7 +321,7 @@ export class ProcedureCodeComponent implements OnInit {
                             .subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Procedure Mapping deleted successfully!',
+                                    'title': 'Procedure mapping deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
@@ -337,7 +337,7 @@ export class ProcedureCodeComponent implements OnInit {
                                 this.selectedProceduresCodes = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete Procedure Mapping';
+                                let errString = 'Unable to delete procedure mapping';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',
@@ -358,12 +358,12 @@ export class ProcedureCodeComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Procedure to delete',
+                'title': 'Select procedure to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Procedure to delete');
+            this._notificationsService.error('Oh No!', 'Select procedure to delete');
         }
     }
 }

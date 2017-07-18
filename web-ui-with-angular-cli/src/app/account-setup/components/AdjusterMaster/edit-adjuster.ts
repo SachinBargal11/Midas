@@ -188,7 +188,7 @@ export class EditAdjusterComponent implements OnInit {
                     this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update Adjuster.';
+                let errString = 'Unable to update adjuster.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

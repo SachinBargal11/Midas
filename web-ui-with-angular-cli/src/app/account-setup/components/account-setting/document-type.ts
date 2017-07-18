@@ -146,7 +146,7 @@ export class DocumentTypeComponent implements OnInit {
                         .subscribe(
                         (response) => {
                             let notification = new Notification({
-                                'title': 'Document Type deleted successfully!',
+                                'title': 'Document type deleted successfully!',
                                 'type': 'SUCCESS',
                                 'createdAt': moment()
                             });
@@ -155,7 +155,7 @@ export class DocumentTypeComponent implements OnInit {
                             this.selectedDocuments;
                         },
                         (error) => {
-                            let errString = 'Unable to delete Document Type';
+                            let errString = 'Unable to delete document type';
                             let notification = new Notification({
                                 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                 'type': 'ERROR',
@@ -174,12 +174,12 @@ export class DocumentTypeComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select document type to delete',
+                'title': 'Select document type to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select document type  to delete');
+            this._notificationsService.error('Oh No!', 'Select document type to delete');
         }
 
     }

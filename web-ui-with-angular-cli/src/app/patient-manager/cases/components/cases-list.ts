@@ -309,12 +309,12 @@ export class CasesListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select case to delete',
+                'title': 'Select case to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select case to delete');
+            this._notificationsService.error('Oh No!', 'Select case to delete');
         }
     }
 }

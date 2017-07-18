@@ -127,7 +127,7 @@ export class EditInsuranceMasterComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'InsuranceMaster added successfully!',
+                    'title': 'Insurance master added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -135,7 +135,7 @@ export class EditInsuranceMasterComponent implements OnInit {
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add InsuranceMaster.';
+                let errString = 'Unable to add Insurance master.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

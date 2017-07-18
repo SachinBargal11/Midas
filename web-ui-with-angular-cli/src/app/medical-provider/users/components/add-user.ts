@@ -234,18 +234,23 @@ export class AddUserComponent implements OnInit {
             this._usersStore.GetIsExistingUser(userFormValues.contact.email, null)
                 .subscribe((users: User[]) => {
                     this.users = users;
+                    this.isExist = false;
+                    this.displayExistPopup = false;
                     if (this.users.length > 0) {
                         _.forEach(users, (currentUser: User) => {
-                            this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
+                            if(currentUser.roles.length > 0){
+                             this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
                             if (!this.isuserCompany) {
                                 this.isExist = true;
                                 this.displayExistPopup = true;
                             }
                             else {
-                                let errString = 'User Already exists.';
+                                let errString = 'User already exists.';
                                 this.isSaveUserProgress = false;
-                                this._notificationsService.error('Oh No!', 'User Already exists');
+                                this._notificationsService.error('Oh No!', 'User already exists');
                                 this._progressBarService.hide();
+                            }   
+                                
                             }
                         });
 
@@ -302,7 +307,7 @@ export class AddUserComponent implements OnInit {
                                 this._router.navigate(['/medical-provider/users']);
                             },
                             (error) => {
-                                let errString = 'Unable to add User.';
+                                let errString = 'Unable to add user.';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',
@@ -355,7 +360,7 @@ export class AddUserComponent implements OnInit {
 
     }
 
-    checkForExist(userName, SSN) {     
+    checkForExist(userName, SSN) {
         this._usersStore.resetStore();
         this._usersStore.GetIsExistingUser(userName, null)
             .subscribe((users: User[]) => {

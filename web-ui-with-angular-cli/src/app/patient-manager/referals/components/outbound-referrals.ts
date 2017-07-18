@@ -204,11 +204,11 @@ export class OutboundReferralsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+                this._notificationsService.error('Oh No!', 'Company, case and consent data already exists');
             }
             else {
                 let notification = new Notification({
-                    'title': 'Consent Uploaded Successfully!',
+                    'title': 'Consent uploaded successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -232,11 +232,11 @@ export class OutboundReferralsComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists.');
+            this._notificationsService.error('Oh No!', 'Company, case and consent data already exists.');
         }
         else {
             let notification = new Notification({
-                'title': 'Consent Uploaded Successfully!',
+                'title': 'Consent uploaded successfully!',
                 'type': 'SUCCESS',
                 'createdAt': moment()
             });
