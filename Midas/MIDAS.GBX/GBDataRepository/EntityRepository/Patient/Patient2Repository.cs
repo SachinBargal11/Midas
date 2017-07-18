@@ -1276,30 +1276,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
 
-            var attorneyCompany = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId //&& p.Company.CompanyType == 2
-                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                           .Include("Company")
-                                                           .Where(p => p.Company1.CompanyType == 2)
-                                                           .Select(p => p.Company1)
-                                                         //.Select(p => p.Company).FirstOrDefault();
-                                                         .FirstOrDefault();
+            var AttorneyCaseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Include("Company")
+                                                     .Where(p => p.Company1.CompanyType == 2)
+                                                     .Select(p => p)
+                                                     .FirstOrDefault();
 
-            //var attorneyCompany = _context.CaseCompanyMappings.Include("Company")
-            //                                                  .Where(p => p.CaseId == CaseId && p.Company.CompanyType == 2
-            //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                                  .Select(p => p.Company1)
-            //                                                  .FirstOrDefault();
+            int? PreviousAttorneyCompanyId = null;
 
-            if (attorneyCompany != null)
+            if (AttorneyCaseCompanyMapping != null)
             {
-                if (attorneyCompany.id != AttorneyCompanyId)
+                PreviousAttorneyCompanyId = AttorneyCaseCompanyMapping.CompanyId;
+
+                if (AttorneyCaseCompanyMapping.CompanyId != AttorneyCompanyId)
                 {
-                    attorneyCompany.IsDeleted = true;
+                    AttorneyCaseCompanyMapping.IsDeleted = true;
                     _context.SaveChanges();
                 }                
             }
+
+            if (PreviousAttorneyCompanyId.HasValue == true)
+            {
+                var UserCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == PreviousAttorneyCompanyId.Value
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault();
+
+                if (UserCompany != null)
+                {
+                    UserCompany.IsDeleted = true;
+                    _context.SaveChanges();
+                }
+            }
             
-            if (attorneyCompany == null || (attorneyCompany != null && attorneyCompany.id != AttorneyCompanyId))
+            if (AttorneyCaseCompanyMapping == null || (AttorneyCaseCompanyMapping != null && AttorneyCaseCompanyMapping.CompanyId != AttorneyCompanyId))
             {
                 var caseCompanyMap = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.CompanyId == AttorneyCompanyId
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
