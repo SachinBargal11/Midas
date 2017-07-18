@@ -164,7 +164,7 @@ export class EditSpecialityDetailsComponent {
             result.subscribe(
                 (response: SpecialityDetail) => {
                     let notification = new Notification({
-                        'title': 'Speciality Details updated successfully!',
+                        'title': 'Speciality details updated successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
@@ -173,7 +173,7 @@ export class EditSpecialityDetailsComponent {
                     this._router.navigate(['/account-setup/specialities']);
                 },
                 (error) => {
-                    let errString = 'Unable to update Speciality Details.';
+                    let errString = 'Unable to update speciality details.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -193,7 +193,7 @@ export class EditSpecialityDetailsComponent {
             result.subscribe(
                 (response: SpecialityDetail) => {
                     let notification = new Notification({
-                        'title': 'Speciality Details added successfully!',
+                        'title': 'Speciality details added successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
@@ -202,7 +202,7 @@ export class EditSpecialityDetailsComponent {
                     this._router.navigate(['/account-setup/specialities']);
                 },
                 (error) => {
-                    let errString = 'Unable to add Speciality Details.';
+                    let errString = 'Unable to add speciality details.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',

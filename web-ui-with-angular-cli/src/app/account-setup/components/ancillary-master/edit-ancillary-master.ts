@@ -125,12 +125,12 @@ export class EditAncillaryComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Ancillary Service has been updated successfully!',
+                    'title': 'Ancillary service has been updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Welcome!', 'Ancillary Service has been updated successfully!.');
+                this._notificationsService.success('Welcome!', 'Ancillary service has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {

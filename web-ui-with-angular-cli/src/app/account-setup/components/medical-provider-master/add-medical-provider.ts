@@ -116,7 +116,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 }
                 },
                 (error) => {
-                    let errString = 'Unable to assign Provider.';
+                    let errString = 'Unable to assign provider.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -195,7 +195,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 }
             },
             (error) => {
-                let errString = 'Unable to Register User.';
+                let errString = 'Unable to register user.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

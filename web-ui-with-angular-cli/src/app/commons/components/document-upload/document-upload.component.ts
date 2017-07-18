@@ -168,7 +168,7 @@ export class DocumentUploadComponent implements OnInit {
       event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
     }
     else {
-      this.uploadError.emit(new Error('Please Select document Type'));
+      this.uploadError.emit(new Error('Please select document type'));
       this.isDocumentSelected = false;
     }
   }
