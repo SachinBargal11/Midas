@@ -573,6 +573,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     IsExisting = false,
                     IsDoctor =  false,
+                    IsPatient= false,
                     Message = "User does not exist"
                 };
              }
