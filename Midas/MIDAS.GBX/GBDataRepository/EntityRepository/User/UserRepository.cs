@@ -559,27 +559,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                            IsDoctor = _context.Doctors.Any(p => p.Id == u.id
                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
                            IsPatient = _context.Patient2.Any(p => p.Id == u.id
-                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
-
-                           Message = "User already exist." //"User already exist as a " + ut.Name
+                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                           Message = "User already exist.",
+                           User = new { u.id, u.FirstName, u.MiddleName, u.LastName, u.UserName }
                        };
 
-            var user = acc.FirstOrDefault();
+            var ExistingUser = acc.FirstOrDefault();
 
 
-            if (user == null)
+            if (ExistingUser == null)
             {
+                User _user = null;
                 return new
                 {
                     IsExisting = false,
                     IsDoctor =  false,
-                    IsPatient= false,
-                    Message = "User does not exist"
+                    IsPatient = false,
+                    Message = "User does not exist",
+                    User = _user
                 };
              }
             else
             {
-                return user;
+                return ExistingUser;
             }
 
         }
