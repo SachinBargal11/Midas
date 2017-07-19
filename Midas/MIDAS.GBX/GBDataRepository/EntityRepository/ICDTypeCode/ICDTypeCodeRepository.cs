@@ -56,6 +56,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                   }
                                   
                                   ;
+            if (ICDTypeCodeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
 
             return ICDTypeCodeDB;
             

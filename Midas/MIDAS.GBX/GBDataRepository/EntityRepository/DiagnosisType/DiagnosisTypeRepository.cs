@@ -87,30 +87,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int companyId, int ICDTypeCodeId)
         {
             var DiagnosisTypeDB = from dt in _context.DiagnosisTypes
-                                    join dtc in _context.DiagnosisTypeCompanies on dt.Id equals dtc.DiagnosisTypeID
-                                    where
-                                    dt.ICDTypeCodeID == ICDTypeCodeId
-                                    && dtc.CompanyID == companyId
-                                    && (dt.IsDeleted.HasValue == false || (dt.IsDeleted.HasValue == true && dt.IsDeleted.Value == false))
-                                    && (dtc.IsDeleted.HasValue == false || (dtc.IsDeleted.HasValue == true && dtc.IsDeleted.Value == false))
-                                    select (dt);
+                                  join dtc in _context.DiagnosisTypeCompanies on dt.Id equals dtc.DiagnosisTypeID
+                                  where
+                                  dt.ICDTypeCodeID == ICDTypeCodeId
+                                  && dtc.CompanyID == companyId
+                                  && (dt.IsDeleted.HasValue == false || (dt.IsDeleted.HasValue == true && dt.IsDeleted.Value == false))
+                                  && (dtc.IsDeleted.HasValue == false || (dtc.IsDeleted.HasValue == true && dtc.IsDeleted.Value == false))
+                                  select new
+                                  {
+                                      dt.Id,
+                                      dt.DiagnosisTypeText,
+                                      dt.ICDTypeCodeID
+                                  };
 
-            List<BO.DiagnosisType> boDiagnosisType = new List<BO.DiagnosisType>();
 
             if (DiagnosisTypeDB == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this CompanyId and ICDTypeCodeId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            else
-            {
-                foreach (var boDiagnosisTypeDBList in DiagnosisTypeDB)
-                {
-                    boDiagnosisType.Add(Convert<BO.DiagnosisType, DiagnosisType>(boDiagnosisTypeDBList));
-                }
-            }
-
-            return (object)boDiagnosisType;
+            return (object)DiagnosisTypeDB;
         }
         #endregion
 

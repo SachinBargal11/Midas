@@ -85,7 +85,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
 
-        #region GetCompanyId ByDiagnosisTypeId
+        #region Get By CompanyId And DiagnosisTypeId
         public override object Get(int companyId,int DiagnosisTypeId)
         {                                                         
             var boDiagnosisCodeDB = from dc in _context.DiagnosisCodes
