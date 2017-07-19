@@ -39,7 +39,7 @@ namespace CAIdentityServer.Controllers
             var context = Request.GetOwinContext();
             var env = Request.GetOwinContext().Environment;
             var signInMessage = env.GetSignInMessage(id);
-
+            
             var authenticationContext = new LocalAuthenticationContext
             {
                 UserName = model.Username.Trim(),
@@ -58,7 +58,6 @@ namespace CAIdentityServer.Controllers
             }
             else
             {
-                signInMessage = env.GetSignInMessage(id);
                 ClearAuthenticationCookiesForNewSignIn(context, authResult);
                 IssueAuthenticationCookie(context, id, authResult, model.RememberMe);
 
