@@ -42,7 +42,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get ICDTypeCode By CompanyId
         public override object GetICDTypeCodeByCompanyId(int CompanyId)
         {
-            var DiagnosisTypeDB = from icd in _context.ICDTypeCodes
+            var ICDTypeCodeDB = from icd in _context.ICDTypeCodes
                                   join cit in _context.CompanyICDTypeCodes on icd.Id equals cit.ICDTypeCodeID
                                   where
                                   cit.CompanyID == CompanyId
@@ -57,7 +57,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                   
                                   ;
 
-            return DiagnosisTypeDB;
+            return ICDTypeCodeDB;
             
         }
         #endregion
