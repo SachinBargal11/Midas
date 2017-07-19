@@ -64,7 +64,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         boPatientVisit.EventEnd = pendingReferral.PatientVisit2.EventEnd;
                         boPatientVisit.Notes = pendingReferral.PatientVisit2.Notes;
                         boPatientVisit.VisitStatusId = pendingReferral.PatientVisit2.VisitStatusId;
-                        boPatientVisit.VisitType = pendingReferral.PatientVisit2.VisitType;
+                        //boPatientVisit.VisitType = pendingReferral.PatientVisit2.VisitType;
                         boPatientVisit.IsOutOfOffice = pendingReferral.PatientVisit2.IsOutOfOffice;
                         boPatientVisit.LeaveStartDate = pendingReferral.PatientVisit2.LeaveStartDate;
                         boPatientVisit.LeaveEndDate = pendingReferral.PatientVisit2.LeaveEndDate;

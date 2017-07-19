@@ -61,13 +61,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.EventEnd = patientVisit2.EventEnd;
                 patientVisit2BO.Notes = patientVisit2.Notes;
                 patientVisit2BO.VisitStatusId = patientVisit2.VisitStatusId;
-                patientVisit2BO.VisitType = patientVisit2.VisitType;
+                //patientVisit2BO.VisitType = patientVisit2.VisitType;
                 patientVisit2BO.IsOutOfOffice = patientVisit2.IsOutOfOffice;
                 patientVisit2BO.LeaveStartDate = patientVisit2.LeaveStartDate;
                 patientVisit2BO.LeaveEndDate = patientVisit2.LeaveEndDate;
                 patientVisit2BO.IsTransportationRequired = patientVisit2.IsTransportationRequired;
                 patientVisit2BO.TransportProviderId = patientVisit2.TransportProviderId;
                 patientVisit2BO.AncillaryProviderId = patientVisit2.AncillaryProviderId;
+                patientVisit2BO.VisitTypeId = patientVisit2.VisitTypeId;
 
                 patientVisit2BO.IsCancelled = patientVisit2.IsCancelled;
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
@@ -332,6 +333,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             mpatientVisits.RoomId = patientVisit2.RoomId;
             mpatientVisits.DoctorId = patientVisit2.DoctorId;
             mpatientVisits.SpecialtyId = patientVisit2.SpecialtyId;
+            mpatientVisits.VisitTypeId = patientVisit2.VisitTypeId;
 
             if (patientVisit2.Location != null)
             {
@@ -971,13 +973,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     PatientVisit2DB.Notes = PatientVisit2BO.Notes;
                     PatientVisit2DB.VisitStatusId = PatientVisit2BO.VisitStatusId;
-                    PatientVisit2DB.VisitType = PatientVisit2BO.VisitType;
+                    //PatientVisit2DB.VisitType = PatientVisit2BO.VisitType;
                     PatientVisit2DB.IsOutOfOffice = PatientVisit2BO.IsOutOfOffice;
                     PatientVisit2DB.LeaveStartDate = PatientVisit2BO.LeaveStartDate;
                     PatientVisit2DB.LeaveEndDate = PatientVisit2BO.LeaveEndDate;
                     PatientVisit2DB.IsTransportationRequired = PatientVisit2BO.IsTransportationRequired;
                     PatientVisit2DB.TransportProviderId = PatientVisit2BO.TransportProviderId;
-                    PatientVisit2DB.AncillaryProviderId = PatientVisit2BO.AncillaryProviderId;                    
+                    PatientVisit2DB.AncillaryProviderId = PatientVisit2BO.AncillaryProviderId;
+                    PatientVisit2DB.VisitTypeId = PatientVisit2BO.VisitTypeId;
 
                     if (IsEditMode == false)
                     {
@@ -1786,6 +1789,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return lstmpatientVisits;
             }
         }
+        #endregion
+
+        #region GetAllVisitType 
+
+        public override object Get()
+        {
+            var allVisitType = from vt in _context.VisitTypes
+                               where
+                               (vt.IsDeleted.HasValue == false || (vt.IsDeleted.HasValue == true && vt.IsDeleted.Value == false))
+                               select new
+                               {
+                                    vt.Id,
+                                    vt.Name,
+                                    vt.Description
+                               };
+
+           var lstalltype =  allVisitType.ToList();
+
+            if (allVisitType == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return lstalltype;
+
+        }
+
+
         #endregion
 
         public void Dispose()

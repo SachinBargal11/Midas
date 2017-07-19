@@ -44,8 +44,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("visitStatusId")]
         public byte? VisitStatusId { get; set; }
 
-        [JsonProperty("visitType")]
-        public byte? VisitType { get; set; }
+        //[JsonProperty("visitType")]
+        //public byte? VisitType { get; set; }
 
         [JsonProperty("calendarEvent")]
         public CalendarEvent CalendarEvent { get; set; }
@@ -97,6 +97,10 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("patientVisitProcedureCodes")]
         public List<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
+
+        [JsonProperty("visitTypeId")]
+        public int? VisitTypeId { get; set; }
+
     }
 
     public class mPatientVisits : GbObject
@@ -147,5 +151,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("calendarEvent")]
         public CalendarEvent CalendarEvent { get; set; }
 
+        [JsonProperty("visitTypeId")]
+        public int? VisitTypeId { get; set; }
     }
 }
