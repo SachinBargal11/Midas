@@ -15,15 +15,16 @@ namespace SampleAspNetWebApi.Controllers
         [Route("GetToken")]
         public TokenResponse Get(string username, string password)
         {
-
+            string clientID = Convert.ToString(System.Web.Configuration.WebConfigurationManager.AppSettings.Get("ClientID"));
+            string secret = Convert.ToString(System.Web.Configuration.WebConfigurationManager.AppSettings.Get("Secret"));
             _tokenClient = new TokenClient(
                 Sample.Constants.TokenEndpoint,
-                "MidasAPIUser",
+               clientID,
                 "secret");
 
             var response = RequestToken(username, password);
 
-            var apiResponse = CallService(response.AccessToken);
+            //var apiResponse = CallService(response.AccessToken);
 
             return response;
         }

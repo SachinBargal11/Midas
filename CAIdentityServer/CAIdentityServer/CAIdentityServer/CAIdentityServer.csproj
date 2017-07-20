@@ -179,7 +179,6 @@
     <Compile Include="Models\ClientSecret.cs">
       <DependentUpon>IdentityServerDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ErrorInfo.cs" />
     <Compile Include="Models\IdentityServerDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
