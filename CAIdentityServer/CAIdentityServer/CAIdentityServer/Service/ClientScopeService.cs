@@ -61,7 +61,7 @@ namespace CAIdentityServer.Service
             scopes.AddRange(
                 new[]
                 {
-                    
+
                     StandardScopes.OpenId,
                     StandardScopes.Profile,
                     StandardScopes.Email,
@@ -73,7 +73,7 @@ namespace CAIdentityServer.Service
                 );
             Models.CAIdentityServerEntitiesModel context = new Models.CAIdentityServerEntitiesModel();
 
-            foreach(Models.Scope clientscope in context.Scopes.ToList())
+            foreach (Models.Scope clientscope in context.Scopes.ToList())
             {
                 Scope scope = new Scope();
                 scope.Name = clientscope.Name;
@@ -82,8 +82,8 @@ namespace CAIdentityServer.Service
                 scope.ShowInDiscoveryDocument = clientscope.ShowInDiscoveryDocument;
                 clientscope.Emphasize = clientscope.Emphasize;
                 scope.Claims = clientscope.ScopeClaims.Select(c => new ScopeClaim { Name = c.Name, Description = c.ScopeClaimDescription, AlwaysIncludeInIdToken = c.AlwaysIncludeInIdToken }).ToList();
-                
-                foreach(Models.ScopeSecret clientscopesecret in clientscope.ScopeSecrets)
+
+                foreach (Models.ScopeSecret clientscopesecret in clientscope.ScopeSecrets)
                 {
                     scope.ScopeSecrets.Add(new Secret(clientscopesecret.SecretValue.Sha256()));
                 }
@@ -92,6 +92,27 @@ namespace CAIdentityServer.Service
             }
 
             return scopes.AsEnumerable();
+        }
+
+        public bool IsTwoFactorAuthentication(string clientid)
+        {
+            bool result = false;
+            Models.CAIdentityServerEntitiesModel context = new Models.CAIdentityServerEntitiesModel();
+            Models.Client client = context.Clients.Where(c => c.ClientId == clientid).FirstOrDefault();
+
+            if (client != null)
+            {
+                //Two factor authentication does not work with resource owner workflow.
+                if ((Flows)client.Flow == Flows.ResourceOwner)
+                {
+                    result = false;
+                }
+                else
+                {
+                    result = client.IsTwoFactorAuthentication;
+                }
+            }
+            return result;
         }
     }
 }

@@ -63,9 +63,11 @@ namespace CAIdentityServer.Service
 
         protected async Task<AuthenticateResult> PostAuthenticateLocalAsync(User user, SignInMessage message)
         {
-            bool twoFactorAuthEnabled = UserManager.Common.Utility.GetConfigValue("TwoFactorAuthenticationEnabled") == "true" ? true : false;
+            ClientScopeService clientScopeService = new ClientScopeService();
 
-            if (twoFactorAuthEnabled && (user.TwoFactorEmailAuthEnabled || user.TwoFactorSMSAuthEnabled))
+            bool isTwoFactorAuthentication = clientScopeService.IsTwoFactorAuthentication(message.ClientId);
+
+            if (isTwoFactorAuthentication && (user.TwoFactorEmailAuthEnabled || user.TwoFactorSMSAuthEnabled))
             {
                 IUserStoreService service = GetUserStoreService(message.ClientId);
 

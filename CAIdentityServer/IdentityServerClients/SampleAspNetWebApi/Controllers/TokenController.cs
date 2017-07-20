@@ -20,7 +20,7 @@ namespace SampleAspNetWebApi.Controllers
             _tokenClient = new TokenClient(
                 Sample.Constants.TokenEndpoint,
                clientID,
-                "secret");
+                secret);
 
             var response = RequestToken(username, password);
 

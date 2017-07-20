@@ -27,6 +27,7 @@
           <Property Name="UpdateAccessTokenClaimsOnRefresh" Type="bit" Nullable="false" />
           <Property Name="RequireSignOutPrompt" Type="bit" Nullable="false" />
           <Property Name="IsEnabled" Type="bit" Nullable="false" />
+          <Property Name="IsTwoFactorAuthentication" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientAllowedCorsOrigin">
           <Key>
@@ -251,6 +252,7 @@
           <NavigationProperty Name="ClientRedirectURIs" Relationship="Self.FK__ClientRed__Clien__3A81B327" FromRole="Client" ToRole="ClientRedirectURI" />
           <NavigationProperty Name="ClientScopes" Relationship="Self.FK__ClientSco__Clien__4316F928" FromRole="Client" ToRole="ClientScope" />
           <NavigationProperty Name="ClientSecrets" Relationship="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" FromRole="Client" ToRole="ClientSecret" />
+          <Property Name="IsTwoFactorAuthentication" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientAllowedCorsOrigin">
           <Key>
@@ -462,6 +464,7 @@
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="CAIdentityServerModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="IsTwoFactorAuthentication" ColumnName="IsTwoFactorAuthentication" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
