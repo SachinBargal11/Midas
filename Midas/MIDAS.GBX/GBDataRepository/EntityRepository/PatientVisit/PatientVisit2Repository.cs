@@ -1114,26 +1114,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                      .Include("ContactInfo")
                                                      .FirstOrDefault();
 
-                    Doctor doctor = _context.Doctors.Where(p => p.Id == PatientVisit2DB.DoctorId 
+                    Doctor doctor = null;
+                    if (PatientVisit2DB.DoctorId.HasValue == true)
+                    {
+                        doctor = _context.Doctors.Where(p => p.Id == PatientVisit2DB.DoctorId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .Include("User")
+                                                 .Include("User.ContactInfo")
+                                                 .FirstOrDefault();
+                    }
+
+
+                    Patient2 patient = null;
+                    if (PatientVisit2DB.PatientId.HasValue == true)
+                    {
+                        patient = _context.Patient2.Where(p => p.Id == PatientVisit2DB.PatientId
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                    .Include("ContactInfo")
-                                                    .FirstOrDefault();
+                                                   .Include("User")
+                                                   .Include("User.ContactInfo")
+                                                   .FirstOrDefault();
+                    }
+                        
 
-                    Patient2 patient = _context.Patient2.Where(p => p.Id == PatientVisit2DB.PatientId 
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .Include("User")
-                                                        .Include("User.ContactInfo")
-                                                        .FirstOrDefault();
+                    //ContactInfo contactPatient = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
 
-                    ContactInfo contactPatient = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
-
-                    User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId 
-                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                     .Include("ContactInfo")
-                                                     .FirstOrDefault();
+                    //User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId 
+                    //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    //                                 .Include("ContactInfo")
+                    //                                 .FirstOrDefault();
 
                     string doctorContactNumber = null;                    
-                    doctorContactNumber = (doctor_user != null && doctor_user.ContactInfo != null) ? doctor_user.ContactInfo.CellPhone : null;
+                    doctorContactNumber = (doctor != null && doctor.User != null && doctor.User.ContactInfo != null) ? doctor.User.ContactInfo.CellPhone : null;
 
                     if (currentUser != null)
                     {
@@ -1158,7 +1169,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             string msg = mailTemplateDB.EmailBody;
                                             string subject = mailTemplateDB.EmailSubject;
 
-                                            string message = string.Format(msg, patient.User.FirstName, ((doctor_user != null) ? doctor_user.FirstName : ""), CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+                                            string message = string.Format(msg, patient.User.FirstName, ((doctor != null && doctor.User != null) ? doctor.User.FirstName : ""), CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
 
                                             BO.Email objEmail = new BO.Email { ToEmail = patient.User.UserName, Subject = subject, Body = message };
                                             objEmail.SendMail();
@@ -1179,7 +1190,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 //string to = dictionary[patientUserName];
                                                 string to = patientContactNumber;
                                                 //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                                string body = ((doctor_user != null) ? "Doctor " + doctor_user.FirstName : ((currentUser != null) ? "Staff " + currentUser.FirstName : "")) + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
+                                                string body = ((doctor != null && doctor.User != null) ? "Doctor " + doctor.User.FirstName : ((currentUser != null) ? "Staff " + currentUser.FirstName : "")) + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
                                                 string msgid = SMSGateway.SendSMS(to, body);
                                             }
                                         }
