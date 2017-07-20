@@ -12,7 +12,7 @@ namespace CAIdentityServer.Controllers
     public class TwoFactorController : Controller
     {
         [Route("core/custom/2fa")]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string id)
         {
             var ctx = Request.GetOwinContext();
             var user = await ctx.Environment.GetIdentityServerPartialLoginAsync();
@@ -26,7 +26,7 @@ namespace CAIdentityServer.Controllers
 
         [Route("core/custom/2fa")]
         [HttpPost]
-        public async Task<ActionResult> Index(string code)
+        public async Task<ActionResult> Index(string id, string code)
         {
             var ctx = Request.GetOwinContext();
 
@@ -36,14 +36,15 @@ namespace CAIdentityServer.Controllers
                 return View("Error");
             }
 
-            var id = user.FindFirst("sub").Value;
+            var subjectid = user.FindFirst("sub").Value;
 
             var context = Request.GetOwinContext();
             var env = Request.GetOwinContext().Environment;
+            var signInMessage = env.GetSignInMessage(id);
             OwinEnvironmentService owin = new OwinEnvironmentService(env);
             MidasUserService userService = new MidasUserService(owin);
 
-            if (!(await userService.VerifyTwoFactorTokenAsync(id, code)))
+            if (!(await userService.VerifyTwoFactorTokenAsync(subjectid, code, signInMessage)))
             {
                 ViewData["message"] = "Incorrect code";
                 return View("Index");

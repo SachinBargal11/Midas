@@ -52,9 +52,19 @@ namespace CAIdentityServer.Controllers
             await userService.AuthenticateLocalAsync(authenticationContext);
 
             var authResult = authenticationContext.AuthenticateResult;
-            if (authResult == null)
+            if (authResult == null || (authResult.ErrorMessage != null && authResult.ErrorMessage != string.Empty))
             {
-                return Redirect("Error");
+                string errorMessage = null;
+                if (authResult != null && authResult.ErrorMessage != string.Empty)
+                {
+                    errorMessage = authResult.ErrorMessage;
+                }
+                else
+                {
+                    errorMessage = "Unable to process you authentication request due an error";
+                }
+                ModelState.AddModelError("AuthError", errorMessage);
+                return View();
             }
             else
             {
