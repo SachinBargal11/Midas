@@ -22,7 +22,7 @@
 <p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
     <header>Preferred Attorney List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="Attorney.name" header="Attorney Name" [sortable]="true">
+    <p-column field="prefferedAttorney.name" header="Attorney Name" [sortable]="true">
         <!--<ng-template let-attorney="rowData" pTemplate="body">
                     <a title="Edit" routerLink="edit/{{attorney.id}}">{{attorney.user.firstName}}{{attorney.user.lastName}}</a>
                 </ng-template>-->
