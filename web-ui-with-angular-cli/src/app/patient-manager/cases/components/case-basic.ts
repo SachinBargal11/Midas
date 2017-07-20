@@ -73,7 +73,7 @@ export class CaseBasicComponent implements OnInit {
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
             let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
-            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+            let fetchCaseDetail = this._casesStore.caseGetById(this.caseId);
 
             Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
@@ -153,17 +153,36 @@ export class CaseBasicComponent implements OnInit {
         // else {
         //     this.caseform.get("caseSource").enable();
         // }
+        if (this.caseDetail.attorneyProviderId != 0) {
+            if (this.attorneyId == 0){
+                this.confirmationService.confirm({
+                message: 'Removing attorney from a case will revoke all the permissions from this assigned attorney.Please confirm if you want to proceed?',
+                header: 'Change Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.currentAttorneyId = this.attorneyId;
+                },
+                reject: () => {
+                    this.currentAttorneyId = this.caseDetail.attorneyProviderId;
+                }
+            });
+        }
+        else
         this.confirmationService.confirm({
-            message: 'Changing attorney from a case will revoke all the permissions from old assigned attorney.Please confirm if you want to proceed?',
-            header: 'Change Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-                this.currentAttorneyId = this.attorneyId;
-            },
-             reject: () => {
-                 this.currentAttorneyId = this.caseDetail.attorneyProviderId;
-             }
-        });
+                message: 'Changing attorney from a case will revoke all the permissions from old assigned attorney.Please confirm if you want to proceed?',
+                header: 'Change Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.currentAttorneyId = this.attorneyId;
+                },
+                reject: () => {
+                    this.currentAttorneyId = this.caseDetail.attorneyProviderId;
+                }
+            });
+        }
+        else {
+            this.attorneyId = parseInt(event.target.value);
+        }    
     }
 
     casesourceChange(event) {
@@ -203,7 +222,7 @@ export class CaseBasicComponent implements OnInit {
         result = this._casesStore.updateCase(caseDetail);
         result.subscribe(
             (response) => {
-                if (this.attorneyId > 0) {
+                if (this.attorneyId >= 0) {
                     let result1 = this._patientStore.assignPatientToAttorney(this.patientId, this.caseId, this.attorneyId);
                     result1.subscribe(
                         (response) => {

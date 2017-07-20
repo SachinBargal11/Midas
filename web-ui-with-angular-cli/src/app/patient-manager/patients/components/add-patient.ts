@@ -155,8 +155,8 @@ export class AddPatientComponent implements OnInit {
                         });
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', errString);
-                    } else if (data.isDoctor == false && data.isPatient == true) {
-                        let errString = 'User already exists & it is patient.';
+                    } else if (data.isDoctor == true && data.isPatient == false) {
+                        let errString = 'User already exists & it is doctor.';
                         let notification = new Notification({
                             'title': errString,
                             'type': 'ERROR',
