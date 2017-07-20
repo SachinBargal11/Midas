@@ -111,7 +111,7 @@ export class AddSpecialityDetailsComponent {
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({
-                    'title': 'Speciality details added successfully!',
+                    'title': 'Specialty details added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -120,7 +120,7 @@ export class AddSpecialityDetailsComponent {
                    this._router.navigate(['/account-setup/specialities']);
             },
             (error) => {
-                let errString = 'Unable to add speciality details.';
+                let errString = 'Unable to add specialty details.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

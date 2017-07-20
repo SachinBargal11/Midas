@@ -112,8 +112,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        if (error.message == 'Please Select document Type') {
-            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        if (error.message == 'Please select document type') {
+            this._notificationsService.error('Oh No!', 'Please select document type');
         }
         else {
             this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
@@ -207,12 +207,12 @@ export class CaseDocumentsUploadComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select record to delete',
+                'title': 'Select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select record to delete');
+            this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
 }

@@ -123,7 +123,7 @@ export class EditAttorneyComponent implements OnInit {
         result = this._attorneyMasterStore.updateAttorney(attorney);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Preferred attorney has been updated successfully!.');
+                this._notificationsService.success('Success!', 'Preferred attorney has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
