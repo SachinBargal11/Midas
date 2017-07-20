@@ -1106,8 +1106,283 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
                 int preferredCommunicationType = 3;
-               
 
+                if (IsEditMode == false)
+                {
+                    User currentUser = _context.Users.Where(p => p.id == PatientVisit2DB.CreateByUserID 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Include("ContactInfo")
+                                                     .FirstOrDefault();
+
+                    Doctor doctor = null;
+                    if (PatientVisit2DB.DoctorId.HasValue == true)
+                    {
+                        doctor = _context.Doctors.Where(p => p.Id == PatientVisit2DB.DoctorId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .Include("User")
+                                                 .Include("User.ContactInfo")
+                                                 .FirstOrDefault();
+                    }
+
+
+                    Patient2 patient = null;
+                    if (PatientVisit2DB.PatientId.HasValue == true)
+                    {
+                        patient = _context.Patient2.Where(p => p.Id == PatientVisit2DB.PatientId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .Include("User")
+                                                   .Include("User.ContactInfo")
+                                                   .FirstOrDefault();
+                    }
+                        
+
+                    //ContactInfo contactPatient = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.ContactInfo).FirstOrDefault();
+
+                    //User doctor_user = _context.Users.Where(p => p.id == PatientVisit2DB.DoctorId 
+                    //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    //                                 .Include("ContactInfo")
+                    //                                 .FirstOrDefault();
+
+                    string doctorContactNumber = null;                    
+                    doctorContactNumber = (doctor != null && doctor.User != null && doctor.User.ContactInfo != null) ? doctor.User.ContactInfo.CellPhone : null;
+
+                    if (currentUser != null)
+                    {
+                        #region UserType Doctor
+                        if (currentUser.UserType == 4 || currentUser.UserType == 2)
+                        {
+                            try
+                            {
+                                if (preferredCommunicationType == 1 || preferredCommunicationType == 3)
+                                {
+                                    if (patient != null && patient.User != null && patient.User.ContactInfo != null)
+                                    {
+                                        #region Send Email
+                                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByDoctor".ToUpper()).FirstOrDefault();
+                                        if (mailTemplateDB == null)
+                                        {
+                                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                        }
+                                        else
+                                        {
+                                            string LoginLink2 = "<a href='http://www.patient.codearray.tk'>http://www.patient.codearray.tk</a>";
+                                            string msg = mailTemplateDB.EmailBody;
+                                            string subject = mailTemplateDB.EmailSubject;
+
+                                            string message = string.Format(msg, patient.User.FirstName, ((doctor != null && doctor.User != null) ? doctor.User.FirstName : ""), CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+
+                                            BO.Email objEmail = new BO.Email { ToEmail = patient.User.UserName, Subject = subject, Body = message };
+                                            objEmail.SendMail();
+                                        }
+                                        #endregion
+                                    }
+                                }
+
+                                if (preferredCommunicationType == 2 || preferredCommunicationType == 3)
+                                {
+                                    if (patient != null && patient.User != null && patient.User.ContactInfo != null)
+                                    {
+                                        #region send SMS notification 
+                                        try
+                                        {
+                                            if (patientContactNumber != null && patientContactNumber != string.Empty)
+                                            {
+                                                //string to = dictionary[patientUserName];
+                                                string to = patientContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = ((doctor != null && doctor.User != null) ? "Doctor " + doctor.User.FirstName : ((currentUser != null) ? "Staff " + currentUser.FirstName : "")) + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }
+                                        }
+                                        catch (Exception) { }
+                                        #endregion
+                                    }
+
+                                }
+
+                                #region Commented Code
+                                /*
+                                if (preferredCommunicationType == 3)
+                                {
+                                    if (contactPatient.EmailAddress != null)
+                                    {
+                                        #region Send Email
+
+                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                        if (userBO != null)
+                                        {
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByDoctor".ToUpper()).FirstOrDefault();
+                                            if (mailTemplateDB == null)
+                                            {
+                                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                            else
+                                            {
+                                                string LoginLink2 = "<a href='http://www.patient.codearray.tk'>http://www.patient.codearray.tk</a>";
+                                                string msg = mailTemplateDB.EmailBody;
+                                                string subject = mailTemplateDB.EmailSubject;
+
+                                                string message = string.Format(msg, patient.User.FirstName, doctor_user.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+                                                //string message = string.Format(msg, userBO.FirstName, doctor_user.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+
+                                                BO.Email objEmail = new BO.Email { ToEmail = patient.User.UserName, Subject = subject, Body = message };
+                                                //BO.Email objEmail = new BO.Email { ToEmail = userBO.FirstName, Subject = subject, Body = message };
+                                                objEmail.SendMail();
+                                            }
+                                        }
+
+                                        #endregion
+                                    }
+                                    if (contactPatient.CellPhone != null)
+                                    {
+                                        #region send SMS notification 
+                                        try
+                                        {
+                                            if (patientContactNumber != null && patientContactNumber != string.Empty)
+                                            {
+                                                //string to = dictionary[patientUserName];
+                                                string to = patientContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Doctor " + doctor_user.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.patient.codearray.tk to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }
+                                        }
+                                        catch (Exception) { }
+                                        #endregion
+
+                                    }
+
+                                }
+                                */
+                                #endregion
+                            }
+                            catch (Exception e) { }
+                            
+                        }
+                        #endregion
+
+                        #region UserType Patient
+                        if (currentUser.UserType == 1)
+                        {
+                            try
+                            {
+                                if (preferredCommunicationType == 1 || preferredCommunicationType == 3)
+                                {
+                                    if (patient != null && patient.User != null && patient.User.ContactInfo != null && doctor != null && doctor.User != null)
+                                    {
+                                        #region Send Email
+                                        var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByPatient".ToUpper()).FirstOrDefault();
+                                        if (mailTemplateDB == null)
+                                        {
+                                            return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                        }
+                                        else
+                                        {
+                                            string LoginLink2 = "<a href='http://www.medicalprovider.codearray.tk'> http://www.medicalprovider.codearray.tk </a>";
+                                            string msg = mailTemplateDB.EmailBody;
+                                            string subject = mailTemplateDB.EmailSubject;
+
+                                            string message = string.Format(msg, doctor.User.FirstName, patient.User.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+
+                                            BO.Email objEmail = new BO.Email { ToEmail = doctor.User.UserName, Subject = subject, Body = message };
+                                            objEmail.SendMail();
+                                        }
+
+                                        #endregion
+                                    }
+                                }
+                                if (preferredCommunicationType == 2 || preferredCommunicationType == 3)
+                                {
+                                    if (patient != null && patient.User != null && patient.User.ContactInfo != null)
+                                    {
+                                        #region send SMS notification 
+                                        try
+                                        {
+                                            if (doctorContactNumber != null && doctorContactNumber != string.Empty)
+                                            {
+                                                //string to = doctor.User.UserName;
+                                                string to = doctorContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }
+                                        }
+                                        catch (Exception) { }
+                                        #endregion
+                                    }
+
+                                }
+
+                                #region Commented Code
+                                /*
+                                if (preferredCommunicationType == 3)
+                                {
+                                    if (contactPatient.EmailAddress != null)
+                                    {
+                                        #region Send Email
+
+                                        var userBO = _context.Users.Where(p => p.id == PatientVisit2DB.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                                        if (userBO != null)
+                                        {
+                                            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "PatientVisitCreatedByPatient".ToUpper()).FirstOrDefault();
+                                            if (mailTemplateDB == null)
+                                            {
+                                                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                            else
+                                            {
+                                                string LoginLink2 = "<a href='http://www.medicalprovider.codearray.tk'> http://www.medicalprovider.codearray.tk </a>";
+                                                string msg = mailTemplateDB.EmailBody;
+                                                string subject = mailTemplateDB.EmailSubject;
+
+                                                string message = string.Format(msg, doctor.User.FirstName, patient.User.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+                                                //string message = string.Format(msg, doctor.User.FirstName, userBO.FirstName, CalendarEventBO.Name, CalendarEventBO.EventStart.Value, LoginLink2);
+
+                                                BO.Email objEmail = new BO.Email { ToEmail = doctor.User.UserName, Subject = subject, Body = message };
+
+                                                objEmail.SendMail();
+                                            }
+                                        }
+
+                                        #endregion
+                                    }
+                                    if (contactPatient.CellPhone != null)
+                                    {
+                                        #region send SMS notification 
+                                        try
+                                        {
+                                            if (doctorContactNumber != null && doctorContactNumber != string.Empty)
+                                            {
+                                                //string to = doctor.User.UserName;
+                                                string to = doctorContactNumber;
+                                                //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == PatientVisit2BO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                                                string body = " Patient " + patient.User.FirstName + " has created a visit " + CalendarEventBO.Name + " on " + CalendarEventBO.EventStart.Value + "." + "  Please visit Midas portal http://www.medicalprovider.codearray.tk  to view details.";
+                                                string msgid = SMSGateway.SendSMS(to, body);
+                                            }
+                                        }
+                                        catch (Exception) { }
+                                        #endregion
+
+                                    }
+
+                                }
+                                */
+                                #endregion
+
+                            }
+                            catch (Exception e) { }
+
+
+
+                        }
+                        #endregion
+                    }
+                }
+
+                #region Commented Code
+                /*
                 if (IsEditMode == false)
                 {
                     User currentUser = _context.Users.Where(p => p.id == PatientVisit2DB.CreateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
@@ -1356,6 +1631,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         #endregion
                     }
                 }
+                */
+                #endregion
 
 
                 if (PatientVisit2DB != null)

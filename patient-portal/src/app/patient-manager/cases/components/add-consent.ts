@@ -199,7 +199,7 @@ export class AddConsentComponent implements OnInit {
         }
         else {
             let notification = new Notification({
-                'title': 'Consent Uploaded Successfully!',
+                'title': 'Consent uploaded successfully!',
                 'type': 'SUCCESS',
                 'createdAt': moment()
             });

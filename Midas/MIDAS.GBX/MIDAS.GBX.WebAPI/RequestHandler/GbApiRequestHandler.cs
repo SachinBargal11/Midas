@@ -2054,5 +2054,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+
+        public HttpResponseMessage GetRecurrenceByCaseAndSpecialtyAndDoctorId(HttpRequestMessage request, int caseId, int specialtyId,int doctorId)
+        {
+            var objResult = dataAccessManager.GetRecurrenceByCaseAndSpecialtyAndDoctorId(caseId, specialtyId, doctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

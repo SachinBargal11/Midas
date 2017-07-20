@@ -191,7 +191,7 @@ export class ProcedureCodeComponent implements OnInit {
                 },
                 (error) => {
                     this.isSaveProgress = false;
-                    let errString = 'Unable to  Updated procedure code amount .';
+                    let errString = 'Unable to update procedure code amount .';
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 },
                 () => {

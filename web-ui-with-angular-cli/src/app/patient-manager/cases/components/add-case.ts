@@ -226,7 +226,7 @@ export class AddCaseComponent implements OnInit {
         result = this._casesStore.addCase(caseDetail);
         result.subscribe(
             (response) => {
-                if (this.attorneyId > 0) {
+                if (this.attorneyId >= 0) {
                     let result1 = this._patientsStore.assignPatientToAttorney((this.patientId) ? this.patientId : parseInt(this.idPatient), response.id, this.attorneyId);
                     result1.subscribe(
                         (response) => {

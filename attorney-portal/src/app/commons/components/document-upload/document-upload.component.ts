@@ -167,7 +167,7 @@ export class DocumentUploadComponent implements OnInit {
       event.xhr.setRequestHeader("inputjson", param);
     }
     else {
-      this.uploadError.emit(new Error('Please Select document Type'));
+      this.uploadError.emit(new Error('Please select document type'));
       this.isDocumentSelected = false;
     }
   }
@@ -190,7 +190,7 @@ export class DocumentUploadComponent implements OnInit {
   uploadScannedDocuments() {
     let fileName = this.scannedFileName.trim();
     if (!fileName) {
-      this._notificationsService.error('File Name not present', 'Please provide name of file for scanned document.');
+      this._notificationsService.error('File name not present', 'Please provide name of file for scanned document.');
       return;
     }
     this._documentUploadService.uploadScanDocument(this.dwObject, this.url, fileName)

@@ -29,4 +29,18 @@ export class Location extends LocationRecord {
         super(props);
     }
 
+
+    get locationTypeLabel(): string {
+        return Location.getLocationTypeLabel(this.locationType);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getLocationTypeLabel(locationType: LocationType): string {
+        switch (locationType) {
+            case LocationType.MEDICAL_OFFICE:
+                return 'Medical office';
+            case LocationType.MEDICAL_TESTING_FACILITY:
+                return 'Medical testing facility';
+        }
+    }
+
 }

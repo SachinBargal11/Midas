@@ -255,24 +255,21 @@ export class UsersService {
 
     }
 
-    GetIsExistingUser(UserName: string, SSN: string): Observable<User[]> {
-        let promise: Promise<User[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/user/GetIsExistingUser/' + UserName + '/' + SSN, {
+    getIsExistingUser(userName: string): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/User/checkIsExistingUser/' + userName , {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((userData: Array<Object>) => {
+                .subscribe((userData:any) => {
                     // let parsedUser: User[] = null;
                     // parsedUser = UserAdapter.parseResponse(userData);
                     // resolve(parsedUser);
-                    let parsedUser = (<Object[]>userData).map((data: any) => {
-                        return UserAdapter.parseUserExistResponse(data);
-                    });
-                    resolve(parsedUser);
+                    resolve(userData);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<User[]>>Observable.fromPromise(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
 }

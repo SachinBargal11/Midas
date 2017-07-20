@@ -130,7 +130,7 @@ export class PatientsListComponent implements OnInit {
                         this.selectedPatients = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete Patient ' + currentPatient.user.firstName + ' ' + currentPatient.user.lastName;
+                        let errString = 'Unable to delete patient ' + currentPatient.user.firstName + ' ' + currentPatient.user.lastName;
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -151,12 +151,12 @@ export class PatientsListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select patients to delete',
+                'title': 'Select patients to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select patients to delete');
+            this._notificationsService.error('Oh No!', 'Select patients to delete');
         }
     }
     showMsg() {
