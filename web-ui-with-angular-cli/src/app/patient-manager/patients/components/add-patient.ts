@@ -38,7 +38,7 @@ export class AddPatientComponent implements OnInit {
     uploadedFiles: any[] = [];
     displayExistPopup: boolean = false;
     isExist: boolean = false;
-    users: User[];
+    users:any;
     isPatientOrDoctor: string = 'patient';
     isuserCompany: boolean = false;
     isAlreadyUser: boolean = false;
@@ -117,7 +117,7 @@ export class AddPatientComponent implements OnInit {
     myUploader(event) {
         this.files = event.files;
     }
-    
+
     uploadProfileImage(patientId: number) {
         let xhr = new XMLHttpRequest(),
             formData = new FormData();
@@ -138,24 +138,34 @@ export class AddPatientComponent implements OnInit {
     savePatient() {
         //this.isExist = this.checkForExist(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn);
 
-        this.usersStore.GetIsExistingUser(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn)
-            .subscribe((users: User[]) => {
-                this.users = users;
-                if (this.users.length > 0) {
-                    _.forEach(users, (currentUser: User) => {
-                        this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
-                        if (!this.isuserCompany) {
-                            // this.isExist = true;
-                            // this.displayExistPopup = true;
-                        }
-                        else {
-                            let errString = 'User already exists.';
-                            this._notificationsService.error('Oh No!', 'User already exists');
-                            this._progressBarService.hide();
-                        }
-                    });
+        this.usersStore.getIsExistingUser(this.patientform.value.contact.email)
+            .subscribe((data: any) => {
+                this.users = data.user;
+                this.isExist = false;
+                this.displayExistPopup = false;
+                if (data.isPatient == true) {
+                    this.isExist = true;
+                    this.displayExistPopup = true;
+                }else if (data.isDoctor == false && data.isPatient == false) {
+                        let errString = 'User already exists & it is staff.';
+                        let notification = new Notification({
+                            'title': errString,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', errString);
+                    } else if (data.isDoctor == false && data.isPatient == true) {
+                        let errString = 'User already exists & it is patient.';
+                        let notification = new Notification({
+                            'title': errString,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', errString);
 
-                }
+                    }
                 else {
                     this.isSavePatientProgress = true;
                     let patientFormValues = this.patientform.value;
@@ -233,31 +243,4 @@ export class AddPatientComponent implements OnInit {
             (error) => { });
     }
 
-    // checkForExist(userName, SSN) {
-    //             debugger;
-    //             this.usersStore.GetIsExistingUser(userName, SSN)
-    //                 .subscribe((users: User[]) => {
-    //                     this.users = users;
-    //                     if (this.users.length > 0) {
-    //                         this.isExist = true;
-    //                         _.forEach(users, (currentUser: User) => {
-    //                             this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
-    //                             if (!this.isuserCompany) {
-    //                                 this.displayExistPopup = true;
-    //                             }
-    //                             else {
-    //                                 this.isAlreadyUser = true;
-    //                                 this.displayExistPopup = false;
-    //                                 let errString = 'User Already exists.';
-    //                                 this.isSavePatientProgress = false;
-    //                                 this._notificationsService.error('Oh No!', 'User Already exists');
-    //                                 this._progressBarService.hide();
-    //                             }
-    //                         });
-    //                     }
-    //                 },
-    //                 (error) => { }
-    //                 );
-    //             return this.isExist;
-    //         }
 }

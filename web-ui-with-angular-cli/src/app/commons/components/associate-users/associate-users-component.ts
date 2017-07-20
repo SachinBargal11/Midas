@@ -35,7 +35,7 @@ export class AssociateUsersComponent implements OnInit {
     selectedUsers: User = null;
     isSaveProgress = false;
 
-    @Input() existUsers: User[];
+    @Input() existUsers: any;
     @Input() isPatientOrDoctor: string;
 
     constructor(
@@ -67,13 +67,13 @@ export class AssociateUsersComponent implements OnInit {
 
     associateUser() {
         let result;
-        if (this.selectedUsers != null) {
+        if (this.existUsers != null) {
             //  alert(this.isPatientOrDoctor);
             if (this.isPatientOrDoctor == 'patient') {
-                result = this._associateUserStore.associatePatientWithCompany(this.selectedUsers.id, this._sessionStore.session.currentCompany.id);
+                result = this._associateUserStore.associatePatientWithCompany(this.existUsers.id, this._sessionStore.session.currentCompany.id);
             }
             else if (this.isPatientOrDoctor == 'doctor') {
-                result = this._associateUserStore.associateDoctorWithCompany(this.selectedUsers.id, this._sessionStore.session.currentCompany.id);
+                result = this._associateUserStore.associateDoctorWithCompany(this.existUsers.id, this._sessionStore.session.currentCompany.id);
             }
             result.subscribe(
                 (response) => {
