@@ -1,13 +1,13 @@
-<h5 class="with-border">Add Preffered Attorney</h5>
+<h5 class="with-border">Add Preferred Attorney</h5>
 <div class="form-group">
     <div class="form-check form-check-inline">
         <label class="form-check-label">
-            <input type="radio" value="1" name="attorneyMode" [(ngModel)]="attorneyMode"> Assign Preffered Attorney
+            <input type="radio" value="1" name="attorneyMode" [(ngModel)]="attorneyMode"> Assign Preferred Attorney
         </label>
     </div>
     <div class="form-check  form-check-inline">
         <label class="form-check-label">
-            <input type="radio" value="2" name="attorneyMode" [(ngModel)]="attorneyMode"> Add Preffered Attorney
+            <input type="radio" value="2" name="attorneyMode" [(ngModel)]="attorneyMode"> Add Preferred Attorney
         </label>
     </div>
 </div>
@@ -45,7 +45,7 @@
 </section>
 <section class="card" [hidden]="attorneyMode != '2'">
     <header class="card-header card-header-lg">
-        Add Preffered Attorney
+        Add Preferred Attorney
     </header>
     <div class="card-block">
         <form [formGroup]="attorneyform" name="attorneyform" (ngSubmit)="saveAttorney()">

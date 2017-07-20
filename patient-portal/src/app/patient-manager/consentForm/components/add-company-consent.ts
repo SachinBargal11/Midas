@@ -207,7 +207,7 @@ export class AddCompanyConsentComponent implements OnInit {
                     this._router.navigate(['../'], { relativeTo: this._route });
                 },
                 (error) => {
-                    let errString = 'Unable to add Consent form.';
+                    let errString = 'Unable to add consent form.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',

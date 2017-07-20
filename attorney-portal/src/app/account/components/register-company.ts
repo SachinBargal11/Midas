@@ -97,7 +97,7 @@ export class RegisterCompanyComponent implements OnInit {
             },
             (error) => {
                 this.isRegistrationInProgress = false;
-                let errString = 'Unable to Register User.';
+                let errString = 'Unable to register user.';
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {

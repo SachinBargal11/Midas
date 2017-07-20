@@ -568,15 +568,15 @@ export class PatientVisitComponent implements OnInit {
         let canScheduleAppointement: boolean = true;
         if (!this.selectedLocationId) {
             canScheduleAppointement = false;
-            this._notificationsService.alert('Oh No!', 'Please Select Location!');
+            this._notificationsService.alert('Oh No!', 'Please select location!');
         } else {
             if (!this.selectedOption) {
                 canScheduleAppointement = false;
-                this._notificationsService.alert('Oh No!', 'Please Select Speciality Or Medical Test!');
+                this._notificationsService.alert('Oh No!', 'Please select speciality Or medical test!');
             } else if (this.selectedOption == 1) {
                 if (!this.selectedDoctorId) {
                     canScheduleAppointement = false;
-                    this._notificationsService.alert('Oh No!', 'Please Select Doctor!');
+                    this._notificationsService.alert('Oh No!', 'Please select doctor!');
                 } else {
                     if (this.doctorSchedule) {
                         let scheduleDetails: ScheduleDetail[] = this.doctorSchedule.scheduleDetails;
@@ -592,7 +592,7 @@ export class PatientVisitComponent implements OnInit {
             } else if (this.selectedOption == 2) {
                 if (!this.selectedRoomId) {
                     canScheduleAppointement = false;
-                    this._notificationsService.alert('Oh No!', 'Please select Room!');
+                    this._notificationsService.alert('Oh No!', 'Please select room!');
                 } else {
                     if (this.roomSchedule) {
                         let scheduleDetails: ScheduleDetail[] = this.roomSchedule.scheduleDetails;
@@ -910,7 +910,7 @@ export class PatientVisitComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
-                let errString = 'Unable to save Referral.';
+                let errString = 'Unable to save referral.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -1249,7 +1249,7 @@ export class PatientVisitComponent implements OnInit {
                     .subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'record deleted successfully!',
+                            'title': 'Record deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
 
@@ -1280,12 +1280,12 @@ export class PatientVisitComponent implements OnInit {
             // });
         } else {
             let notification = new Notification({
-                'title': 'select record to delete',
+                'title': 'Select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select record to delete');
+            this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
 

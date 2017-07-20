@@ -142,7 +142,16 @@ export class CasesStore {
     //     });
     //     return <Observable<CaseDocument[]>>Observable.from(promise);
     // }
-
+    caseGetById(id: number){
+         let promise = new Promise((resolve, reject) => {
+            this._casesService.getCase(id).subscribe((cases: Case) => {
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 
 
     findCaseById(id: number) {
