@@ -117,7 +117,13 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
+        public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
+    
+        public virtual ObjectResult<GetCase_Result> GetCase()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCase_Result>("GetCase");
+        }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

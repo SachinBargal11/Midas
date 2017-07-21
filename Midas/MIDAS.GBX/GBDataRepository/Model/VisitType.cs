@@ -12,23 +12,24 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ICDTypeCode
+    public partial class VisitType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ICDTypeCode()
+        public VisitType()
         {
-            this.CompanyICDTypeCodes = new HashSet<CompanyICDTypeCode>();
+            this.PatientVisit2 = new HashSet<PatientVisit2>();
         }
     
         public int Id { get; set; }
-        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public int CreatedByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<int> UpdatedByUserID { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompanyICDTypeCode> CompanyICDTypeCodes { get; set; }
+        public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
     }
 }
