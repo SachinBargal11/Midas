@@ -241,7 +241,7 @@ export class AddUserComponent implements OnInit {
                     if (data.isDoctor == true) {
                         this.isExist = true;
                         this.displayExistPopup = true;
-                    } else if (data.isDoctor == false && data.isPatient == false) {
+                    } else if (data.isDoctor == false && data.isPatient == false && data.user != null) {
                         let errString = 'User already exists & it is staff.';
                         let notification = new Notification({
                             'title': errString,
