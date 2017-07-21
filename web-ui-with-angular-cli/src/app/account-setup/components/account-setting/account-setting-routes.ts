@@ -6,6 +6,7 @@ import { ValidateInActiveDoctorSession } from '../../../commons/guards/validate-
 import { ShellComponent } from '../../../commons/shell-component';
 import { AccountSettingShellComponent } from './account-setting-shell';
 import { ProcedureCodeComponent } from './procedure-code-master';
+import { AddProcedureCodeComponent } from './add-procedure-code-master';
 import { DocumentTypeComponent } from './document-type';
 import { AccountGeneralSettingComponent } from './account-general-settings'
 
@@ -38,11 +39,28 @@ export const AccountSettingShellRoutes: Routes = [
             },
             {
                 path: 'procedure-codes',
-                component: ProcedureCodeComponent,
+                component: ShellComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Procedure Codes'
-                }
+                },
+                children: [
+                    {
+                        path: '',
+                        component: ProcedureCodeComponent,
+                        data: {
+                            breadcrumb: 'root'
+                        }
+                    },
+                    {
+                        path: 'add',
+                        component: AddProcedureCodeComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Add procedures'
+                        }
+                    }
+                ]
             },
             {
                 path: 'document-types',

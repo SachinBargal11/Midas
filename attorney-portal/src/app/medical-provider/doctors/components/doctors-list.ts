@@ -126,12 +126,12 @@ export class DoctorsListComponent implements OnInit {
         }
         else {
             let notification = new Notification({
-                'title': 'select doctor to delete',
+                'title': 'Select doctor to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select doctor to delete');
+            this._notificationsService.error('Oh No!', 'Select doctor to delete');
         }
     }
 }

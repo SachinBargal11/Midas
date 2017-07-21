@@ -637,6 +637,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)freeSlots;
         }
 
+        #region GetRecurrenceByCaseAndSpecialtyAndDoctorId
+        public override Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId,int specialtyId,int doctorId)
+        {
+            var calendarEvent = from pv in _context.PatientVisit2  
+                      join ce in _context.CalendarEvents on pv.CalendarEventId equals ce.Id                   
+                      where (pv.CaseId ==caseId
+                      && pv.SpecialtyId == specialtyId
+                      && pv.DoctorId == doctorId
+                      && (pv.IsDeleted.HasValue == false || (pv.IsDeleted.HasValue == true && pv.IsDeleted.Value == false))
+                      && (ce.IsDeleted.HasValue == false || (ce.IsDeleted.HasValue == true && ce.IsDeleted.Value == false)))
+                      select (ce);
+            var acc = calendarEvent.Distinct();
+
+            if (acc == null)
+            {                
+                    return new BO.ErrorObject { ErrorMessage = "No record found for this User Name.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                return acc;
+            }
+
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

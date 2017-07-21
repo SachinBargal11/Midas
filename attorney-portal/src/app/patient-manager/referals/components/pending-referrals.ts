@@ -191,7 +191,7 @@ export class PendingReferralsComponent implements OnInit {
         if(this.selectedOption !== 3){
           if(this.selectedOption !== 1){
         this.confirmationService.confirm({
-            message: 'Do you want to Appoint Schedule?',
+            message: 'Do you want to appoint schedule?',
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {
@@ -210,7 +210,7 @@ export class PendingReferralsComponent implements OnInit {
     //    this.checkUserSettings(this.selectedMedicalProviderId,this.selectedDoctorId)
        if(this.userSetting.isCalendarPublic){
            this.confirmationService.confirm({
-            message: 'Do you want to Appoint Schedule?',
+            message: 'Do you want to appoint schedule?',
             header: 'Confirmation',
             icon: 'fa fa-question-circle',
             accept: () => {

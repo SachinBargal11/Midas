@@ -105,7 +105,7 @@ export class ConsentListComponent implements OnInit {
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'record deleted successfully!',
+                                    'title': 'Record deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
@@ -136,12 +136,12 @@ export class ConsentListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select record to delete',
+                'title': 'Select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select record to delete');
+            this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
 

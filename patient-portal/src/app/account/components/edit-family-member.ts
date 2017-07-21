@@ -105,7 +105,7 @@ export class EditFamilyMemberComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Family Member updated successfully!',
+                    'title': 'Family member updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -113,7 +113,7 @@ export class EditFamilyMemberComponent implements OnInit {
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update Family Member.';
+                let errString = 'Unable to update family member.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

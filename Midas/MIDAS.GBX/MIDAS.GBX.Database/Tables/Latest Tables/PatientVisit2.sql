@@ -12,7 +12,8 @@
 	[EventEnd] [DATETIME2] NULL,
     [Notes] [NVARCHAR](250) NULL, 
     [VisitStatusId] [TINYINT] NULL,
-    [VisitType] [TINYINT] NULL,
+    --[VisitType] [TINYINT] NULL,
+    [VisitTypeId] [TINYINT] NULL,
 	[IsCancelled] [bit] NULL DEFAULT 0,
 	--[FileUploadPath] [NVARCHAR](250) NULL,
 	[IsTransportationRequired] [BIT] NOT NULL DEFAULT 0,
@@ -105,3 +106,20 @@ GO
 ALTER TABLE [dbo].[PatientVisit2] ALTER COLUMN [IsTransportationRequired] [BIT] NOT NULL
 GO
 */
+
+--ALTER TABLE [dbo].[PatientVisit2] ADD [VisitTypeId] TINYINT NULL
+--GO
+--UPDATE [dbo].[PatientVisit2] SET [VisitTypeId] = [VisitType]
+--GO
+--ALTER TABLE [dbo].[PatientVisit2] DROP COLUMN [VisitType]
+--GO
+
+--UPDATE [dbo].[PatientVisit2] SET [VisitTypeId] = NULL WHERE [VisitTypeId] <= 0
+--GO
+
+ALTER TABLE [dbo].[PatientVisit2]  WITH CHECK ADD  CONSTRAINT [FK_PatientVisit2_VisitType_VisitTypeId] FOREIGN KEY([VisitTypeId])
+	REFERENCES [dbo].[VisitType] ([Id])
+GO
+
+ALTER TABLE [dbo].[PatientVisit2] CHECK CONSTRAINT [FK_PatientVisit2_VisitType_VisitTypeId]
+GO
