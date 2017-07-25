@@ -26,7 +26,7 @@
 <div class="input-group">
   <h3 class="with-border">Selected Procedures
     <a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="deleteProcedureCode()">
-      <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
+      <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure Codes </span>
       <loader [visible]="isDeleteProgress"></loader>
     </a>
   </h3>
@@ -43,7 +43,7 @@
       <input type="number" [(ngModel)]="selectedValue" value="" min="1" max="10" class="form-control" />
     </ng-template>
   </p-column>
-  <p-column header="Total charge per day">
+  <p-column header="Total Charge Per day">
     <ng-template let-procedure="rowData" pTemplate="body">
       {{selectedValue * procedure.amount}}
     </ng-template>

@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[DoctorTaxType]
 (
-    [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Id] [TINYINT] IDENTITY(1,1) NOT NULL,
     [Name] NVARCHAR(50) NOT NULL, 
     [Description] NVARCHAR(128) NULL, 
     [IsDeleted] [bit] NULL CONSTRAINT [DF_DoctorTaxType_IsDeleted] DEFAULT 0,

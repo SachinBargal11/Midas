@@ -86,7 +86,7 @@ export class InsuranceMasterListComponent implements OnInit {
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Insurance Master deleted successfully!',
+                            'title': 'Insurance master deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
@@ -95,7 +95,7 @@ export class InsuranceMasterListComponent implements OnInit {
                         this.selectedInsuranceMasters = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete Insurance Master';
+                        let errString = 'Unable to delete insurance master';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -115,12 +115,12 @@ export class InsuranceMasterListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Insurance Master to delete',
+                'title': 'Select insurance master to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Insurance Master to delete');
+            this._notificationsService.error('Oh No!', 'Select insurance master to delete');
         }
 
     }

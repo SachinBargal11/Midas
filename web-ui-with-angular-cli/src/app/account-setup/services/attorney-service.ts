@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { Attorney } from '../models/attorney';
 import { AttorneyAdapter } from './adapters/attorney-adpter';
 import { PrefferedAttorneyAdapter } from '../services/adapters/preffered-attorney-adapter';
+import { PrefferedAttorney } from '../models/preffered-attorney';
 import { Account } from '../../account/models/account';
 import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
 @Injectable()
@@ -59,8 +60,8 @@ export class AttorneyMasterService {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
-    getAllAttorney(companyId: Number): Observable<Attorney[]> {
-        let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
+    getAllAttorney(companyId: Number): Observable<PrefferedAttorney[]> {
+        let promise: Promise<PrefferedAttorney[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PreferredAttorneyProvider/GetAllPrefAttorneyProviderExcludeAssigned/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
@@ -73,7 +74,7 @@ export class AttorneyMasterService {
                     reject(error);
                 });
         });
-        return <Observable<Attorney[]>>Observable.fromPromise(promise);
+        return <Observable<PrefferedAttorney[]>>Observable.fromPromise(promise);
     }
 
     assignAttorney(currentAttorneyId: Number, companyId: Number): Observable<Attorney> {

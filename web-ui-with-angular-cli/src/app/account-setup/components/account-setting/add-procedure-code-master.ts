@@ -24,11 +24,11 @@ import { ProcedureCodeMasterStore } from '../../../account-setup/stores/procedur
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 @Component({
-    selector: 'procedure-code',
-    templateUrl: './procedure-code-master.html'
+    selector: 'add-procedure-code',
+    templateUrl: './add-procedure-code-master.html'
 })
 
-export class ProcedureCodeComponent implements OnInit {
+export class AddProcedureCodeComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     procedureForm: FormGroup;
     procedures: Procedure[];
@@ -109,54 +109,47 @@ export class ProcedureCodeComponent implements OnInit {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
-        this.selectedProcedures = [];
-        this.selectedProceduresForCompany = [];
-        this.selectedProceduresCodes = [];
+        // this.selectedProcedures = [];
         if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
             this.selectedSpecialityId = parseInt(event.target.value);
-            this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
+            this.loadProceduresForSpeciality(this.selectedSpecialityId);
+            // this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
             // this.fetchSelectedSpeciality(this.selectedSpecialityId);
             // this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedTestId = parseInt(event.target.value);
-            this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
+            this.loadProceduresForRoomTest(this.selectedTestId);
+            // this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
             //this.fetchSelectedTestingFacility(this.selectedTestId);
             // this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
         } else {
             this.selectedMode = 0;
             this.procedures = null;
-            this.selectedProcedures = [];
-            this.selectedProceduresForCompany = [];
-            this.selectedProceduresCodes = [];
+            // this.selectedProcedures = [];
         }
         this.msg = '';
     }
 
-    selectProcedures() {
-        //let savedProcedures = this.selectedProceduresForCompany;
-        this.selectedProceduresForCompany = _.union(this.savedProcedures, this.selectedProcedures);
-        // let procedures = _.union(savedProcedures, this.selectedProcedures);
-        // this.selectedProceduresForCompany = _.map(procedures, (currentProcedure: Procedure) => {
-        //     return currentProcedure;
-        // })
-    }
-
-    loadProceduresByCompanyAndSpecialtyId(specialityId: number) {
+    loadProceduresForSpeciality(specialityId: number) {
         this._progressBarService.show();
-        this._procedureCodeMasterStore.getProceduresByCompanyAndSpecialtyId(this._sessionStore.session.currentCompany.id, specialityId)
-            .subscribe(procedure => {
-                let procedures = procedure.reverse();
-                this.selectedProceduresForCompany = _.map(procedures, (currentProcedure: Procedure) => {
-                    return currentProcedure.toJS();
-                })
-                this.selectedProceduresForCompanyStored = procedure.reverse();
-                this.savedProcedures = procedure.reverse();
-                // this.datasource = attorneys.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.attorneys = this.datasource.slice(0, 10);
-            },
+        let result = this._procedureCodeMasterStore.getBySpecialityAndCompanyId(specialityId, this._sessionStore.session.currentCompany.id);
+        result.subscribe((procedures: Procedure[]) => {
+
+            // let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+            //     return currentProcedure.id;
+            // });
+            // let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+            //     return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+            // });
+            this.proceduresArr = _.map(procedures, (currProcedure: Procedure) => {
+                return {
+                    label: `${currProcedure.procedureCodeText} - ${currProcedure.procedureCodeDesc}`,
+                    value: currProcedure.toJS()
+                };
+            })
+        },
             (error) => {
                 this._progressBarService.hide();
             },
@@ -165,19 +158,24 @@ export class ProcedureCodeComponent implements OnInit {
             });
     }
 
-    loadProceduresByCompanyAndRoomTestId(roomTestId: number) {
+    loadProceduresForRoomTest(roomTestId: number) {
         this._progressBarService.show();
-        this._procedureCodeMasterStore.getProceduresByCompanyAndRoomTestId(this._sessionStore.session.currentCompany.id, roomTestId)
-            .subscribe(procedure => {
-                let procedures = procedure.reverse();
-                this.selectedProceduresForCompany = _.map(procedures, (currentProcedure: Procedure) => {
-                    return currentProcedure.toJS();
+        let result = this._procedureCodeMasterStore.getByRoomTestAndCompanyId(roomTestId, this._sessionStore.session.currentCompany.id);
+        result.subscribe(
+            (procedures: Procedure[]) => {
+                // this.procedures = procedures;
+                // let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+                //     return currentProcedure.id;
+                // });
+                // let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+                //     return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+                // });
+                this.proceduresArr = _.map(procedures, (currProcedure: Procedure) => {
+                    return {
+                        label: `${currProcedure.procedureCodeText} - ${currProcedure.procedureCodeDesc}`,
+                        value: currProcedure.toJS()
+                    };
                 })
-                this.selectedProceduresForCompanyStored = procedure.reverse();
-                this.savedProcedures = procedure.reverse();
-                // this.datasource = attorneys.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.attorneys = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -190,8 +188,8 @@ export class ProcedureCodeComponent implements OnInit {
     saveProcedures() {
         let result;
         this.isSaveProgress = true;
-        if (this.selectedProceduresCodes.length > 0) {
-            this.selectedProceduresCodes.forEach(currentProcedure => {
+        if (this.selectedProcedures.length > 0) {
+            this.selectedProcedures.forEach(currentProcedure => {
                 this.selProcedureCodes.push({
                     'procedureCodeID': currentProcedure.procedureCodeId,
                     'amount': currentProcedure.amount,
@@ -199,7 +197,7 @@ export class ProcedureCodeComponent implements OnInit {
                 });
             });
 
-            if (this.selectedProceduresCodes.find(selProcedure => selProcedure.amount == null || selProcedure.amount == 0)) {
+            if (this.selectedProcedures.find(selProcedure => selProcedure.amount == null || selProcedure.amount == 0)) {
                 this.isSaveProgress = false;
                 let errString = 'Please enter valid amount .';
                 this._notificationsService.error('Oh No!', errString);
@@ -210,20 +208,21 @@ export class ProcedureCodeComponent implements OnInit {
                     (response) => {
 
                         let notification = new Notification({
-                            'title': 'Procedure code amount updated successfully',
+                            'title': 'Procedure codes added successfully',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
                         this._notificationsStore.addNotification(notification);
-                        this._notificationsService.success('Success!', 'Procedure code amount updated successfully');
-                        this.selProcedureCodes = [];
-                        this.selectedProcedures = [];
-                        this.selectedProceduresCodes = [];
-                        if (this.selectedOption == 1) {
-                            this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
-                        } else {
-                            this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
-                        }
+                        this._notificationsService.success('Success!', 'Procedure codes added successfully');
+                        this._router.navigate(['../'], { relativeTo: this._route });
+                        // this.selProcedureCodes = [];
+                        // this.selectedProcedures = [];
+                        // this.selectedProceduresCodes = [];
+                        // if (this.selectedOption == 1) {
+                        //     this.loadProceduresForSpeciality(this.selectedSpecialityId);
+                        // } else {
+                        //     this.loadProceduresForRoomTest(this.selectedTestId);
+                        // }
                     },
                     (error) => {
                         this.isSaveProgress = false;
@@ -250,58 +249,67 @@ export class ProcedureCodeComponent implements OnInit {
     reset() {
         this.selectedMode = 0;
         this.procedures = null;
-        this.selectedProceduresForCompany = [];
-        this.selectedProceduresCodes = [];
-        // this.loadAllSpecialitiesAndTests();
+        this.selectedProcedures = [];
+        this.loadAllSpecialitiesAndTests();
     }
 
     deleteProcedureMappings() {
         if (this.selectedProceduresCodes.length > 0) {
-            this.confirmationService.confirm({
-                message: 'Do you want to delete this record?',
-                header: 'Delete Confirmation',
-                icon: 'fa fa-trash',
-                accept: () => {
-                    this.selectedProceduresCodes.forEach(currentProcedure => {
-                        this.isDeleteProgress = true;
-                        this._progressBarService.show();
-                        this._procedureCodeMasterStore.deleteProcedureMapping(currentProcedure)
-                            .subscribe(
-                            (response) => {
-                                let notification = new Notification({
-                                    'title': 'Procedure mapping deleted successfully!',
-                                    'type': 'SUCCESS',
-                                    'createdAt': moment()
-
-                                });
-                                if (this.selectedOption == 1) {
-                                    this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
-                                } else {
-                                    this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
-                                }
-                                this._notificationsStore.addNotification(notification);
-                                this.selectedProceduresCodes = [];
-                            },
-                            (error) => {
-                                let errString = 'Unable to delete procedure mapping';
-                                let notification = new Notification({
-                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                    'type': 'ERROR',
-                                    'createdAt': moment()
-                                });
-                                this.selectedProceduresCodes = [];
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                                this._notificationsStore.addNotification(notification);
-                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            },
-                            () => {
-                                this.isDeleteProgress = false;
-                                this._progressBarService.hide();
-                            });
-                    });
-                }
+            let procedureCodeIds: number[] = _.map(this.selectedProceduresCodes, (currentProcedureCode: Procedure) => {
+                return currentProcedureCode.procedureCodeId;
             });
+            let procedureCodeDetails = _.filter(this.selectedProcedures, (currentProcedureCode: Procedure) => {
+                return _.indexOf(procedureCodeIds, currentProcedureCode.procedureCodeId) < 0 ? true : false;
+            });
+
+            this.selectedProcedures = procedureCodeDetails;
+
+            // if (this.selectedProceduresCodes.length > 0) {
+            //     this.confirmationService.confirm({
+            //         message: 'Do you want to delete this record?',
+            //         header: 'Delete Confirmation',
+            //         icon: 'fa fa-trash',
+            //         accept: () => {
+            //             this.selectedProceduresCodes.forEach(currentProcedure => {
+            //                 this.isDeleteProgress = true;
+            //                 this._progressBarService.show();
+            //                 this._procedureCodeMasterStore.deleteProcedureMapping(currentProcedure)
+            //                     .subscribe(
+            //                     (response) => {
+            //                         let notification = new Notification({
+            //                             'title': 'Procedure mapping deleted successfully!',
+            //                             'type': 'SUCCESS',
+            //                             'createdAt': moment()
+
+            //                         });
+            //                         if (this.selectedOption == 1) {
+            //                             this.loadProceduresForSpeciality(this.selectedSpecialityId);
+            //                         } else {
+            //                             this.loadProceduresForRoomTest(this.selectedTestId);
+            //                         }
+            //                         this._notificationsStore.addNotification(notification);
+            //                         this.selectedProceduresCodes = [];
+            //                     },
+            //                     (error) => {
+            //                         let errString = 'Unable to delete procedure mapping';
+            //                         let notification = new Notification({
+            //                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            //                             'type': 'ERROR',
+            //                             'createdAt': moment()
+            //                         });
+            //                         this.selectedProceduresCodes = [];
+            //                         this._progressBarService.hide();
+            //                         this.isDeleteProgress = false;
+            //                         this._notificationsStore.addNotification(notification);
+            //                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            //                     },
+            //                     () => {
+            //                         this.isDeleteProgress = false;
+            //                         this._progressBarService.hide();
+            //                     });
+            //             });
+            //         }
+            //     });
         } else {
             let notification = new Notification({
                 'title': 'Select procedure to delete',

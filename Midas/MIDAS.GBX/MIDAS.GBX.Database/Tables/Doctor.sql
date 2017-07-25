@@ -4,7 +4,8 @@
 	[WCBAuthorization] [nvarchar](50) NULL,
 	[WcbRatingCode] [nvarchar](50) NULL,
 	[NPI] [nvarchar](50) NULL,
-	[TaxType] [tinyint] NULL,
+	--[TaxType] [tinyint] NULL,
+    [TaxTypeId] [TINYINT] NULL,
 	[Title] [nvarchar](10) NULL,
 	[IsCalendarPublic] [BIT] NOT NULL,
 	[IsDeleted] [bit] NULL CONSTRAINT [DF_Doctor_IsDeleted] DEFAULT ((0)),
@@ -22,7 +23,7 @@
 GO
 
 ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_User] FOREIGN KEY([UserID])
-REFERENCES [dbo].[User] ([id])
+    REFERENCES [dbo].[User] ([id])
 GO
 
 ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_User]
@@ -36,18 +37,18 @@ ALTER TABLE [dbo].[Doctor] ALTER COLUMN [IsCalendarPublic] [BIT] NOT NULL
 GO
 */
 
+/*
+ALTER TABLE [dbo].[Doctor] ADD [TaxTypeId] [TINYINT] NULL
+GO
+UPDATE [dbo].[Doctor] SET [TaxTypeId] = [TaxType]
+GO
+ALTER TABLE [dbo].[Doctor] DROP COLUMN [TaxType]
+GO
+*/
+ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_DoctorTaxType_TaxTypeId] FOREIGN KEY([TaxTypeId])
+REFERENCES [dbo].[DoctorTaxType] ([Id])
+GO
 
---ALTER TABLE [dbo].[Doctor] ADD [TaxTypeId] [TINYINT] NULL
---GO
---UPDATE [dbo].[Doctor] SET [TaxTypeId] = [TaxType]
---GO
---ALTER TABLE [dbo].[Doctor] DROP COLUMN [TaxType]
---GO
-
---ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_User] FOREIGN KEY([UserID])
---REFERENCES [dbo].[DoctorTaxType] ([id])
---GO
-
---ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_User]
---GO
+ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_DoctorTaxType_TaxTypeId]
+GO
 

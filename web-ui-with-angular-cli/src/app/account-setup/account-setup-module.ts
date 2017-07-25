@@ -45,6 +45,7 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
 
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
 import { ProcedureCodeComponent } from './components/account-setting/procedure-code-master';
+import { AddProcedureCodeComponent } from './components/account-setting/add-procedure-code-master';
 import { DocumentTypeComponent } from './components/account-setting/document-type';
 import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
 import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
@@ -96,6 +97,7 @@ import { EditAncillaryComponent } from './components/ancillary-master/edit-ancil
         EditMedicalProviderComponent,
         AccountSettingShellComponent,
         ProcedureCodeComponent,
+        AddProcedureCodeComponent,
         DocumentTypeComponent,
         AccountGeneralSettingComponent,
         AncillaryListComponent, AddAncillaryComponent, EditAncillaryComponent

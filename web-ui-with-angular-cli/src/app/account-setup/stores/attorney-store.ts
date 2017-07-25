@@ -1,3 +1,4 @@
+import { PrefferedAttorney } from '../models/preffered-attorney';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -45,17 +46,17 @@ export class AttorneyMasterStore {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
-    getAllAttorney(): Observable<Attorney[]> {
+    getAllAttorney(): Observable<PrefferedAttorney[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.getAllAttorney(companyId).subscribe((allAttorney: Attorney[]) => {
-                this._allAttorneyInMidas.next(List(allAttorney));
+            this._attorneyMasterService.getAllAttorney(companyId).subscribe((allAttorney: PrefferedAttorney[]) => {
+                // this._allAttorneyInMidas.next(List(allAttorney));
                 resolve(allAttorney);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Attorney[]>>Observable.fromPromise(promise);
+        return <Observable<PrefferedAttorney[]>>Observable.fromPromise(promise);
     }
 
     assignAttorney(id: number): Observable<Attorney> {

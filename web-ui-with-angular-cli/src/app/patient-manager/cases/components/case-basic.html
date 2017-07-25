@@ -1,3 +1,4 @@
+<p-confirmDialog width="425"></p-confirmDialog>
 <h3 class="with-border">Edit Case</h3>
 <div *ngIf="caseDetail">
     <form [formGroup]="caseform" (ngSubmit)="saveCase()">
@@ -124,7 +125,7 @@
                 <label class="form-label">Attorney                              
                             </label>
                 <div class="form-group">
-                    <select [ngModel]="caseDetail.attorneyProviderId" formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control"
+                    <select [(ngModel)]="currentAttorneyId" formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control"
                         placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                             <option value="0">-Select -</option>
                             <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.prefferedAttorney.id}}">{{currentAttorney.prefferedAttorney.name}}</option>

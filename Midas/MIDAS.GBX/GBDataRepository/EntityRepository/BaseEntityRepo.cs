@@ -844,6 +844,13 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId,int specialtyId, int doctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
         public virtual Object GetICDTypeCodeByCompanyId(int CompanyId)
         {
             throw new NotImplementedException();

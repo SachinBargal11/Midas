@@ -139,16 +139,15 @@ export class UsersStore {
         }
     }
 
-    GetIsExistingUser(UserName: string, SSN: string): Observable<User[]> {
+    getIsExistingUser(userName: string): Observable<any> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.GetIsExistingUser(UserName, SSN).subscribe((users: User[]) => {
-                this._users.next(List(users));
-                resolve(users);
+            this._usersService.getIsExistingUser(userName).subscribe((user:any) => {
+                resolve(user);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<User[]>>Observable.fromPromise(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
 }

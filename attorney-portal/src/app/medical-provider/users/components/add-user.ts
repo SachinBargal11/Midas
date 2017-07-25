@@ -258,7 +258,7 @@ export class AddUserComponent implements OnInit {
                 this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
-                let errString = 'Unable to add User.';
+                let errString = 'Unable to add user.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

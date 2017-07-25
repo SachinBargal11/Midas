@@ -31,5 +31,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GetFreeSlotsForRoomByLocationId(Request, RoomId, locationId, startDate, endDate);
         }
+
+        [HttpGet]
+        [Route("getRecurrenceByCaseAndSpecialtyAndDoctorId/{caseId}/{specialtyId}/{doctorId}")]
+        public HttpResponseMessage GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId, int specialtyId, int doctorId)
+        {
+            return requestHandler.GetRecurrenceByCaseAndSpecialtyAndDoctorId(Request, caseId, specialtyId, doctorId);
+        }
     }
 }

@@ -50,8 +50,9 @@ export class AddUserComponent implements OnInit {
     doctorFlag: boolean = false;
     displayExistPopup: boolean = false;
     isExist: boolean = false;
-    users: User[];
+    users: any;
     isPatientOrDoctor: string = 'doctor';
+    existUserData: any;
     userCompany: User;
     isuserCompany: boolean = false;
     constructor(
@@ -231,23 +232,33 @@ export class AddUserComponent implements OnInit {
             selectedSpeciality.forEach(element => {
                 doctorSpecialities.push({ 'id': parseInt(element) });
             });
-            this._usersStore.GetIsExistingUser(userFormValues.contact.email, null)
-                .subscribe((users: User[]) => {
-                    this.users = users;
-                    if (this.users.length > 0) {
-                        _.forEach(users, (currentUser: User) => {
-                            this.isuserCompany = currentUser.isSessionCompany(this._sessionStore.session.currentCompany.id);
-                            if (!this.isuserCompany) {
-                                this.isExist = true;
-                                this.displayExistPopup = true;
-                            }
-                            else {
-                                let errString = 'User Already exists.';
-                                this.isSaveUserProgress = false;
-                                this._notificationsService.error('Oh No!', 'User Already exists');
-                                this._progressBarService.hide();
-                            }
+            this._usersStore.getIsExistingUser(userFormValues.contact.email)
+                .subscribe((data: any) => {
+                    this.existUserData = data;
+                    this.users = data.user;
+                    this.isExist = false;
+                    this.displayExistPopup = false;
+                    if (data.isDoctor == true) {
+                        this.isExist = true;
+                        this.displayExistPopup = true;
+                    } else if (data.isDoctor == false && data.isPatient == false && data.user != null) {
+                        let errString = 'User already exists & it is staff.';
+                        let notification = new Notification({
+                            'title': errString,
+                            'type': 'ERROR',
+                            'createdAt': moment()
                         });
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', errString);
+                    } else if (data.isDoctor == false && data.isPatient == true) {
+                        let errString = 'User already exists & it is patient.';
+                        let notification = new Notification({
+                            'title': errString,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', errString);
 
                     }
                     else {
@@ -302,7 +313,7 @@ export class AddUserComponent implements OnInit {
                                 this._router.navigate(['/medical-provider/users']);
                             },
                             (error) => {
-                                let errString = 'Unable to add User.';
+                                let errString = 'Unable to add user.';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',
@@ -353,20 +364,6 @@ export class AddUserComponent implements OnInit {
         //         this._progressBarService.hide();
         //     });
 
-    }
-
-    checkForExist(userName, SSN) {     
-        this._usersStore.resetStore();
-        this._usersStore.GetIsExistingUser(userName, null)
-            .subscribe((users: User[]) => {
-                this.users = users;
-                if (this.users.length > 0) {
-                    this.isExist = true;
-                }
-            },
-            (error) => { }
-            );
-        return this.isExist;
     }
 
 }

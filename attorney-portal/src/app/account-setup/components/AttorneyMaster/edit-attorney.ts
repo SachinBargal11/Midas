@@ -120,12 +120,12 @@ export class EditAttorneyComponent implements OnInit {
         result = this._attorneyMasterStore.updateAttorney(attorney);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'Preffered attorney has been updated successfully!.');
+                this._notificationsService.success('Success!', 'Preferred attorney has been updated successfully!.');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errString = 'Unable to Register User.';
+                let errString = 'Unable to register user.';
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {

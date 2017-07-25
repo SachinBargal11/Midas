@@ -1,4 +1,4 @@
-<div *ngIf="accidents.length !== 0 && currentAccident && caseViewedByOriginator && (caseStatusId === 1)">
+<div *ngIf="currentAccident && caseViewedByOriginator && (caseStatusId === 1)">
     <form [formGroup]="accidentform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">

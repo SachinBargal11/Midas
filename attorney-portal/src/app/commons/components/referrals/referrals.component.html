@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-lg-6">
       <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-        <option value="0">- Select speciality -</option>
+        <option value="0">- Select specialty -</option>
         <optgroup label="Select Specialty">
            <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
         </optgroup>
