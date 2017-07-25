@@ -207,6 +207,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object LoginWithUserName<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Login2<T>(T entity)
         {
             throw new NotImplementedException();
@@ -518,7 +523,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
+        public virtual Object GetByDoctorAndDates(int DoctorId,int medicalProviderId, DateTime FromDate, DateTime ToDate)
         {
             throw new NotImplementedException();
         }

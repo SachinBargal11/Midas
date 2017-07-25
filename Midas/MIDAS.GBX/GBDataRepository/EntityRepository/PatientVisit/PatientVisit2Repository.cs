@@ -1503,21 +1503,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Dates
-        public override object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
+        #region Get By DoctorID, MedcialProvider and Dates
+        public override object GetByDoctorAndDates(int DoctorId,int medicalProviderId, DateTime FromDate, DateTime ToDate)
         {
             if (ToDate == ToDate.Date)
             {
                 ToDate = ToDate.AddDays(1);
             }
 
+            List<int> caseid = _context.CaseCompanyMappings.Where(p => p.CompanyId == medicalProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .Select(p => p.CaseId).ToList<int>();
+
+
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.User").Include("Patient2.PatientInsuranceInfoes")
                                                                         .Include("Case").Include("Case.PatientAccidentInfoes")
                                                                         .Where(p => p.DoctorId == DoctorId
-                                                                                 && p.EventStart >= FromDate && p.EventStart < ToDate
-                                                                                && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
-                                                                                && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                         && p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                         && caseid.Contains((int)p.CaseId)
+                                                                         && p.VisitStatusId == 1
+                                                                         && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
+                                                                         && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
+                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
 
             if (lstPatientVisit == null)

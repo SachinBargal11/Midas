@@ -89,10 +89,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByDoctorAndDates/{DoctorId}/{FromDate}/{ToDate}")]
-        public HttpResponseMessage GetByDates(int DoctorId, DateTime FromDate,DateTime ToDate)
+        [Route("getByDoctorAndDates/{DoctorId}/{medicalProviderId}/{FromDate}/{ToDate}")]
+        public HttpResponseMessage GetByDates(int DoctorId,int medicalProviderId, DateTime FromDate,DateTime ToDate)
         {
-            return requestHandler.GetByDoctorAndDates(Request, DoctorId, FromDate, ToDate);
+            return requestHandler.GetByDoctorAndDates(Request, DoctorId, medicalProviderId, FromDate, ToDate);
         }
 
         [HttpGet]

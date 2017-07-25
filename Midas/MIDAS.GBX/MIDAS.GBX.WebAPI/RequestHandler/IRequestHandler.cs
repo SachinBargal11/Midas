@@ -28,7 +28,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateCompany(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage Login(HttpRequestMessage request, T gbObject);        
+        HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
 
         HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
         HttpResponseMessage GenerateToken(HttpRequestMessage request,int userId);
@@ -90,7 +91,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage DismissPendingReferral(HttpRequestMessage request, int PendingReferralId, int userId);       
         HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
         HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail);
-        HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
+        HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,int medicalProviderId, DateTime FromDate,DateTime ToDate);
         HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name);
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
         HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId);

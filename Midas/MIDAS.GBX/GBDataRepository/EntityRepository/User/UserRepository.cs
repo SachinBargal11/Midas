@@ -753,6 +753,128 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Login with Only UserName
+        public override Object LoginWithUserName<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            //Check if the User even if valid is logging as invalid User Type
+            bool isUserTypeValid = false;
+            try
+            {
+                if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
+                {
+                    isUserTypeValid = true;
+                }
+
+                if (!isUserTypeValid)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            BO.User acc_ = isUserTypeValid ? Convert<BO.User, User>(data_) : null;
+
+            if (!userBO.forceLogin)
+            {
+                if (acc_.C2FactAuthEmailEnabled)
+                {
+
+                    var otpOld = _context.OTPs.Where(p => p.UserID == acc_.ID).ToList<OTP>();
+                    otpOld.ForEach(a => { a.IsDeleted = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });
+                    if (otpOld != null)
+                    {
+                        _context.SaveChanges();
+                    }
+
+                    //Send OTP Via Email
+                    OTP otpDB = new OTP();
+                    otpDB.OTP1 = Utility.GenerateRandomNumber(6);
+                    otpDB.Pin = Utility.GenerateRandomNo();
+                    otpDB.UserID = acc_.ID;
+                    otpDB.CreateDate = DateTime.UtcNow;
+                    otpDB.CreateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+
+                    _dbOTP.Add(otpDB);
+                    _context.SaveChanges();
+
+                    string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
+
+                    BO.Email objEmail = new BO.Email { ToEmail = acc_.UserName, Subject = "Alert Message From GBX MIDAS", Body = Message };
+                    objEmail.SendMail();
+
+                    otpDB.UserID = acc_.ID;
+                    otpDB.OTP1 = 0000;
+
+                    BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User = new BO.User();
+                        usrComp.User.ID = acc_.ID;
+                        boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                    }
+                    boOTP.User = acc_;
+
+                    List<BO.Role> RoleBO1 = new List<BO.Role>();
+                    var roles1 = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in roles1)
+                    {
+                        RoleBO1.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID
+                        });
+                    }
+                    boOTP.User.Roles = RoleBO1;
+                    return boOTP;
+                }
+                else if (acc_.C2FactAuthSMSEnabled)
+                {
+                    //Send OTP Via SMS
+                }
+            }
+
+            BO.OTP boOTP_ = new BusinessObjects.OTP();
+            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+            {
+                BO.UserCompany usrComp = new BO.UserCompany();
+                usrComp.User = new BO.User();
+                usrComp.User.ID = acc_.ID;
+                boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+            }
+            boOTP_.User = acc_;
+
+            List<BO.Role> RoleBO = new List<BO.Role>();
+            var roles = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+            foreach (var item in roles)
+            {
+                RoleBO.Add(new BO.Role()
+                {
+                    ID = item.RoleID,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                    RoleType = (BO.GBEnums.RoleType)item.RoleID
+                });
+            }
+            boOTP_.User.Roles = RoleBO;
+            return boOTP_;
+        }
+
+        #endregion
+
+
+
+
         #region Get By Filter
         public override object Get<T>(T entity)
         {

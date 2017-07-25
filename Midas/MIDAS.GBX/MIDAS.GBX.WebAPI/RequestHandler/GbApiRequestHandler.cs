@@ -495,6 +495,29 @@ namespace MIDAS.GBX.WebAPI
         }
         #endregion
 
+        #region LoginWithUserName
+        public HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject)
+        {
+            User userBO = (User)(object)gbObject;
+            if (userBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.LoginWithUserName(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        #endregion
+
         #region Login
         public object Login(T gbObject)
         {
@@ -1285,9 +1308,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
+        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, int medicalProviderId, DateTime FromDate, DateTime ToDate)
         {
-            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
+            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, medicalProviderId, FromDate, ToDate);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

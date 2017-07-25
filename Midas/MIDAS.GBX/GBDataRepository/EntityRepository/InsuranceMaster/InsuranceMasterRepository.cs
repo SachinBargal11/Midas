@@ -42,7 +42,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boInsuranceMaster.CompanyName = eachInsuranceMaster.CompanyName;
                 boInsuranceMaster.AddressInfoId = eachInsuranceMaster.AddressInfoId;
                 boInsuranceMaster.ContactInfoId = eachInsuranceMaster.ContactInfoId;
-
+                //boInsuranceMaster.ZeusID = eachInsuranceMaster.ZeusID;
+                //boInsuranceMaster.PriorityBilling = eachInsuranceMaster.PriorityBilling;
+                //boInsuranceMaster.Only1500Form = eachInsuranceMaster.Only1500Form;
+                //boInsuranceMaster.PaperAuthorization = eachInsuranceMaster.PaperAuthorization;
 
                 //if (eachInsuranceMaster.IsDeleted.HasValue)
                 //    boInsuranceMaster.IsDeleted = eachInsuranceMaster.IsDeleted.Value;
@@ -108,6 +111,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boInsuranceMaster.CompanyName = insuranceMaster.CompanyName;
             boInsuranceMaster.AddressInfoId = insuranceMaster.AddressInfoId;
             boInsuranceMaster.ContactInfoId = insuranceMaster.ContactInfoId;
+            //boInsuranceMaster.ZeusID = insuranceMaster.ZeusID;
+            //boInsuranceMaster.PriorityBilling = insuranceMaster.PriorityBilling;
+            //boInsuranceMaster.Only1500Form = insuranceMaster.Only1500Form;
+            //boInsuranceMaster.PaperAuthorization = insuranceMaster.PaperAuthorization;
 
             //if (insuranceMaster.IsDeleted.HasValue)
             //    boInsuranceMaster.IsDeleted = insuranceMaster.IsDeleted.Value;
@@ -350,7 +357,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     insuranceMasterDB.CompanyCode = insuranceMasterBO.CompanyCode;
                     insuranceMasterDB.CompanyName = IsEditMode == true && insuranceMasterBO.CompanyName == null ? insuranceMasterDB.CompanyName : insuranceMasterBO.CompanyName;
-                 
+                    //insuranceMasterDB.ZeusID = insuranceMasterBO.ZeusID;
+                    //insuranceMasterDB.PriorityBilling = insuranceMasterBO.PriorityBilling;
+                    //insuranceMasterDB.Only1500Form = insuranceMasterBO.Only1500Form;
+                    //insuranceMasterDB.PaperAuthorization = insuranceMasterBO.PaperAuthorization;
+
                     insuranceMasterDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : insuranceMasterDB.AddressInfoId;
                     insuranceMasterDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : insuranceMasterDB.ContactInfoId;                 
 
