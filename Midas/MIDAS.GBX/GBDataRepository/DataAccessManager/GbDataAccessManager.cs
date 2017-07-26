@@ -1828,15 +1828,34 @@ namespace MIDAS.GBX.DataAccessManager
 
             catch (GbException gbe)
             {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
                 return gbe;
             }
             catch (Exception ex)
             {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
                 return ex;
             }
         }
+
+        public Object GetByDoctorAndCompanyId(int doctorId,int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByDoctorAndCompanyId(doctorId, companyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
 
         public Object GetByReferringUserId(int UserId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {

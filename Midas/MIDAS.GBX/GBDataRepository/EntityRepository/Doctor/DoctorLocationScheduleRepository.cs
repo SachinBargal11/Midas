@@ -635,6 +635,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Doctor And Company Id
+        public override object GetByDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+
+            var locations = _context.Locations.Where(p => p.CompanyID == companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.id);
+
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Doctor.User")
+                                                        .Include("Doctor.DoctorSpecialities")
+                                                        .Include("Doctor.DoctorSpecialities.Specialty")
+                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
+                                                        .Include("Schedule")
+                                                        .Where(p => p.DoctorID == doctorId 
+                                                        && locations.Contains(p.LocationID)
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .ToList<DoctorLocationSchedule>();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                foreach (DoctorLocationSchedule item in acc_)
+                {
+                    lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                }
+
+                return lstDoctorLocationSchedule;
+            }
+        }
+        #endregion
+
         #region Get By Location Id and Doctor Id
         public override object Get(int locationId,int doctorId)
         {

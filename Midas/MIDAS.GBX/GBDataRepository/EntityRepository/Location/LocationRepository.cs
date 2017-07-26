@@ -499,7 +499,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company ID
+        public override object GetByCompanyId(int companyId)
+        {
+            var locationDB = _context.Locations.Where(p => p.CompanyID == companyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Location>();
 
+            List<BO.Location> boLocation = new List<BO.Location>();
+            if (locationDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                foreach (var EachLocation in locationDB)
+                {
+                    boLocation.Add(Convert<BO.Location, Location>(EachLocation));
+                }
+            }
+            return (object)boLocation;
+        }
+        #endregion
 
 
         public void Dispose()

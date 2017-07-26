@@ -765,6 +765,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetByCompanyId(companyId);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request)
         {
             var objResult = dataAccessManager.GetAllCompanyAndLocation();
@@ -1035,6 +1053,19 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int DoctorId)
         {
             var objResult = dataAccessManager.GetByDoctorId(DoctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByDoctorAndCompanyId(doctorId, companyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

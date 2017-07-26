@@ -48,6 +48,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
         HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId);
+        HttpResponseMessage GetByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId);
 
         HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status);
@@ -72,6 +73,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByReferringLocationId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferringToLocationId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId);
         HttpResponseMessage GetByReferringUserId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferredToDoctorId(HttpRequestMessage request, int id);
         HttpResponseMessage GetPatientAccidentInfoByPatientId(HttpRequestMessage request, int PatientId);
