@@ -170,8 +170,8 @@ export class VisitDetailComponent implements OnInit {
     }
 
       documentUploadError(error: Error) {
-        if (error.message == 'Please Select document Type') {
-            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        if (error.message == 'Please select document type') {
+            this._notificationsService.error('Oh No!', 'Please Select document type');
         }
         else {
             this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
@@ -345,7 +345,7 @@ export class VisitDetailComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
-                let errString = 'Unable to save Referral.';
+                let errString = 'Unable to save referral.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -375,7 +375,7 @@ export class VisitDetailComponent implements OnInit {
                     .subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'record deleted successfully!',
+                            'title': 'Record deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
 
@@ -406,12 +406,12 @@ export class VisitDetailComponent implements OnInit {
             // });
         } else {
             let notification = new Notification({
-                'title': 'select record to delete',
+                'title': 'Select record to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select record to delete');
+            this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
 

@@ -261,11 +261,11 @@ export class ReferralsComponent implements OnInit {
             return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
           });
         } else if (this.selectedOption === 0) {
-          this.msg = 'Please, Select Speciality.';
+          this.msg = 'Please, Select Specialty.';
         } else if (this.selectedOption === 2 || this.selectedSpeciality.mandatoryProcCode) {
           this.msg = 'Please, Select Procedure Codes.';
         } else if (this.selectedSpeciality == null) {
-          this.msg = 'Please, Select Speciality.';
+          this.msg = 'Please, Select Specialty.';
         } else {
           this.msg = 'Already in the list';
         }

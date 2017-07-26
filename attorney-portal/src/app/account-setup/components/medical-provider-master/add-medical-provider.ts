@@ -123,7 +123,7 @@ export class AddMedicalProviderComponent implements OnInit {
                 }
             },
             (error) => {
-                let errString = 'Unable to Register User.';
+                let errString = 'Unable to register user.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

@@ -221,7 +221,7 @@ export class ReferralListComponent implements OnInit {
                                 this.selectedReferrals = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete Referral';
+                                let errString = 'Unable to delete referral';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',
@@ -242,12 +242,12 @@ export class ReferralListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Referral to delete',
+                'title': 'Select referral to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Referral to delete');
+            this._notificationsService.error('Oh No!', 'Select referral to delete');
         }
     }
 

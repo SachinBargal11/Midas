@@ -87,7 +87,7 @@ export class ViewAllComponent implements OnInit {
                     if (employer.id) {
                         this.employer = employer;
                     } else {
-                        this.noEmployer = 'No Employer available';
+                        this.noEmployer = 'No employer available';
 
                     }
 
@@ -108,7 +108,7 @@ export class ViewAllComponent implements OnInit {
                     if (familyMember.length) {
                         this.familyMember = familyMember;
                     } else {
-                        this.noFamilyMember = 'No Family Member Available';
+                        this.noFamilyMember = 'No family member available';
                     }
                 },
                 (error) => {
@@ -125,7 +125,7 @@ export class ViewAllComponent implements OnInit {
                     if (insurances.length) {
                         this.insurances = insurances;
                     } else {
-                        this.noInsurances = 'No Insurance Information Available';
+                        this.noInsurances = 'No insurance information available';
                     }
                 },
                 (error) => {

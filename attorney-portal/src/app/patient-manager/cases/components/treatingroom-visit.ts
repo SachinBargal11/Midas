@@ -205,12 +205,12 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select visit to delete',
+                'title': 'Select visit to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select visit to delete');
+            this._notificationsService.error('Oh No!', 'Select visit to delete');
         }
     }
        bill(){

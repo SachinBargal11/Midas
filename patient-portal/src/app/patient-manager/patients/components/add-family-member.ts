@@ -91,7 +91,7 @@ export class AddFamilyMemberComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Family Member added successfully!',
+                    'title': 'Family member added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -99,7 +99,7 @@ export class AddFamilyMemberComponent implements OnInit {
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add Family Member.';
+                let errString = 'Unable to add family member.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

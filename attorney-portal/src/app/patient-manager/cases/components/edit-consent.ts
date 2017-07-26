@@ -175,7 +175,7 @@ export class EditConsentComponent implements OnInit {
         this.msgs = [];
         let notification = new Notification({
 
-            'title': 'File Uploaded!',
+            'title': 'File uploaded!',
             'type': 'SUCCESS',
             'createdAt': moment()
         });
@@ -228,7 +228,7 @@ export class EditConsentComponent implements OnInit {
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update Consent form.';
+                let errString = 'Unable to update consent form.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

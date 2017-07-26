@@ -1,10 +1,12 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 // import { AmChartsModule } from "amcharts3-angular2";
+
+import { ConfigService, configServiceFactory } from './config-service';
 
 import { AppComponent } from './app.component';
 
@@ -85,6 +87,13 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     // AmChartsModule
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configServiceFactory,
+      deps: [ConfigService],
+      multi: true
+    },
+    ConfigService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ValidateActiveSession,
     ValidateInActiveSession,

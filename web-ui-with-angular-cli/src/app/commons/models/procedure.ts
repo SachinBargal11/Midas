@@ -23,7 +23,8 @@ const ProcedureRecord = Record({
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, // Moment
-    updateDate: null // Moment
+    updateDate: null, // Moment
+    originalResponse: null
 });
 
 export class Procedure extends ProcedureRecord {
@@ -46,6 +47,7 @@ export class Procedure extends ProcedureRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    originalResponse: any;
 
     constructor(props) {
         super(props);

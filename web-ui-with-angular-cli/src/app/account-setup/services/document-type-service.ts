@@ -53,7 +53,7 @@ export class DocumentTypeService {
             // requestData.objectType = requestData.objectType;
             // requestData.companyid = requestData.companyid;
             // requestData = _.omit(requestData, 'documentType', 'objectType', 'companyid');
-            return this._http.post(this._url + '/DocumentNodeObjectMapping/saveDocumentType/', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/DocumentNodeObjectMapping/saveDocumentType', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

@@ -98,7 +98,7 @@ export class AddAncillaryComponent implements OnInit {
             result.subscribe(
                 (response) => {
                     let notification = new Notification({
-                        'title': 'Ancillary Service assigned successfully!',
+                        'title': 'Ancillary service assigned successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
@@ -109,7 +109,7 @@ export class AddAncillaryComponent implements OnInit {
 
                 },
                 (error) => {
-                    let errString = 'Unable to assign Ancillary Service.';
+                    let errString = 'Unable to assign ancillary service.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -123,7 +123,7 @@ export class AddAncillaryComponent implements OnInit {
 
         } else {
             let notification = new Notification({
-                'title': 'Select Ancillary Service to assign to company',
+                'title': 'Select ancillary service to assign to company',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
@@ -172,12 +172,12 @@ export class AddAncillaryComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Ancillary Service has been registered successfully!',
+                    'title': 'Ancillary service has been registered successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.success('Welcome!', 'Ancillary Service has been registered successfully!.');
+                this._notificationsService.success('Welcome!', 'Ancillary service has been registered successfully!.');
                 if (!this.inputCancel) {
                     setTimeout(() => {
                         this._router.navigate(['../'], { relativeTo: this._route });
@@ -188,7 +188,7 @@ export class AddAncillaryComponent implements OnInit {
                 }
             },
             (error) => {
-                let errString = 'Unable to Register Ancillary Service.';
+                let errString = 'Unable to register ancillary service.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

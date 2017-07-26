@@ -75,7 +75,7 @@ export class FamilyMemberListComponent implements OnInit {
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Family Member deleted successfully!',
+                            'title': 'Family member deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
@@ -84,7 +84,7 @@ export class FamilyMemberListComponent implements OnInit {
                         this.selectedFamilyMembers = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete Family Member';
+                        let errString = 'Unable to delete family member';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -101,12 +101,12 @@ export class FamilyMemberListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Family Member to delete',
+                'title': 'Select family member to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this.notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Family Member to delete');
+            this._notificationsService.error('Oh No!', 'Select family member to delete');
         }
     }
 

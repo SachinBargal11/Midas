@@ -217,9 +217,9 @@ export class ReferralsComponent implements OnInit {
           });
           this.proceduresList.push(selectedProcSpec);
         } else if (this.selectedOption === 2) {
-          this.msg = 'Please, Select Procedure Codes.';
+          this.msg = 'Please, Select procedure codes.';
         } else if (this.selectedSpeciality == null) {
-          this.msg = 'Please, Select Speciality.';
+          this.msg = 'Please, Select specialty.';
         } else {
           this.msg = 'Already in the list';
         }
