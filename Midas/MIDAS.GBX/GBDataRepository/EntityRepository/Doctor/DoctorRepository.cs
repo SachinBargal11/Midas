@@ -639,33 +639,61 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var Doctor = _context.Doctors.Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var doctor = _context.Doctors.Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-            if (Doctor == null)
+            if (doctor == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var userCompany = _context.UserCompanies.Where(p => p.UserID == DoctorId && p.CompanyID == CompanyId && p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var user = _context.Users.Where(p => p.id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this User.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Include("User.AddressInfo")
+                                                    .Include("User.ContactInfo")
+                                                    .Where(p => p.UserID == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .ToList();
+            bool isUcdelete = false;
 
             if (userCompany != null)
             {
-                userCompany.IsDeleted = true;
+                var Uc = _context.UserCompanies.Where(p => p.UserID == DoctorId && p.CompanyID == CompanyId && p.IsAccepted == true
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                .FirstOrDefault();
+
+                if (userCompany.Count == 1)
+                {
+                    Uc.User.IsDeleted = true;
+                    Uc.User.Doctor.IsDeleted = true;
+                    Uc.User.AddressInfo.IsDeleted = true;
+                    Uc.User.ContactInfo.IsDeleted = true;
+                    isUcdelete = true;
+                }
+
+                Uc.IsDeleted = true;
             }
 
             _context.SaveChanges();
 
-            var doctorDB = _context.Doctors.Include("User")
-                                              .Include("User.AddressInfo")
-                                              .Include("User.ContactInfo")
-                                              .Include("DoctorSpecialities")
-                                              .Include("DoctorSpecialities.Specialty")
-                                              .Include("User.UserCompanyRoles")
-                                              .Include("User.UserCompanies")
-                                              .Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Doctor>();
+            string message = "";
 
-            var res = Convert<BO.Doctor, Doctor>(doctorDB);
-            return (object)res;
+            if (isUcdelete == true)
+            {
+
+               message = "The user with Id " + DoctorId + " is diassociated from company Id " + CompanyId + " and user is deleted." ;
+                               
+            }
+            else
+            {
+               message = "The user with Id " + DoctorId + " is diassociated from company Id " + CompanyId + "." ;
+            }
+
+            return message;
+         
 
         }
         #endregion
