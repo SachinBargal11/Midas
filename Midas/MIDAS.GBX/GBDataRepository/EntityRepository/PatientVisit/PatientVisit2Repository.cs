@@ -11,6 +11,12 @@ using Twilio.Rest.Api.V2010.Account;
 using System.Configuration;
 using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
+using Ical.Net;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization.iCalendar.Serializers;
+using Ical.Net.Serialization;
+using Ical.Net.Interfaces.DataTypes;
+
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class PatientVisit2Repository : BaseEntityRepo, IDisposable
@@ -1781,39 +1787,169 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By DoctorID, MedcialProvider and Dates
-        public override object GetByDoctorAndDates(int DoctorId,int medicalProviderId, DateTime FromDate, DateTime ToDate)
+        public override object GetByDoctorAndDates(int DoctorId, int medicalProviderId, DateTime FromDate, DateTime ToDate)
         {
             if (ToDate == ToDate.Date)
             {
                 ToDate = ToDate.AddDays(1);
             }
 
-            List<int> caseid = _context.CaseCompanyMappings.Where(p => p.CompanyId == medicalProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                            .Select(p => p.CaseId).ToList<int>();
+            List<int> caseid = _context.CaseCompanyMappings.Where(p => p.CompanyId == medicalProviderId 
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .Select(p => p.CaseId).ToList<int>();
 
+            DateTime currentDate = DateTime.Now.Date;
+            var PatientVisitCompleted = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId
+                                                                            && (p.EventStart >= FromDate && p.EventStart < ToDate)
+                                                                            && p.EventStart < currentDate
+                                                                            && p.CaseId.HasValue == true
+                                                                            && caseid.Contains((int)p.CaseId)
+                                                                            //&& p.VisitStatusId == 1
+                                                                            && p.IsOutOfOffice == false
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                              .Join(_context.Users, p1 => p1.PatientId, p2 => p2.id, (p1, p2) => new {
+                                                                  CaseId = p1.CaseId.Value,
+                                                                  PatientName = p2.FirstName + " " + p2.LastName,
+                                                                  VisitDate = p1.EventStart.Value
+                                                              })
+                                                              .ToList();
 
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.User").Include("Patient2.PatientInsuranceInfoes")
-                                                                        .Include("Case").Include("Case.PatientAccidentInfoes")
-                                                                        .Where(p => p.DoctorId == DoctorId
-                                                                         && p.EventStart >= FromDate && p.EventStart < ToDate
-                                                                         && caseid.Contains((int)p.CaseId)
-                                                                         && p.VisitStatusId == 1
-                                                                         && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
-                                                                         && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
-                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                        .ToList<PatientVisit2>();
+            var PatientCalendarEvents = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId
+                                                                   && p.CaseId.HasValue == true
+                                                                   && caseid.Contains((int)p.CaseId)
+                                                                   //&& p.VisitStatusId == 1
+                                                                   && p.IsOutOfOffice == false
+                                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                              .Join(_context.Users, p1 => p1.PatientId, p2 => p2.id, (p1, p2) => new {
+                                                                  CaseId = p1.CaseId.Value,
+                                                                  PatientName = p2.FirstName + " " + p2.LastName,
+                                                                  CalendarEvent = p1.CalendarEvent
+                                                              })
+                                                              .ToList();
 
-            if (lstPatientVisit == null)
+            foreach (var eachItem in PatientCalendarEvents)
+            {
+                CalendarEvent eachEvent = eachItem.CalendarEvent;
+
+                if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
+                {
+                    Calendar calendar = new Calendar();
+                    var newEvent = new Event()
+                    {
+                        Name = eachEvent.Name,
+                        Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                        End = new CalDateTime(eachEvent.EventEnd, "UTC"),
+                        Description = eachEvent.Description,
+                        IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
+                        Created = new CalDateTime(eachEvent.CreateDate)
+                    };
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceRule = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceRule += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+                        IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceRule);
+                        if (recPattern.Frequency != FrequencyType.None)
+                        {
+                            newEvent.RecurrenceRules.Add(recPattern);
+                        }
+                    }
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceException = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceException += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+                        IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceException);
+                        if (recPattern.Frequency != FrequencyType.None)
+                        {
+                            newEvent.ExceptionRules.Add(recPattern);
+                        }
+                    }
+
+                    calendar.Events.Add(newEvent);
+
+                    HashSet<Occurrence> newEventOccurrences = new HashSet<Occurrence>();
+                    newEventOccurrences = calendar.GetOccurrences(FromDate, ToDate);
+
+                    string TimeZone = eachEvent.TimeZone;
+                    int intTimeZone = 0;
+                    int.TryParse(TimeZone, out intTimeZone);
+
+                    intTimeZone = intTimeZone * -1;
+
+                    var Occurrence = newEventOccurrences.Select(p => new
+                    {
+                        eachItem.CaseId,
+                        eachItem.PatientName,
+                        VisitDate = p.Period.StartTime.AddMinutes(intTimeZone).Value
+                    }).ToList().Distinct().OrderBy(p => p.VisitDate).ToList();
+
+                    PatientVisitCompleted.AddRange(Occurrence.Where(p => (p.VisitDate >= FromDate && p.VisitDate < ToDate) && p.VisitDate >= currentDate));
+                }
+            }
+
+            if (PatientVisitCompleted == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No visits found for these Date range.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            else
-            {
-                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
-                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
 
-                return lstBOPatientVisit;
-            }
+            return PatientVisitCompleted.OrderBy(p => p.VisitDate);
         }
         #endregion
 
