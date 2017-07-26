@@ -84,10 +84,12 @@
         }
 
         var client_id = 'js.manual';
+        //var client_id = 'MidasPortal';
 
         function getToken() {
             var authorizationUrl = 'https://lt007.codearray.tech/CAIdentityServer/core/connect/authorize';
             var redirect_uri = window.location.protocol + "//" + window.location.host + "/JavaScriptClient/index.html";
+            //var redirect_uri =  window.location.protocol + "//localhost:4201/#/dashboard";
             var response_type = "id_token token";
             var scope = "openid profile email roles SampleWebAPI";
 
