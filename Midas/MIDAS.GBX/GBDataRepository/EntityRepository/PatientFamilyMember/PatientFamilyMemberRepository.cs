@@ -80,7 +80,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
-            var acc = _context.PatientFamilyMembers.Include("Patient2").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientFamilyMember>();
+            var acc = _context.PatientFamilyMembers.Include("Patient").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientFamilyMember>();
 
             if (acc == null)
             {

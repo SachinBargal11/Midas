@@ -374,7 +374,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             string path = string.Empty;
             string pdfText = GetTemplateDocument(Constants.ConsentType + "_" + companyid);
             var acc = _context.Companies.Where(p => p.id == companyid).FirstOrDefault();
-            var cases = _context.Cases.Include("Patient2").Include("Patient2.User").Where(x => x.Id == caseid).FirstOrDefault();
+            var cases = _context.Cases.Include("Patient").Include("Patient.User").Where(x => x.Id == caseid).FirstOrDefault();
 
             if (acc != null)
             {
