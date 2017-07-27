@@ -593,7 +593,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.User userBO = (BO.User)(object)entity;
 
             string Pass = userBO.Password;
-            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName
+                                                && (x.IsDeleted.HasValue == false || (x.IsDeleted.HasValue == true && x.IsDeleted.Value == false))).FirstOrDefault();
             if(data_==null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
