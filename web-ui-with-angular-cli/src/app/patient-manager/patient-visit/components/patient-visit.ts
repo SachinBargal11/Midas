@@ -130,6 +130,7 @@ export class PatientVisitComponent implements OnInit {
     visitId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    doctorId: number = this.sessionStore.session.user.id;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -224,9 +225,17 @@ export class PatientVisitComponent implements OnInit {
         };
 
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.locationsStore.getLocations();
+            if (!this.sessionStore.isOnlyDoctorRole()) {
+                this.locationsStore.getLocations();
+            } else {
+                this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+            }
         });
-        this.locationsStore.getLocations();
+        if (!this.sessionStore.isOnlyDoctorRole()) {
+            this.locationsStore.getLocations();
+        } else {
+            this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+        }
         this._patientsStore.getPatientsWithOpenCases();
     }
 
@@ -861,7 +870,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = true;
     }
-    
+
     saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
