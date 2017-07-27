@@ -48,7 +48,7 @@ h6 {
 
 .side-menu {
     &.side-menu-compact {
-        padding-top: 50px;
+        padding-top: 60px;
     }
 }
 
@@ -60,6 +60,9 @@ body {
                 font-size: 1em;
             }
         }
+    }
+    .ui-dialog-footer {
+        padding: 0px;
     }
     .ui-widget-header {
         padding: 0;
