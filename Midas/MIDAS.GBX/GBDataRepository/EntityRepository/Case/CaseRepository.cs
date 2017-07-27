@@ -693,7 +693,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
-                    caseDB.ClaimFileNumber = IsEditMode == true && caseBO.ClaimFileNumber.HasValue == false ? caseDB.ClaimFileNumber : caseBO.ClaimFileNumber.Value;
+                    caseDB.ClaimFileNumber = IsEditMode == true && caseBO.ClaimFileNumber.HasValue == false ? caseDB.ClaimFileNumber : caseBO.ClaimFileNumber;
                     caseDB.CreateByUserID = IsEditMode == true && caseBO.CreateByUserID == 0 ? caseDB.CreateByUserID : caseBO.CreateByUserID;
                     caseDB.UpdateByUserID = IsEditMode == true && caseBO.UpdateByUserID == 0 ? caseDB.UpdateByUserID : caseBO.UpdateByUserID;
                     //if (!string.IsNullOrEmpty(caseBO.caseSource))
