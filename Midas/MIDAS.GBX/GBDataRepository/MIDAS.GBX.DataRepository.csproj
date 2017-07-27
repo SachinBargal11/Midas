@@ -205,7 +205,7 @@
     <Compile Include="EntityRepository\PatientVisitEvent\PatientVisitEventRepository.cs" />
     <Compile Include="EntityRepository\PatientVisit\PatientVisit2Repository.cs" />
     <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
-    <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
+    <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCodeCompanyMapping\ProcedureCodeCompanyMappingRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCode\ProcedureCodeRepository.cs" />
     <Compile Include="EntityRepository\Referral\Referral2Repository.cs" />
@@ -389,7 +389,7 @@
     <Compile Include="Model\PasswordToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Patient2.cs">
+    <Compile Include="Model\Patient.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientAccidentInfo.cs">

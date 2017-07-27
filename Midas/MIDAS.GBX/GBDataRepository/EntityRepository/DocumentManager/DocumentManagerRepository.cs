@@ -155,7 +155,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             break;
                         case EN.Constants.PatientType:
                             path = documentPath[0].Replace("cmp/", "")
-                                                .Replace("patient", "patient" + _context.Patient2.Where(ptid => ptid.Id == uploadInfo.ObjectId).FirstOrDefault());
+                                                .Replace("patient", "patient" + _context.Patients.Where(ptid => ptid.Id == uploadInfo.ObjectId).FirstOrDefault());
                             break;
                     }
                 }

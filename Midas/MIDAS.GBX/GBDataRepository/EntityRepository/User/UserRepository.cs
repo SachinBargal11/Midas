@@ -506,7 +506,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetIsExistingUser by UserName or SSN
         public override Object GetIsExistingUser(string User, string SSN)
         {
-            var ssn = _context.Patient2.Where(p => p.SSN == SSN
+            var ssn = _context.Patients.Where(p => p.SSN == SSN
                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                          .ToList()
                                                          .Select(p => p.Id);
@@ -558,7 +558,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                            //IsDoctor = u.UserType == 4 ? true : false,
                            IsDoctor = _context.Doctors.Any(p => p.Id == u.id
                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
-                           IsPatient = _context.Patient2.Any(p => p.Id == u.id
+                           IsPatient = _context.Patients.Any(p => p.Id == u.id
                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
                            Message = "User already exist.",
                            User = new { u.id, u.FirstName, u.MiddleName, u.LastName, u.UserName }

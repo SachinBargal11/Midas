@@ -81,20 +81,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
                 patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;               
 
-                if (patientVisit2.Patient2 != null)
+                if (patientVisit2.Patient != null)
                 {
-                    BO.Patient2 Patient2BO = new BO.Patient2();
-                    using (Patient2Repository patient2Repo = new Patient2Repository(_context))
+                    BO.Patient PatientBO = new BO.Patient();
+                    using (PatientRepository patientRepo = new PatientRepository(_context))
                     {
-                        Patient2BO = patient2Repo.Convert<BO.Patient2, Patient2>(patientVisit2.Patient2);
-                        patientVisit2BO.Patient2 = Patient2BO;
+                        PatientBO = patientRepo.Convert<BO.Patient, Patient>(patientVisit2.Patient);
+                        patientVisit2BO.Patient = PatientBO;
 
-                        if (patientVisit2.Patient2.PatientInsuranceInfoes != null && patientVisit2.Patient2.PatientInsuranceInfoes.Count > 0)
+                        if (patientVisit2.Patient.PatientInsuranceInfoes != null && patientVisit2.Patient.PatientInsuranceInfoes.Count > 0)
                         {
                             List<BO.PatientInsuranceInfo> PatientInsuranceInfoBOList = new List<BO.PatientInsuranceInfo>();
                             using (PatientInsuranceInfoRepository patientInsuranceInfoRepo = new PatientInsuranceInfoRepository(_context))
                             {
-                                foreach (PatientInsuranceInfo eachPatientInsuranceInfo in patientVisit2.Patient2.PatientInsuranceInfoes)
+                                foreach (PatientInsuranceInfo eachPatientInsuranceInfo in patientVisit2.Patient.PatientInsuranceInfoes)
                                 {
                                     if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
                                     {
@@ -102,7 +102,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     }
                                 }
 
-                                patientVisit2BO.Patient2.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
+                                patientVisit2BO.Patient.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
                             }
                         }
                     }
@@ -371,12 +371,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     mpatientVisits.DoctorLastName = patientVisit2.Doctor.User.LastName;
                 }
             }
-            if (patientVisit2.Patient2 != null)
+            if (patientVisit2.Patient != null)
             {
-                if (patientVisit2.Patient2.IsDeleted.HasValue == false || (patientVisit2.Patient2.IsDeleted.HasValue == true && patientVisit2.Patient2.IsDeleted.Value == false))
+                if (patientVisit2.Patient.IsDeleted.HasValue == false || (patientVisit2.Patient.IsDeleted.HasValue == true && patientVisit2.Patient.IsDeleted.Value == false))
                 {
-                    mpatientVisits.PatientFirstName = patientVisit2.Patient2.User.FirstName;
-                    mpatientVisits.PatientLastName = patientVisit2.Patient2.User.LastName;
+                    mpatientVisits.PatientFirstName = patientVisit2.Patient.User.FirstName;
+                    mpatientVisits.PatientLastName = patientVisit2.Patient.User.LastName;
                 }
             }
             if (patientVisit2.CalendarEvent != null)
@@ -1007,7 +1007,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (PatientVisit2DB.PatientId.HasValue == true && PatientVisit2DB.CaseId.HasValue == true && PatientVisit2DB.AncillaryProviderId.HasValue == true)
                     {
-                        using (Patient2Repository patientRepo = new Patient2Repository(_context))
+                        using (PatientRepository patientRepo = new PatientRepository(_context))
                         {
                             patientRepo.AssociatePatientWithAncillaryCompany(PatientVisit2DB.PatientId.Value, PatientVisit2DB.CaseId.Value, PatientVisit2BO.AncillaryProviderId.Value, PatientVisit2BO.AddedByCompanyId);
                         }
@@ -1134,10 +1134,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
 
-                    Patient2 patient = null;
+                    Patient patient = null;
                     if (PatientVisit2DB.PatientId.HasValue == true)
                     {
-                        patient = _context.Patient2.Where(p => p.Id == PatientVisit2DB.PatientId
+                        patient = _context.Patients.Where(p => p.Id == PatientVisit2DB.PatientId
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                    .Include("User")
                                                    .Include("User.ContactInfo")
@@ -1976,7 +1976,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                        .Where(p => p.DoctorId == DoctorId
                                                                                 && ((p.PatientId.HasValue == true) && (userId.Contains(p.PatientId.Value)))
                                                                                 && p.EventStart >= FromDate && p.EventStart < ToDate
-                                                                                && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
+                                                                                && (p.Patient.IsDeleted.HasValue == false || (p.Patient.IsDeleted.HasValue == true && p.Patient.IsDeleted.Value == false))
                                                                                 && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                 .ToList<PatientVisit2>();

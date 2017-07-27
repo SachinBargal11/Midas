@@ -102,7 +102,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Save<T>(T entity)
         {
             BO.PatientFamilyMember patientfamilymemberBO = (BO.PatientFamilyMember)(object)entity;
-            BO.Patient2 patient2BO = new BO.Patient2();
+            BO.Patient patientBO = new BO.Patient();
             BO.Common.Gender genderBO = new BO.Common.Gender();
             BO.Relation relationBO = new BO.Relation();
 
@@ -113,7 +113,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 bool IsEditMode = false;
                 IsEditMode = (patientfamilymemberBO != null && patientfamilymemberBO.ID > 0) ? true : false;
 
-                Patient2 patient2DB = new Patient2();
+                Patient patient2DB = new Patient();
                 Gender genderDB = new Gender();
                 Relation relationDB = new Relation();                
 

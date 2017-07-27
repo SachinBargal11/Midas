@@ -71,8 +71,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("leaveEndDate")]
         public DateTime? LeaveEndDate { get; set; }
 
-        [JsonProperty("patient2")]
-        public Patient2 Patient2 { get; set; }
+        [JsonProperty("patient")]
+        public Patient Patient { get; set; }
 
         [JsonProperty("case")]
         public Case Case { get; set; }

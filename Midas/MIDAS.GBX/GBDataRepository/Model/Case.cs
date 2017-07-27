@@ -47,7 +47,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual CaseStatu CaseStatu { get; set; }
         public virtual CaseType CaseType { get; set; }
         public virtual Location Location { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
+        public virtual Patient Patient { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }

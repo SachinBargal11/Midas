@@ -55,7 +55,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Company Company { get; set; }
         public virtual Doctor Doctor { get; set; }
         public virtual Location Location { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
+        public virtual Patient Patient { get; set; }
+        public virtual Patient Patient1 { get; set; }
         public virtual Room Room { get; set; }
         public virtual Specialty Specialty { get; set; }
         public virtual VisitType VisitType1 { get; set; }

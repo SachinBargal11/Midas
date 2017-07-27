@@ -129,9 +129,9 @@ namespace MIDAS.GBX
             {
                 repo = new GenderRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Patient2))
+            else if (typeof(T) == typeof(BO.Patient))
             {
-                repo = new Patient2Repository(context);
+                repo = new PatientRepository(context);
             }
             else if (typeof(T) == typeof(BO.Case))
             {
@@ -235,7 +235,7 @@ namespace MIDAS.GBX
             }
             else if (typeof(T) == typeof(BO.AddPatient))
             {
-                repo = new Patient2Repository(context);
+                repo = new PatientRepository(context);
             }
             else if (typeof(T) == typeof(BO.DiagnosisType))
             {

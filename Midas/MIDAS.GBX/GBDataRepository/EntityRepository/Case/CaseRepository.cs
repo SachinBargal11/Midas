@@ -59,13 +59,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
-            if (cases.Patient2 != null)
+            if (cases.Patient != null)
             {
-                BO.Patient2 boPatient2 = new BO.Patient2();
-                using (Patient2Repository cmp = new Patient2Repository(_context))
+                BO.Patient boPatient = new BO.Patient();
+                using (PatientRepository cmp = new PatientRepository(_context))
                 {
-                    boPatient2 = cmp.Convert<BO.Patient2, Patient2>(cases.Patient2);
-                    caseBO.Patient2 = boPatient2;
+                    boPatient = cmp.Convert<BO.Patient, Patient>(cases.Patient);
+                    caseBO.Patient = boPatient;
                 }
             }
             
@@ -242,29 +242,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Entity Conversion ConvertToCaseWithUserAndPatient
         public T ConvertToCaseWithUserAndPatient<T, U>(U entity, int CompanyId)
         {
-            Patient2 patient2 = entity as Patient2;
+            Patient patient = entity as Patient;
 
-            if (patient2 == null)
+            if (patient == null)
                 return default(T);
 
             List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
 
-            if (patient2.User != null && patient2.Cases != null)
+            if (patient.User != null && patient.Cases != null)
             {
-                foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
+                foreach (var eachCase in GetByPatientId(patient.Id) as List<BO.Case>)
                 {
                     if (eachCase.CaseCompanyMappings.Any(p => p.Company != null && p.Company.ID == CompanyId) == true
                         || (eachCase.Referrals != null && eachCase.Referrals.Any(p => p.ToCompanyId == CompanyId) == true))
                     {
                         BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
 
-                        caseWithUserAndPatient.ID = patient2.Id;
+                        caseWithUserAndPatient.ID = patient.Id;
 
-                        caseWithUserAndPatient.UserId = patient2.User.id;
-                        caseWithUserAndPatient.UserName = patient2.User.UserName;
-                        caseWithUserAndPatient.FirstName = patient2.User.FirstName;
-                        caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
-                        caseWithUserAndPatient.LastName = patient2.User.LastName;
+                        caseWithUserAndPatient.UserId = patient.User.id;
+                        caseWithUserAndPatient.UserName = patient.User.UserName;
+                        caseWithUserAndPatient.FirstName = patient.User.FirstName;
+                        caseWithUserAndPatient.MiddleName = patient.User.MiddleName;
+                        caseWithUserAndPatient.LastName = patient.User.LastName;
 
                         caseWithUserAndPatient.CaseId = eachCase.ID;
                         caseWithUserAndPatient.PatientId = eachCase.PatientId;
@@ -364,25 +364,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Entity Conversion ConvertToCaseWithUserAndPatient
         public T ConvertToCaseWithPatientName<T, U>(U entity, int CompanyId)
         {
-            Patient2 patient2 = entity as Patient2;
+            Patient patient = entity as Patient;
 
-            if (patient2 == null)
+            if (patient == null)
                 return default(T);
 
             List<BO.CaseWithPatientName> lstCaseWithPatient = new List<BO.CaseWithPatientName>();
 
-            if (patient2.User != null && patient2.Cases != null)
+            if (patient.User != null && patient.Cases != null)
             {
-                foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
+                foreach (var eachCase in GetByPatientId(patient.Id) as List<BO.Case>)
                 {
                     if (eachCase.CaseCompanyMappings.Any(p => p.Company != null && p.Company.ID == CompanyId) == true
                         || (eachCase.Referrals != null && eachCase.Referrals.Any(p => p.ToCompanyId == CompanyId) == true))
                     {
                         BO.CaseWithPatientName caseWithPatient = new BO.CaseWithPatientName();
                       
-                        caseWithPatient.FirstName = patient2.User.FirstName;
-                        caseWithPatient.MiddleName = patient2.User.MiddleName;
-                        caseWithPatient.LastName = patient2.User.LastName;
+                        caseWithPatient.FirstName = patient.User.FirstName;
+                        caseWithPatient.MiddleName = patient.User.MiddleName;
+                        caseWithPatient.LastName = patient.User.LastName;
 
                         caseWithPatient.CaseId = eachCase.ID;
                         
@@ -620,7 +620,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             Case caseDB = new Case();
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                Patient2 patient2DB = new Patient2();
+                Patient patientDB = new Patient();
                 Location locationDB = new Location();
 
                 bool IsEditMode = false;
@@ -1236,10 +1236,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                   .Select(p => p.UserID)
                                                   .Distinct<int>();
 
-            var AccList = _context.Patient2.Include("User")
+            var AccList = _context.Patients.Include("User")
                                            .Where(p => (UserList1.Contains(p.Id))
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                           .ToList<Patient2>();
+                                           .ToList<Patient>();
 
             var ReferralList = _context.Referral2.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
@@ -1248,7 +1248,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .ToList<Referral2>();
             ReferralList.RemoveAll(referral => referral.Case.CaseStatusId == 2);
 
-            var UserList2 = ReferralList.Select(p => p.Case.Patient2).ToList();
+            var UserList2 = ReferralList.Select(p => p.Case.Patient).ToList();
 
             if (AccList == null && UserList2 == null)
             {
@@ -1257,9 +1257,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-                foreach (Patient2 eachPatient in AccList.Union(UserList2).Distinct())
+                foreach (Patient eachPatient in AccList.Union(UserList2).Distinct())
                 {
-                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient>(eachPatient, CompanyId));
                 }
                 return lstCaseWithUserAndPatient;
             }
@@ -1378,10 +1378,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                   .Select(p => p.UserID)
                                                   .Distinct<int>();
 
-            var AccList = _context.Patient2.Include("User")
+            var AccList = _context.Patients.Include("User")
                                            .Where(p => (UserList1.Contains(p.Id))
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                           .ToList<Patient2>();
+                                           .ToList<Patient>();
 
             var ReferralList = _context.Referral2.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
@@ -1390,7 +1390,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .ToList<Referral2>();
             ReferralList.RemoveAll(referral => referral.Case.CaseStatusId == 2);
 
-            var UserList2 = ReferralList.Select(p => p.Case.Patient2).ToList();
+            var UserList2 = ReferralList.Select(p => p.Case.Patient).ToList();
 
             if (AccList == null && UserList2 == null)
             {
@@ -1399,9 +1399,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 List<BO.CaseWithPatientName> lstCaseWithPatient = new List<BO.CaseWithPatientName>();
-                foreach (Patient2 eachPatient in AccList.Union(UserList2).Distinct())
+                foreach (Patient eachPatient in AccList.Union(UserList2).Distinct())
                 {
-                    lstCaseWithPatient.AddRange(ConvertToCaseWithPatientName<List<BO.CaseWithPatientName>, Patient2>(eachPatient, CompanyId));
+                    lstCaseWithPatient.AddRange(ConvertToCaseWithPatientName<List<BO.CaseWithPatientName>, Patient>(eachPatient, CompanyId));
                 }
                 return lstCaseWithPatient;
             }
@@ -1440,8 +1440,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
-            var patientList1 = _context.Patient2.Include("User").Include("Cases")
-                                       .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
+            var patientList1 = _context.Patients.Include("User").Include("Cases")
+                                       .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient>();
 
 
             var referralList = _context.Referral2.Include("Case")
@@ -1456,7 +1456,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .ToList<Referral2>();
 
-            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
+            var patientList2 = referralList.Select(p => p.Case.Patient).ToList();
 
             if (patientList1 == null)
             {
@@ -1465,9 +1465,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-                foreach (Patient2 eachPatient in patientList1.Union(patientList2).Distinct())
+                foreach (Patient eachPatient in patientList1.Union(patientList2).Distinct())
                 {
-                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient>(eachPatient, CompanyId));
                 }
 
                 return lstCaseWithUserAndPatient;

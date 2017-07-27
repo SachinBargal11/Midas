@@ -382,7 +382,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 {
                     pdfText = pdfText.Replace("{{CompanyName}}", acc.Name);
                     if (cases != null)
-                        pdfText = pdfText.Replace("{{PatientName}}", cases.Patient2.User.FirstName + " " + cases.Patient2.User.LastName);
+                        pdfText = pdfText.Replace("{{PatientName}}", cases.Patient.User.FirstName + " " + cases.Patient.User.LastName);
 
                     if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\" + "blank.png");
                     else pdfText = pdfText.Replace("{{Signature}}", signpath);

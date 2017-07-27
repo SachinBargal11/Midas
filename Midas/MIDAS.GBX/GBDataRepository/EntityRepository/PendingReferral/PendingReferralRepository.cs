@@ -87,46 +87,46 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                 boCase.CaseStatusId = pendingReferral.PatientVisit2.Case.CaseStatusId;
                                 //boCase.AttorneyId = pendingReferral.PatientVisit2.Case.AttorneyId;
 
-                                if (pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient2.IsDeleted.Value == false))
+                                if (pendingReferral.PatientVisit2.Case.Patient.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient.IsDeleted.Value == false))
                                  {
-                                   BO.Patient2 boPatient = new BO.Patient2();
+                                   BO.Patient boPatient = new BO.Patient();
 
-                                    boPatient.ID = pendingReferral.PatientVisit2.Case.Patient2.Id;
-                                    boPatient.SSN = pendingReferral.PatientVisit2.Case.Patient2.SSN;
-                                    boPatient.Weight = pendingReferral.PatientVisit2.Case.Patient2.Weight;
-                                    boPatient.Height = pendingReferral.PatientVisit2.Case.Patient2.Height;
-                                    boPatient.MaritalStatusId = pendingReferral.PatientVisit2.Case.Patient2.MaritalStatusId;
-                                    boPatient.DateOfFirstTreatment = pendingReferral.PatientVisit2.Case.Patient2.DateOfFirstTreatment;
+                                    boPatient.ID = pendingReferral.PatientVisit2.Case.Patient.Id;
+                                    boPatient.SSN = pendingReferral.PatientVisit2.Case.Patient.SSN;
+                                    boPatient.Weight = pendingReferral.PatientVisit2.Case.Patient.Weight;
+                                    boPatient.Height = pendingReferral.PatientVisit2.Case.Patient.Height;
+                                    boPatient.MaritalStatusId = pendingReferral.PatientVisit2.Case.Patient.MaritalStatusId;
+                                    boPatient.DateOfFirstTreatment = pendingReferral.PatientVisit2.Case.Patient.DateOfFirstTreatment;
 
-                                   if (pendingReferral.PatientVisit2.Case.Patient2.User.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient2.User.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient2.User.IsDeleted.Value == false))
+                                   if (pendingReferral.PatientVisit2.Case.Patient.User.IsDeleted.HasValue == false || (pendingReferral.PatientVisit2.Case.Patient.User.IsDeleted.HasValue == true && pendingReferral.PatientVisit2.Case.Patient.User.IsDeleted.Value == false))
                                    {
                                     BO.User boUser = new BO.User();
-                                    boUser.UserName = pendingReferral.PatientVisit2.Case.Patient2.User.UserName;
-                                    boUser.ID = pendingReferral.PatientVisit2.Case.Patient2.User.id;
-                                    boUser.FirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
-                                    boUser.MiddleName = pendingReferral.PatientVisit2.Case.Patient2.User.MiddleName;
-                                    boUser.LastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
-                                    boUser.ImageLink = pendingReferral.PatientVisit2.Case.Patient2.User.ImageLink;
-                                    boUser.UserType = (BO.GBEnums.UserType)pendingReferral.PatientVisit2.Case.Patient2.User.UserType;
+                                    boUser.UserName = pendingReferral.PatientVisit2.Case.Patient.User.UserName;
+                                    boUser.ID = pendingReferral.PatientVisit2.Case.Patient.User.id;
+                                    boUser.FirstName = pendingReferral.PatientVisit2.Case.Patient.User.FirstName;
+                                    boUser.MiddleName = pendingReferral.PatientVisit2.Case.Patient.User.MiddleName;
+                                    boUser.LastName = pendingReferral.PatientVisit2.Case.Patient.User.LastName;
+                                    boUser.ImageLink = pendingReferral.PatientVisit2.Case.Patient.User.ImageLink;
+                                    boUser.UserType = (BO.GBEnums.UserType)pendingReferral.PatientVisit2.Case.Patient.User.UserType;
 
-                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.Gender.HasValue == true)
-                                        boUser.Gender = (BO.GBEnums.Gender)pendingReferral.PatientVisit2.Case.Patient2.User.Gender;
+                                    if (pendingReferral.PatientVisit2.Case.Patient.User.Gender.HasValue == true)
+                                        boUser.Gender = (BO.GBEnums.Gender)pendingReferral.PatientVisit2.Case.Patient.User.Gender;
 
-                                    boUser.CreateByUserID = pendingReferral.PatientVisit2.Case.Patient2.User.CreateByUserID;
+                                    boUser.CreateByUserID = pendingReferral.PatientVisit2.Case.Patient.User.CreateByUserID;
 
-                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthEmailEnabled.HasValue)
-                                        boUser.C2FactAuthEmailEnabled = pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthEmailEnabled.Value;
-                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthSMSEnabled.HasValue)
-                                        boUser.C2FactAuthSMSEnabled = pendingReferral.PatientVisit2.Case.Patient2.User.C2FactAuthSMSEnabled.Value;
-                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.HasValue)
-                                        boUser.DateOfBirth = pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.Value;
-                                    if (pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.HasValue)
-                                        boUser.DateOfBirth = pendingReferral.PatientVisit2.Case.Patient2.User.DateOfBirth.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient.User.C2FactAuthEmailEnabled.HasValue)
+                                        boUser.C2FactAuthEmailEnabled = pendingReferral.PatientVisit2.Case.Patient.User.C2FactAuthEmailEnabled.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient.User.C2FactAuthSMSEnabled.HasValue)
+                                        boUser.C2FactAuthSMSEnabled = pendingReferral.PatientVisit2.Case.Patient.User.C2FactAuthSMSEnabled.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient.User.DateOfBirth.HasValue)
+                                        boUser.DateOfBirth = pendingReferral.PatientVisit2.Case.Patient.User.DateOfBirth.Value;
+                                    if (pendingReferral.PatientVisit2.Case.Patient.User.DateOfBirth.HasValue)
+                                        boUser.DateOfBirth = pendingReferral.PatientVisit2.Case.Patient.User.DateOfBirth.Value;
 
                                     boPatient.User = boUser;
                                 }
 
-                                    boCase.Patient2 = boPatient;
+                                    boCase.Patient = boPatient;
                                 }
 
                             
@@ -322,9 +322,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                         PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
                         PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
-                        PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
-                        PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
-                        PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+                        PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient.User.id;
+                        PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient.User.FirstName;
+                        PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient.User.LastName;
 
                         BO.PendingReferralProcedureCode pendingReferralProcedureCode = new BO.PendingReferralProcedureCode();
 
@@ -424,9 +424,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 PendingReferralList.CaseId = pendingReferral.PatientVisit2.Case.Id;
                 PendingReferralList.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
-                PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
-                PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
-                PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+                PendingReferralList.UserId = pendingReferral.PatientVisit2.Case.Patient.User.id;
+                PendingReferralList.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient.User.FirstName;
+                PendingReferralList.PatientLastName = pendingReferral.PatientVisit2.Case.Patient.User.LastName;
 
                 PendingReferralListBO.Add(PendingReferralList);
             }
@@ -512,9 +512,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     PendingReferralListBO.CaseId = pendingReferral.PatientVisit2.Case.Id;
                     PendingReferralListBO.PatientId = pendingReferral.PatientVisit2.PatientId.HasValue == true ? pendingReferral.PatientVisit2.PatientId.Value : 0;
-                    PendingReferralListBO.UserId = pendingReferral.PatientVisit2.Case.Patient2.User.id;
-                    PendingReferralListBO.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient2.User.FirstName;
-                    PendingReferralListBO.PatientLastName = pendingReferral.PatientVisit2.Case.Patient2.User.LastName;
+                    PendingReferralListBO.UserId = pendingReferral.PatientVisit2.Case.Patient.User.id;
+                    PendingReferralListBO.PatientFirstName = pendingReferral.PatientVisit2.Case.Patient.User.FirstName;
+                    PendingReferralListBO.PatientLastName = pendingReferral.PatientVisit2.Case.Patient.User.LastName;
 
                     PendingReferralListBO.PendingReferralProcedureCodes = new List<BO.PendingReferralProcedureCode>();
                     if (pendingReferral.PendingReferralProcedureCodes != null)
@@ -573,7 +573,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Get(int id)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")                                              
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")                                             
@@ -596,7 +596,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByCompanyId(int CompanyId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -626,7 +626,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetPendingReferralByCompanyId2(int CompanyId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -656,7 +656,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetPendingReferralByCompanyId(int CompanyId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -686,7 +686,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByDoctorId(int DoctorId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -716,7 +716,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetBySpecialityId(int specialityId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -745,7 +745,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByRoomId(int RoomId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -774,7 +774,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByPatientVisitId(int patientVisitId)
         {
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -802,7 +802,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object DismissPendingReferral(int PendingReferralId, int userId)
         {
             PendingReferral pendingReferral = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")
@@ -934,7 +934,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         //    _context.SaveChanges();
 
         //    pendingReferralDB = _context.PendingReferrals.Include("PatientVisit2")
-        //                                      .Include("PatientVisit2.Case.Patient2.User")
+        //                                      .Include("PatientVisit2.Case.Patient.User")
         //                                      .Include("Doctor")
         //                                      .Include("Doctor.User")
         //                                      .Include("Specialty")
@@ -1069,7 +1069,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
             var acc = _context.PendingReferrals.Include("PatientVisit2")
-                                              .Include("PatientVisit2.Case.Patient2.User")
+                                              .Include("PatientVisit2.Case.Patient.User")
                                               .Include("Doctor")
                                               .Include("Doctor.User")
                                               .Include("Specialty")

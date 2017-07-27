@@ -12,10 +12,10 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Patient2
+    public partial class Patient
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Patient2()
+        public Patient()
         {
             this.Cases = new HashSet<Case>();
             this.PatientDocuments = new HashSet<PatientDocument>();
@@ -23,6 +23,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PatientFamilyMembers = new HashSet<PatientFamilyMember>();
             this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
             this.PatientVisit2 = new HashSet<PatientVisit2>();
+            this.PatientVisit21 = new HashSet<PatientVisit2>();
         }
     
         public int Id { get; set; }
@@ -51,5 +52,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisit2> PatientVisit21 { get; set; }
     }
 }
