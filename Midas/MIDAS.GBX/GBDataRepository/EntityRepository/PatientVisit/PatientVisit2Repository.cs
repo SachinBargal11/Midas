@@ -1937,7 +1937,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         eachItem.CaseId,
                         eachItem.PatientName,
-                        VisitDate = p.Period.StartTime.AddMinutes(intTimeZone).Value
+                        //VisitDate = p.Period.StartTime.AddMinutes(intTimeZone).Value
+                        VisitDate = p.Period.StartTime.Value
                     }).ToList().Distinct().OrderBy(p => p.VisitDate).ToList();
 
                     PatientVisitCompleted.AddRange(Occurrence.Where(p => (p.VisitDate >= FromDate && p.VisitDate < ToDate) && p.VisitDate >= currentDate));
@@ -1949,7 +1950,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No visits found for these Date range.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            return PatientVisitCompleted.OrderBy(p => p.VisitDate);
+            return PatientVisitCompleted.Distinct().OrderBy(p => p.VisitDate);
         }
         #endregion
 
