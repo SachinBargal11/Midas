@@ -122,7 +122,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorBO.WcbRatingCode = doctor.WcbRatingCode;
                 doctorBO.NPI = doctor.NPI;
                 doctorBO.Title = doctor.Title;
-                doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxType;
+                doctorBO.TaxType = (BO.GBEnums.TaxType)doctor.TaxTypeId;
 
                 if (doctor.IsDeleted.HasValue)
                     doctorBO.IsDeleted = doctor.IsDeleted.Value;

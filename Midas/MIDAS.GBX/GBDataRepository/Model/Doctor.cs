@@ -20,7 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.DoctorCaseConsentApprovals = new HashSet<DoctorCaseConsentApproval>();
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
             this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
-            this.PatientVisit2 = new HashSet<PatientVisit2>();
+            this.PatientVisits = new HashSet<PatientVisit>();
             this.PendingReferrals = new HashSet<PendingReferral>();
             this.Referral2 = new HashSet<Referral2>();
             this.Referral21 = new HashSet<Referral2>();
@@ -31,7 +31,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public string WCBAuthorization { get; set; }
         public string WcbRatingCode { get; set; }
         public string NPI { get; set; }
-        public Nullable<byte> TaxType { get; set; }
         public string Title { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
@@ -39,7 +38,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public bool IsCalendarPublic { get; set; }
+        public Nullable<byte> TaxTypeId { get; set; }
     
+        public virtual DoctorTaxType DoctorTaxType { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
@@ -48,7 +49,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
+        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PendingReferral> PendingReferrals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

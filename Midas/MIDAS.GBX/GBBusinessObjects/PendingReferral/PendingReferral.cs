@@ -38,7 +38,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int? DismissedBy { get; set; }
 
         [JsonProperty("patientVisit")]
-        public PatientVisit2 PatientVisit2 { get; set; }
+        public PatientVisit PatientVisit { get; set; }
 
         [JsonProperty("doctor")]
         public Doctor Doctor { get; set; }

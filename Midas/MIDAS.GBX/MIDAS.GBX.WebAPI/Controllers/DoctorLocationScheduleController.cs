@@ -55,6 +55,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getByDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            return requestHandler.GetByDoctorAndCompanyId(Request, doctorId, companyId);
+        }
+
+
+        [HttpGet]
         [Route("GetByLocationAndDoctor/{locationId}/{doctorId}")]
         public HttpResponseMessage GetByLocationAndDoctor(int locationId,int doctorId)
         {

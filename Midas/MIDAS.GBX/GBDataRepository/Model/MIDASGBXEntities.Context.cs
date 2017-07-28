@@ -43,20 +43,25 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
+        public virtual DbSet<CompanyICDTypeCode> CompanyICDTypeCodes { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual DbSet<CompanyStatusType> CompanyStatusTypes { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
+        public virtual DbSet<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
+        public virtual DbSet<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
+        public virtual DbSet<DoctorTaxType> DoctorTaxTypes { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
+        public virtual DbSet<ICDTypeCode> ICDTypeCodes { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
@@ -70,14 +75,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<NotifyContact> NotifyContacts { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
-        public virtual DbSet<Patient2> Patient2 { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
         public virtual DbSet<PatientDocument> PatientDocuments { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         public virtual DbSet<PatientType> PatientTypes { get; set; }
-        public virtual DbSet<PatientVisit2> PatientVisit2 { get; set; }
+        public virtual DbSet<PatientVisit> PatientVisits { get; set; }
         public virtual DbSet<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
         public virtual DbSet<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
@@ -112,6 +117,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
+        public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)

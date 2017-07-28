@@ -22,13 +22,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
     public class PatientController : ApiController
     {
         //private IRequestHandler<Patient> requestHandler;
-        private IRequestHandler<Patient2> requestHandlerPatient2;
+        private IRequestHandler<Patient> requestHandlerPatient;
         private IRequestHandler<AddPatient> requestHandlerAddPatient;
 
         public PatientController()
         {
             //requestHandler = new GbApiRequestHandler<Patient>();
-            requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
+            requestHandlerPatient = new GbApiRequestHandler<Patient>();
             requestHandlerAddPatient = new GbApiRequestHandler<AddPatient>();
         }
 
@@ -92,9 +92,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("getAllPatient")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetAllPatient([FromBody]Patient2 data)
+        public HttpResponseMessage GetAllPatient([FromBody]Patient data)
         {
-            return requestHandlerPatient2.GetGbObjects(Request, data);
+            return requestHandlerPatient.GetGbObjects(Request, data);
         }
 
         [HttpGet]
@@ -102,7 +102,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
         {
-            return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
+            return requestHandlerPatient.GetGbObjects(Request, CompanyId);
         }
 
         [HttpGet]
@@ -110,7 +110,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithOpenCases(int CompanyId)
         {
-            return requestHandlerPatient2.GetGbObjects2(Request, CompanyId);
+            return requestHandlerPatient.GetGbObjects2(Request, CompanyId);
         }
 
         [HttpGet]
@@ -118,7 +118,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithCloseCases(int CompanyId)
         {
-            return requestHandlerPatient2.GetGbObjects4(Request, CompanyId);
+            return requestHandlerPatient.GetGbObjects4(Request, CompanyId);
         }
 
         [HttpGet]
@@ -126,7 +126,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
         {
-            return requestHandlerPatient2.GetGbObjects3(Request, LocationId);
+            return requestHandlerPatient.GetGbObjects3(Request, LocationId);
         }
 
         [HttpGet]
@@ -134,7 +134,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetPatientById2(int id)
         {
-            return requestHandlerPatient2.GetObject(Request, id);
+            return requestHandlerPatient.GetObject(Request, id);
         }
 
         [HttpGet]
@@ -142,16 +142,16 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyAndDoctorId(int companyId,int doctorId)
         {
-            return requestHandlerPatient2.GetGbObjects(Request, companyId, doctorId);
+            return requestHandlerPatient.GetGbObjects(Request, companyId, doctorId);
         }
         
 
         [HttpPost]
         [Route("savePatient")]
         //[AllowAnonymous]
-        public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
+        public HttpResponseMessage SavePatient2([FromBody]Patient patient)
         {
-            return requestHandlerPatient2.CreateGbObject(Request, patient2);
+            return requestHandlerPatient.CreateGbObject(Request, patient);
         }
 
 
@@ -168,28 +168,28 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            return requestHandlerPatient2.Delete(Request, id);
+            return requestHandlerPatient.Delete(Request, id);
         }
 
         [HttpGet]
         [Route("associatePatientWithAttorneyCompany/{PatientId}/{CaseId}/{AttorneyCompanyId}")]
         public HttpResponseMessage AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
         {
-            return requestHandlerPatient2.AssociatePatientWithAttorneyCompany(Request, PatientId, CaseId, AttorneyCompanyId);
+            return requestHandlerPatient.AssociatePatientWithAttorneyCompany(Request, PatientId, CaseId, AttorneyCompanyId);
         }
         
         [HttpGet]
         [Route("associatePatientWithCompany/{PatientId}/{CompanyId}")]
         public HttpResponseMessage AssociatePatientWithCompany(int PatientId, int CompanyId)
         {
-            return requestHandlerPatient2.AssociatePatientWithCompany(Request, PatientId, CompanyId);
+            return requestHandlerPatient.AssociatePatientWithCompany(Request, PatientId, CompanyId);
         }
 
         [HttpGet]
         [Route("addPatientProfileDocument/{PatientId}/{DocumentId}")]
         public HttpResponseMessage AddPatientProfileDocument(int PatientId, int DocumentId)
         {
-            return requestHandlerPatient2.AddPatientProfileDocument(Request, PatientId, DocumentId);
+            return requestHandlerPatient.AddPatientProfileDocument(Request, PatientId, DocumentId);
         }
 
         protected override void Dispose(bool disposing)
