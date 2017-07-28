@@ -37,7 +37,7 @@ namespace MIDAS.GBX.BusinessObjects
         public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
 
         [JsonProperty("referral")]
-        public List<Referral2> Referrals { get; set; }
+        public List<Referral> Referrals { get; set; }
 
         [JsonProperty("patientAccidentInfo")]
         public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
@@ -169,7 +169,7 @@ namespace MIDAS.GBX.BusinessObjects
         public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
 
         [JsonProperty("referral")]
-        public List<Referral2> Referrals { get; set; }
+        public List<Referral> Referrals { get; set; }
 
         [JsonProperty("patientAccidentInfo")]
         public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }

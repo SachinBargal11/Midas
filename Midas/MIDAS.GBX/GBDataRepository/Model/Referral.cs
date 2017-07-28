@@ -12,10 +12,10 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Referral2
+    public partial class Referral
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Referral2()
+        public Referral()
         {
             this.ReferralDocuments = new HashSet<ReferralDocument>();
             this.ReferralProcedureCodes = new HashSet<ReferralProcedureCode>();

@@ -40,8 +40,8 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PreferredMedicalProviders1 = new HashSet<PreferredMedicalProvider>();
             this.ProcedureCodes = new HashSet<ProcedureCode>();
             this.ProcedureCodeCompanyMappings = new HashSet<ProcedureCodeCompanyMapping>();
-            this.Referral2 = new HashSet<Referral2>();
-            this.Referral21 = new HashSet<Referral2>();
+            this.Referrals = new HashSet<Referral>();
+            this.Referrals1 = new HashSet<Referral>();
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
             this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
@@ -116,9 +116,9 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProcedureCodeCompanyMapping> ProcedureCodeCompanyMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Referral2> Referral2 { get; set; }
+        public virtual ICollection<Referral> Referrals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Referral2> Referral21 { get; set; }
+        public virtual ICollection<Referral> Referrals1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

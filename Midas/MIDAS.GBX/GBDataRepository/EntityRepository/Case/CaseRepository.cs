@@ -194,16 +194,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
             }
 
-            if (cases.Referral2 != null)
+            if (cases.Referrals != null)
             {
-                List<BO.Referral2> BOListReferral = new List<BO.Referral2>();
-                foreach (var eachRefrral in cases.Referral2)
+                List<BO.Referral> BOListReferral = new List<BO.Referral>();
+                foreach (var eachRefrral in cases.Referrals)
                 {
                     if (eachRefrral != null)
                     {
                         if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
                         {
-                            BO.Referral2 referralBO = new BO.Referral2();
+                            BO.Referral referralBO = new BO.Referral();
 
                             referralBO.ID = eachRefrral.Id;
                             referralBO.PendingReferralId = eachRefrral.PendingReferralId;
@@ -323,7 +323,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
 
 
-                        List<BO.Referral2> boReferral = new List<BO.Referral2>();
+                        List<BO.Referral> boReferral = new List<BO.Referral>();
                         foreach (var item in eachCase.Referrals)
                         {
                             if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
@@ -482,7 +482,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral2")
+                                    .Include("Referral")
                                     .Where(p => p.Id == id
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -510,7 +510,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral2")                                    
+                                    .Include("Referral")                                    
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -542,14 +542,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral2")
+                                    .Include("Referral")
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
 
             caseList1 = caseList1.Where(p => p.CaseCompanyMappings.Any(p2 => p2.CompanyId == CompanyId) == true).ToList();
 
-            var referralList = _context.Referral2.Include("Case")
+            var referralList = _context.Referrals.Include("Case")
                                                 .Include("Case.CompanyCaseConsentApprovals")
                                                 .Include("Case.CaseCompanyMappings")
                                                 .Include("Case.Patient.User")
@@ -557,7 +557,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 .Include("Case.Patient.User.AddressInfo")
                                                 .Include("Case.Patient.User.ContactInfo")
                                                 .Where(p => p.FromCompanyId == CompanyId && p.Case.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                .ToList<Referral2>();
+                                                .ToList<Referral>();
 
             var caseList2 = referralList.Select(p => p.Case).ToList();
 
@@ -589,7 +589,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral2")
+                                    .Include("Referral")
                                     .Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -764,7 +764,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("CompanyCaseConsentApprovals")
                                        .Include("CaseCompanyConsentDocuments")
                                        .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                       .Include("Referral2")                                     
+                                       .Include("Referral")                                     
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
 
                 try
@@ -1241,11 +1241,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                            .ToList<Patient>();
 
-            var ReferralList = _context.Referral2.Include("Case")
+            var ReferralList = _context.Referrals.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
                                                  .Include("Case.Patient.User")
                                                  .Where(p => p.ToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                 .ToList<Referral2>();
+                                                 .ToList<Referral>();
             ReferralList.RemoveAll(referral => referral.Case.CaseStatusId == 2);
 
             var UserList2 = ReferralList.Select(p => p.Case.Patient).ToList();
@@ -1383,11 +1383,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                            .ToList<Patient>();
 
-            var ReferralList = _context.Referral2.Include("Case")
+            var ReferralList = _context.Referrals.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
                                                  .Include("Case.Patient.User")
                                                  .Where(p => p.ToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                 .ToList<Referral2>();
+                                                 .ToList<Referral>();
             ReferralList.RemoveAll(referral => referral.Case.CaseStatusId == 2);
 
             var UserList2 = ReferralList.Select(p => p.Case.Patient).ToList();
@@ -1444,17 +1444,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient>();
 
 
-            var referralList = _context.Referral2.Include("Case")
+            var referralList = _context.Referrals.Include("Case")
                                                .Include("Case.CompanyCaseConsentApprovals")
                                                .Include("Case.Patient.User")
                                                .Include("Case.Patient.User.UserCompanies")
                                                .Include("Case.Patient.User.AddressInfo")
                                                .Include("Case.Patient.User.ContactInfo")
                                                .Include("Case.Patient.Cases")
-                                               .Include("Case.Patient.Cases.Referral2")
+                                               .Include("Case.Patient.Cases.Referral")
                                                .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                               .ToList<Referral2>();
+                                               .ToList<Referral>();
 
             var patientList2 = referralList.Select(p => p.Case.Patient).ToList();
 
@@ -1484,7 +1484,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        .Include("CompanyType1")
                                                        .ToList();
            
-            var company2 = _context.Referral2.Where(p => p.CaseId == caseId
+            var company2 = _context.Referrals.Where(p => p.CaseId == caseId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .Select(p => p.Company1)
                                              .Include("CompanyType1")
@@ -1554,7 +1554,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        });
             //.Include("CompanyType1");
 
-            var company2 = _context.Referral2.Where(p => openCases.Contains(p.CaseId)
+            var company2 = _context.Referrals.Where(p => openCases.Contains(p.CaseId)
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .Select(p => /*p.Company1*/new
                                              {

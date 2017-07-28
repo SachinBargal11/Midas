@@ -93,7 +93,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
         public virtual DbSet<ProcedureCodeCompanyMapping> ProcedureCodeCompanyMappings { get; set; }
-        public virtual DbSet<Referral2> Referral2 { get; set; }
+        public virtual DbSet<Referral> Referrals { get; set; }
         public virtual DbSet<ReferralDocument> ReferralDocuments { get; set; }
         public virtual DbSet<ReferralProcedureCode> ReferralProcedureCodes { get; set; }
         public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }

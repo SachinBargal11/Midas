@@ -207,7 +207,6 @@
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCodeCompanyMapping\ProcedureCodeCompanyMappingRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCode\ProcedureCodeRepository.cs" />
-    <Compile Include="EntityRepository\Referral\Referral2Repository.cs" />
     <Compile Include="EntityRepository\Referral\ReferralRepository.cs" />
     <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
     <Compile Include="EntityRepository\Reports\ReportsRepository.cs" />
@@ -442,7 +441,7 @@
     <Compile Include="Model\ProcedureCodeCompanyMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Referral2.cs">
+    <Compile Include="Model\Referral.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReferralDocument.cs">
