@@ -694,6 +694,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetDoctorTaxTypes
+        public override object GetDoctorTaxTypes()
+        {
+            var doctorTaxTypes = _context.DoctorTaxTypes.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                         .Select(p => new {
+                                             p.Id,
+                                             p.Name,
+                                             p.Description
+                                         }).ToList();
+
+            if (doctorTaxTypes == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            
+            return doctorTaxTypes;
+        }
+        #endregion
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 

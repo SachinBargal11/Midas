@@ -2135,6 +2135,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.GetDoctorTaxTypes();
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
     }
 }
