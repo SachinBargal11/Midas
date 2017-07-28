@@ -593,7 +593,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.User userBO = (BO.User)(object)entity;
 
             string Pass = userBO.Password;
-            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName
+                                                && (x.IsDeleted.HasValue == false || (x.IsDeleted.HasValue == true && x.IsDeleted.Value == false))).FirstOrDefault();
             if(data_==null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -897,7 +898,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         case BO.GBEnums.UserType.Patient:
                         case BO.GBEnums.UserType.Staff:
-                            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                     .Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe 
+                                                            && p.UserCompanies.Any(d => d.CompanyID == CompID 
+                                                                && (d.IsDeleted.HasValue == false || (d.IsDeleted.HasValue == true && d.IsDeleted.Value == false))))
+                                                     .ToList<User>();
+
                             if (data == null || data.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in data)
@@ -906,7 +912,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                             return lstUsers;
                         default:
-                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                      .Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null) 
+                                                            && p.UserCompanies.Any(d => d.CompanyID == CompID 
+                                                                && (d.IsDeleted.HasValue == false || (d.IsDeleted.HasValue == true && d.IsDeleted.Value == false))))
+                                                      .ToList<User>();
+
                             if (data1 == null || data1.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in data1)

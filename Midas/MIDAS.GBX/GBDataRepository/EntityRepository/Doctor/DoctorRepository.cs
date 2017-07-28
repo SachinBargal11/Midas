@@ -679,22 +679,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             _context.SaveChanges();
 
-            string message = "";
+            string strmessage = "";
 
             if (isUcdelete == true)
             {
-
-               message = "The user with Id " + DoctorId + " is diassociated from company Id " + CompanyId + " and user is deleted." ;
-                               
+                strmessage = "The user with Id " + DoctorId + " is diassociated from company Id " + CompanyId + " and user is deleted.";                               
             }
             else
             {
-               message = "The user with Id " + DoctorId + " is diassociated from company Id " + CompanyId + "." ;
+                strmessage = "The user with Id " + DoctorId + " is diassociated from company Id " + CompanyId + "." ;
             }
 
-            return message;
-         
-
+            return new { message = strmessage };
         }
         #endregion
 
