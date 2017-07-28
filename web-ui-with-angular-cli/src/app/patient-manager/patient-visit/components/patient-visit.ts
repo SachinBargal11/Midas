@@ -130,6 +130,7 @@ export class PatientVisitComponent implements OnInit {
     visitId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    doctorId: number = this.sessionStore.session.user.id;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -224,9 +225,17 @@ export class PatientVisitComponent implements OnInit {
         };
 
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.locationsStore.getLocations();
+            if (!this.sessionStore.isOnlyDoctorRole()) {
+                this.locationsStore.getLocations();
+            } else {
+                this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+            }
         });
-        this.locationsStore.getLocations();
+        if (!this.sessionStore.isOnlyDoctorRole()) {
+            this.locationsStore.getLocations();
+        } else {
+            this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+        }
         this._patientsStore.getPatientsWithOpenCases();
     }
 
@@ -649,6 +658,21 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+        this.selectedProcedures = null;
+        this.eventDialogVisible = false;
+        this.addNewPatientForm.reset();
+        this.patientScheduleForm.reset();
+        this.selectedVisit = null;
+        if (this.selectedOption == 1) {
+            if (this.selectedSpeciality.mandatoryProcCode) {
+                this.isProcedureCode = true;
+            } else {
+                this.isProcedureCode = false;
+            }
+        } else if (this.selectedOption == 2) {
+            this.isProcedureCode = true;
+        }
+        this.procedures = this.procedures;
         let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
         if (canScheduleAppointement) {
@@ -861,7 +885,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = true;
     }
-    
+
     saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
@@ -1285,6 +1309,7 @@ export class PatientVisitComponent implements OnInit {
             }
         }
         this.eventDialogVisible = false;
+        this.handleEventDialogHide();
     }
 
     getDocuments() {

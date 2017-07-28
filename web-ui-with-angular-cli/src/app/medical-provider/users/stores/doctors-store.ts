@@ -93,17 +93,17 @@ export class DoctorsStore {
 
     fetchDoctorById(id: number): Observable<Doctor> {
         let promise = new Promise((resolve, reject) => {
-            let matchedDoctor: Doctor = this.findDoctorById(id);
-            if (matchedDoctor) {
-                resolve(matchedDoctor);
-            } else {
+            // let matchedDoctor: Doctor = this.findDoctorById(id);
+            // if (matchedDoctor) {
+            //     resolve(matchedDoctor);
+            // } else {
                 this._doctorsService.getDoctor(id)
                 .subscribe((doctorDetail: Doctor) => {
                     resolve(doctorDetail);
                 }, error => {
                     reject(error);
                 });
-            }
+            // }
         });
         return <Observable<Doctor>>Observable.fromPromise(promise);
     }

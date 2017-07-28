@@ -77,6 +77,23 @@ export class ProcedureCodeMasterService {
         return <Observable<Procedure[]>>Observable.fromPromise(promise);
     }
 
+    getProceduresByCompanyId(companyId: number): Observable<Procedure[]> {
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let procedures = (<Object[]>data).map((data: any) => {
+                        return ProcedureAdapter.parseResponse(data);
+                    });
+                    resolve(procedures);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
     getProceduresByCompanyAndSpecialtyId(companyId: number, specialityId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {

@@ -41,6 +41,12 @@
         [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20,100,1000]" [globalFilter]="gb" [responsive]="true">
         <header>Procedures</header>
         <p-column selectionMode="multiple"></p-column>
+        <p-column *ngIf="selectedOption == 0" header="Specialty" [sortable]="true">
+            <ng-template let-col let-procedure="rowData" pTemplate="body">
+                <div *ngIf="specialtyId != 0">{{procedure.originalResponse.specialtyName}}</div>
+                <div *ngIf="roomTestId != 0">{{procedure.originalResponse.roomTestName}}</div>
+            </ng-template>
+        </p-column>
         <p-column header="Procedure Code" field="procedureCodeText" [sortable]="true"></p-column>
         <p-column header="Description" field="procedureCodeDesc" [sortable]="true"></p-column>
         <p-column field="amount" header="Amount" [sortable]="true" [editable]="true"></p-column>

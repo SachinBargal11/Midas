@@ -45,16 +45,12 @@
         <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
             <header>Doctors Visits List</header>
             <p-column selectionMode="multiple"></p-column>
-            <p-column field="caseId" header="Case" [sortable]="true"></p-column>
-            <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
-                <ng-template let-visit="rowData" pTemplate="body">
-                    {{visit.patient.user.displayName}}
-                </ng-template>
-            </p-column>
-            <p-column field="eventStart" header="Visit Date" [sortable]="true">
-                <ng-template let-visit="rowData" pTemplate="body">
-                    {{visit.eventStart | dateTimeFormat}}
-                </ng-template>
+            <p-column field="originalResponse.caseId" header="Case" [sortable]="true"></p-column>
+            <p-column field="originalResponse.patientName" header="Patient Name" [sortable]="true"></p-column>
+            <p-column field="originalResponse.visitDate" header="Visit Date" [sortable]="true">
+                <!--<ng-template let-visit="rowData" pTemplate="body">
+                    {{visit.originalResponse.visitDate | dateTimeFormat}}
+                </ng-template>-->
             </p-column>
         </p-dataTable>
     </div>

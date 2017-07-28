@@ -57,17 +57,17 @@ export class UsersStore {
 
     fetchUserById(id: number): Observable<User> {
         let promise = new Promise((resolve, reject) => {
-            let matchedUser: User = this.findUserById(id);
-            if (matchedUser) {
-                resolve(matchedUser);
-            } else {
+            // let matchedUser: User = this.findUserById(id);
+            // if (matchedUser) {
+            //     resolve(matchedUser);
+            // } else {
                 this._usersService.getUser(id)
                     .subscribe((userDetail: User) => {
                         resolve(userDetail);
                     }, error => {
                         reject(error);
                     });
-            }
+            // }
         });
         return <Observable<User>>Observable.fromPromise(promise);
     }
@@ -141,13 +141,25 @@ export class UsersStore {
 
     getIsExistingUser(userName: string): Observable<any> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.getIsExistingUser(userName).subscribe((user:any) => {
+            this._usersService.getIsExistingUser(userName).subscribe((user: any) => {
                 resolve(user);
             }, error => {
                 reject(error);
             });
         });
         return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    disassociateDoctorWithCompany(doctorId: number, companyId: number): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.disassociateDoctorWithCompany(doctorId, companyId)
+                .subscribe((data:any) => {
+                    resolve(data);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.from(promise);
     }
 
 }
