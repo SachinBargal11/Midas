@@ -9,13 +9,13 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/patientVisit")]
-    public class PatientVisit2Controller : ApiController
+    public class PatientVisitController : ApiController
     {
-        private IRequestHandler<PatientVisit2> requestHandler;
+        private IRequestHandler<PatientVisit> requestHandler;
 
-        public PatientVisit2Controller()
+        public PatientVisitController()
         {
-            requestHandler = new GbApiRequestHandler<PatientVisit2>();
+            requestHandler = new GbApiRequestHandler<PatientVisit>();
         }
 
         [HttpGet]
@@ -48,7 +48,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        public HttpResponseMessage Post([FromBody]PatientVisit2 data)
+        public HttpResponseMessage Post([FromBody]PatientVisit data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }

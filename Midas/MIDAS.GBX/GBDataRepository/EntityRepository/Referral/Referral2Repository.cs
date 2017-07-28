@@ -667,9 +667,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     if (referralBO.PendingReferralId.HasValue == true && referralBO.CaseId <= 0)
                     {
-                        int? CaseId = _context.PendingReferrals.Include("PatientVisit2")
+                        int? CaseId = _context.PendingReferrals.Include("PatientVisit")
                                                                .Where(p => p.Id == referralBO.PendingReferralId)
-                                                               .Select(p => p.PatientVisit2.CaseId)
+                                                               .Select(p => p.PatientVisit.CaseId)
                                                                .FirstOrDefault();
                         if (CaseId.HasValue == true)
                         {

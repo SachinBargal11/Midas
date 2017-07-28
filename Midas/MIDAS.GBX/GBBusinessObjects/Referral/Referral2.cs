@@ -73,7 +73,7 @@ namespace MIDAS.GBX.BusinessObjects
         public Location Location1 { get; set; }
 
         [JsonProperty("scheduledPatientVisit")]
-        public PatientVisit2 PatientVisit2 { get; set; }
+        public PatientVisit PatientVisit { get; set; }
 
         [JsonProperty("pendingReferral")]
         public PendingReferral PendingReferral { get; set; }

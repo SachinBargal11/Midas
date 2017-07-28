@@ -295,7 +295,6 @@
     <Compile Include="Controllers\ProcedureCodeCompanyMappingController.cs" />
     <Compile Include="Controllers\Referral2Controller.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Controllers\PatientVisit2Controller.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
     <Compile Include="Controllers\PendingReferralController.cs" />

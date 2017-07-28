@@ -12,10 +12,10 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientVisit2
+    public partial class PatientVisit
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PatientVisit2()
+        public PatientVisit()
         {
             this.PatientVisitDiagnosisCodes = new HashSet<PatientVisitDiagnosisCode>();
             this.PatientVisitProcedureCodes = new HashSet<PatientVisitProcedureCode>();
@@ -56,7 +56,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Doctor Doctor { get; set; }
         public virtual Location Location { get; set; }
         public virtual Patient Patient { get; set; }
-        public virtual Patient Patient1 { get; set; }
         public virtual Room Room { get; set; }
         public virtual Specialty Specialty { get; set; }
         public virtual VisitType VisitType1 { get; set; }

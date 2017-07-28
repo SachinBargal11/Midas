@@ -1132,7 +1132,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
-                                    .Include("PatientVisit2")
+                                    .Include("PatientVisit")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseInsuranceMappings")
                                     .Include("CompanyCaseConsentApprovals")
@@ -1143,13 +1143,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .FirstOrDefault<Case>();
             if (acc != null)
             {
-                if (acc.PatientVisit2 != null)
+                if (acc.PatientVisits != null)
                 {
-                    foreach (var item in acc.PatientVisit2)
+                    foreach (var item in acc.PatientVisits)
                     {
                         if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                         {
-                            using (PatientVisit2Repository sr = new PatientVisit2Repository(_context))
+                            using (PatientVisitRepository sr = new PatientVisitRepository(_context))
                             {
                                 sr.DeleteVisit(item.Id);
                             }
@@ -1437,7 +1437,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
             
-            var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
+            var patientInCaseMapping = _context.PatientVisits.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
             var patientList1 = _context.Patients.Include("User").Include("Cases")

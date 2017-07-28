@@ -172,7 +172,6 @@
     <Compile Include="PatientVisitEvent\PatientVisitEvent.cs" />
     <Compile Include="PatientVisitProcedureCode\PatientVisitProcedureCode.cs" />
     <Compile Include="PatientVisit\PatientVisit.cs" />
-    <Compile Include="PatientVisit\PatientVisit2.cs" />
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\PatientType.cs" />
     <Compile Include="ProcedureCodeCompanyMapping\ProcedureCodeCompanyMapping.cs" />
