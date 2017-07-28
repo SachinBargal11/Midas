@@ -105,7 +105,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (caseCompanyMapping == null)
                 {
                     caseCompanyMapping = new CaseCompanyMapping();
-                    var referredBy = _context.Referral2.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId.Value
+                    var referredBy = _context.Referrals.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId.Value
                                                                    && p.ToCompanyId == companyCaseConsentApprovalBO.CompanyId
                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                          .Select(p2 => p2.FromCompanyId).FirstOrDefault();

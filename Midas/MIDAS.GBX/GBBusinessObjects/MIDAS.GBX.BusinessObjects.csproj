@@ -179,7 +179,6 @@
     <Compile Include="ReferralProcedureCode\ReferralProcedureCode.cs" />
     <Compile Include="Referral\MidasDocument.cs" />
     <Compile Include="Referral\Referral.cs" />
-    <Compile Include="Referral\Referral2.cs" />
     <Compile Include="Referral\ReferralDocument.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />

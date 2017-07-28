@@ -26,6 +26,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public string DocumentType { get; set; }
     
         public virtual MidasDocument MidasDocument { get; set; }
-        public virtual Referral2 Referral2 { get; set; }
+        public virtual Referral Referral { get; set; }
     }
 }
