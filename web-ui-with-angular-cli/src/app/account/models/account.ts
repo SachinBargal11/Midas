@@ -13,7 +13,9 @@ const AccountRecord = Record({
     accountStatus: AccountStatus.IN_ACTIVE,
     subscriptionPlan: SubscriptionPlan.TRIAL,
     accessToken: '',
-    tokenExpiresAt: null
+    tokenExpiresAt: null,
+    tokenResponse: null,
+    originalResponse: null
 });
 
 export class Account extends AccountRecord {
@@ -24,6 +26,8 @@ export class Account extends AccountRecord {
     subscriptionPlan: SubscriptionPlan;
     accessToken: string;
     tokenExpiresAt: any;
+    tokenResponse: any;
+    originalResponse: any;
 
     constructor(props) {
         super(props);

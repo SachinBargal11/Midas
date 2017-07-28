@@ -17,7 +17,7 @@ import { DashboardModule } from './dashboard/dashboard-module';
 import { EventModule } from './event/event-module';
 
 import { AuthenticationService } from './account/services/authentication-service';
-import { SessionStore } from './commons/stores/session-store';
+import { SessionStore, tokenServiceFactory } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
 import { ProgressBarService } from './commons/services/progress-bar-service';
 import { ConfirmationService } from 'primeng/primeng';
@@ -92,6 +92,12 @@ import { AssociateUserStore } from './commons/stores/associate-user-store';
     // NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: tokenServiceFactory,
+      deps: [SessionStore],
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: configServiceFactory,

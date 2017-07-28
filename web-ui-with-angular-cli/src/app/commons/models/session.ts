@@ -19,6 +19,7 @@ export class Session extends SessionRecord {
     private _currentCompany: Company = null;
     private _accessToken: string = '';
     private _tokenExpiresAt: any = null;
+    private _tokenResponse: any = null;
     private _router: Router;
     public _sessionStore: SessionStore;
 
@@ -77,6 +78,13 @@ export class Session extends SessionRecord {
 
     public set tokenExpiresAt(value: any) {
         this._tokenExpiresAt = value;
+    }
+    public get tokenResponse(): any {
+        return this._tokenResponse;
+    }
+
+    public set tokenResponse(value: any) {
+        this._tokenResponse = value;
     }
 
     logout() {

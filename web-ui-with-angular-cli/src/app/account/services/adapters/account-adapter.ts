@@ -8,7 +8,7 @@ import * as moment from 'moment';
 export class AccountAdapter {
 
 
-    static parseResponse(accountData: any, accessToken: string, tokenExpiresAt: any): Account {
+    static parseResponse(accountData: any, accessToken: string, tokenExpiresAt: any, tokenResponse: any): Account {
 
         let account = null;
         let companies: Company[] = [];
@@ -23,7 +23,9 @@ export class AccountAdapter {
                 user: UserAdapter.parseUserResponse(accountData.user),
                 companies: companies,
                 accessToken: accessToken,
-                tokenExpiresAt: tokenExpiresAt
+                tokenExpiresAt: tokenExpiresAt,
+                tokenResponse: tokenResponse ? tokenResponse : null,
+                originalResponse: accountData
             });
         }
         return account;
@@ -42,7 +44,9 @@ export class AccountAdapter {
                 user: UserAdapter.parseUserResponse(accountData.user),
                 companies: companies,
                 accessToken: accountData.accessToken,
-                tokenExpiresAt: moment(accountData.tokenExpiresAt)
+                tokenExpiresAt: moment(accountData.tokenExpiresAt),
+                tokenResponse: accountData.tokenResponse ? accountData.tokenResponse : null,
+                originalResponse: accountData.originalResponse
             });
         }
         return account;

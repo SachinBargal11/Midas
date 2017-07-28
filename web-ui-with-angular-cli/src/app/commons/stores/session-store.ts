@@ -22,6 +22,7 @@ export class SessionStore {
     private __CURRENT_COMPANY__ = 'current_company';
     private __ACCESS_TOKEN__ = 'access_token';
     private __TOKEN_EXPIRES_AT__ = 'token_expires_at';
+    private __TOKEN_RESPONSE__ = 'token_response';
 
     public get session(): Session {
         return this._session;
@@ -117,11 +118,19 @@ export class SessionStore {
     // }
 
     logout() {
-        this._resetSession();
+        let tokenResponse = this.session.tokenResponse;
+        this.session.account = null;
+        // this._resetSession();
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
         window.localStorage.removeItem(this.__CURRENT_COMPANY__);
         window.localStorage.removeItem(this.__ACCESS_TOKEN__);
         window.localStorage.removeItem(this.__TOKEN_EXPIRES_AT__);
+        window.localStorage.removeItem(this.__TOKEN_RESPONSE__);
+        if (tokenResponse) {
+            //window.location = "https://lt007.codearray.tech/CAIdentityServer/core/connect/endsession";
+            let url = "https://lt007.codearray.tech/CAIdentityServer/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent('http://localhost:4200/home') + "&id_token_hint=" + encodeURIComponent(tokenResponse.id_token);
+            window.location.assign(url);
+        }
     }
 
     authenticatePassword(userName, oldpassword) {
@@ -149,6 +158,7 @@ export class SessionStore {
         this._session.account = account;
         this._session.accessToken = account.accessToken;
         this._session.tokenExpiresAt = account.tokenExpiresAt;
+        this._session.tokenResponse = account.tokenResponse ? account.tokenResponse : null;
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);
         this._session.currentCompany = company ? company : account.companies[0];
@@ -156,6 +166,7 @@ export class SessionStore {
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
         window.localStorage.setItem(this.__ACCESS_TOKEN__, account.accessToken);
         window.localStorage.setItem(this.__TOKEN_EXPIRES_AT__, account.tokenExpiresAt);
+        window.localStorage.setItem(this.__TOKEN_RESPONSE__, account.tokenResponse ? JSON.stringify(account.tokenResponse) : null);
     }
 
     private _resetSession() {
@@ -191,4 +202,61 @@ export class SessionStore {
         }
         return isOnlyDoctorRole;
     }
+
+    public Load() {
+        var result: any;
+        if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
+            var hash = window.location.hash.substr(1);
+            result = hash.split('&').reduce(function (result, item) {
+                var parts = item.split('=');
+                result[parts[0]] = parts[1];
+                return result;
+            }, {});
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            if (this.session.account == null && storedAccount == null) {
+                let promise = new Promise((resolve, reject) => {
+                    let accessToken: any = 'bearer ' + result.access_token;
+                    let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 60, 'seconds').toString();
+                    // this.login('mprovidercompany@gmail.com', 'Ca@123456', true).subscribe((account) => {
+                    this._authenticationService.signinWithUserName('mprovidercompany@gmail.com', accessToken, tokenExpiresAt, result)
+                        .subscribe((accountData) => {
+                            let account: Account = AccountAdapter.parseStoredData(accountData);
+                            this._populateSession(account);
+                            resolve(account);
+                            // window.location.assign('http://localhost:4201/#/dashboard');
+                        }, error => {
+                            window.location.assign('http://localhost:4200/home');
+                            reject(error);
+                        });
+                });
+                // return <Observable<User[]>>Observable.fromPromise(promise);
+                window.location.assign('http://localhost:4201/#/dashboard');
+            } else {
+                this._populateTokenSession(result);
+            }
+        }
+    }
+    private _populateTokenSession(result) {
+        let promise = new Promise((resolve, reject) => {
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            let storedAccessToken: any = 'bearer ' + result.access_token;
+            let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 60, 'seconds').toString();
+
+            if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
+                let storedAccountData: any = JSON.parse(storedAccount);
+                let accountData: Account = AccountAdapter.parseResponse(storedAccountData.originalResponse, storedAccessToken, storedTokenExpiresAt, result);
+                let account: Account = AccountAdapter.parseStoredData(accountData);
+                this._populateSession(account);
+                resolve(this._session);
+            }
+            else {
+                reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
+            }
+        });
+        window.location.assign('http://localhost:4201/#/dashboard');
+        return Observable.from(promise);
+    }
+}
+export function tokenServiceFactory(config: SessionStore) {
+    return () => config.Load();
 }
