@@ -87,7 +87,7 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage DismissPendingReferral(HttpRequestMessage request, int PendingReferralId, int userId);       
         HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
         HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail);
-        HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
+        HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, int MedicalProviderId, DateTime FromDate,DateTime ToDate);
         HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name);
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
         HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId);

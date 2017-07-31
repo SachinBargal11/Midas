@@ -126,6 +126,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, companyId, string.Empty);
         }
 
+        [HttpGet]
+        [Route("getDoctorTaxTypes")]
+        public HttpResponseMessage GetDoctorTaxTypes()
+        {
+            return requestHandler.GetDoctorTaxTypes(Request);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

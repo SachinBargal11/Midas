@@ -129,9 +129,9 @@ namespace MIDAS.GBX
             {
                 repo = new GenderRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Patient2))
+            else if (typeof(T) == typeof(BO.Patient))
             {
-                repo = new Patient2Repository(context);
+                repo = new PatientRepository(context);
             }
             else if (typeof(T) == typeof(BO.Case))
             {
@@ -205,9 +205,9 @@ namespace MIDAS.GBX
             //{
             //    repo = new PatientVisitEventRepository(context);
             //}
-            else if (typeof(T) == typeof(BO.PatientVisit2))
+            else if (typeof(T) == typeof(BO.PatientVisit))
             {
-                repo = new PatientVisit2Repository(context);
+                repo = new PatientVisitRepository(context);
             }
             else if (typeof(T) == typeof(BO.CalendarEvent))
             {
@@ -235,7 +235,7 @@ namespace MIDAS.GBX
             }
             else if (typeof(T) == typeof(BO.AddPatient))
             {
-                repo = new Patient2Repository(context);
+                repo = new PatientRepository(context);
             }
             else if (typeof(T) == typeof(BO.DiagnosisType))
             {
@@ -277,9 +277,9 @@ namespace MIDAS.GBX
             {
                 repo = new ReportsRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Referral2))
+            else if (typeof(T) == typeof(BO.Referral))
             {
-                repo = new Referral2Repository(context);
+                repo = new ReferralRepository(context);
             }            
             else if (typeof(T) == typeof(BO.MergePDF) || typeof(T) == typeof(BO.Document) || typeof(T) == typeof(BO.Common.UploadInfo))
             {
@@ -300,6 +300,10 @@ namespace MIDAS.GBX
             else if (typeof(T) == typeof(BO.ProcedureCodeCompanyMapping))
             {
                 repo = new ProcedureCodeCompanyMappingRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.CompanyICDTypeCode))
+            {
+                repo = new ICDTypeCodeRepository(context);
             }
 
             return repo;

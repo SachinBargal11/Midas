@@ -8,13 +8,13 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
     public class PatientController : ApiController
     {
         //private IRequestHandler<Patient> requestHandler;
-        private IRequestHandler<Patient2> requestHandlerPatient2;
+        private IRequestHandler<Patient> requestHandlerPatient;
         private IRequestHandler<AddPatient> requestHandlerAddPatient;
 
         public PatientController()
         {
             //requestHandler = new GbApiRequestHandler<Patient>();
-            requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
+            requestHandlerPatient = new GbApiRequestHandler<Patient>();
             requestHandlerAddPatient = new GbApiRequestHandler<AddPatient>();
         }
 
@@ -25,22 +25,22 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyIdForAncillary(int CompanyId)
         {
-            return requestHandlerPatient2.GetByCompanyIdForAncillary(Request, CompanyId);
+            return requestHandlerPatient.GetByCompanyIdForAncillary(Request, CompanyId);
         }
 
         [HttpGet]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            return requestHandlerPatient2.Delete(Request, id);
+            return requestHandlerPatient.Delete(Request, id);
         }
         
         [HttpPost]
         [Route("savePatient")]
         //[AllowAnonymous]
-        public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
+        public HttpResponseMessage SavePatient2([FromBody]Patient patient)
         {
-            return requestHandlerPatient2.CreateGbObject(Request, patient2);
+            return requestHandlerPatient.CreateGbObject(Request, patient);
         }
 
         [HttpGet]
@@ -48,7 +48,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
         {
-            return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
+            return requestHandlerPatient.GetGbObjects(Request, CompanyId);
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetPatientById2(int id)
         {
-            return requestHandlerPatient2.GetObject(Request, id);
+            return requestHandlerPatient.GetObject(Request, id);
         }
 
         protected override void Dispose(bool disposing)

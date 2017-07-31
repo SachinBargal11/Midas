@@ -37,7 +37,7 @@ namespace MIDAS.GBX.BusinessObjects
         public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
 
         [JsonProperty("referral")]
-        public List<Referral2> Referrals { get; set; }
+        public List<Referral> Referrals { get; set; }
 
         [JsonProperty("patientAccidentInfo")]
         public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
@@ -45,8 +45,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("patientEmpInfo")]
         public PatientEmpInfo PatientEmpInfo { get; set; }
 
-        [JsonProperty("patient2")]
-        public Patient2 Patient2 { get; set; }
+        [JsonProperty("patient")]
+        public Patient Patient { get; set; }
 
         [JsonProperty("caseCompanyConsentDocument")]
         public List<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
@@ -65,6 +65,10 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("attorneyProviderId")]
         public int? AttorneyProviderId { get; set; }
+
+        [JsonProperty("claimFileNumber")]
+        public int? ClaimFileNumber { get; set; }
+        
     }
 
     public class mCase : GbObject
@@ -107,6 +111,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("mCaseCompanyConsentDocument")]
         public List<mCaseCompanyConsentDocument> mCaseCompanyConsentDocuments { get; set; }
+
+        [JsonProperty("claimFileNumber")]
+        public int? ClaimFileNumber { get; set; }
     }
 
     //----------------------------------------------------------------------------
@@ -162,7 +169,7 @@ namespace MIDAS.GBX.BusinessObjects
         public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
 
         [JsonProperty("referral")]
-        public List<Referral2> Referrals { get; set; }
+        public List<Referral> Referrals { get; set; }
 
         [JsonProperty("patientAccidentInfo")]
         public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
@@ -184,6 +191,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("attorneyProviderId")]
         public int? AttorneyProviderId { get; set; }
+
+        [JsonProperty("claimFileNumber")]
+        public int? ClaimFileNumber { get; set; }
     }
 
     public class mCaseWithUserAndPatient : GbObject
@@ -232,6 +242,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("mCaseCompanyConsentDocument")]
         public List<mCaseCompanyConsentDocument> mCaseCompanyConsentDocuments { get; set; }
+
+        [JsonProperty("claimFileNumber")]
+        public int? ClaimFileNumber { get; set; }
     }
 
     public class CaseWithPatientName : GbObject
@@ -269,5 +282,8 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("attorneyProviderId")]
         public int? AttorneyProviderId { get; set; }
+
+        [JsonProperty("claimFileNumber")]
+        public int? ClaimFileNumber { get; set; }
     }
 }

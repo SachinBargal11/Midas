@@ -20,8 +20,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("procedureCode")]
         public ProcedureCode ProcedureCode { get; set; }
 
-        [JsonProperty("patientVisit2")]
-        public PatientVisit2 PatientVisit2 { get; set; }
+        [JsonProperty("patientVisit")]
+        public PatientVisit PatientVisit { get; set; }
 
     }
 

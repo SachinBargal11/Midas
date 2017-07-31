@@ -506,7 +506,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetIsExistingUser by UserName or SSN
         public override Object GetIsExistingUser(string User, string SSN)
         {
-            var ssn = _context.Patient2.Where(p => p.SSN == SSN
+            var ssn = _context.Patients.Where(p => p.SSN == SSN
                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                          .ToList()
                                                          .Select(p => p.Id);
@@ -545,13 +545,56 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region CheckIsExistingUser by UserName
+        public override Object Get(string User)
+        {                     
+            var acc = from u in _context.Users
+                       join ut in _context.UserTypes on u.UserType equals ut.id
+                       where (u.UserName == User
+                       && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false)))
+                       select new
+                       {
+                           IsExisting = true,
+                           //IsDoctor = u.UserType == 4 ? true : false,
+                           IsDoctor = _context.Doctors.Any(p => p.Id == u.id
+                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                           IsPatient = _context.Patients.Any(p => p.Id == u.id
+                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                           Message = "User already exist.",
+                           User = new { u.id, u.FirstName, u.MiddleName, u.LastName, u.UserName }
+                       };
+
+            var ExistingUser = acc.FirstOrDefault();
+
+
+            if (ExistingUser == null)
+            {
+                User _user = null;
+                return new
+                {
+                    IsExisting = false,
+                    IsDoctor =  false,
+                    IsPatient = false,
+                    Message = "User does not exist",
+                    User = _user
+                };
+             }
+            else
+            {
+                return ExistingUser;
+            }
+
+        }
+        #endregion
+
         #region Login
         public override Object Login<T>(T entity)
         {
             BO.User userBO = (BO.User)(object)entity;
 
             string Pass = userBO.Password;
-            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName
+                                                && (x.IsDeleted.HasValue == false || (x.IsDeleted.HasValue == true && x.IsDeleted.Value == false))).FirstOrDefault();
             if(data_==null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -717,6 +760,128 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Login with Only UserName
+        public override Object LoginWithUserName<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            //Check if the User even if valid is logging as invalid User Type
+            bool isUserTypeValid = false;
+            try
+            {
+                if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
+                {
+                    isUserTypeValid = true;
+                }
+
+                if (!isUserTypeValid)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            BO.User acc_ = isUserTypeValid ? Convert<BO.User, User>(data_) : null;
+
+            if (!userBO.forceLogin)
+            {
+                if (acc_.C2FactAuthEmailEnabled)
+                {
+
+                    var otpOld = _context.OTPs.Where(p => p.UserID == acc_.ID).ToList<OTP>();
+                    otpOld.ForEach(a => { a.IsDeleted = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });
+                    if (otpOld != null)
+                    {
+                        _context.SaveChanges();
+                    }
+
+                    //Send OTP Via Email
+                    OTP otpDB = new OTP();
+                    otpDB.OTP1 = Utility.GenerateRandomNumber(6);
+                    otpDB.Pin = Utility.GenerateRandomNo();
+                    otpDB.UserID = acc_.ID;
+                    otpDB.CreateDate = DateTime.UtcNow;
+                    otpDB.CreateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+
+                    _dbOTP.Add(otpDB);
+                    _context.SaveChanges();
+
+                    string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
+
+                    BO.Email objEmail = new BO.Email { ToEmail = acc_.UserName, Subject = "Alert Message From GBX MIDAS", Body = Message };
+                    objEmail.SendMail();
+
+                    otpDB.UserID = acc_.ID;
+                    otpDB.OTP1 = 0000;
+
+                    BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User = new BO.User();
+                        usrComp.User.ID = acc_.ID;
+                        boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                    }
+                    boOTP.User = acc_;
+
+                    List<BO.Role> RoleBO1 = new List<BO.Role>();
+                    var roles1 = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in roles1)
+                    {
+                        RoleBO1.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID
+                        });
+                    }
+                    boOTP.User.Roles = RoleBO1;
+                    return boOTP;
+                }
+                else if (acc_.C2FactAuthSMSEnabled)
+                {
+                    //Send OTP Via SMS
+                }
+            }
+
+            BO.OTP boOTP_ = new BusinessObjects.OTP();
+            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+            {
+                BO.UserCompany usrComp = new BO.UserCompany();
+                usrComp.User = new BO.User();
+                usrComp.User.ID = acc_.ID;
+                boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+            }
+            boOTP_.User = acc_;
+
+            List<BO.Role> RoleBO = new List<BO.Role>();
+            var roles = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+            foreach (var item in roles)
+            {
+                RoleBO.Add(new BO.Role()
+                {
+                    ID = item.RoleID,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                    RoleType = (BO.GBEnums.RoleType)item.RoleID
+                });
+            }
+            boOTP_.User.Roles = RoleBO;
+            return boOTP_;
+        }
+
+        #endregion
+
+
+
+
         #region Get By Filter
         public override object Get<T>(T entity)
         {
@@ -733,7 +898,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         case BO.GBEnums.UserType.Patient:
                         case BO.GBEnums.UserType.Staff:
-                            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                     .Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe 
+                                                            && p.UserCompanies.Any(d => d.CompanyID == CompID 
+                                                                && (d.IsDeleted.HasValue == false || (d.IsDeleted.HasValue == true && d.IsDeleted.Value == false))))
+                                                     .ToList<User>();
+
                             if (data == null || data.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in data)
@@ -742,7 +912,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                             return lstUsers;
                         default:
-                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                      .Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null) 
+                                                            && p.UserCompanies.Any(d => d.CompanyID == CompID 
+                                                                && (d.IsDeleted.HasValue == false || (d.IsDeleted.HasValue == true && d.IsDeleted.Value == false))))
+                                                      .ToList<User>();
+
                             if (data1 == null || data1.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in data1)

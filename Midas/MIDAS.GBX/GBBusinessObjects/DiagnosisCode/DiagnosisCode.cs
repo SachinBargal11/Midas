@@ -23,11 +23,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("diagnosisCodeDesc")]
         public string DiagnosisCodeDesc { get; set; }
 
-        [Required]
-        [JsonProperty("companyId")]
-        public int? CompanyId { get; set; }
+        //[Required]
+        //[JsonProperty("companyId")]
+        //public int? CompanyId { get; set; }
 
-        public Company Company { get; set; }
+        //public Company Company { get; set; }
 
         public DiagnosisType DiagnosisType { get; set; }
     }

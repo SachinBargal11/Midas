@@ -17,7 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CalendarEvent()
         {
-            this.PatientVisit2 = new HashSet<PatientVisit2>();
+            this.PatientVisits = new HashSet<PatientVisit>();
         }
     
         public int Id { get; set; }
@@ -38,6 +38,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<bool> IsCancelled { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
+        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
     }
 }
