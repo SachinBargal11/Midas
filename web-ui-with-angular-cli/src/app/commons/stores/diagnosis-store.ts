@@ -37,10 +37,33 @@ export class DiagnosisStore {
         return this._diagnosisTypes.asObservable();
     }
 
-    getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
+    // getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._diagnosisService.getAllDiagnosisTypes().subscribe((diagnosisTypes: DiagnosisType[]) => {
+    //             this._diagnosisTypes.next(List(diagnosisTypes));
+    //             resolve(diagnosisTypes);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<DiagnosisType[]>>Observable.fromPromise(promise);
+    // }
+
+    getICDTypeCodeByCompanyId(): Observable<any> {
         let promise = new Promise((resolve, reject) => {
-            this._diagnosisService.getAllDiagnosisTypes().subscribe((diagnosisTypes: DiagnosisType[]) => {
-                this._diagnosisTypes.next(List(diagnosisTypes));
+            this._diagnosisService.getICDTypeCodeByCompanyId().subscribe((data:any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    getDiagnosisTypeByCompanyIdAndICDTypeId(ICDTypeId: number): Observable<DiagnosisType[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._diagnosisService.getDiagnosisTypeByCompanyIdAndICDTypeId(ICDTypeId).subscribe((diagnosisTypes: DiagnosisType[]) => {
+                // this._diagnosisCodes.next(List(diagnosisCodes));
                 resolve(diagnosisTypes);
             }, error => {
                 reject(error);
@@ -49,9 +72,9 @@ export class DiagnosisStore {
         return <Observable<DiagnosisType[]>>Observable.fromPromise(promise);
     }
 
-    getDiagnosisCodesByDiagnosisType(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
+     getDiagnosisCodesByCompanyIdAndDiagnosisTypeId(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
         let promise = new Promise((resolve, reject) => {
-            this._diagnosisService.getAllDiagnosisCodesByDiagnosisTypeId(diagnosisTypeId).subscribe((diagnosisCodes: DiagnosisCode[]) => {
+            this._diagnosisService.getDiagnosisCodesByCompanyIdAndDiagnosisTypeId(diagnosisTypeId).subscribe((diagnosisCodes: DiagnosisCode[]) => {
                 this._diagnosisCodes.next(List(diagnosisCodes));
                 resolve(diagnosisCodes);
             }, error => {
