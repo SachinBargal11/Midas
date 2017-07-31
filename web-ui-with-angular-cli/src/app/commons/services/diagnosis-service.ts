@@ -1,4 +1,3 @@
-import { Data } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -28,43 +27,9 @@ export class DiagnosisService {
         this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
-    // getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
-    //     let promise: Promise<DiagnosisType[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/DiagnosisType/getAll', {
-    //             headers: this._headers
-    //         })
-    //             .map(res => res.json())
-    //             .subscribe((data: Array<Object>) => {
-    //                 let diagnosisTypes = (<Object[]>data).map((data: any) => {
-    //                     return DiagnosisTypeAdapter.parseResponse(data);
-    //                 });
-    //                 resolve(diagnosisTypes);
-    //             }, (error) => {
-    //                 reject(error);
-    //             });
-    //     });
-    //     return <Observable<DiagnosisType[]>>Observable.fromPromise(promise);
-    // }
-
-    getICDTypeCodeByCompanyId(): Observable<any> {
-        let companyId = this._sessionStore.session.currentCompany.id;
-        let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ICDTypeCode/getICDTypeCodeByCompanyId/' + companyId, {
-                headers: this._headers
-            }).map(res => res.json())
-                .subscribe((data: any) => {
-                    resolve(data);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<any>>Observable.fromPromise(promise);
-    }
-
-    getDiagnosisTypeByCompanyIdAndICDTypeId(ICDTypeId: number): Observable<DiagnosisType[]> {
-        let companyId = this._sessionStore.session.currentCompany.id;
+    getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
         let promise: Promise<DiagnosisType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisType/getDiagnosisTypeByCompanyIdAndICDTypeId/' + companyId + '/' + ICDTypeId, {
+            return this._http.get(this._url + '/DiagnosisType/getAll', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -76,15 +41,12 @@ export class DiagnosisService {
                 }, (error) => {
                     reject(error);
                 });
-
         });
         return <Observable<DiagnosisType[]>>Observable.fromPromise(promise);
     }
-
-    getDiagnosisCodesByCompanyIdAndDiagnosisTypeId(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
-        let companyId = this._sessionStore.session.currentCompany.id;
+    getAllDiagnosisCodesByDiagnosisTypeId(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
         let promise: Promise<DiagnosisCode[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisCode/GetByCompanyIdAndDiagnosisTypeId/' + companyId + '/' + diagnosisTypeId, {
+            return this._http.get(this._url + '/DiagnosisCode/getByDiagnosisTypeId/' + diagnosisTypeId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -100,4 +62,6 @@ export class DiagnosisService {
         });
         return <Observable<DiagnosisCode[]>>Observable.fromPromise(promise);
     }
+
+
 }

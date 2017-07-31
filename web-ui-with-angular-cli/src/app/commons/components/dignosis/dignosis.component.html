@@ -3,12 +3,7 @@
 <!--<div *ngIf="sessionStore.isOnlyDoctorRole()">-->
 <div>
   <div class="col-lg-6">
-    <select class="form-control select-list" (change)="searchDiagnosisType($event)">
-      <option value="">-Select ICD Type-</option>
-      <option *ngFor="let code of codes" value="{{code.id}}">{{code.code}}</option>
-  </select>
-    <br>
-    <select class="form-control select-list" (change)="searchDiagnosisCode($event)">
+    <select class="form-control select-list" (change)="searchDiagnosis($event)">
       <option value="">-Select Diagnosis Type-</option>
       <option *ngFor="let diagnosisType of diagnosisTypes" value="{{diagnosisType.id}}">{{diagnosisType.diagnosisTypeText}}</option>
   </select>
