@@ -94,6 +94,21 @@ namespace CAIdentityServer.Service
             return scopes.AsEnumerable();
         }
 
+        public string GetClientScopes(string clientid)
+        {
+            string scope = string.Empty;
+
+            Models.CAIdentityServerEntitiesModel context = new Models.CAIdentityServerEntitiesModel();
+
+            foreach (Models.ClientScope clientscope in context.ClientScopes.Where(s=> s.Client.ClientId == clientid).ToList())
+            {
+                scope = scope + clientscope.ScopeName + " ";
+            }
+
+            return scope;
+            
+        }
+
         public bool IsTwoFactorAuthentication(string clientid)
         {
             bool result = false;
