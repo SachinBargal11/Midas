@@ -1451,7 +1451,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                .Include("Case.Patient.User.AddressInfo")
                                                .Include("Case.Patient.User.ContactInfo")
                                                .Include("Case.Patient.Cases")
-                                               .Include("Case.Patient.Cases.Referral")
+                                               .Include("Case.Patient.Cases.Referrals")
                                                .Where(p => p.ToCompanyId == CompanyId && p.ToDoctorId == DoctorId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .ToList<Referral>();
