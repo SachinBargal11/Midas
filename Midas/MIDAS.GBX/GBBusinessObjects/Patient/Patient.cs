@@ -10,7 +10,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Patient2 : GbObject
+    public class Patient : GbObject
     {
         [JsonProperty("ssn")]
         public string SSN { get; set; }
@@ -186,7 +186,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int? CompanyId { get; set; }
     }
 
-    public class mPatient2 : GbObject
+    public class minPatient : GbObject
     {
       
 

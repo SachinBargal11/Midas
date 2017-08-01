@@ -24,6 +24,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     duration: number;
     isAllDay: boolean;
     repeatType: string = '7';
+    name: string;
 
     // Daily 
     daily_end: string = '0';
@@ -68,10 +69,13 @@ export class ScheduledEventEditorComponent implements OnChanges {
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
             this._selectedEvent = value;
+            this.name = this._selectedEvent.name;
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
             this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
             this.isAllDay = this._selectedEvent.isAllDay;
+            this.ancillaryProviderId = this._selectedEvent.ancillaryProviderId;
+            this.referredBy = '';
 
             if (this._selectedEvent.recurrenceRule) {
                 let options = this._selectedEvent.recurrenceRule.options;

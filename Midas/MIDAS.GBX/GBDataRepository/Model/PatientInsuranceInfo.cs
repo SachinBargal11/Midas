@@ -48,7 +48,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual InsuranceMaster InsuranceMaster { get; set; }
         public virtual InsuranceType InsuranceType { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
+        public virtual Patient Patient { get; set; }
         public virtual PolicyOwner PolicyOwner { get; set; }
     }
 }

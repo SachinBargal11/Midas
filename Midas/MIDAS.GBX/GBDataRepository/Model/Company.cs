@@ -21,16 +21,16 @@ namespace MIDAS.GBX.DataRepository.Model
             this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
             this.CaseCompanyMappings1 = new HashSet<CaseCompanyMapping>();
+            this.DiagnosisTypeCompanies = new HashSet<DiagnosisTypeCompany>();
+            this.DiagnosisCodeCompanies = new HashSet<DiagnosisCodeCompany>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
-            this.DiagnosisCodes = new HashSet<DiagnosisCode>();
-            this.DiagnosisTypes = new HashSet<DiagnosisType>();
             this.DocumentNodeObjectMappings = new HashSet<DocumentNodeObjectMapping>();
             this.GeneralSettings = new HashSet<GeneralSetting>();
             this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
             this.Notifications = new HashSet<Notification>();
-            this.PatientVisit2 = new HashSet<PatientVisit2>();
+            this.PatientVisits = new HashSet<PatientVisit>();
             this.PendingReferrals = new HashSet<PendingReferral>();
             this.PreferredAncillaryProviders = new HashSet<PreferredAncillaryProvider>();
             this.PreferredAncillaryProviders1 = new HashSet<PreferredAncillaryProvider>();
@@ -40,8 +40,8 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PreferredMedicalProviders1 = new HashSet<PreferredMedicalProvider>();
             this.ProcedureCodes = new HashSet<ProcedureCode>();
             this.ProcedureCodeCompanyMappings = new HashSet<ProcedureCodeCompanyMapping>();
-            this.Referral2 = new HashSet<Referral2>();
-            this.Referral21 = new HashSet<Referral2>();
+            this.Referrals = new HashSet<Referral>();
+            this.Referrals1 = new HashSet<Referral>();
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
             this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
@@ -73,6 +73,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual CompanyStatusType CompanyStatusType { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
@@ -81,10 +85,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisType> DiagnosisTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -96,7 +96,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notification> Notifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
+        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PendingReferral> PendingReferrals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -116,9 +116,9 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProcedureCodeCompanyMapping> ProcedureCodeCompanyMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Referral2> Referral2 { get; set; }
+        public virtual ICollection<Referral> Referrals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Referral2> Referral21 { get; set; }
+        public virtual ICollection<Referral> Referrals1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

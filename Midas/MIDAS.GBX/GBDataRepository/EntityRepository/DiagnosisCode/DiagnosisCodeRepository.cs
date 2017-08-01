@@ -39,7 +39,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             diagnosisCodeBO.DiagnosisTypeId = diagnosisCode.DiagnosisTypeId;
             diagnosisCodeBO.DiagnosisCodeText = diagnosisCode.DiagnosisCodeText;
             diagnosisCodeBO.DiagnosisCodeDesc = diagnosisCode.DiagnosisCodeDesc;
-            diagnosisCodeBO.CompanyId = diagnosisCode.CompanyId;
+            //diagnosisCodeBO.CompanyId = diagnosisCode.CompanyId;
 
             if (diagnosisCode.IsDeleted.HasValue)
                 diagnosisCodeBO.IsDeleted = diagnosisCode.IsDeleted.Value;
@@ -70,6 +70,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (boDiagnosisCodeDB == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Diagnosis Code.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            else
+            {
+                foreach (var boDiagnosisCodeDBList in boDiagnosisCodeDB)
+                {
+                    boDiagnosisCode.Add(Convert<BO.DiagnosisCode, DiagnosisCode>(boDiagnosisCodeDBList));
+                }
+            }
+
+            return (object)boDiagnosisCode;
+        }
+        #endregion
+
+
+        #region Get By CompanyId And DiagnosisTypeId
+        public override object Get(int companyId,int DiagnosisTypeId)
+        {                                                         
+            var boDiagnosisCodeDB = from dc in _context.DiagnosisCodes
+                                    join dcc in _context.DiagnosisCodeCompanies on dc.Id equals dcc.DiagnosisCodeID
+                                    where
+                                    dc.DiagnosisTypeId == DiagnosisTypeId
+                                    && dcc.CompanyID == companyId
+                                    && (dc.IsDeleted.HasValue == false || (dc.IsDeleted.HasValue == true && dc.IsDeleted.Value == false))
+                                    && (dcc.IsDeleted.HasValue == false || (dcc.IsDeleted.HasValue == true && dcc.IsDeleted.Value == false))
+                                    select ( dc);                                     
+
+            List < BO.DiagnosisCode > boDiagnosisCode = new List<BO.DiagnosisCode>();
+
+            if (boDiagnosisCodeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this CompanyId and DiagnosisTypeId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
             else

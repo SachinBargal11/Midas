@@ -15,11 +15,19 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("diagnosisTypeText")]
         public string DiagnosisTypeText { get; set; }
 
-        [Required]
-        [JsonProperty("companyId")]
-        public int? CompanyId { get; set; }
+        //[Required]
+        //[JsonProperty("companyId")]
+        //public int? CompanyId { get; set; }
 
-        public Company Company { get; set; }
+        //public Company Company { get; set; }
+
+        [Required]
+        [JsonProperty("iCDTypeCodeID")]
+        public int ICDTypeCodeID { get; set; }
+
+        [Required]
+        [JsonProperty("iCDTypeCode")]
+        public ICDTypeCode ICDTypeCode { get; set; }
 
         public List<DiagnosisCode> DiagnosisCodes { get; set; }
     }

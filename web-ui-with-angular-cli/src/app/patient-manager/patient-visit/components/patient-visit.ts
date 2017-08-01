@@ -658,6 +658,21 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+        this.selectedProcedures = null;
+        this.eventDialogVisible = false;
+        this.addNewPatientForm.reset();
+        this.patientScheduleForm.reset();
+        this.selectedVisit = null;
+        if (this.selectedOption == 1) {
+            if (this.selectedSpeciality.mandatoryProcCode) {
+                this.isProcedureCode = true;
+            } else {
+                this.isProcedureCode = false;
+            }
+        } else if (this.selectedOption == 2) {
+            this.isProcedureCode = true;
+        }
+        this.procedures = this.procedures;
         let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
         if (canScheduleAppointement) {
@@ -1294,6 +1309,7 @@ export class PatientVisitComponent implements OnInit {
             }
         }
         this.eventDialogVisible = false;
+        this.handleEventDialogHide();
     }
 
     getDocuments() {

@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.name.touched && !scheduledEventEditorFormControls.name.valid">
-                <input formControlName="name" [ngModel]="selectedEvent.name" class="form-control" [class.error]="!scheduledEventEditorFormControls.name.valid"
+                <input formControlName="name" [(ngModel)]="name" class="form-control" [class.error]="!scheduledEventEditorFormControls.name.valid"
                 />
                 <div class='error-list' *ngIf="scheduledEventEditorFormControls.name.touched && !scheduledEventEditorFormControls.name.valid">
                     <ul>
@@ -135,7 +135,7 @@
         </div>
     </div>
     <div formGroupName="dailyInfo" *ngIf="repeatType == '3'">
-        {{daily_end}}
+        <!--{{daily_end}}-->
         <div class="row">
             <div class="col-md-2"><label class="form-label">Repeat every</label></div>
             <div class="col-md-4">

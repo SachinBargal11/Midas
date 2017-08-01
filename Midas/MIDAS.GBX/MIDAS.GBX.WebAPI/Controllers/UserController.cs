@@ -96,7 +96,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             return requestHandler.Login(Request, user);
         }
-        
+
+        [HttpPost]
+        [Route("SigninWithUserName")]
+        public HttpResponseMessage SigninWithUserName([FromBody]User user)
+        {
+            if (user != null)
+            {
+                user.UserType = GBEnums.UserType.Staff;
+            }
+
+            return requestHandler.LoginWithUserName(Request, user);
+        }
+
+
         /*[HttpPost]
         [Route("Signin2")]
         public HttpResponseMessage Signin2([FromBody]User user)
@@ -125,6 +138,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetIsExistingUser(string User, string SSN)
         {
             return requestHandler.GetIsExistingUser(Request, User,SSN);
+        }
+
+        [HttpGet]
+        [Route("checkIsExistingUser/{User}")]
+        public HttpResponseMessage CheckIsExistingUser(string User)
+        {
+            return requestHandler.GetObjects(Request, User);
         }
 
         [HttpPost]

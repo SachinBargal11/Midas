@@ -12,10 +12,10 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Referral2
+    public partial class Referral
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Referral2()
+        public Referral()
         {
             this.ReferralDocuments = new HashSet<ReferralDocument>();
             this.ReferralProcedureCodes = new HashSet<ReferralProcedureCode>();
@@ -50,7 +50,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Doctor Doctor1 { get; set; }
         public virtual Location Location { get; set; }
         public virtual Location Location1 { get; set; }
-        public virtual PatientVisit2 PatientVisit2 { get; set; }
+        public virtual PatientVisit PatientVisit { get; set; }
         public virtual PendingReferral PendingReferral { get; set; }
         public virtual Room Room { get; set; }
         public virtual Room Room1 { get; set; }

@@ -40,12 +40,14 @@ namespace MIDAS.GBX.DataAccessManager
         Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object UpdateCompany(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object LoginWithUserName(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login2(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object ValidateInvitation(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         
         Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationAndSpecialty(int locationId, int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetBySpecialityInAllApp(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomInAllApp(int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateToken(int userId);
         Object ValidateToken(string tokenId);
@@ -66,7 +68,6 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetIsExistingUser(string User,string SSN, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Update(T gbObject);
         Object Add(T gbObject);
-        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyIdForAncillary(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllExcludeCompany(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetConsentList(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -85,6 +86,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByReferringToLocationId(int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         Object GetByDoctorId(int DoctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByDoctorAndCompanyId(int doctorId,int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByPatientVisitId(int patientVisitId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
         Object GetByReferringUserId(int UserId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByReferredToDoctorId(int DoctorId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -97,7 +99,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object DeleteVisit(int id);
         Object CancleVisit(int id);
         Object CancleCalendarEvent(int id);
-        Object GetByDoctorAndDates(int DoctorId, DateTime FromDate,DateTime ToDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByDoctorAndDates(int DoctorId, int medicalProviderId, DateTime FromDate,DateTime ToDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate,string Name, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -167,5 +169,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetProcedureCodeBySpecialtyExcludingAssigned(int specialtyId, int CompanyId);
         Object GetProcedureCodeByRoomTestExcludingAssigned(int roomTestId, int CompanyId);
         Object GetOpenCaseCompaniesByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId, int specialtyId,int doctorId);
+        Object GetICDTypeCodeByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetDoctorTaxTypes(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

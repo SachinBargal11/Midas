@@ -84,9 +84,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     break;
                 case EN.Constants.VisitType:
                     path = documentPath[0].Replace("cmp/", "")
-                                        .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                        .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
                                                                                                    .FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                        .Replace("cs", "cs-" + _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                        .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
                     break;
             }
             return (object)path;
@@ -114,9 +114,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             {
                 storagePath.Append(remotePath)
                            .Append(COMPANY)
-                           .Append(_dbSet.Where(xc => xc.UserID == _context.PatientVisit2.FirstOrDefault(p => p.Id == id).PatientId).FirstOrDefault().CompanyID)
+                           .Append(_dbSet.Where(xc => xc.UserID == _context.PatientVisits.FirstOrDefault(p => p.Id == id).PatientId).FirstOrDefault().CompanyID)
                            .Append(CASE)
-                           .Append(_context.PatientVisit2.FirstOrDefault(p => p.Id == id).CaseId)
+                           .Append(_context.PatientVisits.FirstOrDefault(p => p.Id == id).CaseId)
                            .Append(VISIT)
                            .Append(id);
             }

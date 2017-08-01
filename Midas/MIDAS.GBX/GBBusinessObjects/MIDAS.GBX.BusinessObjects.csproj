@@ -59,6 +59,33 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.AncillaryWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.AncillaryWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.CollectionWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.CollectionWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.FundingWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.FundingWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,7 +107,9 @@
     <Compile Include="Address\AddressInfo.cs" />
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
+    <Compile Include="CompanyICDTypeCode\CompanyICDTypeCode.cs" />
     <Compile Include="Company\CompanyType.cs" />
+    <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
     <Compile Include="InsuranceType\InsuranceType.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />
     <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
@@ -143,15 +172,13 @@
     <Compile Include="PatientVisitEvent\PatientVisitEvent.cs" />
     <Compile Include="PatientVisitProcedureCode\PatientVisitProcedureCode.cs" />
     <Compile Include="PatientVisit\PatientVisit.cs" />
-    <Compile Include="PatientVisit\PatientVisit2.cs" />
-    <Compile Include="Patient\Patient2.cs" />
+    <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\PatientType.cs" />
     <Compile Include="ProcedureCodeCompanyMapping\ProcedureCodeCompanyMapping.cs" />
     <Compile Include="ProcedureCode\ProcedureCode.cs" />
     <Compile Include="ReferralProcedureCode\ReferralProcedureCode.cs" />
     <Compile Include="Referral\MidasDocument.cs" />
     <Compile Include="Referral\Referral.cs" />
-    <Compile Include="Referral\Referral2.cs" />
     <Compile Include="Referral\ReferralDocument.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
