@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="74f888316ee946128caf7b5e95f9289c" Name="Diagram1">
+        <EntityTypeShape EntityType="NotificationModel.Application" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="NotificationModel.ApplicationGroup" Width="1.5" PointX="3" PointY="9.5" />
+        <EntityTypeShape EntityType="NotificationModel.Event" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="NotificationModel.EventGroup" Width="1.5" PointX="5.25" PointY="10.375" />
+        <EntityTypeShape EntityType="NotificationModel.EventSubscription" Width="1.5" PointX="5.25" PointY="7" />
+        <EntityTypeShape EntityType="NotificationModel.User" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="NotificationModel.UserConnection" Width="1.5" PointX="5.25" PointY="1.375" />
+        <AssociationConnector Association="NotificationModel.FK__Applicati__Appli__3A81B327" />
+        <AssociationConnector Association="NotificationModel.FK__Event__Applicati__3F466844" />
+        <AssociationConnector Association="NotificationModel.FK__User__Applicatio__30C33EC3" />
+        <AssociationConnector Association="NotificationModel.FK__EventGrou__Group__3D5E1FD2" />
+        <AssociationConnector Association="NotificationModel.FK__EventGrou__Event__3E52440B" />
+        <AssociationConnector Association="NotificationModel.FK__EventSubs__Event__403A8C7D" />
+        <AssociationConnector Association="NotificationModel.FK__UserConne__UserN__078C1F06" />
+        <EntityTypeShape EntityType="NotificationModel.Message" Width="1.5" PointX="5.25" PointY="13.125" />
+        <AssociationConnector Association="NotificationModel.FK__Message__EventID__54968AE5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
