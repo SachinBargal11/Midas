@@ -131,6 +131,7 @@ export class PatientVisitComponent implements OnInit {
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
     doctorId: number = this.sessionStore.session.user.id;
+    doctorSpecialities: DoctorSpeciality[];
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -166,7 +167,7 @@ export class PatientVisitComponent implements OnInit {
         private _patientVisitsStore: PatientVisitsStore,
         private _patientsStore: PatientsStore,
         private _roomsStore: RoomsStore,
-        private _doctorsStore: DoctorsStore,
+        public  doctorsStore: DoctorsStore,
         public locationsStore: LocationsStore,
         private _scheduleStore: ScheduleStore,
         private _roomScheduleStore: RoomScheduleStore,
@@ -229,12 +230,34 @@ export class PatientVisitComponent implements OnInit {
                 this.locationsStore.getLocations();
             } else {
                 this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+                 this.doctorsStore.fetchDoctorById( this.doctorId)
+                 .subscribe((doctor: Doctor) => {
+                 this.doctorSpecialities = doctor.doctorSpecialities;
+            },
+
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
             }
         });
         if (!this.sessionStore.isOnlyDoctorRole()) {
             this.locationsStore.getLocations();
         } else {
             this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+             this.doctorsStore.fetchDoctorById( this.doctorId)
+             .subscribe((doctor: Doctor) => {
+                 this.doctorSpecialities = doctor.doctorSpecialities;
+            },
+
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
         }
         this._patientsStore.getPatientsWithOpenCases();
     }
@@ -268,7 +291,7 @@ export class PatientVisitComponent implements OnInit {
     }
     getReadingDoctorsByCompanyId() {
         // this._progressBarService.show();
-        this._doctorsStore.getReadingDoctorsByCompanyId()
+        this.doctorsStore.getReadingDoctorsByCompanyId()
             .subscribe((readingDoctors: Doctor[]) => {
                 let doctorDetails = _.reject(readingDoctors, (currentDoctor: Doctor) => {
                     return currentDoctor.user == null;
