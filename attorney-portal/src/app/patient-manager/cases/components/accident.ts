@@ -217,7 +217,7 @@ export class AccidentInfoComponent implements OnInit {
             result.subscribe(
                 (response) => {
                     let notification = new Notification({
-                        'title': 'Accident Information updated successfully!',
+                        'title': 'Accident information updated successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
@@ -249,7 +249,7 @@ export class AccidentInfoComponent implements OnInit {
             addResult.subscribe(
                 (response) => {
                     let notification = new Notification({
-                        'title': 'Accident Information added successfully!',
+                        'title': 'Accident information added successfully!',
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });

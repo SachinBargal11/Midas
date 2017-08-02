@@ -447,6 +447,41 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object LoginWithUserName(T data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
+        {
+            try
+            {
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.LoginWithUserName(data);
+                    return gbdata;
+                }
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(data)).ID, ex.Message));
+            }
+        }
+
         public Object Login2(T data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
         {
             try
@@ -1793,15 +1828,34 @@ namespace MIDAS.GBX.DataAccessManager
 
             catch (GbException gbe)
             {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
                 return gbe;
             }
             catch (Exception ex)
             {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
                 return ex;
             }
         }
+
+        public Object GetByDoctorAndCompanyId(int doctorId,int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByDoctorAndCompanyId(doctorId, companyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
 
         public Object GetByReferringUserId(int UserId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
@@ -1847,12 +1901,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByDoctorAndDates(int DoctorId, int medicalProviderId, DateTime FromDate, DateTime ToDate, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
+                var gbdata = baseRepo.GetByDoctorAndDates(DoctorId, medicalProviderId, FromDate, ToDate);
 
                 return gbdata;
             }
@@ -3521,5 +3575,70 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId, int specialtyId, int doctorId)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetRecurrenceByCaseAndSpecialtyAndDoctorId(caseId, specialtyId, doctorId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+        
+        public Object GetICDTypeCodeByCompanyId(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetICDTypeCodeByCompanyId(CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetDoctorTaxTypes(int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetDoctorTaxTypes();
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
     }
 }

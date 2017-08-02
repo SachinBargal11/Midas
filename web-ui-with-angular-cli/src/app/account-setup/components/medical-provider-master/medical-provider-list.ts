@@ -109,7 +109,7 @@ export class MedicalProviderListComponent implements OnInit {
                     this.currentProviderId = 0;
                 },
                 (error) => {
-                    let errString = 'Unable to assign Provider.';
+                    let errString = 'Unable to assign provider.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -147,7 +147,7 @@ export class MedicalProviderListComponent implements OnInit {
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Medical Provider deleted successfully!',
+                                    'title': 'Medical provider deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
                                 });
@@ -157,7 +157,7 @@ export class MedicalProviderListComponent implements OnInit {
                                 this.selectedProviders = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete Medical Provider';
+                                let errString = 'Unable to delete medical provider';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',

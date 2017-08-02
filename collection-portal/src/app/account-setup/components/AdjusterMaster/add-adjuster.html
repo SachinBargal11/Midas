@@ -10,11 +10,11 @@
                     <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="adjusterform.controls.firstname.touched && !adjusterform.controls.firstname.valid">
-                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!adjusterform.controls.firstname.valid">
-                        <div class='error-list' *ngIf="adjusterform.controls.firstname.touched && !adjusterform.controls.firstname.valid">
+                    <div class="form-group" [class.error]="adjusterformControls.firstname.touched && !adjusterformControls.firstname.valid">
+                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!adjusterformControls.firstname.valid">
+                        <div class='error-list' *ngIf="adjusterformControls.firstname.touched && !adjusterformControls.firstname.valid">
                             <ul>
-                                <li *ngIf="adjusterform.controls.firstname.hasError('required')">First Name is required.</li>
+                                <li *ngIf="adjusterformControls.firstname.hasError('required')">First Name is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -29,11 +29,11 @@
                     <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="adjusterform.controls.lastname.touched && !adjusterform.controls.lastname.valid">
-                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!adjusterform.controls.lastname.valid">
-                        <div class='error-list' *ngIf="adjusterform.controls.lastname.touched && !adjusterform.controls.lastname.valid">
+                    <div class="form-group" [class.error]="adjusterformControls.lastname.touched && !adjusterformControls.lastname.valid">
+                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!adjusterformControls.lastname.valid">
+                        <div class='error-list' *ngIf="adjusterformControls.lastname.touched && !adjusterformControls.lastname.valid">
                             <ul>
-                                <li *ngIf="adjusterform.controls.lastname.hasError('required')">Last Name is required.</li>
+                                <li *ngIf="adjusterformControls.lastname.hasError('required')">Last Name is required.</li>
                             </ul>
                         </div>
                     </div>

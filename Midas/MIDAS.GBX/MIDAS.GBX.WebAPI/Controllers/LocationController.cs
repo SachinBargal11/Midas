@@ -55,6 +55,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByCompanyId/{companyId}")]
+        public HttpResponseMessage GetByCompanyId(int companyId)
+        {
+            return requestHandler.GetByCompanyId(Request, companyId);
+        }
+
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]

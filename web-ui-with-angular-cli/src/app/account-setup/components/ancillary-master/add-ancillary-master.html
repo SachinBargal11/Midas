@@ -2,18 +2,18 @@
     <div class="form-check form-check-inline">
         <label class="form-check-label">
             <!--<input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onMedicalProviderModelChange($event)"> Assign Preffered Medical Provider-->
-            <input type="radio" value="1" name="medicalProviderMode" [(ngModel)]="medicalProviderMode"> Assign Preffered Ancillary
+            <input type="radio" value="1" name="medicalProviderMode" [(ngModel)]="medicalProviderMode"> Assign Preferred Ancillary
         </label>
     </div>
     <div class="form-check  form-check-inline">
         <label class="form-check-label">
-            <input type="radio" value="2" name="medicalProviderMode" [(ngModel)]="medicalProviderMode"> Add Preffered Ancillary
+            <input type="radio" value="2" name="medicalProviderMode" [(ngModel)]="medicalProviderMode"> Add Preferred Ancillary
         </label>
     </div>
 </div>
 <section class="card" [hidden]="medicalProviderMode != '1'">
     <header class="card-header card-header-lg">
-        Assign Preffered Ancillary
+        Assign Preferred Ancillary
     </header>
     <div class="card-block">
         <div class="row">
@@ -38,7 +38,7 @@
 
 <section class="card" [hidden]="medicalProviderMode != '2'">
     <header class="card-header card-header-lg">
-        Add Preffered Ancillary
+        Add Preferred Ancillary
     </header>
     <div class="card-block">
         <form [formGroup]="ancillaryform" name="ancillaryform" (ngSubmit)="saveAncillary()">

@@ -85,7 +85,7 @@ export class InsuranceListComponent implements OnInit {
                         this.selectedInsurances = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete Insurance';
+                        let errString = 'Unable to delete insurance';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
@@ -102,12 +102,12 @@ export class InsuranceListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Insurance to delete',
+                'title': 'Select insurance to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this.notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Insurance to delete');
+            this._notificationsService.error('Oh No!', 'Select insurance to delete');
         }
     }
 

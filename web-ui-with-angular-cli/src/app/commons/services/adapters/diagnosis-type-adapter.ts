@@ -10,6 +10,7 @@ export class DiagnosisTypeAdapter {
         if (data) {
             diagnosisType = new DiagnosisType({
                 id: data.id,
+                icdTypeCodeID: data.icdTypeCodeID,
                 companyId: data.companyId,
                 company: CompanyAdapter.parseResponse(data.company),
                 diagnosisTypeText: data.diagnosisTypeText,

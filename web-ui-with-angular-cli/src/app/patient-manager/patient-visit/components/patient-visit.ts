@@ -130,6 +130,7 @@ export class PatientVisitComponent implements OnInit {
     visitId: number;
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
+    doctorId: number = this.sessionStore.session.user.id;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -224,9 +225,17 @@ export class PatientVisitComponent implements OnInit {
         };
 
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.locationsStore.getLocations();
+            if (!this.sessionStore.isOnlyDoctorRole()) {
+                this.locationsStore.getLocations();
+            } else {
+                this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+            }
         });
-        this.locationsStore.getLocations();
+        if (!this.sessionStore.isOnlyDoctorRole()) {
+            this.locationsStore.getLocations();
+        } else {
+            this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
+        }
         this._patientsStore.getPatientsWithOpenCases();
     }
 
@@ -605,15 +614,15 @@ export class PatientVisitComponent implements OnInit {
         let canScheduleAppointement: boolean = true;
         if (!this.selectedLocationId) {
             canScheduleAppointement = false;
-            this._notificationsService.alert('Oh No!', 'Please Select Location!');
+            this._notificationsService.alert('Oh No!', 'Please select location!');
         } else {
             if (!this.selectedOption) {
                 canScheduleAppointement = false;
-                this._notificationsService.alert('Oh No!', 'Please Select Speciality Or Medical Test!');
+                this._notificationsService.alert('Oh No!', 'Please select specialty Or Medical Test!');
             } else if (this.selectedOption == 1) {
                 if (!this.selectedDoctorId) {
                     canScheduleAppointement = false;
-                    this._notificationsService.alert('Oh No!', 'Please Select Doctor!');
+                    this._notificationsService.alert('Oh No!', 'Please select doctor!');
                 } else {
                     if (this.doctorSchedule) {
                         let scheduleDetails: ScheduleDetail[] = this.doctorSchedule.scheduleDetails;
@@ -629,7 +638,7 @@ export class PatientVisitComponent implements OnInit {
             } else if (this.selectedOption == 2) {
                 if (!this.selectedRoomId) {
                     canScheduleAppointement = false;
-                    this._notificationsService.alert('Oh No!', 'Please select Room!');
+                    this._notificationsService.alert('Oh No!', 'Please select room!');
                 } else {
                     if (this.roomSchedule) {
                         let scheduleDetails: ScheduleDetail[] = this.roomSchedule.scheduleDetails;
@@ -649,6 +658,21 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+        this.selectedProcedures = null;
+        this.eventDialogVisible = false;
+        this.addNewPatientForm.reset();
+        this.patientScheduleForm.reset();
+        this.selectedVisit = null;
+        if (this.selectedOption == 1) {
+            if (this.selectedSpeciality.mandatoryProcCode) {
+                this.isProcedureCode = true;
+            } else {
+                this.isProcedureCode = false;
+            }
+        } else if (this.selectedOption == 2) {
+            this.isProcedureCode = true;
+        }
+        this.procedures = this.procedures;
         let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
         if (canScheduleAppointement) {
@@ -861,7 +885,7 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = true;
     }
-    
+
     saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
         let patientVisitFormValues = this.patientVisitForm.value;
         let updatedVisit: PatientVisit;
@@ -958,7 +982,7 @@ export class PatientVisitComponent implements OnInit {
                 this._notificationsService.success('Success!', 'Referral saved successfully');
             },
             (error) => {
-                let errString = 'Unable to save Referral.';
+                let errString = 'Unable to save referral.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -990,7 +1014,7 @@ export class PatientVisitComponent implements OnInit {
                 this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
             },
             (error) => {
-                let errString = 'Unable to cancel Appointment!';
+                let errString = 'Unable to cancel appointment!';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -1285,6 +1309,7 @@ export class PatientVisitComponent implements OnInit {
             }
         }
         this.eventDialogVisible = false;
+        this.handleEventDialogHide();
     }
 
     getDocuments() {
@@ -1327,8 +1352,8 @@ export class PatientVisitComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        if (error.message == 'Please Select document Type') {
-            this._notificationsService.error('Oh No!', 'Please Select document Type');
+        if (error.message == 'Please select document Type') {
+            this._notificationsService.error('Oh No!', 'Please select document Type');
         }
         else {
             this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
@@ -1416,7 +1441,7 @@ export class PatientVisitComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select record to delete');
+            this._notificationsService.error('Oh No!', 'Select record to delete');
         }
     }
 

@@ -26,18 +26,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             var patients = _context.UserCompanies.Where(usrcomp => usrcomp.CompanyID == companyId).Select(usr => usr.UserID).ToList();
             var cases = _context.Cases.Where(cs => patients.Contains(cs.PatientId)).Select(cse => cse.Id).ToList();
-            var visits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var visits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
                         
-            var scheduledvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var scheduledvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 1 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var completedvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var completedvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 2 &&                                                             
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var noshowvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var noshowvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 4 &&                                                             
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
@@ -57,18 +57,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             var patients = _context.UserCompanies.Where(usrcomp => usrcomp.CompanyID == companyId).Select(usr => usr.UserID).ToList();
             var cases = _context.Cases.Where(cs => patients.Contains(cs.PatientId)).Select(cse => cse.Id).ToList();
-            var visits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var visits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var scheduledvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var scheduledvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 1 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var completedvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var completedvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 2 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var noshowvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var noshowvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 4 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
@@ -86,22 +86,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.VisitReports visitreports = new BO.VisitReports();
             
             var cases = _context.Cases.Where(cs => cs.PatientId== patientId).Select(cse => cse.Id).ToList();
-            var visits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var visits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
             
-            var scheduledvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var scheduledvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 1 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var completedvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var completedvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 2 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var noshowvisits = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var noshowvisits = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              vis.VisitStatusId == 4 &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false))).ToList();
 
-            var caldarids = _context.PatientVisit2.Where(vis => cases.Contains((int)vis.CaseId) &&
+            var caldarids = _context.PatientVisits.Where(vis => cases.Contains((int)vis.CaseId) &&
                                                              (vis.IsDeleted.HasValue == false || (vis.IsDeleted.HasValue == true && vis.IsDeleted.Value == false)))
                                                              .Select(cal=>cal.CalendarEventId).ToList();
             

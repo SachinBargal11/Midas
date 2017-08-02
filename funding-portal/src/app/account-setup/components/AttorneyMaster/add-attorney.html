@@ -10,11 +10,11 @@
                     <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyform.controls.firstname.touched && !attorneyform.controls.firstname.valid">
-                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!attorneyform.controls.firstname.valid">
-                        <div class='error-list' *ngIf="attorneyform.controls.firstname.touched && !attorneyform.controls.firstname.valid">
+                    <div class="form-group" [class.error]="attorneyformControls.firstname.touched && !attorneyformControls.firstname.valid">
+                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!attorneyformControls.firstname.valid">
+                        <div class='error-list' *ngIf="attorneyformControls.firstname.touched && !attorneyformControls.firstname.valid">
                             <ul>
-                                <li *ngIf="attorneyform.controls.firstname.hasError('required')">First Name is required.</li>
+                                <li *ngIf="attorneyformControls.firstname.hasError('required')">First Name is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -29,11 +29,11 @@
                     <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyform.controls.lastname.touched && !attorneyform.controls.lastname.valid">
-                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!attorneyform.controls.lastname.valid">
-                        <div class='error-list' *ngIf="attorneyform.controls.lastname.touched && !attorneyform.controls.lastname.valid">
+                    <div class="form-group" [class.error]="attorneyformControls.lastname.touched && !attorneyformControls.lastname.valid">
+                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!attorneyformControls.lastname.valid">
+                        <div class='error-list' *ngIf="attorneyformControls.lastname.touched && !attorneyformControls.lastname.valid">
                             <ul>
-                                <li *ngIf="attorneyform.controls.lastname.hasError('required')">Last Name is required.</li>
+                                <li *ngIf="attorneyformControls.lastname.hasError('required')">Last Name is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -44,17 +44,17 @@
                     <label class="form-label"> Gender
                                     <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="attorneyform.controls.gender.touched && !attorneyform.controls.gender.valid">
-                        <select formControlName="gender" class="select2-arrow form-control" [class.error]="attorneyform.controls.gender.touched && !attorneyform.controls.gender.valid">
+                    <div class="form-group" [class.error]="attorneyformControls.gender.touched && !attorneyformControls.gender.valid">
+                        <select formControlName="gender" class="select2-arrow form-control" [class.error]="attorneyformControls.gender.touched && !attorneyformControls.gender.valid">
                                              <option value="">-Select Gender-</option>
                                              <option disabled>────────────────────</option>
                                              <option value="1">Male</option>
                                              <option value="2">Female</option>
                                              <option value="3">Others</option>
                                          </select>
-                        <div class='error-list' *ngIf="attorneyform.controls.gender.touched && !attorneyform.controls.gender.valid">
+                        <div class='error-list' *ngIf="attorneyformControls.gender.touched && !attorneyformControls.gender.valid">
                             <ul>
-                                <li *ngIf="attorneyform.controls.gender.hasError('required')">Gender is required.</li>
+                                <li *ngIf="attorneyformControls.gender.hasError('required')">Gender is required.</li>
                             </ul>
                         </div>
                     </div>

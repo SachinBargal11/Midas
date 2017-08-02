@@ -13,7 +13,7 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 @Component({
     selector: 'users-list',
@@ -91,56 +91,60 @@ export class UsersListComponent implements OnInit {
     deleteUser() {
         if (this.selectedUsers !== undefined) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
 
-            this.selectedUsers.forEach(currentUser => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                let result;
-                result = this._usersStore.deleteUser(currentUser);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'User ' + currentUser.firstName + ' ' + currentUser.lastName + ' deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadUsers();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedUsers = undefined;
-                        // this.users.splice(this.users.indexOf(currentUser), 1);
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName;
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+                    this.selectedUsers.forEach(currentUser => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        let result;
+                        if (currentUser.userRole != 'Doctor') {
+                            result = this._usersStore.deleteUser(currentUser);
+                        } else if (currentUser.userRole == 'Doctor') {
+                            result = this._usersStore.disassociateDoctorWithCompany(this._sessionStore.session.currentCompany.id,currentUser.id);
+                        }
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'User ' + currentUser.firstName + ' ' + currentUser.lastName + ' deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadUsers();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedUsers = undefined;
+                                // this.users.splice(this.users.indexOf(currentUser), 1);
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName;
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
-            });
-            }
+                }
             });
         }
         else {
             let notification = new Notification({
-                'title': 'select users to delete',
+                'title': 'Select users to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select users to delete');
+            this._notificationsService.error('Oh No!', 'Select users to delete');
         }
     }
     onRowSelect(user) {

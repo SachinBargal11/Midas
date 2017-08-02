@@ -35,6 +35,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //    return requestHandler.GetGbObjects(Request, id);
         //}
 
+        [HttpGet]
+        [Route("getDiagnosisTypeByCompanyIdAndICDTypeId/{companyId}/{ICDTypeCodeId}")]
+        public HttpResponseMessage GetDiagnosisTypeByCompanyIdAndICDTypeId(int companyId, int ICDTypeCodeId)
+        {
+            return requestHandler.GetGbObjects(Request, companyId, ICDTypeCodeId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

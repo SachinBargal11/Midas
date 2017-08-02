@@ -39,7 +39,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string LastName { get; set; }
     
         public virtual Gender Gender { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
+        public virtual Patient Patient { get; set; }
         public virtual Relation Relation { get; set; }
     }
 }

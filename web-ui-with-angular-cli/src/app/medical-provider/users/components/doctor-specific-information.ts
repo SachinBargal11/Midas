@@ -138,7 +138,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
-                let errString = 'Unable to update Doctor.';
+                let errString = 'Unable to update doctor.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

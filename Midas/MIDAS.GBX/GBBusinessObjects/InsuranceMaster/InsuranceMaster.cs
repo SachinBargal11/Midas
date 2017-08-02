@@ -30,6 +30,18 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("adjusterMasters")]
         public AdjusterMaster AdjusterMasters { get; set; }
 
+        [JsonProperty("ZeusID")]
+        public string ZeusID { get; set; }
+
+        [JsonProperty("priorityBilling")]
+        public int? PriorityBilling { get; set; }
+
+        [JsonProperty("1500Form")]
+        public int? Only1500Form { get; set; }
+
+        [JsonProperty("paperAuthorization")]
+        public int? PaperAuthorization { get; set; }
+
     }
 
     public class mInsuranceMaster : GbObject
@@ -51,6 +63,18 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("mAdjusterMasters")]
         public mAdjusterMaster mAdjusterMasters { get; set; }
+
+        [JsonProperty("ZeusID")]
+        public string ZeusID { get; set; }
+
+        [JsonProperty("priorityBilling")]
+        public int? PriorityBilling { get; set; }
+
+        [JsonProperty("1500Form")]
+        public int? Only1500Form { get; set; }
+
+        [JsonProperty("paperAuthorization")]
+        public int? PaperAuthorization { get; set; }
 
     }
 }

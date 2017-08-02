@@ -47,7 +47,7 @@ export class ProcedureCodeComponent implements OnInit {
     selectedMode: number = 0;
     selectedDoctorId: number;
     selectedRoomId: number;
-    selectedOption: number;
+    selectedOption: number = 0;
     selectedSpecialityId: number;
     selectedTestId: number;
     msg: string;
@@ -83,6 +83,7 @@ export class ProcedureCodeComponent implements OnInit {
 
     ngOnInit() {
         this.selectedProcedures = [];
+        this.loadProceduresByCompanyId();
         this.loadAllSpecialitiesAndTests();
     }
 
@@ -110,17 +111,22 @@ export class ProcedureCodeComponent implements OnInit {
         this.selectedRoomId = 0;
         this.selectedOption = 0;
         this.selectedProcedures = [];
-        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+        this.selectedProceduresForCompany = [];
+        this.selectedProceduresCodes = [];
+        if (event.target.value == '0') {
+            this.selectedOption = 0;
+            this.selectedSpecialityId = 0;
+            this.selectedTestId = 0;
+            this.loadProceduresByCompanyId();
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
             this.selectedSpecialityId = parseInt(event.target.value);
-            this.loadProceduresForSpeciality(this.selectedSpecialityId);
             this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
             // this.fetchSelectedSpeciality(this.selectedSpecialityId);
             // this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
             this.selectedTestId = parseInt(event.target.value);
-            this.loadProceduresForRoomTest(this.selectedTestId);
             this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
             //this.fetchSelectedTestingFacility(this.selectedTestId);
             // this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
@@ -128,6 +134,8 @@ export class ProcedureCodeComponent implements OnInit {
             this.selectedMode = 0;
             this.procedures = null;
             this.selectedProcedures = [];
+            this.selectedProceduresForCompany = [];
+            this.selectedProceduresCodes = [];
         }
         this.msg = '';
     }
@@ -141,50 +149,19 @@ export class ProcedureCodeComponent implements OnInit {
         // })
     }
 
-    loadProceduresForSpeciality(specialityId: number) {
+    loadProceduresByCompanyId() {
         this._progressBarService.show();
-        let result = this._procedureCodeMasterStore.getBySpecialityAndCompanyId(specialityId, this._sessionStore.session.currentCompany.id);
-        result.subscribe((procedures: Procedure[]) => {
-
-            let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
-                return currentProcedure.id;
-            });
-            let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
-                return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-            });
-            this.proceduresArr = _.map(procedureDetails, (currProcedure: Procedure) => {
-                return {
-                    label: `${currProcedure.procedureCodeText} - ${currProcedure.procedureCodeDesc}`,
-                    value: currProcedure.toJS()
-                };
-            })
-        },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-    loadProceduresForRoomTest(roomTestId: number) {
-        this._progressBarService.show();
-        let result = this._procedureCodeMasterStore.getByRoomTestAndCompanyId(roomTestId, this._sessionStore.session.currentCompany.id);
-        result.subscribe(
-            (procedures: Procedure[]) => {
-                // this.procedures = procedures;
-                let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
-                    return currentProcedure.id;
-                });
-                let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
-                    return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-                });
-                this.proceduresArr = _.map(procedureDetails, (currProcedure: Procedure) => {
-                    return {
-                        label: `${currProcedure.procedureCodeText} - ${currProcedure.procedureCodeDesc}`,
-                        value: currProcedure.toJS()
-                    };
+        this._procedureCodeMasterStore.getProceduresByCompanyId(this._sessionStore.session.currentCompany.id)
+            .subscribe(procedure => {
+                let procedures = procedure;
+                this.selectedProceduresForCompany = _.map(procedures, (currentProcedure: Procedure) => {
+                    return currentProcedure.toJS();
                 })
+                this.selectedProceduresForCompanyStored = procedure.reverse();
+                this.savedProcedures = procedure.reverse();
+                // this.datasource = attorneys.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.attorneys = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -270,11 +247,11 @@ export class ProcedureCodeComponent implements OnInit {
                         this.selProcedureCodes = [];
                         this.selectedProcedures = [];
                         this.selectedProceduresCodes = [];
-                        if (this.selectedOption == 1) {
-                            this.loadProceduresForSpeciality(this.selectedSpecialityId);
+                        if (this.selectedOption == 0) {
+                            this.loadProceduresByCompanyId();
+                        } else if (this.selectedOption == 1) {
                             this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
                         } else {
-                            this.loadProceduresForRoomTest(this.selectedTestId);
                             this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
                         }
                     },
@@ -303,8 +280,9 @@ export class ProcedureCodeComponent implements OnInit {
     reset() {
         this.selectedMode = 0;
         this.procedures = null;
-        this.selectedProcedures = [];
-        this.loadAllSpecialitiesAndTests();
+        this.selectedProceduresForCompany = [];
+        this.selectedProceduresCodes = [];
+        // this.loadAllSpecialitiesAndTests();
     }
 
     deleteProcedureMappings() {
@@ -321,23 +299,23 @@ export class ProcedureCodeComponent implements OnInit {
                             .subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Procedure Mapping deleted successfully!',
+                                    'title': 'Procedure mapping deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
 
                                 });
-                                if (this.selectedOption == 1) {
-                                    this.loadProceduresForSpeciality(this.selectedSpecialityId);
+                                if (this.selectedOption == 0) {
+                                    this.loadProceduresByCompanyId();
+                                } else if (this.selectedOption == 1) {
                                     this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
                                 } else {
-                                    this.loadProceduresForRoomTest(this.selectedTestId);
                                     this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
                                 }
                                 this._notificationsStore.addNotification(notification);
                                 this.selectedProceduresCodes = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete Procedure Mapping';
+                                let errString = 'Unable to delete procedure mapping';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',
@@ -358,12 +336,12 @@ export class ProcedureCodeComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Procedure to delete',
+                'title': 'Select procedure to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Procedure to delete');
+            this._notificationsService.error('Oh No!', 'Select procedure to delete');
         }
     }
 }

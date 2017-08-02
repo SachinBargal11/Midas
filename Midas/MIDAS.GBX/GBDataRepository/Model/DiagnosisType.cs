@@ -18,19 +18,21 @@ namespace MIDAS.GBX.DataRepository.Model
         public DiagnosisType()
         {
             this.DiagnosisCodes = new HashSet<DiagnosisCode>();
+            this.DiagnosisTypeCompanies = new HashSet<DiagnosisTypeCompany>();
         }
     
         public int Id { get; set; }
         public string DiagnosisTypeText { get; set; }
-        public Nullable<int> CompanyId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int ICDTypeCodeID { get; set; }
     
-        public virtual Company Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
     }
 }

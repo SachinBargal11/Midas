@@ -23,6 +23,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public byte Id { get; set; }
         public string CaseTypeText { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string AbbreviationCode { get; set; }
+        public bool IsInclude1500 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Case> Cases { get; set; }

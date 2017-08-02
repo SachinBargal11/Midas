@@ -32,17 +32,18 @@
             </a>
         </ng-template>
     </p-column>
+     <p-column field="location.locationTypeLabel" header="Location Type" [sortable]="true">
+            <!-- <ng-template let-rowdata="rowData" pTemplate="body">
+                <span>{{rowdata.contact.workPhone | phoneFormat}}
+            </span>
+            </ng-template> -->
+    </p-column>
     <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
     <p-column field="contact.workPhone" header="Phone" [sortable]="true">
-        <!-->
-        <-->
             <ng-template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
             </ng-template>
-
-            <!-->
-            <-->
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-location="rowData" pTemplate="body">

@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonsModule } from '../commons/commons-module';
 import { DashboardComponent } from './components/dashboard';
 import { DashboardRoutingModule } from './dashboard-routes';
+import { PatientManagerModule } from '../patient-manager/patient-manager-module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { DashboardRoutingModule } from './dashboard-routes';
         FormsModule,
         ReactiveFormsModule,
         CommonsModule,
-        DashboardRoutingModule
+        DashboardRoutingModule,
+        PatientManagerModule
     ],
     declarations: [
         DashboardComponent

@@ -495,6 +495,29 @@ namespace MIDAS.GBX.WebAPI
         }
         #endregion
 
+        #region LoginWithUserName
+        public HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject)
+        {
+            User userBO = (User)(object)gbObject;
+            if (userBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.LoginWithUserName(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        #endregion
+
         #region Login
         public object Login(T gbObject)
         {
@@ -730,6 +753,24 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByCompanyId(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GetByCompanyId(companyId);
+
+            try
+            {
                 var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
@@ -1022,6 +1063,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByDoctorAndCompanyId(HttpRequestMessage request, int doctorId, int companyId)
+        {
+            var objResult = dataAccessManager.GetByDoctorAndCompanyId(doctorId, companyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByObjectIdAndType(HttpRequestMessage request, int objectId, string objectType)
         {
             var objResult = dataAccessManager.GetByObjectIdAndType(objectId, objectType);
@@ -1285,9 +1339,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
+        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, int medicalProviderId, DateTime FromDate, DateTime ToDate)
         {
-            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
+            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, medicalProviderId, FromDate, ToDate);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1521,7 +1575,7 @@ namespace MIDAS.GBX.WebAPI
 
             try
             {
-                var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
@@ -2044,6 +2098,46 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage AddPatientProfileDocument(HttpRequestMessage request, int PatientId, int DocumentId)
         {
             var objResult = dataAccessManager.AddPatientProfileDocument(PatientId, DocumentId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+        public HttpResponseMessage GetRecurrenceByCaseAndSpecialtyAndDoctorId(HttpRequestMessage request, int caseId, int specialtyId,int doctorId)
+        {
+            var objResult = dataAccessManager.GetRecurrenceByCaseAndSpecialtyAndDoctorId(caseId, specialtyId, doctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetICDTypeCodeByCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetICDTypeCodeByCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.GetDoctorTaxTypes();
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

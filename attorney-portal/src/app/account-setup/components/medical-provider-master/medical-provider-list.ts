@@ -108,7 +108,7 @@ export class MedicalProviderListComponent implements OnInit {
                     this.currentProviderId = 0;
                 },
                 (error) => {
-                    let errString = 'Unable to assign Provider.';
+                    let errString = 'Unable to assign provider.';
                     let notification = new Notification({
                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                         'type': 'ERROR',
@@ -127,7 +127,7 @@ export class MedicalProviderListComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select provider to assign to company');
+            this._notificationsService.error('Oh No!', 'Select provider to assign to company');
         }
     }
 
@@ -146,7 +146,7 @@ export class MedicalProviderListComponent implements OnInit {
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
-                                    'title': 'Medical Provider deleted successfully!',
+                                    'title': 'Medical provider deleted successfully!',
                                     'type': 'SUCCESS',
                                     'createdAt': moment()
                                 });
@@ -156,7 +156,7 @@ export class MedicalProviderListComponent implements OnInit {
                                 this.selectedProviders = [];
                             },
                             (error) => {
-                                let errString = 'Unable to delete Medical Provider';
+                                let errString = 'Unable to delete medical provider';
                                 let notification = new Notification({
                                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                                     'type': 'ERROR',

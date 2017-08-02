@@ -12,7 +12,7 @@ export class ProcedureAdapter {
         if (data) {
             procedure = new Procedure({
                 id: data.id,
-                procedureCodeId: data.procedureCodeId,
+                procedureCodeId: data.procedureCodeId ? data.procedureCodeId : data.procedureCodeID,
                 specialityId: data.specialityId,
                 roomId: data.roomId,
                 roomTestId: data.roomTestId,
@@ -28,7 +28,8 @@ export class ProcedureAdapter {
                 createByUserId: data.createByUserId,
                 updateByUserId: data.updateByUserId,
                 createDate: moment(data.createDate), // Moment
-                updateDate: moment(data.updateDate) // Moment
+                updateDate: moment(data.updateDate), // Moment
+                originalResponse: data
             });
         }
         return procedure;
@@ -42,7 +43,9 @@ export class ProcedureAdapter {
                 procedureCodeId: data.procedureCodeId,
                 procedureCodeText: data.procedureCodeText,
                 procedureCodeDesc: data.procedureCodeDesc,
-                amount: data.amount ? data.amount : null
+                amount: data.amount ? data.amount : null,
+                specialityId: data.specialtyId,
+                originalResponse: data
             });
         }
         return procedure;

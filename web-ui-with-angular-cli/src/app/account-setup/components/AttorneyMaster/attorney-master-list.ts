@@ -42,14 +42,12 @@ export class AttorneyMasterListComponent implements OnInit {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadAttorney();
-            this.loadAllAttorney();
         });
 
     }
 
     ngOnInit() {
         this.loadAttorney();
-        this.loadAllAttorney();
     }
 
     loadAttorney() {
@@ -69,76 +67,12 @@ export class AttorneyMasterListComponent implements OnInit {
             });
     }
 
-    loadAllAttorney() {
-        this._progressBarService.show();
-        this._attorneyMasterStore.getAllAttorney()
-            .subscribe((allAttorney: Attorney[]) => {
-                this.allAttorneys = allAttorney;
-                // let allFilteredAttorneys: Attorney[] = _.reject(allAttorney, (currentAttorney: Attorney) => {
-                //     return currentAttorney.user == null;
-                // });
-                // this.allAttorneys = allFilteredAttorneys;
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
     loadAttorneysLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
                 this.attorneys = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
-    }
-
-    selectAttorney(event) {
-        let currentAttorneyId = parseInt(event.target.value);
-        this.currentAttorneyId = currentAttorneyId;
-    }
-
-    assignAttorneyToCompany() {
-        if (this.currentAttorneyId !== 0) {
-            let result;
-            result = this._attorneyMasterStore.assignAttorney(this.currentAttorneyId);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Attorney assigned successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this.loadAttorney();
-                    this.loadAllAttorney();
-                    this.currentAttorneyId = 0;
-                    // this._router.navigate(['../'], { relativeTo: this._route });
-                },
-                (error) => {
-                    let errString = 'Unable to assign attorney.';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                },
-                () => {
-                });
-        } else {
-            let notification = new Notification({
-                'title': 'select attorney to assign to company',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select attorney to assign to company');
-        }
-
     }
 
     deleteAttorneys() {
@@ -162,8 +96,8 @@ export class AttorneyMasterListComponent implements OnInit {
                                     'createdAt': moment()
                                 });
                                 this.loadAttorney();
-                                this.loadAllAttorney();
                                 this._notificationsStore.addNotification(notification);
+                                this._notificationsService.success('Success!', 'Attorney deleted successfully!');
                                 this.selectedAttorneys = [];
                             },
                             (error) => {
@@ -187,12 +121,12 @@ export class AttorneyMasterListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select attorney to delete',
+                'title': 'Select attorney to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select attorney to delete');
+            this._notificationsService.error('Oh No!', 'Select attorney to delete');
         }
 
     }
