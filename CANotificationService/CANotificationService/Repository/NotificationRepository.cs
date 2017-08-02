@@ -30,6 +30,19 @@ namespace CANotificationService.Repository
             return null;
         }
 
+        public IEnumerable<NotificationUser> GetUsers(string applicationname)
+        {
+            using (NotificationEntities dc = new NotificationEntities())
+            {
+                return dc.Users.Where(u => u.Application.Name == applicationname).Select(a => new NotificationUser
+                {
+                    UserName = a.UserName,
+                    ApplicationID = (int)a.ApplicationID,
+                    ApplicationName = a.Application.Name
+                }).ToList();
+            }
+        }
+
         public List<NotificationUserConnection> GetUserConnections(string username, string applicationname)
         {
             using (NotificationEntities dc = new NotificationEntities())
@@ -102,10 +115,36 @@ namespace CANotificationService.Repository
                         Message = n.NotificationMessage,
                         ReceiverUserID = n.ReceiverUserID,
                         EventName = n.Event.Name,
+                        EventID = n.EventID,
                         NotificationTime = n.NotificationTime,
                         ApplicationName = n.Event.Application.Name,
+                        ApplicationID = n.Event.Application.Id,
                         IsRead = n.IsRead
                     }).ToList();
+            }
+        }
+
+        public void UpdateMessageStatus(int messageid)
+        {
+            using (NotificationEntities dc = new NotificationEntities())
+            {
+                var message = dc.Messages.Where(m => m.Id == messageid && m.IsRead == false).FirstOrDefault();
+                message.IsRead = true;
+                dc.SaveChanges();
+            }
+        }
+
+        public void UpdateMessageStatus(string username)
+        {
+            using (NotificationEntities dc = new NotificationEntities())
+            {
+                var messages = dc.Messages.Where(m => m.ReceiverUserID == username && m.IsRead == false).ToList();
+                messages.ForEach(m =>
+                {
+                    m.IsRead = true;
+                    m.NotificationTime = DateTime.Now;
+                });
+                dc.SaveChanges();
             }
         }
 
@@ -122,8 +161,10 @@ namespace CANotificationService.Repository
                         Message = n.NotificationMessage,
                         ReceiverUserID = n.ReceiverUserID,
                         EventName = n.Event.Name,
+                        EventID = n.EventID,
                         NotificationTime = n.NotificationTime,
                         ApplicationName = n.Event.Application.Name,
+                        ApplicationID = n.Event.Application.Id,
                         IsRead = n.IsRead
                     }).ToList();
             }
@@ -158,6 +199,14 @@ namespace CANotificationService.Repository
                 Application application = new Application { Name = applicationname };
                 dc.Applications.Add(application);
                 dc.SaveChanges();
+            }
+        }
+
+        public IEnumerable<NotificationApplication> GetApplications()
+        {
+            using (NotificationEntities dc = new NotificationEntities())
+            {
+              return dc.Applications.Select(a=> new NotificationApplication { ApplicationID = a.Id, ApplicationName = a.Name }).ToList();
             }
         }
 

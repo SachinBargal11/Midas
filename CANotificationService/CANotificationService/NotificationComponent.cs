@@ -30,6 +30,7 @@ namespace CANotificationService
                 cmd.Notification = null;
                 SqlDependency sqlDep = new SqlDependency(cmd);
                 sqlDep.OnChange += sqlDep_OnChange;
+                
                 //we must have to execute the command here
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -55,7 +56,15 @@ namespace CANotificationService
                     List<NotificationUserConnection> userConnections = repository.GetUserConnections(item.ReceiverUserID, item.ApplicationName);
                     foreach(var connection in userConnections)
                     {
-                        context.Clients.Client(connection.ConnectionId).addLatestNotification(item);
+                        if(item.IsRead)
+                        {
+                            context.Clients.Client(connection.ConnectionId).messageReadNotification(item);
+
+                        }
+                        else
+                        {
+                            context.Clients.Client(connection.ConnectionId).addLatestNotification(item);
+                        }
                     }
                 }
                 

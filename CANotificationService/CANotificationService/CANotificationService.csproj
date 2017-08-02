@@ -272,7 +272,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
-    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -353,6 +352,7 @@
     <Content Include="Repository\NotificationDataModel.edmx.diagram">
       <DependentUpon>NotificationDataModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Home\PushMessage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
