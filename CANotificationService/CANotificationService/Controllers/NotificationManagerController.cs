@@ -9,7 +9,7 @@ using CANotificationService.Models;
 
 namespace CANotificationService.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class NotificationManagerController : ApiController
     {
         [Route("NotificationManager/PushMessage")]
