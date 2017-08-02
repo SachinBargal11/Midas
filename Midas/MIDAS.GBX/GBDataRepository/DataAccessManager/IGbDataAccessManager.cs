@@ -172,5 +172,6 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId, int specialtyId,int doctorId);
         Object GetICDTypeCodeByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetDoctorTaxTypes(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetOpenCasesByCompanyWithPatient(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

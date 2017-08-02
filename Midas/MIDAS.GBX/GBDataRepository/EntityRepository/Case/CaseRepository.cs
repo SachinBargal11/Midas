@@ -1622,6 +1622,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Open Cases By Company With Patient
+        public override object GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            var result = _context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Join(_context.Cases.Where(p => p.CaseStatusId == 1
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))), 
+                                                           ccm => ccm.CaseId, c => c.Id, (ccm, c) => c)
+                                                     .Join(_context.Patients.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
+                                                           c => c.PatientId, pat => pat.Id, (c, pat) => new
+                                                           {
+                                                               CaseId = c.Id,
+                                                               PatientId = pat.Id
+                                                           })
+                                                     .Join(_context.Users.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
+                                                           caseandpatient => caseandpatient.PatientId, u => u.id, (caseandpatient, u) => new
+                                                           {
+                                                               CaseId = caseandpatient.CaseId,
+                                                               PatientId = caseandpatient.PatientId,
+                                                               CaseAndPatientName = caseandpatient.CaseId + " - " + u.FirstName + " " + u.LastName
+                                                           })
+                                                     .ToList();
+
+            if (result == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return result;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
