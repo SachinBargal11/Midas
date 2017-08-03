@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
     // var redirect_uri = window.location.protocol + "//" + window.location.host + "/JavaScriptClient/index.html";
     // var redirect_uri = redirect_uri;
     var response_type = "id_token token";
-    var scope = "openid profile email roles SampleWebAPI";
+    var scope = "openid profile email roles SampleWebAPI NotificationService";
 
     var state = this.rand();
     var nonce = this.rand();

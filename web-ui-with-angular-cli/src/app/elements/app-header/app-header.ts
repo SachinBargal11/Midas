@@ -119,7 +119,7 @@ export class AppHeaderComponent implements OnInit {
     }
 
     showSettingsDialog() {
-        this._router.navigate(['/account/user-settings']);
+        this._router.navigate(['/account/settings']);
 
     }
     closeDialog() {

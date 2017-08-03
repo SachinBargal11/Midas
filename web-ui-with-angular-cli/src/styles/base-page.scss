@@ -124,6 +124,31 @@ body {
     .select-list {
         width: 300px;
     }
+
+    // Primeng selection color changes
+
+    .ui-datatable .ui-datatable-data tr.ui-datatable-even.ui-state-highlight {
+        background-color: #59c09d;
+        border-color: #59c09d;
+    }
+    .ui-listbox .ui-listbox-item.ui-state-highlight {
+        background-color: #59c09d;
+    }
+    .ui-listbox .ui-listbox-item.ui-state-highlight .ui-chkbox {    
+        border: 1px solid #59c09d;
+    }
+    .ui-chkbox .ui-chkbox-box.ui-state-active {        
+        border: 1px solid #59c09d;
+        background-color: #59c09d
+    }
+    .ui-state-active,.ui-state-highlight {
+        background-color: #59c09d;
+    }
+    .ui-button {
+        background-color: #59c09d;
+    }
+    
+    //
 }
 
 .breadcrumb {

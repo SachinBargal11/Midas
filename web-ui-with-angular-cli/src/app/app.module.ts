@@ -69,6 +69,7 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
 
 import { AssociateUserService } from './commons/services/associate-user-service';
 import { AssociateUserStore } from './commons/stores/associate-user-store';
+import { PushNotificationService } from './commons/services/push-notification-service';
 // import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
@@ -145,7 +146,8 @@ import { AssociateUserStore } from './commons/stores/associate-user-store';
     MedicalProviderMasterService,
     MedicalProviderMasterStore,
     AssociateUserService,
-    AssociateUserStore
+    AssociateUserStore,
+    PushNotificationService
   ],
   bootstrap: [AppComponent]
 })

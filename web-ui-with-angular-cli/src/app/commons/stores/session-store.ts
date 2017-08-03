@@ -215,11 +215,12 @@ export class SessionStore {
                 return result;
             }, {});
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
-            if (this.session.account == null && storedAccount == null) {
+            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+            if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
                 let promise = new Promise((resolve, reject) => {
                     let accessToken: any = 'bearer ' + result.access_token;
-                    let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 60, 'seconds').toString();
-                    // this.login('mprovidercompany@gmail.com', 'Ca@123456', true).subscribe((account) => {
+                    let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 600, 'seconds').toString();
                     this._authenticationService.signinWithUserName('mprovidercompany@gmail.com', accessToken, tokenExpiresAt, result)
                         .subscribe((accountData) => {
                             let account: Account = AccountAdapter.parseStoredData(accountData);
@@ -231,10 +232,23 @@ export class SessionStore {
                             reject(error);
                         });
                 });
-                // return <Observable<User[]>>Observable.fromPromise(promise);
                 window.location.assign('http://localhost:4201/#/dashboard');
+                // return Observable.fromPromise(promise);
             } else {
                 this._populateTokenSession(result);
+            }
+        } else {
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+            if (this.session.account != null && storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
+                if (window.location.hash != '') {
+                    window.location.assign(window.location.href);
+                } else {
+                    window.location.assign('http://localhost:4201/#/dashboard');
+                }
+            } else {
+                // window.location.assign('http://localhost:4200/home');
             }
         }
     }
