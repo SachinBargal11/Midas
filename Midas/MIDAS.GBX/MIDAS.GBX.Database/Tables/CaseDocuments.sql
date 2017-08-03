@@ -27,3 +27,9 @@ ALTER TABLE CaseDocuments ADD DocumentType varchar(50) NULL;
 */
 
 
+ALTER TABLE [dbo].[CaseDocuments]  WITH CHECK ADD  CONSTRAINT [FK_CaseDocuments_Case_CaseId] FOREIGN KEY([CaseId])
+    REFERENCES [dbo].[Case] ([Id])
+GO
+
+ALTER TABLE [dbo].[CaseDocuments] CHECK CONSTRAINT [FK_CaseDocuments_Case_CaseId]
+GO

@@ -119,6 +119,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
+        [HttpGet]
+        [Route("GetOpenCasesByCompanyWithPatient/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            return requestHandler.GetOpenCasesByCompanyWithPatient(Request, CompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -1,3 +1,4 @@
+import { Data } from '@angular/router';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
@@ -24,9 +25,12 @@ export class DignosisComponent implements OnInit {
   selectedDiagnosisType: DiagnosisType;
   diagCodes: DiagnosisCode[];
   diagnosisCodes: SelectItem[] = [];
+  codes: SelectItem[] = [];
   selectedDiagnosisCodes: DiagnosisCode[];
   selectedDiagnosis: DiagnosisCode[];
   diagnosisTypeId: number;
+  icdTypeCodeID: number;
+  companyId: number;
 
   @Input() selectedVisit: PatientVisit;
   @Input() routeFrom: number;
@@ -49,16 +53,32 @@ export class DignosisComponent implements OnInit {
 
   ngOnInit() {
     this.routeFrom;
-    this.loadAllDiagnosisTypes();
+    // this.loadAllDiagnosisTypes();
+    this.loadAllICDTypes();
     this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
   }
 
-  loadAllDiagnosisTypes() {
-    // this._progressBarService.show();
-    let result = this._diagnosisStore.getAllDiagnosisTypes();
+  loadAllDiagnosisTypesByIcdCode(ICDTypeId) {
+    this._progressBarService.show();
+    let result = this._diagnosisStore.getDiagnosisTypeByCompanyIdAndICDTypeId(ICDTypeId);
     result.subscribe(
       (diagnosisTypes: DiagnosisType[]) => {
         this.diagnosisTypes = diagnosisTypes;
+      },
+      (error) => {
+        this._progressBarService.hide();
+      },
+      () => {
+        this._progressBarService.hide();
+      });
+  }
+
+  loadAllICDTypes() {
+    // this._progressBarService.show();
+    let result = this._diagnosisStore.getICDTypeCodeByCompanyId();
+    result.subscribe(
+      (codes: any[]) => {
+        this.codes = codes;
       },
       (error) => {
         // this._progressBarService.hide();
@@ -68,19 +88,29 @@ export class DignosisComponent implements OnInit {
       });
   }
 
-  searchDiagnosis(event) {
+  searchDiagnosisType(event) {
+    let currentICDTypeCodeID = event.target.value;
+    this.icdTypeCodeID = currentICDTypeCodeID;
+    if (currentICDTypeCodeID !== '') {
+      this.loadAllDiagnosisTypesByIcdCode(currentICDTypeCodeID);
+    } else {
+      this.codes = [];
+    }
+  }
+
+  searchDiagnosisCode(event) {
     let currentDiagnosisTypeId = event.target.value;
     this.diagnosisTypeId = currentDiagnosisTypeId;
     if (currentDiagnosisTypeId !== '') {
-      this.loadAllDiagnosisCodesForType(currentDiagnosisTypeId);
+      this.loadAllDiagnosisCodesForDiagnosisType(currentDiagnosisTypeId);
     } else {
       this.diagnosisCodes = [];
     }
   }
 
-  loadAllDiagnosisCodesForType(diagnosisTypeId: number) {
+  loadAllDiagnosisCodesForDiagnosisType(diagnosisTypeId: number) {
     this._progressBarService.show();
-    let result = this._diagnosisStore.getDiagnosisCodesByDiagnosisType(diagnosisTypeId);
+    let result = this._diagnosisStore.getDiagnosisCodesByCompanyIdAndDiagnosisTypeId(diagnosisTypeId);
     result.subscribe(
       (diagnosisCodes: DiagnosisCode[]) => {
         this.diagCodes = diagnosisCodes;
@@ -114,7 +144,7 @@ export class DignosisComponent implements OnInit {
     // });
     // this.saveComplete.emit(diagnosisCodes);
     this.save.emit(this.selectedDiagnosisCodes);
-    this.loadAllDiagnosisCodesForType(this.diagnosisTypeId);
+    this.loadAllDiagnosisCodesForDiagnosisType(this.diagnosisTypeId);
   }
 
   deleteDiagnosis() {
