@@ -66,6 +66,16 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveIMEVisit<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object SaveEOVisit<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
         {
             throw new NotImplementedException();

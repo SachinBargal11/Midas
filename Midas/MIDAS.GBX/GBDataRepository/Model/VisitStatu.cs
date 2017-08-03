@@ -12,38 +12,22 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CalendarEvent
+    public partial class VisitStatu
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CalendarEvent()
+        public VisitStatu()
         {
             this.EOVisits = new HashSet<EOVisit>();
             this.IMEVisits = new HashSet<IMEVisit>();
-            this.PatientVisits = new HashSet<PatientVisit>();
         }
     
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public System.DateTime EventStart { get; set; }
-        public System.DateTime EventEnd { get; set; }
-        public string TimeZone { get; set; }
-        public string Description { get; set; }
-        public Nullable<int> RecurrenceId { get; set; }
-        public string RecurrenceRule { get; set; }
-        public string RecurrenceException { get; set; }
-        public Nullable<bool> IsAllDay { get; set; }
+        public int ID { get; set; }
+        public string NAME { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<bool> IsCancelled { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EOVisit> EOVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IMEVisit> IMEVisits { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
     }
 }

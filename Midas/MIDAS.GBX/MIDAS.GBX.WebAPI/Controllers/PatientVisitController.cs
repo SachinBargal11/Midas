@@ -12,10 +12,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
     public class PatientVisitController : ApiController
     {
         private IRequestHandler<PatientVisit> requestHandler;
+        private IRequestHandler<IMEVisit> requestHandler1;
 
         public PatientVisitController()
         {
             requestHandler = new GbApiRequestHandler<PatientVisit>();
+            requestHandler1 = new GbApiRequestHandler<IMEVisit>();
         }
 
         [HttpGet]
@@ -52,6 +54,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.CreateGbObject(Request, data);
         }
+
+        [HttpPost]
+        [Route("SaveIMEVisit")]
+        public HttpResponseMessage SaveIMEVisit([FromBody]IMEVisit data)
+        {
+            return requestHandler1.CreateGbObject3(Request, data);
+        }
+        
 
         [HttpGet]
         [Route("DeleteVisit/{id}")]

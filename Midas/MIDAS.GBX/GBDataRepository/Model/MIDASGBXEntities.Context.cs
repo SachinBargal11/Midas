@@ -59,9 +59,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual DbSet<DoctorTaxType> DoctorTaxTypes { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
+        public virtual DbSet<EOVisit> EOVisits { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<GeneralSetting> GeneralSettings { get; set; }
         public virtual DbSet<ICDTypeCode> ICDTypeCodes { get; set; }
+        public virtual DbSet<IMEVisit> IMEVisits { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
@@ -117,8 +119,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
+        public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
+        public virtual DbSet<Patient2_backup> Patient2_backup { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {
