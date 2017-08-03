@@ -1466,7 +1466,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             caseCompanyMap.CaseId = CaseId;
             caseCompanyMap.CompanyId = AncillaryCompanyId;
-            caseCompanyMap.AddedByCompanyId = AddedByCompanyId; //Need to modify API parameters to have additional AddedByCompanyId
+            if (AddedByCompanyId.HasValue == true)
+            caseCompanyMap.AddedByCompanyId = AddedByCompanyId.Value; //Need to modify API parameters to have additional AddedByCompanyId
 
             if (add_CaseCompanyMap)
             {

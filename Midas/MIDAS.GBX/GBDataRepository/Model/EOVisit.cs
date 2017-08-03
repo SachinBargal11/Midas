@@ -12,24 +12,27 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class VisitType
+    public partial class EOVisit
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public VisitType()
-        {
-            this.PatientVisits = new HashSet<PatientVisit>();
-        }
-    
-        public byte Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> DoctorId { get; set; }
+        public Nullable<int> MedicalProviderId { get; set; }
+        public Nullable<int> InsuranceProviderId { get; set; }
+        public int CalendarEventId { get; set; }
+        public Nullable<int> VisitStatusId { get; set; }
+        public Nullable<System.DateTime> EventStart { get; set; }
+        public Nullable<System.DateTime> EventEnd { get; set; }
+        public string Notes { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
+        public virtual CalendarEvent CalendarEvent { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
+        public virtual Doctor Doctor { get; set; }
+        public virtual VisitStatu VisitStatu { get; set; }
     }
 }
