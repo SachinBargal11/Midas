@@ -77,6 +77,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getByLocationAndRoomTest/{locationId}/{roomTestId}")]
+        public HttpResponseMessage GetByLocationAndRoomTest(int locationId, int roomTestId)
+        {
+            return requestHandler.Get1(Request, locationId, roomTestId);
+        }
+
+        [HttpGet]
         [Route("getBySpecialityInAllApp/{SpecialtyId}")]
         public HttpResponseMessage GetBySpecialityInAllApp(int specialtyId)
         {
