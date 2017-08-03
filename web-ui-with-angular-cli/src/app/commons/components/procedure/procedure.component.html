@@ -29,7 +29,7 @@
     <!--<a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="deleteProcedureCode()">-->
     <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
-      <loader [visible]="isDeleteProgress"></loader>
+      <!--<loader [visible]="isDeleteProgress"></loader>-->
     </a>
   </h3>
 </div>
@@ -54,5 +54,5 @@
 <br>
 <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" class="btn btn-success sign-up" (click)="saveProcedures()">Save-->
 <button  class="btn btn-success sign-up" (click)="saveProcedures()">Save
-    <loader [visible]="isSaveProgress"></loader>
+    <!--<loader [visible]="isSaveProgress"></loader>-->
 </button>
