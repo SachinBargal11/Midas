@@ -13,9 +13,9 @@
             <div *ngIf="sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
                     <div class="form-group">
-                        <select class="select2-arrow form-control">
+                        <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                             <option value="0"> -- Select specialty -- </option>
-                            <option *ngFor="let specialty of doctorSpecialities" [value]="specialty.speciality.id">{{specialty.speciality.name}}</option>                                       
+                            <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>                                       
                         </select>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                 </div>
             </div>
             <div *ngIf="!isGoingOutOffice">
-                <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
+                <scheduled-event-editor [selectedPatientVisit]="selectedVisit" [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
             </div>
             <div class="row" *ngIf="!isGoingOutOffice">
                 <div class="col-md-2"><label class="form-label">Notes

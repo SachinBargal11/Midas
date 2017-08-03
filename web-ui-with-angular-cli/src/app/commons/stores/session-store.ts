@@ -9,6 +9,7 @@ import { Company } from '../../account/models/company';
 import { Account } from '../../account/models/account';
 import { AccountAdapter } from '../../account/services/adapters/account-adapter';
 import * as _ from 'underscore';
+import { UserRole } from "../models/user-role";
 
 @Injectable()
 export class SessionStore {
@@ -185,7 +186,8 @@ export class SessionStore {
     }
     isOnlyDoctorRole() {
         let isOnlyDoctorRole: boolean = false;
-        let roles = this.session ? this.session.user.roles : [];
+        let roles: UserRole[] =[];
+        roles = (this.session.account && this.session.user) ? this.session.user.roles : [];
         if (roles) {
             if (roles.length === 1) {
                 let doctorRoleOnly = _.find(roles, (currentRole) => {
