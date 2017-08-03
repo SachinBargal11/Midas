@@ -34,6 +34,7 @@ import { SelectItem } from 'primeng/primeng';
 
 export class AddUserComponent implements OnInit {
     states: any[];
+    taxTypes: any[];
     cities: any[];
     selectedRole: any[] = ['1'];
     isCalendarPublic: boolean = false;
@@ -123,6 +124,8 @@ export class AddUserComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+        this._doctorsStore.getDoctorsTaxType()
+            .subscribe(taxType => this.taxTypes = taxType);
     }
 
     onSelectedRoleChange(roleValues: any) {

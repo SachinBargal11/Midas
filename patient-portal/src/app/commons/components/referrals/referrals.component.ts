@@ -44,6 +44,7 @@ export class ReferralsComponent implements OnInit {
   selectedTestId: number;
   msg: string;
   selectedEvent;
+  visitReferrals:any[];
 
   @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
@@ -91,32 +92,33 @@ export class ReferralsComponent implements OnInit {
       });
   }
   getPendingReferralByPatientVisitId() {
-    // this._progressBarService.show();
-    this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
-      .subscribe(
-      (visitReferrals: VisitReferral[]) => {
-        let selectedProcSpec: Procedure;
-        _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
-          if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
-            selectedProcSpec = new Procedure({
-              specialityId: currentVisitReferral.forSpecialtyId,
-              speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
-            });
-            this.proceduresList.push(selectedProcSpec);
-          } else {
-            _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
-              this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
-              this.proceduresList = _.union(this.proceduresList);
-            })
-          }
-        });
-      },
-      (error) => {
-        // this._progressBarService.hide();
-      },
-      () => {
-        // this._progressBarService.hide();
-      });
+    // this._visitReferralStore.getPendingReferralByPatientVisitId(this.selectedVisit.id)
+    //   .subscribe(
+    //   (visitReferrals: VisitReferral[]) => {
+    //     let selectedProcSpec: Procedure;
+    //     _.forEach(visitReferrals, (currentVisitReferral: VisitReferral) => {
+    //       if (currentVisitReferral.pendingReferralProcedureCode.length <= 0) {
+    //         selectedProcSpec = new Procedure({
+    //           specialityId: currentVisitReferral.forSpecialtyId,
+    //           speciality: new Speciality(_.extend(currentVisitReferral.speciality.toJS()))
+    //         });
+    //         this.proceduresList.push(selectedProcSpec);
+    //       } else {
+    //         _.forEach(currentVisitReferral.pendingReferralProcedureCode, (currentVisitReferralProcedureCode: VisitReferralProcedureCode) => {
+    //           this.proceduresList.push(currentVisitReferralProcedureCode.procedureCode);
+    //           this.proceduresList = _.union(this.proceduresList);
+    //         })
+    //       }
+    //     });
+    //   },
+    //   (error) => {
+    //     this._progressBarService.hide();
+    //   },
+    //   () => {
+    //     this._progressBarService.hide();
+    //   });
+    this._visitReferralStore.getPendingReferralWithPatientVisitId(this.selectedVisit.id)
+     .subscribe(visitReferrals => this.visitReferrals = visitReferrals) 
   }
 
   selectOption(event) {
