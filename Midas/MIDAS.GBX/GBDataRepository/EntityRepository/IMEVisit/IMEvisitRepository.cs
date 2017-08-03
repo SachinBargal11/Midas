@@ -150,34 +150,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                                 if (StartAndEndTimes.Count > 0)
                                 {
-                                    DateTime? checkContinuation = null;
-                                    foreach (var eachSlot in StartAndEndTimes.Distinct().OrderBy(p => p.StartTime))
-                                    {
-                                        if (checkContinuation.HasValue == false)
-                                        {
-                                            checkContinuation = eachSlot.EndTime;
-                                        }
-                                        else
-                                        {
-                                            if (checkContinuation.Value != eachSlot.StartTime)
-                                            {
-                                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
-                                            }
-                                            else
-                                            {
-                                                checkContinuation = eachSlot.EndTime;
-                                            }
-                                        }
-                                    }
+                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have free slots for IME visit time on " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
                                 }
-                                else
-                                {
-                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
-                                }
-                            }
-                            else
-                            {
-                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
                             }
                         }
                     }
