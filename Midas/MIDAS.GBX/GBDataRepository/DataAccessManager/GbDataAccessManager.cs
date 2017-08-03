@@ -3661,5 +3661,26 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
+
+        public object GetByPatientVisitIdWithProcedureCodes(int PatientVisitId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var refid = baseRepo.GetByPatientVisitIdWithProcedureCodes(PatientVisitId);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

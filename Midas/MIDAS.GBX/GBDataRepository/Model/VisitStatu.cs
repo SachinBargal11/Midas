@@ -12,28 +12,22 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class DiagnosisType
+    public partial class VisitStatu
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DiagnosisType()
+        public VisitStatu()
         {
-            this.DiagnosisCodes = new HashSet<DiagnosisCode>();
-            this.DiagnosisTypeCompanies = new HashSet<DiagnosisTypeCompany>();
+            this.EOVisits = new HashSet<EOVisit>();
+            this.IMEVisits = new HashSet<IMEVisit>();
         }
     
-        public int Id { get; set; }
-        public string DiagnosisTypeText { get; set; }
+        public int ID { get; set; }
+        public string NAME { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int ICDTypeCodeID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
+        public virtual ICollection<EOVisit> EOVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
-        public virtual ICDTypeCode ICDTypeCode { get; set; }
+        public virtual ICollection<IMEVisit> IMEVisits { get; set; }
     }
 }

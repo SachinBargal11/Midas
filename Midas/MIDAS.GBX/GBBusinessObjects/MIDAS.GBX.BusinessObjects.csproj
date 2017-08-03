@@ -109,6 +109,7 @@
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
     <Compile Include="CompanyICDTypeCode\CompanyICDTypeCode.cs" />
     <Compile Include="Company\CompanyType.cs" />
+    <Compile Include="Doctor\DoctorRoomTestMapping.cs" />
     <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
     <Compile Include="InsuranceType\InsuranceType.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />

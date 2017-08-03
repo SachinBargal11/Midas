@@ -99,7 +99,7 @@ namespace MIDAS.GBX.BusinessObjects
         public List<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
 
         [JsonProperty("visitTypeId")]
-        public int? VisitTypeId { get; set; }
+        public byte? VisitTypeId { get; set; }
 
     }
 
