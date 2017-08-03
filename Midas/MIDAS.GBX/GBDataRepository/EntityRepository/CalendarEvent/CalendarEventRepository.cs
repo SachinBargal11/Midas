@@ -662,6 +662,159 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region BusySlots for Patients
+        public override object GetBusySlotsForPatients(int PatientId, DateTime StartDate, DateTime EndDate)
+        {
+            if (PatientId <= 0)
+            {
+                PatientId = _context.Patients.Where(p => p.Id == PatientId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                             .Select(p => p.Id).FirstOrDefault();
+            }
+
+            var CalendarEvents = _context.PatientVisits.Where(p => p.PatientId == PatientId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .Select(p => p.CalendarEvent)
+                                                        .ToList();
+
+            //var SlotDuration = _context.UserPersonalSettings.Where(p => p.UserId == PatientId
+            //                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                            .Select(p => p.SlotDuration)
+            //                                            .FirstOrDefault();
+
+            //if (SlotDuration == 0)
+            //{
+            //    SlotDuration = 30;
+            //}
+
+            //Calendar calendar = new Calendar();
+            Dictionary<HashSet<Occurrence>, string> Occurrences = new Dictionary<HashSet<Occurrence>, string>();
+            foreach (var eachEvent in CalendarEvents)
+            {
+                if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
+                {
+                    Calendar calendar = new Calendar();
+                    var newEvent = new Event()
+                    {
+                        Name = eachEvent.Name,
+                        Start = new CalDateTime(eachEvent.EventStart, "UTC"),
+                        End = new CalDateTime(eachEvent.EventEnd, "UTC"),
+                        Description = eachEvent.Description,
+                        IsAllDay = eachEvent.IsAllDay.HasValue == true ? eachEvent.IsAllDay.Value : false,
+                        Created = new CalDateTime(eachEvent.CreateDate)
+                    };
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceRule) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceRule = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceRule += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+                        IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceRule);
+                        if (recPattern.Frequency != FrequencyType.None)
+                        {
+                            newEvent.RecurrenceRules.Add(recPattern);
+                        }
+                    }
+
+                    if (String.IsNullOrWhiteSpace(eachEvent.RecurrenceException) == false)
+                    {
+                        var keyValuePair = eachEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                        if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                        {
+                            for (int i = 0; i < keyValuePair.Length; i++)
+                            {
+                                if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                                {
+                                    keyValuePair[i] = "";
+                                }
+                            }
+                        }
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                            {
+                                keyValuePair[i] = "COUNT=500";
+                            }
+                        }
+
+                        string modifiedRecurrenceException = "";
+
+                        foreach (var item in keyValuePair)
+                        {
+                            if (string.IsNullOrWhiteSpace(item) == false)
+                            {
+                                modifiedRecurrenceException += item + ";";
+                            }
+                        }
+
+                        modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+                        IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceException);
+                        if (recPattern.Frequency != FrequencyType.None)
+                        {
+                            newEvent.ExceptionRules.Add(recPattern);
+                        }
+                    }
+
+                    calendar.Events.Add(newEvent);
+                    HashSet<Occurrence> newEventOccurrences = new HashSet<Occurrence>();
+                    newEventOccurrences = calendar.GetOccurrences(StartDate, EndDate);
+
+                    Occurrences.Add(newEventOccurrences, eachEvent.TimeZone);
+                }                
+            }
+
+            List<BO.StartAndEndTime> EventTimes = new List<BO.StartAndEndTime>();
+
+            foreach (var eachOccurrences in Occurrences)
+            {
+                string TimeZone = eachOccurrences.Value;
+                int intTimeZone = 0;
+                int.TryParse(TimeZone, out intTimeZone);
+
+                intTimeZone = intTimeZone * -1;
+
+                HashSet<Occurrence> newEventOccurrences = new HashSet<Occurrence>();
+                newEventOccurrences = eachOccurrences.Key;
+
+                EventTimes.AddRange(newEventOccurrences.Select(p => new BO.StartAndEndTime
+                                                       {
+                                                           StartTime = p.Period.StartTime.AddMinutes(intTimeZone).Value,
+                                                           EndTime = p.Period.EndTime.AddMinutes(intTimeZone).Value
+                                                       })
+                                                       .ToList().Distinct().OrderBy(p => p.StartTime).ToList());
+            }
+
+            return (object)EventTimes;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
