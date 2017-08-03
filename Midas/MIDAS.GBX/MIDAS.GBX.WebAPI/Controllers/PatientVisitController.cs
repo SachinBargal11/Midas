@@ -55,14 +55,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        [HttpPost]
-        [Route("SaveIMEVisit")]
-        public HttpResponseMessage SaveIMEVisit([FromBody]IMEVisit data)
-        {
-            return requestHandler1.CreateGbObject3(Request, data);
-        }
-        
-
         [HttpGet]
         [Route("DeleteVisit/{id}")]
         public HttpResponseMessage DeleteVisit(int id)
