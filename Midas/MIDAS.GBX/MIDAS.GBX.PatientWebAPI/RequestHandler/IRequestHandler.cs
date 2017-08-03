@@ -67,5 +67,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetVisitsByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId, int companyId);
         HttpResponseMessage GetOpenCaseCompaniesByPatientId(HttpRequestMessage request, int PatientId);
+        HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId);
     }
 }

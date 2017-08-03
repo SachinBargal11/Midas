@@ -29,6 +29,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByPatientVisitId(Request, patientVisitId);
         }
 
+        [HttpGet]
+        [Route("getByPatientVisitIdWithProcedureCodes/{patientVisitId}")]
+        public HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(int patientVisitId)
+        {
+            return requestHandler.GetByPatientVisitIdWithProcedureCodes(Request, patientVisitId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

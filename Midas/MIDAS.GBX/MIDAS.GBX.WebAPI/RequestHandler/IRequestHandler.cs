@@ -155,5 +155,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetICDTypeCodeByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request);
         HttpResponseMessage GetOpenCasesByCompanyWithPatient(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId);
     }
 }
