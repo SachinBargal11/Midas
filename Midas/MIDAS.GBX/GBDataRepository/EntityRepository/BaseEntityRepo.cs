@@ -874,6 +874,21 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetMasterAndByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object Delete(int id, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetInsuranceDetails(int id, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

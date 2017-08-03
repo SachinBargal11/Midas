@@ -156,5 +156,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request);
         HttpResponseMessage GetOpenCasesByCompanyWithPatient(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId);
+        HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
+        HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
     }
 }

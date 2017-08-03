@@ -42,6 +42,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("paperAuthorization")]
         public int? PaperAuthorization { get; set; }
 
+        [JsonProperty("createdByCompanyId")]
+        public int? CreatedByCompanyId { get; set; }
+
     }
 
     public class mInsuranceMaster : GbObject

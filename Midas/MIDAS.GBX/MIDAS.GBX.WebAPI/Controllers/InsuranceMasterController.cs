@@ -18,29 +18,29 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<InsuranceMaster>();
         }
        
-        [HttpGet]
-        [Route("getAll")]
-        //[AllowAnonymous]
-        public HttpResponseMessage Get()
-        {
-            return requestHandler.GetObjects(Request);
-        }
+        //[HttpGet]
+        //[Route("getAll")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage Get()
+        //{
+        //    return requestHandler.GetObjects(Request);
+        //}
 
         // GET: api/Organizations/5
         [HttpGet]
-        [Route("get/{id}")]
+        [Route("getInsuranceDetails/{id}/{companyId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage GetInsuranceDetails(int id, int companyId)
         {
-            return requestHandler.GetObject(Request, id);
+            return requestHandler.GetInsuranceDetails(Request, id, companyId);
         }
 
         [HttpDelete]
         [HttpGet]
-        [Route("Delete/{id}")]
-        public HttpResponseMessage Delete(int id)
+        [Route("Delete/{id}/{companyId}")]
+        public HttpResponseMessage Delete(int id, int companyId)
         {
-            return requestHandler.Delete(Request, id);
+            return requestHandler.Delete(Request, id, companyId);
         }
 
         [HttpPost]
@@ -50,6 +50,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpGet]
+        [Route("getMasterAndByCompanyId/{companyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetMasterAndByCompanyId(int companyId)
+        {
+            return requestHandler.GetMasterAndByCompanyId(Request, companyId);
+        }
 
     }
 }

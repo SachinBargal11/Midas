@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -569,6 +569,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreatedByCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="InsuranceType">
           <Key>
@@ -2198,6 +2199,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InsuranceMaster_Company_CreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="InsuranceMaster">
+              <PropertyRef Name="CreatedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
@@ -3820,6 +3833,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
           </AssociationSet>
+          <AssociationSet Name="FK_InsuranceMaster_Company_CreatedByCompanyId" Association="Self.FK_InsuranceMaster_Company_CreatedByCompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="Invitation" EntitySet="Invitation" />
@@ -4237,8 +4254,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4542,6 +4558,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
           <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="Company" ToRole="UserPersonalSettings" />
+          <NavigationProperty Name="InsuranceMasters" Relationship="MIDASGBXModel.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="Company" ToRole="InsuranceMaster" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -4950,6 +4967,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
+          <Property Name="CreatedByCompanyId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="InsuranceMaster" ToRole="Company" />
         </EntityType>
         <EntityType Name="InsuranceType">
           <Key>
@@ -8787,12 +8806,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASGBXModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <AssociationSet Name="FK_InsuranceMaster_Company_CreatedByCompanyId" Association="MIDASGBXModel.FK_InsuranceMaster_Company_CreatedByCompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_CaseGetReadOnly_Result">
           <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -8813,6 +8836,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
           <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
         </ComplexType>
+        <Association Name="FK_InsuranceMaster_Company_CreatedByCompanyId">
+          <End Type="MIDASGBXModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.InsuranceMaster" Role="InsuranceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="InsuranceMaster">
+              <PropertyRef Name="CreatedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9398,6 +9433,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="InsuranceMasters">
             <EntityTypeMapping TypeName="MIDASGBXModel.InsuranceMaster">
               <MappingFragment StoreEntitySet="InsuranceMaster">
+                <ScalarProperty Name="CreatedByCompanyId" ColumnName="CreatedByCompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
