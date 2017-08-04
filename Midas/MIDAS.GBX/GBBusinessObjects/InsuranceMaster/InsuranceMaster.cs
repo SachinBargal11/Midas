@@ -36,7 +36,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("priorityBilling")]
         public int? PriorityBilling { get; set; }
 
-        [JsonProperty("1500Form")]
+        [JsonProperty("Only1500Form")]
         public int? Only1500Form { get; set; }
 
         [JsonProperty("paperAuthorization")]
