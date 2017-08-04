@@ -763,6 +763,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetBusySlotsForDoctors(int DoctorId, DateTime StartDate, DateTime EndDate)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate)
         {
             throw new NotImplementedException();
