@@ -115,6 +115,10 @@ import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
 import { AncillaryMasterStore } from '../account-setup/stores/ancillary-store';
 import { AncillaryMasterService } from '../account-setup/services/ancillary-service';
 
+import { PatientVisitShellComponent } from './patient-visit/components/patient-visit-shell';
+import { ImeVisitComponent } from './patient-visit/components/ime-visit';
+import { EoVisitComponent } from './patient-visit/components/eo-visit';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -181,8 +185,10 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
         PendingReferralsComponent,
         BillingInfoComponent,
         PaymentListComponent,
-        CaseBasicLabelComponent
-
+        CaseBasicLabelComponent,
+        PatientVisitShellComponent,
+        ImeVisitComponent,
+        EoVisitComponent,
 
     ],
     providers: [

@@ -1,3 +1,4 @@
+import { ImePatientAdapter } from './adapters/ime-patient-adapter';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -109,7 +110,6 @@ export class PatientsService {
         });
         return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
-
 
     getPatientsWithNoCase(): Observable<Patient[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
@@ -293,5 +293,22 @@ export class PatientsService {
         return `${this._url}/documentmanager/downloadfromnoproviderblob/${documentId}`;
     }
 
-}
+     getOpenCasesByCompanyWithPatient(companyId: number): Observable<Patient[]> {
+        let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/GetOpenCasesByCompanyWithPatient/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patients = (<Object[]>data).map((patientData: any) => {
+                        return ImePatientAdapter.parseResponse(patientData);
+                    });
+                    resolve(patients);
+                }, (error) => {
+                    reject(error);
+                });
 
+        });
+        return <Observable<Patient[]>>Observable.fromPromise(promise);
+    }
+}
