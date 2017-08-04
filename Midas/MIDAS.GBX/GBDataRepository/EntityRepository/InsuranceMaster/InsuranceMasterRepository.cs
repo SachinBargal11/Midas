@@ -264,7 +264,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = insuranceMasterBO.AddressInfo;
             BO.ContactInfo contactinfoBO = insuranceMasterBO.ContactInfo;
            
-            if (insuranceMasterBO.CreatedByCompanyId.HasValue == false)
+            if (insuranceMasterBO.CreatedByCompanyId.HasValue == true)
             {
                 InsuranceMaster insuranceMasterDB = new InsuranceMaster();
 
