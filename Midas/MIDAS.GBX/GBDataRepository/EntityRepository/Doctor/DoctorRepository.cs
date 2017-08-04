@@ -324,35 +324,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 doctorDB.DoctorSpecialities = lstDoctorSpecility;
 
-                if (doctorBO.DoctorRoomTestMappings.Count > 0)
-                {
-                    _dbSetDocRoomTestMapping.RemoveRange(_context.DoctorRoomTestMappings.Where(c => c.DoctorId == doctorBO.user.ID));
-                    _context.SaveChanges();
-                    RoomTest roomTestDB = null;
-                    DoctorRoomTestMapping doctorRoomTestMappingDB = null;
-                    foreach (var item in doctorBO.DoctorRoomTestMappings)
+                if(doctorBO.DoctorRoomTestMappings != null)
                     {
-                        BO.DoctorRoomTestMapping doctorRoomTestMappingBO = (BO.DoctorRoomTestMapping)(object)item;
-                        roomTestDB = new RoomTest();
-                        doctorRoomTestMappingDB = new DoctorRoomTestMapping();
-                        doctorRoomTestMappingDB.IsDeleted = doctorRoomTestMappingBO.IsDeleted.HasValue ? doctorRoomTestMappingBO.IsDeleted.Value : false;
-                        doctorRoomTestMappingDB.Doctor = doctorDB;
-                        //Find Record By ID
-                        RoomTest roomTest = _context.RoomTests.Where(p => p.id == doctorRoomTestMappingBO.ID).FirstOrDefault<RoomTest>();
-                        if (roomTest == null)
+                    if (doctorBO.DoctorRoomTestMappings.Count > 0)
+                    {
+                        _dbSetDocRoomTestMapping.RemoveRange(_context.DoctorRoomTestMappings.Where(c => c.DoctorId == doctorBO.user.ID));
+                        _context.SaveChanges();
+                        RoomTest roomTestDB = null;
+                        DoctorRoomTestMapping doctorRoomTestMappingDB = null;
+                        foreach (var item in doctorBO.DoctorRoomTestMappings)
                         {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { ErrorMessage = "Invalid specility " + item.ToString() + " details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            BO.DoctorRoomTestMapping doctorRoomTestMappingBO = (BO.DoctorRoomTestMapping)(object)item;
+                            roomTestDB = new RoomTest();
+                            doctorRoomTestMappingDB = new DoctorRoomTestMapping();
+                            doctorRoomTestMappingDB.IsDeleted = doctorRoomTestMappingBO.IsDeleted.HasValue ? doctorRoomTestMappingBO.IsDeleted.Value : false;
+                            doctorRoomTestMappingDB.Doctor = doctorDB;
+                            //Find Record By ID
+                            RoomTest roomTest = _context.RoomTests.Where(p => p.id == doctorRoomTestMappingBO.ID).FirstOrDefault<RoomTest>();
+                            if (roomTest == null)
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { ErrorMessage = "Invalid specility " + item.ToString() + " details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            }
+                            if (!lstDoctorRoomTestMapping.Select(p => p.RoomTest).Contains(roomTest))
+                            {
+                                doctorRoomTestMappingDB.RoomTest = roomTest;
+                                _context.Entry(roomTest).State = System.Data.Entity.EntityState.Modified;
+                                lstDoctorRoomTestMapping.Add(doctorRoomTestMappingDB);
+                            };
                         }
-                        if (!lstDoctorRoomTestMapping.Select(p => p.RoomTest).Contains(roomTest))
-                        {
-                            doctorRoomTestMappingDB.RoomTest = roomTest;
-                            _context.Entry(roomTest).State = System.Data.Entity.EntityState.Modified;
-                            lstDoctorRoomTestMapping.Add(doctorRoomTestMappingDB);
-                        };
                     }
+                    doctorDB.DoctorRoomTestMappings = lstDoctorRoomTestMapping;
                 }
-                doctorDB.DoctorRoomTestMappings = lstDoctorRoomTestMapping;
 
                 if (doctorDB.Id > 0)
                 {
