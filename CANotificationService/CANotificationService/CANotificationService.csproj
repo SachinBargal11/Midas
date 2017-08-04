@@ -291,6 +291,7 @@
     <Compile Include="Models\NotificationEventGroupDetail.cs" />
     <Compile Include="Models\NotificationEventSubscription.cs" />
     <Compile Include="Models\NotificationEventSubscriptionDetail.cs" />
+    <Compile Include="Models\UserEventSubscription.cs" />
     <Compile Include="Repository\Application.cs">
       <DependentUpon>NotificationDataModel.tt</DependentUpon>
     </Compile>
