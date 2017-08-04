@@ -3284,7 +3284,7 @@ namespace MIDAS.GBX.DataAccessManager
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetBusySlotsForPatients(DoctorId, StartDate, EndDate);
+                var gbdata = baseRepo.GetBusySlotsForDoctors(DoctorId, StartDate, EndDate);
                 return gbdata;
             }
             catch (GbException gbe)
