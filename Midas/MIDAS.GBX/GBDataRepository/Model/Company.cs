@@ -30,6 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.EOVisits1 = new HashSet<EOVisit>();
             this.GeneralSettings = new HashSet<GeneralSetting>();
             this.IMEVisits = new HashSet<IMEVisit>();
+            this.InsuranceMasters = new HashSet<InsuranceMaster>();
             this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
             this.Notifications = new HashSet<Notification>();
@@ -48,7 +49,6 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
             this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
-            this.InsuranceMasters = new HashSet<InsuranceMaster>();
         }
     
         public int id { get; set; }
@@ -100,6 +100,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IMEVisit> IMEVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InsuranceMaster> InsuranceMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Invitation> Invitations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Location> Locations { get; set; }
@@ -135,7 +137,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPersonalSetting> UserPersonalSettings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InsuranceMaster> InsuranceMasters { get; set; }
     }
 }

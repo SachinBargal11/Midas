@@ -32,13 +32,17 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> CreatedByCompanyId { get; set; }
+        public string ZeusID { get; set; }
+        public Nullable<int> PriorityBilling { get; set; }
+        public Nullable<int> Only1500Form { get; set; }
+        public Nullable<int> PaperAuthorization { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdjusterMaster> AdjusterMasters { get; set; }
+        public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
-        public virtual Company Company { get; set; }
     }
 }
