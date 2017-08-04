@@ -97,7 +97,8 @@ export class AddCaseComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
             attorneyId: [''],
-            caseSource: ['']
+            caseSource: [''],
+            claimNumber:['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -216,6 +217,7 @@ export class AddCaseComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             // attorneyId: caseFormValues.attorneyId,
             caseSource: caseFormValues.caseSource,
+            claimFileNumber: caseFormValues.claimNumber,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
             createdByCompanyId: this._sessionStore.session.currentCompany.id,
