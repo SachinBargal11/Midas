@@ -8852,6 +8852,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="String" Name="CaseSource" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="MedicalProvider" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="AttorneyProvider" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ClaimFileNumber" Nullable="true" />
           <Property Type="Int32" Name="CreateByUserID" Nullable="false" />
           <Property Type="DateTime" Name="CreateDate" Nullable="false" />
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
@@ -10385,6 +10386,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CaseSource" ColumnName="CaseSource" />
                 <ScalarProperty Name="MedicalProvider" ColumnName="MedicalProvider" />
                 <ScalarProperty Name="AttorneyProvider" ColumnName="AttorneyProvider" />
+                <ScalarProperty Name="ClaimFileNumber" ColumnName="ClaimFileNumber" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
