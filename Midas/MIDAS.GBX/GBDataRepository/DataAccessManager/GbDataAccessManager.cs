@@ -2338,6 +2338,87 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object SaveIMEVisit(T data)
+        {
+            try
+            {
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.SaveIMEVisit(data);
+                    return gbdata;
+                }
+            }
+
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object SaveEOVisit(T data)
+        {
+            try
+            {
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.SaveEOVisit(data);
+                    return gbdata;
+                }
+            }
+
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
 
         public Object GetByRoomTestId(int RoomTestId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
@@ -3166,6 +3247,25 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetFreeSlotsForDoctorByLocationId(DoctorId, LocationId, StartDate, EndDate);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetBusySlotsForPatients(int PatientId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetBusySlotsForPatients(PatientId, StartDate, EndDate);
 
                 return gbdata;
             }

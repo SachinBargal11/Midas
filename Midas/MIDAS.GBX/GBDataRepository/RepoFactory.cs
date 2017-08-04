@@ -305,6 +305,14 @@ namespace MIDAS.GBX
             {
                 repo = new ICDTypeCodeRepository(context);
             }
+            else if (typeof(T) == typeof(BO.IMEVisit))
+            {
+                repo = new IMEvisitRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.EOVisit))
+            {
+                repo = new EOVisitRepository(context);
+            }
 
             return repo;
         }

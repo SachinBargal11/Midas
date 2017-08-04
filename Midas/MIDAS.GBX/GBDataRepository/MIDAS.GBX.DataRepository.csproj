@@ -156,7 +156,9 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
+    <Compile Include="EntityRepository\EOVisit\EOVisitRepository.cs" />
     <Compile Include="EntityRepository\ICDTypeCode\ICDTypeCodeRepository.cs" />
+    <Compile Include="EntityRepository\IMEVisit\IMEvisitRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
@@ -394,6 +396,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Patient.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Patient2_backup.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientAccidentInfo.cs">

@@ -66,6 +66,16 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveIMEVisit<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object SaveEOVisit<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
         {
             throw new NotImplementedException();
@@ -744,6 +754,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public virtual Object GetBusySlotsForPatients(int PatientId, DateTime StartDate, DateTime EndDate)
         {
             throw new NotImplementedException();
         }
