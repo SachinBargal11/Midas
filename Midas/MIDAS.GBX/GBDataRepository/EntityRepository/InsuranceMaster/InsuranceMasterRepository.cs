@@ -42,10 +42,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boInsuranceMaster.CompanyName = eachInsuranceMaster.CompanyName;
                 boInsuranceMaster.AddressInfoId = eachInsuranceMaster.AddressInfoId;
                 boInsuranceMaster.ContactInfoId = eachInsuranceMaster.ContactInfoId;
-                //boInsuranceMaster.ZeusID = eachInsuranceMaster.ZeusID;
-                //boInsuranceMaster.PriorityBilling = eachInsuranceMaster.PriorityBilling;
-                //boInsuranceMaster.Only1500Form = eachInsuranceMaster.Only1500Form;
-                //boInsuranceMaster.PaperAuthorization = eachInsuranceMaster.PaperAuthorization;
+                boInsuranceMaster.ZeusID = eachInsuranceMaster.ZeusID;
+                boInsuranceMaster.PriorityBilling = eachInsuranceMaster.PriorityBilling;
+                boInsuranceMaster.Only1500Form = eachInsuranceMaster.Only1500Form;
+                boInsuranceMaster.PaperAuthorization = eachInsuranceMaster.PaperAuthorization;
+                boInsuranceMaster.CreatedByCompanyId = eachInsuranceMaster.CreatedByCompanyId;
 
                 //if (eachInsuranceMaster.IsDeleted.HasValue)
                 //    boInsuranceMaster.IsDeleted = eachInsuranceMaster.IsDeleted.Value;
@@ -111,10 +112,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boInsuranceMaster.CompanyName = insuranceMaster.CompanyName;
             boInsuranceMaster.AddressInfoId = insuranceMaster.AddressInfoId;
             boInsuranceMaster.ContactInfoId = insuranceMaster.ContactInfoId;
-            //boInsuranceMaster.ZeusID = insuranceMaster.ZeusID;
-            //boInsuranceMaster.PriorityBilling = insuranceMaster.PriorityBilling;
-            //boInsuranceMaster.Only1500Form = insuranceMaster.Only1500Form;
-            //boInsuranceMaster.PaperAuthorization = insuranceMaster.PaperAuthorization;
+            boInsuranceMaster.ZeusID = insuranceMaster.ZeusID;
+            boInsuranceMaster.PriorityBilling = insuranceMaster.PriorityBilling;
+            boInsuranceMaster.Only1500Form = insuranceMaster.Only1500Form;
+            boInsuranceMaster.PaperAuthorization = insuranceMaster.PaperAuthorization;
+            boInsuranceMaster.CreatedByCompanyId = insuranceMaster.CreatedByCompanyId;
 
             //if (insuranceMaster.IsDeleted.HasValue)
             //    boInsuranceMaster.IsDeleted = insuranceMaster.IsDeleted.Value;
@@ -174,7 +176,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get All Insurance Master
         public override Object Get()
         {
-            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<InsuranceMaster>();
+            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo")
+                                               .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<InsuranceMaster>();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.InsuranceMaster> acc_ = Convert<List<BO.InsuranceMaster>, List<InsuranceMaster>>(acc);
+                return (object)acc_;
+            }
+        }
+        #endregion
+
+        #region Get Master And By CompanyId
+        public override Object GetMasterAndByCompanyId(int CompanyId)
+        {
+            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo")
+                                               .Where(p => (p.CreatedByCompanyId.HasValue == false || (p.CreatedByCompanyId.HasValue == true && p.CreatedByCompanyId.Value == CompanyId))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<InsuranceMaster>();
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -188,10 +211,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Id 
-        public override object Get(int id)
+        public override object GetInsuranceDetails(int id, int CompanyId)
         {
 
-            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
+            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo")
+                                               .Where(p => p.Id == id 
+                                                    && (p.CreatedByCompanyId.HasValue == false || (p.CreatedByCompanyId.HasValue == true && p.CreatedByCompanyId.Value == CompanyId))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .FirstOrDefault<InsuranceMaster>();
 
             if (acc == null)
             {
@@ -206,10 +233,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Delete
-        public override object Delete(int id)
+        public override object Delete(int id, int CompanyId)
         {
 
-            InsuranceMaster insuranceMasterDB = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();           
+            InsuranceMaster insuranceMasterDB = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo")
+                                                                         .Where(p => p.Id == id && p.CreatedByCompanyId.HasValue == true && p.CreatedByCompanyId == CompanyId
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                         .FirstOrDefault<InsuranceMaster>();           
             if (insuranceMasterDB == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this InsuranceMaster.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -234,167 +264,172 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = insuranceMasterBO.AddressInfo;
             BO.ContactInfo contactinfoBO = insuranceMasterBO.ContactInfo;
            
-
-            InsuranceMaster insuranceMasterDB = new InsuranceMaster();
-
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            if (insuranceMasterBO.CreatedByCompanyId.HasValue == true)
             {
+                InsuranceMaster insuranceMasterDB = new InsuranceMaster();
 
-                bool IsEditMode = false;
-                IsEditMode = (insuranceMasterBO != null && insuranceMasterBO.ID > 0) ? true : false;
-
-                AddressInfo addressDB = new AddressInfo();
-                ContactInfo contactinfoDB = new ContactInfo();
-              
-                #region Address
-                if (addressBO != null)
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {
-                    bool Add_addressDB = false;
-                    addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                    if (addressDB == null && addressBO.ID <= 0)
+                    bool IsEditMode = false;
+                    IsEditMode = (insuranceMasterBO != null && insuranceMasterBO.ID > 0) ? true : false;
+
+                    AddressInfo addressDB = new AddressInfo();
+                    ContactInfo contactinfoDB = new ContactInfo();
+
+                    #region Address
+                    if (addressBO != null)
                     {
-                        addressDB = new AddressInfo();
-                        Add_addressDB = true;
+                        bool Add_addressDB = false;
+                        addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                        if (addressDB == null && addressBO.ID <= 0)
+                        {
+                            addressDB = new AddressInfo();
+                            Add_addressDB = true;
+                        }
+                        else if (addressDB == null && addressBO.ID > 0)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        addressDB.Name = IsEditMode == true && addressBO.Name == null ? addressDB.Name : addressBO.Name;
+                        addressDB.Address1 = IsEditMode == true && addressBO.Address1 == null ? addressDB.Address1 : addressBO.Address1;
+                        addressDB.Address2 = IsEditMode == true && addressBO.Address2 == null ? addressDB.Address2 : addressBO.Address2;
+                        addressDB.City = IsEditMode == true && addressBO.City == null ? addressDB.City : addressBO.City;
+                        addressDB.State = IsEditMode == true && addressBO.State == null ? addressDB.State : addressBO.State;
+                        addressDB.ZipCode = IsEditMode == true && addressBO.ZipCode == null ? addressDB.ZipCode : addressBO.ZipCode;
+                        addressDB.Country = IsEditMode == true && addressBO.Country == null ? addressDB.Country : addressBO.Country;
+                        //[STATECODE-CHANGE]
+                        //addressDB.StateCode = IsEditMode == true && addressBO.StateCode == null ? addressDB.StateCode : addressBO.StateCode;
+                        //[STATECODE-CHANGE]
+
+                        if (Add_addressDB == true)
+                        {
+                            addressDB = _context.AddressInfoes.Add(addressDB);
+                        }
+                        _context.SaveChanges();
                     }
-                    else if (addressDB == null && addressBO.ID > 0)
+                    else
                     {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        if (IsEditMode == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid address details.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        addressDB = null;
+                    }
+                    #endregion
+
+                    #region Contact Info
+                    if (contactinfoBO != null)
+                    {
+                        bool Add_contactinfoDB = false;
+                        contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                        if (contactinfoDB == null && contactinfoBO.ID <= 0)
+                        {
+                            contactinfoDB = new ContactInfo();
+                            Add_contactinfoDB = true;
+                        }
+                        else if (contactinfoDB == null && contactinfoBO.ID > 0)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        contactinfoDB.Name = IsEditMode == true && contactinfoBO.Name == null ? contactinfoDB.Name : contactinfoBO.Name;
+                        contactinfoDB.CellPhone = IsEditMode == true && contactinfoBO.CellPhone == null ? contactinfoDB.CellPhone : contactinfoBO.CellPhone;
+                        contactinfoDB.EmailAddress = IsEditMode == true && contactinfoBO.EmailAddress == null ? contactinfoDB.EmailAddress : contactinfoBO.EmailAddress;
+                        contactinfoDB.HomePhone = IsEditMode == true && contactinfoBO.HomePhone == null ? contactinfoDB.HomePhone : contactinfoBO.HomePhone;
+                        contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
+                        contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
+                        contactinfoDB.OfficeExtension = IsEditMode == true && contactinfoBO.OfficeExtension == null ? contactinfoDB.OfficeExtension : contactinfoBO.OfficeExtension;
+                        contactinfoDB.AlternateEmail = IsEditMode == true && contactinfoBO.AlternateEmail == null ? contactinfoDB.AlternateEmail : contactinfoBO.AlternateEmail;
+                        contactinfoDB.PreferredCommunication = IsEditMode == true && contactinfoBO.PreferredCommunication == null ? contactinfoDB.PreferredCommunication : contactinfoBO.PreferredCommunication;
+                        contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+
+                        if (Add_contactinfoDB == true)
+                        {
+                            contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
+                        }
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        if (IsEditMode == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid contact details.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        contactinfoDB = null;
+                    }
+                    #endregion
+
+                    #region Insurance Master
+                    if (insuranceMasterBO != null)
+                    {
+
+
+                        bool Add_insuranceMasterDB = false;
+                        insuranceMasterDB = _context.InsuranceMasters.Where(p => p.Id == insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
+
+                        if (insuranceMasterDB == null && insuranceMasterBO.ID <= 0)
+                        {
+                            insuranceMasterDB = new InsuranceMaster();
+                            Add_insuranceMasterDB = true;
+                        }
+                        else if (insuranceMasterDB == null && insuranceMasterBO.ID > 0)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance Master information dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        insuranceMasterDB.CompanyCode = insuranceMasterBO.CompanyCode;
+                        insuranceMasterDB.CompanyName = IsEditMode == true && insuranceMasterBO.CompanyName == null ? insuranceMasterDB.CompanyName : insuranceMasterBO.CompanyName;
+                        insuranceMasterDB.ZeusID = insuranceMasterBO.ZeusID;
+                        insuranceMasterDB.PriorityBilling = insuranceMasterBO.PriorityBilling;
+                        insuranceMasterDB.Only1500Form = insuranceMasterBO.Only1500Form;
+                        insuranceMasterDB.PaperAuthorization = insuranceMasterBO.PaperAuthorization;
+                        insuranceMasterDB.CreatedByCompanyId = insuranceMasterBO.CreatedByCompanyId;
+
+                        insuranceMasterDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : insuranceMasterDB.AddressInfoId;
+                        insuranceMasterDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : insuranceMasterDB.ContactInfoId;
+
+                        if (Add_insuranceMasterDB == true)
+                        {
+                            insuranceMasterDB = _context.InsuranceMasters.Add(insuranceMasterDB);
+                        }
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        if (IsEditMode == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance master information details.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        insuranceMasterDB = null;
                     }
 
-                    addressDB.Name = IsEditMode == true && addressBO.Name == null ? addressDB.Name : addressBO.Name;
-                    addressDB.Address1 = IsEditMode == true && addressBO.Address1 == null ? addressDB.Address1 : addressBO.Address1;
-                    addressDB.Address2 = IsEditMode == true && addressBO.Address2 == null ? addressDB.Address2 : addressBO.Address2;
-                    addressDB.City = IsEditMode == true && addressBO.City == null ? addressDB.City : addressBO.City;
-                    addressDB.State = IsEditMode == true && addressBO.State == null ? addressDB.State : addressBO.State;
-                    addressDB.ZipCode = IsEditMode == true && addressBO.ZipCode == null ? addressDB.ZipCode : addressBO.ZipCode;
-                    addressDB.Country = IsEditMode == true && addressBO.Country == null ? addressDB.Country : addressBO.Country;
-                    //[STATECODE-CHANGE]
-                    //addressDB.StateCode = IsEditMode == true && addressBO.StateCode == null ? addressDB.StateCode : addressBO.StateCode;
-                    //[STATECODE-CHANGE]
-
-                    if (Add_addressDB == true)
-                    {
-                        addressDB = _context.AddressInfoes.Add(addressDB);
-                    }
                     _context.SaveChanges();
-                }
-                else
-                {
-                    if (IsEditMode == false)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid address details.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    addressDB = null;
-                }
-                #endregion                
+                    #endregion
 
-                #region Contact Info
-                if (contactinfoBO != null)
-                {
-                    bool Add_contactinfoDB = false;
-                    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    dbContextTransaction.Commit();
 
-                    if (contactinfoDB == null && contactinfoBO.ID <= 0)
-                    {
-                        contactinfoDB = new ContactInfo();
-                        Add_contactinfoDB = true;
-                    }
-                    else if (contactinfoDB == null && contactinfoBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-
-                    contactinfoDB.Name = IsEditMode == true && contactinfoBO.Name == null ? contactinfoDB.Name : contactinfoBO.Name;
-                    contactinfoDB.CellPhone = IsEditMode == true && contactinfoBO.CellPhone == null ? contactinfoDB.CellPhone : contactinfoBO.CellPhone;
-                    contactinfoDB.EmailAddress = IsEditMode == true && contactinfoBO.EmailAddress == null ? contactinfoDB.EmailAddress : contactinfoBO.EmailAddress;
-                    contactinfoDB.HomePhone = IsEditMode == true && contactinfoBO.HomePhone == null ? contactinfoDB.HomePhone : contactinfoBO.HomePhone;
-                    contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
-                    contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
-                    contactinfoDB.OfficeExtension = IsEditMode == true && contactinfoBO.OfficeExtension == null ? contactinfoDB.OfficeExtension : contactinfoBO.OfficeExtension;
-                    contactinfoDB.AlternateEmail = IsEditMode == true && contactinfoBO.AlternateEmail == null ? contactinfoDB.AlternateEmail : contactinfoBO.AlternateEmail;
-                    contactinfoDB.PreferredCommunication = IsEditMode == true && contactinfoBO.PreferredCommunication == null ? contactinfoDB.PreferredCommunication : contactinfoBO.PreferredCommunication;
-                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
-
-                    if (Add_contactinfoDB == true)
-                    {
-                        contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
-                    }
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    if (IsEditMode == false)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid contact details.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    contactinfoDB = null;
-                }
-                #endregion            
-
-                #region Insurance Master
-                if (insuranceMasterBO != null)
-                {
-                    
-
-                    bool Add_insuranceMasterDB = false;
-                    insuranceMasterDB = _context.InsuranceMasters.Where(p => p.Id == insuranceMasterBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
-
-                    if (insuranceMasterDB == null && insuranceMasterBO.ID <= 0)
-                    {
-                        insuranceMasterDB = new InsuranceMaster();
-                        Add_insuranceMasterDB = true;
-                    }
-                    else if (insuranceMasterDB == null && insuranceMasterBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance Master information dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-
-                    insuranceMasterDB.CompanyCode = insuranceMasterBO.CompanyCode;
-                    insuranceMasterDB.CompanyName = IsEditMode == true && insuranceMasterBO.CompanyName == null ? insuranceMasterDB.CompanyName : insuranceMasterBO.CompanyName;
-                    //insuranceMasterDB.ZeusID = insuranceMasterBO.ZeusID;
-                    //insuranceMasterDB.PriorityBilling = insuranceMasterBO.PriorityBilling;
-                    //insuranceMasterDB.Only1500Form = insuranceMasterBO.Only1500Form;
-                    //insuranceMasterDB.PaperAuthorization = insuranceMasterBO.PaperAuthorization;
-
-                    insuranceMasterDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : insuranceMasterDB.AddressInfoId;
-                    insuranceMasterDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : insuranceMasterDB.ContactInfoId;                 
-
-                    if (Add_insuranceMasterDB == true)
-                    {
-                        insuranceMasterDB = _context.InsuranceMasters.Add(insuranceMasterDB);
-                    }
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    if (IsEditMode == false)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance master information details.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    insuranceMasterDB = null;
+                    insuranceMasterDB = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Where(p => p.Id == insuranceMasterDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
                 }
 
-                _context.SaveChanges();
-                #endregion
-
-                dbContextTransaction.Commit();
-
-                insuranceMasterDB = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo").Where(p => p.Id == insuranceMasterDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<InsuranceMaster>();
+                var res = ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(insuranceMasterDB);
+                return (object)res;
             }
-
-            var res = ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(insuranceMasterDB);
-            return (object)res;
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Cannot add or update Master Insurance data.", ErrorLevel = ErrorLevel.Error };
+            }            
         }
         #endregion
-
-
 
         public void Dispose()
         {

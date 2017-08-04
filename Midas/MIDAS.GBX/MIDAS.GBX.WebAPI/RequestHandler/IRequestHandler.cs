@@ -18,6 +18,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, List<T> gbObject);
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbObject3(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbObject4(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateMedicalProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
         HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed);
@@ -154,6 +156,10 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetRecurrenceByCaseAndSpecialtyAndDoctorId(HttpRequestMessage request, int caseId, int specialtyId,int doctorId);
         HttpResponseMessage GetICDTypeCodeByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request);
-
+        HttpResponseMessage GetOpenCasesByCompanyWithPatient(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId);
+        HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
+        HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
     }
 }

@@ -62,7 +62,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByPatientVisitId/{patientVisitId}")]
-
         public HttpResponseMessage GetByPatientVisitId(int patientVisitId)
         {
             return requestHandler.GetByPatientVisitId(Request, patientVisitId);
@@ -104,6 +103,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetPendingReferralByCompanyId2(int CompanyId)
         {
             return requestHandler.GetPendingReferralByCompanyId2(Request, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("getByPatientVisitIdWithProcedureCodes/{patientVisitId}")]
+        public HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(int patientVisitId)
+        {
+            return requestHandler.GetByPatientVisitIdWithProcedureCodes(Request, patientVisitId);
         }
 
         protected override void Dispose(bool disposing)

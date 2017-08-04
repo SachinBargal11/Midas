@@ -25,6 +25,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<bool> IsDeleted { get; set; }
         public string DocumentType { get; set; }
     
+        public virtual Case Case { get; set; }
         public virtual MidasDocument MidasDocument { get; set; }
     }
 }

@@ -25,6 +25,7 @@ const CaseRecord = Record({
     patient: null,
     caseCompanyConsentDocument: null,
     caseSource: '',
+    claimFileNumber:0,
     isDeleted: false,
     createByUserID: 0,
     updateByUserID: 0,
@@ -57,6 +58,7 @@ export class Case extends CaseRecord {
     patient: Patient;
     caseCompanyConsentDocument: CaseDocument[];
     caseSource: string;
+    claimFileNumber: number;
     isDeleted: boolean;
     createByUserID: number;
     updateByUserID: number;

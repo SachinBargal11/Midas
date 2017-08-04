@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {Doctor} from '../models/doctor';
-import {DoctorsService} from '../services/doctors-service';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {List} from 'immutable';
-import {BehaviorSubject} from 'rxjs/Rx';
+import { Doctor } from '../models/doctor';
+import { DoctorsService } from '../services/doctors-service';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { List } from 'immutable';
+import { BehaviorSubject } from 'rxjs/Rx';
 
 
 @Injectable()
@@ -15,7 +15,7 @@ export class DoctorsStore {
     private _doctors: BehaviorSubject<List<Doctor>> = new BehaviorSubject(List([]));
     private _selectedDoctors: BehaviorSubject<List<Doctor>> = new BehaviorSubject(List([]));
 
-   constructor(
+    constructor(
         private _doctorsService: DoctorsService,
         private _sessionStore: SessionStore
     ) {
@@ -34,7 +34,7 @@ export class DoctorsStore {
         return this._doctors.asObservable();
     }
 
-    get selectedDoctors(){
+    get selectedDoctors() {
         return this._selectedDoctors.asObservable();
     }
 
@@ -73,6 +73,18 @@ export class DoctorsStore {
         });
         return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
+
+    getDoctorsTaxType(): Observable<any[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._doctorsService.getDoctorsTaxType().subscribe((taxType: any[]) => {
+                resolve(taxType);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
     getDoctorsBySpecialityInAllApp(specialityId: number): Observable<Doctor[]> {
         let promise = new Promise((resolve, reject) => {
             this._doctorsService.getDoctorsBySpecialityInAllApp(specialityId).subscribe((doctors: Doctor[]) => {
@@ -97,7 +109,7 @@ export class DoctorsStore {
             // if (matchedDoctor) {
             //     resolve(matchedDoctor);
             // } else {
-                this._doctorsService.getDoctor(id)
+            this._doctorsService.getDoctor(id)
                 .subscribe((doctorDetail: Doctor) => {
                     resolve(doctorDetail);
                 }, error => {

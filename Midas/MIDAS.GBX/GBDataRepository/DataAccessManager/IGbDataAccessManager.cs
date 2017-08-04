@@ -18,6 +18,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
         Object SaveAsBlob(int id, int CompanyId, string objectType, string docType, string uploadpath);
         Object AddQuickPatient(T gbObject);
+        Object SaveIMEVisit(T gbObject);
+        Object SaveEOVisit(T gbObject);
         Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed);
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
@@ -150,6 +152,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByForSpecialtyId(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByForRoomTestId(int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetFreeSlotsForDoctorByLocationId(int DoctorId, int LocationId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetBusySlotsForPatients(int PatientId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateVisitWithReferral(int ReferralId, int PatientVisitId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociatePrefAttorneyProviderWithCompany(int PrefAttorneyProviderId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -172,5 +175,10 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId, int specialtyId,int doctorId);
         Object GetICDTypeCodeByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetDoctorTaxTypes(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetOpenCasesByCompanyWithPatient(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByPatientVisitIdWithProcedureCodes(int PatientVisitId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetMasterAndByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object Delete(int id, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetInsuranceDetails(int id, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

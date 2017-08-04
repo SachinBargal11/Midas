@@ -43,6 +43,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         public List<DoctorSpeciality> DoctorSpecialities { get; set; }
         public List<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
+        public List<DoctorRoomTestMapping> DoctorRoomTestMappings { get; set; }
     }
 
     public class mDoctor : GbObject

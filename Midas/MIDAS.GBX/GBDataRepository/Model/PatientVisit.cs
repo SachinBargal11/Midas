@@ -48,7 +48,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public bool IsTransportationRequired { get; set; }
         public Nullable<int> TransportProviderId { get; set; }
         public Nullable<int> AncillaryProviderId { get; set; }
-        public Nullable<int> VisitTypeId { get; set; }
+        public Nullable<byte> VisitTypeId { get; set; }
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }

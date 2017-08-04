@@ -135,7 +135,8 @@ export class CaseBasicComponent implements OnInit {
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
-            caseSource: ['']
+            caseSource: [''],
+            claimNumber:['']
             // transportation: [1, Validators.required],
         });
 
@@ -213,6 +214,7 @@ export class CaseBasicComponent implements OnInit {
             attorneyId: parseInt(caseFormValues.attorneyId, 10),
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
+            claimFileNumber: caseFormValues.claimNumber,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment(),
             createdByCompanyId: this.sessionStore.session.currentCompany.id

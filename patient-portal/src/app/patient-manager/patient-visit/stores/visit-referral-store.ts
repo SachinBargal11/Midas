@@ -41,6 +41,18 @@ export class VisitReferralStore {
         });
         return <Observable<VisitReferral[]>>Observable.from(promise);
     }
+
+    getPendingReferralWithPatientVisitId(patientVisitId: number): Observable<any[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getPendingReferralWithPatientVisitId(patientVisitId).subscribe((data: any[]) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any[]>>Observable.from(promise);
+    }
+
     getPendingReferralByCompanyId(companyId: number): Observable<VisitReferral[]> {
         let promise = new Promise((resolve, reject) => {
             this._visitReferralService.getPendingReferralByCompanyId(companyId).subscribe((visitReferralDetails: VisitReferral[]) => {

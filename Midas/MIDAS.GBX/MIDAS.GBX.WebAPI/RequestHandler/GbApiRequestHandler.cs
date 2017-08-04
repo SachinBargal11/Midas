@@ -203,6 +203,42 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage CreateGbObject3(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.SaveIMEVisit(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGbObject4(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.SaveEOVisit(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         private static string GetCurrentUserFromContext(HttpRequestMessage request)
         {
             //use the usertoken to determine the  user
@@ -2148,5 +2184,69 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetOpenCasesByCompanyWithPatient(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetOpenCasesByCompanyWithPatient(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId)
+        {
+            var objResult = dataAccessManager.GetByPatientVisitIdWithProcedureCodes(PatientVisitId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetMasterAndByCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId)
+        {
+            var res = dataAccessManager.Delete(id, CompanyId);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        public HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int CompanyId)
+        {
+            var res = dataAccessManager.GetInsuranceDetails(id, CompanyId);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+import { PatientVisit } from '../../../patient-manager/patient-visit/models/patient-visit';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
@@ -19,6 +20,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
     private _selectedEvent: ScheduledEvent;
+    private _selectedVisit: PatientVisit;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
@@ -66,6 +68,13 @@ export class ScheduledEventEditorComponent implements OnChanges {
     scheduledEventEditorFormControls;
     @Output() isValid = new EventEmitter();
 
+    @Input() set selectedPatientVisit(value: PatientVisit) {
+        if(value) {
+            this._selectedVisit = value;
+            this.ancillaryProviderId = this._selectedVisit.ancillaryProviderId;
+            this.referredBy = '';
+        }
+    }   
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
             this._selectedEvent = value;
@@ -74,8 +83,6 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
             this.isAllDay = this._selectedEvent.isAllDay;
-            this.ancillaryProviderId = this._selectedEvent.ancillaryProviderId;
-            this.referredBy = '';
 
             if (this._selectedEvent.recurrenceRule) {
                 let options = this._selectedEvent.recurrenceRule.options;

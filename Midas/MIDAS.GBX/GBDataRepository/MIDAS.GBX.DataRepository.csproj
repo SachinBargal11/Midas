@@ -156,7 +156,9 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
+    <Compile Include="EntityRepository\EOVisit\EOVisitRepository.cs" />
     <Compile Include="EntityRepository\ICDTypeCode\ICDTypeCodeRepository.cs" />
+    <Compile Include="EntityRepository\IMEVisit\IMEvisitRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
@@ -312,6 +314,9 @@
     <Compile Include="Model\DoctorLocationSchedule.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DoctorRoomTestMapping.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DoctorSpeciality.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -324,6 +329,9 @@
     <Compile Include="Model\DocumentNodeObjectMapping.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\EOVisit.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Gender.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -331,6 +339,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ICDTypeCode.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IMEVisit.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\InsuranceMaster.cs">
@@ -376,9 +387,6 @@
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Model\Notification.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\NotifyContact.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\OTP.cs">
@@ -513,7 +521,13 @@
     <Compile Include="Model\UserType.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\VisitCategory.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\VisitDocument.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VisitStatu.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitType.cs">

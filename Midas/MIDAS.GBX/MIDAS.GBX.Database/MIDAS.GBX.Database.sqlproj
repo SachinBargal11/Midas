@@ -212,6 +212,7 @@
     <Build Include="StoredProcedure\sp_CaseGetReadOnly.sql" />
     <Build Include="Tables\Latest Tables\DoctorTaxType.sql" />
     <Build Include="Tables\Latest Tables\VisitType.sql" />
+    <Build Include="Tables\Latest Tables\DoctorRoomTestMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

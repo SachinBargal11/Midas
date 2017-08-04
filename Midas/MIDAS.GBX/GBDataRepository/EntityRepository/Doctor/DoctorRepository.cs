@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     {
         private DbSet<Doctor> _dbSet;
         private DbSet<DoctorSpeciality> _dbSetDocSpecility;
+        private DbSet<DoctorRoomTestMapping> _dbSetDocRoomTestMapping;
 
         #region Constructor
         public DoctorRepository(MIDASGBXEntities context)
@@ -24,6 +25,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             _dbSetDocSpecility = context.Set<DoctorSpeciality>();
             _dbSet = context.Set<Doctor>();
+            _dbSetDocRoomTestMapping = context.Set<DoctorRoomTestMapping>();
             context.Configuration.ProxyCreationEnabled = false;
         }
         #endregion
@@ -80,7 +82,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                         doctorBO.DoctorSpecialities = lstDoctorSpecility;
                     }
-                    
+
+                    if (doctor.DoctorRoomTestMappings != null)
+                    {
+                        List<BO.DoctorRoomTestMapping> lstDoctorRoomTestMapping = new List<BO.DoctorRoomTestMapping>();
+                        foreach (var item in doctor.DoctorRoomTestMappings)
+                        {
+
+                            if (item.IsDeleted == false)
+                            {
+                                BO.DoctorRoomTestMapping doctorRoomTestMappingBO = new BO.DoctorRoomTestMapping();
+                                doctorRoomTestMappingBO.ID = item.Id;
+                                doctorRoomTestMappingBO.IsDeleted = item.IsDeleted;
+                                if (doctorRoomTestMappingBO.UpdateByUserID.HasValue)
+                                    doctorRoomTestMappingBO.UpdateByUserID = item.UpdateByUserID.Value;
+
+                                if (item.RoomTest != null && (item.RoomTest.IsDeleted.HasValue == false || (item.RoomTest.IsDeleted.HasValue == true && item.RoomTest.IsDeleted.Value == false)))
+                                {
+                                    BO.RoomTest boRoomTest = new BO.RoomTest();
+                                    using (RoomTestRepository sr = new RoomTestRepository(_context))
+                                    {
+                                        boRoomTest = sr.Convert<BO.RoomTest, RoomTest>(item.RoomTest);
+                                        doctorRoomTestMappingBO.RoomTest = boRoomTest;
+                                    }
+                                }
+                                lstDoctorRoomTestMapping.Add(doctorRoomTestMappingBO);
+                            }
+                        }
+                        doctorBO.DoctorRoomTestMappings = lstDoctorRoomTestMapping;
+                    }
+
                     //if (doctor.User.UserCompanies != null && doctorBO.user.UserCompanies != null && doctorBO.user.UserCompanies.Count <= 0)
                     if (doctor.User.UserCompanies != null)
                     {
@@ -197,6 +228,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             Doctor doctorDB = new Doctor();
             User userDB = new User();
             List<DoctorSpeciality> lstDoctorSpecility = new List<DoctorSpeciality>();
+            List<DoctorRoomTestMapping> lstDoctorRoomTestMapping = new List<DoctorRoomTestMapping>();
             doctorDB.Id = doctorBO.ID;
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -291,6 +323,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
                 doctorDB.DoctorSpecialities = lstDoctorSpecility;
+
+                if(doctorBO.DoctorRoomTestMappings != null)
+                    {
+                    if (doctorBO.DoctorRoomTestMappings.Count > 0)
+                    {
+                        _dbSetDocRoomTestMapping.RemoveRange(_context.DoctorRoomTestMappings.Where(c => c.DoctorId == doctorBO.user.ID));
+                        _context.SaveChanges();
+                        RoomTest roomTestDB = null;
+                        DoctorRoomTestMapping doctorRoomTestMappingDB = null;
+                        foreach (var item in doctorBO.DoctorRoomTestMappings)
+                        {
+                            BO.DoctorRoomTestMapping doctorRoomTestMappingBO = (BO.DoctorRoomTestMapping)(object)item;
+                            roomTestDB = new RoomTest();
+                            doctorRoomTestMappingDB = new DoctorRoomTestMapping();
+                            doctorRoomTestMappingDB.IsDeleted = doctorRoomTestMappingBO.IsDeleted.HasValue ? doctorRoomTestMappingBO.IsDeleted.Value : false;
+                            doctorRoomTestMappingDB.Doctor = doctorDB;
+                            //Find Record By ID
+                            RoomTest roomTest = _context.RoomTests.Where(p => p.id == doctorRoomTestMappingBO.ID).FirstOrDefault<RoomTest>();
+                            if (roomTest == null)
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { ErrorMessage = "Invalid specility " + item.ToString() + " details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            }
+                            if (!lstDoctorRoomTestMapping.Select(p => p.RoomTest).Contains(roomTest))
+                            {
+                                doctorRoomTestMappingDB.RoomTest = roomTest;
+                                _context.Entry(roomTest).State = System.Data.Entity.EntityState.Modified;
+                                lstDoctorRoomTestMapping.Add(doctorRoomTestMappingDB);
+                            };
+                        }
+                    }
+                    doctorDB.DoctorRoomTestMappings = lstDoctorRoomTestMapping;
+                }
 
                 if (doctorDB.Id > 0)
                 {
@@ -459,6 +524,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<int> doctorWithSpecialty = _context.DoctorSpecialities.Where(p => p.SpecialityID == specialtyId
                                                                                && (p.IsDeleted == false))
                                                                                .Select(p => p.DoctorID)
+                                                                               .Distinct()
+                                                                               .ToList();
+
+            var acc_ = _context.Doctors.Where(p => doctorInLocation.Contains(p.Id) && doctorWithSpecialty.Contains(p.Id)
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Doctor> doctorBO = new List<BO.Doctor>();
+
+            foreach (Doctor item in acc_)
+            {
+                doctorBO.Add(Convert<BO.Doctor, Doctor>(item));
+            }
+            return (object)doctorBO;
+        }
+        #endregion
+
+        #region GetByLocationAndRoomTest
+        public override object Get1(int locationId, int roomTestId)
+        {
+            List<int> doctorInLocation = _context.DoctorLocationSchedules.Where(p => p.LocationID == locationId
+                                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .Select(p => p.DoctorID)
+                                                                          .Distinct()
+                                                                          .ToList();
+
+            List<int> doctorWithSpecialty = _context.DoctorRoomTestMappings.Where(p => p.RoomTestId == roomTestId
+                                                                               && (p.IsDeleted == false))
+                                                                               .Select(p => p.DoctorId)
                                                                                .Distinct()
                                                                                .ToList();
 
