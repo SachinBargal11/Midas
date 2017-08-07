@@ -23,6 +23,7 @@ const CaseRecord = Record({
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
+    claimFileNumber:0,
     // transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
@@ -60,6 +61,7 @@ export class Case extends CaseRecord {
     // transportation: boolean;
     caseStatusId: CaseStatus;
     attorneyId: number;
+    claimFileNumber: number;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

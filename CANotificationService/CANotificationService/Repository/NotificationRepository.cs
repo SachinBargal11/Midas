@@ -500,42 +500,39 @@ namespace CANotificationService.Repository
 
         public void SubscribeEvent(string applicationname, string username, int[] eventids)
         {
-            var eventsNotEixtsInDB = string.Empty;
-            var eventsAlreadyMappedWithUser = string.Empty;
-            var eventsNewlyMappedWithUser = string.Empty;
             string message = string.Empty;
 
             using (NotificationEntities dc = new NotificationEntities())
             {
                 dc.Database.BeginTransaction();
                 //Check if application exists
-                Application application = dc.Applications.Where(a => a.Name == applicationname).FirstOrDefault();
-                if (application == null)
+                try
                 {
-                    throw new Exception( string.Format("The application with name {0} doen not exists.", applicationname));
-                }
-
-                if (eventids.Count() > 0)
-                {
-                    dc.EventSubscriptions.RemoveRange(dc.EventSubscriptions.Where(a => eventids.Contains(a.EventID)).ToList());
-
-                    foreach (var item in eventids)
+                    Application application = dc.Applications.Where(a => a.Name == applicationname).FirstOrDefault();
+                    if (application == null)
                     {
-                        EventSubscription subscription = new EventSubscription
-                        {
-                            EventID = item,
-                            UserID = username
-                        };
-
-                        dc.EventSubscriptions.Add(subscription);
+                        throw new Exception(string.Format("The application with name {0} doen not exists.", applicationname));
                     }
 
-                    if (eventsNewlyMappedWithUser != string.Empty)
+                    if (eventids.Count() > 0)
                     {
+                        dc.EventSubscriptions.RemoveRange(dc.EventSubscriptions.Where(a => a.UserID == username && a.Event.Application.Name == applicationname).ToList());
+
+                        foreach (var item in eventids)
+                        {
+                            EventSubscription subscription = new EventSubscription
+                            {
+                                EventID = item,
+                                UserID = username
+                            };
+
+                            dc.EventSubscriptions.Add(subscription);
+                        }
+
                         var user = dc.Users.Where(u => u.Application.Name == applicationname && u.UserName == username).FirstOrDefault();
                         if (user == null)
                         {
-                            user = new User
+                            user = new User 
                             {
                                 ApplicationID = application.Id,
                                 UserName = username
@@ -546,10 +543,11 @@ namespace CANotificationService.Repository
                         dc.SaveChanges();
                         dc.Database.CurrentTransaction.Commit();
                     }
-                    else
-                    {
-                        dc.Database.CurrentTransaction.Rollback();
-                    }
+                }
+                catch ( Exception ex)
+                {
+                    dc.Database.CurrentTransaction.Rollback();
+                    throw new Exception(ex.Message);
                 }
             }
         }

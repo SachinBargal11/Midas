@@ -11,17 +11,19 @@ import { InsuranceMasterAdapter } from '../../patient-manager/patients/services/
 
 @Injectable()
 export class InsuranceMasterService {
+    companyId: number;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
     constructor(private _http: Http, private _sessionStore: SessionStore) {
+        this.companyId = this._sessionStore.session.currentCompany.id;
         this._headers.append('Content-Type', 'application/json');
         this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getInsuranceMaster(insuranceMasterId: Number): Observable<InsuranceMaster> {
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/get/' + insuranceMasterId, {
+            return this._http.get(this._url + '/InsuranceMaster/getInsuranceDetails/' + insuranceMasterId + '/' + this.companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -38,7 +40,7 @@ export class InsuranceMasterService {
 
     getAllInsuranceMasters(): Observable<InsuranceMaster[]> {
         let promise: Promise<InsuranceMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/getAll', {
+            return this._http.get(this._url + '/InsuranceMaster/getMasterAndByCompanyId/' + this.companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -99,7 +101,7 @@ export class InsuranceMasterService {
 
     deleteInsuranceMaster(insuranceMaster: InsuranceMaster): Observable<InsuranceMaster> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/Delete/' + insuranceMaster.id, {
+            return this._http.get(this._url + '/InsuranceMaster/Delete/' + insuranceMaster.id + '/' + this.companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

@@ -569,6 +569,11 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreatedByCompanyId" Type="int" />
+          <Property Name="ZeusID" Type="nvarchar" MaxLength="50" />
+          <Property Name="PriorityBilling" Type="int" />
+          <Property Name="Only1500Form" Type="int" />
+          <Property Name="PaperAuthorization" Type="int" />
         </EntityType>
         <EntityType Name="InsuranceType">
           <Key>
@@ -2198,6 +2203,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InsuranceMaster_Company_CreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="InsuranceMaster">
+              <PropertyRef Name="CreatedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
@@ -3820,6 +3837,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
           </AssociationSet>
+          <AssociationSet Name="FK_InsuranceMaster_Company_CreatedByCompanyId" Association="Self.FK_InsuranceMaster_Company_CreatedByCompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="Invitation" EntitySet="Invitation" />
@@ -4524,6 +4545,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="EOVisits1" Relationship="Self.FK_EOVisit_MedicalProvider_MedicalProviderId" FromRole="Company" ToRole="EOVisit" />
           <NavigationProperty Name="GeneralSettings" Relationship="Self.FK_GeneralSettings_Company_CompanyId" FromRole="Company" ToRole="GeneralSettings" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Transport_TransportProviderId" FromRole="Company" ToRole="IMEVisit" />
+          <NavigationProperty Name="InsuranceMasters" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="Company" ToRole="InsuranceMaster" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
@@ -4946,8 +4968,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="CreatedByCompanyId" Type="Int32" />
+          <Property Name="ZeusID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PriorityBilling" Type="Int32" />
+          <Property Name="Only1500Form" Type="Int32" />
+          <Property Name="PaperAuthorization" Type="Int32" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId" FromRole="InsuranceMaster" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="InsuranceMaster" ToRole="Company" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
         </EntityType>
@@ -6657,6 +6685,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InsuranceMaster_Company_CreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="InsuranceMaster">
+              <PropertyRef Name="CreatedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
@@ -8334,6 +8374,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Companies" />
             <End Role="IMEVisit" EntitySet="IMEVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_InsuranceMaster_Company_CreatedByCompanyId" Association="Self.FK_InsuranceMaster_Company_CreatedByCompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Invitation" EntitySet="Invitations" />
@@ -8808,6 +8852,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="String" Name="CaseSource" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="MedicalProvider" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="AttorneyProvider" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ClaimFileNumber" Nullable="true" />
           <Property Type="Int32" Name="CreateByUserID" Nullable="false" />
           <Property Type="DateTime" Name="CreateDate" Nullable="false" />
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
@@ -9408,6 +9453,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreatedByCompanyId" ColumnName="CreatedByCompanyId" />
+                <ScalarProperty Name="ZeusID" ColumnName="ZeusID" />
+                <ScalarProperty Name="PriorityBilling" ColumnName="PriorityBilling" />
+                <ScalarProperty Name="Only1500Form" ColumnName="Only1500Form" />
+                <ScalarProperty Name="PaperAuthorization" ColumnName="PaperAuthorization" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10336,6 +10386,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CaseSource" ColumnName="CaseSource" />
                 <ScalarProperty Name="MedicalProvider" ColumnName="MedicalProvider" />
                 <ScalarProperty Name="AttorneyProvider" ColumnName="AttorneyProvider" />
+                <ScalarProperty Name="ClaimFileNumber" ColumnName="ClaimFileNumber" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />

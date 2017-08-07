@@ -155,6 +155,18 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Claim Number
+                            </label>
+            <div class="form-group" [class.error]="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
+                <input formControlName="claimNumber" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.claimNumber.valid">
+                <div class='error-list' *ngIf="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
+                    <ul>
+                        <li *ngIf="caseformControls.claimNumber.hasError('required')">Claim Number is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
     <button [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
