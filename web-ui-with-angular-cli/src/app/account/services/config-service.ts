@@ -15,7 +15,7 @@ export class ConfigService {
                 this.http.get('../../../assets/config.json').map(res => res.json())
                     .subscribe((config: any) => {
                         environment.SERVICE_BASE_URL = config.baseUrl;
-                        resolve(environment.SERVICE_BASE_URL);
+                        resolve(environment);
                     }, (error: any) => {
                         // this._config = new AppConfig();
                         // resolve(this._config);
