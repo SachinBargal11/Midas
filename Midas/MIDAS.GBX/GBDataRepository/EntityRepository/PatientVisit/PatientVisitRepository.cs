@@ -2211,8 +2211,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region GetAllVisitType 
-
+        #region GetAllVisitType
         public override object Get()
         {
             var allVisitType = from vt in _context.VisitTypes
@@ -2235,8 +2234,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstalltype;
 
         }
+        #endregion
 
+        #region Cancel Single Event Occurrence
+        public override object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart)
+        {
+            var CalendarEvent = _context.PatientVisits.Where(p => p.Id == PatientVisitId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .Select(p => p.CalendarEvent)
+                                                      .SingleOrDefault();
 
+            if (CalendarEvent != null)
+            {
+                string RecurrenceException = CalendarEvent.RecurrenceException;
+                if (string.IsNullOrWhiteSpace(RecurrenceException) == false)
+                {
+                    RecurrenceException += ",";
+                }
+                else
+                {
+                    RecurrenceException = "";
+                }
+                
+                CalendarEvent.RecurrenceException = RecurrenceException + CancelEventStart.ToString();
+            }
+
+            _context.SaveChanges();
+
+            return Get(PatientVisitId);
+        }
         #endregion
 
         public void Dispose()

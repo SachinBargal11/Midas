@@ -904,6 +904,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

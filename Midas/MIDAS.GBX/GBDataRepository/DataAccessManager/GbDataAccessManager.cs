@@ -3845,5 +3845,26 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
+
+        public object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var refid = baseRepo.CancelSingleEventOccurrence(PatientVisitId, CancelEventStart);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

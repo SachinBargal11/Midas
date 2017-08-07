@@ -2248,5 +2248,18 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
             }
         }
+
+        public HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart)
+        {
+            var objResult = dataAccessManager.CancelSingleEventOccurrence(PatientVisitId, CancelEventStart);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }
