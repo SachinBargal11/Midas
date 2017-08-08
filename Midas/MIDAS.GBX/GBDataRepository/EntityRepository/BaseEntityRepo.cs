@@ -909,6 +909,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual object GetByLocationDoctorAndSpecialityId(int LocationId, int DoctorId, int SpecialtyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

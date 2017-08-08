@@ -155,6 +155,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CancelSingleEventOccurrence(Request, patientVisitId, cancelEventStart);
         }
 
+        [HttpGet]
+        [Route("getByLocationDoctorAndSpecialityId/{locationId}/{doctorId}/{specialtyId}")]
+        public HttpResponseMessage GetByLocationDoctorAndSpecialityId(int locationId, int doctorId, int specialtyId)
+        {
+            return requestHandler.GetByLocationDoctorAndSpecialityId(Request, locationId, doctorId, specialtyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

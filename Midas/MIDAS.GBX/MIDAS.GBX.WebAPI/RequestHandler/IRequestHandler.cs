@@ -162,5 +162,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
         HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
         HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart);
+        HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialtyId);
     }
 }
