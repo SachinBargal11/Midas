@@ -934,6 +934,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByReferringCompanyId(id);

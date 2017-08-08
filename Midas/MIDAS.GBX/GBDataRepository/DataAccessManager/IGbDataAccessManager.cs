@@ -78,6 +78,7 @@ namespace MIDAS.GBX.DataAccessManager
 
         Object GetByCompanyWithOpenCases(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetOpenCaseForPatient(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetOpenCaseForPatient(int PatientId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationWithOpenCases(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyWithCloseCases(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByInsuranceMasterId(int InsuranceMasterId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
