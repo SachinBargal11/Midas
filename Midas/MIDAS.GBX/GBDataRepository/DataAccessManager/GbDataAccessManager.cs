@@ -2670,6 +2670,26 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociatePatientWithMedicalCompany(PatientId, CaseId, MedicalCompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         public Object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try

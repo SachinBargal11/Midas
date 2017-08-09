@@ -1179,6 +1179,24 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
+        public HttpResponseMessage AssociatePatientWithMedicalCompany(HttpRequestMessage request, int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            var objResult = dataAccessManager.AssociatePatientWithMedicalCompany(PatientId, CaseId, MedicalCompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail)
         {
             var objResult = dataAccessManager.AssociateUserToCompany(UserName, CompanyId, sendEmail);

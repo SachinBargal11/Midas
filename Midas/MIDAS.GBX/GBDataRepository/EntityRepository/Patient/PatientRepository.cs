@@ -1406,6 +1406,183 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region AssociatePatientWithAttorneyCompany
+        public override object AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            bool add_UserCompany = false;
+            bool add_CaseCompanyMap = false;
+            bool sendEmail = false;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            int AddedByCompanyId = 0;
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                //var company = _context.Companies.Where(p => p.id == AttorneyCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (MedicalCompanyId > 0 && _context.Companies.Any(p => p.id == MedicalCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == false)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                AddedByCompanyId = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.IsOriginator == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.CompanyId).FirstOrDefault();
+
+                var Patient = _context.Patients.Where(p => p.Id == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                if (Patient == null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+
+                #region Remove Existing Attorney if exists
+                var MedicalCaseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .Include("Company")
+                                                         .Where(p => p.Company1.CompanyType == 1)
+                                                         .Select(p => p)
+                                                         .FirstOrDefault();
+
+                int? PreviousMedicalCompanyId = null;
+
+                if (MedicalCaseCompanyMapping != null)
+                {
+                    PreviousMedicalCompanyId = MedicalCaseCompanyMapping.CompanyId;
+                }
+
+                if (PreviousMedicalCompanyId.HasValue == true && PreviousMedicalCompanyId.Value != MedicalCompanyId)
+                {
+                    MedicalCaseCompanyMapping.IsDeleted = true;
+                    //_context.SaveChanges();
+
+                    var UserCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == PreviousMedicalCompanyId.Value
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                .FirstOrDefault();
+
+                    if (UserCompany != null)
+                    {
+                        UserCompany.IsDeleted = true;                        
+                    }
+                    //_context.SaveChanges();
+                }
+                #endregion
+
+                if (MedicalCompanyId > 0)
+                {
+                    #region Add new Attorney
+                    var userCompany = _context.UserCompanies.Where(p => p.UserID == PatientId && p.CompanyID == MedicalCompanyId && p.IsAccepted == true
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
+
+                    if (userCompany == null)
+                    {
+                        userCompany = new UserCompany();
+                        add_UserCompany = true;
+                        sendEmail = true;
+                    }
+
+                    userCompany.CompanyID = MedicalCompanyId;
+                    userCompany.UserID = PatientId;
+                    userCompany.UserStatusID = 1;
+                    userCompany.IsAccepted = true;
+
+                    if (add_UserCompany)
+                    {
+                        _context.UserCompanies.Add(userCompany);
+                    }
+                    //_context.SaveChanges();
+
+                    var caseCompanyMap = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.CompanyId == MedicalCompanyId
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                         .FirstOrDefault();
+
+                    if (caseCompanyMap == null)
+                    {
+                        caseCompanyMap = new CaseCompanyMapping();
+                        add_CaseCompanyMap = true;
+                        sendEmail = true;
+                    }
+
+                    caseCompanyMap.CaseId = CaseId;
+                    caseCompanyMap.CompanyId = MedicalCompanyId;
+                    caseCompanyMap.AddedByCompanyId = AddedByCompanyId;// Need to modify API parameters to have additional AddedByCompanyId
+
+                    if (add_CaseCompanyMap)
+                    {
+                        _context.CaseCompanyMappings.Add(caseCompanyMap);
+                    }
+                    //_context.SaveChanges();
+                    #endregion
+                }
+
+                _context.SaveChanges();
+                dbContextTransaction.Commit();
+            }
+
+
+            var PatientDB = _context.Patients.Include("User")
+                                             .Include("User.UserCompanies")
+                                             .Include("User.AddressInfo")
+                                             .Include("User.ContactInfo")
+                                             .Include("Cases")
+                                             .Include("Cases.Referrals")
+                                              .Where(p => p.Id == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Patient>();
+
+            #region Send Email
+            if (sendEmail == true)
+            {
+                //try
+                //{
+
+                //    #region Send Email
+
+                //    if (PatientDB != null)
+                //    {
+                //        var attorneyCompany = _context.Companies.Include("ContactInfo")
+                //                                               .Where(x => x.id == AttorneyCompanyId).FirstOrDefault();
+
+                //        if (attorneyCompany.ContactInfo.EmailAddress != null)
+                //        {
+                //            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                //            var mailTemplateDB = _context.MailTemplates.Where(x => x.TemplateName.ToUpper() == "AssociatePatientWithAttorneyCompany".ToUpper()).FirstOrDefault();
+                //            if (mailTemplateDB == null)
+                //            {
+                //                return new BO.ErrorObject { ErrorMessage = "No record found Mail Template.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //            }
+                //            else
+                //            {
+                //                string msg = mailTemplateDB.EmailBody;
+                //                string subject = mailTemplateDB.EmailSubject;
+
+                //                string message = string.Format(msg, attorneyCompany.Name, PatientDB.Id, PatientDB.User.UserName, attorneyCompany.ContactInfo.EmailAddress, VerificationLink);
+
+                //                BO.Email objEmail = new BO.Email { ToEmail = attorneyCompany.ContactInfo.EmailAddress, Subject = subject, Body = message };
+                //                objEmail.SendMail();
+                //            }
+                //        }
+                //        else
+                //        {
+                //            return new BO.ErrorObject { ErrorMessage = "Email address not found for attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //        }
+
+
+                //    }
+
+                //    #endregion
+
+
+                //}
+                //catch (Exception ex) { }
+            }
+            #endregion
+
+            var res = Convert<BO.Patient, Patient>(PatientDB);
+            return (object)res;
+
+        }
+        #endregion
+
         #region AssociatePatientWithAncillaryCompany
         public override object AssociatePatientWithAncillaryCompany(int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId)
         {

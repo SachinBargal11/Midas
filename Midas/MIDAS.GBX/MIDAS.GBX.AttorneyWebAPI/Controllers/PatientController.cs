@@ -180,6 +180,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandlerPatient.AssociatePatientWithAttorneyCompany(Request, PatientId, CaseId, AttorneyCompanyId);
         }
 
+        [HttpGet]
+        [Route("associatePatientWithMedicalCompany/{PatientId}/{CaseId}/{MedicalCompanyId}")]
+        public HttpResponseMessage AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            return requestHandlerPatient.AssociatePatientWithMedicalCompany(Request, PatientId, CaseId, MedicalCompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
