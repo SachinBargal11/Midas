@@ -65,6 +65,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);
+        HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId);
         HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferredToCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
@@ -161,5 +162,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
         HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
+        HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart);
+        HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialtyId);
     }
 }

@@ -60,6 +60,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetOpenCaseForPatient(int PatientId)
         {
             return requestHandler.GetOpenCaseForPatient(Request, PatientId);
+        }
+
+        [HttpGet]
+        [Route("getOpenCaseForPatient/{PatientId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetOpenCaseForPatient(int PatientId, int CompanyId)
+        {
+            return requestHandler.GetOpenCaseForPatient(Request, PatientId, CompanyId);
         }        
 
         [HttpGet]

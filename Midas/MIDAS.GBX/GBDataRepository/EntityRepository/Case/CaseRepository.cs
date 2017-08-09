@@ -609,6 +609,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Open Cases By Patient Id
+        public override object GetOpenCaseForPatient(int PatientId, int CompanyId)
+        {
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
+                                    .Include("Referrals")
+                                    .Where(p => p.PatientId == PatientId && p.CaseStatusId == 1 
+                                        && (p.CaseCompanyMappings.Any(p2 => p2.CompanyId == CompanyId 
+                                            && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == true)
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .ToList<Case>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Case> lstcase = new List<BO.Case>();
+            foreach (Case item in acc)
+            {
+                lstcase.Add(Convert<BO.Case, Case>(item));
+            }
+
+            return lstcase;
+        }
+        #endregion
+
         #region save
         public override object Save<T>(T entity)
         {

@@ -934,6 +934,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByReferringCompanyId(id);
@@ -2246,6 +2259,32 @@ namespace MIDAS.GBX.WebAPI
             else
             {
                 return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        public HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart)
+        {
+            var objResult = dataAccessManager.CancelSingleEventOccurrence(PatientVisitId, CancelEventStart);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialityId)
+        {
+            var objResult = dataAccessManager.GetByLocationDoctorAndSpecialityId(LocationId, DoctorId, SpecialityId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
     }
