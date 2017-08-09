@@ -20,7 +20,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public string PatientName { get; set; }
         public string CaseTypeText { get; set; }
         public string CaseStatusText { get; set; }
-        public string LocationName { get; set; }
         public string CarrierCaseNo { get; set; }
         public string CompanyName { get; set; }
         public string CaseSource { get; set; }

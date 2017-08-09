@@ -98,7 +98,6 @@
           <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="CaseName" Type="nvarchar" MaxLength="50" />
           <Property Name="CaseTypeId" Type="tinyint" />
-          <Property Name="LocationId" Type="int" Nullable="false" />
           <Property Name="PatientEmpInfoId" Type="int" />
           <Property Name="CarrierCaseNo" Type="nvarchar" MaxLength="50" />
           <Property Name="CaseStatusId" Type="tinyint" />
@@ -1561,18 +1560,6 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="Case">
               <PropertyRef Name="CaseTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Case_Location_LocationID">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Case" Type="Self.Case" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Case">
-              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3625,10 +3612,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="CaseType" EntitySet="CaseType" />
             <End Role="Case" EntitySet="Case" />
           </AssociationSet>
-          <AssociationSet Name="FK_Case_Location_LocationID" Association="Self.FK_Case_Location_LocationID">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="Case" EntitySet="Case" />
-          </AssociationSet>
           <AssociationSet Name="FK_Case_Patient_PatientId" Association="Self.FK_Case_Patient_PatientId">
             <End Role="Patient" EntitySet="Patient" />
             <End Role="Case" EntitySet="Case" />
@@ -4379,7 +4362,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="PatientId" Type="Int32" Nullable="false" />
           <Property Name="CaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CaseTypeId" Type="Byte" />
-          <Property Name="LocationId" Type="Int32" Nullable="false" />
           <Property Name="PatientEmpInfoId" Type="Int32" />
           <Property Name="CarrierCaseNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CaseStatusId" Type="Byte" />
@@ -4392,7 +4374,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="ClaimFileNumber" Type="Int32" />
           <NavigationProperty Name="CaseStatu" Relationship="Self.FK_Case_CaseStatus_CaseStatusId" FromRole="Case" ToRole="CaseStatus" />
           <NavigationProperty Name="CaseType" Relationship="Self.FK_Case_CaseType_CaseTypeId" FromRole="Case" ToRole="CaseType" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Case_Location_LocationID" FromRole="Case" ToRole="Location" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Case_Patient_PatientId" FromRole="Case" ToRole="Patient" />
           <NavigationProperty Name="PatientEmpInfo" Relationship="Self.FK_Case_PatientEmpInfo_PatientEmpInfoId" FromRole="Case" ToRole="PatientEmpInfo" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="Case" ToRole="CaseCompanyConsentDocuments" />
@@ -5036,7 +5017,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
-          <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Location_LocationID" FromRole="Location" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_Location_Company" FromRole="Location" ToRole="Company" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
@@ -6286,18 +6266,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Case">
               <PropertyRef Name="CaseTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Case_Location_LocationID">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Case" Type="Self.Case" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Case">
-              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8242,10 +8210,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="CaseType" EntitySet="CaseTypes" />
             <End Role="Case" EntitySet="Cases" />
           </AssociationSet>
-          <AssociationSet Name="FK_Case_Location_LocationID" Association="Self.FK_Case_Location_LocationID">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Case" EntitySet="Cases" />
-          </AssociationSet>
           <AssociationSet Name="FK_Case_Patient_PatientId" Association="Self.FK_Case_Patient_PatientId">
             <End Role="Patient" EntitySet="Patients" />
             <End Role="Case" EntitySet="Cases" />
@@ -8846,7 +8810,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="String" Name="PatientName" Nullable="true" MaxLength="152" />
           <Property Type="String" Name="CaseTypeText" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="CaseStatusText" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="LocationName" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="CarrierCaseNo" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="CaseSource" Nullable="true" MaxLength="50" />
@@ -8962,7 +8925,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="CaseName" ColumnName="CaseName" />
                 <ScalarProperty Name="CaseTypeId" ColumnName="CaseTypeId" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="PatientEmpInfoId" ColumnName="PatientEmpInfoId" />
                 <ScalarProperty Name="CarrierCaseNo" ColumnName="CarrierCaseNo" />
                 <ScalarProperty Name="CaseStatusId" ColumnName="CaseStatusId" />
@@ -10380,7 +10342,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="PatientName" ColumnName="PatientName" />
                 <ScalarProperty Name="CaseTypeText" ColumnName="CaseTypeText" />
                 <ScalarProperty Name="CaseStatusText" ColumnName="CaseStatusText" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="CarrierCaseNo" ColumnName="CarrierCaseNo" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="CaseSource" ColumnName="CaseSource" />

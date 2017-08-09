@@ -121,13 +121,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandlerPatient.GetGbObjects4(Request, CompanyId);
         }
 
-        [HttpGet]
-        [Route("getByLocationWithOpenCases/{LocationId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
-        {
-            return requestHandlerPatient.GetGbObjects3(Request, LocationId);
-        }
+        //[HttpGet]
+        //[Route("getByLocationWithOpenCases/{LocationId}")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
+        //{
+        //    return requestHandlerPatient.GetGbObjects3(Request, LocationId);
+        //}
 
         [HttpGet]
         [Route("getPatientById/{id}")]

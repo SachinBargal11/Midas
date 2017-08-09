@@ -1635,27 +1635,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByLocationWithOpenCases(int LocationId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
-        {
-            try
-            {
-                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByLocationWithOpenCases(LocationId);
+        //public Object GetByLocationWithOpenCases(int LocationId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        //{
+        //    try
+        //    {
+        //        BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+        //        var gbdata = baseRepo.GetByLocationWithOpenCases(LocationId);
 
-                return gbdata;
-            }
+        //        return gbdata;
+        //    }
 
-            catch (GbException gbe)
-            {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
-                return gbe;
-            }
-            catch (Exception ex)
-            {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
-                return ex;
-            }
-        }
+        //    catch (GbException gbe)
+        //    {
+        //        //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+        //        return gbe;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+        //        return ex;
+        //    }
+        //}
 
         public Object GetByCompanyWithCloseCases(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {

@@ -81,7 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                 boCase.PatientId = pendingReferral.PatientVisit.Case.PatientId;
                                 boCase.CaseName = pendingReferral.PatientVisit.Case.CaseName;
                                 boCase.CaseTypeId = pendingReferral.PatientVisit.Case.CaseTypeId;
-                                boCase.LocationId = pendingReferral.PatientVisit.Case.LocationId;
+                                //boCase.LocationId = pendingReferral.PatientVisit.Case.LocationId;
                                 boCase.PatientEmpInfoId = pendingReferral.PatientVisit.Case.PatientEmpInfoId;
                                 boCase.CarrierCaseNo = pendingReferral.PatientVisit.Case.CarrierCaseNo;
                                 boCase.CaseStatusId = pendingReferral.PatientVisit.Case.CaseStatusId;

@@ -102,7 +102,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.PatientId = casemap.PatientId;
                             caseBO.CaseName = casemap.CaseName;
                             caseBO.CaseTypeId = casemap.CaseTypeId;
-                            caseBO.LocationId = casemap.LocationId;
+                            //caseBO.LocationId = casemap.LocationId;
                             caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
                             caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
                             caseBO.CaseStatusId = casemap.CaseStatusId;
@@ -541,37 +541,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region GetByLocationWithOpenCases For Patient 
-        public override object GetByLocationWithOpenCases(int LocationId)
-        {
-            var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1 && p.LocationId == LocationId
-                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                         .Select(p => p.PatientId)
-                                         .Distinct<int>();
+        //public override object GetByLocationWithOpenCases(int LocationId)
+        //{
+        //    var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1 && p.LocationId == LocationId
+        //                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                 .Select(p => p.PatientId)
+        //                                 .Distinct<int>();
 
-            var acc = _context.Patients.Include("User")
-                                       .Include("User.UserCompanies")
-                                       .Include("User.AddressInfo")
-                                       .Include("User.ContactInfo")
-                                       .Where(p => (openCase.Contains(p.Id))
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .ToList<Patient>();
+        //    var acc = _context.Patients.Include("User")
+        //                               .Include("User.UserCompanies")
+        //                               .Include("User.AddressInfo")
+        //                               .Include("User.ContactInfo")
+        //                               .Where(p => (openCase.Contains(p.Id))
+        //                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                               .ToList<Patient>();
 
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
-                List<BO.Patient> lstpatients = new List<BO.Patient>();
-                //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient, Patient>(p)));
-                foreach (Patient item in acc)
-                {
-                    lstpatients.Add(Convert<BO.Patient, Patient>(item));
-                }
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    else
+        //    {
+        //        List<BO.Patient> lstpatients = new List<BO.Patient>();
+        //        //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient, Patient>(p)));
+        //        foreach (Patient item in acc)
+        //        {
+        //            lstpatients.Add(Convert<BO.Patient, Patient>(item));
+        //        }
 
-                return lstpatients;
-            }
-        }
+        //        return lstpatients;
+        //    }
+        //}
         #endregion
 
         #region Get By ID For Patient 
@@ -972,7 +972,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         _context.SaveChanges();
 
                         caseDB.PatientId = patientDB.Id;
-                        caseDB.LocationId = 0;
+                        //caseDB.LocationId = 0;
                         caseDB.CaseStatusId = 1;
                         caseDB.CaseTypeId = 1;
                         _context.Entry(caseDB).State = System.Data.Entity.EntityState.Added;

@@ -761,18 +761,18 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
-        public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id)
         {
