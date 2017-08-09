@@ -94,7 +94,7 @@ export class AddCaseComponent implements OnInit {
             patientId: ['', Validators.required],
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
             providerId: [''],
@@ -106,12 +106,12 @@ export class AddCaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations);
+        // this._locationsStore.getLocations()
+        //     .subscribe(locations => this.locations = locations);
 
         //  this._attorneyMasterStore.getAttorneyMasters()
         //  .subscribe(attorneys => this.attorneys = attorneys);
-        this._attorneyMasterStore.getAllProviders()
+        this._attorneyMasterStore.getAllPreferredMedicalProviders()
             .subscribe((allProviders: Account[]) => {
                 this.allProviders = allProviders;
             },
@@ -175,7 +175,7 @@ export class AddCaseComponent implements OnInit {
 
     loadPatientsWithoutCase() {
         this._progressBarService.show();
-        this._patientsStore.getPatientsWithNoCase()
+        this._patientsStore.getPatients()
             .subscribe(patients => {
                 // this.patientsWithoutCase = patients;
                 // this.idPatient = patients[0].id;
@@ -210,7 +210,7 @@ export class AddCaseComponent implements OnInit {
             caseName: 'caseName',
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
-            locationId: caseFormValues.locationId,
+            // locationId: caseFormValues.locationId,
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,

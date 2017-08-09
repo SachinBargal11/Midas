@@ -67,20 +67,20 @@ export class CaseBasicComponent implements OnInit {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
-            let fetchlocations = this._locationsStore.getLocations();
+            // let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
-            let fetchAttorneys = this._attorneyMasterStore.getAllProviders();
+            let fetchAttorneys = this._attorneyMasterStore.getAllPreferredMedicalProviders();
 
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
-            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
+            Observable.forkJoin([fetchPatient, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
                 (results) => {
                     this.patient = results[0];
                     this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
-                    this.locations = results[1];
-                    this.employer = results[2];
-                    this.allProviders = results[3];
-                    this.caseDetail = results[4];
+                    // this.locations = results[1];
+                    this.employer = results[1];
+                    this.allProviders = results[2];
+                    this.caseDetail = results[3];
 
                     // if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
                     //     this.caseform.get("caseSource").disable();
@@ -121,7 +121,7 @@ export class CaseBasicComponent implements OnInit {
             patientId: [{ value: '', disabled: true }],
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             providerId: [''],
@@ -165,7 +165,7 @@ export class CaseBasicComponent implements OnInit {
             patientId: this.patientId,
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
-            locationId: parseInt(caseFormValues.locationId, 10),
+            // locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.providerId,

@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Location
                                 <span class="color-red">*</span>
                             </label>
@@ -87,10 +87,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-
-
-
+            </div>-->
             <div class="col-lg-4">
                 <label class="form-label"> Carrier Case Number
                             </label>
@@ -134,7 +131,7 @@
 </select>
                     <div class='error-list' *ngIf="caseformControls.providerId.touched && !caseformControls.providerId.valid">
                         <ul>
-                            <li *ngIf="caseformControls.providerId.hasError('required')">Attorney is required.</li>
+                            <li *ngIf="caseformControls.providerId.hasError('required')">Medical Provider is required.</li>
                         </ul>
                     </div>
                 </div>

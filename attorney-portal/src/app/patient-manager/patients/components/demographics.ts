@@ -102,9 +102,9 @@ export class DemographicsComponent implements OnInit {
         });
         this.demographicsform = this.fb.group({
             userInfo: this.fb.group({
-                ssn: ['', Validators.required],
-                weight: [''],
-                height: [''],
+                ssn: [''],
+                // weight: [''],
+                // height: [''],
                 dateOfFirstTreatment: [''],
                 // races: ['', Validators.required],
                 // ethnicities: ['', Validators.required],
@@ -143,8 +143,8 @@ export class DemographicsComponent implements OnInit {
         let existingPatientJS = this.patientInfo.toJS();
         let patient = new Patient(_.extend(existingPatientJS, {
             ssn: demographicsFormValues.userInfo.ssn,
-            weight: parseInt(demographicsFormValues.userInfo.weight, 10),
-            height: parseInt(demographicsFormValues.userInfo.height, 10),
+            // weight: parseInt(demographicsFormValues.userInfo.weight, 10),
+            // height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             //raceId: demographicsFormValues.userInfo.races,
             //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
