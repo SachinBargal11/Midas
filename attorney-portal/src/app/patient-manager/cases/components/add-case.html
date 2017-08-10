@@ -123,16 +123,9 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
             <div class="form-group" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                <!--<select formControlName="providerId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                            <option value="">-Select -</option>
-                            <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.name}}</option>
-                        </select>-->
-
                 <select type="text" formControlName="providerId" (change)="providerChange($event)" class="form-control" placeholder="">
                             <option value="">-Select Provider-</option>
-                             <!--<option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       -->
-                              <option *ngFor="let provider of allProviders" value="{{provider.id}}">{{provider.name}} </option>
-                        
+                              <option *ngFor="let provider of allProviders" value="{{provider.prefferedProvider.id}}">{{provider.prefferedProvider.name}}</option>       
                  </select>
                 <div class='error-list' *ngIf="caseformControls.providerId.touched && !caseformControls.providerId.valid">
                     <ul>

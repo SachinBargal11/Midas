@@ -23,6 +23,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import { Account } from '../../../account/models/account';
+import { MedicalProviderMasterStore } from '../../../account-setup/stores/medical-provider-master-store';
+import { MedicalProviderMaster } from '../../../account-setup/models/medical-provider-master';
 @Component({
     selector: 'case-basic',
     templateUrl: './case-basic.html'
@@ -42,7 +44,7 @@ export class CaseBasicComponent implements OnInit {
     patientId: number;
     patientName: string;
     // transportation: any;
-    allProviders: Account[];
+    allProviders: MedicalProviderMaster[];
     attorneyId: number = 0;
     constructor(
         private fb: FormBuilder,
@@ -55,7 +57,7 @@ export class CaseBasicComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _patientStore: PatientsStore,
-        private _attorneyMasterStore: AttorneyMasterStore,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
         private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
@@ -69,10 +71,10 @@ export class CaseBasicComponent implements OnInit {
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
             // let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
-            let fetchAttorneys = this._attorneyMasterStore.getAllPreferredMedicalProviders();
+            let fetchMedicalProviders = this._medicalProviderMasterStore.getAllPreferredMedicalProviders();
 
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
-            Observable.forkJoin([fetchPatient, fetchEmployer, fetchAttorneys, fetchCaseDetail])
+            Observable.forkJoin([fetchPatient, fetchEmployer, fetchMedicalProviders, fetchCaseDetail])
                 .subscribe(
                 (results) => {
                     this.patient = results[0];
@@ -182,7 +184,7 @@ export class CaseBasicComponent implements OnInit {
         result.subscribe(
             (response) => {
                 if (this.attorneyId > 0) {
-                    let result1 = this._patientStore.assignPatientToMP(this.patientId, this.caseId, this.attorneyId);
+                    let result1 = this._patientStore.assignPatientToMedicalProvider(this.patientId, this.caseId, this.attorneyId);
                     result1.subscribe(
                         (response) => {
                             let notification = new Notification({

@@ -146,19 +146,6 @@ export class AttorneyMasterStore {
         return <Observable<Attorney>>Observable.from(promise);
     }
 
-
-     getAllPreferredMedicalProviders(): Observable<Account[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService. getAllPreferredMedicalProviders().subscribe((allProvider: Account[]) => {
-                this._allProvidersInMidas.next(List(allProvider));
-                resolve(allProvider);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Account[]>>Observable.fromPromise(promise);
-    }
-
     resetStore() {
         this._attorneyMaster.next(this._attorneyMaster.getValue().clear());
         this._allAttorneyInMidas.next(this._allAttorneyInMidas.getValue().clear());

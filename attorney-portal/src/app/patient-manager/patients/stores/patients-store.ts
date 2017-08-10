@@ -194,10 +194,9 @@ export class PatientsStore {
         this._selectedPatients.next(selectedPatients.delete(index));
     }
 
-    assignPatientToMP(id: number, caseId: number, providerId: number): Observable<Patient> {
+    assignPatientToMedicalProvider(id: number, caseId: number, providerId: number): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
-            this._patientsService.assignPatientToMP(id, caseId, providerId).subscribe((patient: Patient) => {
-                // this._attorneyMaster.next(List(allattorney));
+            this._patientsService.assignPatientToMedicalProvider(id, caseId, providerId).subscribe((patient: Patient) => {
                 resolve(patient);
             }, error => {
                 reject(error);

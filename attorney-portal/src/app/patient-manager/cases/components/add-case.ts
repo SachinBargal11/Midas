@@ -19,10 +19,11 @@ import { NotificationsService } from 'angular2-notifications';
 import { PatientsStore } from '../../patients/stores/patients-store';
 import { Patient } from '../../patients/models/patient';
 import { Attorney } from '../../../account-setup/models/attorney';
-import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
+import { MedicalProviderMasterStore } from '../../../account-setup/stores/medical-provider-master-store';
 import { Account } from '../../../account/models/account';
 import { SelectItem } from 'primeng/primeng';
 import * as _ from 'underscore';
+import { MedicalProviderMaster } from '../../../account-setup/models/medical-provider-master';
 
 @Component({
     selector: 'add-case',
@@ -43,7 +44,7 @@ export class AddCaseComponent implements OnInit {
     patients: Patient[];
     // patientsWithoutCase: Patient[];
     patientsWithoutCase: SelectItem[] = [];
-    allProviders: Account[];
+    allProviders: MedicalProviderMaster[];
     currentProviderId: number = 0;
     providerId: number = 0;
 
@@ -60,7 +61,7 @@ export class AddCaseComponent implements OnInit {
         private _employerStore: EmployerStore,
         private _casesStore: CasesStore,
         private _patientStore: PatientsStore,
-        private _attorneyMasterStore: AttorneyMasterStore,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
@@ -82,8 +83,8 @@ export class AddCaseComponent implements OnInit {
                         this._progressBarService.hide();
                     });
 
-                this._employerStore.getCurrentEmployer(this.patientId)
-                    .subscribe(employer => this.employer = employer);
+                // this._employerStore.getCurrentEmployer(this.patientId)
+                //     .subscribe(employer => this.employer = employer);
             }
         });
 
@@ -106,13 +107,8 @@ export class AddCaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this._locationsStore.getLocations()
-        //     .subscribe(locations => this.locations = locations);
-
-        //  this._attorneyMasterStore.getAttorneyMasters()
-        //  .subscribe(attorneys => this.attorneys = attorneys);
-        this._attorneyMasterStore.getAllPreferredMedicalProviders()
-            .subscribe((allProviders: Account[]) => {
+        this._medicalProviderMasterStore.getAllPreferredMedicalProviders()
+            .subscribe((allProviders: MedicalProviderMaster[]) => {
                 this.allProviders = allProviders;
             },
             (error) => {
@@ -211,7 +207,7 @@ export class AddCaseComponent implements OnInit {
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             // locationId: caseFormValues.locationId,
-            patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
+            // patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
             claimFileNumber: caseFormValues.claimNumber,
@@ -243,7 +239,7 @@ export class AddCaseComponent implements OnInit {
             (response) => {
                 if (this.providerId > 0) {
 
-                    let result1 = this._patientsStore.assignPatientToMP((this.patientId) ? this.patientId : parseInt(this.idPatient), response.id, this.providerId);
+                    let result1 = this._patientsStore.assignPatientToMedicalProvider((this.patientId) ? this.patientId : parseInt(this.idPatient), response.id, this.providerId);
                     result1.subscribe(
                         (response) => {
                             let notification = new Notification({

@@ -67,7 +67,7 @@ export class MedicalProviderListComponent implements OnInit {
 
     loadMedicalProviders() {
         this._progressBarService.show();
-        this._medicalProviderMasterStore.getMedicalProviders()
+        this._medicalProviderMasterStore.getAllPreferredMedicalProviders()
             .subscribe((providers: MedicalProviderMaster[]) => {
                 this.providers = providers;
             },
