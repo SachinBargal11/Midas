@@ -32,6 +32,61 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zeus Id
+                        <!--<span class="color-red">*</span>-->
+                    </label>
+                    <div class="form-group" [class.error]="addInsuranceMasterFormControls.zeusId.touched && !addInsuranceMasterFormControls.zeusId.valid">
+                        <input formControlName="zeusId" type="number" class="form-control" placeholder="" [class.error]="!addInsuranceMasterFormControls.zeusId.valid">
+                        <div class='error-list' *ngIf="addInsuranceMasterFormControls.zeusId.touched && !addInsuranceMasterFormControls.zeusId.valid">
+                            <ul>
+                                <li *ngIf="addInsuranceMasterFormControls.zeusId.hasError('required')">Zeus Id is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> 1500Form 
+                            <!--<span class="color-red">*</span>-->
+                        </label>
+                    <div class="form-group">
+                        <label class="form-check-label">
+                        <input type="radio" value="1" name="Only1500Form" formControlName="Only1500Form" [(ngModel)]="Only1500Form"> Yes
+                    </label>
+                        <label class="form-check-label">
+                        <input type="radio" value="0" name="Only1500Form" formControlName="Only1500Form" [(ngModel)]="Only1500Form"> No
+                    </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Paper Authorization 
+                            <!--<span class="color-red">*</span>-->
+                        </label>
+                    <div class="form-group">
+                        <label class="form-check-label">
+                        <input type="radio" value="1" name="paperAuthorization" formControlName="paperAuthorization" [(ngModel)]="paperAuthorization"> Yes
+                    </label>
+                        <label class="form-check-label">
+                        <input type="radio" value="0" name="paperAuthorization" formControlName="paperAuthorization" [(ngModel)]="paperAuthorization"> No
+                    </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Priority Billing
+                            <!--<span class="color-red">*</span>-->
+                        </label>
+                    <div class="form-group">
+                        <label class="form-check-label">
+                        <input type="radio" value="1" name="priorityBilling" formControlName="priorityBilling" [(ngModel)]="priorityBilling"> Yes
+                    </label>
+                        <label class="form-check-label">
+                        <input type="radio" value="0" name="priorityBilling" formControlName="priorityBilling" [(ngModel)]="priorityBilling"> No
+                    </label>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -71,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Fax No</label>
                         <p-inputMask mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
@@ -91,29 +146,30 @@
                         <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Office Extension</label>
                         <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
                     </div>
+                </div>
             </div>
-            </div>
-         <div class="row">
+            <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail                                                                                                                                     
                                 </label>
                         <div class="form-group" [class.error]="addInsuranceMasterFormControls.alternateEmail.touched && !addInsuranceMasterFormControls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [class.error]="!addInsuranceMasterFormControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="addInsuranceMasterFormControls.alternateEmail.touched && !addInsuranceMasterFormControls.alternateEmail.valid">
-                            <ul>
-                                <li *ngIf="addInsuranceMasterFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
+                            <input formControlName="alternateEmail" [class.error]="!addInsuranceMasterFormControls.alternateEmail.valid" class="form-control"
+                                type="text" placeholder="" />
+                            <div class='error-list' *ngIf="addInsuranceMasterFormControls.alternateEmail.touched && !addInsuranceMasterFormControls.alternateEmail.valid">
+                                <ul>
+                                    <li *ngIf="addInsuranceMasterFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                  <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>

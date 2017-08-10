@@ -54,7 +54,7 @@ namespace MIDAS.GBX.CollectionWebAPI
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
-        HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
+        //HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);

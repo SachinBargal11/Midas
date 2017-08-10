@@ -61,10 +61,11 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetReadOnly(HttpRequestMessage request, int CaseId,int companyId);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
-        HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
+        //HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);
+        HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId);
         HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferredToCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
@@ -110,6 +111,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
         HttpResponseMessage AssociatePatientWithCompany(HttpRequestMessage request, int PatientId, int CompanyId);
         HttpResponseMessage AssociatePatientWithAttorneyCompany(HttpRequestMessage request, int PatientId, int CaseId, int AttorneyCompanyId);
+        HttpResponseMessage AssociatePatientWithMedicalCompany(HttpRequestMessage request, int PatientId, int CaseId, int MedicalCompanyId);
         HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId);
         HttpResponseMessage DisassociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
         HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
@@ -154,9 +156,14 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetProcedureCodeByRoomTestExcludingAssigned(HttpRequestMessage request, int roomTestId, int CompanyId);
         HttpResponseMessage AddPatientProfileDocument(HttpRequestMessage request, int PatietnId, int DocumentId);
         HttpResponseMessage GetRecurrenceByCaseAndSpecialtyAndDoctorId(HttpRequestMessage request, int caseId, int specialtyId,int doctorId);
-        
         HttpResponseMessage GetICDTypeCodeByCompanyId(HttpRequestMessage request, int CompanyId);
-
-
+        HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request);
+        HttpResponseMessage GetOpenCasesByCompanyWithPatient(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId);
+        HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
+        HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
+        HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart);
+        HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialtyId);
     }
 }

@@ -60,6 +60,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetOpenCaseForPatient(int PatientId)
         {
             return requestHandler.GetOpenCaseForPatient(Request, PatientId);
+        }
+
+        [HttpGet]
+        [Route("getOpenCaseForPatient/{PatientId}/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetOpenCaseForPatient(int PatientId, int CompanyId)
+        {
+            return requestHandler.GetOpenCaseForPatient(Request, PatientId, CompanyId);
         }        
 
         [HttpGet]
@@ -117,6 +125,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
+        }
+
+        [HttpGet]
+        [Route("GetOpenCasesByCompanyWithPatient/{CompanyId}")]
+        //[AllowAnonymous]
+        public HttpResponseMessage GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            return requestHandler.GetOpenCasesByCompanyWithPatient(Request, CompanyId);
         }
 
         protected override void Dispose(bool disposing)

@@ -19,6 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
+            this.CaseDocuments = new HashSet<CaseDocument>();
             this.CaseInsuranceMappings = new HashSet<CaseInsuranceMapping>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
             this.DoctorCaseConsentApprovals = new HashSet<DoctorCaseConsentApproval>();
@@ -33,7 +34,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public int PatientId { get; set; }
         public string CaseName { get; set; }
         public Nullable<byte> CaseTypeId { get; set; }
-        public int LocationId { get; set; }
         public Nullable<int> PatientEmpInfoId { get; set; }
         public string CarrierCaseNo { get; set; }
         public Nullable<byte> CaseStatusId { get; set; }
@@ -47,13 +47,14 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual CaseStatu CaseStatu { get; set; }
         public virtual CaseType CaseType { get; set; }
-        public virtual Location Location { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseDocument> CaseDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

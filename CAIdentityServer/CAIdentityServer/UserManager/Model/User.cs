@@ -10,7 +10,7 @@ namespace UserManager.Model
     /// <summary>
     /// Midas user
     /// </summary>
-    public class MidasUser
+    public class User
     {
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace UserManager.Model
         /// </summary>
         public IEnumerable<Role> Roles { get; set; }
 
-        public MidasUser()
+        public User()
         {
             Enabled = true;
             Claims = new List<Claim>();

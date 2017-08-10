@@ -895,18 +895,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id)
         {
@@ -924,6 +924,19 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId)
         {
             var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId, CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -1587,6 +1600,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage AssociatePatientWithMedicalCompany(HttpRequestMessage request, int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            var objResult = dataAccessManager.AssociatePatientWithMedicalCompany(PatientId, CaseId, MedicalCompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage AssociatePatientWithAncillaryCompany(HttpRequestMessage request, int PatientId, int CaseId, int AncillaryCompanyId, int? AddedByCompanyId)
         {
             var objResult = dataAccessManager.AssociatePatientWithAncillaryCompany(PatientId, CaseId, AncillaryCompanyId, AddedByCompanyId);
@@ -2171,6 +2202,108 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetDoctorTaxTypes(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.GetDoctorTaxTypes();
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
+        public HttpResponseMessage GetOpenCasesByCompanyWithPatient(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetOpenCasesByCompanyWithPatient(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId)
+        {
+            var objResult = dataAccessManager.GetByPatientVisitIdWithProcedureCodes(PatientVisitId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetMasterAndByCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId)
+        {
+            var res = dataAccessManager.Delete(id, CompanyId);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        public HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int CompanyId)
+        {
+            var res = dataAccessManager.GetInsuranceDetails(id, CompanyId);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        public HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart)
+        {
+            var objResult = dataAccessManager.CancelSingleEventOccurrence(PatientVisitId, CancelEventStart);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialityId)
+        {
+            var objResult = dataAccessManager.GetByLocationDoctorAndSpecialityId(LocationId, DoctorId, SpecialityId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

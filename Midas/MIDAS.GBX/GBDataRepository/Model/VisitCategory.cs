@@ -12,18 +12,10 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Patient2_backup
+    public partial class VisitCategory
     {
-        public int Id { get; set; }
-        public string SSN { get; set; }
-        public Nullable<decimal> Weight { get; set; }
-        public Nullable<decimal> Height { get; set; }
-        public Nullable<byte> MaritalStatusId { get; set; }
-        public Nullable<System.DateTime> DateOfFirstTreatment { get; set; }
+        public int ID { get; set; }
+        public string NAME { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

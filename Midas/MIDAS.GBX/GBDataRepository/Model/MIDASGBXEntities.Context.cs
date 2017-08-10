@@ -56,6 +56,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
+        public virtual DbSet<DoctorRoomTestMapping> DoctorRoomTestMappings { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual DbSet<DoctorTaxType> DoctorTaxTypes { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
@@ -74,7 +75,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
         public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
-        public virtual DbSet<NotifyContact> NotifyContacts { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
@@ -118,11 +118,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserPersonalSetting> UserPersonalSettings { get; set; }
         public virtual DbSet<UserStatu> UserStatus { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<VisitCategory> VisitCategories { get; set; }
         public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<Patient2_backup> Patient2_backup { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

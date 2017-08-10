@@ -74,7 +74,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <!--<div class="col-lg-4">
             <label class="form-label"> Location
                                 <span class="color-red">*</span>
                             </label>
@@ -89,7 +89,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="col-lg-4">
             <label class="form-label"> Carrier Case Number
                             </label>
@@ -141,8 +141,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Case Source
                             </label>
@@ -151,6 +149,20 @@
                 <div class='error-list' *ngIf="caseformControls.caseSource.touched && !caseformControls.caseSource.valid">
                     <ul>
                         <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Claim Number
+                            </label>
+            <div class="form-group" [class.error]="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
+                <input formControlName="claimNumber" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.claimNumber.valid">
+                <div class='error-list' *ngIf="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
+                    <ul>
+                        <li *ngIf="caseformControls.claimNumber.hasError('required')">Claim Number is required.</li>
                     </ul>
                 </div>
             </div>

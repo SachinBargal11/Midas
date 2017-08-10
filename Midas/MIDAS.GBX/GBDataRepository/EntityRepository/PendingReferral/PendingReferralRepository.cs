@@ -81,7 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                 boCase.PatientId = pendingReferral.PatientVisit.Case.PatientId;
                                 boCase.CaseName = pendingReferral.PatientVisit.Case.CaseName;
                                 boCase.CaseTypeId = pendingReferral.PatientVisit.Case.CaseTypeId;
-                                boCase.LocationId = pendingReferral.PatientVisit.Case.LocationId;
+                                //boCase.LocationId = pendingReferral.PatientVisit.Case.LocationId;
                                 boCase.PatientEmpInfoId = pendingReferral.PatientVisit.Case.PatientEmpInfoId;
                                 boCase.CarrierCaseNo = pendingReferral.PatientVisit.Case.CarrierCaseNo;
                                 boCase.CaseStatusId = pendingReferral.PatientVisit.Case.CaseStatusId;
@@ -1089,6 +1089,108 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)lstPendingReferral;            
         }
         #endregion
+
+        public override object GetByPatientVisitIdWithProcedureCodes(int PatientVisitId)
+        {
+            //var acc = _context.PendingReferrals.Include("PatientVisit")
+            //                                  .Include("PatientVisit.Case.Patient.User")
+            //                                  .Include("Doctor")
+            //                                  .Include("Doctor.User")
+            //                                  .Include("Specialty")
+            //                                  .Include("RoomTest")
+            //                                  .Include("PendingReferralProcedureCodes")
+            //                                  .Include("PendingReferralProcedureCodes.ProcedureCode")
+            //                           .Where(p => p.PatientVisitId == patientVisitId
+            //                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                           .ToList<PendingReferral>();
+
+            //var result = _context.PendingReferrals.Where(p => p.PatientVisitId == PatientVisitId
+            //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                      .Join(_context.Specialties,
+            //                                            pr => pr.ForSpecialtyId, sp => sp.id, (pr, sp) => new
+            //                                            {
+            //                                                PendingReferralId = pr.Id,
+            //                                                ForSpecialtyId = pr.ForSpecialtyId,
+            //                                                ForSpecialtyName = sp.Name,
+            //                                                ForRoomTestId = pr.ForRoomTestId
+            //                                            })
+            //                                       .Join(_context.RoomTests,
+            //                                            prsp => prsp.ForRoomTestId, rt => rt.id, (prsp, rt) => new
+            //                                            {
+            //                                                PendingReferralId = prsp.PendingReferralId,
+            //                                                ForSpecialtyId = prsp.ForSpecialtyId,
+            //                                                ForSpecialtyName = prsp.ForSpecialtyName,
+            //                                                ForRoomTestId = prsp.ForRoomTestId,
+            //                                                ForRoomTestName = rt.Name
+            //                                            })
+            //                                       .Join(_context.PendingReferralProcedureCodes,
+            //                                            prsprt => prsprt.PendingReferralId, prpc => prpc.PendingReferralId, (prsprt, prpc) => new
+            //                                            {
+            //                                                PendingReferralId = prsprt.PendingReferralId,
+            //                                                ForSpecialtyId = prsprt.ForSpecialtyId,
+            //                                                ForSpecialtyName = prsprt.ForSpecialtyName,
+            //                                                ForRoomTestId = prsprt.ForRoomTestId,
+            //                                                ForRoomTestName = prsprt.ForRoomTestName,
+            //                                                ProcedureCodeId = prpc.ProcedureCodeId
+            //                                            })
+            //                                       .Join(_context.ProcedureCodes,
+            //                                            prsprt => prsprt.ProcedureCodeId, pc => pc.Id, (prsprt, pc) => new
+            //                                            {
+            //                                                PendingReferralId = prsprt.PendingReferralId,
+            //                                                ForSpecialtyId = prsprt.ForSpecialtyId,
+            //                                                ForSpecialtyName = prsprt.ForSpecialtyName,
+            //                                                ForRoomTestId = prsprt.ForRoomTestId,
+            //                                                ForRoomTestName = prsprt.ForRoomTestName,
+            //                                                ProcedureCodeId = prsprt.ProcedureCodeId,
+            //                                                ProcedureCodeText = pc.ProcedureCodeText,
+            //                                                ProcedureCodeDesc = pc.ProcedureCodeDesc
+            //                                            })
+            //                                       .ToList();
+
+            var result = _context.PendingReferrals.Where(p => p.PatientVisitId == PatientVisitId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .GroupJoin(_context.Specialties,
+                                                        pr => pr.ForSpecialtyId, sp => sp.id, (pr, sp) => new
+                                                        {
+                                                            pr = pr,
+                                                            sp = sp.DefaultIfEmpty()
+                                                        })
+                                                   .GroupJoin(_context.RoomTests,
+                                                        prsp => prsp.pr.ForRoomTestId, rt => rt.id, (prsp, rt) => new
+                                                        {
+                                                            pr = prsp.pr,
+                                                            sp = prsp.sp,
+                                                            rt = rt.DefaultIfEmpty()
+                                                        })
+                                                   .Join(_context.PendingReferralProcedureCodes,
+                                                        prsprt => prsprt.pr.Id, prpc => prpc.PendingReferralId, (prsprt, prpc) => new
+                                                        {
+                                                            pr = prsprt.pr,
+                                                            sp = prsprt.sp,
+                                                            rt = prsprt.rt,
+                                                            prpc = prpc
+                                                        })
+                                                   .Join(_context.ProcedureCodes,
+                                                        prsprt => prsprt.prpc.ProcedureCodeId, pc => pc.Id, (prsprt, pc) => new
+                                                        {
+                                                            PendingReferralId = prsprt.pr.Id,
+                                                            ForSpecialtyId = prsprt.pr.ForSpecialtyId,
+                                                            ForSpecialtyName = prsprt.sp.FirstOrDefault().Name,
+                                                            ForRoomTestId = prsprt.pr.ForRoomTestId,
+                                                            ForRoomTestName = prsprt.rt.FirstOrDefault().Name,
+                                                            ProcedureCodeId = prsprt.prpc.ProcedureCodeId,
+                                                            ProcedureCodeText = pc.ProcedureCodeText,
+                                                            ProcedureCodeDesc = pc.ProcedureCodeDesc
+                                                        })
+                                                   .ToList();
+
+            if (result == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return result;
+        }
 
         public void Dispose()
         {

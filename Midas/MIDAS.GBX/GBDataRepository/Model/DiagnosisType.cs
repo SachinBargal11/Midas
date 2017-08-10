@@ -34,5 +34,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiagnosisTypeCompany> DiagnosisTypeCompanies { get; set; }
+        public virtual ICDTypeCode ICDTypeCode { get; set; }
     }
 }

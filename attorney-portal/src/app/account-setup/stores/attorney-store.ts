@@ -147,9 +147,9 @@ export class AttorneyMasterStore {
     }
 
 
-    getAllProviders(): Observable<Account[]> {
+     getAllPreferredMedicalProviders(): Observable<Account[]> {
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.getAllProviders().subscribe((allProvider: Account[]) => {
+            this._attorneyMasterService. getAllPreferredMedicalProviders().subscribe((allProvider: Account[]) => {
                 this._allProvidersInMidas.next(List(allProvider));
                 resolve(allProvider);
             }, error => {

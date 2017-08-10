@@ -121,13 +121,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandlerPatient.GetGbObjects4(Request, CompanyId);
         }
 
-        [HttpGet]
-        [Route("getByLocationWithOpenCases/{LocationId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
-        {
-            return requestHandlerPatient.GetGbObjects3(Request, LocationId);
-        }
+        //[HttpGet]
+        //[Route("getByLocationWithOpenCases/{LocationId}")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
+        //{
+        //    return requestHandlerPatient.GetGbObjects3(Request, LocationId);
+        //}
 
         [HttpGet]
         [Route("getPatientById/{id}")]
@@ -177,7 +177,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandlerPatient.AssociatePatientWithAttorneyCompany(Request, PatientId, CaseId, AttorneyCompanyId);
         }
-        
+
+        [HttpGet]
+        [Route("associatePatientWithMedicalCompany/{PatientId}/{CaseId}/{MedicalCompanyId}")]
+        public HttpResponseMessage AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            return requestHandlerPatient.AssociatePatientWithMedicalCompany(Request, PatientId, CaseId, MedicalCompanyId);
+        }
+
         [HttpGet]
         [Route("associatePatientWithCompany/{PatientId}/{CompanyId}")]
         public HttpResponseMessage AssociatePatientWithCompany(int PatientId, int CompanyId)

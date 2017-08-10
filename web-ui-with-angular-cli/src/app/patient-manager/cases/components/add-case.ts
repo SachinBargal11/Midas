@@ -93,19 +93,20 @@ export class AddCaseComponent implements OnInit {
             patientId: ['', Validators.required],
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
             attorneyId: [''],
-            caseSource: ['']
+            caseSource: [''],
+            claimNumber:['']
         });
 
         this.caseformControls = this.caseform.controls;
     }
 
     ngOnInit() {
-        this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations);
+        // this._locationsStore.getLocations()
+        //     .subscribe(locations => this.locations = locations);
 
         this._attorneyMasterStore.getAttorneyMasters()
             // .subscribe(attorneys => this.attorneys = attorneys);
@@ -211,11 +212,12 @@ export class AddCaseComponent implements OnInit {
             caseName: 'caseName',
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
-            locationId: caseFormValues.locationId,
+            // locationId: caseFormValues.locationId,
             patientEmpInfoId: this.employer ? this.employer.id ? this.employer.id : null : null,
             caseStatusId: caseFormValues.caseStatusId,
             // attorneyId: caseFormValues.attorneyId,
             caseSource: caseFormValues.caseSource,
+            claimFileNumber: caseFormValues.claimNumber,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
             createdByCompanyId: this._sessionStore.session.currentCompany.id,

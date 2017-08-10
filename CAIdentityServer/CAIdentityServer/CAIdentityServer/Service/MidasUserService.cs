@@ -9,7 +9,7 @@ using System.Security.Claims;
 using IdentityServer3.Core.Services;
 using Microsoft.Owin;
 using UserManager.Model;
-using UserManager;
+using UserManager.Contract;
 using IdentityServer3.Core;
 
 namespace CAIdentityServer.Service
@@ -17,6 +17,7 @@ namespace CAIdentityServer.Service
     public class MidasUserService : UserServiceBase
     {
         OwinContext ctx;
+        
         public MidasUserService(OwinEnvironmentService owinEnv)
         {
             ctx = new OwinContext(owinEnv.Environment);
@@ -37,8 +38,10 @@ namespace CAIdentityServer.Service
 
             ctx.AuthenticateResult = null;
 
-            UserManager.MidasUserService service = new UserManager.MidasUserService();
+            IUserStoreService service = GetUserStoreService(message.ClientId);
+
             var user = service.GetUser(ctx.UserName, ctx.Password);
+
             if (user != null)
             {
                 var result = await PostAuthenticateLocalAsync(user, message);
@@ -58,13 +61,16 @@ namespace CAIdentityServer.Service
 
         }
 
-        protected async Task<AuthenticateResult> PostAuthenticateLocalAsync(MidasUser user, SignInMessage message)
+        protected async Task<AuthenticateResult> PostAuthenticateLocalAsync(User user, SignInMessage message)
         {
-            bool twoFactorAuthEnabled = UserManager.Common.Utility.GetConfigValue("TwoFactorAuthenticationEnabled") == "true" ? true : false;
+            ClientScopeService clientScopeService = new ClientScopeService();
 
-            if (twoFactorAuthEnabled && (user.TwoFactorEmailAuthEnabled || user.TwoFactorSMSAuthEnabled))
+            bool isTwoFactorAuthentication = clientScopeService.IsTwoFactorAuthentication(message.ClientId);
+
+            if (isTwoFactorAuthentication && (user.TwoFactorEmailAuthEnabled || user.TwoFactorSMSAuthEnabled))
             {
-                UserManager.MidasUserService service = new UserManager.MidasUserService();
+                IUserStoreService service = GetUserStoreService(message.ClientId);
+
                 var result = service.GenerateAndSendOTP(user.Id);
 
                 if (!result)
@@ -73,7 +79,7 @@ namespace CAIdentityServer.Service
                 }
 
                 var claims = GetUserClaims(user);
-                return new AuthenticateResult("~/custom/2fa", user.Subject, user.DisplayName, claims);
+                return new AuthenticateResult("~/custom/2fa?id=" + ctx.Request.Query.Get("id"), user.Subject, user.DisplayName, claims);
             }
             else
             {
@@ -81,9 +87,10 @@ namespace CAIdentityServer.Service
             }
         }
 
-        public async Task<bool> VerifyTwoFactorTokenAsync(string userId, string code)
+        public async Task<bool> VerifyTwoFactorTokenAsync(string userId, string code, SignInMessage message)
         {
-            UserManager.MidasUserService service = new UserManager.MidasUserService();
+            IUserStoreService service = GetUserStoreService(message.ClientId);
+
             var result = service.VerifyOTP(Convert.ToInt32(userId), Convert.ToInt32(code));
             return result;
         }
@@ -97,7 +104,8 @@ namespace CAIdentityServer.Service
 
             int userID = Convert.ToInt32(subject.GetSubjectId());
 
-            UserManager.MidasUserService service = new UserManager.MidasUserService();
+            IUserStoreService service = GetUserStoreService(ctx.Client.ClientId);
+
             var user = service.GetUserProfileData(userID);
 
             if (user == null)
@@ -114,7 +122,7 @@ namespace CAIdentityServer.Service
             ctx.IssuedClaims = claims;
         }
 
-        private IEnumerable<Claim> GetUserClaims(MidasUser user)
+        private IEnumerable<Claim> GetUserClaims(User user)
         {
             List<Claim> claims = new List<Claim>();
 
@@ -128,6 +136,22 @@ namespace CAIdentityServer.Service
             }
 
             return claims;
+        }
+
+        private IUserStoreService GetUserStoreService(string clientid)
+        {
+            IUserStoreService userStoreService;
+
+            if (clientid == "Midas" || clientid == "MidasAPIUser")
+            {
+                userStoreService = new UserManager.Service.MidasUserStoreService();
+            }
+            else
+            {
+                userStoreService = new UserManager.Service.MidasUserStoreService();
+            }
+
+            return userStoreService;
         }
     }
 }

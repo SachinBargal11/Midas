@@ -4,45 +4,52 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UserManager.Model;
 using UserManager.Repository;
+using UserManager.Contract;
 
-namespace UserManager
+namespace UserManager.Service
 {
     /// <summary>
     /// Midas User Service
     /// </summary>
-    public class MidasUserService
+    public class MidasUserStoreService:IUserStoreService
     {
-        MIDASGBXEntities _context; 
+        MIDASGBXEntities _context;
 
         /// <summary>
         /// Returns the user based on authentication context
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        public MidasUser GetUser(string userName, string password)
+        public Model.User GetUser(string userName, string password)
         {
             _context = new MIDASGBXEntities();
             User user = _context.Users.Where(u => u.UserName == userName).FirstOrDefault();
 
             if (user != null)
             {
-                if (Common.PasswordHash.ValidatePassword(password, user.Password))
+                try
                 {
-                    MidasUser midasuser = new MidasUser();
-                    midasuser.Subject = Convert.ToString(user.id);
-                    midasuser.Id = user.id;
-                    midasuser.Username = user.UserName;
-                    midasuser.FirstName = user.FirstName;
-                    midasuser.MiddleName = user.MiddleName;
-                    midasuser.LastName = user.LastName;
-                    midasuser.DisplayName = user.FirstName + ' ' + user.LastName;
-                    midasuser.TwoFactorEmailAuthEnabled = (user.C2FactAuthEmailEnabled == null || user.C2FactAuthEmailEnabled == false ? false:true);
-                    midasuser.TwoFactorSMSAuthEnabled = (user.C2FactAuthSMSEnabled == null || user.C2FactAuthSMSEnabled == false  ? false : true);
-                    midasuser.Roles = GetUserRoles(user.id);
+                    if (Common.PasswordHash.ValidatePassword(password, user.Password))
+                    {
+                        Model.User midasuser = new Model.User();
+                        midasuser.Subject = Convert.ToString(user.id);
+                        midasuser.Id = user.id;
+                        midasuser.Username = user.UserName;
+                        midasuser.FirstName = user.FirstName;
+                        midasuser.MiddleName = user.MiddleName;
+                        midasuser.LastName = user.LastName;
+                        midasuser.DisplayName = user.FirstName + ' ' + user.LastName;
+                        midasuser.TwoFactorEmailAuthEnabled = (user.C2FactAuthEmailEnabled == null || user.C2FactAuthEmailEnabled == false ? false : true);
+                        midasuser.TwoFactorSMSAuthEnabled = (user.C2FactAuthSMSEnabled == null || user.C2FactAuthSMSEnabled == false ? false : true);
+                        midasuser.Roles = GetUserRoles(user.id);
 
-                    return midasuser;
+                        return midasuser;
+                    }
+                }
+                catch (Exception)
+                {
+                    //Log exception
                 }
             }
 
@@ -53,11 +60,11 @@ namespace UserManager
         /// Returns user by user id
         /// </summary>
         /// <param name="userID"></param>
-        public MidasUser GetUserProfileData(int userID)
+        public Model.User GetUserProfileData(int userID)
         {
             _context = new MIDASGBXEntities();
-            MidasUser midasuser = new MidasUser();
-            User user = _context.Users.Where(u => u.id == userID).FirstOrDefault();
+            Model.User midasuser = new Model.User();
+            Repository.User user = _context.Users.Where(u => u.id == userID).FirstOrDefault();
 
             if (user != null)
             {
@@ -79,18 +86,18 @@ namespace UserManager
         /// <summary>
         /// Returns the user based on authentication context
         /// </summary>
-        public List<Role> GetUserRoles(int useriID)
+        public List<Model.Role> GetUserRoles(int useriID)
         {
-            List<Role> roles = new List<Role>();
-            roles.Add(new Role { RoleID = 1, Name = "Admin" });
-            roles.Add(new Role { RoleID = 2, Name = "Doctor" });
+            List<Model.Role> roles = new List<Model.Role>();
+            roles.Add(new Model.Role { RoleID = 1, Name = "Admin" });
+            roles.Add(new Model.Role { RoleID = 2, Name = "Doctor" });
             return roles;
         }
 
         public bool GenerateAndSendOTP(int userID)
         {
             _context = new MIDASGBXEntities();
-            User user = _context.Users.Where(u => u.id == userID).FirstOrDefault();
+            Repository.User user = _context.Users.Where(u => u.id == userID).FirstOrDefault();
             int defaultAdminUserID = Convert.ToInt32(Common.Utility.GetConfigValue("DefaultAdminUserID"));
             bool result = false;
             try

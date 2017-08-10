@@ -761,18 +761,18 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
-        public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id)
         {
@@ -1164,6 +1164,24 @@ namespace MIDAS.GBX.AttorneyWebAPI
         public HttpResponseMessage AssociatePatientWithAttorneyCompany(HttpRequestMessage request, int PatientId, int CaseId, int AttorneyCompanyId)
         {
             var objResult = dataAccessManager.AssociatePatientWithAttorneyCompany(PatientId, CaseId, AttorneyCompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage AssociatePatientWithMedicalCompany(HttpRequestMessage request, int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            var objResult = dataAccessManager.AssociatePatientWithMedicalCompany(PatientId, CaseId, MedicalCompanyId);
 
             try
             {

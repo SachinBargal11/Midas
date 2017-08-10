@@ -371,10 +371,15 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByLocationWithOpenCases(int LocationId)
+        public virtual Object GetOpenCaseForPatient(int PatientId, int CompanyId)
         {
             throw new NotImplementedException();
         }
+
+        //public virtual Object GetByLocationWithOpenCases(int LocationId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public virtual Object GetByCompanyWithCloseCases(int CompanyId)
         {
@@ -609,6 +614,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId)
         {
             throw new NotImplementedException();
         }
@@ -872,15 +882,52 @@ namespace MIDAS.GBX.EntityRepository
         public virtual Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId,int specialtyId, int doctorId)
         {
             throw new NotImplementedException();
-        }
-
-        
+        }        
 
         public virtual Object GetICDTypeCodeByCompanyId(int CompanyId)
         {
             throw new NotImplementedException();
         }
-        
+
+        public virtual Object GetDoctorTaxTypes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByPatientVisitIdWithProcedureCodes(int PatientVisitId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetMasterAndByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object Delete(int id, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetInsuranceDetails(int id, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetByLocationDoctorAndSpecialityId(int LocationId, int DoctorId, int SpecialtyId)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

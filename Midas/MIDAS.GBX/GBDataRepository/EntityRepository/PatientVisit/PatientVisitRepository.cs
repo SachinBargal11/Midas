@@ -2211,8 +2211,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region GetAllVisitType 
-
+        #region GetAllVisitType
         public override object Get()
         {
             var allVisitType = from vt in _context.VisitTypes
@@ -2235,8 +2234,67 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstalltype;
 
         }
+        #endregion
 
+        #region Cancel Single Event Occurrence
+        public override object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart)
+        {
+            var CalendarEvent = _context.PatientVisits.Where(p => p.Id == PatientVisitId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .Select(p => p.CalendarEvent)
+                                                      .SingleOrDefault();
 
+            if (CalendarEvent != null)
+            {
+                string RecurrenceException = CalendarEvent.RecurrenceException;
+                if (string.IsNullOrWhiteSpace(RecurrenceException) == false)
+                {
+                    RecurrenceException += ",";
+                }
+                else
+                {
+                    RecurrenceException = "";
+                }
+                
+                CalendarEvent.RecurrenceException = RecurrenceException + CancelEventStart.ToString();
+            }
+
+            _context.SaveChanges();
+
+            return Get(PatientVisitId);
+        }
+        #endregion
+
+        #region Get By Location Doctor And Speciality Id
+        public override object GetByLocationDoctorAndSpecialityId(int LocationId, int DoctorId, int SpecialityId)
+        {
+            List<PatientVisit> lstPatientVisit = _context.PatientVisits.Include("Location").Include("Location.Company")
+                                                                       .Include("CalendarEvent")
+                                                                       .Include("Patient")
+                                                                       .Include("Patient.User")
+                                                                       .Include("Case")
+                                                                       .Include("Doctor")
+                                                                       .Include("Doctor.User")
+                                                                       .Include("Room").Include("Room.RoomTest")
+                                                                       .Include("Specialty")
+                                                                       .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                       .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
+                                                                       .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId && p.SpecialtyId == SpecialityId
+                                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                       .ToList<PatientVisit>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id and Doctor Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit> lstBOPatientVisit = new List<BO.PatientVisit>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
         #endregion
 
         public void Dispose()

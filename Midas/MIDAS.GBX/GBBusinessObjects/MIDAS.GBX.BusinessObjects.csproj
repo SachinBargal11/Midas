@@ -110,6 +110,7 @@
     <Compile Include="CompanyICDTypeCode\CompanyICDTypeCode.cs" />
     <Compile Include="Company\CompanyType.cs" />
     <Compile Include="EOVisit\EOVisit.cs" />
+    <Compile Include="Doctor\DoctorRoomTestMapping.cs" />
     <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
     <Compile Include="IMEVisit\IMEVisit.cs" />
     <Compile Include="InsuranceType\InsuranceType.cs" />

@@ -1,9 +1,9 @@
 <h3 class="with-border">
-    Add Patient</h3>
+    Add Client</h3>
 <form [formGroup]="patientform" (ngSubmit)="savePatient()">
     <section class="card">
         <header class="card-header card-header-lg">
-            Patient Information
+            Client Information
         </header>
         <div class="card-block" formGroupName="userInfo">
             <div class="row">
@@ -96,7 +96,7 @@
 
                 <div class="col-lg-4">
                     <label class="form-label"> SSN
-                                            <span class="color-red">*</span>
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                     <div class="form-group" [class.error]="patientformControls.userInfo.controls.ssn.touched && !patientformControls.userInfo.controls.ssn.valid">
                         <input formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!patientformControls.userInfo.controls.ssn.valid">
@@ -108,20 +108,6 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <label class="form-label"> Weight (lbs)</label>
-                    <div class="form-group">
-                        <input formControlName="weight" type="text" class="form-control" placeholder="">
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Height (cms)</label>
-                    <div class="form-group">
-                        <input formControlName="height" type="text" class="form-control" placeholder="">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
                     <label class="form-label"> Date of First Treatment
                                         </label>
                     <div class="form-group">
@@ -132,7 +118,31 @@
                         </div>
                     </div>
                 </div>
-
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Weight (lbs)</label>
+                    <div class="form-group">
+                        <input formControlName="weight" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>-->
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Height (cms)</label>
+                    <div class="form-group">
+                        <input formControlName="height" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>-->
+            </div>
+            <div class="row">
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Date of First Treatment
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                </div>-->
             </div>
         </div>
     </section>
@@ -175,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Fax No</label>
                         <!--<input formControlName="faxNo" type="text" class="form-control" placeholder="" />-->
@@ -203,20 +213,21 @@
                     </div>
                 </div>
             </div>
-             <div class="row">
+            <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail                                                                                                                                     
                                 </label>
                         <div class="form-group" [class.error]="patientformControls.contact.controls.alternateEmail.touched && !patientformControls.contact.controls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [class.error]="!patientformControls.contact.controls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="patientformControls.contact.controls.alternateEmail.touched && !patientformControls.contact.controls.alternateEmail.valid">
-                            <ul>
-                                <li *ngIf="patientformControls.contact.controls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
+                            <input formControlName="alternateEmail" [class.error]="!patientformControls.contact.controls.alternateEmail.valid" class="form-control"
+                                type="text" placeholder="" />
+                            <div class='error-list' *ngIf="patientformControls.contact.controls.alternateEmail.touched && !patientformControls.contact.controls.alternateEmail.valid">
+                                <ul>
+                                    <li *ngIf="patientformControls.contact.controls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -232,7 +243,7 @@
                         </select>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
     </section>
 

@@ -9,6 +9,9 @@
     <div class="flex-box">
         <div class="inner">
             <h3 class="form-heading"><strong>MIDAS </strong>PORTAL</h3>
+            <div class="alert-danger">
+                @Html.ValidationSummary()
+            </div>
             <div class="frm-block">
                 <form>
                     <div class="form-group mb-1">
@@ -25,9 +28,11 @@
                     </div>
                     <a href="#" class="forgot">Forgot Password?</a>
                     <button class="btn btn-success btn-block">Sign In</button>
+                   
                 </form>
             </div>
             <small class="form-text text-white text-center">Don't have an account? <a href="signup.html">SignUp</a></small>
+            
         </div>
     </div>
 }

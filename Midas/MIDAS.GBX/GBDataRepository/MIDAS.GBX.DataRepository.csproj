@@ -314,6 +314,9 @@
     <Compile Include="Model\DoctorLocationSchedule.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DoctorRoomTestMapping.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DoctorSpeciality.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -386,9 +389,6 @@
     <Compile Include="Model\Notification.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\NotifyContact.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\OTP.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -396,9 +396,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Patient.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Patient2_backup.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientAccidentInfo.cs">
@@ -524,6 +521,9 @@
     <Compile Include="Model\UserType.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\VisitCategory.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\VisitDocument.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -537,11 +537,11 @@
     <Compile Include="RepoFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="Model\MIDASGBXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="App.Config" />
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </None>

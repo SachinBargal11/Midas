@@ -27,6 +27,9 @@ export class AddInsuranceMasterComponent implements OnInit {
     minDate: Date;
     maxDate: Date;
     patientId: number;
+    Only1500Form = '0';
+    paperAuthorization = '0';
+    priorityBilling = '0';
 
     addInsuranceMasterForm: FormGroup;
     addInsuranceMasterFormControls;
@@ -43,7 +46,7 @@ export class AddInsuranceMasterComponent implements OnInit {
         private _insuranceMasterStore: InsuranceMasterStore,
         private _elRef: ElementRef
     ) {
-          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/insurance-masters']);
         });
         this.addInsuranceMasterForm = this.fb.group({
@@ -60,9 +63,13 @@ export class AddInsuranceMasterComponent implements OnInit {
             homePhone: [''],
             workPhone: [''],
             faxNo: [''],
-            alternateEmail:  ['', [AppValidators.emailValidator]],
+            alternateEmail: ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredCommunication: ['']
+            preferredCommunication: [''],
+            Only1500Form: [''],
+            paperAuthorization: [''],
+            priorityBilling: [''],
+            zeusId: ['']
         });
 
         this.addInsuranceMasterFormControls = this.addInsuranceMasterForm.controls;
@@ -78,30 +85,33 @@ export class AddInsuranceMasterComponent implements OnInit {
         let addInsuranceMasterFormValues = this.addInsuranceMasterForm.value;
         let result;
         let insuranceMaster = new InsuranceMaster({
-                companyCode: addInsuranceMasterFormValues.companyCode,
-                companyName: addInsuranceMasterFormValues.companyName,
-                Contact: new Contact({
-                    cellPhone: addInsuranceMasterFormValues.cellPhone ? addInsuranceMasterFormValues.cellPhone.replace(/\-/g, '') : null,
-                    emailAddress: addInsuranceMasterFormValues.email,
-                    faxNo: addInsuranceMasterFormValues.faxNo ? addInsuranceMasterFormValues.faxNo.replace(/\-|\s/g, '') : null,
-                    homePhone: addInsuranceMasterFormValues.homePhone,
-                    workPhone: addInsuranceMasterFormValues.workPhone,
-                    officeExtension: addInsuranceMasterFormValues.officeExtension,
-                    alternateEmail: addInsuranceMasterFormValues.alternateEmail,
-                    preferredCommunication: addInsuranceMasterFormValues.preferredCommunication,
-                    createByUserId: this._sessionStore.session.account.user.id
-                }),
-                Address: new Address({
-                    address1: addInsuranceMasterFormValues.address1,
-                    address2: addInsuranceMasterFormValues.address2,
-                    city: addInsuranceMasterFormValues.city,
-                    country: addInsuranceMasterFormValues.country,
-                    state: addInsuranceMasterFormValues.state,
-                    zipCode: addInsuranceMasterFormValues.zipCode,
-                    createByUserId: this._sessionStore.session.account.user.id
-                })
-
-
+            companyCode: addInsuranceMasterFormValues.companyCode,
+            companyName: addInsuranceMasterFormValues.companyName,
+            Contact: new Contact({
+                cellPhone: addInsuranceMasterFormValues.cellPhone ? addInsuranceMasterFormValues.cellPhone.replace(/\-/g, '') : null,
+                emailAddress: addInsuranceMasterFormValues.email,
+                faxNo: addInsuranceMasterFormValues.faxNo ? addInsuranceMasterFormValues.faxNo.replace(/\-|\s/g, '') : null,
+                homePhone: addInsuranceMasterFormValues.homePhone,
+                workPhone: addInsuranceMasterFormValues.workPhone,
+                officeExtension: addInsuranceMasterFormValues.officeExtension,
+                alternateEmail: addInsuranceMasterFormValues.alternateEmail,
+                preferredCommunication: addInsuranceMasterFormValues.preferredCommunication,
+                createByUserId: this._sessionStore.session.account.user.id
+            }),
+            Address: new Address({
+                address1: addInsuranceMasterFormValues.address1,
+                address2: addInsuranceMasterFormValues.address2,
+                city: addInsuranceMasterFormValues.city,
+                country: addInsuranceMasterFormValues.country,
+                state: addInsuranceMasterFormValues.state,
+                zipCode: addInsuranceMasterFormValues.zipCode,
+                createByUserId: this._sessionStore.session.account.user.id
+            }),
+            Only1500Form: parseInt(addInsuranceMasterFormValues.Only1500Form),
+            paperAuthorization: parseInt(addInsuranceMasterFormValues.paperAuthorization),
+            priorityBilling: parseInt(addInsuranceMasterFormValues.priorityBilling),
+            zeusID: addInsuranceMasterFormValues.zeusId,
+            createdByCompanyId: this._sessionStore.session.currentCompany.id
         });
         this._progressBarService.show();
         result = this._insuranceMasterStore.addInsuranceMaster(insuranceMaster);

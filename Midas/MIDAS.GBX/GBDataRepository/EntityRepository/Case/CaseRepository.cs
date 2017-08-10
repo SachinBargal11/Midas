@@ -36,7 +36,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.PatientId = cases.PatientId;
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
-            caseBO.LocationId = cases.LocationId;
+            //caseBO.LocationId = cases.LocationId;
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.CaseStatusId = cases.CaseStatusId;
@@ -270,7 +270,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.PatientId = eachCase.PatientId;
                         caseWithUserAndPatient.CaseName = eachCase.CaseName;
                         caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
-                        caseWithUserAndPatient.LocationId = eachCase.LocationId;
+                        //caseWithUserAndPatient.LocationId = eachCase.LocationId;
                         caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
                         caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
                         caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
@@ -482,7 +482,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral")
+                                    .Include("Referrals")
                                     .Where(p => p.Id == id
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -510,7 +510,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral")                                    
+                                    .Include("Referrals")                                    
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -542,7 +542,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral")
+                                    .Include("Referrals")
                                     .Where(p => p.PatientId == PatientId
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -589,8 +589,42 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                    .Include("Referral")
+                                    .Include("Referrals")
                                     .Where(p => p.PatientId == PatientId && p.CaseStatusId == 1
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .ToList<Case>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Case> lstcase = new List<BO.Case>();
+            foreach (Case item in acc)
+            {
+                lstcase.Add(Convert<BO.Case, Case>(item));
+            }
+
+            return lstcase;
+        }
+        #endregion
+
+        #region Get Open Cases By Patient Id
+        public override object GetOpenCaseForPatient(int PatientId, int CompanyId)
+        {
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
+                                    .Include("Referrals")
+                                    .Where(p => p.PatientId == PatientId && p.CaseStatusId == 1 
+                                        && (p.CaseCompanyMappings.Any(p2 => p2.CompanyId == CompanyId 
+                                            && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == true)
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
 
@@ -689,7 +723,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.PatientId = caseBO.PatientId;
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
-                    caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue == false ? caseDB.LocationId : caseBO.LocationId.Value;
+                    //caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue == false ? caseDB.LocationId : caseBO.LocationId.Value;
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
@@ -764,7 +798,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("CompanyCaseConsentApprovals")
                                        .Include("CaseCompanyConsentDocuments")
                                        .Include("CaseCompanyConsentDocuments.MidasDocument")
-                                       .Include("Referral")                                     
+                                       .Include("Referrals")                                     
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
 
                 try
@@ -1619,6 +1653,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             //return (object)lstcompany;
             return company1.Union(company2).Distinct().ToList();
+        }
+        #endregion
+
+        #region Get Open Cases By Company With Patient
+        public override object GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            var result = _context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Join(_context.Cases.Where(p => p.CaseStatusId == 1
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))), 
+                                                           ccm => ccm.CaseId, c => c.Id, (ccm, c) => c)
+                                                     .Join(_context.Patients.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
+                                                           c => c.PatientId, pat => pat.Id, (c, pat) => new
+                                                           {
+                                                               CaseId = c.Id,
+                                                               PatientId = pat.Id
+                                                           })
+                                                     .Join(_context.Users.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
+                                                           caseandpatient => caseandpatient.PatientId, u => u.id, (caseandpatient, u) => new
+                                                           {
+                                                               CaseId = caseandpatient.CaseId,
+                                                               PatientId = caseandpatient.PatientId,
+                                                               CaseAndPatientName = caseandpatient.CaseId + " - " + u.FirstName + " " + u.LastName
+                                                           })
+                                                     .ToList();
+
+            if (result == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return result;
         }
         #endregion
 

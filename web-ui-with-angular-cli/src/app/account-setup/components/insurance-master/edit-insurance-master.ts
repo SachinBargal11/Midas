@@ -31,6 +31,9 @@ export class EditInsuranceMasterComponent implements OnInit {
     maxDate: Date;
     insuranceMaster: InsuranceMaster;
     insuranceMasterId: number;
+    Only1500Form = '0';
+    paperAuthorization = '0';
+    priorityBilling = '0';
 
     editInsuranceMasterForm: FormGroup;
     editInsuranceMasterFormControls;
@@ -57,6 +60,9 @@ export class EditInsuranceMasterComponent implements OnInit {
                 .subscribe(
                 (insuranceMaster: InsuranceMaster) => {
                     this.insuranceMaster = insuranceMaster;
+                    this.Only1500Form = insuranceMaster.Only1500Form ? insuranceMaster.Only1500Form.toString() : '0';
+                    this.paperAuthorization = insuranceMaster.paperAuthorization ? insuranceMaster.paperAuthorization.toString() : '0';
+                    this.priorityBilling = insuranceMaster.priorityBilling ? insuranceMaster.priorityBilling.toString() : '0';
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -80,9 +86,13 @@ export class EditInsuranceMasterComponent implements OnInit {
             homePhone: [''],
             workPhone: [''],
             faxNo: [''],
-            alternateEmail:  ['', [AppValidators.emailValidator]],
+            alternateEmail: ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredCommunication: ['']
+            preferredCommunication: [''],
+            Only1500Form: [''],
+            paperAuthorization: [''],
+            priorityBilling: [''],
+            zeusId: ['']
         });
 
         this.editInsuranceMasterFormControls = this.editInsuranceMasterForm.controls;
@@ -120,7 +130,12 @@ export class EditInsuranceMasterComponent implements OnInit {
                 state: editInsuranceMasterFormValues.state,
                 zipCode: editInsuranceMasterFormValues.zipCode,
                 updateByUserId: this._sessionStore.session.account.user.id
-            }))
+            })),
+            Only1500Form: parseInt(editInsuranceMasterFormValues.Only1500Form),
+            paperAuthorization: parseInt(editInsuranceMasterFormValues.paperAuthorization),
+            priorityBilling: parseInt(editInsuranceMasterFormValues.priorityBilling),
+            zeusID: editInsuranceMasterFormValues.zeusId,
+            createdByCompanyId: this._sessionStore.session.currentCompany.id
         }));
         this._progressBarService.show();
         result = this._insuranceMasterStore.updateInsuranceMaster(insuranceMaster);

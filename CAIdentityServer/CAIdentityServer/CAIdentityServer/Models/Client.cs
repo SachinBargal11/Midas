@@ -21,6 +21,7 @@ namespace CAIdentityServer.Models
             this.ClientPostLogoutRedirectURIs = new HashSet<ClientPostLogoutRedirectURI>();
             this.ClientRedirectURIs = new HashSet<ClientRedirectURI>();
             this.ClientScopes = new HashSet<ClientScope>();
+            this.ClientSecrets = new HashSet<ClientSecret>();
         }
     
         public int Id { get; set; }
@@ -41,6 +42,7 @@ namespace CAIdentityServer.Models
         public bool UpdateAccessTokenClaimsOnRefresh { get; set; }
         public bool RequireSignOutPrompt { get; set; }
         public bool IsEnabled { get; set; }
+        public bool IsTwoFactorAuthentication { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClientAllowedCorsOrigin> ClientAllowedCorsOrigins { get; set; }
@@ -50,5 +52,7 @@ namespace CAIdentityServer.Models
         public virtual ICollection<ClientRedirectURI> ClientRedirectURIs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClientScope> ClientScopes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ClientSecret> ClientSecrets { get; set; }
     }
 }
