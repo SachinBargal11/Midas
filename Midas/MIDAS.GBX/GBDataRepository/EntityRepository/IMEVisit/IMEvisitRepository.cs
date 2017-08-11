@@ -59,7 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 IMEVisitBO.Notes = IMEVisit.Notes;
                 IMEVisitBO.VisitStatusId = IMEVisit.VisitStatusId;
                 IMEVisitBO.TransportProviderId = IMEVisit.TransportProviderId;
-
+                IMEVisitBO.DoctorName = IMEVisit.DoctorName;
                 IMEVisitBO.IsDeleted = IMEVisit.IsDeleted;
                 IMEVisitBO.CreateByUserID = IMEVisit.CreateByUserID;
                 IMEVisitBO.UpdateByUserID = IMEVisit.UpdateByUserID;
@@ -348,6 +348,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     IMEVisitDB.Notes = IMEVisitBO.Notes;
                     IMEVisitDB.VisitStatusId = IMEVisitBO.VisitStatusId;
                     IMEVisitDB.TransportProviderId = IMEVisitBO.TransportProviderId;
+                    IMEVisitDB.DoctorName = IMEVisitBO.DoctorName;
 
                     if (IsEditMode == false)
                     {
