@@ -222,9 +222,9 @@ export class PatientsService {
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
 
-    assignPatientToMP(currentPatientId: Number, caseId: Number, providerId: Number): Observable<Patient> {
+    assignPatientToMedicalProvider(currentPatientId: Number, caseId: Number, providerId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/associatePatientWithAttorneyCompany/' + currentPatientId + '/' + caseId + '/' + providerId, {
+            return this._http.get(this._url + '/Patient/associatePatientWithMedicalCompany/' + currentPatientId + '/' + caseId + '/' + providerId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

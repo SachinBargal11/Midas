@@ -57,7 +57,7 @@ export const PatientsShellRoutes: Routes = [
         path: 'patients',
         component: ShellComponent,
         data: {
-            breadcrumb: 'Patients'
+            breadcrumb: 'Clients'
         },
         children: [
             {
@@ -71,7 +71,7 @@ export const PatientsShellRoutes: Routes = [
                 path: 'add',
                 component: AddPatientComponent,
                 data: {
-                    breadcrumb: 'Add Patient'
+                    breadcrumb: 'Add Client'
                 }
             },
             {

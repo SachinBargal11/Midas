@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> SSN
-                                            <span class="color-red">*</span>
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="demographicsformControls.userInfo.controls.ssn.touched && !demographicsformControls.userInfo.controls.ssn.valid">
                             <input [ngModel]="patientInfo.ssn" formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.userInfo.controls.ssn.valid">
@@ -19,20 +19,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Weight (lbs)</label>
-                        <div class="form-group">
-                            <input [ngModel]="patientInfo.weight" formControlName="weight" type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Height (cms)</label>
-                        <div class="form-group">
-                            <input [ngModel]="patientInfo.height" formControlName="height" type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Date of First Treatment
                                         </label>
@@ -45,6 +31,32 @@
                             </div>
                         </div>
                     </div>
+                    <!--<div class="col-lg-4">
+                        <label class="form-label"> Weight (lbs)</label>
+                        <div class="form-group">
+                            <input [ngModel]="patientInfo.weight" formControlName="weight" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Height (cms)</label>
+                        <div class="form-group">
+                            <input [ngModel]="patientInfo.height" formControlName="height" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>-->
+                </div>
+                <div class="row">
+                    <!--<div class="col-lg-4">
+                        <label class="form-label"> Date of First Treatment
+                                        </label>
+                        <div class="form-group">
+                            <div class='input-group date'>
+                                <p-calendar [ngModel]="dateOfFirstTreatment" formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
+                                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                                    [showIcon]="true" icon="font-icon font-icon-calend">
+                                    </p-calendar>
+                            </div>
+                        </div>
+                    </div>-->
                     <!--<div class="col-lg-4">
                         <label class="form-label"> Races
                                 <span class="color-red">*</span>

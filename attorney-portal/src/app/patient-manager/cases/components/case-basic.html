@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Location
                                 <span class="color-red">*</span>
                             </label>
@@ -87,10 +87,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-
-
-
+            </div>-->
             <div class="col-lg-4">
                 <label class="form-label"> Carrier Case Number
                             </label>
@@ -127,18 +124,33 @@
                 <div class="form-group" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
                     <select [ngModel]="caseDetail.medicalProviderId" formControlName="providerId" type="text" (change)="attorneyChange($event)" class="form-control"
                         placeholder="" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-<option value="">-Select -</option>
-<!--<option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.user.displayName}}</option>-->
-<option *ngFor="let provider of allProviders" value="{{provider.id}}">{{provider.name}} </option>
-
-</select>
+                                <option value="">-Select -</option>
+                <option *ngFor="let provider of allProviders" value="{{provider.prefferedProvider.id}}">{{provider.prefferedProvider.name}} </option>
+                
+                </select>
                     <div class='error-list' *ngIf="caseformControls.providerId.touched && !caseformControls.providerId.valid">
                         <ul>
-                            <li *ngIf="caseformControls.providerId.hasError('required')">Attorney is required.</li>
+                            <li *ngIf="caseformControls.providerId.hasError('required')">Medical Provider is required.</li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <!--<div class="col-lg-4">
+                <label class="form-label">Attorney                              
+                            </label>
+                <div class="form-group">
+                    <select [(ngModel)]="currentAttorneyId" formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control"
+                        placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                            <option value="0">-Select -</option>
+                            <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.prefferedAttorney.id}}">{{currentAttorney.prefferedAttorney.name}}</option>
+                        </select>
+                    <div class='error-list' *ngIf="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.attorneyId.hasError('required')">Attorney is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>-->
         </div>
         <div class="row">
             <div class="col-lg-4">

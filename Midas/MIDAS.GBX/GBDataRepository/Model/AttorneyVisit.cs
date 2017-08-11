@@ -12,28 +12,30 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class IMEVisit
+    public partial class AttorneyVisit
     {
-        public int ID { get; set; }
-        public Nullable<int> CaseId { get; set; }
-        public Nullable<int> PatientId { get; set; }
+        public int Id { get; set; }
         public int CalendarEventId { get; set; }
-        public Nullable<int> VisitStatusId { get; set; }
+        public int CaseId { get; set; }
+        public int PatientId { get; set; }
+        public int AttorneyId { get; set; }
         public Nullable<System.DateTime> EventStart { get; set; }
         public Nullable<System.DateTime> EventEnd { get; set; }
-        public string Notes { get; set; }
-        public Nullable<int> TransportProviderId { get; set; }
+        public string Subject { get; set; }
+        public Nullable<byte> VisitStatusId { get; set; }
+        public string ContactPerson { get; set; }
+        public Nullable<int> LocationId { get; set; }
+        public string Agenda { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string DoctorName { get; set; }
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }
-        public virtual Company Company { get; set; }
+        public virtual Location Location { get; set; }
         public virtual Patient Patient { get; set; }
-        public virtual VisitStatu VisitStatu { get; set; }
+        public virtual User User { get; set; }
     }
 }

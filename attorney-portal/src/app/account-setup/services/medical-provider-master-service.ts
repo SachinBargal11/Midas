@@ -62,7 +62,7 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
+    getAllPreferredMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
         let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
                 headers: this._headers
@@ -146,5 +146,4 @@ export class MedicalProviderMasterService {
         });
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
-
 }

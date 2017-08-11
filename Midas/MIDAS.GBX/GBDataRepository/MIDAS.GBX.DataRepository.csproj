@@ -236,6 +236,9 @@
     <Compile Include="Model\Attorney.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AttorneyVisit.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\BlobStorage.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

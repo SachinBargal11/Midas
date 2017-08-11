@@ -138,19 +138,4 @@ export class AttorneyMasterService {
         return <Observable<Attorney>>Observable.from(promise);
     }
 
-    getAllProviders(): Observable<Account[]> {
-        let promise: Promise<Account[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Company/getAll')
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let allProviders = (<Object[]>data).map((data: any) => {
-                        return CompanyAdapter.parseResponse(data);
-                    });
-                    resolve(allProviders);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Account[]>>Observable.fromPromise(promise);
-    }
 }

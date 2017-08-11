@@ -121,13 +121,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandlerPatient.GetGbObjects4(Request, CompanyId);
         }
 
-        [HttpGet]
-        [Route("getByLocationWithOpenCases/{LocationId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
-        {
-            return requestHandlerPatient.GetGbObjects3(Request, LocationId);
-        }
+        //[HttpGet]
+        //[Route("getByLocationWithOpenCases/{LocationId}")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
+        //{
+        //    return requestHandlerPatient.GetGbObjects3(Request, LocationId);
+        //}
 
         [HttpGet]
         [Route("getPatientById/{id}")]
@@ -178,6 +178,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         public HttpResponseMessage AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
         {
             return requestHandlerPatient.AssociatePatientWithAttorneyCompany(Request, PatientId, CaseId, AttorneyCompanyId);
+        }
+
+        [HttpGet]
+        [Route("associatePatientWithMedicalCompany/{PatientId}/{CaseId}/{MedicalCompanyId}")]
+        public HttpResponseMessage AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId)
+        {
+            return requestHandlerPatient.AssociatePatientWithMedicalCompany(Request, PatientId, CaseId, MedicalCompanyId);
         }
 
         protected override void Dispose(bool disposing)

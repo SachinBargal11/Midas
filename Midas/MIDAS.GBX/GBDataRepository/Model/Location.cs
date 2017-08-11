@@ -17,7 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
-            this.Cases = new HashSet<Case>();
+            this.AttorneyVisits = new HashSet<AttorneyVisit>();
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
             this.Notifications = new HashSet<Notification>();
             this.PatientVisits = new HashSet<PatientVisit>();
@@ -43,7 +43,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
+        public virtual ICollection<AttorneyVisit> AttorneyVisits { get; set; }
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

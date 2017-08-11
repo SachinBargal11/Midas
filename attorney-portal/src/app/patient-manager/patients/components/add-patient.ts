@@ -47,9 +47,9 @@ export class AddPatientComponent implements OnInit {
     ) {
         this.patientform = this.fb.group({
             userInfo: this.fb.group({
-                ssn: ['', Validators.required],
-                weight: [''],
-                height: [''],
+                ssn: [''],
+                // weight: [''],
+                // height: [''],
                 maritalStatusId: ['', Validators.required],
                 dateOfFirstTreatment: [''],
                 dob: [''],
@@ -96,8 +96,8 @@ export class AddPatientComponent implements OnInit {
         let result;
         let patient = new Patient({
             ssn: patientFormValues.userInfo.ssn,
-            weight: patientFormValues.userInfo.weight,
-            height: patientFormValues.userInfo.height,
+            // weight: patientFormValues.userInfo.weight,
+            // height: patientFormValues.userInfo.height,
             dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
             maritalStatusId: patientFormValues.userInfo.maritalStatusId,
             createByUserId: this._sessionStore.session.account.user.id,
