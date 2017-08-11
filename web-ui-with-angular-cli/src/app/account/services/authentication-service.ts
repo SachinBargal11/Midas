@@ -313,4 +313,22 @@ export class AuthenticationService {
         });
         return <Observable<Signup>>Observable.fromPromise(promise);
     }
+
+    getJson(url, token) {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            if (token) {
+                headers.append("Authorization", "Bearer " + token);
+            }
+            return this._http.get(url, {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }

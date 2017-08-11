@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  url = 'https://identityserverdev.codearray.tk/core';
   title = '';
   // client_id = 'js.manual';
   client_id = 'MidasPortal';
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit {
     return (Date.now() + "" + Math.random()).replace(".", "");
   }
   getToken(redirect_uri) {
-    var authorizationUrl = 'https://lt007.codearray.tech/CAIdentityServer/core/connect/authorize';
+    var authorizationUrl = this.url + '/connect/authorize';
     // var redirect_uri = window.location.protocol + "//" + window.location.host + "/JavaScriptClient/index.html";
     // var redirect_uri = redirect_uri;
     var response_type = "id_token token";

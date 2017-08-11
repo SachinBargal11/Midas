@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
+import { SignalRModule } from 'ng2-signalr';
+import { SignalRConfiguration } from 'ng2-signalr';
 
 import { ConfigService, configServiceFactory } from './account/services/config-service';
 import { environment } from '../environments/environment';
@@ -73,6 +75,20 @@ import { PushNotificationService } from './commons/services/push-notification-se
 // import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
+// v2.0.0
+export function createConfig(): SignalRConfiguration {
+  const c = new SignalRConfiguration();
+  let storedAccessToken: any = window.localStorage.getItem('token');
+  c.hubName = 'NotificationHub';
+  if (storedAccessToken) {
+    let accessToken = storedAccessToken.replace(/"/g, "");
+    c.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
+    c.url = 'http://caserver:7011';
+    c.logging = true;
+    return c;
+  }
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +104,9 @@ import { PushNotificationService } from './commons/services/push-notification-se
     AppRoutingModule,
     DashboardModule,
     SimpleNotificationsModule,
-    EventModule
+    EventModule,
+    SignalRModule.forRoot(createConfig)
+    // SignalRModule
     // MomentModule,
     // NgIdleKeepaliveModule.forRoot()
   ],

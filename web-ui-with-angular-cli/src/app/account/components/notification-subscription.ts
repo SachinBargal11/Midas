@@ -55,8 +55,23 @@ export class NotificationSubscriptionComponent implements OnInit {
                 return currSelectedGroupEvent.EventID;
             })
         }
-        this._progressBarService.show();
+        // this._progressBarService.show();
+        // var xhr = new XMLHttpRequest();
+        // xhr.open("POST", 'http://192.168.0.128/CANotificationService/NotificationManager/SubscribeEvents', true);
+
+        // //Send the proper header information along with the request
+        // xhr.setRequestHeader("Content-type", "application/json");
+
+        // xhr.onreadystatechange = function () {//Call a function when the state changes.
+        //     if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+        //         // Request finished. Do processing here.
+        //     }
+        // }
+        // let requestData = '{"ApplicationName": "Midas", "UserName": "bajpai.adarsh@gmail.com", "EventIDs":[' + eventIds + ']}';
+        // let requestData = {"ApplicationName": "Midas", "UserName": "bajpai.adarsh@gmail.com", "EventIDs":[ 1, 2]};
+        // xhr.send(requestData);
         result = this._pushNotificationService.subscribeEvents(eventIds);
+        // result = this._pushNotificationService.testAPI();
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -76,10 +91,10 @@ export class NotificationSubscriptionComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
 
     }
