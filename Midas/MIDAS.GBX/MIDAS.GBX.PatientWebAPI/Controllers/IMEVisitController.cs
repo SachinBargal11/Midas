@@ -20,10 +20,10 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByPatientId/{PatientId}")]
-        public HttpResponseMessage GetByPatientId(int PatientId)
+        [Route("getByPatientId/{patientId}")]
+        public HttpResponseMessage GetByPatientId(int patientId)
         {
-            return requestHandler.GetByPatientId(Request, PatientId);
+            return requestHandler.GetByPatientId(Request, patientId);
         }
     }
 }
