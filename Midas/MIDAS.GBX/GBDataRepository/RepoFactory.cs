@@ -313,6 +313,10 @@ namespace MIDAS.GBX
             {
                 repo = new EOVisitRepository(context);
             }
+            else if (typeof(T) == typeof(BO.AttorneyVisit))
+            {
+                repo = new AttorneyVisitRepository(context);
+            }
 
             return repo;
         }

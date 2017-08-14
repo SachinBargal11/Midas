@@ -273,4 +273,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PendingReferralId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="d9a2064e-6faa-4381-8cf5-0c975f89f949" ChangeDateTime="08/10/2017 05:57:43">
+    <Property Name="ElementName" Value="[dbo].[AttorneyVisit].[PatientId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AttorneyVisit]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CaseId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a9c713c9-30b0-4730-adb5-fb346672b27b" ChangeDateTime="08/10/2017 05:57:46">
+    <Property Name="ElementName" Value="[dbo].[AttorneyVisit].[CaseId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AttorneyVisit]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PatientId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4aa64fb6-99c5-4092-afc1-ee727f99a33b" ChangeDateTime="08/10/2017 05:59:32">
+    <Property Name="ElementName" Value="[dbo].[AttorneyVisit].[Notes]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AttorneyVisit]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Subject" />
+  </Operation>
 </Operations>

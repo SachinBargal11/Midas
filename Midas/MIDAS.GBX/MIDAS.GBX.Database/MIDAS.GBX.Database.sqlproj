@@ -213,6 +213,7 @@
     <Build Include="Tables\Latest Tables\DoctorTaxType.sql" />
     <Build Include="Tables\Latest Tables\VisitType.sql" />
     <Build Include="Tables\Latest Tables\DoctorRoomTestMapping.sql" />
+    <Build Include="Tables\Latest Tables\AttorneyVisit.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
