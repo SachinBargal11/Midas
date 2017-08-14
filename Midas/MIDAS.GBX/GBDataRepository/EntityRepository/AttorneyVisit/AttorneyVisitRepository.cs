@@ -386,6 +386,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company And Attorney Id
+        public override object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
+        {
+            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                                                          .Include("Patient")
+                                                                          .Include("Patient.User")
+                                                                          .Include("Case")
+                                                                          .Include("Location").Include("Location.Company")
+                                                                          .Where(p => p.LocationId == LocationId
+                                                                                && ((AttorneyId > 0 && p.AttorneyId == AttorneyId) || (AttorneyId <= 0))
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .ToList<AttorneyVisit>();
+
+            if (lstAttorneyVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Company and Attorney Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.AttorneyVisit> lstBOAttorneyVisit = new List<BO.AttorneyVisit>();
+                lstAttorneyVisit.ForEach(p => lstBOAttorneyVisit.Add(Convert<BO.AttorneyVisit, AttorneyVisit>(p)));
+
+                return lstBOAttorneyVisit;
+            }
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

@@ -26,10 +26,17 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByLocationAndAttorneyId/{companyId}/{attorneyId}")]
+        [Route("getByCompanyAndAttorneyId/{companyId}/{attorneyId}")]
         public HttpResponseMessage GetByCompanyAndAttorneyId(int companyId, int attorneyId)
         {
             return requestHandler.GetByCompanyAndAttorneyId(Request, companyId, attorneyId);
+        }
+
+        [HttpGet]
+        [Route("GetByLocationAndAttorneyId/{locationId}/{attorneyId}")]
+        public HttpResponseMessage GetByLocationAndAttorneyId(int locationId, int attorneyId)
+        {
+            return requestHandler.GetByLocationAndAttorneyId(Request, locationId, attorneyId);
         }
     }
 }
