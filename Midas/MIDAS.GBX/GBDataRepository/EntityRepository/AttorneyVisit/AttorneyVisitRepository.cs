@@ -338,24 +338,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (AttorneyVisitDB != null)
                 {
                     AttorneyVisitDB = _context.AttorneyVisits.Include("CalendarEvent")
-                                                            .Include("Location")
-                                                            .Include("Location.Company")
-                                                            .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")                                                            
-                                                            .Where(p => p.Id == AttorneyVisitDB.Id
+                                                             .Include("Location")
+                                                             .Include("Location.Company")
+                                                             .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")                                                            
+                                                             .Where(p => p.Id == AttorneyVisitDB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                            .FirstOrDefault<AttorneyVisit>();
+                                                             .FirstOrDefault<AttorneyVisit>();
                 }
                 else if (CalendarEventDB != null)
                 {
                     AttorneyVisitDB = _context.AttorneyVisits.Include("CalendarEvent")
-                                                            .Where(p => p.CalendarEvent.Id == CalendarEventDB.Id
+                                                             .Where(p => p.CalendarEvent.Id == CalendarEventDB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                            .FirstOrDefault<AttorneyVisit>();
+                                                             .FirstOrDefault<AttorneyVisit>();
                 }
             }
 
             var res = Convert<BO.AttorneyVisit, AttorneyVisit>(AttorneyVisitDB);
             return (object)res;
+        }
+        #endregion
+
+        #region Get By Company And Attorney Id
+        public override object GetByCompanyAndAttorneyId(int CompanyId, int AttorneyId)
+        {
+            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                                                          .Include("Patient")
+                                                                          .Include("Patient.User")
+                                                                          .Include("Case")
+                                                                          .Include("Location").Include("Location.Company")
+                                                                          .Where(p => p.Location.CompanyID == CompanyId
+                                                                                && ((AttorneyId > 0 && p.AttorneyId == AttorneyId) || (AttorneyId <= 0))
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .ToList<AttorneyVisit>();
+
+            if (lstAttorneyVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Company and Attorney Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.AttorneyVisit> lstBOAttorneyVisit = new List<BO.AttorneyVisit>();
+                lstAttorneyVisit.ForEach(p => lstBOAttorneyVisit.Add(Convert<BO.AttorneyVisit, AttorneyVisit>(p)));
+
+                return lstBOAttorneyVisit;
+            }
         }
         #endregion
 

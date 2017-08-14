@@ -184,5 +184,6 @@ namespace MIDAS.GBX.DataAccessManager
         object GetInsuranceDetails(int id, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetByLocationDoctorAndSpecialityId(int LocationId, int DoctorId, int SpecialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByCompanyAndAttorneyId(int CompanyId, int AttorneyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }
