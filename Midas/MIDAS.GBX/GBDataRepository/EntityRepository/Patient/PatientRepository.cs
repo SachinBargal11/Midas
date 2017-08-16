@@ -813,7 +813,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Add_patientDB == true)
                     {
-                        if (_context.Patients.Any(p => p.SSN == PatientBO.SSN))
+                        if (PatientBO.SSN.Trim() != "" && _context.Patients.Any(p => p.SSN == PatientBO.SSN) == true)
                         {
                             dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "SSN already exists.", ErrorLevel = ErrorLevel.Error };
