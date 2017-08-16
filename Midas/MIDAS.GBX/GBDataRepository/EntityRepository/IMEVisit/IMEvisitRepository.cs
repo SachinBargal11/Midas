@@ -59,7 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 IMEVisitBO.Notes = IMEVisit.Notes;
                 IMEVisitBO.VisitStatusId = IMEVisit.VisitStatusId;
                 IMEVisitBO.TransportProviderId = IMEVisit.TransportProviderId;
-
+                IMEVisitBO.DoctorName = IMEVisit.DoctorName;
                 IMEVisitBO.IsDeleted = IMEVisit.IsDeleted;
                 IMEVisitBO.CreateByUserID = IMEVisit.CreateByUserID;
                 IMEVisitBO.UpdateByUserID = IMEVisit.UpdateByUserID;
@@ -135,49 +135,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             busySlots = result as List<BO.StartAndEndTime>;
                         }
                     }
-
-                    foreach (var eachDayEventSlot in currentEventSlots)
+                    if (busySlots != null && busySlots.Count > 0)
                     {
-                        DateTime ForDate = eachDayEventSlot.ForDate;
-                        foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
+                        foreach (var eachDayEventSlot in currentEventSlots)
                         {
-                            DateTime StartTime = eachEventSlot.StartTime;
-                            DateTime EndTime = eachEventSlot.EndTime;
-                            var StartAndEndTimesForDate = busySlots.Where(p => p.StartTime.Date == ForDate).ToList();
-                            if (StartAndEndTimesForDate.Count > 0)
+                            DateTime ForDate = eachDayEventSlot.ForDate;
+                            foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
                             {
-                                var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();
-
-                                if (StartAndEndTimes.Count > 0)
+                                DateTime StartTime = eachEventSlot.StartTime;
+                                DateTime EndTime = eachEventSlot.EndTime;
+                                var StartAndEndTimesForDate = busySlots.Where(p => p.StartTime.Date == ForDate).ToList();
+                                if (StartAndEndTimesForDate.Count > 0)
                                 {
-                                    DateTime? checkContinuation = null;
-                                    foreach (var eachSlot in StartAndEndTimes.Distinct().OrderBy(p => p.StartTime))
+                                    var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();
+
+                                    if (StartAndEndTimes.Count > 0)
                                     {
-                                        if (checkContinuation.HasValue == false)
+                                        DateTime? checkContinuation = null;
+                                        foreach (var eachSlot in StartAndEndTimes.Distinct().OrderBy(p => p.StartTime))
                                         {
-                                            checkContinuation = eachSlot.EndTime;
-                                        }
-                                        else
-                                        {
-                                            if (checkContinuation.Value != eachSlot.StartTime)
-                                            {
-                                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
-                                            }
-                                            else
+                                            if (checkContinuation.HasValue == false)
                                             {
                                                 checkContinuation = eachSlot.EndTime;
                                             }
+                                            else
+                                            {
+                                                if (checkContinuation.Value != eachSlot.StartTime)
+                                                {
+                                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have continued free slots on the planned visit time of " + checkContinuation.Value.ToString() + ".", ErrorLevel = ErrorLevel.Error };
+                                                }
+                                                else
+                                                {
+                                                    checkContinuation = eachSlot.EndTime;
+                                                }
+                                            }
                                         }
+                                    }
+                                    else
+                                    {
+                                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
                                     }
                                 }
                                 else
                                 {
-                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
+                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
                                 }
-                            }
-                            else
-                            {
-                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
                             }
                         }
                     }
@@ -346,6 +348,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     IMEVisitDB.Notes = IMEVisitBO.Notes;
                     IMEVisitDB.VisitStatusId = IMEVisitBO.VisitStatusId;
                     IMEVisitDB.TransportProviderId = IMEVisitBO.TransportProviderId;
+                    IMEVisitDB.DoctorName = IMEVisitBO.DoctorName;
 
                     if (IsEditMode == false)
                     {

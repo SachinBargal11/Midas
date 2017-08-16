@@ -47,5 +47,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("transportProvider")]
         public Company Company { get; set; }
 
+        [JsonProperty("doctorName")]
+        public string DoctorName { get; set; }
+
     }
 }
