@@ -36,8 +36,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("contactPerson")]
         public string ContactPerson { get; set; }
 
-        [JsonProperty("locationId")]
-        public int? LocationId { get; set; }
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
 
         [JsonProperty("agenda")]
         public string Agenda { get; set; }
@@ -51,7 +51,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("case")]
         public Case Case { get; set; }
 
-        [JsonProperty("location")]
-        public Location Location { get; set; }
+        [JsonProperty("company")]
+        public Company Company { get; set; }
     }
 }

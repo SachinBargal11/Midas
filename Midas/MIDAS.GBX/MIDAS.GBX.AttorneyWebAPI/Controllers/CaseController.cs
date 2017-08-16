@@ -119,6 +119,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
+        [HttpGet]
+        [Route("getOpenCaseForPatient/{PatientId}/{CompanyId}")]
+        public HttpResponseMessage GetOpenCaseForPatient(int PatientId, int CompanyId)
+        {
+            return requestHandler.GetOpenCaseForPatient(Request, PatientId, CompanyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
