@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -493,7 +493,7 @@
           <Property Name="ISCUSTOMTYPE" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DocumentNodes">
           <Key>
             <PropertyRef Name="id" />
@@ -849,6 +849,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="PolicyHolderName" Type="nvarchar" MaxLength="50" />
           <Property Name="PolicyHolderAddressInfoId" Type="int" />
           <Property Name="PolicyHolderContactInfoId" Type="int" />
@@ -866,7 +867,6 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="InsuranceMasterId" Type="int" />
-          <Property Name="CaseId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PatientType">
           <Key>
@@ -2561,18 +2561,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PatientInsuranceInfo_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="1" />
-          <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PatientInsuranceInfo">
-              <PropertyRef Name="CaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId">
           <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
           <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
@@ -2618,6 +2606,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientInsuranceInfo">
               <PropertyRef Name="InsuranceTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientInsuranceInfo_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInsuranceInfo">
+              <PropertyRef Name="PatientId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4008,10 +4008,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
           </AssociationSet>
-          <AssociationSet Name="FK_PatientInsuranceInfo_Case_CaseId" Association="Self.FK_PatientInsuranceInfo_Case_CaseId">
-            <End Role="Case" EntitySet="Case" />
-            <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
-          </AssociationSet>
           <AssociationSet Name="FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId" Association="Self.FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
@@ -4026,6 +4022,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId" Association="Self.FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId">
             <End Role="InsuranceType" EntitySet="InsuranceType" />
+            <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientInsuranceInfo_Patient_PatientId" Association="Self.FK_PatientInsuranceInfo_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" Association="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId">
@@ -4329,7 +4329,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4502,7 +4503,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Case_CaseId" FromRole="Case" ToRole="PatientVisit" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Case" ToRole="Referral" />
           <NavigationProperty Name="RefferingOffices" Relationship="Self.FK_RefferingOffice_Case_CaseId" FromRole="Case" ToRole="RefferingOffice" />
-          <NavigationProperty Name="PatientInsuranceInfoes" Relationship="MIDASGBXModel.FK_PatientInsuranceInfo_Case_CaseId" FromRole="Case" ToRole="PatientInsuranceInfo" />
         </EntityType>
         <EntityType Name="CaseCompanyConsentDocument">
           <Key>
@@ -5401,8 +5401,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="InsuranceType" Relationship="Self.FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId" FromRole="PatientInsuranceInfo" ToRole="InsuranceType" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientInsuranceInfo_Patient_PatientId" FromRole="PatientInsuranceInfo" ToRole="Patient" />
           <NavigationProperty Name="PolicyOwner" Relationship="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" FromRole="PatientInsuranceInfo" ToRole="PolicyOwner" />
-          <Property Name="CaseId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Case" Relationship="MIDASGBXModel.FK_PatientInsuranceInfo_Case_CaseId" FromRole="PatientInsuranceInfo" ToRole="Case" />
         </EntityType>
         <EntityType Name="PatientType">
           <Key>
@@ -6030,10 +6028,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="SlotDuration" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="UserPersonalSettings" ToRole="Company" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="UserPersonalSettings" ToRole="User" />
           <Property Name="PreferredModeOfCommunication" Type="Int32" Nullable="false" />
           <Property Name="IsPushNotificationEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="UserPersonalSettings" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="UserPersonalSettings" ToRole="User" />
         </EntityType>
         <EntityType Name="UserStatu">
           <Key>
@@ -8981,16 +8979,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-          <Parameter Name="document_node" Mode="In" Type="String" />
+            <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASGBXModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <AssociationSet Name="FK_PatientInsuranceInfo_Case_CaseId" Association="MIDASGBXModel.FK_PatientInsuranceInfo_Case_CaseId">
-            <End Role="Case" EntitySet="Cases" />
-            <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfoes" />
-          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_CaseGetReadOnly_Result">
           <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -9011,18 +9005,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
           <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
         </ComplexType>
-        <Association Name="FK_PatientInsuranceInfo_Case_CaseId">
-          <End Type="MIDASGBXModel.Case" Role="Case" Multiplicity="1" />
-          <End Type="MIDASGBXModel.PatientInsuranceInfo" Role="PatientInsuranceInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PatientInsuranceInfo">
-              <PropertyRef Name="CaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9915,8 +9897,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PatientInsuranceInfoes">
             <EntityTypeMapping TypeName="MIDASGBXModel.PatientInsuranceInfo">
               <MappingFragment StoreEntitySet="PatientInsuranceInfo">
-                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="PolicyHolderName" ColumnName="PolicyHolderName" />
                 <ScalarProperty Name="PolicyHolderAddressInfoId" ColumnName="PolicyHolderAddressInfoId" />
                 <ScalarProperty Name="PolicyHolderContactInfoId" ColumnName="PolicyHolderContactInfoId" />
@@ -10460,8 +10442,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="UserPersonalSettings">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserPersonalSetting">
               <MappingFragment StoreEntitySet="UserPersonalSettings">
-                <ScalarProperty Name="IsPushNotificationEnabled" ColumnName="IsPushNotificationEnabled" />
-                <ScalarProperty Name="PreferredModeOfCommunication" ColumnName="PreferredModeOfCommunication" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -10474,6 +10454,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="SlotDuration" ColumnName="SlotDuration" />
+                <ScalarProperty Name="PreferredModeOfCommunication" ColumnName="PreferredModeOfCommunication" />
+                <ScalarProperty Name="IsPushNotificationEnabled" ColumnName="IsPushNotificationEnabled" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
