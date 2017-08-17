@@ -30,7 +30,7 @@ import { PatientVisitListTreatingRoomComponent } from './components/treatingroom
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 import { BillingInfoComponent } from './components/billing';
 import { PaymentListComponent } from './components/payment-list';
-
+import { CaseEmployerComponent } from './components/employer';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -409,7 +409,15 @@ export const CasesShellRoutes: Routes = [
                                 }
                             }
                         ]
-                    }
+                    },
+                     {
+                        path: 'employer',
+                        component: CaseEmployerComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Employer'
+                        }
+                    },
                 ]
             }
         ]

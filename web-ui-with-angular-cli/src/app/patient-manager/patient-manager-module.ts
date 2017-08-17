@@ -19,7 +19,7 @@ import { FamilyMemberListComponent } from './patients/components/family-member-l
 import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
 import { AccidentInfoComponent } from './cases/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
-import { PatientEmployerComponent } from './patients/components/employer';
+import { CaseEmployerComponent } from './cases/components/employer';
 import { CaseShellComponent } from './cases/components/cases-shell';
 import { ReferringOfficeListComponent } from './cases/components/referring-office-list';
 import { AddReferringOfficeComponent } from './cases/components/add-referring-office';
@@ -32,12 +32,12 @@ import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
 import { AccidentService } from './cases/services/accident-services';
 import { AttorneyService } from './patients/services/attorney-services';
-import { EmployerService } from './patients/services/employer-service';
+import { EmployerService } from './cases/services/employer-service';
 import { FamilyMemberService } from './patients/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
 import { ReferringOfficeService } from './cases/services/referring-office-service';
 import { PatientsStore } from './patients/stores/patients-store';
-import { EmployerStore } from './patients/stores/employer-store';
+import { EmployerStore } from './cases/stores/employer-store';
 import { FamilyMemberStore } from './patients/stores/family-member-store';
 import { AccidentStore } from './cases/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
@@ -147,7 +147,7 @@ import { EoVisitComponent } from './patient-visit/components/eo-visit';
         EditFamilyMemberComponent,
         AccidentInfoComponent,
         AttorneyComponent,
-        PatientEmployerComponent,
+        CaseEmployerComponent,
         AddInsuranceComponent,
         CaseShellComponent,
         ReferringOfficeListComponent,
