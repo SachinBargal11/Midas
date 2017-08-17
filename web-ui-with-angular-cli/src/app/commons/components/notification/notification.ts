@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import * as _ from 'underscore';
 import { PushNotification } from '../../models/push-notification';
 import { PushNotificationAdapter } from '../../services/adapters/push-notification-adapter';
-import { PushNotificationService } from '../../services/push-notification-service';
+import { PushNotificationStore } from '../../stores/push-notification-store';
 
 @Component({
     selector: 'notification',
@@ -19,71 +19,17 @@ import { PushNotificationService } from '../../services/push-notification-servic
 })
 
 export class NotificationComponent implements OnInit {
-    messages: PushNotification[] = [];
 
     constructor(
         public notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _signalR: SignalR,
         private _route: ActivatedRoute,
-        private _pushNotificationService: PushNotificationService
+        private _pushNotificationStore: PushNotificationStore
     ) {
     }
 
     ngOnInit() {
-        let accessToken;
-        if (this._sessionStore.session.accessToken) {
-            accessToken = this._sessionStore.session.accessToken.replace('bearer ', '');
-        } else {
-            accessToken = window.localStorage.getItem('access_token');
-        }
-        if(accessToken) {
-            this.loadNotifictionHub(accessToken);
-        }
-        // let storedAccessToken: any = window.localStorage.getItem('token');
-        // let accessToken = storedAccessToken.replace(/"/g, "");
-        // $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
-        // $.connection.hub.url = 'http://caserver:7011/signalr';
-        // $.connection.hub.logging = true;
-        // var notificationHub = $.connection.hub.proxies['notificationhub'];
-        // notificationHub.client.refreshNotification = function (data: PushNotification[]) {
-        //     this.messages = _.map(data, (currData: any) => {
-        //         return PushNotificationAdapter.parseResponse(currData);
-        //     });
-        //     _.forEach(this.messages, (currMessage: PushNotification) => {
-        //             let notification = new Notification({
-        //                 'messages': currMessage.message,
-        //                 'type': 'SUCCESS',
-        //                 'createdAt': moment(currMessage.notificationTime)
-        //             });
-        //             this.notificationsStore.addNotification(notification);
-        //         })
-        // }
-        // $.connection.hub.start().done(function () {
-        //     console.log('Notification hub started');
-        // });
-        // window.onbeforeunload = function (e) {
-        //     $.connection.hub.stop();
-        // };
-    }
-
-    loadNotifictionHub(accessToken) {
-        this._pushNotificationService.loadNotifictionHub(accessToken)
-            .subscribe((data: PushNotification[]) => {
-                let notifications: PushNotification[] = data;
-                _.forEach(notifications, (currMessage: PushNotification) => {
-                    if (currMessage.isRead == true) {
-                        let notification = new Notification({
-                            'title': currMessage.message,
-                            'type': 'SUCCESS',
-                            'createdAt': moment(currMessage.notificationTime)
-                        });
-                        this.notificationsStore.addNotification(notification);
-                    }
-                })
-            },
-            error => {
-            })
     }
 
 

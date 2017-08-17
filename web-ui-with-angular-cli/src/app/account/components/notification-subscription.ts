@@ -10,7 +10,9 @@ import { ProgressBarService } from '../../commons/services/progress-bar-service'
 import { Notification } from '../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
-import { PushNotificationService } from '../../commons/services/push-notification-service';
+import { PushNotificationStore } from '../../commons/stores/push-notification-store';
+import { PushNotification } from '../../commons/models/push-notification';
+import { PushNotificationEvent } from '../../commons/models/push-notification-event';
 import { SelectItem } from 'primeng/primeng';
 
 @Component({
@@ -21,7 +23,7 @@ import { SelectItem } from 'primeng/primeng';
 export class NotificationSubscriptionComponent implements OnInit {
 
     allGroupEvents: SelectItem[] = [];
-    selectedGroupEvents: any[] = [];
+    selectedGroupEvents: SelectItem[] = [];
 
     constructor(
         private _notificationsStore: NotificationsStore,
@@ -30,7 +32,7 @@ export class NotificationSubscriptionComponent implements OnInit {
         private _fb: FormBuilder,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _pushNotificationService: PushNotificationService,
+        private _pushNotificationStore: PushNotificationStore,
         private _elRef: ElementRef
 
     ) {
@@ -38,12 +40,31 @@ export class NotificationSubscriptionComponent implements OnInit {
 
     ngOnInit() {
         this.loadAllGroupEvents();
+        this.loadSavedSubscriptions();
     }
 
     loadAllGroupEvents() {
-        this._pushNotificationService.getAllGroupEvents()
-            .subscribe((groupEvents) => {
-                this.allGroupEvents = groupEvents;
+        this._pushNotificationStore.getAllGroupEvents()
+            .subscribe((groupEvents: PushNotificationEvent[]) => {
+                // this.allGroupEvents = groupEvents;
+                this.allGroupEvents = _.map(groupEvents, (currentGroupEvent: PushNotificationEvent) => {
+                    return {
+                        label: `${currentGroupEvent.eventName}`,
+                        value: currentGroupEvent.id
+                    };
+                });
+            })
+    }
+    loadSavedSubscriptions() {
+        this._pushNotificationStore.getSavedSubscriptionsByUsername(this.sessionStore.session.user.userName)
+            .subscribe((groupEvents: PushNotificationEvent[]) => {
+                // this.selectedGroupEvents = groupEvents;
+                this.selectedGroupEvents = _.map(groupEvents, (currentGroupEvent: PushNotificationEvent) => {
+                    return {
+                        label: `${currentGroupEvent.eventName}`,
+                        value: currentGroupEvent.id
+                    };
+                });
             })
     }
 
@@ -52,26 +73,11 @@ export class NotificationSubscriptionComponent implements OnInit {
         let eventIds: number[] = [];
         if (this.selectedGroupEvents.length > 0) {
             eventIds = _.map(this.selectedGroupEvents, (currSelectedGroupEvent: any) => {
-                return currSelectedGroupEvent.EventID;
+                return currSelectedGroupEvent.value;
             })
         }
-        // this._progressBarService.show();
-        // var xhr = new XMLHttpRequest();
-        // xhr.open("POST", 'http://192.168.0.128/CANotificationService/NotificationManager/SubscribeEvents', true);
-
-        // //Send the proper header information along with the request
-        // xhr.setRequestHeader("Content-type", "application/json");
-
-        // xhr.onreadystatechange = function () {//Call a function when the state changes.
-        //     if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-        //         // Request finished. Do processing here.
-        //     }
-        // }
-        // let requestData = '{"ApplicationName": "Midas", "UserName": "bajpai.adarsh@gmail.com", "EventIDs":[' + eventIds + ']}';
-        // let requestData = {"ApplicationName": "Midas", "UserName": "bajpai.adarsh@gmail.com", "EventIDs":[ 1, 2]};
-        // xhr.send(requestData);
-        result = this._pushNotificationService.subscribeEvents(eventIds);
-        // result = this._pushNotificationService.testAPI();
+        this._progressBarService.show();
+        result = this._pushNotificationStore.subscribeEvents(eventIds);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -80,7 +86,8 @@ export class NotificationSubscriptionComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/dashboard']);
+                this._notificationsService.success('Success!', 'Notification settings saved successfully!');
+                // this._router.navigate(['/dashboard']);
             },
             (error) => {
                 let errString = 'Unable to save notification settings.';
@@ -91,10 +98,10 @@ export class NotificationSubscriptionComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
             },
             () => {
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
             });
 
     }

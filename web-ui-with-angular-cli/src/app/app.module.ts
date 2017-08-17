@@ -71,6 +71,7 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
 
 import { AssociateUserService } from './commons/services/associate-user-service';
 import { AssociateUserStore } from './commons/stores/associate-user-store';
+import { PushNotificationStore } from './commons/stores/push-notification-store';
 import { PushNotificationService } from './commons/services/push-notification-service';
 // import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
@@ -161,11 +162,12 @@ export function createConfig(): SignalRConfiguration {
     ProcedureStore,
     UserSettingStore,
     UserSettingService,
+    PushNotificationStore,
+    PushNotificationService,
     MedicalProviderMasterService,
     MedicalProviderMasterStore,
     AssociateUserService,
-    AssociateUserStore,
-    PushNotificationService
+    AssociateUserStore
   ],
   bootstrap: [AppComponent]
 })

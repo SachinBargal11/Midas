@@ -9,9 +9,6 @@ import { NotificationsService } from 'angular2-notifications';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { Notification } from './commons/models/notification';
-import { PushNotification } from './commons/models/push-notification';
-import { PushNotificationAdapter } from './commons/services/adapters/push-notification-adapter';
-import { PushNotificationService } from './commons/services/push-notification-service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +33,6 @@ export class AppComponent implements OnInit {
     public sessionStore: SessionStore,
     public notificationsStore: NotificationsStore,
     private _notificationsService: NotificationsService,
-    private _pushNotificationService: PushNotificationService,
     public progressBarService: ProgressBarService,
     private cdRef: ChangeDetectorRef
     // private idle: Idle,
@@ -79,27 +75,6 @@ export class AppComponent implements OnInit {
 
     this.sessionStore.authenticate().subscribe(
       (response) => {
-        // let storedAccessToken: any = window.localStorage.getItem('token');
-        // let accessToken = storedAccessToken.replace(/"/g, "");
-        // let storedAccessToken: any = this.sessionStore.session.accessToken;
-        // let accessToken = storedAccessToken.replace('bearer ', '');
-        // // this.loadNotifictionHub(accessToken);
-        // this._pushNotificationService.loadNotifictionHub(accessToken)
-        //   .subscribe((data: PushNotification[]) => {
-        //     let notifications: PushNotification[] = data;
-        //     _.forEach(notifications, (currMessage: PushNotification) => {
-        //       if (currMessage.isRead == true) {
-        //         let notification = new Notification({
-        //           'title': currMessage.message,
-        //           'type': 'SUCCESS',
-        //           'createdAt': moment(currMessage.notificationTime)
-        //         });
-        //         this.notificationsStore.addNotification(notification);
-        //       }
-        //     })
-        //   },
-        //   error => {
-        //   })
       },
       error => {
         // this._router.navigate(['/account/login']);
@@ -115,29 +90,5 @@ export class AppComponent implements OnInit {
     this.dateNow = new Date();
     this.cdRef.detectChanges();
   }
-
-  // loadNotifictionHub(accessToken) {
-  //       $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
-  //       $.connection.hub.url = 'http://caserver:7011/signalr';
-  //       $.connection.hub.logging = true;
-  //       var notificationHub = $.connection.hub.proxies['notificationhub'];
-  //       notificationHub.client.refreshNotification = function (data: PushNotification[]) {
-  //         this.messages = _.map(data, (currData: any) => {
-  //           return PushNotificationAdapter.parseResponse(currData);
-  //         });
-  //         _.forEach(this.messages, (currMessage: PushNotification) => {
-  //           if (currMessage.isRead == true) {
-  //             let notification = new Notification({
-  //               'title': currMessage.message,
-  //               'type': 'SUCCESS',
-  //               'createdAt': moment(currMessage.notificationTime)
-  //             });
-  //             NotificationsStore.prototype.addNotification(notification);
-  //           }
-  //         })
-  //       }
-  //       $.connection.hub.start().done(function () {
-  //         console.log('Notification hub started');
-  //       });
-  // }
+  
 }
