@@ -21,8 +21,8 @@ namespace MIDAS.GBX.BusinessObjects
         //[JsonProperty("locationId")]
         //public int? LocationId { get; set; }
 
-        [JsonProperty("patientEmpInfoId")]
-        public int? PatientEmpInfoId { get; set; }
+        //[JsonProperty("patientEmpInfoId")]
+        //public int? PatientEmpInfoId { get; set; }
 
         [JsonProperty("carrierCaseNo")]
         public string CarrierCaseNo { get; set; }

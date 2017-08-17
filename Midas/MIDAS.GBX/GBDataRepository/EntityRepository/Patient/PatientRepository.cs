@@ -103,7 +103,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.CaseName = casemap.CaseName;
                             caseBO.CaseTypeId = casemap.CaseTypeId;
                             //caseBO.LocationId = casemap.LocationId;
-                            caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
+                            //caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
                             caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
                             caseBO.CaseStatusId = casemap.CaseStatusId;
                             //caseBO.AttorneyId = casemap.AttorneyId;
@@ -1078,19 +1078,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-                    if (Patient.PatientEmpInfoes != null)
-                    {
-                        foreach (var item in Patient.PatientEmpInfoes)
-                        {
-                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                            {
-                                using (PatientEmpInfoRepository sr = new PatientEmpInfoRepository(_context))
-                                {
-                                    sr.Delete(item.Id);
-                                }
-                            }
-                        }
-                    }
+                    //if (Patient.PatientEmpInfoes != null)
+                    //{
+                    //    foreach (var item in Patient.PatientEmpInfoes)
+                    //    {
+                    //        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    //        {
+                    //            using (PatientEmpInfoRepository sr = new PatientEmpInfoRepository(_context))
+                    //            {
+                    //                sr.Delete(item.Id);
+                    //            }
+                    //        }
+                    //    }
+                    //}
 
                     if (Patient.PatientFamilyMembers != null)
                     {

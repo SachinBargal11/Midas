@@ -37,7 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
             //caseBO.LocationId = cases.LocationId;
-            caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
+            //caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.ClaimFileNumber = cases.ClaimFileNumber;
@@ -46,14 +46,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.CreateByUserID = cases.CreateByUserID;
             caseBO.UpdateByUserID = cases.UpdateByUserID;
 
-            if (cases.PatientEmpInfo != null)
+            if (cases.PatientEmpInfoes != null)
             {
-                if (cases.PatientEmpInfo.IsDeleted.HasValue == false || (cases.PatientEmpInfo.IsDeleted.HasValue == true && cases.PatientEmpInfo.IsDeleted.Value == false))
+                var PatientEmpInfo = cases.PatientEmpInfoes.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).FirstOrDefault();
+                if (PatientEmpInfo != null)
                 {
                     BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
                     using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
                     {
-                        boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
+                        boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(PatientEmpInfo);
                         caseBO.PatientEmpInfo = boPatientEmpInfo;
                     }
                 }
@@ -271,7 +272,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.CaseName = eachCase.CaseName;
                         caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
                         //caseWithUserAndPatient.LocationId = eachCase.LocationId;
-                        caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
+                        //caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
                         caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
                         caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
                         caseWithUserAndPatient.ClaimFileNumber = eachCase.ClaimFileNumber;
@@ -724,7 +725,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
                     //caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue == false ? caseDB.LocationId : caseBO.LocationId.Value;
-                    caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
+                    //caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
                     caseDB.ClaimFileNumber = IsEditMode == true && caseBO.ClaimFileNumber.HasValue == false ? caseDB.ClaimFileNumber : caseBO.ClaimFileNumber;
