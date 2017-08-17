@@ -1,12 +1,12 @@
 <!--<h3 class="with-border">Eo Visits</h3>-->
-<p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
+<!--<p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer"
     [businessHours]="businessHours">
-</p-schedule>
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <form [formGroup]="eoScheduleForm" (ngSubmit)="saveEvent()">
-        <div *ngIf="selectedVisit">
+</p-schedule>-->
+<!--<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">-->
+    <form [formGroup]="eoScheduleForm" name="eoScheduleForm" (ngSubmit)="saveEvent()">
+        <!--<div *ngIf="selectedVisit">-->
             <div class="row">
                 <div class="col-md-2"><label class="form-label">Doctor<span class="color-red">*</span></label></div>
                 <div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-4">
@@ -16,7 +16,7 @@
                 </div>
                 <div *ngIf="!sessionStore.isOnlyDoctorRole()" class="col-md-4">
                     <div class="form-group" [class.error]="eoScheduleFormControls.doctorId && eoScheduleFormControls.doctorId.touched && !eoScheduleFormControls.doctorId.valid">
-                        <select formControlName="doctorId" [ngModel]="selectedVisit.doctorId" class="select2-arrow form-control">
+                        <select formControlName="doctorId" [ngModel]="doctorId" class="select2-arrow form-control">
                         <option value=""> -- Select Doctor -- </option>
                         <option *ngFor="let doctor of doctors" [value]="doctor.id">{{doctor.user.firstName}} {{doctor.user.lastName}}</option>                                       
                     </select>
@@ -95,7 +95,7 @@
                 <div class="col-md-2"><label class="form-label">Insurance Provider<span class="color-red">*</span></label></div>
                 <div class="col-md-4">
                     <div class="form-group" [class.error]="eoScheduleFormControls.insuranceMasterId && eoScheduleFormControls.insuranceMasterId.touched && !eoScheduleFormControls.insuranceMasterId.valid">
-                        <select formControlName="insuranceMasterId" [ngModel]="selectedVisit.insuranceMasterId" class="select2-arrow form-control">
+                        <select formControlName="insuranceProviderId" [ngModel]="insuranceProviderId" class="select2-arrow form-control">
                         <option value=""> -- Select Insurance -- </option>
                         <option *ngFor="let insuranceMaster of insuranceMasters" [value]="insuranceMaster.id">{{insuranceMaster.companyName}}</option>                                       
                     </select>
@@ -112,7 +112,7 @@
                     </label></div>
                 <div class="col-md-6">
                     <div class="form-group" [class.error]="eoScheduleFormControls.notes && eoScheduleFormControls.notes.touched && !eoScheduleFormControls.notes.valid">
-                        <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
+                        <textarea [ngModel]="notes" formControlName="notes" class="form-control" rows="3"></textarea>
                         <div class='error-list' *ngIf="eoScheduleFormControls.notes && eoScheduleFormControls.notes.touched && !eoScheduleFormControls.notes.valid">
                             <ul>
                                 <li *ngIf="eoScheduleFormControls.notes.hasError('required')">Please enter Notes.</li>
@@ -121,22 +121,21 @@
                     </div>
                 </div>
             </div>
-        </div>
         <br>
-        <p-footer *ngIf="selectedVisit">
+        <!--<p-footer *ngIf="selectedVisit">-->
             <div class="row">
                 <div class="col-md-4">
-                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
+                    <button [disabled]="!eoScheduleForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">
                         Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-                    <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
-                    <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
+                    <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+                    <!--<button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>-->
                 </div>
             </div>
-        </p-footer>
+        <!--</p-footer>-->
     </form>
-</p-dialog>
+<!--</p-dialog>-->
 
 <p-dialog [minWidth]="600" [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
@@ -158,7 +157,7 @@
                         <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
                         <div class="col-md-6">
                             <div class="form-group" [class.error]="eoVisitFormControls.notes && eoVisitFormControls.notes.touched && !eoVisitFormControls.notes.valid">
-                                <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
+                                <textarea [ngModel]="notes" formControlName="notes" class="form-control" rows="3"></textarea>
                                 <div class='error-list' *ngIf="eoVisitFormControls.notes && eoVisitFormControls.notes.touched && !eoVisitFormControls.notes.valid">
                                     <ul>
                                         <li *ngIf="eoVisitFormControls.notes.hasError('required')">Please enter Notes.</li>
@@ -256,4 +255,3 @@
                     <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
                         (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 </p-dialog>
-            </p-tabPanel>

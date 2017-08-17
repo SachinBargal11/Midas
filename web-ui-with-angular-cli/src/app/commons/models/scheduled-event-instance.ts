@@ -37,7 +37,7 @@ export class ScheduledEventInstance {
     }
 
     get color(): string {
-        return this.eventWrapper.eventColor;
+        return this.eventWrapper ? this.eventWrapper.eventColor : null;
     }
     
 }

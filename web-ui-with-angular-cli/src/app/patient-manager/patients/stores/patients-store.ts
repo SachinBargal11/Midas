@@ -230,18 +230,18 @@ export class PatientsStore {
         return <Observable<Patient>>Observable.from(promise);
     }
 
- getOpenCasesByCompanyWithPatient(): Observable<Patient[]> {
-        let companyId: number = this._sessionStore.session.currentCompany.id;
-        let promise = new Promise((resolve, reject) => {
-            this._patientsService.getOpenCasesByCompanyWithPatient(companyId).subscribe((patients: Patient[]) => {
-                this._patients.next(List(patients));
-                resolve(patients);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Patient[]>>Observable.fromPromise(promise);
-    }
+//  getOpenCasesByCompanyWithPatient(): Observable<Patient[]> {
+//         let companyId: number = this._sessionStore.session.currentCompany.id;
+//         let promise = new Promise((resolve, reject) => {
+//             this._patientsService.getOpenCasesByCompanyWithPatient(companyId).subscribe((patients: Patient[]) => {
+//                 this._patients.next(List(patients));
+//                 resolve(patients);
+//             }, error => {
+//                 reject(error);
+//             });
+//         });
+//         return <Observable<Patient[]>>Observable.fromPromise(promise);
+//     }
 
     
 }

@@ -293,22 +293,22 @@ export class PatientsService {
         return `${this._url}/documentmanager/downloadfromnoproviderblob/${documentId}`;
     }
 
-     getOpenCasesByCompanyWithPatient(companyId: number): Observable<Patient[]> {
-        let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/GetOpenCasesByCompanyWithPatient/' + companyId, {
-                headers: this._headers
-            })
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let patients = (<Object[]>data).map((patientData: any) => {
-                        return ImePatientAdapter.parseResponse(patientData);
-                    });
-                    resolve(patients);
-                }, (error) => {
-                    reject(error);
-                });
+    //  getOpenCasesByCompanyWithPatient(companyId: number): Observable<Patient[]> {
+    //     let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/Case/GetOpenCasesByCompanyWithPatient/' + companyId, {
+    //             headers: this._headers
+    //         })
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let patients = (<Object[]>data).map((patientData: any) => {
+    //                     return ImePatientAdapter.parseResponse(patientData);
+    //                 });
+    //                 resolve(patients);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
 
-        });
-        return <Observable<Patient[]>>Observable.fromPromise(promise);
-    }
+    //     });
+    //     return <Observable<Patient[]>>Observable.fromPromise(promise);
+    // }
 }

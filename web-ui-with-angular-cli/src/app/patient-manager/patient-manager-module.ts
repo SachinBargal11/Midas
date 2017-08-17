@@ -115,7 +115,7 @@ import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
 import { AncillaryMasterStore } from '../account-setup/stores/ancillary-store';
 import { AncillaryMasterService } from '../account-setup/services/ancillary-service';
 
-import { PatientVisitShellComponent } from './patient-visit/components/patient-visit-shell';
+// import { PatientVisitShellComponent } from './patient-visit/components/patient-visit-shell';
 import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
 
@@ -186,7 +186,7 @@ import { EoVisitComponent } from './patient-visit/components/eo-visit';
         BillingInfoComponent,
         PaymentListComponent,
         CaseBasicLabelComponent,
-        PatientVisitShellComponent,
+        // PatientVisitShellComponent,
         ImeVisitComponent,
         EoVisitComponent,
 

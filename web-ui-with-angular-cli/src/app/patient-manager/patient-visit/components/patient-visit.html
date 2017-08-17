@@ -1,4 +1,4 @@
-<h3 class="with-border">Patient Visits</h3>
+<h3 class="with-border">Schedule</h3>
 <section class="card">
     <div class="card-block">
         <div class="row">
@@ -37,9 +37,28 @@
                     </div>
                 </div>
             </div>
+            <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showEoDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add EO Visit</span>
+            </a>
+            <div *ngIf="!sessionStore.isOnlyDoctorRole()">
+                <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showIMEDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add IME Visit</span>
+            </a>
+            </div>
         </div>
     </div>
 </section>
+
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddImeVisitDialogHide()" [(visible)]="addImeVisitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <ime-visit (closeDialogBox)="closeDialog()"></ime-visit>
+</p-dialog>
+
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddEoVisitDialogHide()" [(visible)]="addEoVisitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <eo-visit (closeDialogBox)="closeDialog()"></eo-visit>
+</p-dialog>
+
 <p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer"
     [businessHours]="businessHours">
@@ -158,9 +177,9 @@
                 <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
                 <div class="col-md-4">
                     <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                        <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control">
+                        <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control" (change)="selectPatient($event)">
                         <option value=""> -- Select Patient -- </option>
-                        <option *ngFor="let patient of _patientsStore.patientsWithOpenCases | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
+                        <option *ngFor="let patient of patients" [value]="patient.id">{{patient.user.displayName}}</option>                                       
                     </select>
                         <div class='error-list' *ngIf="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
                             <ul>
@@ -171,7 +190,23 @@
                 </div>
                 <div class="col-md-4">
                     <!--<a class="btn btn-rounded btn-inline btn-primary-outline" (click)="addNewPatient()">Add New Patient</a>-->
-                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient">                    <label>Add New Patient</label>
+                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient"><label>Add New Patient</label>
+                </div>
+            </div>
+            <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
+                <div class="col-md-2"><label class="form-label">Case No<span class="color-red">*</span></label></div>
+                <div class="col-md-4">
+                    <div class="form-group" [class.error]="patientScheduleFormControls.caseId && patientScheduleFormControls.caseId.touched && !patientScheduleFormControls.caseId.valid">
+                        <select formControlName="caseId" [ngModel]="caseId" class="select2-arrow form-control">
+                        <option value=""> -- Select Case -- </option>
+                        <option *ngFor="let case of cases" [value]="case.id">{{case.id}}</option>                                       
+                    </select>
+                        <div class='error-list' *ngIf="patientScheduleFormControls.caseId && patientScheduleFormControls.caseId.touched && !patientScheduleFormControls.caseId.valid">
+                            <ul>
+                                <li *ngIf="patientScheduleFormControls.caseId.hasError('required')">Please select any case number.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div *ngIf="!isGoingOutOffice">
@@ -209,37 +244,37 @@
                     <div class="col-lg-4 input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
-</div>
-</div>
-<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
-    <header>Procedures</header>
-    <p-headerColumnGroup>
-        <p-row>
-            <p-column [style]="{'width':'38px'}"></p-column>
-            <p-column header="Procedure Code"></p-column>
-            <p-column header="Description"></p-column>
-        </p-row>
-    </p-headerColumnGroup>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="procedureCodeText"></p-column>
-    <p-column field="procedureCodeDesc"></p-column>
-</p-dataTable>
-</div>
-</div>
-<br>
-<p-footer *ngIf="selectedVisit">
-    <div class="row">
-        <div class="col-md-4">
-            <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
+                    </div>
+                </div>
+                <p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+                    <header>Procedures</header>
+                    <p-headerColumnGroup>
+                        <p-row>
+                            <p-column [style]="{'width':'38px'}"></p-column>
+                            <p-column header="Procedure Code"></p-column>
+                            <p-column header="Description"></p-column>
+                        </p-row>
+                    </p-headerColumnGroup>
+                    <p-column selectionMode="multiple"></p-column>
+                    <p-column field="procedureCodeText"></p-column>
+                    <p-column field="procedureCodeDesc"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+        <br>
+        <p-footer *ngIf="selectedVisit">
+            <div class="row">
+                <div class="col-md-4">
+                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
                         Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-            <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
-            <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
-        </div>
-    </div>
-</p-footer>
-</form>
+                    <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
+                    <button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
+                </div>
+            </div>
+        </p-footer>
+    </form>
 </p-dialog>
 
 <p-dialog [minWidth]="600" [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
@@ -290,7 +325,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="!selectedVisit.specialtyId">
+                    <div class="row" *ngIf="!selectedVisit.specialtyId && selectedVisit.isPatientVisitType">
                         <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -331,48 +366,48 @@
                     <div class="col-lg-4 input-group">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
-</div>
-</div>
-<p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
-    <header> List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column header="Document Name">
-        <ng-template let-document="rowData" pTemplate="body">
-            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
-                <u>{{document.document.originalResponse.documentName}}</u>
-            </a>
-        </ng-template>
-    </p-column>
-    <p-column header="Document Type" [sortable]="true">
-        <ng-template let-document="rowData.document" pTemplate="body">
-            {{ document.documentType }}
-        </ng-template>
-    </p-column>
-    <p-column field="createDate" header="Created Date" [sortable]="true">
-        <ng-template let-document="rowData.document" pTemplate="body">
-            {{ document.createDate | dateTimeFormat }}
-        </ng-template>
-    </p-column>
-</p-dataTable>
-<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
-        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
-</p-dialog>
-</p-tabPanel>
+                    </div>
+                </div>
+                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+                    [globalFilter]="gb" [responsive]="true">
+                    <header> List</header>
+                    <p-column selectionMode="multiple"></p-column>
+                    <p-column header="Document Name">
+                        <ng-template let-document="rowData" pTemplate="body">
+                            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+                                <u>{{document.document.originalResponse.documentName}}</u>
+                            </a>
+                        </ng-template>
+                    </p-column>
+                    <p-column header="Document Type" [sortable]="true">
+                        <ng-template let-document="rowData.document" pTemplate="body">
+                            {{ document.documentType }}
+                        </ng-template>
+                    </p-column>
+                    <p-column field="createDate" header="Created Date" [sortable]="true">
+                        <ng-template let-document="rowData.document" pTemplate="body">
+                            {{ document.createDate | dateTimeFormat }}
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+                <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+                    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+                    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
+                        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                </p-dialog>
+            </p-tabPanel>
 
-<p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
-    <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
-</p-tabPanel>
-<p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
-    <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
-</p-tabPanel>
-<p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
-    <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
-</p-tabPanel>
+            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+                <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
+            </p-tabPanel>
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+                <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
+            </p-tabPanel>
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+                <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
+            </p-tabPanel>
 
-</p-tabView>
-</div>
+        </p-tabView>
+    </div>
 
 </p-dialog>
