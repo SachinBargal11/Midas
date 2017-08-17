@@ -263,8 +263,8 @@ export class ReferralsComponent implements OnInit {
         let visitReferral = new VisitReferral({
           patientVisitId: this.selectedVisit.id,
           fromCompanyId: this.sessionStore.session.currentCompany.id,
-          fromLocationId: this.selectedVisit.locationId,
-          fromDoctorId: this.selectedVisit.doctorId,
+          // fromLocationId: this.selectedVisit.locationId,
+          // fromDoctorId: this.selectedVisit.doctorId,
           forSpecialtyId: currentSpecialityId,
           forRoomId: null,
           forRoomTestId: null,
@@ -294,10 +294,10 @@ export class ReferralsComponent implements OnInit {
         let visitReferral = new VisitReferral({
           patientVisitId: this.selectedVisit.id,
           fromCompanyId: this.sessionStore.session.currentCompany.id,
-          fromLocationId: this.selectedVisit.locationId,
-          fromDoctorId: this.selectedVisit.doctorId,
-          forSpecialtyId: null,
-          forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
+          // fromLocationId: this.selectedVisit.locationId,
+          // fromDoctorId: this.selectedVisit.doctorId,
+          // forSpecialtyId: null,
+          // forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
           forRoomTestId: currentRoomTestId,
           isReferralCreated: false,
           pendingReferralProcedureCode: procedureCodes
