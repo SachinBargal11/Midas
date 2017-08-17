@@ -929,10 +929,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
-        {
-            throw new NotImplementedException();
-        }
+        //public virtual object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
     }

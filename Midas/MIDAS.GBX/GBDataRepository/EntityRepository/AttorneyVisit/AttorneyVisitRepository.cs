@@ -50,7 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 AttorneyVisitBO.CalendarEventId = AttorneyVisitDB.CalendarEventId;
                 AttorneyVisitBO.CaseId = AttorneyVisitDB.CaseId;
                 AttorneyVisitBO.PatientId = AttorneyVisitDB.PatientId;
-                AttorneyVisitBO.LocationId = AttorneyVisitDB.LocationId;
+                AttorneyVisitBO.CompanyId = AttorneyVisitDB.CompanyId;
                 AttorneyVisitBO.AttorneyId = AttorneyVisitDB.AttorneyId;
                 AttorneyVisitBO.EventStart = AttorneyVisitDB.EventStart;
                 AttorneyVisitBO.EventEnd = AttorneyVisitDB.EventEnd;
@@ -116,13 +116,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }                
 
-                if (AttorneyVisitDB.Location != null)
+                if (AttorneyVisitDB.Company != null)
                 {
-                    BO.Location boLocation = new BO.Location();
-                    using (LocationRepository cmp = new LocationRepository(_context))
+                    BO.Company boCompany = new BO.Company();
+                    using (CompanyRepository cmp = new CompanyRepository(_context))
                     {
-                        boLocation = cmp.Convert<BO.Location, Location>(AttorneyVisitDB.Location);
-                        AttorneyVisitBO.Location = boLocation;
+                        boCompany = cmp.Convert<BO.Company, Company>(AttorneyVisitDB.Company);
+                        AttorneyVisitBO.Company = boCompany;
                     }
                 }
 
@@ -172,7 +172,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 bool IsAddModeCalendarEvent = false;
                 IsEditMode = (AttorneyVisitBO != null && AttorneyVisitBO.ID > 0) ? true : false;
                 
-                if (AttorneyVisitBO.ID <= 0 && AttorneyVisitBO.PatientId.HasValue == false && AttorneyVisitBO.LocationId.HasValue == false)
+                if (AttorneyVisitBO.ID <= 0 && AttorneyVisitBO.PatientId.HasValue == false && AttorneyVisitBO.CompanyId.HasValue == false)
                 {
                     IsEditMode = (CalendarEventBO != null && CalendarEventBO.ID > 0) ? true : false;
                     IsAddModeCalendarEvent = (CalendarEventBO != null && CalendarEventBO.ID > 0) ? false : true;
@@ -238,7 +238,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 #region Patient Visit
                 if (AttorneyVisitBO != null
-                    && ((AttorneyVisitBO.ID <= 0 && AttorneyVisitBO.PatientId.HasValue == true && AttorneyVisitBO.LocationId.HasValue == true)
+                    && ((AttorneyVisitBO.ID <= 0 && AttorneyVisitBO.PatientId.HasValue == true && AttorneyVisitBO.CompanyId.HasValue == true)
                         || (AttorneyVisitBO.ID > 0)))
                 {
                     bool Add_patientVisitDB = false;
@@ -285,7 +285,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     AttorneyVisitDB.PatientId = IsEditMode == true && AttorneyVisitBO.PatientId.HasValue == false ? AttorneyVisitDB.PatientId : (AttorneyVisitBO.PatientId.HasValue == false ? AttorneyVisitDB.PatientId : AttorneyVisitBO.PatientId.Value);
                     AttorneyVisitDB.AttorneyId = IsEditMode == true && AttorneyVisitBO.AttorneyId.HasValue == false ? AttorneyVisitDB.AttorneyId : (AttorneyVisitBO.AttorneyId.HasValue == false ? AttorneyVisitDB.AttorneyId : AttorneyVisitBO.AttorneyId.Value);
-                    AttorneyVisitDB.LocationId = IsEditMode == true && AttorneyVisitBO.LocationId.HasValue == false ? AttorneyVisitDB.LocationId : (AttorneyVisitBO.LocationId.HasValue == false ? AttorneyVisitDB.LocationId : AttorneyVisitBO.LocationId.Value);
+                    AttorneyVisitDB.CompanyId = IsEditMode == true && AttorneyVisitBO.CompanyId.HasValue == false ? AttorneyVisitDB.CompanyId : (AttorneyVisitBO.CompanyId.HasValue == false ? AttorneyVisitDB.CompanyId : AttorneyVisitBO.CompanyId.Value);
 
                     AttorneyVisitDB.EventStart = AttorneyVisitBO.EventStart;
                     AttorneyVisitDB.EventEnd = AttorneyVisitBO.EventEnd;
@@ -338,8 +338,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (AttorneyVisitDB != null)
                 {
                     AttorneyVisitDB = _context.AttorneyVisits.Include("CalendarEvent")
-                                                             .Include("Location")
-                                                             .Include("Location.Company")
+                                                             .Include("Company")
                                                              .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")                                                            
                                                              .Where(p => p.Id == AttorneyVisitDB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -366,8 +365,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                           .Include("Patient")
                                                                           .Include("Patient.User")
                                                                           .Include("Case")
-                                                                          .Include("Location").Include("Location.Company")
-                                                                          .Where(p => p.Location.CompanyID == CompanyId
+                                                                          .Include("Company")
+                                                                          .Where(p => p.CompanyId == CompanyId
                                                                                 && ((AttorneyId > 0 && p.AttorneyId == AttorneyId) || (AttorneyId <= 0))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                           .ToList<AttorneyVisit>();
@@ -387,30 +386,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Company And Attorney Id
-        public override object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
-        {
-            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
-                                                                          .Include("Patient")
-                                                                          .Include("Patient.User")
-                                                                          .Include("Case")
-                                                                          .Include("Location").Include("Location.Company")
-                                                                          .Where(p => p.LocationId == LocationId
-                                                                                && ((AttorneyId > 0 && p.AttorneyId == AttorneyId) || (AttorneyId <= 0))
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                          .ToList<AttorneyVisit>();
+        //public override object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
+        //{
+        //    List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+        //                                                                  .Include("Patient")
+        //                                                                  .Include("Patient.User")
+        //                                                                  .Include("Case")
+        //                                                                  .Include("Location").Include("Location.Company")
+        //                                                                  .Where(p => p.LocationId == LocationId
+        //                                                                        && ((AttorneyId > 0 && p.AttorneyId == AttorneyId) || (AttorneyId <= 0))
+        //                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                                  .ToList<AttorneyVisit>();
 
-            if (lstAttorneyVisit == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No visit found for this Company and Attorney Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
-                List<BO.AttorneyVisit> lstBOAttorneyVisit = new List<BO.AttorneyVisit>();
-                lstAttorneyVisit.ForEach(p => lstBOAttorneyVisit.Add(Convert<BO.AttorneyVisit, AttorneyVisit>(p)));
+        //    if (lstAttorneyVisit == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No visit found for this Company and Attorney Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    else
+        //    {
+        //        List<BO.AttorneyVisit> lstBOAttorneyVisit = new List<BO.AttorneyVisit>();
+        //        lstAttorneyVisit.ForEach(p => lstBOAttorneyVisit.Add(Convert<BO.AttorneyVisit, AttorneyVisit>(p)));
 
-                return lstBOAttorneyVisit;
-            }
-        }
+        //        return lstBOAttorneyVisit;
+        //    }
+        //}
         #endregion
 
         public void Dispose()

@@ -1910,9 +1910,22 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
-        public HttpResponseMessage GetByLocationAndAttorneyId(HttpRequestMessage request, int LocationId, int AttorneyId)
+        //public HttpResponseMessage GetByLocationAndAttorneyId(HttpRequestMessage request, int LocationId, int AttorneyId)
+        //{
+        //    var objResult = dataAccessManager.GetByLocationAndAttorneyId(LocationId, AttorneyId);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
+
+        public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId)
         {
-            var objResult = dataAccessManager.GetByLocationAndAttorneyId(LocationId, AttorneyId);
+            var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId, CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

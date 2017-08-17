@@ -24,7 +24,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string Subject { get; set; }
         public Nullable<byte> VisitStatusId { get; set; }
         public string ContactPerson { get; set; }
-        public Nullable<int> LocationId { get; set; }
+        public int CompanyId { get; set; }
         public string Agenda { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
@@ -34,7 +34,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }
-        public virtual Location Location { get; set; }
+        public virtual Company Company { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual User User { get; set; }
     }
