@@ -9,47 +9,47 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientEmpInfo : GbObject
     {
-        [JsonProperty("patientId")]
-        public int patientId { get; set; }
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
         [JsonProperty("jobTitle")]
-        public string jobTitle { get; set; }
+        public string JobTitle { get; set; }
 
         [JsonProperty("empName")]
-        public string empName { get; set; }
+        public string EmpName { get; set; }
 
         [JsonProperty("addressInfoId")]
-        public int? addressInfoId { get; set; }
+        public int? AddressInfoId { get; set; }
 
         [JsonProperty("contactInfoId")]
-        public int? contactInfoId { get; set; }
+        public int? ContactInfoId { get; set; }
 
-        [JsonProperty("isCurrentEmp")]
-        public bool? isCurrentEmp { get; set; }
+        //[JsonProperty("isCurrentEmp")]
+        //public bool? IsCurrentEmp { get; set; }
 
         [JsonProperty("addressInfo")]
-        public AddressInfo addressInfo { get; set; }
+        public AddressInfo AddressInfo { get; set; }
 
         [JsonProperty("contactInfo")]
-        public ContactInfo contactInfo { get; set; }
+        public ContactInfo ContactInfo { get; set; }
     }
 
     public class mPatientEmpInfo : GbObject
     {
-        [JsonProperty("patientId")]
-        public int patientId { get; set; }
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
         [JsonProperty("empName")]
-        public string empName { get; set; }
+        public string EmpName { get; set; }
 
         [JsonProperty("addressInfoId")]
-        public int? addressInfoId { get; set; }
+        public int? AddressInfoId { get; set; }
 
         [JsonProperty("contactInfoId")]
-        public int? contactInfoId { get; set; }
+        public int? ContactInfoId { get; set; }
 
         [JsonProperty("isCurrentEmp")]
-        public bool? isCurrentEmp { get; set; }
+        public bool? IsCurrentEmp { get; set; }
 
         [JsonProperty("mAddressInfo")]
         public mAddressInfo mAddressInfo { get; set; }

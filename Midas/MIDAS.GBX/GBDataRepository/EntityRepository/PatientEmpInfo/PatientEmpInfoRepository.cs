@@ -31,12 +31,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.PatientEmpInfo PatientEmpInfoBO = new BO.PatientEmpInfo();
             PatientEmpInfoBO.ID = PatientEmpInfo.Id;
-            PatientEmpInfoBO.patientId = PatientEmpInfo.PatientId;
-            PatientEmpInfoBO.jobTitle = PatientEmpInfo.JobTitle;
-            PatientEmpInfoBO.empName = PatientEmpInfo.EmpName;
-            PatientEmpInfoBO.addressInfoId = PatientEmpInfo.AddressInfoId;
-            PatientEmpInfoBO.contactInfoId = PatientEmpInfo.ContactInfoId;
-            PatientEmpInfoBO.isCurrentEmp = PatientEmpInfo.IsCurrentEmp;
+            PatientEmpInfoBO.CaseId = PatientEmpInfo.CaseId;
+            PatientEmpInfoBO.JobTitle = PatientEmpInfo.JobTitle;
+            PatientEmpInfoBO.EmpName = PatientEmpInfo.EmpName;
+            PatientEmpInfoBO.AddressInfoId = PatientEmpInfo.AddressInfoId;
+            PatientEmpInfoBO.ContactInfoId = PatientEmpInfo.ContactInfoId;
+            //PatientEmpInfoBO.IsCurrentEmp = PatientEmpInfo.IsCurrentEmp;
 
             if (PatientEmpInfo.AddressInfo != null)
             {
@@ -55,7 +55,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //[STATECODE-CHANGE]
                     boAddress.CreateByUserID = PatientEmpInfo.AddressInfo.CreateByUserID;
                     boAddress.ID = PatientEmpInfo.AddressInfo.id;
-                    PatientEmpInfoBO.addressInfo = boAddress;
+                    PatientEmpInfoBO.AddressInfo = boAddress;
                 }
             }
 
@@ -75,7 +75,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boContactInfo.PreferredCommunication = PatientEmpInfo.ContactInfo.PreferredCommunication;
                     boContactInfo.CreateByUserID = PatientEmpInfo.ContactInfo.CreateByUserID;
                     boContactInfo.ID = PatientEmpInfo.ContactInfo.id;
-                    PatientEmpInfoBO.contactInfo = boContactInfo;
+                    PatientEmpInfoBO.ContactInfo = boContactInfo;
                 }
             }
 
@@ -113,31 +113,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Patient Id
-        public override object GetByPatientId(int PatientId)
-        {
-            var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientEmpInfo>();
+        //public override object GetByPatientId(int PatientId)
+        //{
+        //    var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientEmpInfo>();
             
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
 
-            List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
-            foreach (PatientEmpInfo item in acc)
-            {
-                lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
-            }
+        //    List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
+        //    foreach (PatientEmpInfo item in acc)
+        //    {
+        //        lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
+        //    }
 
-            return lstpatientsEmpInfo;
-        }
+        //    return lstpatientsEmpInfo;
+        //}
         #endregion
 
         #region save
         public override object Save<T>(T entity)
         {
             BO.PatientEmpInfo patientEmpInfoBO = (BO.PatientEmpInfo)(object)entity;
-            BO.AddressInfo addressBO = patientEmpInfoBO.addressInfo;
-            BO.ContactInfo contactinfoBO = patientEmpInfoBO.contactInfo;
+            BO.AddressInfo addressBO = patientEmpInfoBO.AddressInfo;
+            BO.ContactInfo contactinfoBO = patientEmpInfoBO.ContactInfo;
 
             PatientEmpInfo patientEmpInfoDB = new PatientEmpInfo();
 
@@ -244,11 +244,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #region patient Emp Info
                 if (patientEmpInfoBO != null)
                 {
-                    if (patientEmpInfoBO.isCurrentEmp.HasValue == true && patientEmpInfoBO.isCurrentEmp == true)
-                    {
-                        var existingPatientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.PatientId == patientEmpInfoBO.patientId).ToList();
-                        existingPatientEmpInfoDB.ForEach(p => p.IsCurrentEmp = false);
-                    }
+                    //if (patientEmpInfoBO.IsCurrentEmp.HasValue == true && patientEmpInfoBO.IsCurrentEmp == true)
+                    //{
+                    //    var existingPatientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.PatientId == patientEmpInfoBO.CaseId).ToList();
+                    //    existingPatientEmpInfoDB.ForEach(p => p.IsCurrentEmp = false);
+                    //}
 
                     bool Add_patientEmpInfoDB = false;
                     patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoBO.ID).FirstOrDefault();
@@ -264,12 +264,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient employee information dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    patientEmpInfoDB.PatientId = patientEmpInfoBO.patientId;
-                    patientEmpInfoDB.JobTitle = IsEditMode == true && patientEmpInfoBO.jobTitle == null ? patientEmpInfoDB.JobTitle : patientEmpInfoBO.jobTitle;
-                    patientEmpInfoDB.EmpName = IsEditMode == true && patientEmpInfoBO.empName == null ? patientEmpInfoDB.EmpName : patientEmpInfoBO.empName;
+                    patientEmpInfoDB.CaseId = patientEmpInfoBO.CaseId;
+                    patientEmpInfoDB.JobTitle = IsEditMode == true && patientEmpInfoBO.JobTitle == null ? patientEmpInfoDB.JobTitle : patientEmpInfoBO.JobTitle;
+                    patientEmpInfoDB.EmpName = IsEditMode == true && patientEmpInfoBO.EmpName == null ? patientEmpInfoDB.EmpName : patientEmpInfoBO.EmpName;
                     patientEmpInfoDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : patientEmpInfoDB.AddressInfoId;
                     patientEmpInfoDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : patientEmpInfoDB.ContactInfoId;
-                    patientEmpInfoDB.IsCurrentEmp = (patientEmpInfoBO.isCurrentEmp.HasValue == false) ? patientEmpInfoDB.IsCurrentEmp : patientEmpInfoBO.isCurrentEmp.Value;
+                    //patientEmpInfoDB.IsCurrentEmp = (patientEmpInfoBO.IsCurrentEmp.HasValue == false) ? patientEmpInfoDB.IsCurrentEmp : patientEmpInfoBO.IsCurrentEmp.Value;
 
                     if (Add_patientEmpInfoDB == true)
                     {
@@ -297,6 +297,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = Convert<BO.PatientEmpInfo, PatientEmpInfo>(patientEmpInfoDB);
             return (object)res;
+        }
+        #endregion
+
+        #region Get By Case Id
+        public override object GetByCaseId(int CaseId)
+        {
+            var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.CaseId == CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientEmpInfo>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
+            foreach (PatientEmpInfo item in acc)
+            {
+                lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
+            }
+
+            return lstpatientsEmpInfo;
         }
         #endregion
 
@@ -336,25 +356,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get EmpInfo patient ID
-        public override object GetCurrentEmpByPatientId(int PatientId)
-        {
-            var acc = _context.PatientEmpInfoes.Include("addressInfo")
-                                                     .Include("contactInfo")
-                                                     .Where(p => p.PatientId == PatientId && p.IsCurrentEmp == true && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
-                                                     .FirstOrDefault<PatientEmpInfo>();
+        //public override object GetCurrentEmpByPatientId(int PatientId)
+        //{
+        //    var acc = _context.PatientEmpInfoes.Include("addressInfo")
+        //                                             .Include("contactInfo")
+        //                                             .Where(p => p.PatientId == PatientId && p.IsCurrentEmp == true && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+        //                                             .FirstOrDefault<PatientEmpInfo>();
 
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
 
-            else
-            {
-                BO.PatientEmpInfo acc_ = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
-                return (object)acc_;
-            }
+        //    else
+        //    {
+        //        BO.PatientEmpInfo acc_ = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
+        //        return (object)acc_;
+        //    }
 
-        }
+        //}
         #endregion
 
         public void Dispose()

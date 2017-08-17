@@ -18,7 +18,7 @@ BEGIN
         [Subject] NVARCHAR(256) NULL, 
         [VisitStatusId] TINYINT NULL, 
         [ContactPerson] NVARCHAR(128) NULL, 
-        [LocationId] [INT] NULL, 
+        [CompanyId] [INT] NULL, 
         [Agenda] NVARCHAR(1024) NULL, 
 
         [IsDeleted] [bit] NULL DEFAULT 0,
@@ -113,9 +113,9 @@ IF EXISTS
 )
 BEGIN
 	ALTER TABLE [dbo].[AttorneyVisit] 
-        DROP CONSTRAINT [FK_AttorneyVisit_Location_LocationID]
+        DROP CONSTRAINT [FK_AttorneyVisit_Company_CompanyId]
 END
 
-ALTER TABLE [dbo].[AttorneyVisit]  WITH CHECK ADD  CONSTRAINT [FK_AttorneyVisit_Location_LocationID] FOREIGN KEY([LocationID])
-	REFERENCES [dbo].[Location] ([Id])
+ALTER TABLE [dbo].[AttorneyVisit]  WITH CHECK ADD  CONSTRAINT [FK_AttorneyVisit_Company_CompanyId] FOREIGN KEY([CompanyId])
+	REFERENCES [dbo].[Company] ([Id])
 GO
