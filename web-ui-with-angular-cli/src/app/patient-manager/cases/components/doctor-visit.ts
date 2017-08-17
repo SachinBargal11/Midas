@@ -21,6 +21,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import { SessionStore } from '../../../commons/stores/session-store';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'patient-visit-doctor-list',
@@ -53,6 +54,9 @@ export class PatientVisitListDoctorComponent implements OnInit {
     selectedVisit: PatientVisit;
     visitInfo = 'Visit Info';
     visitDialogVisible = false;
+    addVisitDialogVisible = false;
+    case:Case;
+    routeFromCase: true;
 
     constructor(
         private _fb: FormBuilder,
@@ -69,31 +73,23 @@ export class PatientVisitListDoctorComponent implements OnInit {
         private _casesStore: CasesStore,
         public sessionStore: SessionStore
     ) {
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+       this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
         });
-
         this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
+            let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
+            Observable.forkJoin([fetchPatient, fetchCaseDetail])
                 .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                (results) => {
+                    this.patient = results[0];
+                    this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
+                    this.case = results[1];
+                    this.caseStatusId = this.case.caseStatusId;
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -103,6 +99,42 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+        
+        // this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.caseId = parseInt(routeParams.caseId, 10);
+        //     this._progressBarService.show();
+        //     let result = this._casesStore.fetchCaseById(this.caseId);
+        //     result.subscribe(
+        //         (caseDetail: Case) => {
+        //             this.case = caseDetail;
+        //             this.caseStatusId = caseDetail.caseStatusId;
+        //         },
+        //         (error) => {
+        //             this._router.navigate(['../'], { relativeTo: this._route });
+        //             this._progressBarService.hide();
+        //         },
+        //         () => {
+        //             this._progressBarService.hide();
+        //         });
+        // });
+
+        // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        //     this._progressBarService.show();
+        //     this._patientStore.fetchPatientById(this.patientId)
+        //         .subscribe(
+        //         (patient: Patient) => {
+        //             this.patient = patient;
+        //             this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+        //         },
+        //         (error) => {
+        //             this._router.navigate(['../'], { relativeTo: this._route });
+        //             this._progressBarService.hide();
+        //         },
+        //         () => {
+        //             this._progressBarService.hide();
+        //         });
+        // });
 
     }
 
@@ -165,6 +197,13 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.selectedVisitId = visitId;
     }
 
+    AddVisitDialog() {
+     this.addVisitDialogVisible = true;  
+    }
+
+    closeAddVisitDialog() {
+        this.addVisitDialogVisible = false;
+    }
     handleVisitDialogHide() {
         this.selectedVisitId = null;
     }
@@ -173,6 +212,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
     }
+    
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {

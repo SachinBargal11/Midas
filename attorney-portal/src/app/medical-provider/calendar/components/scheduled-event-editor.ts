@@ -161,6 +161,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     ) {
         this.scheduledEventEditorForm = this._fb.group({
             name: ['', Validators.required],
+            contactPerson: [''],
             eventStartDate: ['', Validators.required],
             eventStartTime: [''],
             duration: ['', Validators.required],
@@ -333,9 +334,6 @@ export class ScheduledEventEditorComponent implements OnChanges {
             name: scheduledEventEditorFormValues.name,
             eventStart: moment(this.eventStartAsDate),
             eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
-            // eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
-            // eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).endOf('day') : moment(this.eventStartAsDate).add(this.duration, 'minutes'),
-            // isAllDay: scheduledEventEditorFormValues.isAllDay,
             recurrenceRule: recurrenceRule ? recurrenceRule : null,
             transportProviderId: parseInt(scheduledEventEditorFormValues.transportProviderId)
         }));

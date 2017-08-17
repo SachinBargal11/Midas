@@ -47,9 +47,10 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
-    getPatientVisitsByLocationId(locationId: number): Observable<PatientVisit[]> {
+   getPatientVisitsByAttorneyCompanyId(): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationId/' + locationId)
+            return this._http.get(this._url + '/attorneyVisit/getByCompanyAndAttorneyId/' + companyId + '/' + 0)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -236,8 +237,7 @@ export class PatientVisitService {
                 })
             });
             requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
-            requestData = _.omit(requestData, 'caseId');
-            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/attorneyVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

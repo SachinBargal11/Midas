@@ -4,7 +4,7 @@ import { User } from '../../../commons/models/user';
 import { Case } from '../../cases/models/case';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
@@ -49,6 +49,8 @@ import * as RRule from 'rrule';
 import { ProcedureStore } from '../../../commons/stores/procedure-store';
 import { VisitReferralStore } from '../stores/visit-referral-store';
 import { VisitReferral } from '../models/visit-referral';
+import { CasesStore } from '../../cases/stores/case-store';
+
 
 @Component({
     selector: 'patient-visit',
@@ -132,7 +134,13 @@ export class PatientVisitComponent implements OnInit {
     selectedCaseId: number;
     doctorId: number = this.sessionStore.session.user.id;
     doctorSpecialities: DoctorSpeciality[];
-
+    cases:Case[];
+    caseDetail:Case;
+    patient: Patient;
+    @Input() routeFromCase: boolean = false;
+    @Input() caseId:number;
+    // @Input() patientId:number;
+    @Input() idPatient:number;
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
         //     element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
@@ -167,7 +175,8 @@ export class PatientVisitComponent implements OnInit {
         private _patientVisitsStore: PatientVisitsStore,
         private _patientsStore: PatientsStore,
         private _roomsStore: RoomsStore,
-        public  doctorsStore: DoctorsStore,
+        private _casesStore: CasesStore ,
+        public doctorsStore: DoctorsStore,
         public locationsStore: LocationsStore,
         private _scheduleStore: ScheduleStore,
         private _roomScheduleStore: RoomScheduleStore,
@@ -184,6 +193,7 @@ export class PatientVisitComponent implements OnInit {
     ) {
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required],
+            caseId: ['', Validators.required],
             isAddNewPatient: [''],
             isGoingOutOffice: [''],
             isProcedureCode: [''],
@@ -213,7 +223,16 @@ export class PatientVisitComponent implements OnInit {
         return model;
     }
 
+    selectPatient(event) {
+        let currentPatient: number = parseInt(event.target.value);
+        if (event.value != '') {
+            let result = this._casesStore.getOpenCaseForPatientByPatientIdAndCompanyId(currentPatient);
+            result.subscribe((cases) => { this.cases = cases; }, null);
+        }
+    }
+
     ngOnInit() {
+        this.routeFromCase;
         this.getReadingDoctorsByCompanyId();
         this.header = {
             left: 'prev,next today',
@@ -230,36 +249,73 @@ export class PatientVisitComponent implements OnInit {
                 this.locationsStore.getLocations();
             } else {
                 this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
-                 this.doctorsStore.fetchDoctorById( this.doctorId)
-                 .subscribe((doctor: Doctor) => {
-                 this.doctorSpecialities = doctor.doctorSpecialities;
-            },
+                this.doctorsStore.fetchDoctorById(this.doctorId)
+                    .subscribe((doctor: Doctor) => {
+                        this.doctorSpecialities = doctor.doctorSpecialities;
+                    },
 
-            (error) => {
-                // this._progressBarService.hide();
-            },
-            () => {
-                // this._progressBarService.hide();
-            });
+                    (error) => {
+                        // this._progressBarService.hide();
+                    },
+                    () => {
+                        // this._progressBarService.hide();
+                    });
             }
         });
         if (!this.sessionStore.isOnlyDoctorRole()) {
             this.locationsStore.getLocations();
         } else {
             this.locationsStore.getLocationsByCompanyDoctorId(this.sessionStore.session.currentCompany.id, this.doctorId);
-             this.doctorsStore.fetchDoctorById( this.doctorId)
-             .subscribe((doctor: Doctor) => {
-                 this.doctorSpecialities = doctor.doctorSpecialities;
-            },
+            this.doctorsStore.fetchDoctorById(this.doctorId)
+                .subscribe((doctor: Doctor) => {
+                    this.doctorSpecialities = doctor.doctorSpecialities;
+                },
 
+                (error) => {
+                    // this._progressBarService.hide();
+                },
+                () => {
+                    // this._progressBarService.hide();
+                });
+        }
+        this._patientsStore.getPatientsWithOpenCases()
+        .subscribe(
+            (patient: Patient[]) => {
+                this.patients = patient;
+            },
             (error) => {
-                // this._progressBarService.hide();
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
             },
             () => {
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
             });
+
+        //    this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+        //         this.caseId = parseInt(routeParams.caseId, 10);
+        //     });
+        // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        //     this._progressBarService.show();
+        if(this.idPatient && this.caseId){
+          let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
+            Observable.forkJoin([fetchPatient, fetchCaseDetail])
+                .subscribe(
+                (results) => {
+                    this.patient = results[0];
+                    this.caseDetail = results[1];
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         }
-        this._patientsStore.getPatientsWithOpenCases();
+              
     }
 
     isFormValid() {
@@ -463,7 +519,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedOption = 1;
             this.selectedDoctorId = parseInt(event.target.value);
             this.selectedSpecialityId = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityId'));
-            this.loadLocationDoctorVisits();
+            this.loadLocationDoctorSpeciatityVisits();
             this.fetchDoctorSchedule();
             this.fetchSelectedSpeciality(this.selectedSpecialityId);
             this.loadProceduresForSpeciality(this.selectedSpecialityId);
@@ -487,7 +543,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadVisits() {
         if (this.selectedOption == 1) {
-            this.loadLocationDoctorVisits();
+            this.loadLocationDoctorSpeciatityVisits();
         } else if (this.selectedOption == 2) {
             this.loadLocationRoomVisits();
         } else {
@@ -540,9 +596,9 @@ export class PatientVisitComponent implements OnInit {
         return occurrences;
     }
 
-    loadLocationDoctorVisits() {
+     loadLocationDoctorSpeciatityVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId)
+        this._patientVisitsStore.getPatientVisitsByLocationDoctorAndSpecialityId(this.selectedLocationId, this.selectedDoctorId, this.selectedSpecialityId)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -721,6 +777,8 @@ export class PatientVisitComponent implements OnInit {
             }
 
             this.selectedVisit = new PatientVisit({
+                caseId: this.caseDetail ? this.caseDetail.id : '',
+                patientId: this.patient ? this.patient.id : '',
                 locationId: this.selectedLocationId,
                 doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
                 doctor: selectedDoctor,
@@ -1158,7 +1216,9 @@ export class PatientVisitComponent implements OnInit {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
         }
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientId: leaveEvent ? null : patientScheduleFormValues.patientId,
+            // patientId: leaveEvent ? null : patientScheduleFormValues.patientId ? patientScheduleFormValues.patientId : this.idPatient,
+            patientId: leaveEvent ? null : this.idPatient ? (this.idPatient) : patientScheduleFormValues.patientId,
+            caseId: leaveEvent ? null : patientScheduleFormValues.caseId ? patientScheduleFormValues.caseId : this.caseId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
             isOutOfOffice: this.isGoingOutOffice,

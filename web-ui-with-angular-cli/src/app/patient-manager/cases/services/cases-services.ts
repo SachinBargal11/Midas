@@ -341,5 +341,24 @@ export class CaseService {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
+
+    
+     getOpenCaseForPatientByPatientIdAndCompanyId(patientId: Number): Observable<Case[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<Case[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getOpenCaseForPatient/' + patientId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let cases = (<Object[]>data).map((data: any) => {
+                        return CaseAdapter.parseResponse(data);
+                    });
+                    resolve(cases);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 }
 
