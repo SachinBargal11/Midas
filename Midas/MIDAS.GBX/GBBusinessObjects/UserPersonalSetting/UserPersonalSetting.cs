@@ -29,6 +29,12 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("slotDuration")]
         public int SlotDuration { get; set; }
 
+        [JsonProperty("preferredModeOfCommunication")]
+        public int PreferredModeOfCommunication { get; set; }
+
+        [JsonProperty("isPushNotificationEnabled")]
+        public bool IsPushNotificationEnabled { get; set; }
+
         [JsonProperty("user")]
         public User User { get; set; }
     }

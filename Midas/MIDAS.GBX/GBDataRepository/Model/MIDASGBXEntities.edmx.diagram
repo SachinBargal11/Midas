@@ -275,6 +275,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_Case_CaseId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

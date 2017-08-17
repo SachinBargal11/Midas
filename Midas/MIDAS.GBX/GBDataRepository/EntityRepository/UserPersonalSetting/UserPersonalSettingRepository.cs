@@ -42,6 +42,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userPersonalSettingBO.IsSearchable = userPersonalSetting.IsSearchable;
             userPersonalSettingBO.IsCalendarPublic = userPersonalSetting.IsCalendarPublic;
             userPersonalSettingBO.SlotDuration = userPersonalSetting.SlotDuration;
+            userPersonalSettingBO.PreferredModeOfCommunication = userPersonalSetting.PreferredModeOfCommunication;
+            userPersonalSettingBO.IsPushNotificationEnabled = userPersonalSetting.IsPushNotificationEnabled;
             userPersonalSettingBO.IsDeleted = userPersonalSetting.IsDeleted;
             userPersonalSettingBO.CreateByUserID = userPersonalSetting.CreateByUserID;
             userPersonalSettingBO.UpdateByUserID = userPersonalSetting.UpdateByUserID;
@@ -118,6 +120,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userPersonalSettingDB.IsSearchable = userPersonalSettingBO.IsSearchable;
                 userPersonalSettingDB.IsCalendarPublic = userPersonalSettingBO.IsCalendarPublic;
                 userPersonalSettingDB.SlotDuration = userPersonalSettingBO.SlotDuration;
+                userPersonalSettingDB.PreferredModeOfCommunication = userPersonalSettingBO.PreferredModeOfCommunication;
+                userPersonalSettingDB.IsPushNotificationEnabled = userPersonalSettingBO.IsPushNotificationEnabled;
 
                 if (Add_userPersonalsetting == true)
                 {
