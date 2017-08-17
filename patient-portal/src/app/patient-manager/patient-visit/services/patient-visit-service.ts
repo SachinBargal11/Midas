@@ -1,3 +1,4 @@
+import { ImeVisit } from '../models/ime-visit';
 import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Injectable } from '@angular/core';
@@ -14,6 +15,7 @@ import { VisitDocumentAdapter } from './adapters/visit-document-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { Consent } from '../../cases/models/consent';
+import { ImeVisitAdapter } from './adapters/ime-visit-adapter';
 
 @Injectable()
 export class PatientVisitService {
@@ -63,6 +65,7 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByPatientId(patientId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/patientVisit/getByPatientId/' + patientId )
@@ -80,6 +83,22 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getImeVisitsByPatientId(patientId: number): Observable<ImeVisit[]> {
+        let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/IMEVisit/getByPatientId/' + patientId )
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let imeVisits = (<Object[]>data).map((data: any) => {
+                        return ImeVisitAdapter.parseResponse(data);
+                    });
+                    resolve(imeVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
 
     getPatientVisitsByLocationId(locationId: number, patientId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
@@ -133,6 +152,7 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByDoctorAndDates(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
@@ -151,6 +171,7 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+    
     getVisitsByDoctorDatesAndName(starDate: any, endDate: any, doctorName: string): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
@@ -169,7 +190,6 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
-
 
     getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
@@ -206,7 +226,6 @@ export class PatientVisitService {
         });
         return <Observable<VisitDocument>>Observable.fromPromise(promise);
     }
-
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
@@ -339,7 +358,6 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
-
     }
 
     cancelPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
@@ -356,7 +374,6 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
-
     }
 
     updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
@@ -376,7 +393,30 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
 
+     updateImeVisitDetail(imeVisitDetail: ImeVisit): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = imeVisitDetail.toJS();
+            // let procedures = _.map(requestData.patientVisitProcedureCodes, (currentProcedure: Procedure) => {
+            //     return { 'procedureCodeId': currentProcedure.id };
+            // })
+            // requestData.patientVisitProcedureCodes = procedures;
+            requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
+            requestData = _.omit(requestData, 'calendarEvent');
+            return this._http.post(this._url + '/IMEvisit/SaveIMEVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedImeVisit: ImeVisit = null;
+                    parsedImeVisit = ImeVisitAdapter .parseResponse(data);
+                    resolve(parsedImeVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
     }
 
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {

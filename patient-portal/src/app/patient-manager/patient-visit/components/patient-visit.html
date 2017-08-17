@@ -251,13 +251,13 @@
                         (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 </p-dialog>
             </p-tabPanel>
-            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
                 <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
             </p-tabPanel>
-            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
                 <app-diagnosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-diagnosis>
             </p-tabPanel>
-            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
                 <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
             </p-tabPanel>
         </p-tabView>
