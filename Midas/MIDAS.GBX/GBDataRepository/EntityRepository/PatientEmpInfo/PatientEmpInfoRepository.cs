@@ -303,20 +303,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.CaseId == CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientEmpInfo>();
+            var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo")
+                                               .Where(p => p.CaseId == CaseId 
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .FirstOrDefault();
 
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
-            foreach (PatientEmpInfo item in acc)
-            {
-                lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
-            }
+            BO.PatientEmpInfo patientsEmpInfo = new BO.PatientEmpInfo();
+            patientsEmpInfo = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
+            //foreach (PatientEmpInfo item in acc)
+            //{
+            //    lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
+            //}
 
-            return lstpatientsEmpInfo;
+            return patientsEmpInfo;
         }
         #endregion
 
