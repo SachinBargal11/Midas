@@ -17,6 +17,7 @@ import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 
 const PatientVisitRecord = Record({
     id: 0,
+    isPatientVisitType: true,
     calendarEventId: 0,
     location: null,
     locationId: 0,
@@ -50,6 +51,7 @@ const PatientVisitRecord = Record({
 export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     id: number;
+    isPatientVisitType: boolean;
     calendarEventId: number;
     location: Location;
     locationId: number;

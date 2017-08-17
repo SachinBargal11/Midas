@@ -67,7 +67,6 @@ export class PatientsStore {
         return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
 
-    //
     getPatientsWithNoCase(): Observable<Patient[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.getPatientsWithNoCase().subscribe((patients: Patient[]) => {
@@ -78,8 +77,6 @@ export class PatientsStore {
         });
         return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
-
-    //
 
     getPatientsWithOpenCases(): Observable<Patient[]> {
         let promise = new Promise((resolve, reject) => {
@@ -233,5 +230,20 @@ export class PatientsStore {
         return <Observable<Patient>>Observable.from(promise);
     }
 
+//  getOpenCasesByCompanyWithPatient(): Observable<Patient[]> {
+//         let companyId: number = this._sessionStore.session.currentCompany.id;
+//         let promise = new Promise((resolve, reject) => {
+//             this._patientsService.getOpenCasesByCompanyWithPatient(companyId).subscribe((patients: Patient[]) => {
+//                 this._patients.next(List(patients));
+//                 resolve(patients);
+//             }, error => {
+//                 reject(error);
+//             });
+//         });
+//         return <Observable<Patient[]>>Observable.fromPromise(promise);
+//     }
 
+    
 }
+
+

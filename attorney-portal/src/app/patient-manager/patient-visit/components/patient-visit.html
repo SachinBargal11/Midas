@@ -1,5 +1,5 @@
-<h3 class="with-border">Patient Visits</h3>
-<section class="card">
+<h3 class="with-border">Client Visits</h3>
+<!--<section class="card">
     <div class="card-block">
         <div class="row">
             <div class="col-lg-3">
@@ -15,19 +15,15 @@
                     <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0"></option>
              <optgroup label="Select Attorney">
-                    <!--<option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       -->
                      <option data-type="1" [attr.data-specialityId]="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>
              </optgroup>
-             <!--<optgroup label="Select Room">
-                    <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
-             </optgroup>-->
         </select>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
+</section>-->
+<p-schedule [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer"
     [businessHours]="businessHours">
 </p-schedule>
@@ -143,35 +139,67 @@
             </div>
             <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">
                 <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
-                <div class="col-md-4">
-                    <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                        <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control">
+                    <div class="col-md-4">
+                        <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
+                            <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control" (change)="selectPatient($event)">
                         <option value=""> -- Select Patient -- </option>
-                        <option *ngFor="let patient of _patientsStore.patientsWithOpenCases | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
+                        <option *ngFor="let patient of patients" [value]="patient.id">{{patient.user.displayName}}</option>                                       
                     </select>
-                        <div class='error-list' *ngIf="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                            <ul>
-                                <li *ngIf="patientScheduleFormControls.patientId.hasError('required')">Please select any Patient.</li>
-                            </ul>
+                            <div class='error-list' *ngIf="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
+                                <ul>
+                                    <li *ngIf="patientScheduleFormControls.patientId.hasError('required')">Please select any Patient.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-4">
+                        <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient"><label>Add New Patient</label>
+                    </div>-->
+            </div>
+            <div class="row">
+                    <div class="col-md-2"><label class="form-label">Case No<span class="color-red">*</span></label></div>
+                    <div class="col-md-4">
+                        <div class="form-group" [class.error]="patientScheduleFormControls.caseId && patientScheduleFormControls.caseId.touched && !patientScheduleFormControls.caseId.valid">
+                            <select formControlName="caseId" [ngModel]="caseId" class="select2-arrow form-control">
+                        <option value=""> -- Select Case -- </option>
+                        <option *ngFor="let case of cases" [value]="case.id">{{case.id}}</option>                                       
+                    </select>
+                            <div class='error-list' *ngIf="patientScheduleFormControls.caseId && patientScheduleFormControls.caseId.touched && !patientScheduleFormControls.caseId.valid">
+                                <ul>
+                                    <li *ngIf="patientScheduleFormControls.caseId.hasError('required')">Please select any case number.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <!--<a class="btn btn-rounded btn-inline btn-primary-outline" (click)="addNewPatient()">Add New Patient</a>-->
-                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient">                    <label>Add New Patient</label>
+        <div class="row">
+        <div class="col-md-2"><label class="form-label">Contact Person
+            <span class="color-red">*</span>
+            </label>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" [class.error]="patientScheduleFormControls.contactPerson.touched && !patientScheduleFormControls.contactPerson.valid">
+                <input formControlName="contactPerson" [ngModel]="selectedVisit.contactPerson" class="form-control" [class.error]="!patientScheduleFormControls.contactPerson.valid"
+                />
+                <div class='error-list' *ngIf="patientScheduleFormControls.contactPerson.touched && !patientScheduleFormControls.contactPerson.valid">
+                    <ul>
+                        <li *ngIf="patientScheduleFormControls.contactPerson.hasError('required')">Contact Person is required.</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </div>
             <div *ngIf="!isGoingOutOffice">
                 <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
             </div>
             <div class="row" *ngIf="!isGoingOutOffice">
-                <div class="col-md-2"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                <div class="col-md-2"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
                 <div class="col-md-4">
                     <div class="form-group" [class.error]="patientScheduleFormControls.notes && patientScheduleFormControls.notes.touched && !patientScheduleFormControls.notes.valid">
                         <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
                         <div class='error-list' *ngIf="patientScheduleFormControls.notes && patientScheduleFormControls.notes.touched && !patientScheduleFormControls.notes.valid">
                             <ul>
-                                <li *ngIf="patientScheduleFormControls.notes.hasError('required')">Please enter Notes.</li>
+                                <li *ngIf="patientScheduleFormControls.notes.hasError('required')">Please enter Agenda.</li>
                             </ul>
                         </div>
                     </div>
@@ -201,7 +229,7 @@
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
 
                     <div class="row">
-                        <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                        <div class="col-md-1"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
                         <div class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>

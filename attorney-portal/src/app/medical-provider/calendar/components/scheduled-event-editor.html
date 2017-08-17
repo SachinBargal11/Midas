@@ -16,6 +16,23 @@
             </div>
         </div>
     </div>
+    <!--<div class="row">
+        <div class="col-md-2"><label class="form-label">Contact Person
+            <span class="color-red">*</span>
+            </label>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group" [class.error]="scheduledEventEditorFormControls.contactPerson.touched && !scheduledEventEditorFormControls.contactPerson.valid">
+                <input formControlName="contactPerson" [ngModel]="selectedEvent.contactPerson" class="form-control" [class.error]="!scheduledEventEditorFormControls.contactPerson.valid"
+                />
+                <div class='error-list' *ngIf="scheduledEventEditorFormControls.contactPerson.touched && !scheduledEventEditorFormControls.contactPerson.valid">
+                    <ul>
+                        <li *ngIf="scheduledEventEditorFormControls.contactPerson.hasError('required')">Contact Person is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>-->
     <div class="row">
         <div class="col-md-2"><label class="form-label">Start Time<span class="color-red">*</span></label></div>
         <div class="col-md-3">
@@ -91,7 +108,7 @@
             </div>
         </div>
     </div>-->
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Transportation Required</label></div>
         <div class="col-md-4">
             <div class="form-group">
@@ -103,8 +120,8 @@
 
             </div>
         </div>
-    </div>
-    <div class="row">
+    </div>-->
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Referred By</label></div>
         <div class="col-md-4">
             <div class="form-group">
@@ -115,8 +132,8 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row" *ngIf="!selectedEvent.recurrenceId">
+    </div>-->
+    <!--<div class="row" *ngIf="!selectedEvent.recurrenceId">
         <div class="col-md-2"><label class="form-label">Repeat</label></div>
         <div class="col-md-4">
             <div class="form-group">
@@ -147,11 +164,6 @@
             <div class="col-md-2"><label class="form-label">End</label></div>
             <div class="col-md-4">
                 <div class="form-group">
-
-                    <!--<p-radioButton [(ngModel)]="daily_end" formControlName="end" name="groupend" value="0" label="Never"></p-radioButton>
-                    <p-radioButton [(ngModel)]="daily_end" formControlName="end" name="groupend" value="1" label="After"></p-radioButton>
-                    <p-radioButton [(ngModel)]="daily_end" formControlName="end" name="groupend" value="2" label="On"></p-radioButton>-->
-
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="daily_end" value="0" id="daily_end_0" />                    <label for="daily_end_0">Never</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="daily_end" value="1" id="daily_end_1" />                    <label for="daily_end_1">After</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="daily_end" value="2" id="daily_end_2" />                    <label for="daily_end_2">On</label>
@@ -196,10 +208,6 @@
             <div class="col-md-2"><label class="form-label">End</label></div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <!--<p-radioButton [(ngModel)]="weekly_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
-                    <p-radioButton [(ngModel)]="weekly_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
-                    <p-radioButton [(ngModel)]="weekly_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>-->
-
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="weekly_end" value="0" id="weekly_end_0" />                    <label for="weekly_end_0">Never</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="weekly_end" value="1" id="weekly_end_1" />                    <label for="weekly_end_1">After</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="weekly_end" value="2" id="weekly_end_2" />                    <label for="weekly_end_2">On</label>
@@ -230,8 +238,6 @@
             <div class="col-md-2"><label class="form-label">Repeat On</label></div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <!--<p-radioButton [(ngModel)]="monthly_recur_monthday_radio" formControlName="recur_monthday_radio" name="recur_monthday_radio"
-                        value="0" label="Day"></p-radioButton>-->
                     <input type="radio" name="recur_monthday_radio" formControlName="recur_monthday_radio" [(ngModel)]="monthly_recur_monthday_radio"
                         value="0" id="recur_monthday_radio_0" />
                     <label for="recur_monthday_radio_0">Day</label>
@@ -247,8 +253,6 @@
             <div class="col-md-2"></div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <!--<p-radioButton [(ngModel)]="monthly_recur_monthday_radio" formControlName="recur_monthday_radio" name="recur_monthday_radio"
-                        value="1" label=""></p-radioButton>-->
                     <input type="radio" name="recur_monthday_radio" formControlName="recur_monthday_radio" [(ngModel)]="monthly_recur_monthday_radio"
                         value="1" />
                 </div>
@@ -280,9 +284,6 @@
             <div class="col-md-2"><label class="form-label">End</label></div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <!--<p-radioButton [(ngModel)]="monthly_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
-                    <p-radioButton [(ngModel)]="monthly_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
-                    <p-radioButton [(ngModel)]="monthly_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>-->
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="monthly_end" value="0" id="monthly_end_0" />                    <label for="monthly_end_0">Never</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="monthly_end" value="1" id="monthly_end_1" />                    <label for="monthly_end_1">After</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="monthly_end" value="2" id="monthly_end_2" />                    <label for="monthly_end_2">On</label>
@@ -344,8 +345,6 @@
             <div class="col-md-2"></div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <!--<p-radioButton [(ngModel)]="yearly_recur_year_radio" formControlName="recur_year_radio" name="recur_year_radio" value="1"
-                        label=""></p-radioButton>-->
                     <input type="radio" name="recur_year_radio" formControlName="recur_year_radio" [(ngModel)]="yearly_recur_year_radio" value="1"
                     />
                 </div>
@@ -397,10 +396,6 @@
             <div class="col-md-2"><label class="form-label">End</label></div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <!--<p-radioButton [(ngModel)]="yearly_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
-                    <p-radioButton [(ngModel)]="yearly_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
-                    <p-radioButton [(ngModel)]="yearly_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>-->
-
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="yearly_end" value="0" id="yearly_end_0" />                    <label for="yearly_end_0">Never</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="yearly_end" value="1" id="yearly_end_1" />                    <label for="yearly_end_1">After</label>
                     <input type="radio" name="end" formControlName="end" [(ngModel)]="yearly_end" value="2" id="yearly_end_2" />                    <label for="yearly_end_2">On</label>
@@ -412,9 +407,7 @@
                 <p-calendar *ngIf="yearly_end == 2" formControlName="recur_until" [(ngModel)]="yearly_recur_until" dateFormat="M d, yy" [monthNavigator]="true"
                     [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
                 </p-calendar>
-            </div>
-        </div>
-    </div>
-
-
+            </div>-->
+        <!--</div>-->
+    <!--</div>-->
 </form>

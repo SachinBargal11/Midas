@@ -51,6 +51,9 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     selectedVisit: PatientVisit;
     visitInfo = 'Visit Info';
     visitDialogVisible = false;
+    routeFromCase: true;
+    addVisitDialogVisible = false;
+
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -182,6 +185,14 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
         this.fetchPatientVisit(visitId);
             this.selectedVisitId = visitId;
             this.visitDialogVisible = true;
+    }
+
+    AddVisitDialog() {
+     this.addVisitDialogVisible = true;  
+    }
+
+    closeAddVisitDialog() {
+        this.addVisitDialogVisible = false;
     }
 
     handleVisitDialogHide() {

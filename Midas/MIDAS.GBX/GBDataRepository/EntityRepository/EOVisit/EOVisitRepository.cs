@@ -120,6 +120,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             string doctorUserName = string.Empty;
             bool sendNotification = false;
 
+            //CalenderEventBO
+            if (CalendarEventBO != null)
+            {
+                List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+                CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
+                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEvent(CalendarEventBO) as List<BO.FreeSlots>;
+
+                if (currentEventSlots.Count > 0)
+                {
+                    DateTime dtStartDate = currentEventSlots.Min(p => p.ForDate);
+                    DateTime dtEndDate = currentEventSlots.Max(p => p.ForDate).AddDays(1);
+
+                    List<BO.StartAndEndTime> busySlots = new List<BO.StartAndEndTime>();
+
+                    if (EOVisitBO.DoctorId != null)
+                    {
+                        var result = calEventRepo.GetBusySlotsForDoctors(EOVisitBO.DoctorId.Value, dtStartDate, dtEndDate);
+                        if (result is BO.ErrorObject)
+                        {
+                            return result;
+                        }
+                        else
+                        {
+                            busySlots = result as List<BO.StartAndEndTime>;
+                        }
+                    }
+
+                    foreach (var eachDayEventSlot in currentEventSlots)
+                    {
+                        DateTime ForDate = eachDayEventSlot.ForDate;
+                        foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
+                        {
+                            DateTime StartTime = eachEventSlot.StartTime;
+                            DateTime EndTime = eachEventSlot.EndTime;
+                            var StartAndEndTimesForDate = busySlots.Where(p => p.StartTime.Date == ForDate).ToList();
+                            if (StartAndEndTimesForDate.Count > 0)
+                            {
+                                var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();
+
+                                if (StartAndEndTimes.Count > 0)
+                                {
+                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The Doctor dosent have free slots for EO visit time on " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             EOVisit EOVisitDB = new EOVisit();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -275,13 +324,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     _context.SaveChanges();
 
-                    //if (IMEVisitDB.PatientId.HasValue == true && IMEVisitDB.CaseId.HasValue == true && IMEVisitDB.AncillaryProviderId.HasValue == true)
-                    //{
-                    //    using (PatientRepository patientRepo = new PatientRepository(_context))
-                    //    {
-                    //        patientRepo.AssociatePatientWithAncillaryCompany(patientVisitDB.PatientId.Value, patientVisitDB.CaseId.Value, patientVisitBO.AncillaryProviderId.Value, patientVisitBO.AddedByCompanyId);
-                    //    }
-                    //}
                 }
                 else
                 {
