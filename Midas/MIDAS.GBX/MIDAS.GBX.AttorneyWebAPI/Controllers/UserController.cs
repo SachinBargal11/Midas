@@ -135,6 +135,18 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return adduserrequestHandler.ResetPassword(Request, data);
         }
 
+        [HttpPost]
+        [Route("SigninWithUserName")]
+        public HttpResponseMessage SigninWithUserName([FromBody]User user)
+        {
+            if (user != null)
+            {
+                user.UserType = GBEnums.UserType.Staff;
+            }
+
+            return requestHandler.LoginWithUserName(Request, user);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

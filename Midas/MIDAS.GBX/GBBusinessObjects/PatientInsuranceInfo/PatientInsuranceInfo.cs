@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-     public class PatientInsuranceInfo : GbObject
+    public class PatientInsuranceInfo : GbObject
     {
-        [JsonProperty("patientId")]
-        public int patientId { get; set; }
+        //[JsonProperty("patientId")]
+        //public int patientId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
         [JsonProperty("policyHoldersName")]
         public string policyHoldersName { get; set; }
@@ -65,16 +68,18 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("insuranceMaster")]
         public InsuranceMaster InsuranceMaster { get; set; }
-
        
         [JsonProperty(" InsuranceType")]
-         public InsuranceType InsuranceType { get; set; }
+        public InsuranceType InsuranceType { get; set; }
     }
 
     public class mPatientInsuranceInfo : GbObject
     {
-        [JsonProperty("patientId")]
-        public int patientId { get; set; }
+        //[JsonProperty("patientId")]
+        //public int patientId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
         [JsonProperty("policyHoldersName")]
         public string policyHoldersName { get; set; }

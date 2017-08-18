@@ -1058,7 +1058,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("Cases")
                                             .Include("PatientEmpInfoes")
                                             .Include("PatientFamilyMembers")
-                                            .Include("PatientInsuranceInfoes")
+                                            //.Include("PatientInsuranceInfoes")
                                             .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault();
 
@@ -1106,19 +1106,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                     }
 
-                    if (Patient.PatientInsuranceInfoes != null)
-                    {
-                        foreach (var item in Patient.PatientInsuranceInfoes)
-                        {
-                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                            {
-                                using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
-                                {
-                                    sr.Delete(item.Id);
-                                }
-                            }
-                        }
-                    }
+                    //if (Patient.PatientInsuranceInfoes != null)
+                    //{
+                    //    foreach (var item in Patient.PatientInsuranceInfoes)
+                    //    {
+                    //        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    //        {
+                    //            using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+                    //            {
+                    //                sr.Delete(item.Id);
+                    //            }
+                    //        }
+                    //    }
+                    //}
 
                     if (Patient.User != null)
                     {

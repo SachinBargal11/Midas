@@ -60,7 +60,7 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferredToCompanyId(HttpRequestMessage request, int id);
-        HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
+        //HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId);
         HttpResponseMessage GetByPatientId(HttpRequestMessage request, int CaseId);
@@ -139,5 +139,6 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage GetByCompanyAndAttorneyId(HttpRequestMessage request, int CompanyId, int AttorneyId);
         //HttpResponseMessage GetByLocationAndAttorneyId(HttpRequestMessage request, int LocationId, int AttorneyId);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId);
+        HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
     }
 }

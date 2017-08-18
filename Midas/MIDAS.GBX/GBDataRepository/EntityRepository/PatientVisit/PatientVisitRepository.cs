@@ -89,22 +89,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientBO = patientRepo.Convert<BO.Patient, Patient>(patientVisit.Patient);
                         patientVisitBO.Patient = PatientBO;
 
-                        if (patientVisit.Patient.PatientInsuranceInfoes != null && patientVisit.Patient.PatientInsuranceInfoes.Count > 0)
-                        {
-                            List<BO.PatientInsuranceInfo> PatientInsuranceInfoBOList = new List<BO.PatientInsuranceInfo>();
-                            using (PatientInsuranceInfoRepository patientInsuranceInfoRepo = new PatientInsuranceInfoRepository(_context))
-                            {
-                                foreach (PatientInsuranceInfo eachPatientInsuranceInfo in patientVisit.Patient.PatientInsuranceInfoes)
-                                {
-                                    if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
-                                    {
-                                        PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
-                                    }
-                                }
+                        //if (patientVisit.Patient.PatientInsuranceInfoes != null && patientVisit.Patient.PatientInsuranceInfoes.Count > 0)
+                        //{
+                        //    List<BO.PatientInsuranceInfo> PatientInsuranceInfoBOList = new List<BO.PatientInsuranceInfo>();
+                        //    using (PatientInsuranceInfoRepository patientInsuranceInfoRepo = new PatientInsuranceInfoRepository(_context))
+                        //    {
+                        //        foreach (PatientInsuranceInfo eachPatientInsuranceInfo in patientVisit.Patient.PatientInsuranceInfoes)
+                        //        {
+                        //            if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
+                        //            {
+                        //                PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
+                        //            }
+                        //        }
 
-                                patientVisitBO.Patient.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
-                            }
-                        }
+                        //        patientVisitBO.Patient.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
+                        //    }
+                        //}
                     }
                 }
 
@@ -1971,7 +1971,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                   .Select(p => p.id);
 
-            List<PatientVisit> lstPatientVisit = _context.PatientVisits.Include("Patient").Include("Patient.User").Include("Patient.PatientInsuranceInfoes")
+            List<PatientVisit> lstPatientVisit = _context.PatientVisits.Include("Patient").Include("Patient.User")//.Include("Patient.PatientInsuranceInfoes")
                                                                        .Include("Case").Include("Case.PatientAccidentInfoes")
                                                                        .Where(p => p.DoctorId == DoctorId
                                                                                 && ((p.PatientId.HasValue == true) && (userId.Contains(p.PatientId.Value)))

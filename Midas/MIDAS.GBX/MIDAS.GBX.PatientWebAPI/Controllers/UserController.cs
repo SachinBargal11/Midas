@@ -71,5 +71,17 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return adduserrequestHandler.ResetPassword(Request, data);
         }
 
+        [HttpPost]
+        [Route("SigninWithUserName")]
+        public HttpResponseMessage SigninWithUserName([FromBody]User user)
+        {
+            if (user != null)
+            {
+                user.UserType = GBEnums.UserType.Staff;
+            }
+
+            return requestHandler.LoginWithUserName(Request, user);
+        }
+
     }
 }
