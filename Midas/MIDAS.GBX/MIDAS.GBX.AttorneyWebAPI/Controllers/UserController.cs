@@ -141,7 +141,9 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             if (user != null)
             {
-                user.UserType = GBEnums.UserType.Staff;
+                //Since the API should only validate for Patient Users.
+                //Rest all other even if valid are not Authorised.
+                user.UserType = GBEnums.UserType.Attorney;
             }
 
             return requestHandler.LoginWithUserName(Request, user);
