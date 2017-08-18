@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { PatientsStore } from '../stores/patients-store';
-import { EmployerStore } from '../stores/employer-store';
+//import { EmployerStore } from '../stores/employer-store';
 import { FamilyMemberStore } from '../stores/family-member-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import * as moment from 'moment';
@@ -54,7 +54,7 @@ export class ViewAllComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
         private _familyMemberStore: FamilyMemberStore,
-        private _employerStore: EmployerStore,
+        // private _employerStore: EmployerStore,
         private _insuranceStore: InsuranceStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
@@ -81,24 +81,24 @@ export class ViewAllComponent implements OnInit {
                 });
 
             //
-            let empResult = this._employerStore.getCurrentEmployer(this.patientId);
-            empResult.subscribe(
-                (employer: Employer) => {
-                    if (employer.id) {
-                        this.employer = employer;
-                    } else {
-                        this.noEmployer = 'No employer available';
+            // let empResult = this._employerStore.getCurrentEmployer(this.patientId);
+            // empResult.subscribe(
+            //     (employer: Employer) => {
+            //         if (employer.id) {
+            //             this.employer = employer;
+            //         } else {
+            //             this.noEmployer = 'No employer available';
 
-                    }
+            //         }
 
-                },
-                (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            //     },
+            //     (error) => {
+            //         this._router.navigate(['/patient-manager/patients']);
+            //         this._progressBarService.hide();
+            //     },
+            //     () => {
+            //         this._progressBarService.hide();
+            //     });
 
             //
 
