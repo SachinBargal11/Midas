@@ -28,7 +28,6 @@ namespace MIDAS.GBX.DataRepository.Model
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
             this.DocumentNodeObjectMappings = new HashSet<DocumentNodeObjectMapping>();
             this.EOVisits = new HashSet<EOVisit>();
-            this.EOVisits1 = new HashSet<EOVisit>();
             this.GeneralSettings = new HashSet<GeneralSetting>();
             this.IMEVisits = new HashSet<IMEVisit>();
             this.InsuranceMasters = new HashSet<InsuranceMaster>();
@@ -96,8 +95,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EOVisit> EOVisits { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EOVisit> EOVisits1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GeneralSetting> GeneralSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

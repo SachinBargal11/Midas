@@ -1056,8 +1056,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 Patient = _context.Patients.Include("User")
                                             .Include("Cases")
-                                            .Include("PatientEmpInfoes")
-                                            .Include("PatientFamilyMembers")
+                                            //.Include("PatientEmpInfoes")
+                                            //.Include("PatientFamilyMembers")
                                             //.Include("PatientInsuranceInfoes")
                                             .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault();
@@ -1092,19 +1092,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //    }
                     //}
 
-                    if (Patient.PatientFamilyMembers != null)
-                    {
-                        foreach (var item in Patient.PatientFamilyMembers)
-                        {
-                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                            {
-                                using (Common.PatientFamilyMemberRepository sr = new Common.PatientFamilyMemberRepository(_context))
-                                {
-                                    sr.Delete(item.Id);
-                                }
-                            }
-                        }
-                    }
+                    //if (Patient.PatientFamilyMembers != null)
+                    //{
+                    //    foreach (var item in Patient.PatientFamilyMembers)
+                    //    {
+                    //        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                    //        {
+                    //            using (Common.PatientFamilyMemberRepository sr = new Common.PatientFamilyMemberRepository(_context))
+                    //            {
+                    //                sr.Delete(item.Id);
+                    //            }
+                    //        }
+                    //    }
+                    //}
 
                     //if (Patient.PatientInsuranceInfoes != null)
                     //{
@@ -1122,7 +1122,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Patient.User != null)
                     {
-
                         if (Patient.User.IsDeleted.HasValue == false || (Patient.User.IsDeleted.HasValue == true && Patient.User.IsDeleted.Value == false))
                         {
                             using (UserRepository sr = new UserRepository(_context))

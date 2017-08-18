@@ -31,8 +31,8 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Company Company { get; set; }
-        public virtual Company Company1 { get; set; }
         public virtual Doctor Doctor { get; set; }
+        public virtual InsuranceMaster InsuranceMaster { get; set; }
         public virtual VisitStatu VisitStatu { get; set; }
     }
 }

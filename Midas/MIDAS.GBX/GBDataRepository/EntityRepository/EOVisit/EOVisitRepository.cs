@@ -84,13 +84,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                if (EOVisit.Company1 != null)
+                if (EOVisit.InsuranceMaster != null)
                 {
-                    BO.Company CompanyBO = new BO.Company();
-                    using (CompanyRepository companyRepo = new CompanyRepository(_context))
+                    BO.InsuranceMaster InsuranceMasterBO = new BO.InsuranceMaster();
+                    using (InsuranceMasterRepository InsuranceMasterRepo = new InsuranceMasterRepository(_context))
                     {
-                        CompanyBO = companyRepo.Convert<BO.Company, Company>(EOVisit.Company1);
-                        EOVisitBO.Company1 = CompanyBO;
+                        InsuranceMasterBO = InsuranceMasterRepo.Convert<BO.InsuranceMaster, InsuranceMaster>(EOVisit.InsuranceMaster);
+                        EOVisitBO.InsuranceMaster = InsuranceMasterBO;
                     }
                 }
 
@@ -345,7 +345,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     EOVisitDB = _context.EOVisits.Include("CalendarEvent")
                                                   .Include("Doctor")
                                                   .Include("Company")
-                                                  .Include("Company1")
+                                                  .Include("InsuranceMaster")
                                                   .Where(p => p.ID == EOVisitDB.ID
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<EOVisit>();
@@ -376,7 +376,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            .Include("Doctor")
                                            .Include("Doctor.User")
                                            .Include("Company")
-                                           .Include("Company1")
+                                           .Include("InsuranceMaster")
                                            .Where(p => companyId.Contains((int)p.MedicalProviderId)
                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                            .ToList();
@@ -410,7 +410,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
                                            .Include("Company")
-                                           .Include("Company1")
+                                           .Include("InsuranceMaster")
                                            .Where(p => p.DoctorId == DoctorId && medicalProvider.Contains((int)p.MedicalProviderId)
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                     .ToList();

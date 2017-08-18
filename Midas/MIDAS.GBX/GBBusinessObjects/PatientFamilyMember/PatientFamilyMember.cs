@@ -10,8 +10,11 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientFamilyMember : GbObject
     {
+        //[JsonProperty("patientId")]
+        //public int PatientId { get; set; }
+
         [JsonProperty("patientId")]
-        public int PatientId { get; set; }
+        public int CaseId { get; set; }
 
         [JsonProperty("relationId")]
         public byte RelationId { get; set; }
