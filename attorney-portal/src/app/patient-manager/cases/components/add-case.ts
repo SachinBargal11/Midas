@@ -6,8 +6,8 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
-import { Employer } from '../../patients/models/employer';
-import { EmployerStore } from '../../patients/stores/employer-store';
+// import { Employer } from '../../patients/models/employer';
+// import { EmployerStore } from '../../patients/stores/employer-store';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import * as moment from 'moment';
@@ -35,7 +35,7 @@ export class AddCaseComponent implements OnInit {
     caseformControls;
     locations: LocationDetails[];
     attorneys: Attorney[];
-    employer: Employer;
+    //employer: Employer;
     isSaveProgress = false;
     patientId: number;
     idPatient: any = '';
@@ -58,7 +58,7 @@ export class AddCaseComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
-        private _employerStore: EmployerStore,
+        //  private _employerStore: EmployerStore,
         private _casesStore: CasesStore,
         private _patientStore: PatientsStore,
         private _medicalProviderMasterStore: MedicalProviderMasterStore,
@@ -149,8 +149,8 @@ export class AddCaseComponent implements OnInit {
         let currentPatient: number = parseInt(event.value);
         let idPatient = parseInt(event.value);
         if (event.value != '') {
-            let result = this._employerStore.getCurrentEmployer(currentPatient);
-            result.subscribe((employer) => { this.employer = employer; }, null);
+            //let result = this._employerStore.getCurrentEmployer(currentPatient);
+            //result.subscribe((employer) => { this.employer = employer; }, null);
         }
     }
 
