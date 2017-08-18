@@ -37,7 +37,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetDiagnosisType(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetCaseCompanies(int caseId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
+        //Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object Get(T gbObject, int? nestingLevels = null);
         Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object UpdateCompany(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

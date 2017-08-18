@@ -201,10 +201,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object IsInsuranceInfoAdded(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public virtual Object IsInsuranceInfoAdded(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public virtual object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail)
         {

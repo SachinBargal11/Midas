@@ -32,20 +32,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("getByPatientId/{PatientId}")]
+        [Route("getByCaseId/{caseId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetByPatientId(int PatientId)
+        public HttpResponseMessage GetByCaseId(int caseId)
         {
-            return requestHandler.GetByPatientId(Request, PatientId);
+            return requestHandler.GetByCaseId(Request, caseId);
         }
 
-        [HttpGet]
-        [Route("isInsuranceInfoAdded/{PatientId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage IsInsuranceInfoAdded(int PatientId)
-        {
-            return requestHandler.IsInsuranceInfoAdded(Request, PatientId);
-        }
+        //[HttpGet]
+        //[Route("isInsuranceInfoAdded/{PatientId}")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage IsInsuranceInfoAdded(int PatientId)
+        //{
+        //    return requestHandler.IsInsuranceInfoAdded(Request, PatientId);
+        //}
 
         [HttpPost]
         [Route("save")]

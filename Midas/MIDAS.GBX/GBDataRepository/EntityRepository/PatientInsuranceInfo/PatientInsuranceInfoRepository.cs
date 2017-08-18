@@ -31,7 +31,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.PatientInsuranceInfo insuranceBO = new BO.PatientInsuranceInfo();
             insuranceBO.ID = InsuranceInfos.Id;
-            insuranceBO.patientId = InsuranceInfos.PatientId;
+            insuranceBO.CaseId = InsuranceInfos.CaseId;
             insuranceBO.policyHoldersName = InsuranceInfos.PolicyHolderName;
             insuranceBO.policyHolderAddressInfoId = InsuranceInfos.PolicyHolderAddressInfoId;
             insuranceBO.policyHolderContactInfoId = InsuranceInfos.PolicyHolderContactInfoId;
@@ -192,14 +192,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By patient ID
-        public override object GetByPatientId(int PatientId)
+        //public override object GetByPatientId(int PatientId)
+        //{
+        //    var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
+        //                                             .Include("addressInfo1").Include("contactInfo1")
+        //                                             .Include("InsuranceMaster")
+        //                                             .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                             .ToList<PatientInsuranceInfo>();
+
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+
+        //    List<BO.PatientInsuranceInfo> lstpatientsInsuranceInfo = new List<BO.PatientInsuranceInfo>();
+        //    //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
+        //    foreach (PatientInsuranceInfo item in acc)
+        //    {
+        //        lstpatientsInsuranceInfo.Add(Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item));
+        //    }
+
+        //    return lstpatientsInsuranceInfo;
+        //}
+        #endregion
+
+        #region Get By Case ID
+        public override object GetByCaseId(int CaseId)
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                                                      .Include("addressInfo1").Include("contactInfo1")
                                                      .Include("InsuranceMaster")
-                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Where(p => p.CaseId == CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList<PatientInsuranceInfo>();
-            
+
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -217,20 +242,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Is InsuranceInfo Added
-        public override object IsInsuranceInfoAdded(int id)
-        {
-            var acc = _context.PatientInsuranceInfoes.Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                     .FirstOrDefault<PatientInsuranceInfo>();
-           
-            if (acc == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }            
-        }
+        //public override object IsInsuranceInfoAdded(int id)
+        //{
+        //    var acc = _context.PatientInsuranceInfoes.Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                             .FirstOrDefault<PatientInsuranceInfo>();
+
+        //    if (acc == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }            
+        //}
         #endregion
 
 
@@ -455,7 +480,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Insurance dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-                    insuranceDB.PatientId = insuranceBO.patientId;
+                    insuranceDB.CaseId = insuranceBO.CaseId;
                     insuranceDB.PolicyHolderName = IsEditMode == true && insuranceBO.policyHoldersName == null ? insuranceDB.PolicyHolderName : insuranceBO.policyHoldersName;
                     insuranceDB.PolicyHolderAddressInfoId = (addressinfoPolicyHolderDB != null && addressinfoPolicyHolderDB.id > 0) ? addressinfoPolicyHolderDB.id : insuranceDB.PolicyHolderAddressInfoId;
                     insuranceDB.PolicyHolderContactInfoId = (contactinfoPolicyHolderDB != null && contactinfoPolicyHolderDB.id > 0) ? contactinfoPolicyHolderDB.id : insuranceDB.PolicyHolderContactInfoId;

@@ -27,9 +27,9 @@ export class InsuranceStore {
         return this._insurances.asObservable();
     }
 
-    getInsurances(patientId: number): Observable<Insurance[]> {
+    getInsurances(caseId: number): Observable<Insurance[]> {
         let promise = new Promise((resolve, reject) => {
-            this._insuranceService.getInsurances(patientId).subscribe((insurances: Insurance[]) => {
+            this._insuranceService.getInsurances(caseId).subscribe((insurances: Insurance[]) => {
                 this._insurances.next(List(insurances));
                 resolve(insurances);
             }, error => {
@@ -52,9 +52,9 @@ export class InsuranceStore {
 //
 
 
-  getInsurancesMaster(): Observable<InsuranceMaster[]> {
+  getInsurancesMasterByCompanyId(): Observable<InsuranceMaster[]> {
         let promise = new Promise((resolve, reject) => {
-            this._insuranceService.getInsurancesMaster().subscribe((insurancesMaster: InsuranceMaster[]) => {
+            this._insuranceService.getInsurancesMasterByCompanyId().subscribe((insurancesMaster: InsuranceMaster[]) => {
                 resolve(insurancesMaster);
             }, error => {
                 reject(error);

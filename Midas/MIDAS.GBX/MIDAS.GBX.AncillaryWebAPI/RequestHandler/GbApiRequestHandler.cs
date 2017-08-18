@@ -879,18 +879,18 @@ namespace MIDAS.GBX.AncillaryWebAPI
             }
         }
 
-        public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id)
         {
@@ -1907,6 +1907,27 @@ namespace MIDAS.GBX.AncillaryWebAPI
             }
         }
 
+        #region LoginWithUserName
+        public HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject)
+        {
+            User userBO = (User)(object)gbObject;
+            if (userBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.LoginWithUserName(gbObject);
 
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        #endregion
     }
 }

@@ -374,6 +374,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
+                                           .Include("Doctor.User")
                                            .Include("Company")
                                            .Include("Company1")
                                            .Where(p => companyId.Contains((int)p.MedicalProviderId)
