@@ -20,7 +20,7 @@ import { AddFamilyMemberComponent } from './patients/components/add-family-membe
 import { FamilyMemberListComponent } from './patients/components/family-member-list';
 import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
 // import { AttorneyComponent } from './components/attorney';
-import { PatientEmployerComponent } from './patients/components/employer';
+//import { PatientEmployerComponent } from './patients/components/employer';
 import { InsuranceListComponent } from './patients/components/insurance-list';
 import { AddInsuranceComponent } from './patients/components/add-insurance';
 import { EditInsuranceComponent } from './patients/components/edit-insurance';
@@ -150,15 +150,15 @@ let PatientManagerRoutes: Routes = [
                         data: {
                             breadcrumb: 'Documents'
                         }
-                    },
-                    {
-                        path: 'employer',
-                        component: PatientEmployerComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Employer'
-                        }
-                    }
+                     }
+                    // {
+                    //     path: 'employer',
+                    //     component: PatientEmployerComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Employer'
+                    //     }
+                    // }
                 ]
             },
             // ...PatientsShellRoutes,

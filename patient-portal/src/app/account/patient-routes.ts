@@ -8,7 +8,7 @@ import { ShellComponent } from '../commons/shell-component';
 import { FamilyMemberListComponent } from './components/family-member-list';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { EditFamilyMemberComponent } from './components/edit-family-member';
-import { PatientEmployerComponent } from './components/employer';
+//import { PatientEmployerComponent } from './components/employer';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -71,15 +71,15 @@ export const PatientsShellRoutes: Routes = [
                         }
                     }
                 ]
-            },
-            {
-                path: 'employer',
-                component: PatientEmployerComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Employer'
-                }
             }
+            // {
+            //     path: 'employer',
+            //     component: PatientEmployerComponent,
+            //     canActivate: [ValidateActiveSession],
+            //     data: {
+            //         breadcrumb: 'Employer'
+            //     }
+            // }
         ]
     }
 ];
