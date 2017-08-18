@@ -105,7 +105,7 @@ export class AuthenticationService {
 
     }
 
-    authenticate(email: string, password: string, forceLogin: boolean): Observable<Account> {
+    authenticate(email: string, password: string, forceLogin: boolean, authAccessToken: string, tokenExpiresAt: any): Observable<Account> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
@@ -120,7 +120,8 @@ export class AuthenticationService {
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        let user = AccountAdapter.parseResponse(data);
+                        // let user = AccountAdapter.parseResponse(data);
+                        let user = AccountAdapter.parseResponse(data, authAccessToken, tokenExpiresAt, null);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);
                     } else {
@@ -132,6 +133,34 @@ export class AuthenticationService {
         });
 
         return <Observable<Account>>Observable.fromPromise(promise);
+    }
+    signinWithUserName(email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let autheticateRequestData = {
+                'userName': email
+            };
+            return this._http.post(this._url + '/User/SigninWithUserName', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        // data.company = data.usercompanies[0].company;
+                        let user = AccountAdapter.parseResponse(data, authAccessToken, tokenExpiresAt, tokenResponse);
+                        // window.sessionStorage.setItem('pin', data.pin);
+                        resolve(user);
+                    }
+                    else {
+                        reject(new Error('INVALID_CREDENTIALS'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
     authenticatePassword(userName: string, oldpassword: string): Observable<User> {

@@ -12,6 +12,10 @@ export class ConfigService {
             this.http.get('../assets/config.json').map(res => res.json())
             .subscribe((config: any) => {
                     environment.SERVICE_BASE_URL = config.baseUrl;
+                    environment.IDENTITY_SERVER_URL = config.identityServerUrl;
+                    environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
+                    environment.HOME_URL = config.home_url;
+                    environment.APP_URL = config.mp_url
                     resolve(config);
             }, (error: any) => {
                 // this._config = new AppConfig();

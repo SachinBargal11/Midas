@@ -5,6 +5,8 @@ import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NotificationsService } from 'angular2-notifications';
+import { SignalRModule } from 'ng2-signalr';
+import { SignalRConfiguration } from 'ng2-signalr';
 
 import { ConfigService, configServiceFactory } from './config-service';
 import { AppComponent } from './app.component';
@@ -15,7 +17,7 @@ import { DashboardModule } from './dashboard/dashboard-module';
 import { EventModule } from './event/event-module';
 
 import { AuthenticationService } from './account/services/authentication-service';
-import { SessionStore } from './commons/stores/session-store';
+import { SessionStore, tokenServiceFactory } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
 import { ProgressBarService } from './commons/services/progress-bar-service';
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
@@ -41,12 +43,31 @@ import { SpecialityService } from './account-setup/services/speciality-service';
 import { UsersService } from './medical-provider/users/services/users-service';
 import { UsersStore } from './medical-provider/users/stores/users-store';
 
+import { UserSettingStore } from './commons/stores/user-setting-store';
+import { UserSettingService } from './commons/services/user-setting-service';
+import { PushNotificationStore } from './commons/stores/push-notification-store';
+import { PushNotificationService } from './commons/services/push-notification-service';
+
 import { LocationsStore } from './medical-provider/locations/stores/locations-store';
 import { LocationsService } from './medical-provider/locations/services/locations-service';
 import { ProcedureStore } from './commons/stores/procedure-store';
 import { ProcedureService } from './commons/services/procedure-service';
 import { DiagnosisService } from './commons/services/diagnosis-service';
 import { DiagnosisStore } from './commons/stores/diagnosis-store';
+
+// v2.0.0
+export function createConfig(): SignalRConfiguration {
+  const c = new SignalRConfiguration();
+  let storedAccessToken: any = window.localStorage.getItem('token');
+  c.hubName = 'NotificationHub';
+  if (storedAccessToken) {
+    let accessToken = storedAccessToken.replace(/"/g, "");
+    c.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
+    c.url = 'http://caserver:7011';
+    c.logging = true;
+    return c;
+  }
+}
 
 @NgModule({
   declarations: [
@@ -64,9 +85,16 @@ import { DiagnosisStore } from './commons/stores/diagnosis-store';
     PatientManagerModule,
     DashboardModule,
     SimpleNotificationsModule,
-    EventModule
+    EventModule,
+    SignalRModule.forRoot(createConfig)
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: tokenServiceFactory,
+      deps: [SessionStore],
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: configServiceFactory,
@@ -102,6 +130,10 @@ import { DiagnosisStore } from './commons/stores/diagnosis-store';
     ProcedureService,
     DiagnosisService,
     DiagnosisStore,
+    UserSettingStore,
+    UserSettingService,
+    PushNotificationStore,
+    PushNotificationService
   ],
   bootstrap: [AppComponent]
 })

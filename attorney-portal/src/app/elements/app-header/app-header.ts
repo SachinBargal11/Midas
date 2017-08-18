@@ -14,6 +14,10 @@ import { ProgressBarService } from '../../commons/services/progress-bar-service'
 import { Notification } from '../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
+import { PushNotification } from '../../commons/models/push-notification';
+import { PushNotificationAdapter } from '../../commons/services/adapters/push-notification-adapter';
+import { PushNotificationStore } from '../../commons/stores/push-notification-store';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-header',
@@ -22,7 +26,8 @@ import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter
 })
 
 export class AppHeaderComponent implements OnInit {
-
+    private _notificationServerUrl: string = `${environment.NOTIFICATION_SERVER_URL}`;
+    messages: PushNotification[] = [];
     userSetting: UserSetting;
     doctorRoleFlag = false;
     disabled: boolean = false;
@@ -32,12 +37,12 @@ export class AppHeaderComponent implements OnInit {
 
     /* Dialog Visibilities */
     settingsDialogVisible: boolean = false;
-
-    addUserSettings: FormGroup;
-    addUserSettingsControls;
-    isSearchable: boolean = false;
-    isCalendarPublic: boolean = false;
-    isPublic: boolean = false;
+    
+        addUserSettings: FormGroup;
+        addUserSettingsControls;
+        isSearchable: boolean = false;
+        isCalendarPublic: boolean = false;
+        isPublic: boolean = false;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -54,6 +59,7 @@ export class AppHeaderComponent implements OnInit {
         private _userSettingStore: UserSettingStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
+        private _pushNotificationStore: PushNotificationStore,
         private _elRef: ElementRef
 
     ) {
@@ -65,6 +71,43 @@ export class AppHeaderComponent implements OnInit {
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
+        let accessToken;
+        accessToken = this.sessionStore.session.accessToken.replace('bearer ', '');
+        $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
+        $.connection.hub.url = this._notificationServerUrl + '/signalr';
+        $.connection.hub.logging = true;
+        var notificationHub = $.connection.hub.proxies['notificationhub'];
+
+        notificationHub.client.refreshNotification = function (data: PushNotification[]) {
+            AppHeaderComponent.prototype.messages = _.map(data, (currData: any) => {
+                return PushNotificationAdapter.parseResponse(currData);
+            });
+            _.forEach(AppHeaderComponent.prototype.messages.reverse(), (currMessage: PushNotification) => {
+                // if (currMessage.isRead == false) {
+                    let notification = new Notification({
+                        'title': currMessage.message,
+                        'type': 'SUCCESS',
+                        'createdAt': moment(currMessage.notificationTime)
+                    });
+                    _notificationsStore.addNotification(notification);
+                // }
+            })
+        }
+
+        notificationHub.client.addLatestNotification = function (data) {
+            let message = PushNotificationAdapter.parseResponse(data);
+            AppHeaderComponent.prototype.messages.push(message);
+            let notification = new Notification({
+                'title': message.message,
+                'type': 'SUCCESS',
+                'createdAt': moment(message.notificationTime)
+            });
+            _notificationsStore.addNotification(notification);
+        }
+
+        $.connection.hub.start().done(function () {
+            console.log('Notification hub started');
+        });
     }
 
     ngOnInit() {
@@ -125,7 +168,7 @@ export class AppHeaderComponent implements OnInit {
 
     logout() {
         this.sessionStore.logout();
-        this._router.navigate(['/account/login']);
+        // this._router.navigate(['/account/login']);
     }
 
     changePassword() {
@@ -134,9 +177,16 @@ export class AppHeaderComponent implements OnInit {
 
     showNotifications() {
         this._notificationsStore.toggleVisibility();
+        let isUnReadMessage =  _.find(AppHeaderComponent.prototype.messages, (currMessage: PushNotification) => {
+            return currMessage.isRead == false;
+        })
+            if (isUnReadMessage) {
+                this._pushNotificationStore.updateMessageStatus();
+            }
     }
 
     showSettingsDialog() {
+        this._router.navigate(['/account/settings']);
         this.settingsDialogVisible = true;
         // this._cd.detectChanges();
     }
