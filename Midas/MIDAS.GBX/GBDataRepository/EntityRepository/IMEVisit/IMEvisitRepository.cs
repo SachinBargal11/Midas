@@ -415,7 +415,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                                  ).Select(p => p.CaseId);
             var IMEVisit = _context.IMEVisits.Include("CalendarEvent")
-                                             .Include("Patient").Include("Patient.Cases")
+                                             .Include("Patient").Include("Patient.Cases").Include("Patient.User")
                                              .Where(p => caseId.Contains((int)p.CaseId)
                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .ToList();
@@ -443,7 +443,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByPatientId(int PatientId)
         {
             var acc = _context.IMEVisits.Include("CalendarEvent")
-                                        .Include("Patient").Include("Patient.Cases")
+                                        .Include("Patient").Include("Patient.Cases").Include("Patient.User")
                                         .Where(p => p.PatientId == PatientId 
                                          &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .ToList<IMEVisit>();

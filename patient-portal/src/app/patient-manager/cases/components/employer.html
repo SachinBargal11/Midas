@@ -1,0 +1,259 @@
+<h3 class="with-border">{{title}}</h3>
+<div *ngIf="currentEmployer">
+    <form [formGroup]="employerform" (ngSubmit)="save()">
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Case Employer Information
+            </header>
+            <div class="card-block">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Job Title
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.jobTitle.touched && !employerformControls.jobTitle.valid">
+                            <input type="text" formControlName="jobTitle" [ngModel]="currentEmployer.jobTitle" [class.error]="!employerformControls.jobTitle.valid"
+                                class="form-control" type="text" placeholder="" />
+                            <div class='error-list' *ngIf="employerformControls.jobTitle.touched && !employerformControls.jobTitle.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.jobTitle.hasError('required')">Job Title is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Employer Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.employerName.touched && !employerformControls.employerName.valid">
+                            <input type="text" formControlName="employerName" [ngModel]="currentEmployer.empName" [class.error]="!employerformControls.employerName.valid"
+                                class="form-control" type="text" placeholder="" />
+                            <div class='error-list' *ngIf="employerformControls.employerName.touched && !employerformControls.employerName.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.employerName.hasError('required')">Employer Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Is Current Employer
+                                        <span class="color-red">*</span>
+                                    </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                    <input type="radio" value="1" name="isCurrentEmployer" formControlName="isCurrentEmployer" [ngModel]="isCurrentEmp"> Yes
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="radio" value="0" name="isCurrentEmployer" formControlName="isCurrentEmployer" [ngModel]="isCurrentEmp"> No
+                                </label>
+                              </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </section>
+
+
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Contact Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.email.touched && !employerformControls.email.valid">
+                            <input type="email" formControlName="email" [ngModel]="currentEmployer.contact.emailAddress" [class.error]="!employerformControls.email.valid"
+                                class="form-control" type="text" placeholder="" />
+                            <div class='error-list' *ngIf="employerformControls.email.touched && !employerformControls.email.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.email.hasError('required')">Email is required.</li>
+                                    <li *ngIf="employerformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
+                            <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid"
+                                placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                    <li *ngIf="employerformControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Home Phone No</label>
+                            <input formControlName="homePhone" [ngModel]="currentEmployer.contact.homePhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Work Phone No</label>
+                            <input formControlName="workPhone" [ngModel]="currentEmployer.contact.workPhone" type="text" class="form-control" placeholder=""
+                            />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Fax No</label>
+                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Address Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Address1
+                                     <!--<span class="color-red">*</span>-->
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.address.touched && !employerformControls.address.valid">
+                            <input formControlName="address" [ngModel]="currentEmployer.address.address1" type="text" class="form-control" placeholder=""
+                                [class.error]="!employerformControls.address.valid">
+                            <div class='error-list' *ngIf="employerformControls.address.touched && !employerformControls.address.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.address.hasError('required')">Address is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="form-label"> Address2
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.address2.touched && !employerformControls.address2.valid">
+                            <input formControlName="address2" [ngModel]="currentEmployer.address.address2" type="text" class="form-control" placeholder=""
+                                [class.error]="!employerformControls.address2.valid">
+                            <div class='error-list' *ngIf="employerformControls.address2.touched && !employerformControls.address2.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.address2.hasError('required')">Address is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> State
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
+                            <select formControlName="state" [ngModel]="currentEmployer.address.state" type="text" class="form-control" placeholder=""
+                                [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
+                                <option value="">-Select State-</option>
+                                <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                                </select>
+                            <div class='error-list' *ngIf="employerformControls.state.touched && !employerformControls.state.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.state.hasError('required')">State is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4">
+                        <label class="form-label"> City
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
+                            <input formControlName="city" [ngModel]="currentEmployer.address.city" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.city.valid">
+                            <div class='error-list' *ngIf="employerformControls.city.touched && !employerformControls.city.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.city.hasError('required')">City is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
+                        <label class="form-label"> City
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
+                            <select formControlName="city" [ngModel]="selectedCity" type="text" class="form-control" placeholder="" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
+                                        <option value="">-Select City-</option>
+                                        <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
+                                    </select>
+                            <div class='error-list' *ngIf="employerformControls.city.touched && !employerformControls.city.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.city.hasError('required')">City is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 m-t-lg">
+                        <loader [visible]="isCitiesLoading"></loader>
+                    </div>-->
+
+                    <div class="col-lg-4">
+                        <label class="form-label"> Zip code
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
+                            <input formControlName="zipcode" [ngModel]="currentEmployer.address.zipCode" type="text" class="form-control" placeholder=""
+                                [class.error]="!employerformControls.zipcode.valid">
+                            <div class='error-list' *ngIf="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.zipcode.hasError('required')">Zipcode is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="form-label"> Country
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
+                            <!--<input formControlName="country" [ngModel]="currentEmployer.address.country" type="text" class="form-control" placeholder="" 
+                            [class.error]="!employerformControls.country.valid">-->
+                            <select formControlName="country" type="text" [ngModel]="currentEmployer.address.country" class="form-control" placeholder=""
+                                [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
+                            <div class='error-list' *ngIf="employerformControls.country.touched && !employerformControls.country.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.country.hasError('required')">Country is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+        <!--button-->
+        <button [disabled]="!employerform.valid || isSaveEmployerProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSaveEmployerProgress"></loader>
+                </button>
+        <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
+                </button>-->
+        <a [routerLink]="['/patient-manager/profile/viewall']" class="btn btn-secondary">Cancel</a>
+        <!--button-->
+
+    </form>
+</div>

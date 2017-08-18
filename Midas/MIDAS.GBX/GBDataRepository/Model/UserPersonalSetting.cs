@@ -26,6 +26,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public int SlotDuration { get; set; }
+        public int PreferredModeOfCommunication { get; set; }
+        public bool IsPushNotificationEnabled { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual User User { get; set; }
