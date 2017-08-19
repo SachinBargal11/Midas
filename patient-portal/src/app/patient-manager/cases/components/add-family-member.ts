@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import * as moment from 'moment';
-import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
-import { SessionStore } from '../../commons/stores/session-store';
-import { NotificationsStore } from '../../commons/stores/notifications-store';
-import { ProgressBarService } from '../../commons/services/progress-bar-service';
-import { Notification } from '../../commons/models/notification';
-import { AppValidators } from '../../commons/utils/AppValidators';
-import { StatesStore } from '../../commons/stores/states-store';
+import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
+import { ProgressBarService } from '../../../commons/services/progress-bar-service';
+import { Notification } from '../../../commons/models/notification';
+import { AppValidators } from '../../../commons/utils/AppValidators';
+import { StatesStore } from '../../../commons/stores/states-store';
 import { FamilyMemberStore } from '../stores/family-member-store';
 
 @Component({
@@ -18,11 +18,10 @@ import { FamilyMemberStore } from '../stores/family-member-store';
     templateUrl: './add-family-member.html'
 })
 
-
 export class AddFamilyMemberComponent implements OnInit {
     isCitiesLoading = false;
     patientId: number;
-
+    caseId: number;
     familyMemberForm: FormGroup;
     familyMemberFormControls;
     isSaveProgress = false;
@@ -33,18 +32,20 @@ export class AddFamilyMemberComponent implements OnInit {
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _statesStore: StatesStore,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
         private _familyMemberStore: FamilyMemberStore,
         private _elRef: ElementRef
     ) {
-            this.patientId = this.sessionStore.session.user.id;
+        this.patientId = this.sessionStore.session.user.id;
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId);
+        });
         this.familyMemberForm = this.fb.group({
             relationId: ['', Validators.required],
-            fullName: ['', Validators.required],
-            familyName: ['', Validators.required],
-            prefix: ['', Validators.required],
-            suffix: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
             age: ['', Validators.required],
             races: ['', Validators.required],
             ethnicities: ['', Validators.required],
@@ -64,26 +65,32 @@ export class AddFamilyMemberComponent implements OnInit {
         let familyMemberFormValues = this.familyMemberForm.value;
         let result;
         let familyMember = new FamilyMember({
-            patientId: this.patientId,
+            caseId: this.caseId,
             relationId: familyMemberFormValues.relationId,
-            fullName: familyMemberFormValues.fullName,
-            familyName: familyMemberFormValues.familyName,
-            prefix: familyMemberFormValues.prefix,
-            sufix: familyMemberFormValues.suffix,
+            // fullName: 'qwerty1',
+            // fullName: familyMemberFormValues.fullName,
+            firstName: familyMemberFormValues.firstName,
+            // familyName: 'qwerty2',
+            // familyName: familyMemberFormValues.familyName,
+            middleName: familyMemberFormValues.middleName,
+            lastName: familyMemberFormValues.lastName,
+            // sufix: 'qwerty3',
+            // sufix: familyMemberFormValues.suffix,
+            // prefix: 'qwerty4',
             age: familyMemberFormValues.age,
             raceId: familyMemberFormValues.races,
             ethnicitiesId: familyMemberFormValues.ethnicities,
             genderId: familyMemberFormValues.gender,
             cellPhone: familyMemberFormValues.cellPhone ? familyMemberFormValues.cellPhone.replace(/\-/g, '') : null,
             workPhone: familyMemberFormValues.workPhone,
-            primaryContact: familyMemberFormValues.primaryContact
+            primaryContact: parseInt(familyMemberFormValues.primaryContact)
         });
         this.progressBarService.show();
         result = this._familyMemberStore.addFamilyMember(familyMember);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Family Member added successfully!',
+                    'title': 'Family member added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -91,7 +98,7 @@ export class AddFamilyMemberComponent implements OnInit {
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add Family Member.';
+                let errString = 'Unable to add family member.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

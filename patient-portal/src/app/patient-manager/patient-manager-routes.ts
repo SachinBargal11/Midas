@@ -16,9 +16,9 @@ import { DemographicsComponent } from './patients/components/demographics';
 import { DocumentsComponent } from './patients/components/documents';
 // import { AppointmentsComponent } from './components/appointments';
 import { ShellComponent } from '../commons/shell-component';
-import { AddFamilyMemberComponent } from './patients/components/add-family-member';
-import { FamilyMemberListComponent } from './patients/components/family-member-list';
-import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
+import { AddFamilyMemberComponent } from './cases/components/add-family-member';
+import { FamilyMemberListComponent } from './cases/components/family-member-list';
+import { EditFamilyMemberComponent } from './cases/components/edit-family-member';
 // import { AttorneyComponent } from './components/attorney';
 //import { PatientEmployerComponent } from './patients/components/employer';
 import { InsuranceListComponent } from './patients/components/insurance-list';
@@ -150,7 +150,7 @@ let PatientManagerRoutes: Routes = [
                         data: {
                             breadcrumb: 'Documents'
                         }
-                     }
+                    }
                     // {
                     //     path: 'employer',
                     //     component: PatientEmployerComponent,

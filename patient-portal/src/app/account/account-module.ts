@@ -10,9 +10,6 @@ import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { ChangePasswordComponent } from './components/change-password';
 import { DemographicsComponent } from './components/demographics';
-import { AddFamilyMemberComponent } from './components/add-family-member';
-import { FamilyMemberListComponent } from './components/family-member-list';
-import { EditFamilyMemberComponent } from './components/edit-family-member';
 //import { PatientEmployerComponent } from './components/employer';
 import { PatientBasicComponent } from './components/patient-basic';
 import { PatientsShellComponent } from './components/patients-shell';
@@ -47,10 +44,7 @@ import { AdjusterMasterService } from '../account-setup/services/adjuster-servic
             ForgotPasswordComponent,
             ResetPasswordComponent,
             ChangePasswordComponent,
-            DemographicsComponent,
-            AddFamilyMemberComponent,
-            FamilyMemberListComponent,
-            EditFamilyMemberComponent,
+            DemographicsComponent,            
             // PatientEmployerComponent,
             PatientBasicComponent,
             PatientsShellComponent,
@@ -58,11 +52,11 @@ import { AdjusterMasterService } from '../account-setup/services/adjuster-servic
       ],
       providers: [
             // EmployerService,
-            FamilyMemberService,
+            //FamilyMemberService,
             PatientsService,
             InsuranceService,
             //  EmployerStore,
-            FamilyMemberStore,
+            // FamilyMemberStore,
             PatientsStore,
             InsuranceStore, AdjusterMasterStore, AdjusterMasterService
       ]

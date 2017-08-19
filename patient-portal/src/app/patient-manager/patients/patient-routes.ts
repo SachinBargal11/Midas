@@ -10,9 +10,9 @@ import { DocumentsComponent } from './components/documents';
 // import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 import { ShellComponent } from '../../commons/shell-component';
-import { AddFamilyMemberComponent } from './components/add-family-member';
-import { FamilyMemberListComponent } from './components/family-member-list';
-import { EditFamilyMemberComponent } from './components/edit-family-member';
+//import { AddFamilyMemberComponent } from './components/add-family-member';
+//import { FamilyMemberListComponent } from './components/family-member-list';
+//import { EditFamilyMemberComponent } from './components/edit-family-member';
 // import { AttorneyComponent } from './components/attorney';
 //import { PatientEmployerComponent } from './components/employer';
 import { InsuranceListComponent } from './components/insurance-list';
@@ -97,40 +97,40 @@ export const PatientsShellRoutes: Routes = [
                     }
                 ]
             },
-            {
-                path: 'family-members',
-                component: ShellComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Family Members'
-                },
-                children: [
-                    {
-                        path: '',
-                        component: FamilyMemberListComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'root'
-                        }
-                    },
-                    {
-                        path: 'add',
-                        component: AddFamilyMemberComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Add Family Member'
-                        }
-                    },
-                    {
-                        path: 'edit/:id',
-                        component: EditFamilyMemberComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Edit Family Member'
-                        }
-                    }
-                ]
-            },
+            // {
+            //     path: 'family-members',
+            //     component: ShellComponent,
+            //     canActivate: [ValidateActiveSession],
+            //     data: {
+            //         breadcrumb: 'Family Members'
+            //     },
+            //     children: [
+            //         {
+            //             path: '',
+            //             component: FamilyMemberListComponent,
+            //             canActivate: [ValidateActiveSession],
+            //             data: {
+            //                 breadcrumb: 'root'
+            //             }
+            //         },
+            //         {
+            //             path: 'add',
+            //             component: AddFamilyMemberComponent,
+            //             canActivate: [ValidateActiveSession],
+            //             data: {
+            //                 breadcrumb: 'Add Family Member'
+            //             }
+            //         },
+            //         {
+            //             path: 'edit/:id',
+            //             component: EditFamilyMemberComponent,
+            //             canActivate: [ValidateActiveSession],
+            //             data: {
+            //                 breadcrumb: 'Edit Family Member'
+            //             }
+            //         }
+            //     ]
+            // },
             {
                 path: 'documents',
                 component: DocumentsComponent,

@@ -2,18 +2,16 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
-import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
-import { SessionStore } from '../../commons/stores/session-store';
-import { NotificationsStore } from '../../commons/stores/notifications-store';
-import { Notification } from '../../commons/models/notification';
+import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
+import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
-import * as _ from 'underscore';
-import { ProgressBarService } from '../../commons/services/progress-bar-service';
-import { AppValidators } from '../../commons/utils/AppValidators';
+import { ProgressBarService } from '../../../commons/services/progress-bar-service';
+import { AppValidators } from '../../../commons/utils/AppValidators';
 import { FamilyMember } from '../models/family-member';
 import { FamilyMemberStore } from '../stores/family-member-store';
-import { PatientsStore } from '../stores/patients-store';
-import { PhoneFormatPipe } from '../../commons/pipes/phone-format-pipe';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 
 @Component({
     selector: 'edit-family-member',
@@ -28,22 +26,23 @@ export class EditFamilyMemberComponent implements OnInit {
     familyMemberFormControls;
     isSaveProgress = false;
     familyMember: FamilyMember;
-
+    caseId: number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         public sessionStore: SessionStore,
         private _familyMemberStore: FamilyMemberStore,
-        private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _elRef: ElementRef
     ) {
         this.patientId = this.sessionStore.session.user.id;
-
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId);
+        });
         this._route.params.subscribe((routeParams: any) => {
             let familyMemberId: number = parseInt(routeParams.id);
             this.progressBarService.show();
@@ -54,7 +53,7 @@ export class EditFamilyMemberComponent implements OnInit {
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
                     this.progressBarService.hide();
                 },
                 () => {
@@ -62,18 +61,17 @@ export class EditFamilyMemberComponent implements OnInit {
                 });
         });
         this.familyMemberForm = this.fb.group({
-                relationId: ['', Validators.required],
-                fullName: ['', Validators.required],
-                familyName: ['', Validators.required],
-                prefix: ['', Validators.required],
-                suffix: ['', Validators.required],
-                age: ['', Validators.required],
-                races: ['', Validators.required],
-                ethnicities: ['', Validators.required],
-                gender: ['', Validators.required],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                workPhone: [''],
-                primaryContact: ['']
+            relationId: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
+            age: ['', Validators.required],
+            races: ['', Validators.required],
+            ethnicities: ['', Validators.required],
+            gender: ['', Validators.required],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            workPhone: [''],
+            primaryContact: ['']
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
@@ -86,12 +84,11 @@ export class EditFamilyMemberComponent implements OnInit {
         let familyMemberFormValues = this.familyMemberForm.value;
         let result;
         let familyMember = new FamilyMember({
-            patientId: this.patientId,
+            caseId: this.caseId,
             relationId: familyMemberFormValues.relationId,
-            fullName: familyMemberFormValues.fullName,
-            familyName: familyMemberFormValues.familyName,
-            prefix: familyMemberFormValues.prefix,
-            sufix: familyMemberFormValues.suffix,
+            firstName: familyMemberFormValues.firstName,
+            middleName: familyMemberFormValues.middleName,
+            lastName: familyMemberFormValues.lastName,
             age: familyMemberFormValues.age,
             raceId: familyMemberFormValues.races,
             ethnicitiesId: familyMemberFormValues.ethnicities,
