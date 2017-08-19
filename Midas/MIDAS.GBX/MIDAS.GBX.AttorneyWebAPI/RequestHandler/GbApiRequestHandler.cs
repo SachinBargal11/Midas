@@ -1958,5 +1958,44 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
         #endregion
+
+        public HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int CompanyId)
+        {
+            var res = dataAccessManager.GetInsuranceDetails(id, CompanyId);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId)
+        {
+            var res = dataAccessManager.Delete(id, CompanyId);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        public HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetMasterAndByCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

@@ -140,5 +140,8 @@ namespace MIDAS.GBX.AttorneyWebAPI
         //HttpResponseMessage GetByLocationAndAttorneyId(HttpRequestMessage request, int LocationId, int AttorneyId);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId);
         HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
+        HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
+        HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId);
     }
 }

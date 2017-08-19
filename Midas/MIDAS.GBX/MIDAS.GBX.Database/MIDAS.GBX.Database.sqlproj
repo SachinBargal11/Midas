@@ -153,7 +153,7 @@
     <Build Include="Tables\DoctorLocationSchedule.sql" />
     <Build Include="Tables\RoomTest.sql" />
     <Build Include="Tables\ScheduleDetail.sql" />
-    <Build Include="Tables\Latest Tables\Patient2.sql" />
+    <Build Include="Tables\Latest Tables\Patient.sql" />
     <Build Include="Tables\Latest Tables\PatientEmpInfo.sql" />
     <Build Include="Tables\Latest Tables\PatientInsuranceInfo.sql" />
     <Build Include="Tables\Latest Tables\State.sql" />
@@ -161,7 +161,6 @@
     <Build Include="Tables\Latest Tables\MaritalStatus.sql" />
     <Build Include="Tables\Latest Tables\Gender.sql" />
     <Build Include="Tables\Latest Tables\Case.sql" />
-    <Build Include="Tables\Latest Tables\Patient.sql" />
     <Build Include="Tables\Latest Tables\PatientFamilyMembers.sql" />
     <Build Include="Tables\Latest Tables\Relations.sql" />
     <Build Include="Tables\Latest Tables\RefferingOffice.sql" />

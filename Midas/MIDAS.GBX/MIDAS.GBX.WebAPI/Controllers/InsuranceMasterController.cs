@@ -26,10 +26,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //    return requestHandler.GetObjects(Request);
         //}
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("getInsuranceDetails/{id}/{companyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetInsuranceDetails(int id, int companyId)
         {
             return requestHandler.GetInsuranceDetails(Request, id, companyId);
@@ -52,7 +50,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getMasterAndByCompanyId/{companyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetMasterAndByCompanyId(int companyId)
         {
             return requestHandler.GetMasterAndByCompanyId(Request, companyId);

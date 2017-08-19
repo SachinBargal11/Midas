@@ -104,7 +104,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.PatientFamilyMembers.Include("Patient")
+            var acc = _context.PatientFamilyMembers//.Include("Patient")
                                                    .Where(p => p.CaseId == CaseId 
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                    .ToList<PatientFamilyMember>();

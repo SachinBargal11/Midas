@@ -1,60 +1,125 @@
-﻿
-CREATE TABLE [dbo].[Patient](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[PatientID] [int] NOT NULL,
-	[SSN] [nvarchar](50) NOT NULL,
-	[WCBNo] [nvarchar](50) NULL,
-	[JobTitle] [nvarchar](50) NULL,
-	[WorkActivities] [nvarchar](50) NULL,
-	[CarrierCaseNo] [nvarchar](50) NULL,
-	[ChartNo] [nvarchar](50) NOT NULL,
-	[CompanyID] [int] NOT NULL,
-	[LocationID] [int] NOT NULL,
-	[IsDeleted] [bit] NULL,
+﻿CREATE TABLE [dbo].[Patient2](
+	[Id] [INT] NOT NULL,
+	[SSN] [NVARCHAR](20) NOT NULL, 
+	[CompanyId] [INT] NULL,
+	[Weight] [DECIMAL](5, 2) NULL, 
+	[Height] [DECIMAL](5, 2) NULL,
+	[MaritalStatusId] [TINYINT] NULL,
+	[DateOfFirstTreatment] [DATETIME2](7) NULL,
+	/*
+	[AttorneyName] [NVARCHAR](50) NULL,
+	[AttorneyAddressInfoId] [INT] NULL,
+	[AttorneyContactInfoId] [INT] NULL,
+	
+	[PatientEmpInfoId] [INT] NULL,
+	[InsuranceInfoId] [INT] NULL,
+	[AccidentInfoId] [INT] NULL,
+	[AttorneyInfoId] [INT] NULL,
+	[ReferingOfficeId] [INT] NULL,
+	*/
+	[IsDeleted] [bit] NULL DEFAULT (0),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
-	[UpdateDate] [datetime2](7) NULL,
-	[Weight] [decimal](3, 2) NULL,
-	[MaritalStatus] [tinyint] NULL,
-	[DrivingLicence] [nvarchar](15) NULL,
-	[EmergenceyContact] [nvarchar](50) NULL,
-	[EmergenceyContactNumber] [nvarchar](50) NULL,
-	[EmergenceyContactRelation] [nvarchar](50) NULL,
- CONSTRAINT [PK_Patient] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	[UpdateDate] [datetime2](7) NULL, 
+    CONSTRAINT [PK_Patient2] PRIMARY KEY ([Id]), 
+	CONSTRAINT [UK_Patient2_SSN] UNIQUE ([SSN])
 ) ON [PRIMARY]
 
 GO
 
-ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_Company] FOREIGN KEY([CompanyID])
-REFERENCES [dbo].[Company] ([id])
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_User_id] FOREIGN KEY([Id])
+	REFERENCES [dbo].[User] ([Id])
 GO
 
-ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_Company]
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_User_id]
 GO
 
-ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_Location] FOREIGN KEY([LocationID])
-REFERENCES [dbo].[Location] ([id])
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_Company_CompanyId] FOREIGN KEY([CompanyId])
+	REFERENCES [dbo].[Company] ([Id])
 GO
 
-ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_Location]
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_Company_CompanyId]
 GO
 
-ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_MaritalStatus] FOREIGN KEY([MaritalStatus])
-REFERENCES [dbo].[MaritalStatus] ([Id])
+--ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_Location_LocationID] FOREIGN KEY([LocationID])
+--REFERENCES [dbo].[Location] ([Id])
+--GO
+
+--ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_Location]
+--GO
+
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_MaritalStatusId] FOREIGN KEY([MaritalStatusId])
+	REFERENCES [dbo].[MaritalStatus] ([Id])
 GO
 
-ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_MaritalStatus]
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_MaritalStatusId]
+GO
+/*
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId] FOREIGN KEY([AttorneyAddressInfoId])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
-ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_User] FOREIGN KEY([PatientID])
-REFERENCES [dbo].[User] ([id])
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId]
 GO
 
-ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_User]
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId] FOREIGN KEY([AttorneyContactInfoId])
+	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId]
+GO
 
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId] FOREIGN KEY([PatientEmpInfoId])
+	REFERENCES [dbo].[PatientEmpInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId]
+GO
+
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId] FOREIGN KEY([InsuranceInfoId])
+	REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
+GO
+
+ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]
+GO
+*/
+
+--ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
+/*
+Link Patient with user company table
+*/
+GO
+
+/*
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyName]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyAddressInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyContactInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [PatientEmpInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [InsuranceInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AccidentInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [ReferingOfficeId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_Company_CompanyId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [UK_Patient2_SSN]
+GO
+*/
