@@ -19,6 +19,7 @@ BEGIN
         [EmergencyContactPhone] [NVARCHAR](256) NULL,
         [LegallyMarried] [BIT] NULL DEFAULT 0,
         [SpouseName] [NVARCHAR](256) NULL,
+        [SocialMediaOther] [NVARCHAR](256) NULL,
 
 	    [IsDeleted] [bit] NULL DEFAULT ((0)),
 	    [CreateByUserID] [int] NOT NULL,
@@ -67,6 +68,118 @@ END
 ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_MaritalStatusId] FOREIGN KEY([MaritalStatusId])
 	REFERENCES [dbo].[MaritalStatus] ([Id])
 GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Patient'
+	AND		COLUMN_NAME = 'ParentOrGuardianName'
+)
+BEGIN
+	PRINT 'Table [dbo].[Patient] already have a Column [ParentOrGuardianName] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Patient] 
+        ADD [ParentOrGuardianName] [NVARCHAR](256) NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Patient'
+	AND		COLUMN_NAME = 'EmergencyContactName'
+)
+BEGIN
+	PRINT 'Table [dbo].[Patient] already have a Column [EmergencyContactName] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Patient] 
+        ADD [EmergencyContactName] [NVARCHAR](256) NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Patient'
+	AND		COLUMN_NAME = 'EmergencyContactPhone'
+)
+BEGIN
+	PRINT 'Table [dbo].[Patient] already have a Column [EmergencyContactPhone] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Patient] 
+        ADD [EmergencyContactPhone] [NVARCHAR](256) NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Patient'
+	AND		COLUMN_NAME = 'LegallyMarried'
+)
+BEGIN
+	PRINT 'Table [dbo].[Patient] already have a Column [LegallyMarried] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Patient] 
+        ADD [LegallyMarried] [BIT] NULL DEFAULT 0
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Patient'
+	AND		COLUMN_NAME = 'SpouseName'
+)
+BEGIN
+	PRINT 'Table [dbo].[Patient] already have a Column [SpouseName] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Patient] 
+        ADD [SpouseName] [NVARCHAR](256) NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Patient'
+	AND		COLUMN_NAME = 'SocialMediaOther'
+)
+BEGIN
+	PRINT 'Table [dbo].[Patient] already have a Column [SocialMediaOther] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Patient] 
+        ADD [SocialMediaOther] [NVARCHAR](256) NULL
+END
+GO
+
+
+
+
 
 --CREATE TABLE [dbo].[Patient](
 --	[Id] [INT] NOT NULL,

@@ -463,7 +463,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var UserSettings = _context.UserPersonalSettings.Where(p => p.UserId == userDB.id && p.CompanyId == userCompanyDB.CompanyID
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault();
-            if (UserSettings != null)
+            if (UserSettings == null)
             {
                 UserSettings = new UserPersonalSetting();
                 UserSettings.UserId = userDB.id;
@@ -477,8 +477,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.UserPersonalSettings.Add(UserSettings);
                 _context.SaveChanges();
-            }            
-
+            }
             #endregion
 
             #region Insert Invitation
