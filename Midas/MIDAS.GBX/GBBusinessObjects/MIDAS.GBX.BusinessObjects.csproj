@@ -115,6 +115,9 @@
     <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
     <Compile Include="IMEVisit\IMEVisit.cs" />
     <Compile Include="InsuranceType\InsuranceType.cs" />
+    <Compile Include="MesssagingService\Subscription.cs" />
+    <Compile Include="MesssagingService\SMS.cs" />
+    <Compile Include="MesssagingService\EmailMessage.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />
     <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
     <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />

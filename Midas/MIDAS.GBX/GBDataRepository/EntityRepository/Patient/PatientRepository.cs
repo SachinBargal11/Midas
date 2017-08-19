@@ -7,9 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Http;
+
 using System.Text;
 using System.Threading.Tasks;
 using BO = MIDAS.GBX.BusinessObjects;
+using Newtonsoft.Json;
+using System.Web;
+using System.Net.Http.Headers;
+using System.Configuration;
+using MIDAS.GBX.Common;
+
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -593,7 +601,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
-            {
+            {              
                 BO.Patient acc_ = Convert<BO.Patient, Patient>(acc);
                 return (object)acc_;
             }
@@ -602,7 +610,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         #region save
         public override object Save<T>(T entity)
-        {
+        {          
             BO.Patient PatientBO = (BO.Patient)(object)entity;
             BO.User userBO = PatientBO.User;
             BO.AddressInfo addressUserBO = (PatientBO.User != null) ? PatientBO.User.AddressInfo : null;
@@ -926,11 +934,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
-            var res = Convert<BO.Patient, Patient>(PatientDB);
+            NotificationHelper nh = new NotificationHelper();
+            BO.Subscription subscription = nh.GetSubscriptionByEventName("m1@allfriendshub.tk", "New Patient Registration");
+
+            if (subscription != null)
+            {
+                nh.PushNotification(subscription.UserID, "Message ....!!!!", subscription.EventID);
+            }
+
+            MessagingHelper messagingHelper = new MessagingHelper();
+            BO.EmailMessage em = new BO.EmailMessage();
+            em.ApplicationName = "Midas";
+            em.FromEmail = "bajpai.adarsh@gmail.com";
+            em.ToEmail = "med25@allfriendshub.tk";
+            em.CcEmail = "";
+            em.BccEmail = "";
+            em.EMailSubject = "Email Header";
+            em.EMailBody = "Body ...........";
+
+            BO.SMS sms = new BO.SMS();
+            sms.ApplicationName = "Midas";
+            sms.ToNumber = "+919768919512";
+            sms.FromNumber = "+917977935408";
+            sms.Message = "Sms messages for save patient";
+          
+
+            messagingHelper.AddMessageToEmailQueue(em);
+            messagingHelper.AddMessageToSMSQueue(sms);
+
+
+
+        var res = Convert<BO.Patient, Patient>(PatientDB);
             return (object)res;
         }
         #endregion
-
+        
         #region AddQuickPatient
         public override object AddQuickPatient<T>(T entity)
         {
