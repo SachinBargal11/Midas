@@ -2279,8 +2279,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                        .Include("Specialty")
                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
-                                                                       .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId && p.SpecialtyId == SpecialityId
-                                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                       .Where(p => ((LocationId > 0 && p.LocationId == LocationId) || (LocationId <= 0))
+                                                                            && ((DoctorId > 0 && p.DoctorId == DoctorId) || (DoctorId <= 0))
+                                                                            && ((SpecialityId > 0 && p.SpecialtyId == SpecialityId) || (SpecialityId <= 0))
+                                                                            && (LocationId > 0 || DoctorId > 0)
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                        .ToList<PatientVisit>();
 
             if (lstPatientVisit == null)
