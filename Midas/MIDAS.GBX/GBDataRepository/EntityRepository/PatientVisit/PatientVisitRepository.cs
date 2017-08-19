@@ -625,7 +625,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Location Id, Doctor Id And Patient Id
+        #region GetByPatientId
         public override object GetByPatientId(int patientId)
         {
             List<PatientVisit> lstPatientVisit = _context.PatientVisits.Include("CalendarEvent")
@@ -2296,6 +2296,67 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
+
+        #region Get By Company ID For Patient Visit 
+        public override object GetByCompanyId(int CompanyId)
+        {
+            var patientVisit = _context.PatientVisits.Include("CalendarEvent")
+                                            .Include("Location")
+                                            .Include("Doctor")
+                                            .Include("Doctor.User")
+                                            .Include("Room")
+                                            .Include("Room.RoomTest")
+                                            .Include("Patient")
+                                            .Include("Patient.User")
+                                            .Where(p => p.Location.CompanyID == CompanyId
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .ToList<PatientVisit>();
+
+            if (patientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit> lstpatientVisits = new List<BO.PatientVisit>();
+                foreach (PatientVisit item in patientVisit)
+                {
+                    lstpatientVisits.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                }
+                return lstpatientVisits;
+            }
+
+        }
+        #endregion
+
+        #region Get by Company & doctor id
+        public override Object GetByCompanyAndDoctorId(int CompanyId, int doctorId)
+        {
+            var patientVisit = _context.PatientVisits.Include("CalendarEvent")
+                                            .Include("Location")
+                                            .Include("Doctor")
+                                            .Include("Doctor.User")
+                                            .Include("Room")
+                                            .Include("Room.RoomTest")
+                                            .Include("Patient")
+                                            .Include("Patient.User")
+                                            .Where(p => p.DoctorId == doctorId && p.Location.CompanyID == CompanyId
+                                             &&  (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            if (patientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+            foreach (PatientVisit item in patientVisit)
+            {
+                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+            }
+            return lstPatientVisit;
+        }
+
+        #endregion
+
 
         public void Dispose()
         {
