@@ -84,13 +84,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                if (EOVisit.Company1 != null)
+                if (EOVisit.InsuranceMaster != null)
                 {
-                    BO.Company CompanyBO = new BO.Company();
-                    using (CompanyRepository companyRepo = new CompanyRepository(_context))
+                    BO.InsuranceMaster InsuranceMasterBO = new BO.InsuranceMaster();
+                    using (InsuranceMasterRepository InsuranceMasterRepo = new InsuranceMasterRepository(_context))
                     {
-                        CompanyBO = companyRepo.Convert<BO.Company, Company>(EOVisit.Company1);
-                        EOVisitBO.Company1 = CompanyBO;
+                        InsuranceMasterBO = InsuranceMasterRepo.Convert<BO.InsuranceMaster, InsuranceMaster>(EOVisit.InsuranceMaster);
+                        EOVisitBO.InsuranceMaster = InsuranceMasterBO;
                     }
                 }
 
@@ -119,6 +119,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Doctor DoctorBO = EOVisitBO.Doctor;
             string doctorUserName = string.Empty;
             bool sendNotification = false;
+
+            //CalenderEventBO
+            if (CalendarEventBO != null)
+            {
+                List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+                CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
+                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEvent(CalendarEventBO) as List<BO.FreeSlots>;
+
+                if (currentEventSlots.Count > 0)
+                {
+                    DateTime dtStartDate = currentEventSlots.Min(p => p.ForDate);
+                    DateTime dtEndDate = currentEventSlots.Max(p => p.ForDate).AddDays(1);
+
+                    List<BO.StartAndEndTime> busySlots = new List<BO.StartAndEndTime>();
+
+                    if (EOVisitBO.DoctorId != null)
+                    {
+                        var result = calEventRepo.GetBusySlotsForDoctors(EOVisitBO.DoctorId.Value, dtStartDate, dtEndDate);
+                        if (result is BO.ErrorObject)
+                        {
+                            return result;
+                        }
+                        else
+                        {
+                            busySlots = result as List<BO.StartAndEndTime>;
+                        }
+                    }
+
+                    foreach (var eachDayEventSlot in currentEventSlots)
+                    {
+                        DateTime ForDate = eachDayEventSlot.ForDate;
+                        foreach (var eachEventSlot in eachDayEventSlot.StartAndEndTimes)
+                        {
+                            DateTime StartTime = eachEventSlot.StartTime;
+                            DateTime EndTime = eachEventSlot.EndTime;
+                            var StartAndEndTimesForDate = busySlots.Where(p => p.StartTime.Date == ForDate).ToList();
+                            if (StartAndEndTimesForDate.Count > 0)
+                            {
+                                var StartAndEndTimes = StartAndEndTimesForDate.Where(p => p.StartTime >= StartTime && p.StartTime < EndTime).ToList();
+
+                                if (StartAndEndTimes.Count > 0)
+                                {
+                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The Doctor dosent have free slots for EO visit time on " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             EOVisit EOVisitDB = new EOVisit();
 
@@ -275,13 +324,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     _context.SaveChanges();
 
-                    //if (IMEVisitDB.PatientId.HasValue == true && IMEVisitDB.CaseId.HasValue == true && IMEVisitDB.AncillaryProviderId.HasValue == true)
-                    //{
-                    //    using (PatientRepository patientRepo = new PatientRepository(_context))
-                    //    {
-                    //        patientRepo.AssociatePatientWithAncillaryCompany(patientVisitDB.PatientId.Value, patientVisitDB.CaseId.Value, patientVisitBO.AncillaryProviderId.Value, patientVisitBO.AddedByCompanyId);
-                    //    }
-                    //}
                 }
                 else
                 {
@@ -303,7 +345,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     EOVisitDB = _context.EOVisits.Include("CalendarEvent")
                                                   .Include("Doctor")
                                                   .Include("Company")
-                                                  .Include("Company1")
+                                                  .Include("InsuranceMaster")
                                                   .Where(p => p.ID == EOVisitDB.ID
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<EOVisit>();
@@ -332,8 +374,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
+                                           .Include("Doctor.User")
                                            .Include("Company")
-                                           .Include("Company1")
+                                           .Include("InsuranceMaster")
                                            .Where(p => companyId.Contains((int)p.MedicalProviderId)
                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                            .ToList();
@@ -367,7 +410,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
                                            .Include("Company")
-                                           .Include("Company1")
+                                           .Include("InsuranceMaster")
                                            .Where(p => p.DoctorId == DoctorId && medicalProvider.Contains((int)p.MedicalProviderId)
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                     .ToList();

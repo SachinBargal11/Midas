@@ -402,8 +402,8 @@
       <DependentUpon>MIDASGBXEntities.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Designer.cs">

@@ -2,8 +2,8 @@ import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
-import { InsuranceStore } from '../stores/insurance-store';
-import { Insurance } from '../models/insurance';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
+import { Insurance } from '../../patients/models/insurance';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -27,7 +27,7 @@ export class InsuranceListComponent implements OnInit {
     referredToMe: boolean = false;
     selectedInsurances: Insurance[] = [];
     insurances: Insurance[];
-    patientId: number;
+    caseId: number;
     datasource: Insurance[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
@@ -43,35 +43,36 @@ export class InsuranceListComponent implements OnInit {
         private _casesStore: CasesStore,
         private _sessionStore: SessionStore
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
-            this._progressBarService.show();
-            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-            caseResult.subscribe(
-                (cases: Case[]) => {
-                    this.caseDetail = cases;
-                    if (this.caseDetail.length > 0) {
-                        let matchedCompany = null;
-                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-                        })
-                        if (matchedCompany) {
-                            this.referredToMe = true;
-                        } else {
-                            this.referredToMe = false;
-                        }
-                    } else {
-                        this.referredToMe = false;
-                    }
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
+         
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        //     this._progressBarService.show();
+        //     let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+        //     caseResult.subscribe(
+        //         (cases: Case[]) => {
+        //             this.caseDetail = cases;
+        //             if (this.caseDetail.length > 0) {
+        //                 let matchedCompany = null;
+        //                 matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+        //                     return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+        //                 })
+        //                 if (matchedCompany) {
+        //                     this.referredToMe = true;
+        //                 } else {
+        //                     this.referredToMe = false;
+        //                 }
+        //             } else {
+        //                 this.referredToMe = false;
+        //             }
+        //         },
+        //         (error) => {
+        //             this._router.navigate(['../'], { relativeTo: this._route });
+        //             this._progressBarService.hide();
+        //         },
+        //         () => {
+        //             this._progressBarService.hide();
+        //         });
+        // });
     }
 
     ngOnInit() {
@@ -79,13 +80,12 @@ export class InsuranceListComponent implements OnInit {
     }
 
     loadInsurances() {
-        this._progressBarService.show();
-        this._insuranceStore.getInsurances(this.patientId)
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            this._progressBarService.show();
+        this._insuranceStore.getInsurances(this.caseId)
             .subscribe(insurances => {
                 this.insurances = insurances.reverse();
-                // this.datasource = insurances.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.insurances = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -93,7 +93,10 @@ export class InsuranceListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+        });
     }
+
+    
 
     loadSpecialitiesLazy(event: LazyLoadEvent) {
         setTimeout(() => {

@@ -1267,27 +1267,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object IsInsuranceInfoAdded(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
-        {
-            try
-            {
-                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.IsInsuranceInfoAdded(id);
+        //public Object IsInsuranceInfoAdded(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        //{
+        //    try
+        //    {
+        //        BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+        //        var gbdata = baseRepo.IsInsuranceInfoAdded(id);
 
-                return gbdata;
-            }
+        //        return gbdata;
+        //    }
 
-            catch (GbException gbe)
-            {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
-                return gbe;
-            }
-            catch (Exception ex)
-            {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
-                return ex;
-            }
-        }
+        //    catch (GbException gbe)
+        //    {
+        //        //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+        //        return gbe;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+        //        return ex;
+        //    }
+        //}
 
         public Object Get(string param1, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
@@ -3309,6 +3309,24 @@ namespace MIDAS.GBX.DataAccessManager
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetBusySlotsForPatients(PatientId, StartDate, EndDate);
 
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        
+        public Object GetBusySlotsForDoctors(int DoctorId, DateTime StartDate, DateTime EndDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetBusySlotsForDoctors(DoctorId, StartDate, EndDate);
                 return gbdata;
             }
             catch (GbException gbe)

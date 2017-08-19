@@ -60,7 +60,7 @@ namespace MIDAS.GBX.FundingWebAPI
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferredToCompanyId(HttpRequestMessage request, int id);
-        HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
+        //HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId);
         HttpResponseMessage GetByPatientId(HttpRequestMessage request, int CaseId);

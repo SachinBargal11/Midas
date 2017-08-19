@@ -70,22 +70,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientBO = patientRepo.Convert<BO.Patient, Patient>(AttorneyVisitDB.Patient);
                         AttorneyVisitBO.Patient = PatientBO;
 
-                        if (AttorneyVisitDB.Patient.PatientInsuranceInfoes != null && AttorneyVisitDB.Patient.PatientInsuranceInfoes.Count > 0)
-                        {
-                            List<BO.PatientInsuranceInfo> PatientInsuranceInfoBOList = new List<BO.PatientInsuranceInfo>();
-                            using (PatientInsuranceInfoRepository patientInsuranceInfoRepo = new PatientInsuranceInfoRepository(_context))
-                            {
-                                foreach (PatientInsuranceInfo eachPatientInsuranceInfo in AttorneyVisitDB.Patient.PatientInsuranceInfoes)
-                                {
-                                    if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
-                                    {
-                                        PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
-                                    }
-                                }
+                        //if (AttorneyVisitDB.Patient.PatientInsuranceInfoes != null && AttorneyVisitDB.Patient.PatientInsuranceInfoes.Count > 0)
+                        //{
+                        //    List<BO.PatientInsuranceInfo> PatientInsuranceInfoBOList = new List<BO.PatientInsuranceInfo>();
+                        //    using (PatientInsuranceInfoRepository patientInsuranceInfoRepo = new PatientInsuranceInfoRepository(_context))
+                        //    {
+                        //        foreach (PatientInsuranceInfo eachPatientInsuranceInfo in AttorneyVisitDB.Patient.PatientInsuranceInfoes)
+                        //        {
+                        //            if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
+                        //            {
+                        //                PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
+                        //            }
+                        //        }
 
-                                AttorneyVisitBO.Patient.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
-                            }
-                        }
+                        //        AttorneyVisitBO.Patient.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
+                        //    }
+                        //}
                     }
                 }
 

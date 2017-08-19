@@ -23,7 +23,7 @@ import { EditConsentComponent } from './components/edit-consent';
 import { VisitShellComponent } from './components/visit-shell';
 import { PatientVisitListDoctorComponent } from './components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './components/treatingroom-visit';
-
+import { CaseEmployerComponent } from './components/employer';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -68,7 +68,7 @@ export const CasesShellRoutes: Routes = [
                     },
 
 
-               {
+                    {
                         path: 'patient-visit',
                         component: VisitShellComponent,
                         canActivate: [ValidateActiveSession],
@@ -288,8 +288,17 @@ export const CasesShellRoutes: Routes = [
                             //         breadcrumb: 'Add Consent'
                             //     }
                             // }
+
                         ]
                     },
+                    {
+                        path: 'employer',
+                        component: CaseEmployerComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Employer'
+                        }
+                    }
                 ]
             }
         ]

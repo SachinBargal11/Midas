@@ -83,7 +83,7 @@ export class AddAdjusterComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
 
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
     }
 

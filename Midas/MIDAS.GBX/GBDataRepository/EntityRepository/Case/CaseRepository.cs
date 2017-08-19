@@ -474,9 +474,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
+            var acc = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CaseCompanyMappings.Company1")
@@ -502,9 +502,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
+            var acc = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CaseCompanyMappings.Company1")
@@ -534,9 +534,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Patient Id and CompanyId
         public override object Get2(int PatientId, int CompanyId)
         {
-            var caseList1 = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
+            var caseList1 = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CaseCompanyMappings.Company1")
@@ -581,9 +581,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Open Cases By Patient Id
         public override object GetOpenCaseForPatient(int PatientId)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
+            var acc = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CaseCompanyMappings.Company1")
@@ -613,9 +613,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Open Cases By Patient Id
         public override object GetOpenCaseForPatient(int PatientId, int CompanyId)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
+            var acc = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CaseCompanyMappings.Company1")
@@ -790,9 +790,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 dbContextTransaction.Commit();
-                caseDB = _context.Cases.Include("PatientEmpInfo")
-                                       .Include("PatientEmpInfo.AddressInfo")
-                                       .Include("PatientEmpInfo.ContactInfo")
+                caseDB = _context.Cases.Include("PatientEmpInfoes")
+                                       .Include("PatientEmpInfoes.AddressInfo")
+                                       .Include("PatientEmpInfoes.ContactInfo")
                                        .Include("CaseCompanyMappings")
                                        .Include("CaseCompanyMappings.Company")
                                        .Include("CaseCompanyMappings.Company1")
@@ -1164,9 +1164,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Delete By ID
         public override object Delete(int id)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
+            var acc = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
                                     .Include("PatientVisit")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseInsuranceMappings")

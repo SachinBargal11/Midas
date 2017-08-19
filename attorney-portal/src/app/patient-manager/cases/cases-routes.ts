@@ -30,7 +30,7 @@ import { PatientVisitListTreatingRoomComponent } from './components/treatingroom
 import { BillingInfoComponent } from './components/billing';
 import { PaymentListComponent } from './components/payment-list';
 import { CaseBasicLabelComponent } from './components/case-basic-label';
-
+import { CaseEmployerComponent } from '../cases/components/employer';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -301,7 +301,7 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Accident'
                         }
                     },
-                     {
+                    {
                         path: 'billings',
                         component: BillingInfoComponent,
                         canActivate: [ValidateActiveSession],
@@ -349,6 +349,14 @@ export const CasesShellRoutes: Routes = [
                                 }
                             },
                         ]
+                    },
+                    {
+                        path: 'employer',
+                        component: CaseEmployerComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Employer'
+                        }
                     },
 
 

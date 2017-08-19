@@ -27,6 +27,8 @@ namespace MIDAS.GBX.DataRepository.Model
             this.IMEVisits = new HashSet<IMEVisit>();
             this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
             this.PatientEmpInfoes = new HashSet<PatientEmpInfo>();
+            this.PatientFamilyMembers = new HashSet<PatientFamilyMember>();
+            this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
             this.PatientVisits = new HashSet<PatientVisit>();
             this.Referrals = new HashSet<Referral>();
             this.RefferingOffices = new HashSet<RefferingOffice>();
@@ -69,6 +71,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientEmpInfo> PatientEmpInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientFamilyMember> PatientFamilyMembers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit> PatientVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

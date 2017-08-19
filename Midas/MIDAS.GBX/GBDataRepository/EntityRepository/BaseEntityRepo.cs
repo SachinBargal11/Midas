@@ -201,10 +201,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object IsInsuranceInfoAdded(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public virtual Object IsInsuranceInfoAdded(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public virtual object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail)
         {
@@ -769,6 +769,11 @@ namespace MIDAS.GBX.EntityRepository
         }
         
         public virtual Object GetBusySlotsForPatients(int PatientId, DateTime StartDate, DateTime EndDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetBusySlotsForDoctors(int DoctorId, DateTime StartDate, DateTime EndDate)
         {
             throw new NotImplementedException();
         }

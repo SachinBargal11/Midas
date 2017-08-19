@@ -1,4 +1,3 @@
-import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,50 +7,34 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
-import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
-import { Insurance } from '../models/insurance';
-import { InsuranceMaster } from '../models/insurance-master';
-import { InsuranceStore } from '../stores/insurance-store';
-import { PatientsStore } from '../stores/patients-store';
-import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
-import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
-import { Case } from '../../cases/models/case';
-import { CasesStore } from '../../cases/stores/case-store';
+import { Insurance } from '../../patients/models/insurance';
+import { InsuranceMaster } from '../../patients/models/insurance-master';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 
 @Component({
-    selector: 'edit-insurance',
-    templateUrl: './edit-insurance.html'
+    selector: 'add-insurance',
+    templateUrl: './add-insurance.html'
 })
 
 
-export class EditInsuranceComponent implements OnInit {
-    caseDetail: Case[];
-    referredToMe: boolean = false;
-    insuranceMasters: InsuranceMaster[];
-    insuranceMastersAdress: Address;
-    insuranceMaster: InsuranceMaster;
-    policyCellPhone: string;
-    policyFaxNo: string;
-    insuranceCellPhone: string;
-    insuranceFaxNo: string;
+export class AddInsuranceComponent implements OnInit {
     states: any[];
+    insuranceMasters: InsuranceMaster[];
+    insuranceMaster: InsuranceMaster;
+    insuranceMastersAdress: Address;
     policyCities: any[];
     insuranceCities: any[];
-    selectedPolicyCity;
-    selectedInsuranceCity;
-    insurance: Insurance;
-    policyAddress = new Address({});
-    policyContact = new Contact({});
-    insuranceAddress = new Address({});
-    insuranceContact = new Contact({});
-    patientId: number;
+    caseId: number;
+    selectedCity = 0;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
+    // msgs: Message[];
     uploadedFiles: any[] = [];
 
     insuranceform: FormGroup;
@@ -68,72 +51,28 @@ export class EditInsuranceComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
-        private _phoneFormatPipe: PhoneFormatPipe,
-        private _faxNoFormatPipe: FaxNoFormatPipe,
-        private _elRef: ElementRef,
-        private _casesStore: CasesStore
+        private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
-            this._progressBarService.show();
-            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-            caseResult.subscribe(
-                (cases: Case[]) => {
-                    this.caseDetail = cases;
-                    if (this.caseDetail.length > 0) {
-                        let matchedCompany = null;
-                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-                        })
-                        if (matchedCompany) {
-                            this.referredToMe = true;
-                        } else {
-                            this.referredToMe = false;
-                        }
-                    } else {
-                        this.referredToMe = false;
-                    }
-
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            this.caseId = parseInt(routeParams.caseId);
         });
-        this._route.params.subscribe((routeParams: any) => {
-            let insuranceId: number = parseInt(routeParams.id);
-            this._progressBarService.show();
-            let result = this._insuranceStore.fetchInsuranceById(insuranceId);
-            result.subscribe(
-                (insurance: any) => {
-                    this.insurance = insurance.toJS();
+        //  this._insuranceStore.getInsurancesMaster()
+        //     .subscribe(
+        //     (insuranceMasters) => {
+        //         this.insuranceMasters = insuranceMasters;
+        //         this.insuranceMasters.forEach(element => {
+        //             this.insuranceMastersAdress = element.Address
+        //         });
+        //     });
 
-                    this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
-                    this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
-                    this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
-                    this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
-                    this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
-
-                },
-                (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
 
         this.insuranceform = this.fb.group({
-            policyNo: ['', Validators.required],
+            policyNumber: ['', Validators.required],
             policyOwner: ['', Validators.required],
             policyHoldersName: ['', Validators.required],
             insuranceCompanyCode: [''],
-            insuranceType: ['', Validators.required],
             insuranceMasterId: ['', Validators.required],
+            insuranceType: ['', Validators.required],
             contactPerson: ['', Validators.required],
             policyAddress: ['', Validators.required],
             policyAddress2: [''],
@@ -146,21 +85,21 @@ export class EditInsuranceComponent implements OnInit {
             policyHomePhone: [''],
             policyWorkPhone: [''],
             policyFaxNo: [''],
-            policyOfficeExtension: [''],
-            policyAlternateEmail: ['', [AppValidators.emailValidator]],
-            policyPreferredCommunication: [''],
-            address: [],
-            address2: [],
-            state: [],
-            city: [],
-            zipcode: [],
-            country: [],
+            policyOfficeExtension:[''],
+            policyAlternateEmail:['', [ AppValidators.emailValidator]],
+            policyPreferredCommunication:[''],
+            address: [''],
+            address2: [''],
+            state: [''],
+            city: [''],
+            zipcode: [''],
+            country: [''],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
             homePhone: [''],
             workPhone: [''],
             faxNo: [''],
-            alternateEmail: ['', [AppValidators.emailValidator]],
+            alternateEmail:  ['', [AppValidators.emailValidator]],
             officeExtension: [''],
             preferredCommunication: ['']
         });
@@ -170,49 +109,51 @@ export class EditInsuranceComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
-
     }
 
     selectInsurance(event) {
+        // this.selectedInsurance = 0;
         let currentInsurance: number = parseInt(event.target.value);
-        if (currentInsurance !== 0) {
-            this.loadInsuranceMasterAddress(currentInsurance);
-        } else {
-            this.insuranceMastersAdress = null
-        }
-    }
-    onUpload(event) {
-
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
+        this.loadInsuranceMasterAddress(currentInsurance);
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
+        if (currentInsurance) {
         this._insuranceStore.getInsuranceMasterById(currentInsurance)
             .subscribe(
             (insuranceMaster) => {
                 this.insuranceMaster = insuranceMaster;
                 this.insuranceMastersAdress = insuranceMaster.Address
             });
+        } else {
+            this.insuranceMaster = null;
+            this.insuranceMastersAdress = null;
+        }
     }
+
+      onUpload(event) {
+
+        for(let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+
+    }
+
     save() {
         this.isSaveProgress = true;
         let insuranceformValues = this.insuranceform.value;
         let result;
         let insurance = new Insurance({
-            id: this.insurance.id,
-            patientId: this.patientId,
+            caseId: this.caseId,
             policyHoldersName: insuranceformValues.policyHoldersName,
             policyOwnerId: insuranceformValues.policyOwner,
-            policyNo: insuranceformValues.policyNo,
+            policyNo: insuranceformValues.policyNumber,
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
             insuranceType: insuranceformValues.insuranceType,
-            insuranceMasterId: parseInt(insuranceformValues.insuranceMasterId),
+            insuranceMasterId: insuranceformValues.insuranceMasterId,
             policyContact: new Contact({
                 cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
                 emailAddress: insuranceformValues.policyEmail,
@@ -243,22 +184,28 @@ export class EditInsuranceComponent implements OnInit {
                 preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
+                address1: insuranceformValues.address,
+                address2: insuranceformValues.address2,
+                city: insuranceformValues.city,
+                country: insuranceformValues.country,
+                state: insuranceformValues.state,
+                zipCode: insuranceformValues.zipCode
             })
         });
         this._progressBarService.show();
-        result = this._insuranceStore.updateInsurance(insurance);
+        result = this._insuranceStore.addInsurance(insurance);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Insurance updated successfully!',
+                    'title': 'Insurance added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to update insurance.';
+                let errString = 'Unable to add insurance.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

@@ -183,7 +183,6 @@
                 </div>
                 <div class="col-lg-4">
                     <label class="form-label"> State
-                                <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                         <select formControlName="policyState" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
@@ -211,25 +210,8 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="col-lg-3">
-                    <label class="form-label"> City
-                            </label>
-                    <div class="form-group" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
-                        <select formControlName="policyCity" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
-                            <option value="">-Select City-</option>
-                            <option *ngFor="let city of policyCities" value="{{city.citytext}}">{{city.citytext}}</option>
-                        </select>
-                        <div class='error-list' *ngIf="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.policyCity.hasError('required')">City is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-1 m-t-lg"><loader [visible]="isPolicyCitiesLoading"></loader></div>-->
                 <div class="col-lg-4">
                     <label class="form-label"> Zip code
-                                <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyZipCode.touched && !insuranceformControls.policyZipCode.valid">
                         <input formControlName="policyZipCode" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyZipCode.valid">
@@ -242,10 +224,8 @@
                 </div>
                 <div class="col-lg-4">
                     <label class="form-label"> Country
-                                <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
-                        <!--<input formControlName="policyCountry" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyCountry.valid">-->
                         <select formControlName="policyCountry" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
@@ -322,7 +302,6 @@
             <div class="row">  
                  <div class="col-lg-4">
                     <label class="form-label">Insurance Photo
-                                <!--<span class="color-red">*</span>-->
                             </label>
                 <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" 
                     multiple="multiple" accept="image/*" maxFileSize="1000000">
@@ -333,33 +312,6 @@
                         </ng-template>        
                 </p-fileUpload>
                  </div>  
-                 <!--<div class="col-lg-4">
-                    <label class="form-label">Insurance Photo Back
-                                <span class="color-red">*</span>
-                            </label>
-                <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" 
-                    multiple="multiple" accept="image/*" maxFileSize="1000000">
-                        <ng-template pTemplate type="content">
-                            <ul *ngIf="uploadedFiles.length">
-                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                            </ul>
-                        </ng-template>        
-                </p-fileUpload>
-                 </div>-->
-                <!--<div class="col-lg-4">
-                    <label class="form-label">Contact Person
-                                <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
-                        <input type="text" formControlName="contactPerson" [class.error]="!insuranceformControls.contactPerson.valid" class="form-control"
-                            type="text" placeholder="" />
-                        <div class='error-list' *ngIf="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.contactPerson.hasError('required')">Contact Person is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>-->
             </div>
         </div>
     </section>

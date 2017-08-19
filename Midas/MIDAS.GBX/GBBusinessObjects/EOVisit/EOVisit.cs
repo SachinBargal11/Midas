@@ -39,13 +39,13 @@ namespace MIDAS.GBX.BusinessObjects
         public CalendarEvent CalendarEvent { get; set; }
 
         [JsonProperty("doctor")]
-        public Doctor Doctor { get; set; }
-
-        [JsonProperty("insuranceProvider")]
-        public Company Company { get; set; }
+        public Doctor Doctor { get; set; }        
 
         [JsonProperty("medicalProvider")]
-        public Company Company1 { get; set; }
+        public Company Company { get; set; }
+
+        [JsonProperty("insuranceMaster")]
+        public InsuranceMaster InsuranceMaster { get; set; }
 
     }
 }

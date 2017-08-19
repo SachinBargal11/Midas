@@ -7,7 +7,8 @@
     [IsSearchable] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsSearchable] DEFAULT 0, 
     [IsCalendarPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsCalendarPublic] DEFAULT 0,
     [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30, 
-
+    [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3,
+    [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1,
 
     [IsDeleted] [bit] NULL DEFAULT 0,
     [CreateByUserID] [int] NOT NULL,
@@ -34,4 +35,10 @@ GO
 
 /*
 ALTER TABLE [dbo].[UserPersonalSettings] ADD [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30
+*/
+/*
+ALTER TABLE [dbo].[UserPersonalSettings] ADD [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3
+GO
+ALTER TABLE [dbo].[UserPersonalSettings] ADD [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1
+GO
 */

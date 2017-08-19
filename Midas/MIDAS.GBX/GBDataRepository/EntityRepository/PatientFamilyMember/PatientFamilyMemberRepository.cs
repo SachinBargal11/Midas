@@ -31,7 +31,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.PatientFamilyMember patientfamilymemberBO = new BO.PatientFamilyMember();
 
             patientfamilymemberBO.ID = patientfamilymember.Id;
-            patientfamilymemberBO.PatientId = patientfamilymember.PatientId;
+            patientfamilymemberBO.CaseId = patientfamilymember.CaseId;
             patientfamilymemberBO.RelationId = patientfamilymember.RelationId;
             patientfamilymemberBO.FirstName = patientfamilymember.FirstName;
             patientfamilymemberBO.MiddleName = patientfamilymember.MiddleName;
@@ -65,22 +65,49 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientFamilyMembers.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientFamilyMember>();
-            BO.PatientFamilyMember acc_ = Convert<BO.PatientFamilyMember, PatientFamilyMember>(acc);
+            var acc = _context.PatientFamilyMembers.Where(p => p.Id == id 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault<PatientFamilyMember>();
 
-            if (acc_ == null)
+            if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+
+            BO.PatientFamilyMember acc_ = Convert<BO.PatientFamilyMember, PatientFamilyMember>(acc);            
 
             return (object)acc_;
         }
         #endregion
 
         #region Get By Patient Id
-        public override object GetByPatientId(int PatientId)
+        //public override object GetByPatientId(int PatientId)
+        //{
+        //    var acc = _context.PatientFamilyMembers.Include("Patient").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientFamilyMember>();
+
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+
+        //    List<BO.PatientFamilyMember> lstPatientFamilyMember = new List<BO.PatientFamilyMember>();
+        //    //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
+        //    foreach (PatientFamilyMember item in acc)
+        //    {
+        //        lstPatientFamilyMember.Add(Convert<BO.PatientFamilyMember, PatientFamilyMember>(item));
+        //    }
+
+        //    return lstPatientFamilyMember;
+        //}
+        #endregion
+
+        #region Get By Case Id
+        public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.PatientFamilyMembers.Include("Patient").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientFamilyMember>();
+            var acc = _context.PatientFamilyMembers.Include("Patient")
+                                                   .Where(p => p.CaseId == CaseId 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .ToList<PatientFamilyMember>();
 
             if (acc == null)
             {
@@ -88,7 +115,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
             List<BO.PatientFamilyMember> lstPatientFamilyMember = new List<BO.PatientFamilyMember>();
-            //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
+
             foreach (PatientFamilyMember item in acc)
             {
                 lstPatientFamilyMember.Add(Convert<BO.PatientFamilyMember, PatientFamilyMember>(item));
@@ -128,7 +155,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     if (patientfamilymemberBO.PrimaryContact.HasValue == true && patientfamilymemberBO.PrimaryContact == true)
                     {
-                        var existingPatientInfoDB = _context.PatientFamilyMembers.Where(p => p.PatientId == patientfamilymemberBO.PatientId).ToList();
+                        var existingPatientInfoDB = _context.PatientFamilyMembers.Where(p => p.CaseId == patientfamilymemberBO.CaseId).ToList();
                         existingPatientInfoDB.ForEach(p => p.PrimaryContact = false);
                     }
 
@@ -148,7 +175,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     if (IsEditMode == false)
                     {
-                        patientfamilymemberDB.PatientId = patientfamilymemberBO.PatientId;
+                        patientfamilymemberDB.CaseId = patientfamilymemberBO.CaseId;
                     }
                     
                     patientfamilymemberDB.RelationId = (IsEditMode == true && patientfamilymemberBO.RelationId <= 0) ? patientfamilymemberDB.RelationId : patientfamilymemberBO.RelationId;

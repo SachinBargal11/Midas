@@ -45,7 +45,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id);
         HttpResponseMessage CancleVisit(HttpRequestMessage request, int id);
         HttpResponseMessage CancleCalendarEvent(HttpRequestMessage request, int id);
-        HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
+        //HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
         HttpResponseMessage GetByLocationId(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
@@ -69,5 +69,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetOpenCaseCompaniesByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId);
         HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart);
+        HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
     }
 }
