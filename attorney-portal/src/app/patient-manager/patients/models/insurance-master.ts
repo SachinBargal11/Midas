@@ -12,7 +12,12 @@ const InsuranceMasterRecord = Record({
     companyName: '',
     Address: null,
     Contact: null,
-    adjusterMasters: null
+    adjusterMasters: null,
+    Only1500Form: '',
+    paperAuthorization: '',
+    priorityBilling: '',
+    zeusID: 0,
+    createdByCompanyId: 0
 
 });
 
@@ -25,6 +30,11 @@ export class InsuranceMaster extends InsuranceMasterRecord {
     Address: Address;
     Contact: Contact;
     adjusterMasters: Adjuster;
+    Only1500Form: string;
+    paperAuthorization: string;
+    priorityBilling: string;
+    zeusID: number;
+    createdByCompanyId: number;
 
 
     constructor(props) {

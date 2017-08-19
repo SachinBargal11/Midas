@@ -1,3 +1,4 @@
+// import { PendingReferral } from '../../referals/models/pending-referral';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -7,15 +8,16 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
-import { Insurance } from '../models/insurance';
-import { InsuranceMaster } from '../models/insurance-master';
-import { InsuranceStore } from '../stores/insurance-store';
-import { PatientsStore } from '../stores/patients-store';
+import { Insurance } from '../../patients/models/insurance';
+import { InsuranceMaster } from '../../patients/models/insurance-master';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import { Case } from '../../cases/models/case';
@@ -47,7 +49,7 @@ export class EditInsuranceComponent implements OnInit {
     policyContact = new Contact({});
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
-    patientId: number;
+    caseId: number;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
     uploadedFiles: any[] = [];
@@ -72,32 +74,34 @@ export class EditInsuranceComponent implements OnInit {
         private _casesStore: CasesStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.caseId = parseInt(routeParams.caseId);
             this._progressBarService.show();
-            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-            caseResult.subscribe(
-                (cases: Case[]) => {
-                    this.caseDetail = cases;
-                    if (this.caseDetail.length > 0) {
-                        this.caseDetail[0].referral.forEach(element => {
-                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
-                                this.referredToMe = true;
-                            } else {
-                                this.referredToMe = false;
-                            }
-                        })
-                    } else {
-                        this.referredToMe = false;
-                    }
+            // let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            // caseResult.subscribe(
+            //     (cases: Case[]) => {
+            //         this.caseDetail = cases;
+            //         if (this.caseDetail.length > 0) {
+            //             let matchedCompany = null;
+            //             matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+            //                 return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+            //             })
+            //             if (matchedCompany) {
+            //                 this.referredToMe = true;
+            //             } else {
+            //                 this.referredToMe = false;
+            //             }
+            //         } else {
+            //             this.referredToMe = false;
+            //         }
 
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            //     },
+            //     (error) => {
+            //         this._router.navigate(['../'], { relativeTo: this._route });
+            //         this._progressBarService.hide();
+            //     },
+            //     () => {
+            //         this._progressBarService.hide();
+            //     });
         });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
@@ -167,7 +171,7 @@ export class EditInsuranceComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
 
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
 
     }
@@ -201,7 +205,7 @@ export class EditInsuranceComponent implements OnInit {
         let result;
         let insurance = new Insurance({
             id: this.insurance.id,
-            patientId: this.patientId,
+            caseId: this.caseId,
             policyHoldersName: insuranceformValues.policyHoldersName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNo,
