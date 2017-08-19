@@ -7,16 +7,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using MIDAS.GBX.PatientWebAPI.RequestHandler;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/PatientInsuranceInfo")]
+    [RoutePrefix("midaspatientapi/PatientInsuranceInfo")]
 
-    public class InsuranceController : ApiController
+    public class PatientInsuranceInfoController : ApiController
     {
         private IRequestHandler<PatientInsuranceInfo> requestHandler;
 
-        public InsuranceController()
+        public PatientInsuranceInfoController()
         {
             requestHandler = new GbApiRequestHandler<PatientInsuranceInfo>();
         }
@@ -30,13 +31,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
-
         [HttpGet]
-        [Route("getByCaseId/{caseId}")]
+        [Route("getByPatientId/{PatientId}")]
         //[AllowAnonymous]
-        public HttpResponseMessage GetByCaseId(int caseId)
+        public HttpResponseMessage GetByPatientId(int PatientId)
         {
-            return requestHandler.GetByCaseId(Request, caseId);
+            return requestHandler.GetByPatientId(Request, PatientId);
         }
 
         //[HttpGet]
@@ -48,7 +48,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //}
 
         [HttpPost]
-        [Route("save")]
+        [Route("Save")]
         //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PatientInsuranceInfo data)
         {
@@ -56,15 +56,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
         //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
         }
-
-
 
         protected override void Dispose(bool disposing)
         {

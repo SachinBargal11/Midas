@@ -7,36 +7,32 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using MIDAS.GBX.PatientWebAPI.RequestHandler;
 
-namespace MIDAS.GBX.PatientWebAPI.Controllers
+namespace MIDAS.GBX.WebAPI.Controllers
 {
-    [RoutePrefix("midaspatientapi/PatientInsuranceInfo")]
-
-    public class InsuranceController : ApiController
+    [RoutePrefix("midasapi/PatientInsuranceInfo")]
+    public class PatientInsuranceInfoController : ApiController
     {
         private IRequestHandler<PatientInsuranceInfo> requestHandler;
 
-        public InsuranceController()
+        public PatientInsuranceInfoController()
         {
             requestHandler = new GbApiRequestHandler<PatientInsuranceInfo>();
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
+
         [HttpGet]
-        [Route("getByPatientId/{PatientId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage GetByPatientId(int PatientId)
+        [Route("getByCaseId/{caseId}")]
+        public HttpResponseMessage GetByCaseId(int caseId)
         {
-            return requestHandler.GetByPatientId(Request, PatientId);
+            return requestHandler.GetByCaseId(Request, caseId);
         }
 
         //[HttpGet]
@@ -48,8 +44,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         //}
 
         [HttpPost]
-        [Route("Save")]
-        //[AllowAnonymous]
+        [Route("save")]
         public HttpResponseMessage Post([FromBody]PatientInsuranceInfo data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -57,7 +52,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("Delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
