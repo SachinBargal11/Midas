@@ -32,7 +32,7 @@ export class EditFamilyMemberComponent implements OnInit {
     familyMemberFormControls;
     isSaveProgress = false;
     familyMember: FamilyMember;
-
+    patientId: number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -46,29 +46,35 @@ export class EditFamilyMemberComponent implements OnInit {
         private _elRef: ElementRef,
         private _casesStore: CasesStore
     ) {
+
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = parseInt(routeParams.patientId);
+        });
+
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId);
+            this.caseId = parseInt(routeParams.caseId);          
             this._progressBarService.show();
-            let caseResult;//= this._casesStore.getOpenCaseForPatient(this.patientId);
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             caseResult.subscribe(
                 (cases: Case[]) => {
-                    // this.caseDetail = cases;
-                    // if (this.caseDetail.length > 0) {
-                    //     let matchedCompany = null;
-                    //     matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-                    //         return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-                    //     })
-                    //     if (matchedCompany) {
-                    //         this.referredToMe = true;
-                    //     } else {
-                    //         this.referredToMe = false;
-                    //     }
-                    // } else {
-                    //     this.referredToMe = false;
-                    // }
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        let matchedCompany = null;
+                        matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+                            return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+                        })
+                        if (matchedCompany) {
+                            this.referredToMe = true;
+                        } else {
+                            this.referredToMe = false;
+                        }
+                    } else {
+                        this.referredToMe = false;
+                    }
 
                     this._route.params.subscribe((routeParams: any) => {
                         let familyMemberId: number = parseInt(routeParams.id);
+                        debugger;
                         let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
                         result.subscribe(
                             (familyMember: any) => {
