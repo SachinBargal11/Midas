@@ -31,6 +31,9 @@ import { BillingInfoComponent } from './components/billing';
 import { PaymentListComponent } from './components/payment-list';
 import { CaseBasicLabelComponent } from './components/case-basic-label';
 import { CaseEmployerComponent } from '../cases/components/employer';
+import { InsuranceListComponent } from './components/insurance-list';
+import { AddInsuranceComponent } from './components/add-insurance';
+import { EditInsuranceComponent } from './components/edit-insurance';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -326,30 +329,64 @@ export const CasesShellRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'insurance-mapping',
-                        component: InsuranceMappingComponent,
+                        path: 'insurances',
+                        component: InsuranceListComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance'
+                            breadcrumb: 'Insurances'
                         }
                     },
                     {
-                        path: 'insurance-mapping',
+                        path: 'insurances',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance'
+                            breadcrumb: 'Insurances'
                         },
                         children: [
                             {
-                                path: 'assign',
-                                component: AssignInsuranceComponent,
+                                path: 'add',
+                                component: AddInsuranceComponent,
+                                canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'Assign Insurance'
+                                    breadcrumb: 'Add Insurance'
                                 }
                             },
+                            {
+                                path: 'edit/:id',
+                                component: EditInsuranceComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Insurance'
+                                }
+                            }
                         ]
                     },
+                    // {
+                    //     path: 'insurance-mapping',
+                    //     component: InsuranceMappingComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Insurance'
+                    //     }
+                    // },
+                    // {
+                    //     path: 'insurance-mapping',
+                    //     component: ShellComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Insurance'
+                    //     },
+                    //     children: [
+                    //         {
+                    //             path: 'assign',
+                    //             component: AssignInsuranceComponent,
+                    //             data: {
+                    //                 breadcrumb: 'Assign Insurance'
+                    //             }
+                    //         },
+                    //     ]
+                    // },
                     {
                         path: 'employer',
                         component: CaseEmployerComponent,

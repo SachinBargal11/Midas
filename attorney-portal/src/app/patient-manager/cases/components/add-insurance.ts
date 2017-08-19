@@ -12,10 +12,10 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
-import { Insurance } from '../models/insurance';
-import { InsuranceMaster } from '../models/insurance-master';
-import { InsuranceStore } from '../stores/insurance-store';
-import { PatientsStore } from '../stores/patients-store';
+import { Insurance } from '../../patients/models/insurance';
+import { InsuranceMaster } from '../../patients/models/insurance-master';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 
 @Component({
     selector: 'add-insurance',
@@ -30,7 +30,7 @@ export class AddInsuranceComponent implements OnInit {
     insuranceMastersAdress: Address;
     policyCities: any[];
     insuranceCities: any[];
-    patientId: number;
+    caseId: number;
     selectedCity = 0;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
@@ -54,7 +54,7 @@ export class AddInsuranceComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.caseId = parseInt(routeParams.caseId);
         });
         //  this._insuranceStore.getInsurancesMaster()
         //     .subscribe(
@@ -109,7 +109,7 @@ export class AddInsuranceComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
@@ -139,55 +139,14 @@ export class AddInsuranceComponent implements OnInit {
             this.uploadedFiles.push(file);
         }
 
-          //this.msgs = [];
-        //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
     }
-
-
-
-    // selectPolicyState(event) {
-    //     this.selectedCity = 0;
-    //     let currentState = event.target.value;
-    //     this.loadPolicyCities(currentState);
-    // }
-
-    // loadPolicyCities(stateName) {
-    //     this.isPolicyCitiesLoading = true;
-    //     if (stateName !== '') {
-    //         this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.policyCities = cities; },
-    //             null,
-    //             () => { this.isPolicyCitiesLoading = false; });
-    //     } else {
-    //         this.policyCities = [];
-    //         this.isPolicyCitiesLoading = false;
-    //     }
-    // }
-    // selectInsuranceState(event) {
-    //     this.selectedCity = 0;
-    //     let currentState = event.target.value;
-    //     this.loadInsuranceCities(currentState);
-    // }
-
-    // loadInsuranceCities(stateName) {
-    //     this.isInsuranceCitiesLoading = true;
-    //     if (stateName !== '') {
-    //         this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.insuranceCities = cities; },
-    //             null,
-    //             () => { this.isInsuranceCitiesLoading = false; });
-    //     } else {
-    //         this.insuranceCities = [];
-    //         this.isInsuranceCitiesLoading = false;
-    //     }
-    // }
 
     save() {
         this.isSaveProgress = true;
         let insuranceformValues = this.insuranceform.value;
         let result;
         let insurance = new Insurance({
-            patientId: this.patientId,
+            caseId: this.caseId,
             policyHoldersName: insuranceformValues.policyHoldersName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNumber,
