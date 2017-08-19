@@ -34,6 +34,10 @@ import { CaseEmployerComponent } from '../cases/components/employer';
 import { InsuranceListComponent } from './components/insurance-list';
 import { AddInsuranceComponent } from './components/add-insurance';
 import { EditInsuranceComponent } from './components/edit-insurance';
+import { AddFamilyMemberComponent } from './components/add-family-member';
+import { FamilyMemberListComponent } from './components/family-member-list';
+import { EditFamilyMemberComponent } from './components/edit-family-member';
+
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -387,6 +391,41 @@ export const CasesShellRoutes: Routes = [
                     //         },
                     //     ]
                     // },
+                    {
+                        path: 'family-members',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Family Members'
+                        },
+                        children: [
+                            {
+                                path: '',
+                                component: FamilyMemberListComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'add',
+                                component: AddFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Family Member'
+                                }
+                            },
+                            {
+                                path: 'edit/:id',
+                                component: EditFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Family Member'
+                                }
+                            }
+                        ]
+                    },
+
                     {
                         path: 'employer',
                         component: CaseEmployerComponent,

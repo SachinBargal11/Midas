@@ -141,40 +141,40 @@ export const PatientsShellRoutes: Routes = [
                     //         }
                     //     ]
                     // },
-                    {
-                        path: 'family-members',
-                        component: ShellComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Family Members'
-                        },
-                        children: [
-                            {
-                                path: '',
-                                component: FamilyMemberListComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'root'
-                                }
-                            },
-                            {
-                                path: 'add',
-                                component: AddFamilyMemberComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Add Family Member'
-                                }
-                            },
-                            {
-                                path: 'edit/:id',
-                                component: EditFamilyMemberComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Edit Family Member'
-                                }
-                            }
-                        ]
-                    },
+                    // {
+                    //     path: 'family-members',
+                    //     component: ShellComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Family Members'
+                    //     },
+                    //     children: [
+                    //         {
+                    //             path: '',
+                    //             component: FamilyMemberListComponent,
+                    //             canActivate: [ValidateActiveSession],
+                    //             data: {
+                    //                 breadcrumb: 'root'
+                    //             }
+                    //         },
+                    //         {
+                    //             path: 'add',
+                    //             component: AddFamilyMemberComponent,
+                    //             canActivate: [ValidateActiveSession],
+                    //             data: {
+                    //                 breadcrumb: 'Add Family Member'
+                    //             }
+                    //         },
+                    //         {
+                    //             path: 'edit/:id',
+                    //             component: EditFamilyMemberComponent,
+                    //             canActivate: [ValidateActiveSession],
+                    //             data: {
+                    //                 breadcrumb: 'Edit Family Member'
+                    //             }
+                    //         }
+                    //     ]
+                    // },
                     // {
                     //     path: 'employer',
                     //     component: PatientEmployerComponent,
