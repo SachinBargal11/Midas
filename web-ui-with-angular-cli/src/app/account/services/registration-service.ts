@@ -26,7 +26,7 @@ export class RegistrationService {
             requestData = _.omit(requestData, 'companies', 'subscriptionPlan', 'accountStatus');
             // requestData = _.omit(requestData, 'accountStatus');
             console.log(requestData);
-            return this._http.post(this._url + '/Company/Signup', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Company/Signup', JSON.stringify(requestData), {
                 headers: headers
             }).map(res => res.json()).subscribe((data) => {
                 resolve(data);

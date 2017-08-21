@@ -67,10 +67,10 @@ export class DocumentUploadService {
 
     getDocumentObjectType(companyId: Number, currentId: number): Observable<DocumentType[]> {
         let promise: Promise<DocumentType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/DocumentNodeObjectMapping/getByObjectType/' + currentId + '/' + companyId, {
                 headers: this._headers
             })
-                // return this._http.get(this._url + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
+                // return this._http.get(environment.SERVICE_BASE_URL + '/DocumentNodeObjectMapping/getByObjectType/2/' + companyId)
                 
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {

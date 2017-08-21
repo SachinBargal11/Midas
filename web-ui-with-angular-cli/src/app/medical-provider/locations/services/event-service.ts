@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { MyEvent } from '../models/my-event';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class EventService {
@@ -19,7 +20,7 @@ export class EventService {
     }
     getEvent(eventId: Number): Observable<MyEvent> {
         let promise: Promise<MyEvent> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + eventId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '?id=' + eventId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
@@ -38,7 +39,7 @@ export class EventService {
 
     getEvents(): Observable<MyEvent[]> {
         let promise: Promise<MyEvent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url, {
+            return this._http.get(environment.SERVICE_BASE_URL, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -53,7 +54,7 @@ export class EventService {
     }
     addEvent(event: MyEvent): Observable<MyEvent> {
         let promise: Promise<MyEvent> = new Promise((resolve, reject) => {
-            return this._http.post(this._url, JSON.stringify(event), {
+            return this._http.post(environment.SERVICE_BASE_URL, JSON.stringify(event), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -67,7 +68,7 @@ export class EventService {
     }
     updateEvent(event: MyEvent): Observable<MyEvent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.put(`${this._url}/${event.id}`, JSON.stringify(event), {
+            return this._http.put(`${environment.SERVICE_BASE_URL}/${event.id}`, JSON.stringify(event), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -81,7 +82,7 @@ export class EventService {
     }
     deleteEvent(event: MyEvent): Observable<MyEvent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${event.id}`, {
+            return this._http.delete(`${environment.SERVICE_BASE_URL}/${event.id}`, {
                 headers: this._headers
             })
                 .map(res => res.json())

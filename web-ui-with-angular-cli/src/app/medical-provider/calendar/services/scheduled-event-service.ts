@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as RRule from 'rrule';
 import * as moment from 'moment';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class ScheduledEventService {
@@ -22,7 +23,7 @@ export class ScheduledEventService {
 
     getEvents(): Observable<ScheduledEvent[]> {
         let promise: Promise<ScheduledEvent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url, {
+            return this._http.get(environment.SERVICE_BASE_URL, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -48,7 +49,7 @@ export class ScheduledEventService {
                 recurrenceException: ''
             });
             //  requestData = _.omit(requestData, 'transportProviderId');
-            return this._http.post(this._url, JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL, JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -75,7 +76,7 @@ export class ScheduledEventService {
             });
             // requestData = _.omit(requestData, 'transportProviderId');
 
-            return this._http.put(`${this._url}/${event.id}`, JSON.stringify(requestData), {
+            return this._http.put(`${environment.SERVICE_BASE_URL}/${event.id}`, JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -91,7 +92,7 @@ export class ScheduledEventService {
     }
     deleteEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${event.id}`, {
+            return this._http.delete(`${environment.SERVICE_BASE_URL}/${event.id}`, {
                 headers: this._headers
             })
                 .map(res => res.json())

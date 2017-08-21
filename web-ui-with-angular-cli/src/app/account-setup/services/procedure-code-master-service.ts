@@ -27,7 +27,7 @@ export class ProcedureCodeMasterService {
 
     getProcedureCodeBySpecialtyExcludingAssigned(specialityId: number, companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getProcedureCodeBySpecialtyExcludingAssigned/' + specialityId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCode/getProcedureCodeBySpecialtyExcludingAssigned/' + specialityId + '/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -45,7 +45,7 @@ export class ProcedureCodeMasterService {
 
     getProcedureCodeByRoomTestExcludingAssigned(roomTestId: number, companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getProcedureCodeByRoomTestExcludingAssigned/' + roomTestId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCode/getProcedureCodeByRoomTestExcludingAssigned/' + roomTestId + '/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -65,7 +65,7 @@ export class ProcedureCodeMasterService {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/ProcedureCodeCompanyMapping/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {
@@ -79,7 +79,7 @@ export class ProcedureCodeMasterService {
 
     getProceduresByCompanyId(companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyId/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -96,7 +96,7 @@ export class ProcedureCodeMasterService {
     }
     getProceduresByCompanyAndSpecialtyId(companyId: number, specialityId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -114,7 +114,7 @@ export class ProcedureCodeMasterService {
 
     getProceduresByCompanyAndRoomTestId(companyId: number, roomTestId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndRoomTestId/' + companyId + '/' + roomTestId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndRoomTestId/' + companyId + '/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -132,7 +132,7 @@ export class ProcedureCodeMasterService {
 
       deleteProcedureMapping(procedures: Procedure): Observable<Procedure> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/delete/' + procedures.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/delete/' + procedures.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
