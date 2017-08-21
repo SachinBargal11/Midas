@@ -11,7 +11,7 @@ export class ConfigService {
     }
 
     public Load(): Promise<any> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
                 this.http.get('../../../assets/config.json').map(res => res.json())
                     .subscribe((config: any) => {
                         environment.SERVICE_BASE_URL = config.baseUrl;
@@ -21,8 +21,7 @@ export class ConfigService {
                         environment.MP_URL = config.mp_url
                         resolve(environment);
                     }, (error: any) => {
-                        // this._config = new AppConfig();
-                        // resolve(this._config);
+                        reject(new Error('UNABLE_TO_LOAD_CONFIG'));
                     });
             });
     }

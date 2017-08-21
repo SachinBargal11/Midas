@@ -95,12 +95,6 @@ export function createConfig(): SignalRConfiguration {
       deps: [SessionStore],
       multi: true
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: configServiceFactory,
-      deps: [ConfigService],
-      multi: true
-    },
     ConfigService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ValidateActiveSession,

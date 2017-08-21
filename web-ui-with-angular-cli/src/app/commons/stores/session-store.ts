@@ -12,6 +12,7 @@ import * as _ from 'underscore';
 import { UserRole } from "../models/user-role";
 import { environment } from '../../../environments/environment';
 import { Http, Headers, RequestOptionsArgs } from '@angular/http';
+import { ConfigService } from '../../account/services/config-service';
 
 @Injectable()
 export class SessionStore {
@@ -34,7 +35,7 @@ export class SessionStore {
         return this._session;
     }
 
-    constructor(private _authenticationService: AuthenticationService, private _http: Http) {
+    constructor(private _authenticationService: AuthenticationService, private _http: Http, private _configService: ConfigService) {
     }
 
     authenticate() {
@@ -214,6 +215,10 @@ export class SessionStore {
 
     public Load() {
         var result: any;
+        let baseUrl: string;
+        this._configService.Load().then((config: any) => {
+            baseUrl = config.SERVICE_BASE_URL;
+        });
         if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
             var hash = window.location.hash.substr(1);
             result = hash.split('&').reduce(function (result, item) {
@@ -222,9 +227,6 @@ export class SessionStore {
                 return result;
             }, {});
             window.location.assign(this._mpAppDomainUrl + '/#/');
-            // this.getMetaData(result).subscribe(userInfo => {
-            //     let user = userInfo;
-            // });
             var metadata_url = this._identityServerUrl + '/core/.well-known/openid-configuration';
             let promise = new Promise((resolve, reject) => {
                 this.getJson(metadata_url, null)
@@ -238,12 +240,10 @@ export class SessionStore {
                                 let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
                                 if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
                                     let promise = new Promise((resolve, reject) => {
-                                        // window.localStorage.setItem('token', JSON.stringify(result.access_token));
                                         let accessToken: any = 'bearer ' + result.access_token;
                                         // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 600, 'seconds').toString();
                                         let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
-                                        // this._authenticationService.signinWithUserName('m1@allfriendshub.tk', accessToken, tokenExpiresAt, result)
-                                        this._authenticationService.signinWithUserName(userInfo.email, accessToken, tokenExpiresAt, result)
+                                        this._authenticationService.signinWithUserName(baseUrl, userInfo.email, accessToken, tokenExpiresAt, result)
                                             .subscribe((accountData) => {
                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
                                                 this._populateSession(account);
@@ -312,7 +312,6 @@ export class SessionStore {
         return Observable.from(promise);
     }
     getJson(url, token) {
-        // let promise: Promise<any> = new Promise((resolve, reject) => {
         let headers = new Headers();
         if (token) {
             headers.append("Authorization", "Bearer " + token);
@@ -320,13 +319,6 @@ export class SessionStore {
         return this._http.get(url, {
             headers: headers
         }).map(res => res.json());
-        // .subscribe((data: any) => {
-        //     resolve(data);
-        // }, (error) => {
-        //     reject(error);
-        // });
-        // });
-        // return <Observable<any>>Observable.fromPromise(promise);
     }
 }
 export function tokenServiceFactory(config: SessionStore) {

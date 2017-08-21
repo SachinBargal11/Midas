@@ -12,13 +12,14 @@ import * as _ from 'underscore';
 import { UserRole } from "../models/user-role";
 import { environment } from '../../../environments/environment';
 import { Http, Headers, RequestOptionsArgs } from '@angular/http';
+import { ConfigService } from '../../config-service';
 
 @Injectable()
 export class SessionStore {
 
     private _identityServerUrl: string = `${environment.IDENTITY_SERVER_URL}`;
     private _homeUrl: string = `${environment.HOME_URL}`;
-    private _mpAppDomainUrl: string = `${environment.APP_URL}`;
+    private _appDomainUrl: string = `${environment.APP_URL}`;
     @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
     @Output() userCompanyChangeEvent: EventEmitter<{}> = new EventEmitter(true);
 
@@ -34,7 +35,7 @@ export class SessionStore {
         return this._session;
     }
 
-    constructor(private _authenticationService: AuthenticationService, private _http: Http) {
+    constructor(private _authenticationService: AuthenticationService, private _http: Http, private _configService: ConfigService) {
     }
 
     authenticate() {
@@ -210,6 +211,10 @@ export class SessionStore {
 
     public Load() {
         var result: any;
+        let baseUrl: string;
+        this._configService.Load().then((config: any) => {
+            baseUrl = config.baseUrl;
+        });
         if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
             var hash = window.location.hash.substr(1);
             result = hash.split('&').reduce(function (result, item) {
@@ -217,7 +222,7 @@ export class SessionStore {
                 result[parts[0]] = parts[1];
                 return result;
             }, {});
-            window.location.assign(this._mpAppDomainUrl + '/#/');
+            window.location.assign(this._appDomainUrl + '/#/');
             var metadata_url = this._identityServerUrl + '/core/.well-known/openid-configuration';
             let promise = new Promise((resolve, reject) => {
                 this.getJson(metadata_url, null)
@@ -233,11 +238,11 @@ export class SessionStore {
                                     let promise = new Promise((resolve, reject) => {
                                         let accessToken: any = 'bearer ' + result.access_token;
                                         let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
-                                        this._authenticationService.signinWithUserName(userInfo.email, accessToken, tokenExpiresAt, result)
+                                        this._authenticationService.signinWithUserName(baseUrl, userInfo.email, accessToken, tokenExpiresAt, result)
                                             .subscribe((accountData) => {
                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
                                                 this._populateSession(account);
-                                                window.location.assign(this._mpAppDomainUrl + '/#/dashboard');
+                                                window.location.assign(this._appDomainUrl + '/#/dashboard');
                                                 resolve(account);
                                             }, error => {
                                                 window.location.assign(this._homeUrl);
@@ -272,7 +277,7 @@ export class SessionStore {
                 if (window.location.hash != '' && window.location.hash != '#/404') {
                     window.location.assign(window.location.href);
                 } else {
-                    window.location.assign(this._mpAppDomainUrl + '/#/dashboard');
+                    window.location.assign(this._appDomainUrl + '/#/dashboard');
                 }
             } else {
                 window.location.assign(this._homeUrl);
@@ -291,14 +296,14 @@ export class SessionStore {
                 let account: Account = AccountAdapter.parseStoredData(accountData);
                 this._populateSession(account);
                 resolve(this._session);
-                window.location.assign(this._mpAppDomainUrl + '/#/dashboard');
+                window.location.assign(this._appDomainUrl + '/#/dashboard');
             }
             else {
                 reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
                 window.location.assign(this._homeUrl);
             }
         });
-        window.location.assign(this._mpAppDomainUrl + '/#/dashboard');
+        window.location.assign(this._appDomainUrl + '/#/dashboard');
         return Observable.from(promise);
     }
     getJson(url, token) {

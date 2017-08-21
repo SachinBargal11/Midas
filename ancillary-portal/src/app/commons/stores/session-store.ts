@@ -9,10 +9,17 @@ import { Company } from '../../account/models/company';
 import { Account } from '../../account/models/account';
 import { AccountAdapter } from '../../account/services/adapters/account-adapter';
 import * as _ from 'underscore';
+import { UserRole } from "../models/user-role";
+import { environment } from '../../../environments/environment';
+import { Http, Headers, RequestOptionsArgs } from '@angular/http';
+import { ConfigService } from '../../config-service';
 
 @Injectable()
 export class SessionStore {
 
+    private _identityServerUrl: string = `${environment.IDENTITY_SERVER_URL}`;
+    private _homeUrl: string = `${environment.HOME_URL}`;
+    private _appDomainUrl: string = `${environment.APP_URL}`;
     @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
     @Output() userCompanyChangeEvent: EventEmitter<{}> = new EventEmitter(true);
 
@@ -21,12 +28,14 @@ export class SessionStore {
     private __ACCOUNT_STORAGE_KEY__ = 'logged_account';
     private __CURRENT_COMPANY__ = 'current_company';
     private __ACCESS_TOKEN__ = 'access_token';
+    private __TOKEN_EXPIRES_AT__ = 'token_expires_at';
+    private __TOKEN_RESPONSE__ = 'token_response';
 
     public get session(): Session {
         return this._session;
     }
 
-    constructor(private _authenticationService: AuthenticationService) {
+    constructor(private _authenticationService: AuthenticationService, private _http: Http, private _configService: ConfigService) {
     }
 
     authenticate() {
@@ -78,7 +87,9 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
             this._authenticationService.authToken(userId, password, forceLogin).subscribe((data: any) => {
                 let accessToken = 'bearer ' + data.access_token;
-                this._authenticationService.authenticate(userId, password, forceLogin, accessToken).subscribe((account: Account) => {
+                let tokenExpiresAt = moment().add(data.expires_in - 10, 'seconds');
+                // let tokenExpiresAt = moment().add(3600, 'seconds');
+                this._authenticationService.authenticate(userId, password, forceLogin, accessToken, tokenExpiresAt).subscribe((account: Account) => {
                     if (!forceLogin) {
                         window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
                     } else {
@@ -113,10 +124,21 @@ export class SessionStore {
     // }
 
     logout() {
-        this._resetSession();
+        let tokenResponse = this.session.tokenResponse;
+        this.session.account = null;
+        // this._resetSession();
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
         window.localStorage.removeItem(this.__CURRENT_COMPANY__);
         window.localStorage.removeItem(this.__ACCESS_TOKEN__);
+        window.localStorage.removeItem(this.__TOKEN_EXPIRES_AT__);
+        window.localStorage.removeItem(this.__TOKEN_RESPONSE__);
+        window.onbeforeunload = function (e) {
+            $.connection.hub.stop();
+        };
+        if (tokenResponse) {
+            let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(tokenResponse.id_token);
+            window.location.assign(url);
+        }
     }
 
     authenticatePassword(userName, oldpassword) {
@@ -143,12 +165,16 @@ export class SessionStore {
     private _populateSession(account: Account) {
         this._session.account = account;
         this._session.accessToken = account.accessToken;
+        this._session.tokenExpiresAt = account.tokenExpiresAt;
+        this._session.tokenResponse = account.tokenResponse ? account.tokenResponse : null;
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);
         this._session.currentCompany = company ? company : account.companies[0];
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(this._session.currentCompany));
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
         window.localStorage.setItem(this.__ACCESS_TOKEN__, account.accessToken);
+        window.localStorage.setItem(this.__TOKEN_EXPIRES_AT__, account.tokenExpiresAt);
+        window.localStorage.setItem(this.__TOKEN_RESPONSE__, account.tokenResponse ? JSON.stringify(account.tokenResponse) : null);
     }
 
     private _resetSession() {
@@ -167,7 +193,8 @@ export class SessionStore {
     }
     isOnlyDoctorRole() {
         let isOnlyDoctorRole: boolean = false;
-        let roles = this.session ? this.session.user.roles : null;
+        let roles: UserRole[] = [];
+        roles = (this.session.account && this.session.user) ? this.session.user.roles : [];
         if (roles) {
             if (roles.length === 1) {
                 let doctorRoleOnly = _.find(roles, (currentRole) => {
@@ -184,4 +211,128 @@ export class SessionStore {
         }
         return isOnlyDoctorRole;
     }
+
+    public Load() {
+        var result: any;
+        let baseUrl: string;
+        // this._http.get('../../../assets/config.json').map(res => res.json())
+        //     .subscribe((config: any) => {
+        //         baseUrl = config.baseUrl;
+        //         environment.SERVICE_BASE_URL = config.baseUrl;
+        //         environment.IDENTITY_SERVER_URL = config.identityServerUrl;
+        //         environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
+        //         environment.HOME_URL = config.home_url;
+        //         environment.APP_URL = config.app_url;
+        //         this._identityServerUrl = config.identityServerUrl;
+        //         this._homeUrl = config.home_url;
+        //         this._appDomainUrl = config.app_url;
+        //     }, (error: any) => {
+        //         console.log('Unable get config data');
+        //     });
+        this._configService.Load().then((config: any) => {
+                    baseUrl = config.SERVICE_BASE_URL;            
+        });
+        if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
+            var hash = window.location.hash.substr(1);
+            result = hash.split('&').reduce(function (result, item) {
+                var parts = item.split('=');
+                result[parts[0]] = parts[1];
+                return result;
+            }, {});
+            window.location.assign(this._appDomainUrl + '/#');
+            var metadata_url = this._identityServerUrl + '/core/.well-known/openid-configuration';
+            let promise = new Promise((resolve, reject) => {
+                this.getJson(metadata_url, null)
+                    .subscribe((metadata: any) => {
+                        metadata = metadata;
+                        let promise = new Promise((resolve, reject) => {
+                            this.getJson(metadata.userinfo_endpoint, result.access_token).subscribe((userInfo) => {
+
+                                let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+                                let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+                                let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+                                if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
+                                    let promise = new Promise((resolve, reject) => {
+                                        let accessToken: any = 'bearer ' + result.access_token;
+                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+                                        this._authenticationService.signinWithUserName(baseUrl, userInfo.email, accessToken, tokenExpiresAt, result)
+                                            .subscribe((accountData) => {
+                                                let account: Account = AccountAdapter.parseStoredData(accountData);
+                                                this._populateSession(account);
+                                                window.location.assign(this._appDomainUrl + '/#/dashboard');
+                                                resolve(account);
+                                            }, error => {
+                                                window.location.assign(this._homeUrl);
+                                                reject(error);
+                                            });
+                                    });
+                                    // window.location.assign(this._mpAppDomainUrl + '/#/dashboard');
+                                    return Observable.fromPromise(promise);
+                                } else {
+                                    this._populateTokenSession(result);
+                                }
+                                resolve(userInfo);
+                            }, error => {
+                                window.location.assign(this._homeUrl);
+                                reject(error);
+                            });
+                        });
+                        resolve(metadata);
+                    }, error => {
+                        window.location.assign(this._homeUrl);
+                        reject(error);
+                    });
+            });
+        } else {
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+            if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
+                let storedAccountData: any = JSON.parse(storedAccount);
+                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
+                this._populateSession(account)
+                if (window.location.hash != '' && window.location.hash != '#/404') {
+                    window.location.assign(window.location.href);
+                } else {
+                    window.location.assign(this._appDomainUrl + '/#/dashboard');
+                }
+            } else {
+                window.location.assign(this._homeUrl);
+            }
+        }
+    }
+    private _populateTokenSession(result) {
+        let promise = new Promise((resolve, reject) => {
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            let storedAccessToken: any = 'bearer ' + result.access_token;
+            let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+
+            if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
+                let storedAccountData: any = JSON.parse(storedAccount);
+                let accountData: Account = AccountAdapter.parseResponse(storedAccountData.originalResponse, storedAccessToken, storedTokenExpiresAt, result);
+                let account: Account = AccountAdapter.parseStoredData(accountData);
+                this._populateSession(account);
+                resolve(this._session);
+                window.location.assign(this._appDomainUrl + '/#/dashboard');
+            }
+            else {
+                reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
+                window.location.assign(this._homeUrl);
+            }
+        });
+        window.location.assign(this._appDomainUrl + '/#/dashboard');
+        return Observable.from(promise);
+    }
+    getJson(url, token) {
+        let headers = new Headers();
+        if (token) {
+            headers.append("Authorization", "Bearer " + token);
+        }
+        return this._http.get(url, {
+            headers: headers
+        }).map(res => res.json());
+    }
+}
+export function tokenServiceFactory(config: SessionStore) {
+    return () => config.Load();
 }

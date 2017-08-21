@@ -9,6 +9,10 @@ import { AccountSetupModule } from '../account-setup/account-setup-module';
 import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
 import { MedicalProviderModule } from '../medical-provider/medical-provider-module';
 import { PatientManagerModule } from '../patient-manager/patient-manager-module';
+import { UserSettingStore } from '../commons/stores/user-setting-store';
+import { UserSettingService } from '../commons/services/user-setting-service';
+import { PushNotificationStore } from '../commons/stores/push-notification-store';
+import { PushNotificationService } from '../commons/services/push-notification-service';
 
 @NgModule({
     imports: [
@@ -26,6 +30,10 @@ import { PatientManagerModule } from '../patient-manager/patient-manager-module'
         DashboardComponent
     ],
     providers: [
+        UserSettingStore,
+        UserSettingService,
+        PushNotificationStore,
+        PushNotificationService
     ]
 })
 export class DashboardModule {

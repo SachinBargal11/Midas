@@ -63,16 +63,11 @@ import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
 import { DateFormatPipe } from './commons/pipes/date-format-pipe';
 
-import { UserSettingStore } from './commons/stores/user-setting-store';
-import { UserSettingService } from './commons/services/user-setting-service';
-
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
 import { AssociateUserService } from './commons/services/associate-user-service';
 import { AssociateUserStore } from './commons/stores/associate-user-store';
-import { PushNotificationStore } from './commons/stores/push-notification-store';
-import { PushNotificationService } from './commons/services/push-notification-service';
 // import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
@@ -118,12 +113,6 @@ export function createConfig(): SignalRConfiguration {
       deps: [SessionStore],
       multi: true
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: configServiceFactory,
-      deps: [ConfigService],
-      multi: true
-    },
     ConfigService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ValidateActiveSession,
@@ -160,10 +149,6 @@ export function createConfig(): SignalRConfiguration {
     DiagnosisStore,
     ProcedureService,
     ProcedureStore,
-    UserSettingStore,
-    UserSettingService,
-    PushNotificationStore,
-    PushNotificationService,
     MedicalProviderMasterService,
     MedicalProviderMasterStore,
     AssociateUserService,

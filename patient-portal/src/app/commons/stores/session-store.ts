@@ -11,6 +11,7 @@ import { Company } from '../../account/models/company';
 import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
 import { environment } from '../../../environments/environment';
 import { Http, Headers, RequestOptionsArgs } from '@angular/http';
+import { ConfigService } from '../../config-service';
 
 @Injectable()
 export class SessionStore {
@@ -34,7 +35,7 @@ export class SessionStore {
         return this._session;
     }
 
-    constructor(private _authenticationService: AuthenticationService, private _http: Http) {
+    constructor(private _authenticationService: AuthenticationService, private _http: Http, private _configService: ConfigService) {
     }
 
     authenticate() {
@@ -164,6 +165,10 @@ export class SessionStore {
 
     public Load() {
         var result: any;
+        let baseUrl: string;
+            this._configService.Load().then((config: any) => {
+                baseUrl = config.SERVICE_BASE_URL;
+            });
         if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
             var hash = window.location.hash.substr(1);
             result = hash.split('&').reduce(function (result, item) {
@@ -187,15 +192,15 @@ export class SessionStore {
                                     let promise = new Promise((resolve, reject) => {
                                         let accessToken: any = 'bearer ' + result.access_token;
                                         let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
-                                        this._authenticationService.signinWithUserName(userInfo.email, accessToken, tokenExpiresAt, result)
+                                        this._authenticationService.signinWithUserName(baseUrl, userInfo.email, accessToken, tokenExpiresAt, result)
                                             .subscribe((accountData) => {
                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
                                                 this._populateSession(account);
                                                 window.location.assign(this._appDomainUrl + '/#/patient-manager/profile/viewall');
                                                 resolve(account);
                                             }, error => {
-                                                // window.location.assign(this._homeUrl);
-                                                this.logout();
+                                                window.location.assign(this._homeUrl);
+                                                // this.logout();
                                                 reject(error);
                                             });
                                     });

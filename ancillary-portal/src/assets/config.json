@@ -1,3 +1,7 @@
 {
-    "baseUrl": "http://ancillarydevapi.codearray.tk/midasancillaryapi"
+    "baseUrl": "http://caserver:7008/midasancillaryapi",
+    "identityServerUrl": "https://identityserverdev.codearray.tk",
+    "notificationServerUrl": "http://caserver:7011",
+    "home_url": "http://localhost:4200/home",
+    "app_url": "http://localhost:4201"
 }

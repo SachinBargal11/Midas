@@ -16,9 +16,7 @@ import { SignupAdapter } from '../../account-setup/services/adapters/signup-adap
 export class AuthenticationService {
     companies: any[];
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-
     constructor(private _http: Http) { }
-
     GeneratePasswordResetLink(userDetail: any): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
@@ -161,7 +159,7 @@ export class AuthenticationService {
 
         return <Observable<Account>>Observable.fromPromise(promise);
     }
-    signinWithUserName(email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
+    signinWithUserName(baseUrl: string, email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
@@ -169,7 +167,7 @@ export class AuthenticationService {
             let autheticateRequestData = {
                 'userName': email
             };
-            return this._http.post(this._url + '/User/SigninWithUserName', JSON.stringify(autheticateRequestData), {
+            return this._http.post(baseUrl + '/User/SigninWithUserName', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

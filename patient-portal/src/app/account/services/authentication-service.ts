@@ -134,7 +134,7 @@ export class AuthenticationService {
 
         return <Observable<Account>>Observable.fromPromise(promise);
     }
-    signinWithUserName(email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
+    signinWithUserName(baseUrl: string, email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
@@ -142,7 +142,7 @@ export class AuthenticationService {
             let autheticateRequestData = {
                 'userName': email
             };
-            return this._http.post(this._url + '/User/SigninWithUserName', JSON.stringify(autheticateRequestData), {
+            return this._http.post(baseUrl + '/User/SigninWithUserName', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
