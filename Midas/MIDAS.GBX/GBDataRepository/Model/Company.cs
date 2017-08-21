@@ -30,6 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.EOVisits = new HashSet<EOVisit>();
             this.GeneralSettings = new HashSet<GeneralSetting>();
             this.IMEVisits = new HashSet<IMEVisit>();
+            this.IMEVisits1 = new HashSet<IMEVisit>();
             this.InsuranceMasters = new HashSet<InsuranceMaster>();
             this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
@@ -99,6 +100,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<GeneralSetting> GeneralSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IMEVisit> IMEVisits { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IMEVisit> IMEVisits1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InsuranceMaster> InsuranceMasters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

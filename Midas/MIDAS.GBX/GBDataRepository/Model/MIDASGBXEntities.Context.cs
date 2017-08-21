@@ -70,6 +70,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<InvitationType> InvitationTypes { get; set; }
+        public virtual DbSet<LanguagePreference> LanguagePreferences { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MailTemplate> MailTemplates { get; set; }
@@ -84,6 +85,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        public virtual DbSet<PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappings { get; set; }
+        public virtual DbSet<PatientSocialMediaMapping> PatientSocialMediaMappings { get; set; }
         public virtual DbSet<PatientType> PatientTypes { get; set; }
         public virtual DbSet<PatientVisit> PatientVisits { get; set; }
         public virtual DbSet<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
@@ -105,6 +108,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<RoomTest> RoomTests { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<ScheduleDetail> ScheduleDetails { get; set; }
+        public virtual DbSet<SocialMedia> SocialMedias { get; set; }
         public virtual DbSet<SpecialityDetail> SpecialityDetails { get; set; }
         public virtual DbSet<Specialty> Specialties { get; set; }
         public virtual DbSet<SpecialtyDetail> SpecialtyDetails { get; set; }

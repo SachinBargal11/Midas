@@ -163,10 +163,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getPatientsByCompanyId/{CompanyId}")]
-        public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
+        [Route("getByCompanyId/{CompanyId}")]
+        public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
-            return requestHandler.GetGbObjects(Request, CompanyId);
+            return requestHandler.GetByCompanyId(Request, CompanyId);
         }
 
         [HttpGet]

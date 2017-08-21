@@ -2301,7 +2301,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Company ID For Patient Visit 
-        public override object GetByCompanyId(int CompanyId)
+        public override object GetByCompanyId(int Id)
         {
             var patientVisit = _context.PatientVisits.Include("CalendarEvent")
                                             .Include("Location")
@@ -2311,7 +2311,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("Room.RoomTest")
                                             .Include("Patient")
                                             .Include("Patient.User")
-                                            .Where(p => p.Location.CompanyID == CompanyId
+                                            .Where(p => p.Location.CompanyID == Id
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList<PatientVisit>();
 
