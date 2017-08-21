@@ -431,6 +431,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Master And By CaseId
+        public override object GetMasterAndByCaseId(int CaseId)
+        {
+            var CompanyId = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId && p.IsOriginator == true
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .Select(p => p.CompanyId);
+
+            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo")
+                                               .Where(p => (p.CreatedByCompanyId.HasValue == false || (p.CreatedByCompanyId.HasValue == true && CompanyId.Contains(p.CreatedByCompanyId.Value)))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<InsuranceMaster>();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.InsuranceMaster> acc_ = Convert<List<BO.InsuranceMaster>, List<InsuranceMaster>>(acc);
+                return (object)acc_;
+            }
+        }
+        #endregion
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 

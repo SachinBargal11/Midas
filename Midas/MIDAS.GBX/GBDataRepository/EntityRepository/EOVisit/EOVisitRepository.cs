@@ -433,6 +433,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Patient Id
+        public override object GetByPatientId(int id)
+        {
+            var EOVisit = _context.EOVisits.Include("CalendarEvent")
+                                           .Include("Doctor")
+                                           .Include("Doctor.User")
+                                           .Include("Company")
+                                           .Include("InsuranceMaster")
+                                           .Where(p => p.PatientId == id
+                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList();
+
+            List<BO.EOVisit> boEOVisit = new List<BO.EOVisit>();
+            if (EOVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachVisit in EOVisit)
+                {
+                    boEOVisit.Add(ConvertEOvisit<BO.EOVisit, EOVisit>(EachVisit));
+                }
+
+            }
+
+            return (object)boEOVisit;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
