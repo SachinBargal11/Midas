@@ -118,6 +118,8 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
 // import { PatientVisitShellComponent } from './patient-visit/components/patient-visit-shell';
 import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
+import { UnscheduleVisitComponent } from './patient-visit/components/unschedule-visit';
+
 
 @NgModule({
     imports: [
@@ -189,6 +191,7 @@ import { EoVisitComponent } from './patient-visit/components/eo-visit';
         // PatientVisitShellComponent,
         ImeVisitComponent,
         EoVisitComponent,
+        UnscheduleVisitComponent
 
     ],
     providers: [

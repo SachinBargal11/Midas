@@ -164,9 +164,9 @@ export class ScheduledEventEditorComponent implements OnChanges {
             contactPerson: [''],
             eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
-            // eventEndDate: ['', Validators.required],
-            // eventEndTime: [''],
+            // duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
             // isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({
@@ -333,7 +333,8 @@ export class ScheduledEventEditorComponent implements OnChanges {
         return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
             name: scheduledEventEditorFormValues.name,
             eventStart: moment(this.eventStartAsDate),
-            eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+            eventEnd: moment(this.eventEndAsDate),
+            // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
             recurrenceRule: recurrenceRule ? recurrenceRule : null,
             transportProviderId: parseInt(scheduledEventEditorFormValues.transportProviderId)
         }));

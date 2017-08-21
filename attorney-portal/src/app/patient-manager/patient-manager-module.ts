@@ -112,6 +112,8 @@ import { AvailableSlotsService } from './referals/services/available-slots-servi
 import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
 import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
 
+import { ImeVisitComponent } from './patient-visit/components/ime-visit';
+import { EoVisitComponent } from './patient-visit/components/eo-visit';
 
 @NgModule({
     imports: [
@@ -179,8 +181,9 @@ import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
         PendingReferralsComponent,
         BillingInfoComponent,
         PaymentListComponent,
-        CaseBasicLabelComponent
-
+        CaseBasicLabelComponent,
+        ImeVisitComponent,
+        EoVisitComponent,
 
     ],
     providers: [

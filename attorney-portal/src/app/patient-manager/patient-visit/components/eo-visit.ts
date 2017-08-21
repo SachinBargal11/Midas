@@ -232,7 +232,7 @@ export class EoVisitComponent implements OnInit {
         private _insuranceMasterStore: InsuranceMasterStore,
     ) {
         this.eoScheduleForm = this._fb.group({
-            doctorId: ['', Validators.required],
+            patientId: ['', Validators.required],
             notes: [''],
             insuranceProviderId: [''],
             name: ['', Validators.required],
@@ -263,10 +263,22 @@ export class EoVisitComponent implements OnInit {
             listWeek: { buttonText: 'list week' }
         };
 
-        this._doctorsStore.getDoctorsByCompanyId()
+        // this._doctorsStore.getDoctorsByCompanyId()
+        //     .subscribe(
+        //     (doctor: Doctor[]) => {
+        //         this.doctors = doctor;
+        //     },
+        //     (error) => {
+        //         this._router.navigate(['../'], { relativeTo: this._route });
+        //         this._progressBarService.hide();
+        //     },
+        //     () => {
+        //         this._progressBarService.hide();
+        //     });
+         this._patientsStore.getPatientsWithOpenCases()
             .subscribe(
-            (doctor: Doctor[]) => {
-                this.doctors = doctor;
+            (patient: Patient[]) => {
+                this.patients = patient;
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
@@ -308,7 +320,7 @@ export class EoVisitComponent implements OnInit {
         let eoScheduleFormValues = this.eoScheduleForm.value;
         let result;
         let eo = new EoVisit({
-            doctorId: this.eoScheduleForm.value.doctorId,
+            patientId: this.eoScheduleForm.value.patientId,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
             medicalProviderId: this.sessionStore.session.currentCompany.id,
             notes: this.eoScheduleForm.value.notes,
@@ -321,7 +333,7 @@ export class EoVisitComponent implements OnInit {
         });
 
         this._progressBarService.show();
-        result = this._patientVisitsStore.addEoVisit(eo);
+        // result = this._patientVisitsStore.addEoVisit(eo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

@@ -3,11 +3,11 @@
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">-->
 <form [formGroup]="imeScheduleForm" name="imeScheduleForm" (ngSubmit)="saveEvent()">
     <div class="row">
-        <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
+        <div class="col-md-2"><label class="form-label">Client<span class="color-red">*</span></label></div>
         <div class="col-md-4">
             <div class="form-group" [class.error]="imeScheduleFormControls.patientId && imeScheduleFormControls.patientId.touched && !imeScheduleFormControls.patientId.valid">
                 <select formControlName="patientId" [ngModel]="patientId" class="select2-arrow form-control" (change)="selectPatient($event)">
-                        <option value="null">--Select Patient--</option>
+                        <option value="null">--Select Client--</option>
                         <option *ngFor="let patient of patients" [value]="patient.id">{{patient.user.displayName}}</option>                                       
                     </select>
                 <div class='error-list' *ngIf="imeScheduleFormControls.patientId && imeScheduleFormControls.patientId.touched && !imeScheduleFormControls.patientId.valid">

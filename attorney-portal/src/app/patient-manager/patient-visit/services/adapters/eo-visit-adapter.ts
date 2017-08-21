@@ -1,28 +1,28 @@
-
 import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
-import { ImeVisit } from '../../models/ime-visit';
+import { EoVisit } from '../../models/eo-visit';
 import { ScheduledEventAdapter } from '../../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { PatientAdapter } from '../../../../patient-manager/patients/services/adapters/patient-adapter';
 import { LocationAdapter } from '../../../../medical-provider/users/services/adapters/location-adapter';
+import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
 
-export class ImeVisitAdapter {
-    static parseResponse(data: any): ImeVisit {
+export class EoVisitAdapter {
+    static parseResponse(data: any): EoVisit {
 
-        let imeVisit = null;
+        let eoVisit = null;
 
-        imeVisit = new ImeVisit({
+        eoVisit = new EoVisit({
             id: data.id,
             calendarEventId: data.calendarEventId,
-            // locationId: data.locationId,
-            // location: data.location ? LocationAdapter.parseResponse(data.location) : null,
+            locationId: data.locationId,
+            location: data.location ? LocationAdapter.parseResponse(data.location) : null,
             case: CaseAdapter.parseResponse(data.case),
             caseId: data.caseId,
-            patient: PatientAdapter.parseResponse(data.patient),
-            patientId: data.patientId,
-            doctorName: data.doctorName,
-            transportProviderId: data.transportProviderId,
+            doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
+            doctorId: data.doctorId,
+            insuranceProviderId: data.insuranceProviderId,
+            medicalProviderId: data.medicalProviderId,
             eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
             eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,
             notes: data.notes,
@@ -36,6 +36,6 @@ export class ImeVisitAdapter {
 
         });
 
-        return imeVisit;
+        return eoVisit;
     }
 }

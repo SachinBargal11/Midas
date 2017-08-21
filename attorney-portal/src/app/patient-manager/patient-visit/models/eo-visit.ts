@@ -72,11 +72,7 @@ export class EoVisit extends EoVisitRecord {
     }
 
      get visitDisplayString(): string {
-        let visitInfo: string = ``;
-
-        if (this.doctorId && this.doctor) {
-            visitInfo = `${visitInfo}Doctor Name: ${this.doctor.user.firstName} ${this.doctor.user.lastName}`;
-        }
+        let visitInfo: string = `Eo Visit`;
        
         return visitInfo;
     }
