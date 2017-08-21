@@ -123,6 +123,7 @@ export class PatientVisitComponent implements OnInit {
     isGoingOutOffice: boolean = false;
     isProcedureCode: boolean = false;
     cases:Case[];
+    selectedVisitType = '1';
     // procedures: Procedure[];
     // selectedProcedures: Procedure[];
     // selectedSpeciality: Speciality;

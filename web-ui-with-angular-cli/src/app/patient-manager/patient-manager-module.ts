@@ -14,9 +14,9 @@ import { PatientsListComponent } from './patients/components/patients-list';
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientProfileComponent } from './patients/components/profile-patient';
-import { AddFamilyMemberComponent } from './patients/components/add-family-member';
-import { FamilyMemberListComponent } from './patients/components/family-member-list';
-import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
+import { AddFamilyMemberComponent } from './cases/components/add-family-member';
+import { FamilyMemberListComponent } from './cases/components/family-member-list';
+import { EditFamilyMemberComponent } from './cases/components/edit-family-member';
 import { AccidentInfoComponent } from './cases/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
 import { CaseEmployerComponent } from './cases/components/employer';
@@ -33,12 +33,12 @@ import { PatientsService } from './patients/services/patients-service';
 import { AccidentService } from './cases/services/accident-services';
 import { AttorneyService } from './patients/services/attorney-services';
 import { EmployerService } from './cases/services/employer-service';
-import { FamilyMemberService } from './patients/services/family-member-service';
+import { FamilyMemberService } from './cases/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
 import { ReferringOfficeService } from './cases/services/referring-office-service';
 import { PatientsStore } from './patients/stores/patients-store';
 import { EmployerStore } from './cases/stores/employer-store';
-import { FamilyMemberStore } from './patients/stores/family-member-store';
+import { FamilyMemberStore } from './cases/stores/family-member-store';
 import { AccidentStore } from './cases/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
@@ -118,6 +118,8 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
 // import { PatientVisitShellComponent } from './patient-visit/components/patient-visit-shell';
 import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
+import { UnscheduleVisitComponent } from './patient-visit/components/unschedule-visit';
+
 
 @NgModule({
     imports: [
@@ -189,6 +191,7 @@ import { EoVisitComponent } from './patient-visit/components/eo-visit';
         // PatientVisitShellComponent,
         ImeVisitComponent,
         EoVisitComponent,
+        UnscheduleVisitComponent
 
     ],
     providers: [

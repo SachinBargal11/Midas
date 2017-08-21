@@ -4,7 +4,8 @@
 		<div class="tbl">
 			<ul class="nav" role="tablist" *ngIf="caseDetail">
 				<li class="nav-item">
-					<a class="nav-link" *ngIf="caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basic" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" *ngIf="caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basic" [routerLinkActive]="['active']"
+					 role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Basic
 						</span>
@@ -14,7 +15,8 @@
 					Basic
 						</span>
 					</a>-->
-					<a class="nav-link" *ngIf="!caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basicLabel" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" *ngIf="!caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basicLabel"
+					 [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Basic
 						</span>
@@ -41,6 +43,14 @@
 						</span>
 					</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="family-members" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Family Member
+						</span>
+					</a>
+				</li>
+
 				<li class="nav-item">
 					<a class="nav-link" routerLink="employer" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">

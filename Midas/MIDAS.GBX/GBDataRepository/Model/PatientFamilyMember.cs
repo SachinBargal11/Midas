@@ -15,7 +15,6 @@ namespace MIDAS.GBX.DataRepository.Model
     public partial class PatientFamilyMember
     {
         public int Id { get; set; }
-        public int PatientId { get; set; }
         public byte RelationId { get; set; }
         public string FullName { get; set; }
         public string FamilyName { get; set; }
@@ -37,9 +36,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public int CaseId { get; set; }
     
+        public virtual Case Case { get; set; }
         public virtual Gender Gender { get; set; }
-        public virtual Patient Patient { get; set; }
         public virtual Relation Relation { get; set; }
     }
 }

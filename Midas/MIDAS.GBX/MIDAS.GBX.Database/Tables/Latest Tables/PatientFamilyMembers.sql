@@ -9,7 +9,8 @@ BEGIN
     CREATE TABLE [dbo].[PatientFamilyMembers]
     (
 	    [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [PatientId] [int] NOT NULL,
+	    --[PatientId] [int] NOT NULL,
+        [CaseId] [int] NOT NULL,
 	    [RelationId] [tinyint] NOT NULL,
 	    [FullName] [nvarchar](50) NULL,
 	    [FamilyName] [nvarchar](50) NULL,
@@ -46,11 +47,11 @@ IF EXISTS
 	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 	WHERE	TABLE_SCHEMA = 'dbo'
 	AND		TABLE_NAME = 'PatientFamilyMembers'
-	AND		CONSTRAINT_NAME = 'FK_PatientInsuranceInfo_Patient_PatientId'
+	AND		CONSTRAINT_NAME = 'FK_PatientFamilyMembers_Patient_PatientId'
 )
 BEGIN
-    ALTER TABLE [dbo].[PatientFamilyMembers]  WITH CHECK ADD  CONSTRAINT [FK_PatientFamilyMembers_Patient_PatientId] FOREIGN KEY([PatientId])
-	    REFERENCES [dbo].[Patient] ([Id])
+    ALTER TABLE [dbo].[PatientFamilyMembers]  
+        DROP CONSTRAINT [FK_PatientFamilyMembers_Patient_PatientId]
 END
 GO
 
@@ -79,6 +80,23 @@ BEGIN
     ALTER TABLE [dbo].[PatientFamilyMembers] 
         DROP COLUMN [PatientId]
 END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientFamilyMembers'
+	AND		CONSTRAINT_NAME = 'FK_PatientFamilyMembers_Case_CaseId'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientFamilyMembers] 
+        DROP CONSTRAINT [FK_PatientFamilyMembers_Case_CaseId]
+END
+
+ALTER TABLE [dbo].[PatientFamilyMembers]  WITH CHECK ADD  CONSTRAINT [FK_PatientFamilyMembers_Case_CaseId] FOREIGN KEY([CaseId])
+	REFERENCES [dbo].[Case] ([Id])
 GO
 
 IF EXISTS

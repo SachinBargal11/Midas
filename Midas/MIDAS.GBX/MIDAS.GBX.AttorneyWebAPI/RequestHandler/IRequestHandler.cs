@@ -53,6 +53,7 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
+        HttpResponseMessage CreateGbObject4(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
         //HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
@@ -140,5 +141,9 @@ namespace MIDAS.GBX.AttorneyWebAPI
         //HttpResponseMessage GetByLocationAndAttorneyId(HttpRequestMessage request, int LocationId, int AttorneyId);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId, int CompanyId);
         HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
+        HttpResponseMessage Delete(HttpRequestMessage request, int id, int CompanyId);
+        HttpResponseMessage GetMasterAndByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage CreateGbObject3(HttpRequestMessage request, T gbObject);
     }
 }

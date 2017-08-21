@@ -14,8 +14,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("doctorId")]
         public int? DoctorId { get; set; }
 
-        [JsonProperty("medicalProviderId")]
-        public int? MedicalProviderId { get; set; }
+        [JsonProperty("patientId")]
+        public int? PatientId { get; set; }
+
+        [JsonProperty("visitCreatedByCompanyId")]
+        public int? VisitCreatedByCompanyId { get; set; }
 
         [JsonProperty("insuranceProviderId")]
         public int? InsuranceProviderId { get; set; }
@@ -39,13 +42,13 @@ namespace MIDAS.GBX.BusinessObjects
         public CalendarEvent CalendarEvent { get; set; }
 
         [JsonProperty("doctor")]
-        public Doctor Doctor { get; set; }
-
-        [JsonProperty("insuranceProvider")]
-        public Company Company { get; set; }
+        public Doctor Doctor { get; set; }        
 
         [JsonProperty("medicalProvider")]
-        public Company Company1 { get; set; }
+        public Company Company { get; set; }
+
+        [JsonProperty("insuranceMaster")]
+        public InsuranceMaster InsuranceMaster { get; set; }
 
     }
 }

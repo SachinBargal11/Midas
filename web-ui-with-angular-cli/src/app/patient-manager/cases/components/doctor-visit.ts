@@ -55,7 +55,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
     visitInfo = 'Visit Info';
     visitDialogVisible = false;
     addVisitDialogVisible = false;
-    case:Case;
+    unscheduleVisitDialogVisible = false;
+    case: Case;
     routeFromCase: true;
 
     constructor(
@@ -73,7 +74,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
         private _casesStore: CasesStore,
         public sessionStore: SessionStore
     ) {
-       this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
         this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
@@ -99,7 +100,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-        
+
         // this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
         //     this.caseId = parseInt(routeParams.caseId, 10);
         //     this._progressBarService.show();
@@ -197,8 +198,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.selectedVisitId = visitId;
     }
 
-    AddVisitDialog() {
-     this.addVisitDialogVisible = true;  
+    addVisitDialog() {
+        this.addVisitDialogVisible = true;
     }
 
     closeAddVisitDialog() {
@@ -212,7 +213,14 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
     }
-    
+
+    unscheduleVisitDialog() {
+        this.unscheduleVisitDialogVisible = true;
+    }
+
+     closeDialog() {
+        this.unscheduleVisitDialogVisible = false;
+    }
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {

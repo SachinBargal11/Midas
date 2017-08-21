@@ -16,7 +16,11 @@ export class InsuranceMasterAdapter {
                 adjusterMasters: AdjusterAdapter.parseResponse(data.adjusterMasters),
                 Contact: ContactAdapter.parseResponse(data.contactInfo),
                 Address: AddressAdapter.parseResponse(data.addressInfo),
-           
+                Only1500Form: data.only1500Form,
+                paperAuthorization: data.paperAuthorization,
+                priorityBilling: data.priorityBilling,
+                zeusID: data.zeusID,
+                createdByCompanyId: data.createdByCompanyId
             });
         }
         return insuranceMaster;

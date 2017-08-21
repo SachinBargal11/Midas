@@ -236,7 +236,7 @@ export class EoVisitComponent implements OnInit {
             notes: [''],
             insuranceProviderId: [''],
             name: ['', Validators.required],
-            eventStartDate: ['', Validators.required],
+            eventStartDate: [''],
             eventStartTime: [''],
             duration: ['', Validators.required],
         });
