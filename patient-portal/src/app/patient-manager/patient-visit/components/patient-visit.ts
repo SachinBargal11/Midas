@@ -160,7 +160,7 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.eventWrapper.isPatientVisitType && event.eventWrapper.doctor == null) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
         } else if (event.eventWrapper.isImeVisitType) {
-            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">Ime Visit</span>`;
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.doctorName}</span>`;
         }
         element.find('.fc-content').html(content);
     }
