@@ -29,6 +29,9 @@ import { ConsentService } from '../../cases/services/consent-service';
 })
 
 export class PatientBasicComponent implements OnInit {
+    isEighteenOrAbove:boolean = true;
+    languagePreference: string;
+    martialStatus:number;
     caseDetail: Case[];
     referredToMe: boolean = false;
     patientId: number;
@@ -97,6 +100,13 @@ export class PatientBasicComponent implements OnInit {
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth
                         ? this.patientInfo.user.dateOfBirth.toDate()
                         : null;
+                        if( this.dateOfBirth){
+                          this.calculateAge();  
+                        }
+
+                    this.martialStatus = this.patientInfo.maritalStatusId;
+                    this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
+                         
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -112,7 +122,11 @@ export class PatientBasicComponent implements OnInit {
             middlename: [''],
             lastname: ['', Validators.required],
             gender: ['', Validators.required],
-            maritalStatusId: ['', Validators.required]
+            maritalStatusId: ['', Validators.required],
+            parentName: ['', Validators.required],
+            languagePreference: [''],
+            otherLanguage: [''],
+            spouseName: [''],
         });
 
         this.basicformControls = this.basicform.controls;
@@ -120,6 +134,17 @@ export class PatientBasicComponent implements OnInit {
 
     ngOnInit() {
         this.url = `${this._url}/documentmanager/uploadtoblob`;
+    }
+
+    calculateAge(){
+       let now = moment();
+       let age =  now.diff(this.dateOfBirth, 'years'); 
+       if(age < 18){
+       this.isEighteenOrAbove = false;
+       }else{
+       this.isEighteenOrAbove = true;
+       }
+       
     }
 
     onBeforeSendEvent(event) {
@@ -168,6 +193,12 @@ export class PatientBasicComponent implements OnInit {
     // }
 
     savePatient() {
+       let patientSocialMediaMappings:any[] = [];
+       let patientLanguagePreferenceMappings:any[] = [];
+       patientLanguagePreferenceMappings.push({
+         languagePreferenceId:(this.languagePreference)  
+       })
+
         this.isSavePatientProgress = true;
         let basicFormValues = this.basicform.value;
         let result;
@@ -175,6 +206,12 @@ export class PatientBasicComponent implements OnInit {
         let patient = new Patient(_.extend(existingPatientJS, {
             maritalStatusId: basicFormValues.maritalStatusId,
             updateByUserId: this._sessionStore.session.account.user.id,
+            patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+            languagePreferenceOther:parseInt(this.languagePreference) == 3 ? basicFormValues.otherLanguage : null,
+            patientSocialMediaMappings:patientSocialMediaMappings,
+            parentOrGuardianName: !this.isEighteenOrAbove ? basicFormValues.parentName : null,
+            legallyMarried:null,
+            spouseName:parseInt(basicFormValues.maritalStatusId) == 2 ? basicFormValues.spouseName : null,
             user: new User(_.extend(existingPatientJS.user, {
                 dateOfBirth: basicFormValues.dob ? moment(basicFormValues.dob) : null,
                 firstName: basicFormValues.firstname,
