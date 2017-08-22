@@ -81,7 +81,7 @@ export class PatientVisitComponent implements OnInit {
     // doctorSchedule: Schedule;
 
     /* Selections */
-    selectedVisit: PatientVisit;
+    selectedVisit: any;
     selectedCalEvent: ScheduledEventInstance;
     selectedLocationId: number = 0;
     selectedDoctorId: number = 0;
@@ -148,6 +148,9 @@ export class PatientVisitComponent implements OnInit {
         }
         else if (event.eventWrapper && event.eventWrapper.isImeVisitType) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.patient.user.displayName}</span>`;
+        }
+        else if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EO-${event.eventWrapper.patient.user.displayName}</span>`;
         }
         element.find('.fc-content').html(content);
     }
@@ -225,6 +228,7 @@ export class PatientVisitComponent implements OnInit {
         // this.loadLocationVisits();
         this.loadAllVisitsForAttorneyCompany();
         this.loadImeVisits();
+        this.loadEoVisits();
 
         this.header = {
             left: 'prev,next today',
@@ -470,6 +474,31 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
+    loadEoVisits() {
+        let result;
+        this._progressBarService.show();
+        this._patientVisitsStore.getEoVisitByCompanyId(this.companyId)
+            .subscribe(
+            (visits: EoVisit[]) => {
+                let events = this.getEOVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
     loadImeVisits() {
         this._progressBarService.show();
         this._patientVisitsStore.getImeVisitByCompanyId(this.companyId)
@@ -533,6 +562,44 @@ export class PatientVisitComponent implements OnInit {
         return occurrences;
     }
 
+    getEOVisitOccurrences(visits) {
+        let occurrences: ScheduledEventInstance[] = [];
+        let calendarEvents: ScheduledEvent[] = _.chain(visits)
+            .map((visit: EoVisit) => {
+                return visit.calendarEvent;
+            })
+            .unique((event: ScheduledEvent) => {
+                return event.id;
+            })
+            .value();
+        _.forEach(calendarEvents, (event: ScheduledEvent) => {
+            occurrences.push(...event.getEventInstances(null));
+        });
+        _.forEach(occurrences, (occurrence: ScheduledEventInstance) => {
+            let matchingVisits: EoVisit[] = _.filter(visits, (currentVisit: EoVisit) => {
+                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
+            });
+            let visitForOccurrence: EoVisit = _.find(matchingVisits, (currentMatchingVisit: EoVisit) => {
+                if (!currentMatchingVisit.isOriginalVisit) {
+                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
+                }
+                return false;
+            });
+            if (visitForOccurrence) {
+                // occurrence.eventWrapper = visitForOccurrence;
+            } else {
+                let originalVisit: EoVisit = _.find(matchingVisits, (currentMatchingVisit: EoVisit) => {
+                    return currentMatchingVisit.isOriginalVisit;
+                });
+                occurrence.eventWrapper = originalVisit;
+            }
+            return occurrence;
+        });
+        // occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
+        //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
+        // });
+        return occurrences;
+    }
 
     getVisitOccurrences(visits) {
         let occurrences: ScheduledEventInstance[] = [];
@@ -727,89 +794,125 @@ export class PatientVisitComponent implements OnInit {
 
     }
 
-    // private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {
-    //     let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
-    //     let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
-    //     if (eventInstance.isInPast) {
-    //         if (scheduledEventForInstance.isChangedInstanceOfSeries) {
-    //             // Edit Existing Single Occurance of Visit
-    //             patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-    //                 calendarEvent: scheduledEventForInstance,
-    //                 case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-    //                 doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-    //                     user: new User(_.extend(patientVisit.doctor.user.toJS()))
-    //                 })) : null,
-    //                 room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-    //                 patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-    //                     user: new User(_.extend(patientVisit.patient.user.toJS()))
-    //                 })) : null
-    //             }));
-    //         } else {
-    //             // Create Visit Instance 
-    //             if (patientVisit.isExistingVisit) {
-    //                 patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-    //                     eventStart: moment.utc(eventInstance.start),
-    //                     eventEnd: moment.utc(eventInstance.end),
-    //                     calendarEvent: scheduledEventForInstance,
-    //                     case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-    //                     doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-    //                         user: new User(_.extend(patientVisit.doctor.user.toJS()))
-    //                     })) : null,
-    //                     room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-    //                     patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-    //                         user: new User(_.extend(patientVisit.patient.user.toJS()))
-    //                     })) : null
-    //                 }));
-    //             } else {
-    //                 patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-    //                     id: 0,
-    //                     eventStart: moment.utc(eventInstance.start),
-    //                     eventEnd: moment.utc(eventInstance.end),
-    //                     calendarEvent: scheduledEventForInstance,
-    //                     case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-    //                     doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-    //                         user: new User(_.extend(patientVisit.doctor.user.toJS()))
-    //                     })) : null,
-    //                     room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-    //                     patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-    //                         user: new User(_.extend(patientVisit.patient.user.toJS()))
-    //                     })) : null
-    //                 }));
-    //             }
-    //         }
+    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {
+        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
+        let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
+        if (eventInstance.isInPast) {
+            if (scheduledEventForInstance.isChangedInstanceOfSeries) {
+                // Edit Existing Single Occurance of Visit
+                patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+                    calendarEvent: scheduledEventForInstance,
+                    // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                    // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                    //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                    // })) : null,
+                    // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                    patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                        user: new User(_.extend(patientVisit.patient.user.toJS()))
+                    })) : null
+                }));
+            } else {
+                // Create Visit Instance 
+                if (patientVisit.isExistingVisit) {
+                    patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+                        eventStart: moment.utc(eventInstance.start),
+                        eventEnd: moment.utc(eventInstance.end),
+                        calendarEvent: scheduledEventForInstance,
+                        // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                        // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                        //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                        // })) : null,
+                        // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                        patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                            user: new User(_.extend(patientVisit.patient.user.toJS()))
+                        })) : null
+                    }));
+                } else {
+                    patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+                        id: 0,
+                        eventStart: moment.utc(eventInstance.start),
+                        eventEnd: moment.utc(eventInstance.end),
+                        calendarEvent: scheduledEventForInstance,
+                        // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                        // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                        //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                        // })) : null,
+                        // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                        patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                            user: new User(_.extend(patientVisit.patient.user.toJS()))
+                        })) : null
+                    }));
+                }
+            }
 
-    //     } else {
-    //         patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-    //             calendarEvent: scheduledEventForInstance,
-    //             case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-    //             doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-    //                 user: new User(_.extend(patientVisit.doctor.user.toJS()))
-    //             })) : null,
-    //             room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-    //             patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-    //                 user: new User(_.extend(patientVisit.patient.user.toJS()))
-    //             })) : null
-    //         }));
-    //     }
+        } else {
+            patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                // })) : null,
+                // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                    user: new User(_.extend(patientVisit.patient.user.toJS()))
+                })) : null
+            }));
+        }
 
-    //     return patientVisit;
-    // }
+        return patientVisit;
+    }
+
+    private _getEoVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): EoVisit {
+        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
+        let eoVisit: EoVisit = <EoVisit>(eventInstance.eventWrapper);
+        if (eventInstance.isInPast) {
+            eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                patient: eoVisit.patient ? new Patient(_.extend(eoVisit.patient.toJS(), {
+                    user: new User(_.extend(eoVisit.patient.user.toJS()))
+                })) : null
+            }));
+        }
+        return eoVisit;
+    }
+
+    private _getImeVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): ImeVisit {
+        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
+        let imeVisit: ImeVisit = <ImeVisit>(eventInstance.eventWrapper);
+        if (eventInstance.isInPast) {
+            imeVisit = new ImeVisit(_.extend(imeVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                case: imeVisit.case ? new Case(_.extend(imeVisit.case.toJS())) : null,
+                patient: imeVisit.patient ? new Patient(_.extend(imeVisit.patient.toJS(), {
+                    user: new User(_.extend(imeVisit.patient.user.toJS()))
+                })) : null
+            }))
+        }
+        return imeVisit;
+    }
+
 
     handleEventClick(event) {
-
         let clickedEventInstance: ScheduledEventInstance = event.calEvent;
         let scheduledEventForInstance: ScheduledEvent = clickedEventInstance.owningEvent;
-        let patientVisit: PatientVisit = <PatientVisit>(clickedEventInstance.eventWrapper);
         this.selectedCalEvent = clickedEventInstance;
-
-        // this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
+        let patientVisit: any = (clickedEventInstance.eventWrapper);
+        if (patientVisit.isPatientVisitType) {
+            this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
+        } else if (patientVisit.isEoVisitType) {
+            this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
+        } else if (patientVisit.isImeVisitType) {
+            this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
+        }
         Object.keys(this.patientScheduleForm.controls).forEach(key => {
             this.patientScheduleForm.controls[key].setValidators(null);
             this.patientScheduleForm.controls[key].updateValueAndValidity();
         });
         this.visitInfo = this.selectedVisit.visitDisplayString;
+        // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
-            this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+            // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+            this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
             this.getDocuments();
             this.visitDialogVisible = true;
         } else {
@@ -820,6 +923,7 @@ export class PatientVisitComponent implements OnInit {
             }
         }
     }
+
 
     private _createVisitInstanceForASeries(seriesEvent: ScheduledEvent, instanceStart: moment.Moment, instanceEnd: moment.Moment): PatientVisit {
         return new PatientVisit({
@@ -857,13 +961,32 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveVisit() {
+        let result;
         let patientVisitFormValues = this.patientVisitForm.value;
-        let updatedVisit: PatientVisit;
-        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            notes: patientVisitFormValues.notes,
-            visitStatusId: patientVisitFormValues.visitStatusId
-        }));
-        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        if (this.selectedVisit.isPatientVisitType) {
+            let updatedVisit: PatientVisit;
+            updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+                notes: patientVisitFormValues.notes,
+                visitStatusId: patientVisitFormValues.visitStatusId
+            }));
+            result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        } else if (this.selectedVisit.isEoVisitType) {
+            let updatedVisit: EoVisit;
+            updatedVisit = new EoVisit(_.extend(this.selectedVisit.toJS(), {
+                notes: patientVisitFormValues.notes,
+                visitStatusId: patientVisitFormValues.visitStatusId,
+                // doctorId: this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
+            }));
+            result = this._patientVisitsStore.updateEoVisitDetail(updatedVisit);
+        } else if (this.selectedVisit.isImeVisitType) {
+            let updatedVisit: ImeVisit;
+            updatedVisit = new ImeVisit(_.extend(this.selectedVisit.toJS(), {
+                notes: patientVisitFormValues.notes,
+                visitStatusId: patientVisitFormValues.visitStatusId,
+                // doctorId: this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
+            }));
+            result = this._patientVisitsStore.updateImeVisitDetail(updatedVisit);
+        }
         result.subscribe(
             (response) => {
                 let notification = new Notification({

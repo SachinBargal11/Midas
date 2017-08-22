@@ -52,15 +52,21 @@ export class ProcedureComponent implements OnInit {
       this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
     }
     this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
-
-    this.checkVisitForCompany();
+    this.fetchVisit();
+  }
+  fetchVisit() {
+    this._patientVisitsStore.fetchPatientVisitById(this.selectedVisit.id)
+      .subscribe((patientVisit: PatientVisit) => {
+        this.selectedVisit = patientVisit;
+        this.checkVisitForCompany();
+      })
   }
   loadProcedures() {
     if (this.selectedVisit.specialtyId) {
       this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
     } else if (this.selectedVisit.roomId) {
       this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
-    }   
+    }
   }
 
   checkVisitForCompany() {

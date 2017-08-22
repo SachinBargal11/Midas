@@ -944,8 +944,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (PatientBO.User.UserCompanies != null)
                 {
                     bool add_UserCompany = false;
-
-
                     Company companyDB = new Company();
 
                     foreach (var userCompany in PatientBO.User.UserCompanies)
@@ -972,27 +970,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         _context.SaveChanges();
                     }
 
-                }
-                #endregion
+                    #region Insert UserSettings
+                    var UserSettings = _context.UserPersonalSettings.Where(p => p.UserId == userDB.id && p.CompanyId == UserCompanyDB.CompanyID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .FirstOrDefault();
+                    if (UserSettings == null)
+                    {
+                        UserSettings = new UserPersonalSetting();
+                        UserSettings.UserId = userDB.id;
+                        UserSettings.CompanyId = UserCompanyDB.CompanyID;
+                        UserSettings.IsPublic = true;
+                        UserSettings.IsSearchable = true;
+                        UserSettings.IsCalendarPublic = true;
+                        UserSettings.SlotDuration = 30;
+                        UserSettings.PreferredModeOfCommunication = 3;
+                        UserSettings.IsPushNotificationEnabled = true;
 
-                #region Insert UserSettings
-                var UserSettings = _context.UserPersonalSettings.Where(p => p.UserId == userDB.id && p.CompanyId == UserCompanyDB.CompanyID
-                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                .FirstOrDefault();
-                if (UserSettings == null)
-                {
-                    UserSettings = new UserPersonalSetting();
-                    UserSettings.UserId = userDB.id;
-                    UserSettings.CompanyId = UserCompanyDB.CompanyID;
-                    UserSettings.IsPublic = true;
-                    UserSettings.IsSearchable = true;
-                    UserSettings.IsCalendarPublic = true;
-                    UserSettings.SlotDuration = 30;
-                    UserSettings.PreferredModeOfCommunication = 3;
-                    UserSettings.IsPushNotificationEnabled = true;
-
-                    _context.UserPersonalSettings.Add(UserSettings);
-                    _context.SaveChanges();
+                        _context.UserPersonalSettings.Add(UserSettings);
+                        _context.SaveChanges();
+                    }
+                    #endregion
                 }
                 #endregion
 

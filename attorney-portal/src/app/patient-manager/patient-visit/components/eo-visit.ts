@@ -321,6 +321,7 @@ export class EoVisitComponent implements OnInit {
         let result;
         let eo = new EoVisit({
             patientId: this.eoScheduleForm.value.patientId,
+            doctorId: null,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             notes: this.eoScheduleForm.value.notes,
@@ -333,7 +334,7 @@ export class EoVisitComponent implements OnInit {
         });
 
         this._progressBarService.show();
-        // result = this._patientVisitsStore.addEoVisit(eo);
+        result = this._patientVisitsStore.addEoVisit(eo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

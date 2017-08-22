@@ -317,6 +317,14 @@ namespace MIDAS.GBX
             {
                 repo = new AttorneyVisitRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Common.LanguagePreference))
+            {
+                repo = new LanguagePreferenceRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.Common.SocialMedia))
+            {
+                repo = new SocialMediaRepository(context);
+            }
 
             return repo;
         }

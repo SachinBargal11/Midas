@@ -17,10 +17,11 @@ const EoVisitRecord = Record({
     locationId: 0,
     isEoVisitType: true,
     doctor: null,
-    doctorId: 0,
+    patient: null,
+    doctorId: null,
     patientId: 0,
     insuranceProviderId: null,
-    VisitCreatedByCompanyId: null,
+    VisitCreatedByCompanyId: 0,
     eventStart: null,
     eventEnd: null,
     notes: '',
@@ -42,6 +43,7 @@ export class EoVisit extends EoVisitRecord {
     locationId: number;
     isEoVisitType: boolean;
     doctor: Doctor;
+    patient: Patient;
     doctorId: number;
     patientId: number;
     insuranceProviderId: number;
@@ -74,7 +76,7 @@ export class EoVisit extends EoVisitRecord {
     }
 
      get visitDisplayString(): string {
-        let visitInfo: string = `Eo Visit`;
+        let visitInfo: string = `EO Visit`;
        
         return visitInfo;
     }
