@@ -22,6 +22,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public byte Id { get; set; }
         public string Name { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }

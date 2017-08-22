@@ -191,6 +191,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Id
+        public override Object Get(int id)
+        {
+            var acc = _context.InsuranceMasters.Include("addressInfo").Include("contactInfo")
+                                               .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .FirstOrDefault();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No Insurance Master info found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                BO.InsuranceMaster acc_ = ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(acc);
+                return (object)acc_;
+            }
+        }
+        #endregion
+
         #region Get Master And By CompanyId
         public override Object GetMasterAndByCompanyId(int CompanyId)
         {

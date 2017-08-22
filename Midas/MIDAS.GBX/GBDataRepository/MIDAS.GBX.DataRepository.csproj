@@ -177,6 +177,8 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\AttorneyVisit\AttorneyVisitRepository.cs" />
+    <Compile Include="EntityRepository\Common\LanguagePreferenceRepository.cs" />
+    <Compile Include="EntityRepository\Common\SocialMediaRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\PatientDocumentRepository.cs" />
     <Compile Include="EntityRepository\EOVisit\EOVisitRepository.cs" />
     <Compile Include="EntityRepository\ICDTypeCode\ICDTypeCodeRepository.cs" />

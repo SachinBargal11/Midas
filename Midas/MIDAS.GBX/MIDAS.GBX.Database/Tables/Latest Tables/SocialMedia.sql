@@ -10,6 +10,7 @@ BEGIN
     (
         [Id] TINYINT NOT NULL IDENTITY, 
         [Name] NVARCHAR(128) NOT NULL,
+        [IsDeleted] [BIT] NULL DEFAULT 0,
         [CreateByUserID] [int] NOT NULL,
 	    [CreateDate] [datetime2](7) NOT NULL,
 	    [UpdateByUserID] [int] NULL,

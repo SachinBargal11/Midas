@@ -51,6 +51,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.MaritalStatusId = Patient.MaritalStatusId;
             patientBO2.DateOfFirstTreatment = Patient.DateOfFirstTreatment;
 
+            patientBO2.ParentOrGuardianName = Patient.ParentOrGuardianName;
+            patientBO2.EmergencyContactName = Patient.EmergencyContactName;
+            patientBO2.EmergencyContactPhone = Patient.EmergencyContactPhone;
+            patientBO2.LegallyMarried = Patient.LegallyMarried;
+            patientBO2.SpouseName = Patient.SpouseName;
+            patientBO2.LanguagePreferenceOther = Patient.LanguagePreferenceOther;
+
             if (Patient.IsDeleted.HasValue)
                 patientBO2.IsDeleted = Patient.IsDeleted.Value;
             if (Patient.UpdateByUserID.HasValue)
@@ -68,6 +75,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
             }
+
+            List<BO.PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappingsBO = new List<BO.PatientLanguagePreferenceMapping>();
+            if (Patient.PatientLanguagePreferenceMappings != null)
+            {
+                foreach (var eachPatientLanguagePreferenceMapping in Patient.PatientLanguagePreferenceMappings)
+                {
+                    if (eachPatientLanguagePreferenceMapping.IsDeleted.HasValue == false || (eachPatientLanguagePreferenceMapping.IsDeleted.HasValue == true && eachPatientLanguagePreferenceMapping.IsDeleted.Value == false))
+                    {
+                        BO.PatientLanguagePreferenceMapping PatientLanguagePreferenceMappingBO = new BO.PatientLanguagePreferenceMapping();
+                        PatientLanguagePreferenceMappingBO.PatientId = eachPatientLanguagePreferenceMapping.PatientId;
+                        PatientLanguagePreferenceMappingBO.LanguagePreferenceId = eachPatientLanguagePreferenceMapping.LanguagePreferenceId;
+
+                        PatientLanguagePreferenceMappingsBO.Add(PatientLanguagePreferenceMappingBO);
+                    }
+                }                
+            }
+            patientBO2.PatientLanguagePreferenceMappings = PatientLanguagePreferenceMappingsBO;
+
+            List<BO.PatientSocialMediaMapping> PatientSocialMediaMappingsBO = new List<BO.PatientSocialMediaMapping>();
+            if (Patient.PatientSocialMediaMappings != null)
+            {
+                foreach (var eachPatientSocialMediaMapping in Patient.PatientSocialMediaMappings)
+                {
+                    if (eachPatientSocialMediaMapping.IsDeleted.HasValue == false || (eachPatientSocialMediaMapping.IsDeleted.HasValue == true && eachPatientSocialMediaMapping.IsDeleted.Value == false))
+                    {
+                        BO.PatientSocialMediaMapping PatientSocialMediaMappingBO = new BO.PatientSocialMediaMapping();
+                        PatientSocialMediaMappingBO.PatientId = eachPatientSocialMediaMapping.PatientId;
+                        PatientSocialMediaMappingBO.SocialMediaId = eachPatientSocialMediaMapping.SocialMediaId;
+
+                        PatientSocialMediaMappingsBO.Add(PatientSocialMediaMappingBO);
+                    }
+                }
+            }
+            patientBO2.PatientSocialMediaMappings = PatientSocialMediaMappingsBO;
+
 
             if (Patient.PatientDocuments != null)
             {
@@ -592,7 +634,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("Cases")
                                        .Include("Cases.Referrals")
                                        .Include("PatientDocuments")
-
+                                       .Include("PatientLanguagePreferenceMappings")
+                                       .Include("PatientSocialMediaMappings")
                                        .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                        .FirstOrDefault<Patient>();
 
@@ -833,13 +876,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientDB.Height = IsEditMode == true && PatientBO.Height == null ? PatientDB.Height : PatientBO.Height;
                     PatientDB.MaritalStatusId = IsEditMode == true && PatientBO.MaritalStatusId == null ? PatientDB.MaritalStatusId : PatientBO.MaritalStatusId;
                     PatientDB.DateOfFirstTreatment = IsEditMode == true && PatientBO.DateOfFirstTreatment == null ? PatientDB.DateOfFirstTreatment : PatientBO.DateOfFirstTreatment;
-                    PatientDB.IsDeleted = PatientBO.IsDeleted.HasValue ? PatientBO.IsDeleted : false;
 
+                    PatientDB.ParentOrGuardianName = IsEditMode == true && PatientBO.ParentOrGuardianName == null ? PatientDB.ParentOrGuardianName : PatientBO.ParentOrGuardianName;
+                    PatientDB.EmergencyContactName = IsEditMode == true && PatientBO.EmergencyContactName == null ? PatientDB.EmergencyContactName : PatientBO.EmergencyContactName;
+                    PatientDB.EmergencyContactPhone = IsEditMode == true && PatientBO.EmergencyContactPhone == null ? PatientDB.EmergencyContactPhone : PatientBO.EmergencyContactPhone;
+                    PatientDB.LegallyMarried = IsEditMode == true && PatientBO.LegallyMarried == null ? PatientDB.LegallyMarried : PatientBO.LegallyMarried;
+                    PatientDB.SpouseName = IsEditMode == true && PatientBO.SpouseName == null ? PatientDB.SpouseName : PatientBO.SpouseName;
+                    PatientDB.LanguagePreferenceOther = IsEditMode == true && PatientBO.LanguagePreferenceOther == null ? PatientDB.LanguagePreferenceOther : PatientBO.LanguagePreferenceOther;
+
+                    PatientDB.IsDeleted = PatientBO.IsDeleted.HasValue ? PatientBO.IsDeleted : false;
 
                     if (Add_patientDB == true)
                     {
                         PatientDB = _context.Patients.Add(PatientDB);
                     }
+                    _context.SaveChanges();
+
+                    List<BO.PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappingsBO = PatientBO.PatientLanguagePreferenceMappings;
+
+                    var PatientLanguagePreferenceMappingsDB = _context.PatientLanguagePreferenceMappings.Where(p => p.PatientId == PatientDB.Id
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .ToList();
+
+                    if (PatientLanguagePreferenceMappingsDB != null)
+                    {
+                        PatientLanguagePreferenceMappingsDB.ForEach(p => p.IsDeleted = true);
+                    }
+
+                    PatientLanguagePreferenceMappingsBO.ForEach(p => _context.PatientLanguagePreferenceMappings.Add(new PatientLanguagePreferenceMapping() {
+                        PatientId = PatientDB.Id,
+                        LanguagePreferenceId = p.LanguagePreferenceId
+                    }));
+
+                    List<BO.PatientSocialMediaMapping> PatientSocialMediaMappingsBO = PatientBO.PatientSocialMediaMappings;
+
+                    var PatientSocialMediaMappingsDB = _context.PatientSocialMediaMappings.Where(p => p.PatientId == PatientDB.Id
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .ToList();
+
+                    if (PatientSocialMediaMappingsDB != null)
+                    {
+                        PatientSocialMediaMappingsDB.ForEach(p => p.IsDeleted = true);
+                    }
+
+                    PatientSocialMediaMappingsBO.ForEach(p => _context.PatientSocialMediaMappings.Add(new PatientSocialMediaMapping()
+                    {
+                        PatientId = PatientDB.Id,
+                        SocialMediaId = p.SocialMediaId
+                    }));
+
                     _context.SaveChanges();
                 }
                 else
@@ -930,12 +1015,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
                 PatientDB = _context.Patients.Include("User")
-                                              .Include("User.UserCompanies")
-                                              .Include("User.UserCompanies.Company")
-                                              .Include("User.AddressInfo")
-                                              .Include("User.ContactInfo")
-                                              .Where(p => p.Id == PatientDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                              .FirstOrDefault<Patient>();
+                                             .Include("User.UserCompanies")
+                                             .Include("User.UserCompanies.Company")
+                                             .Include("User.AddressInfo")
+                                             .Include("User.ContactInfo")
+                                             .Include("PatientLanguagePreferenceMappings")
+                                             .Include("PatientSocialMediaMappings")
+                                             .Where(p => p.Id == PatientDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .FirstOrDefault<Patient>();
             }
 
             if (sendEmail == true)

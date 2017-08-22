@@ -43,7 +43,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string EmergencyContactPhone { get; set; }
         public Nullable<bool> LegallyMarried { get; set; }
         public string SpouseName { get; set; }
-        public string SocialMediaOther { get; set; }
+        public string LanguagePreferenceOther { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttorneyVisit> AttorneyVisits { get; set; }

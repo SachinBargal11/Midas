@@ -11,6 +11,7 @@ BEGIN
         [Id] INT NOT NULL IDENTITY, 
         [PatientId] INT NOT NULL, 
         [LanguagePreferenceId] TINYINT NOT NULL,
+        [IsDeleted] [BIT] NULL DEFAULT 0,
         [CreateByUserID] [int] NOT NULL,
 	    [CreateDate] [datetime2](7) NOT NULL,
 	    [UpdateByUserID] [int] NULL,

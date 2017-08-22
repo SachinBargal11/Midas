@@ -780,7 +780,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="EmergencyContactPhone" Type="nvarchar" MaxLength="256" />
           <Property Name="LegallyMarried" Type="bit" />
           <Property Name="SpouseName" Type="nvarchar" MaxLength="256" />
-          <Property Name="SocialMediaOther" Type="nvarchar" MaxLength="256" />
+          <Property Name="LanguagePreferenceOther" Type="nvarchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="PatientAccidentInfo">
           <Key>
@@ -1242,6 +1242,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
@@ -5447,7 +5448,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="EmergencyContactPhone" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="LegallyMarried" Type="Boolean" />
           <Property Name="SpouseName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="SocialMediaOther" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LanguagePreferenceOther" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_Patient_PatientId" FromRole="Patient" ToRole="AttorneyVisit" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient_PatientId" FromRole="Patient" ToRole="Case" />
           <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="Patient" ToRole="EOVisit" />
@@ -6036,6 +6037,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
@@ -10151,7 +10153,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="EmergencyContactPhone" ColumnName="EmergencyContactPhone" />
                 <ScalarProperty Name="LegallyMarried" ColumnName="LegallyMarried" />
                 <ScalarProperty Name="SpouseName" ColumnName="SpouseName" />
-                <ScalarProperty Name="SocialMediaOther" ColumnName="SocialMediaOther" />
+                <ScalarProperty Name="LanguagePreferenceOther" ColumnName="LanguagePreferenceOther" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10642,6 +10644,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="SocialMedia">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
