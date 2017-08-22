@@ -159,6 +159,11 @@ export class AddPatientComponent implements OnInit {
 
     savePatient() {
         //this.isExist = this.checkForExist(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn);
+       let patientSocialMediaMappings:any[] = [];
+       let patientLanguagePreferenceMappings:any[] = [];
+       patientLanguagePreferenceMappings.push({
+         languagePreferenceId: parseInt(this.languagePreference)  
+       })
 
         this.usersStore.getIsExistingUser(this.patientform.value.contact.email)
             .subscribe((data: any) => {
@@ -200,6 +205,14 @@ export class AddPatientComponent implements OnInit {
                         maritalStatusId: patientFormValues.userInfo.maritalStatusId,
                         createByUserId: this._sessionStore.session.account.user.id,
                         companyId: this._sessionStore.session.currentCompany.id,
+                        patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+                        languagePreferenceOther: parseInt(this.languagePreference) == 3 ? patientFormValues.userInfo.otherLanguage : null,
+                        patientSocialMediaMappings:patientSocialMediaMappings,
+                        parentOrGuardianName: !this.isEighteenOrAbove ? patientFormValues.userInfo.parentName : null,
+                        emergencyContactName:patientFormValues.contact.emergencyContactPerson,
+                        emergencyContactPhone:patientFormValues.contact.emergencyContactCellPhone,
+                        legallyMarried:null,
+                        spouseName:parseInt(this.martialStatus) == 2 ? patientFormValues.userInfo.spouseName : null,
                         user: new User({
                             dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                             firstName: patientFormValues.userInfo.firstname,
