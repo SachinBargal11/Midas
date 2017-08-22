@@ -31,7 +31,7 @@ export class GeneralSettingService {
         let promise: Promise<GeneralSetting> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/GeneralSetting/Save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/GeneralSetting/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {

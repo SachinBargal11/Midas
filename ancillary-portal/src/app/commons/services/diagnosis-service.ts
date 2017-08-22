@@ -29,7 +29,7 @@ export class DiagnosisService {
 
     getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
         let promise: Promise<DiagnosisType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisType/getAll', {
+            return this._http.get(environment.SERVICE_BASE_URL + '/DiagnosisType/getAll', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -46,7 +46,7 @@ export class DiagnosisService {
     }
     getAllDiagnosisCodesByDiagnosisTypeId(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
         let promise: Promise<DiagnosisCode[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisCode/getByDiagnosisTypeId/' + diagnosisTypeId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/DiagnosisCode/getByDiagnosisTypeId/' + diagnosisTypeId, {
                 headers: this._headers
             })
                 .map(res => res.json())

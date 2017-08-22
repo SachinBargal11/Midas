@@ -27,7 +27,7 @@ export class ProcedureCodeMasterService {
 
     getProceduresBySpecialityAndCompanyId(specialityId: number, companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getBySpecialityAndCompanyId/' + specialityId + '/' + companyId + '/' + true, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCode/getBySpecialityAndCompanyId/' + specialityId + '/' + companyId + '/' + true, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -45,7 +45,7 @@ export class ProcedureCodeMasterService {
 
     getProceduresByRoomTestAndCompanyId(roomTestId: number, companyId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getByRoomTestAndCompanyId/' + roomTestId + '/' + companyId + '/' + true, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCode/getByRoomTestAndCompanyId/' + roomTestId + '/' + companyId + '/' + true, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -65,7 +65,7 @@ export class ProcedureCodeMasterService {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/ProcedureCode/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/ProcedureCode/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {

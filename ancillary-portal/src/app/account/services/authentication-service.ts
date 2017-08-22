@@ -164,7 +164,7 @@ export class AuthenticationService {
     signinWithUserName(baseUrl: string, email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        // headers.append('Authorization', authAccessToken);
+        headers.append('Authorization', authAccessToken);
 
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let autheticateRequestData = {

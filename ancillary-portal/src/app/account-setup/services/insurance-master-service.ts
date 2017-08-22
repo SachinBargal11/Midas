@@ -21,7 +21,7 @@ export class InsuranceMasterService {
     }
     getInsuranceMaster(insuranceMasterId: Number): Observable<InsuranceMaster> {
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/get/' + insuranceMasterId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/get/' + insuranceMasterId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -38,7 +38,7 @@ export class InsuranceMasterService {
 
     getAllInsuranceMasters(): Observable<InsuranceMaster[]> {
         let promise: Promise<InsuranceMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/getAll', {
+            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/getAll', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -61,7 +61,7 @@ export class InsuranceMasterService {
             requestData.contactInfo = requestData.Contact;
             requestData.addressInfo = requestData.Address;
             requestData = _.omit(requestData, 'Contact', 'Address');
-            return this._http.post(this._url + '/InsuranceMaster/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/InsuranceMaster/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -82,7 +82,7 @@ export class InsuranceMasterService {
             requestData.contactInfo = requestData.Contact;
             requestData.addressInfo = requestData.Address;
             requestData = _.omit(requestData, 'Contact', 'Address');
-            return this._http.post(this._url + '/InsuranceMaster/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/InsuranceMaster/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -99,7 +99,7 @@ export class InsuranceMasterService {
 
     deleteInsuranceMaster(insuranceMaster: InsuranceMaster): Observable<InsuranceMaster> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/Delete/' + insuranceMaster.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/Delete/' + insuranceMaster.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

@@ -27,7 +27,7 @@ export class DoctorsService {
 
     getDoctor(doctorId: Number): Observable<Doctor> {
         let promise: Promise<Doctor> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/Get/' + doctorId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/Get/' + doctorId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -42,7 +42,7 @@ export class DoctorsService {
     }
     getDoctors(): Observable<Doctor[]> {
         let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/getall', {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getall', {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
@@ -59,7 +59,7 @@ export class DoctorsService {
     }
     getDoctorsByCompanyId(companyId: number): Observable<Doctor[]> {
         let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/getByCompanyId/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getByCompanyId/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
@@ -76,7 +76,7 @@ export class DoctorsService {
     }
     getReadingDoctorsByCompanyId(companyId: number): Observable<Doctor[]> {
         let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/getReadingDoctors/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getReadingDoctors/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
@@ -93,7 +93,7 @@ export class DoctorsService {
     }
     getDoctorsBySpecialityInAllApp(specialityId: number): Observable<Doctor[]> {
         let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/getBySpecialityInAllApp/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getBySpecialityInAllApp/' + specialityId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
@@ -139,7 +139,7 @@ export class DoctorsService {
             // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
-            return this._http.post(this._url + '/Doctor/add', JSON.stringify(doctorDetailRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Doctor/add', JSON.stringify(doctorDetailRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -185,7 +185,7 @@ export class DoctorsService {
             // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.doctor = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
-            return this._http.post(this._url + '/Doctor/add', JSON.stringify(doctorDetailRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Doctor/add', JSON.stringify(doctorDetailRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -205,7 +205,7 @@ export class DoctorsService {
 
 
             let doctorDetailRequestData = doctorDetail.toJS();
-            return this._http.post(this._url + '/DoctorSpeciality/add', JSON.stringify(doctorDetailRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/DoctorSpeciality/add', JSON.stringify(doctorDetailRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
