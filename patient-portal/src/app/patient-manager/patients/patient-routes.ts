@@ -15,9 +15,9 @@ import { ShellComponent } from '../../commons/shell-component';
 //import { EditFamilyMemberComponent } from './components/edit-family-member';
 // import { AttorneyComponent } from './components/attorney';
 //import { PatientEmployerComponent } from './components/employer';
-import { InsuranceListComponent } from './components/insurance-list';
-import { AddInsuranceComponent } from './components/add-insurance';
-import { EditInsuranceComponent } from './components/edit-insurance';
+// import { InsuranceListComponent } from './components/insurance-list';
+// import { AddInsuranceComponent } from './components/add-insurance';
+// import { EditInsuranceComponent } from './components/edit-insurance';
 import { ViewAllComponent } from './components/view-all';
 
 export const PatientsShellRoutes: Routes = [
@@ -63,40 +63,40 @@ export const PatientsShellRoutes: Routes = [
                     breadcrumb: 'Demo Graphics'
                 }
             },
-            {
-                path: 'insurances',
-                component: ShellComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Insurances'
-                },
-                children: [
-                    {
-                        path: '',
-                        component: InsuranceListComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'root'
-                        }
-                    },
-                    {
-                        path: 'add',
-                        component: AddInsuranceComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Add Insurance'
-                        }
-                    },
-                    {
-                        path: 'edit/:id',
-                        component: EditInsuranceComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Edit Insurance'
-                        }
-                    }
-                ]
-            },
+            // {
+            //     path: 'insurances',
+            //     component: ShellComponent,
+            //     canActivate: [ValidateActiveSession],
+            //     data: {
+            //         breadcrumb: 'Insurances'
+            //     },
+            //     children: [
+            //         {
+            //             path: '',
+            //             component: InsuranceListComponent,
+            //             canActivate: [ValidateActiveSession],
+            //             data: {
+            //                 breadcrumb: 'root'
+            //             }
+            //         },
+            //         {
+            //             path: 'add',
+            //             component: AddInsuranceComponent,
+            //             canActivate: [ValidateActiveSession],
+            //             data: {
+            //                 breadcrumb: 'Add Insurance'
+            //             }
+            //         },
+            //         {
+            //             path: 'edit/:id',
+            //             component: EditInsuranceComponent,
+            //             canActivate: [ValidateActiveSession],
+            //             data: {
+            //                 breadcrumb: 'Edit Insurance'
+            //             }
+            //         }
+            //     ]
+            // },
             // {
             //     path: 'family-members',
             //     component: ShellComponent,

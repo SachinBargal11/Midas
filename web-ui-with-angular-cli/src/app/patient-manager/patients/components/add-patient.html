@@ -66,7 +66,7 @@
                                         </label>
 
                     <div class="form-group" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
-                        <select formControlName="maritalStatusId" type="text" class="form-control" placeholder="" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                        <select formControlName="maritalStatusId" type="text" class="form-control" [(ngModel)]="martialStatus" placeholder="" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Single</option>
@@ -79,21 +79,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Date of Birth
+                <div *ngIf="martialStatus == '2'" class="col-lg-4">
+                    <label class="form-label"> Name of Spouse
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                     <div class="form-group">
-                        <div class='input-group date'>
-                            <p-calendar formControlName="dob" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
-                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                            </p-calendar>
-                        </div>
+                        <input formControlName="spouseName" type="text" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>
             <div class="row">
-
-
                 <div class="col-lg-4">
                     <label class="form-label"> SSN
                                             <span class="color-red">*</span>
@@ -119,8 +114,30 @@
                         <input formControlName="height" type="text" class="form-control" placeholder="">
                     </div>
                 </div>
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Date of First Treatment
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                </div>-->
             </div>
             <div class="row">
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Date of First Treatment
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                </div>-->
                 <div class="col-lg-4">
                     <label class="form-label"> Date of First Treatment
                                         </label>
@@ -133,23 +150,75 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
+                    <label class="form-label"> Date of Birth
+                         <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dob" [(ngModel)]="dob" (onSelect)="calculateAge()" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                            <div class='error-list' *ngIf="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.dob.hasError('required')">Date Of Birth is required.</li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!isEighteenOrAbove" class="col-lg-4">
+                    <label class="form-label"> If patient is under 18 year of age,Parent's or Guardian's Name
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                    <!--<div class="form-group" [class.error]="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">-->
+                    <div class="form-group">
+                        <input formControlName="parentName" type="text" class="form-control" placeholder="">
+                        <!--<div class='error-list' *ngIf="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.controls.parentName.hasError('required')">Parent's or Guardian's Name is required.</li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
+                <!--<div class="col-lg-4">
                     <label class="form-label">Patient Photo
                             </label>
-                    <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"
-                        maxFileSize="1000000">
-                        <ng-template pTemplate type="content">
-                            <ul *ngIf="uploadedFiles.length">
-                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                            </ul>
-                        </ng-template>
-                    </p-fileUpload>-->
                     <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
                     <ul *ngIf="files.length">
                         <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
                     </ul>
-                </div>
+                </div>-->
             </div><br>
-        </div>
+            <div class="row">
+             <div class="col-lg-4">
+                    <label class="form-label">Patient Photo
+                            </label>
+                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
+                    <ul *ngIf="files.length">
+                        <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
+                    </ul>
+                </div>   
+            <div class="col-lg-4">
+                    <label class="form-label"> Language Preference 
+                         <!--<span class="color-red">*</span>-->
+                    </label>
+                    <div class="form-group">
+                        <!--<p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="specialityDetailJS.isnitialEvaluation"></p-radioButton>-->
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="2" label="Spanish"  [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="3" label="Other"  [(ngModel)]="languagePreference"></p-radioButton>
+                    </div>
+                </div>
+                <div *ngIf="languagePreference == '3'" class="col-lg-4">
+                    <label class="form-label"> Other Language
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                    <div class="form-group">
+                        <input formControlName="otherLanguage" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>   
+            </div>
+            </div>
     </section>
 
     <section class="card">
@@ -248,7 +317,53 @@
                         </select>
                     </div>
                 </div>
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group">
+                        <input type="email" formControlName="email" [class.error]="!patientformControls.contact.controls.email.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group">
+                        <input formControlName="emergencyContactPerson" type="text" class="form-control" placeholder="">
+                        <!--<div class='error-list' *ngIf="patientformControls.userInfo.controls.firstname.touched && !patientformControls.userInfo.controls.firstname.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.firstname.hasError('required')">First Name is required.</li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
             </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <!--<div class="form-group" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">-->
+                    <div class="form-group">
+                        <p-inputMask mask="999-999-9999" formControlName="emergencyContactCellPhone" 
+                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <!--<div class='error-list' *ngIf="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
+         </div>       
         </div>
     </section>
 

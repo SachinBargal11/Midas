@@ -27,6 +27,9 @@ import { CaseEmployerComponent } from './components/employer';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
 import { EditFamilyMemberComponent } from './components/edit-family-member';
+import { InsuranceListComponent } from './components/insurance-list';
+import { AddInsuranceComponent } from './components/add-insurance';
+import { EditInsuranceComponent } from './components/edit-insurance';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -235,30 +238,64 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Accident'
                         }
                     },
+                    // {
+                    //     path: 'insurance-mapping',
+                    //     component: ShellComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Insurance'
+                    //     },
+
+                    //     children: [
+                    //         {
+                    //             path: '',
+                    //             component: InsuranceMappingComponent,
+                    //             canActivate: [ValidateActiveSession],
+                    //             data: {
+                    //                 breadcrumb: 'root'
+                    //             },
+                    //         },
+                    //         {
+                    //             path: 'assign',
+                    //             component: AssignInsuranceComponent,
+                    //             data: {
+                    //                 breadcrumb: 'Assign Insurance'
+                    //             }
+                    //         },
+                    //     ]
+                    // },
                     {
-                        path: 'insurance-mapping',
+                        path: 'insurances',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance'
+                            breadcrumb: 'Insurances'
                         },
-
                         children: [
                             {
                                 path: '',
-                                component: InsuranceMappingComponent,
+                                component: InsuranceListComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
                                     breadcrumb: 'root'
-                                },
-                            },
-                            {
-                                path: 'assign',
-                                component: AssignInsuranceComponent,
-                                data: {
-                                    breadcrumb: 'Assign Insurance'
                                 }
                             },
+                            {
+                                path: 'add',
+                                component: AddInsuranceComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Insurance'
+                                }
+                            },
+                            {
+                                path: 'edit/:id',
+                                component: EditInsuranceComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Insurance'
+                                }
+                            }
                         ]
                     },
                     {

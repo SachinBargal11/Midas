@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
-import { InsuranceStore } from '../stores/insurance-store';
-import { Insurance } from '../models/insurance';
+import { Insurance } from '../../patients/models/insurance';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import { SessionStore } from '../../../commons/stores/session-store';
@@ -19,7 +19,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 export class InsuranceListComponent implements OnInit {
     selectedInsurances: Insurance[] = [];
     insurances: Insurance[];
-    patientId: number;
+    caseId: number;
     datasource: Insurance[];
     totalRecords: number;
 
@@ -28,14 +28,14 @@ export class InsuranceListComponent implements OnInit {
         public _route: ActivatedRoute,
         private _insuranceStore: InsuranceStore,
         public sessionStore: SessionStore,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
     ) {
-        // this._route.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId, 10);
-        // });
-        this.patientId = this.sessionStore.session.user.id;
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+        });
+        // this.patientId = this.sessionStore.session.user.id;
     }
 
     ngOnInit() {
@@ -44,7 +44,7 @@ export class InsuranceListComponent implements OnInit {
 
     loadInsurances() {
         this.progressBarService.show();
-        this._insuranceStore.getInsurances(this.patientId)
+        this._insuranceStore.getInsurances(this.caseId)
             .subscribe(insurances => {
                 this.insurances = insurances.reverse();
                 // this.datasource = insurances.reverse();
