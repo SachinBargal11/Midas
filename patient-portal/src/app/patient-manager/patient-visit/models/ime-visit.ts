@@ -92,7 +92,7 @@ export class ImeVisit extends ImeVisitRecord {
     }
 
     get visitDisplayString(): string {
-        let visitInfo: string = `Ime Visit`;
+        let visitInfo: string = `IME Visit`;
         return visitInfo;
     }
 }
