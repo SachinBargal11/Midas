@@ -25,5 +25,5 @@ END
 GO
 
 INSERT INTO [dbo].[LanguagePreference] ([Name], [CreateByUserID], [CreateDate])
-    VALUES ('English', 1, GETDATE()), ('Spanish', 1, GETDATE()) 
+    VALUES ('English', 1, GETDATE()), ('Spanish', 1, GETDATE()), ('Other', 1, GETDATE())
 GO

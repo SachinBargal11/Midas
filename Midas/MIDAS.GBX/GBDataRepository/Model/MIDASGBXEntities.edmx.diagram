@@ -285,6 +285,9 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitUnscheduled" Width="1.5" PointX="30.75" PointY="92.375" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitUnscheduled_Case_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitUnscheduled_Patient_PatientId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

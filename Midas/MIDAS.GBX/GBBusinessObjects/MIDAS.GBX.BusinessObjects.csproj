@@ -121,6 +121,7 @@
     <Compile Include="MesssagingService\SMS.cs" />
     <Compile Include="MesssagingService\EmailMessage.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />
+    <Compile Include="PatientVisitUnscheduled\PatientVisitUnscheduled.cs" />
     <Compile Include="Patient\PatientLanguagePreferenceMapping.cs" />
     <Compile Include="Patient\PatientSocialMediaMapping.cs" />
     <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />

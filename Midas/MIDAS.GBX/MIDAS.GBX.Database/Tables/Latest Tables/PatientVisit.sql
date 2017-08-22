@@ -42,11 +42,11 @@ GO
 ALTER TABLE [dbo].[PatientVisit] CHECK CONSTRAINT [FK_PatientVisit_Case_CaseId]
 GO
 
-ALTER TABLE [dbo].[PatientVisit]  WITH CHECK ADD  CONSTRAINT [FK_PatientVisit_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([Id])
+ALTER TABLE [dbo].[PatientVisit]  WITH CHECK ADD  CONSTRAINT [FK_PatientVisit_Patient_PatientId] FOREIGN KEY([PatientId])
+	REFERENCES [dbo].[Patient] ([Id])
 GO
 
-ALTER TABLE [dbo].[PatientVisit] CHECK CONSTRAINT [FK_PatientVisit_Patient2_PatientId]
+ALTER TABLE [dbo].[PatientVisit] CHECK CONSTRAINT [FK_PatientVisit_Patient_PatientId]
 GO
 
 ALTER TABLE [dbo].[PatientVisit]  WITH CHECK ADD  CONSTRAINT [FK_PatientVisit_Location_LocationID] FOREIGN KEY([LocationID])

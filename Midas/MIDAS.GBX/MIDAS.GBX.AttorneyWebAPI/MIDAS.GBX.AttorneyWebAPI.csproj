@@ -291,6 +291,7 @@
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
+    <Compile Include="Controllers\PatientVisitUnscheduledController.cs" />
     <Compile Include="Controllers\PreferredAttorneyProviderController.cs" />
     <Compile Include="Controllers\PreferredMedicalProviderController.cs" />
     <Compile Include="Controllers\ProcedureCodeController.cs" />
