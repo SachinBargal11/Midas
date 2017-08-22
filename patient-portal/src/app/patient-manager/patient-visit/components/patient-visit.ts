@@ -158,13 +158,14 @@ export class PatientVisitComponent implements OnInit {
 
         if (event.eventWrapper.isAttorneyVisitType && event.eventWrapper.attorneyId) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">Attorney-${event.eventWrapper.company.name}</span>`;
-        }
-        else if (event.eventWrapper.isPatientVisitType && event.eventWrapper.room == null) {
+        } else if (event.eventWrapper.isPatientVisitType && event.eventWrapper.room == null) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
         } else if (event.eventWrapper.isPatientVisitType && event.eventWrapper.doctor == null) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
         } else if (event.eventWrapper.isImeVisitType) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.doctorName}</span>`;
+        } else if (event.eventWrapper.isEoVisitType) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EO-${event.eventWrapper.company.name}</span>`;
         }
         element.find('.fc-content').html(content);
     }
@@ -934,6 +935,9 @@ export class PatientVisitComponent implements OnInit {
             this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
         } else if (patientVisit.isImeVisitType) {
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
+        }
+        else if (patientVisit.isEoVisitType) {
+            this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
         }
         Object.keys(this.patientScheduleForm.controls).forEach(key => {
             this.patientScheduleForm.controls[key].setValidators(null);
@@ -1769,5 +1773,21 @@ export class PatientVisitComponent implements OnInit {
         // });
         return occurrences;
     }
+
+    private _getEoVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): EoVisit {
+        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
+        let eoVisit: EoVisit = <EoVisit>(eventInstance.eventWrapper);
+        if (eventInstance.isInPast) {
+            eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                //case: eoVisit.case ? new Case(_.extend(eoVisit.case.toJS())) : null,
+                patient: eoVisit.patient ? new Patient(_.extend(eoVisit.patient.toJS(), {
+                    user: new User(_.extend(eoVisit.patient.user.toJS()))
+                })) : null
+            }))
+        }
+        return eoVisit;
+    }
+
 
 }
