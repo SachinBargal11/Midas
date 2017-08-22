@@ -22,6 +22,8 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         private IRequestHandler<Relation> requestRelationHandler;
         private IRequestHandler<CaseType> requestCaseTypeHandler;
         private IRequestHandler<CaseStatus> requestCaseStatusHandler;
+        private IRequestHandler<LanguagePreference> requestLanguagePreferenceHandler;
+        private IRequestHandler<SocialMedia> requestSocialMediaHandler;
 
         public CommonController()
         {
@@ -35,6 +37,8 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             requestRelationHandler = new GbApiRequestHandler<Relation>();
             requestCaseTypeHandler = new GbApiRequestHandler<CaseType>();
             requestCaseStatusHandler = new GbApiRequestHandler<CaseStatus>();
+            requestLanguagePreferenceHandler = new GbApiRequestHandler<LanguagePreference>();
+            requestSocialMediaHandler = new GbApiRequestHandler<SocialMedia>();
         }
 
         [HttpGet]
@@ -175,6 +179,20 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         public HttpResponseMessage GetCaseStatusById(int id)
         {
             return requestCaseStatusHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getLanguagePreferences")]
+        public HttpResponseMessage GetLanguagePreferences()
+        {
+            return requestLanguagePreferenceHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getSocialMedias")]
+        public HttpResponseMessage GetSocialMedias()
+        {
+            return requestSocialMediaHandler.GetObjects(Request);
         }
     }
 }

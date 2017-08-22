@@ -23,6 +23,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         private IRequestHandler<Relation> requestRelationHandler;
         private IRequestHandler<CaseType> requestCaseTypeHandler;
         private IRequestHandler<CaseStatus> requestCaseStatusHandler;
+        private IRequestHandler<LanguagePreference> requestLanguagePreferenceHandler;
 
         public CommonController()
         {
@@ -36,6 +37,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestRelationHandler = new GbApiRequestHandler<Relation>();
             requestCaseTypeHandler = new GbApiRequestHandler<CaseType>();
             requestCaseStatusHandler = new GbApiRequestHandler<CaseStatus>();
+            requestLanguagePreferenceHandler = new GbApiRequestHandler<LanguagePreference>();
         }
 
         [HttpGet]
@@ -155,6 +157,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         public HttpResponseMessage GetCaseStatusById(int id)
         {
             return requestCaseStatusHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getLanguagePreferences")]
+        public HttpResponseMessage GetLanguagePreferences()
+        {
+            return requestLanguagePreferenceHandler.GetObjects(Request);
         }
     }
 }
