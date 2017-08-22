@@ -1,57 +1,145 @@
-﻿CREATE TABLE [dbo].[Case](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PatientId] [int] NOT NULL,
-	[CaseName] [nvarchar](50) NULL,
-	[CaseTypeId] [TINYINT] NULL,
-	[LocationId] [int] NOT NULL,
-	[PatientEmpInfoId] [int] NULL,
-	[CarrierCaseNo] [nvarchar](50) NULL,
-	[CaseStatusId] [TINYINT] NULL,
-	[AttorneyId] [int] NULL,
-    [CreatedByCompanyId] [INT] NOT NULL,
-
-	[IsDeleted] [bit] NULL,
-	[CreateByUserID] [int] NOT NULL,
-	[CreateDate] [datetime2](7) NOT NULL,
-	[UpdateByUserID] [int] NULL,
-	[UpdateDate] [datetime2](7) NULL,
-	CONSTRAINT [PK_Case] PRIMARY KEY ([Id])
+﻿IF NOT EXISTS
+(
+	SELECT	1 
+	FROM	INFORMATION_SCHEMA.TABLES
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
 )
+BEGIN
+    CREATE TABLE [dbo].[Case]
+    (
+	    [Id] [int] IDENTITY(1,1) NOT NULL,
+	    [PatientId] [int] NOT NULL,
+	    [CaseName] [nvarchar](50) NULL,
+	    [CaseTypeId] [TINYINT] NULL,
+	    [CarrierCaseNo] [nvarchar](50) NULL,
+	    [CaseStatusId] [TINYINT] NULL,
+        [CaseSource] [VARCHAR](50) NULL,
+        [ClaimFileNumber] [INT] NULL,
+        [Medicare] [BIT] NULL CONSTRAINT [DF_Case_Medicare] DEFAULT 0,
+        [Medicaid] [BIT] NULL CONSTRAINT [DF_Case_Medicaid] DEFAULT 0,
+        [SSDisabililtyIncome] [BIT] NULL CONSTRAINT [DF_Case_SSDisabililtyIncome] DEFAULT 0,
+
+	    [IsDeleted] [bit] NULL,
+	    [CreateByUserID] [int] NOT NULL,
+	    [CreateDate] [datetime2](7) NOT NULL,
+	    [UpdateByUserID] [int] NULL,
+	    [UpdateDate] [datetime2](7) NULL,
+	    CONSTRAINT [PK_Case] PRIMARY KEY ([Id])
+    )
+END
+ELSE
+BEGIN
+	PRINT 'Table [dbo].[Case] already exists in database: ' + DB_NAME()
+END
 GO
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Location_LocationID] FOREIGN KEY([LocationId])
-	REFERENCES [dbo].[Location] ([id])
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		CONSTRAINT_NAME = 'FK_Case_Patient_PatientId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case] 
+        DROP CONSTRAINT [FK_Case_Patient_PatientId]
+END
 GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Location_LocationID]
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Patient_PatientId] FOREIGN KEY([PatientId])
+	REFERENCES [dbo].[Patient] ([Id])
 GO
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([Id])
-GO
-
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Patient2_PatientId]
-GO
-
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId] FOREIGN KEY([PatientEmpInfoId])
-	REFERENCES [dbo].[PatientEmpInfo] ([Id])
-GO
-
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId]
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		CONSTRAINT_NAME = 'FK_Case_CaseType_CaseTypeId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case] 
+        DROP CONSTRAINT [FK_Case_CaseType_CaseTypeId]
+END
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseType_CaseTypeId] FOREIGN KEY([CaseTypeId])
 	REFERENCES [dbo].[CaseType] ([Id])
 GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseType_CaseTypeId]
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		CONSTRAINT_NAME = 'FK_Case_CaseStatus_CaseStatusId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case] 
+        DROP CONSTRAINT [FK_Case_CaseStatus_CaseStatusId]
+END
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseStatus_CaseStatusId] FOREIGN KEY([CaseStatusId])
 	REFERENCES [dbo].[CaseStatus] ([Id])
 GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseStatus_CaseStatusId]
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		COLUMN_NAME = 'Medicare'
+)
+BEGIN
+	PRINT 'Table [dbo].[Case] already have a Column [Medicare] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Case] 
+        ADD [Medicare] [BIT] NULL DEFAULT 0
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		COLUMN_NAME = 'Medicaid'
+)
+BEGIN
+	PRINT 'Table [dbo].[Case] already have a Column [Medicaid] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Case] 
+        ADD [Medicaid] [BIT] NULL DEFAULT 0
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		COLUMN_NAME = 'SSDisabililtyIncome'
+)
+BEGIN
+	PRINT 'Table [dbo].[Case] already have a Column [SSDisabililtyIncome] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[Case] 
+        ADD [SSDisabililtyIncome] [BIT] NULL DEFAULT 0
+END
 GO
 
 --ALTER TABLE [dbo].[Case] DROP [LocationId]
@@ -66,12 +154,7 @@ ALTER TABLE [dbo].[Case] DROP COLUMN [FileUploadPath]
 GO
 */
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Company_AttorneyId] FOREIGN KEY([AttorneyId])
-	REFERENCES [dbo].[Company] ([Id])
-GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Company_AttorneyId]
-GO
 
 /*
 ALTER TABLE [dbo].[Case] ADD [CreatedByCompanyId] [INT] NULL
@@ -87,12 +170,7 @@ ALTER TABLE [dbo].[Case] ALTER COLUMN [CreatedByCompanyId] [INT] NOT NULL
 GO
 */
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Company_CreatedByCompanyId] FOREIGN KEY([CreatedByCompanyId])
-	REFERENCES [dbo].[Company] ([Id])
-GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Company_CreatedByCompanyId]
-GO
 
 
 
