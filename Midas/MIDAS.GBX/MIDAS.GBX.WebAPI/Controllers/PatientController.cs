@@ -94,6 +94,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         //[AllowAnonymous]
         public HttpResponseMessage GetAllPatient([FromBody]Patient data)
         {
+            //HttpContext.Current.User.Identity.
             return requestHandlerPatient.GetGbObjects(Request, data);
         }
 
