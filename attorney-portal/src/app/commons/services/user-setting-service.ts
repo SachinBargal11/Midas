@@ -21,11 +21,14 @@ export class UserSettingService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getUserSettingById(id: Number): Observable<UserSetting> {
         let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/UserPersonalSetting/get/' + id).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/UserPersonalSetting/get/' + id, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let user = null;
                     if (data) {
@@ -45,7 +48,9 @@ export class UserSettingService {
 
     getUserSettingByUserId(userId: Number,companyId:Number): Observable<UserSetting> {
         let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/UserPersonalSetting/GetByUserAndCompanyId/' + userId + '/' + companyId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/UserPersonalSetting/GetByUserAndCompanyId/' + userId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let user = null;
                     if (data) {
@@ -65,7 +70,7 @@ export class UserSettingService {
 
     saveUserSettings(userSetting: UserSetting): Observable<UserSetting> {
         let promise: Promise<UserSetting> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/UserPersonalSetting/save', JSON.stringify(userSetting), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/UserPersonalSetting/save', JSON.stringify(userSetting), {
                 headers: this._headers
             })
                 .map(res => res.json())

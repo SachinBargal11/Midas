@@ -13,7 +13,7 @@ import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as _ from 'underscore';
 import { Consent } from '../../cases/models/consent';
 import { EoVisit } from '../models/eo-visit';
-
+import { AttorneyVisit } from '../models/attorney-visit';
 @Injectable()
 export class PatientVisitsStore {
 
@@ -410,16 +410,16 @@ export class PatientVisitsStore {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
-    getAttorneyVisitsByPatientId(patientId: number): Observable<PatientVisit[]> {
+    getAttorneyVisitsByPatientId(patientId: number): Observable<AttorneyVisit[]> {
         let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getAttorneyVisitsByPatientId(patientId).subscribe((attoneyVisits: PatientVisit[]) => {
+            this._patientVisitsService.getAttorneyVisitsByPatientId(patientId).subscribe((attoneyVisits: AttorneyVisit[]) => {
                 // this._patientVisits.next(List(patientVisits));
                 resolve(attoneyVisits);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+        return <Observable<AttorneyVisit[]>>Observable.fromPromise(promise);
     }
 
     getEOVisitsByPatientId(patientId: number): Observable<EoVisit[]> {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  url = 'https://identityserverdev.codearray.tk/core';
+  medicalProviderURI = environment.MEDICAL_PROVIDER_URI;
+  patientPortalURI = environment.PATIENT_PORTAL_URI;
+  attorneyPortalURI = environment.ATTORNEY_PORTAL_URI;
+  ancillaryPortalURI = environment.ANCILLARY_PORTAL_URI;
+  url = environment.AUTHORIZATION_SERVER_URL;
   title = '';
   // client_id = 'js.manual';
-  client_id = 'MidasPortal';
+  client_id = environment.CLIENT_ID;
   constructor() { }
 
   ngOnInit() {
@@ -22,7 +27,7 @@ export class HomeComponent implements OnInit {
     // var redirect_uri = window.location.protocol + "//" + window.location.host + "/JavaScriptClient/index.html";
     // var redirect_uri = redirect_uri;
     var response_type = "id_token token";
-    var scope = "openid profile email roles SampleWebAPI NotificationService";
+    var scope = environment.IDENTITY_SCOPE;
 
     var state = this.rand();
     var nonce = this.rand();

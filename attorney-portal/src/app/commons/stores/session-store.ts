@@ -213,7 +213,7 @@ export class SessionStore {
         var result: any;
         let baseUrl: string;
         this._configService.Load().then((config: any) => {
-            baseUrl = config.baseUrl;
+            baseUrl = config.SERVICE_BASE_URL;
         });
         if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
             var hash = window.location.hash.substr(1);

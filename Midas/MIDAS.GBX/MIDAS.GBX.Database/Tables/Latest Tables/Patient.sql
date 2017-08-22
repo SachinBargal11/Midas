@@ -165,15 +165,15 @@ IF EXISTS
 	FROM	INFORMATION_SCHEMA.COLUMNS
 	WHERE	TABLE_SCHEMA = 'dbo'
 	AND		TABLE_NAME = 'Patient'
-	AND		COLUMN_NAME = 'SocialMediaOther'
+	AND		COLUMN_NAME = 'LanguagePreferenceOther'
 )
 BEGIN
-	PRINT 'Table [dbo].[Patient] already have a Column [SocialMediaOther] in database: ' + DB_NAME()
+	PRINT 'Table [dbo].[Patient] already have a Column [LanguagePreferenceOther] in database: ' + DB_NAME()
 END
 ELSE
 BEGIN
     ALTER TABLE [dbo].[Patient] 
-        ADD [SocialMediaOther] [NVARCHAR](256) NULL
+        ADD [LanguagePreferenceOther] [NVARCHAR](256) NULL
 END
 GO
 

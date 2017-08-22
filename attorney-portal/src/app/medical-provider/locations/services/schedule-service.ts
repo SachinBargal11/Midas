@@ -24,11 +24,14 @@ export class ScheduleService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getSchedule(scheduleId: Number): Observable<any> {
         let promise: Promise<Schedule> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Schedule/get/' + scheduleId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Schedule/get/' + scheduleId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: Schedule = null;
                     if (data) {
@@ -45,7 +48,7 @@ export class ScheduleService {
 
     getSchedules(): Observable<Schedule[]> {
         let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Schedule/GetAll', null, {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Schedule/GetAll', null, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((schedulesData: Array<Object>) => {
@@ -63,7 +66,9 @@ export class ScheduleService {
 
     getSchedulesByCompanyId(companyId: Number): Observable<Schedule[]> {
         let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Schedule/getByCompanyId/' + companyId ).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Schedule/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((schedulesData: Array<Object>) => {
                     let schedules: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
                         return ScheduleAdapter.parseResponse(schedulesData);
@@ -88,7 +93,7 @@ export class ScheduleService {
                     slotEnd: currentScheduleDetailData.slotEnd ? currentScheduleDetailData.slotEnd.format('HH:mm:ss') : null,
                 });
             });
-            return this._http.post(this._url + '/Schedule/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Schedule/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((schedulesData: any) => {
@@ -120,7 +125,7 @@ export class ScheduleService {
                     slotEnd: currentScheduleDetailData.slotEnd ? currentScheduleDetailData.slotEnd.format('HH:mm:ss') : null,
                 });
             });
-            return this._http.post(this._url + '/Schedule/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Schedule/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((schedulesData: any) => {
@@ -138,7 +143,9 @@ export class ScheduleService {
     }
     deleteSchedule(schedule: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${schedule.id}`)
+            return this._http.delete(`${environment.SERVICE_BASE_URL}/${schedule.id}`, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((schedule) => {
                     resolve(schedule);

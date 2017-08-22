@@ -53,7 +53,7 @@ import { Procedure } from '../../../commons/models/procedure';
 import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { ImeVisit } from '../models/ime-visit';
 import { EoVisit } from '../models/eo-visit';
-
+import { AttorneyVisit } from '../models/attorney-visit';
 @Component({
     selector: 'patient-visit',
     templateUrl: './patient-visit.html',
@@ -155,12 +155,17 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.owningEvent.recurrenceRule) {
             content = `<i class="fa fa-refresh"></i>`;
         }
-        if (event.eventWrapper.isPatientVisitType && event.eventWrapper.room == null) {
+
+        if (event.eventWrapper.isAttorneyVisitType && event.eventWrapper.attorneyId) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">Attorney-${event.eventWrapper.company.name}</span>`;
+        } else if (event.eventWrapper.isPatientVisitType && event.eventWrapper.room == null) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.doctor.user.displayName}</span>`;
         } else if (event.eventWrapper.isPatientVisitType && event.eventWrapper.doctor == null) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
         } else if (event.eventWrapper.isImeVisitType) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.doctorName}</span>`;
+        } else if (event.eventWrapper.isEoVisitType) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EO-${event.eventWrapper.company.name}</span>`;
         }
         element.find('.fc-content').html(content);
     }
@@ -238,11 +243,11 @@ export class PatientVisitComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.loadAllVisits();
+
         this.loadAllVisitsForPatientId();
         this.loadImeVisits();
         this.loadAttorneyVisits();
-        // this.loadClientEOVisits();
+        this.loadClientEOVisits();
 
         this.header = {
             left: 'prev,next today',
@@ -930,6 +935,9 @@ export class PatientVisitComponent implements OnInit {
             this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
         } else if (patientVisit.isImeVisitType) {
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
+        }
+        else if (patientVisit.isEoVisitType) {
+            this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
         }
         Object.keys(this.patientScheduleForm.controls).forEach(key => {
             this.patientScheduleForm.controls[key].setValidators(null);
@@ -1644,8 +1652,8 @@ export class PatientVisitComponent implements OnInit {
         this._progressBarService.show();
         this._patientVisitsStore.getAttorneyVisitsByPatientId(this.patientId)
             .subscribe(
-            (visits: PatientVisit[]) => {
-                let events = this.getVisitOccurrences(visits);
+            (visits: AttorneyVisit[]) => {
+                let events = this.getAttorneyVisitOccurrences(visits);
                 this.events = _.union(this.events, events);
                 console.log(this.events);
             },
@@ -1663,6 +1671,46 @@ export class PatientVisitComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
+    getAttorneyVisitOccurrences(visits) {
+        let occurrences: ScheduledEventInstance[] = [];
+        let calendarEvents: ScheduledEvent[] = _.chain(visits)
+            .map((visit: AttorneyVisit) => {
+                return visit.calendarEvent;
+            })
+            .unique((event: ScheduledEvent) => {
+                return event.id;
+            })
+            .value();
+        _.forEach(calendarEvents, (event: ScheduledEvent) => {
+            occurrences.push(...event.getEventInstances(null));
+        });
+        _.forEach(occurrences, (occurrence: ScheduledEventInstance) => {
+            let matchingVisits: AttorneyVisit[] = _.filter(visits, (currentVisit: AttorneyVisit) => {
+                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
+            });
+            let visitForOccurrence: AttorneyVisit = _.find(matchingVisits, (currentMatchingVisit: AttorneyVisit) => {
+                if (!currentMatchingVisit.isOriginalVisit) {
+                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
+                }
+                return false;
+            });
+            if (visitForOccurrence) {
+                occurrence.eventWrapper = visitForOccurrence;
+            } else {
+                let originalVisit: AttorneyVisit = _.find(matchingVisits, (currentMatchingVisit: AttorneyVisit) => {
+                    return currentMatchingVisit.isOriginalVisit;
+                });
+                occurrence.eventWrapper = originalVisit;
+            }
+            return occurrence;
+        });
+        occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
+            return !occurrence.eventWrapper.calendarEvent.isCancelled;
+        });
+        return occurrences;
+    }
+
 
     loadClientEOVisits() {
         this._progressBarService.show();
@@ -1725,5 +1773,21 @@ export class PatientVisitComponent implements OnInit {
         // });
         return occurrences;
     }
+
+    private _getEoVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): EoVisit {
+        let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
+        let eoVisit: EoVisit = <EoVisit>(eventInstance.eventWrapper);
+        if (eventInstance.isInPast) {
+            eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                //case: eoVisit.case ? new Case(_.extend(eoVisit.case.toJS())) : null,
+                patient: eoVisit.patient ? new Patient(_.extend(eoVisit.patient.toJS(), {
+                    user: new User(_.extend(eoVisit.patient.user.toJS()))
+                })) : null
+            }))
+        }
+        return eoVisit;
+    }
+
 
 }

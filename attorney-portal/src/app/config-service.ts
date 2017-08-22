@@ -16,7 +16,7 @@ export class ConfigService {
                     environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
                     environment.HOME_URL = config.home_url;
                     environment.APP_URL = config.app_url
-                    resolve(config);
+                    resolve(environment);
             }, (error: any) => {
                 reject(new Error('UNABLE_TO_LOAD_CONFIG'));
             });

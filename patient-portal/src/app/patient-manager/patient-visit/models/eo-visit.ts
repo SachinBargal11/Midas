@@ -9,7 +9,7 @@ import * as RRule from 'rrule';
 import { VisitStatus } from './enums/visit-status';
 import { Patient } from '../../../patient-manager/patients/models/patient';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
-
+import { Company } from '../../../account/models/company';
 const EoVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
@@ -19,7 +19,7 @@ const EoVisitRecord = Record({
     doctor: null,
     doctorId: 0,
     insuranceProviderId: null,
-    medicalProviderId: null,
+    VisitCreatedByCompanyId: null,
     eventStart: null,
     eventEnd: null,
     notes: '',
@@ -30,6 +30,8 @@ const EoVisitRecord = Record({
     updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null,//Moment
+    company: null,
+    patient:null,
 });
 
 
@@ -43,7 +45,7 @@ export class EoVisit extends EoVisitRecord {
     doctor: Doctor;
     doctorId: number;
     insuranceProviderId: number;
-    medicalProviderId: number;
+    VisitCreatedByCompanyId: number;
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
     notes: string;
@@ -54,6 +56,8 @@ export class EoVisit extends EoVisitRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    company: Company;
+    patient:Patient;
 
     constructor(props) {
         super(props);
@@ -71,13 +75,7 @@ export class EoVisit extends EoVisitRecord {
         return '#7A3DB8';
     }
 
-     get visitDisplayString(): string {
-        let visitInfo: string = ``;
-
-        if (this.doctorId && this.doctor) {
-            visitInfo = `${visitInfo}Doctor Name: ${this.doctor.user.firstName} ${this.doctor.user.lastName}`;
-        }
-       
-        return visitInfo;
+    get visitDisplayString(): string {
+        let visitInfo: string = `EO Visit`;        return visitInfo;
     }
 }

@@ -21,6 +21,7 @@ export class ProcedureCodeMasterService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
 
@@ -29,7 +30,7 @@ export class ProcedureCodeMasterService {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/ProcedureCode/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/ProcedureCode/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {

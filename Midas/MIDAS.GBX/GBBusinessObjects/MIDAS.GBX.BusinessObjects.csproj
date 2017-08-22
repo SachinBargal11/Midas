@@ -108,6 +108,8 @@
     <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
     <Compile Include="AttorneyVisit\AttorneyVisit.cs" />
+    <Compile Include="Common\LanguagePreference.cs" />
+    <Compile Include="Common\SocialMedia.cs" />
     <Compile Include="CompanyICDTypeCode\CompanyICDTypeCode.cs" />
     <Compile Include="Company\CompanyType.cs" />
     <Compile Include="EOVisit\EOVisit.cs" />
@@ -119,6 +121,9 @@
     <Compile Include="MesssagingService\SMS.cs" />
     <Compile Include="MesssagingService\EmailMessage.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />
+    <Compile Include="PatientVisitUnscheduled\PatientVisitUnscheduled.cs" />
+    <Compile Include="Patient\PatientLanguagePreferenceMapping.cs" />
+    <Compile Include="Patient\PatientSocialMediaMapping.cs" />
     <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
     <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />

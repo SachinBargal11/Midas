@@ -24,12 +24,13 @@ export class PushNotificationService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        this._headers.append('access_token', this._sessionStore.session.accessToken.replace('bearer ', ''));
+        // this._headers.append('access_token', this._sessionStore.session.accessToken.replace('bearer ', ''));
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     loadNotifictionHub(accessToken) {
         $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
-        $.connection.hub.url = this._url + '/signalr';
+        $.connection.hub.url = environment.NOTIFICATION_SERVER_URL + '/signalr';
         $.connection.hub.logging = true;
         var notificationHub = $.connection.hub.proxies['notificationhub'];
         let promise: Promise<any> = new Promise((resolve, reject) => {
@@ -51,7 +52,7 @@ export class PushNotificationService {
     updateMessageStatus(): Observable<any> {
         let userName = this._sessionStore.session.user.userName;
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/UpdateMessageStatus?username=' + userName, {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/UpdateMessageStatus?username=' + userName, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -66,7 +67,7 @@ export class PushNotificationService {
 
     getSavedSubscriptionsByUsername(userName: string): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/GetSubscriptions?applicationName=Midas&username=' + userName, {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetSubscriptions?applicationName=Midas&username=' + userName, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -83,7 +84,7 @@ export class PushNotificationService {
     }
     getSubscriptionByUsernameAndEventId(userName: string, eventId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/GetSubscription?applicationName=Midas&username=' + userName + '&eventid=' + eventId, {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetSubscription?applicationName=Midas&username=' + userName + '&eventid=' + eventId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -100,7 +101,7 @@ export class PushNotificationService {
     }
     getAllGroupEventsByGroupId(): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/GetGroupEventsByGroupID?groupid=2', {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetGroupEventsByGroupID?groupid=5', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -117,7 +118,7 @@ export class PushNotificationService {
     }
     getAllGroupEvents(): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/GetGroupEvents?applicationName=Midas&groupname=Medical Provider', {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetGroupEvents?applicationName=Midas&groupname=Attorney', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -134,7 +135,7 @@ export class PushNotificationService {
     }
     getAllMessages(userName: string): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/GetMessages?applicationName=Midas&username=' + userName, {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetMessages?applicationName=Midas&username=' + userName, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -151,7 +152,7 @@ export class PushNotificationService {
     }
     getApplicationEvents(userName: string): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/NotificationManager/GetApplicationEvents?applicationName=Midas', {
+            return this._http.get(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/GetApplicationEvents?applicationName=Midas', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -176,7 +177,7 @@ export class PushNotificationService {
             EventIDs: eventIds
         }
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/NotificationManager/SubscribeEvents', JSON.stringify(requestData), {
+            return this._http.post(environment.NOTIFICATION_SERVER_URL + '/NotificationManager/SubscribeEvents', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

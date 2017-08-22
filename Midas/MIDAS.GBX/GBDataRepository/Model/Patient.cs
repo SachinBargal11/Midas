@@ -25,6 +25,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PatientLanguagePreferenceMappings = new HashSet<PatientLanguagePreferenceMapping>();
             this.PatientSocialMediaMappings = new HashSet<PatientSocialMediaMapping>();
             this.PatientVisits = new HashSet<PatientVisit>();
+            this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
         }
     
         public int Id { get; set; }
@@ -43,7 +44,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string EmergencyContactPhone { get; set; }
         public Nullable<bool> LegallyMarried { get; set; }
         public string SpouseName { get; set; }
-        public string SocialMediaOther { get; set; }
+        public string LanguagePreferenceOther { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttorneyVisit> AttorneyVisits { get; set; }
@@ -63,5 +64,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<PatientSocialMediaMapping> PatientSocialMediaMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit> PatientVisits { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
     }
 }

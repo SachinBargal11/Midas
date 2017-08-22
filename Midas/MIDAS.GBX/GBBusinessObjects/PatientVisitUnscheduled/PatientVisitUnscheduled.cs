@@ -1,0 +1,38 @@
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MIDAS.GBX.BusinessObjects
+{
+    public class PatientVisitUnscheduled : GbObject
+    {
+        [JsonProperty("caseId")]
+        public int? CaseId { get; set; }
+
+        [JsonProperty("patientId")]
+        public int? PatientId { get; set; }
+
+        [JsonProperty("eventStart")]
+        public DateTime? EventStart { get; set; }
+
+        [JsonProperty("medicalProviderName")]
+        public string MedicalProviderName { get; set; }
+
+        [JsonProperty("doctorName")]
+        public string DoctorName { get; set; }
+
+        [JsonProperty("notes")]
+        public string Notes { get; set; }
+
+        [JsonProperty("patient")]
+        public Patient Patient { get; set; }
+
+        [JsonProperty("case")]
+        public Case Case { get; set; }
+    }
+}

@@ -1,65 +1,65 @@
   
 .notification-panel-container {
-
-    position: fixed;
-  right: 0;
-  top: 0;
-  display: none;
-  height: 100%;
-  background: #F4F8FB;
-  overflow: hidden;
-  border-left: solid 1px #c5d6de;
-  padding-top: 50px;
-
-
-  .control-item-content {
-         padding: 10px;
-         background: #F3F7FA;
-         .dropdown-menu-notif-header {
-             margin-bottom: 8px;
-         }
-      }
-
-      .control-item-content.open {
-         display: block;
-      }
-
-      .control-item-content-text {
-         border: 1px solid #e0e0e0;
-         border-radius: 3px;
-         background: #fff;
-         font-size: 0.9rem;
-         padding: 8px 11px;
-         display: block;
-         font-size: 0.9rem;
-         margin-top: 5px;
-
-         &.unread {
-             padding-left: 24px;
-             position: relative;
-         }
-
-         &.success {
-             border-color: #46c35f;
-             background: #edf9ee;
-         }
-
-         &.warning {
-             border-color: #f29824;
-             background: #fdf4e6;
-         }
-
-         .dot {  
-            display: inline-block;
-            vertical-align: middle;
-            width: 6px;
-            height: 6px;
-            margin: 0 0 6px;
-            border-radius: 50%;
-            background: #fa424a;
-            position: absolute;
-            top: 14px;
-            left: 10px;
-         }
-      }
-}
+    
+        position: fixed;
+      right: 0;
+      top: 58px;
+      display: none;
+      height: 100%;
+      background: #F4F8FB;
+      overflow: scroll;
+      border-left: solid 1px #c5d6de;
+    //   padding-top: 50px;
+    
+    
+      .control-item-content {
+             padding: 10px;
+             background: #F3F7FA;
+             .dropdown-menu-notif-header {
+                 margin-bottom: 8px;
+             }
+          }
+    
+          .control-item-content.open {
+             display: block;
+          }
+    
+          .control-item-content-text {
+             border: 1px solid #e0e0e0;
+             border-radius: 3px;
+             background: #fff;
+             font-size: 0.9rem;
+             padding: 8px 11px;
+             display: block;
+             font-size: 0.9rem;
+             margin-top: 5px;
+    
+             &.unread {
+                 padding-left: 24px;
+                 position: relative;
+             }
+    
+             &.success {
+                 border-color: #46c35f;
+                 background: #edf9ee;
+             }
+    
+             &.warning {
+                 border-color: #f29824;
+                 background: #fdf4e6;
+             }
+    
+             .dot {  
+                display: inline-block;
+                vertical-align: middle;
+                width: 6px;
+                height: 6px;
+                margin: 0 0 6px;
+                border-radius: 50%;
+                background: #fa424a;
+                position: absolute;
+                top: 14px;
+                left: 10px;
+             }
+          }
+    }

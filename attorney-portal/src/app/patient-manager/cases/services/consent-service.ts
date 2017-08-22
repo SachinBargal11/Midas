@@ -22,11 +22,14 @@ export class ConsentService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getdoctors(CompanyId: Number): Observable<ConsentAdapter> {
         let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/getByCompanyId/' + CompanyId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/getByCompanyId/' + CompanyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -45,7 +48,7 @@ export class ConsentService {
         let promise: Promise<Consent> = new Promise((resolve, reject) => {
             let caseRequestData = consentDetail.toJS();
 
-            return this._http.post(this._url + '/CompanyCaseConsentApproval/save', JSON.stringify(caseRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -63,7 +66,9 @@ export class ConsentService {
 
     getDocumentsForCaseId(caseId: number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + caseId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -81,7 +86,9 @@ export class ConsentService {
 
     getDoctorCaseConsentApproval(Id: Number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanyCaseConsentApproval/get/' + Id)
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/get/' + Id, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     let docData = ConsentAdapter.parseResponse(data);
@@ -102,7 +109,7 @@ export class ConsentService {
             // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
             dwObject.HTTPUploadAllThroughPostAsPDF(
                 // 'midas.codearray.tk',
-                this._url,
+                environment.SERVICE_BASE_URL,
                 'fileupload/multiupload/' + currentCaseId + '/consent',
                 `scanned_file_${currentCaseId}.pdf`,
                 (response: any) => {
@@ -123,10 +130,12 @@ export class ConsentService {
 
     getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            // return this._http.get(this._url + '/documentmanager/get/' + CaseId  +'/case').map(res => res.json())
-            // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
+            // return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId  +'/case').map(res => res.json())
+            // return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
-            return this._http.get(this._url + '/documentmanager/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + CaseId + '/consent' + '_' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 //documentmanager/get/86/consent
                 .subscribe((data: Array<any>) => {
                     let consent = null;
@@ -145,9 +154,9 @@ export class ConsentService {
 
     deleteConsentform(caseDocument: CaseDocument, companyId: number): Observable<CaseDocument> {
         let promise = new Promise((resolve, reject) => {
-            // return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id, {
-            return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + companyId, {
-                //  return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + caseDocument.document.originalResponse.companyId, {
+            // return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDetail.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + companyId, {
+                //  return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + caseDocument.document.originalResponse.companyId, {
 
                 headers: this._headers
             }).map(res => res.json())
@@ -165,7 +174,7 @@ export class ConsentService {
 
     deleteUploadConsentform(caseDetail: Consent): Observable<Consent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id + '/' + caseDetail.documentId + '/' + caseDetail.caseId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/delete/' + caseDetail.id + '/' + caseDetail.documentId + '/' + caseDetail.caseId, {
 
                 headers: this._headers
             }).map(res => res.json())
@@ -185,7 +194,7 @@ export class ConsentService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
+                .get(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId, {
                 headers: this._headers
             })
                 .map(res => {
@@ -196,7 +205,7 @@ export class ConsentService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
                         // return res.arrayBuffer();
                     }
                 })
@@ -207,20 +216,20 @@ export class ConsentService {
 
                 },
                 () => console.log('Completed file download.'));
-            //window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+            //window.location.assign(environment.SERVICE_BASE_URL + '/fileupload/download/' + CaseId + '/' + documentId);
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
     getConsentFormDownloadUrl(caseId: Number, companyId: Number, download: Boolean = true): string {
-        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
+        return `${environment.SERVICE_BASE_URL}/CompanyCaseConsentApproval/download/${caseId}/${companyId}/${download}`;
     }
 
     downloadTemplate(caseId: Number, companyId: Number): Observable<Consent[]> {
         let thefile = {};
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId)
+                .get(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId)
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -229,7 +238,7 @@ export class ConsentService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId);
+                        window.location.assign(environment.SERVICE_BASE_URL + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId);
                         // return res.arrayBuffer();
                     }
                 })

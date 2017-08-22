@@ -18,6 +18,8 @@ import { Consent } from '../../cases/models/consent';
 import { ImeVisitAdapter } from './adapters/ime-visit-adapter';
 import { EoVisitAdapter } from './adapters/eo-visit-adapter';
 import { EoVisit } from '../models/eo-visit';
+import { AttorneyVisitAdapter } from './adapters/Attorney-visit-adapter';
+import { AttorneyVisit } from '../models/Attorney-visit';
 
 @Injectable()
 export class PatientVisitService {
@@ -514,23 +516,41 @@ export class PatientVisitService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-    getAttorneyVisitsByPatientId(patientId: number): Observable<PatientVisit[]> {
-        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+    getAttorneyVisitsByPatientId(patientId: number): Observable<AttorneyVisit[]> {
+        let promise: Promise<AttorneyVisit[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/attorneyVisit/getByPatientId/' + patientId, {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let attorneyVisits = (<Object[]>data).map((data: any) => {
-                        return PatientVisitAdapter.parseResponse(data);
+                        return AttorneyVisitAdapter.parseResponse(data);
                     });
                     resolve(attorneyVisits);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+        return <Observable<AttorneyVisit[]>>Observable.fromPromise(promise);
     }
+
+    //  getPatientVisitsByAttorneyCompanyId(): Observable<PatientVisit[]> {
+    //     let companyId = this._sessionStore.session.currentCompany.id;
+    //     let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/attorneyVisit/getByCompanyAndAttorneyId/' + companyId + '/' + 0)
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let patientVisits = (<Object[]>data).map((data: any) => {
+    //                     return PatientVisitAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(patientVisits);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+
+    //     });
+    //     return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    // }
 
     getEOVisitsByPatientId(patientId: number): Observable<EoVisit[]> {
         let promise: Promise<EoVisit[]> = new Promise((resolve, reject) => {
