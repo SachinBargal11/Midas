@@ -4,16 +4,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using MIDAS.GBX.BusinessObjects;
+using BO= MIDAS.GBX.BusinessObjects;
 using System.Net.Http.Headers;
 using System.Configuration;
 using System.Web;
 using static MIDAS.GBX.BusinessObjects.GBEnums;
+using MIDAS.GBX.DataRepository.Model;
 
-namespace MIDAS.GBX.Common
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     public class MessagingHelper
     {
+        MIDASGBXEntities _context = new MIDASGBXEntities();
         public string AccessToken { get; set; }
         public string ApplicationName { get; set; }
         public static string NotificationServiceBaseURL { get; set; }
@@ -57,7 +59,7 @@ namespace MIDAS.GBX.Common
             }
         }
 
-        public string AddMessageToEmailQueue(EmailMessage message)
+        public string AddMessageToEmailQueue(BO.EmailMessage message)
         {
             try
             {
@@ -81,7 +83,7 @@ namespace MIDAS.GBX.Common
             }
         }
 
-        public string AddMessageToSMSQueue(SMS message)
+        public string AddMessageToSMSQueue(BO.SMS message)
         {
             try
             {
@@ -105,11 +107,14 @@ namespace MIDAS.GBX.Common
             }
         }
 
-        public PreferedModeOfComunication GetModeOfComunication(int userid, int companyid)
+        public PreferedModeOfComunication GetModeOfComunication(string userName, int companyid)
         {
             using (UserPersonalSettingRepository cmp = new UserPersonalSettingRepository(_context))
+
             {
-                UserPersonalSetting userSettings = (UserPersonalSetting)cmp.GetByUserAndCompanyId(userid, companyid);
+                // BO.UserPersonalSetting userSettings = (BO.UserPersonalSetting)cmp.GetByUserAndCompanyId(userName, companyid);
+                BO.UserPersonalSetting userSettings = new BO.UserPersonalSetting();
+                userSettings.PreferredModeOfCommunication = 3;
                 if (userSettings != null)
                 {
                     return (PreferedModeOfComunication)userSettings.PreferredModeOfCommunication;
@@ -120,6 +125,41 @@ namespace MIDAS.GBX.Common
                 }
             }
 
+        }
+
+        public PreferedModeOfComunication SendEmailAndSms(string userName,int companyId,BO.EmailMessage emailData,BO.SMS smsData)
+        {
+            try
+            {
+
+                PreferedModeOfComunication predferredModewOfCommunication = GetModeOfComunication(userName, companyId);
+
+                    if(predferredModewOfCommunication==PreferedModeOfComunication.Email)
+                    {
+                      
+                            AddMessageToEmailQueue(emailData);
+                            return PreferedModeOfComunication.Email;
+                     }
+                      else if(predferredModewOfCommunication == PreferedModeOfComunication.SMS)
+                      {
+                            AddMessageToSMSQueue(smsData);
+                            return PreferedModeOfComunication.SMS;
+                      }
+                        else
+                        {
+                            AddMessageToEmailQueue(emailData);
+                            AddMessageToSMSQueue(smsData);
+                            return PreferedModeOfComunication.Both;
+
+                        }
+                    
+                                                                
+               
+            }
+            catch (Exception e)
+            {
+                return PreferedModeOfComunication.Both;
+            }
         }
 
     }

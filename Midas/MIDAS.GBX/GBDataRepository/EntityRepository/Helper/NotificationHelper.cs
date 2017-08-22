@@ -4,20 +4,23 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using MIDAS.GBX.BusinessObjects;
+using BO = MIDAS.GBX.BusinessObjects;
 using System.Net.Http.Headers;
 using System.Configuration;
 using System.Web;
+using static MIDAS.GBX.BusinessObjects.GBEnums;
+using MIDAS.GBX.DataRepository.Model;
 
-namespace MIDAS.GBX.Common
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     public class NotificationHelper
     {
+        MIDASGBXEntities _context = new MIDASGBXEntities();
         public string AccessToken { get; set; }
         public string ApplicationName { get; set; }
         public static string NotificationServiceBaseURL { get; set; }
-       
 
+       
 
         public NotificationHelper()
         {
@@ -58,7 +61,7 @@ namespace MIDAS.GBX.Common
             }
         }
 
-        public Subscription GetSubscriptionByEventName(string username, string eventname)
+        public BO.Subscription GetSubscriptionByEventName(string username, string eventname)
         {
             try
             {
@@ -72,7 +75,7 @@ namespace MIDAS.GBX.Common
                 HttpResponseMessage response = client.GetAsync(string.Format("GetSubscriptionByEventName?applicationname={0}&username={1}&eventname={2}", ApplicationName, username, eventname)).Result;
 
                 response.EnsureSuccessStatusCode();
-                Subscription subscription = response.Content.ReadAsAsync<Subscription>().Result;
+                BO.Subscription subscription = response.Content.ReadAsAsync<BO.Subscription>().Result;
 
                 return subscription;
             }
@@ -83,7 +86,7 @@ namespace MIDAS.GBX.Common
             return null;
         }
 
-        public string PushNotification(string username, string message,int eventId )
+        public bool PushNotification(string username, string message,int eventId )
         {
             try
             {
@@ -101,13 +104,59 @@ namespace MIDAS.GBX.Common
                 response.EnsureSuccessStatusCode();
                 string pushStatus = response.Content.ReadAsStringAsync().Result;
 
-                return pushStatus;
+                return true;
             }
             catch (Exception e)
             {
-
+                return false;
             }
-            return null;
+        }
+
+        public PushNotificationStatus PushNotification(string username, int compnayid, string message, string eventName)
+        {
+            try
+            {
+                using (UserPersonalSettingRepository cmp = new UserPersonalSettingRepository(_context))
+                {
+                    //BO.UserPersonalSetting userSettings = (UserPersonalSetting)cmp.GetByUserAndCompanyId(username, compnayid);
+                    BO.UserPersonalSetting userSettings = new BusinessObjects.UserPersonalSetting();
+                    userSettings.IsPushNotificationEnabled = true;
+                    if (userSettings != null)
+                    {
+                        if (userSettings.IsPushNotificationEnabled)
+                        {
+                            var subscription = GetSubscriptionByEventName(username, eventName);
+                            if (subscription != null)
+                            {
+                                var result = PushNotification(username, message, subscription.EventID);
+                                if (result)
+                                {
+                                    return PushNotificationStatus.Delivered;
+                                }
+                                else
+                                {
+                                    return PushNotificationStatus.Failed;
+                                }
+                            }
+                            else
+                            {
+                                return PushNotificationStatus.EventNotSubscribed;
+                            }
+                        }
+                        {
+                            return PushNotificationStatus.NotificationNotEnabled;
+                        }
+                    }
+                    else
+                    {
+                        return PushNotificationStatus.NotificationNotEnabled;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return PushNotificationStatus.NotificationNotEnabled;
+            }
         }
     }
 }

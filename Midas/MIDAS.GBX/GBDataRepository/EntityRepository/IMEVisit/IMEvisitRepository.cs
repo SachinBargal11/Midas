@@ -108,6 +108,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.CalendarEvent CalendarEventBO = IMEVisitBO.CalendarEvent;
             string patientUserName = string.Empty;
             bool sendNotification = false;
+            bool sendMessage = false;
 
             //CalenderEventBO
             if (CalendarEventBO != null)
@@ -266,22 +267,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     _context.SaveChanges();
 
-                    #region send SMS notification 
-                    try
-                    {
-                        if (sendNotification)
-                        {
-                            if (patientContactNumber != null && patientContactNumber != string.Empty)
-                            {
-                                string to = patientContactNumber;
-                                // string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == patientVisitBO.LocationId).Select(lc => lc.Name).FirstOrDefault();
-                                string body = "";
-                                string msgid = SMSGateway.SendSMS(to, body);
-                            }
-                        }
-                    }
-                    catch (Exception) { }
-                    #endregion
+                    //#region send SMS notification 
+                    //try
+                    //{
+                    //    if (sendNotification)
+                    //    {
+                    //        if (patientContactNumber != null && patientContactNumber != string.Empty)
+                    //        {
+                    //            string to = patientContactNumber;
+                    //             //string body = "Your appointment has been scheduled at " + CalendarEventBO.EventStart.Value + " in " + _context.Locations.Where(loc => loc.id == patientVisitBO.LocationId).Select(lc => lc.Name).FirstOrDefault();
+                    //            string body = "";
+                    //            string msgid = SMSGateway.SendSMS(to, body);
+                    //        }
+                    //    }
+                    //}
+                    //catch (Exception) { }
+                    //#endregion
                 }
                 else
                 {
@@ -306,6 +307,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         IMEVisitDB = new IMEVisit();
                         Add_IMEVisitDB = true;
+                        sendMessage = true;
                     }
                     else if (IMEVisitDB == null && IMEVisitBO.ID > 0)
                     {
@@ -400,6 +402,128 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             .Where(p => p.CalendarEvent.Id == CalendarEventDB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<IMEVisit>();
+                }
+            }
+
+            if (sendMessage == true)
+            {
+                try
+                {
+                    //#region Send Email
+                    //string VerificationLink = "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    //string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    //BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                    //objEmail.SendMail();
+                    //#endregion
+
+                    
+                    IdentityHelper identityHelper = new IdentityHelper();
+                    User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                         .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .FirstOrDefault();
+
+                    User patientInfo = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                      .Where(p => p.id == IMEVisitBO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                          .FirstOrDefault();
+
+                    User ancillaryInfo = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                  .Where(p => p.id == IMEVisitBO.TransportProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                      .FirstOrDefault();
+
+                    string body = "Your appointment has been scheduled by " + AdminUser.UserCompanies.Select(p => p.Company.Name).FirstOrDefault() +" from Midas portal";
+                        
+                    //string VerificationLink = "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    string MailMessageForPatient = "Appointment has been scheduled for patient";
+                    string MailMessageForAdmin = "Appointment has been scheduled for patient";
+                    string MailMessageForAncillary= "Appointment has been scheduled for patient";
+
+                    string NotificationForPatient = "Your appointment has been scheduled by " + AdminUser.UserCompanies.Select(p => p.Company.Name).FirstOrDefault() + " from Midas portal";
+                    string NotificationForAdmin = "Appointment has been scheduled for patient ";
+                    string NotificationForAncillary = "Your appointment has been scheduled by " + AdminUser.UserCompanies.Select(p => p.Company.Name).FirstOrDefault() + " from Midas portal";
+
+                    string SmsMessageForPatient = "Appointment has been scheduled for patient";
+                    string SmsMessageForAdmin = "Appointment has been scheduled for patient";
+                    string SmsMessageForAncillary = "Appointment has been scheduled for patient";
+
+
+
+
+
+
+
+                    #region  patient mail object
+
+                    BO.EmailMessage emPatient = new BO.EmailMessage();
+                    emPatient.ApplicationName = "Midas";
+                    emPatient.ToEmail = "med25@allfriendshub.tk";//for patient user mail //patientInfo.UserName;               
+                    emPatient.EMailSubject = "Email Header";
+                    emPatient.EMailBody = MailMessageForPatient;
+                    #endregion
+
+                    #region patient sms object
+                    BO.SMS smsPatient = new BO.SMS();
+                    smsPatient.ApplicationName = "Midas";
+                    smsPatient.ToNumber = patientInfo.ContactInfo.CellPhone;  
+                    smsPatient.Message = SmsMessageForPatient;
+                    #endregion 
+
+
+                    #region  admin mail object                 
+                    BO.EmailMessage emAdmin = new BO.EmailMessage();
+                    emAdmin.ApplicationName = "Midas";
+                    emAdmin.ToEmail = identityHelper.Email;
+                    emAdmin.EMailSubject = "Email Header";
+                    emAdmin.EMailBody = MailMessageForAdmin;
+                    #endregion 
+                  
+                    #region admin sms object
+                    BO.SMS smsAdmin = new BO.SMS();
+                    smsAdmin.ApplicationName = "Midas";
+                    smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                    smsAdmin.Message = SmsMessageForAdmin;
+                    #endregion
+
+                    #region  Ancillary mail object                 
+                    BO.EmailMessage emAncillary = new BO.EmailMessage();
+                    emAdmin.ApplicationName = "Midas";
+                    emAdmin.ToEmail = "an25 @allfriendshub.tk"; //ancillaryInfo.UserName 
+                    emAdmin.EMailSubject = "Email Header";
+                    emAdmin.EMailBody = MailMessageForAncillary;
+                    #endregion
+
+                    #region Ancillary sms object
+                    BO.SMS smsAncillary = new BO.SMS();
+                    smsAdmin.ApplicationName = "Midas";
+                    smsAdmin.ToNumber = ancillaryInfo.ContactInfo.CellPhone;
+                    smsAdmin.Message = SmsMessageForAncillary;
+                    #endregion
+
+
+                    NotificationHelper nh = new NotificationHelper();
+                    MessagingHelper mh = new MessagingHelper();
+
+                    #region Patient                  
+                    nh.PushNotification("p10@allfriendshub.tk", patientInfo.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForPatient, "New Patient Registration"); //for patient user mail //patientInfo.UserName;  
+                    mh.SendEmailAndSms("p10@allfriendshub.tk", patientInfo.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emPatient, smsPatient);   //for patient user mail //patientInfo.UserName; 
+                    #endregion
+
+                    #region admin 
+                    nh.PushNotification(identityHelper.Email, patientInfo.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForAdmin, "New Patient Registration");
+                    mh.SendEmailAndSms(identityHelper.Email, patientInfo.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emAdmin, smsAdmin);
+                    #endregion
+
+                    #region Ancillary 
+                    if(IMEVisitBO.TransportProviderId!=null)
+                    {                                              
+                        nh.PushNotification("an25 @allfriendshub.tk", ancillaryInfo.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForAncillary, "New Patient Registration");   //email for ancillar (ancillaryInfo.UserName
+                        mh.SendEmailAndSms("an25 @allfriendshub.tk", ancillaryInfo.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emAncillary, smsAncillary); // //email for ancillar (ancillaryInfo.UserName
+                    }
+                   
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                   
                 }
             }
 

@@ -131,8 +131,6 @@
     <Compile Include="GbAuthorizationException.cs" />
     <Compile Include="GbException.cs" />
     <Compile Include="GbValidationException.cs" />
-    <Compile Include="MessagingHelper.cs" />
-    <Compile Include="NotificationHelper.cs" />
     <Compile Include="PasswordHash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
