@@ -31,6 +31,7 @@ const ImeVisitRecord = Record({
     updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null,//Moment
+    VisitCreatedByCompanyId: null,
 });
 
 
@@ -57,6 +58,7 @@ export class ImeVisit extends ImeVisitRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    VisitCreatedByCompanyId: number;
 
     constructor(props) {
         super(props);

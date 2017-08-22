@@ -18,8 +18,9 @@ const EoVisitRecord = Record({
     isEoVisitType: true,
     doctor: null,
     doctorId: 0,
+    patientId: 0,
     insuranceProviderId: null,
-    medicalProviderId: null,
+    VisitCreatedByCompanyId: null,
     eventStart: null,
     eventEnd: null,
     notes: '',
@@ -42,8 +43,9 @@ export class EoVisit extends EoVisitRecord {
     isEoVisitType: boolean;
     doctor: Doctor;
     doctorId: number;
+    patientId: number;
     insuranceProviderId: number;
-    medicalProviderId: number;
+    VisitCreatedByCompanyId: number;
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
     notes: string;

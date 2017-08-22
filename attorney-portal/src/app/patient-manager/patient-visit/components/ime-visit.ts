@@ -106,7 +106,7 @@ export class ImeVisitComponent implements OnInit {
             eventStartDate: [''],
             eventStartTime: [''],
             duration: ['', Validators.required],
-            transportProviderId: [''],
+            // transportProviderId: [''],
         });
         // this.loadPrefferdAncillaries();
 
@@ -189,9 +189,10 @@ export class ImeVisitComponent implements OnInit {
             patientId: this.imeScheduleForm.value.patientId,
             caseId: this.imeScheduleForm.value.caseId,
             notes: this.imeScheduleForm.value.notes,
-            transportProviderId: this.imeScheduleForm.value.transportProviderId,
+            // transportProviderId: this.imeScheduleForm.value.transportProviderId,
             doctorName: this.imeScheduleForm.value.doctorName,
             createByUserID: this.sessionStore.session.account.user.id,
+            VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
                 eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
@@ -204,7 +205,7 @@ export class ImeVisitComponent implements OnInit {
 
         this._progressBarService.show();
 
-        // result = this._patientVisitsStore.addImeVisit(ime);
+        result = this._patientVisitsStore.addImeVisit(ime);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

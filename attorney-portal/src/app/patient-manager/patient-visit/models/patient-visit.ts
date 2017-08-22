@@ -48,14 +48,16 @@ const PatientVisitRecord = Record({
     createDate: null, //Moment
     updateDate: null, //Moment
     subject: '',
-    contactPerson:'',
-    agenda:'',
+    contactPerson: '',
+    agenda: '',
     companyid: 0,
     attorneyId: 0,
+    isPatientVisitType: true,
+
 });
 
 
- export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
+export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
 
     id: number;
@@ -90,10 +92,11 @@ const PatientVisitRecord = Record({
     createDate: moment.Moment;
     updateDate: moment.Moment;
     subject: string;
-    contactPerson:string;
+    contactPerson: string;
     agenda: string;
     companyid: number;
-    attorneyId:number;
+    attorneyId: number;
+    isPatientVisitType: boolean;
 
     constructor(props) {
         super(props);
@@ -137,9 +140,9 @@ const PatientVisitRecord = Record({
         // if (this.locationId && this.location) {
         //     visitInfo = `${visitInfo}Location Name: ${this.location.name} - `;
         // }
-        
+
         // visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
-        
+
         // if (this.doctorId && this.doctor) {
         //     visitInfo = `${visitInfo}Attorney Name: ${this.doctor.user.displayName}`;
         //     if (this.specialtyId && this.specialty) {
@@ -160,22 +163,22 @@ const PatientVisitRecord = Record({
         return visitInfo;
     }
 
-         get eventColor(): string {
-            //  if (this.room && this.roomId) {
-            //      return this.room.roomTest.color;
-            //  } else if (this.doctor && this.doctorId) {
-            //      return this.specialty ? this.specialty.color : '';
-            //  } else {
-                 return '';
-             }
-    
-        // let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
-        // // let color: any = _.sample(colorCodes);
-        // if (this.doctorId) {
-        //     return '#7A3DB8';
-        // } else {
-        //     return '#CC6666';
-        // }
-        // return color;
-    
+    get eventColor(): string {
+        //  if (this.room && this.roomId) {
+        //      return this.room.roomTest.color;
+        //  } else if (this.doctor && this.doctorId) {
+        //      return this.specialty ? this.specialty.color : '';
+        //  } else {
+        return '';
+    }
+
+    // let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
+    // // let color: any = _.sample(colorCodes);
+    // if (this.doctorId) {
+    //     return '#7A3DB8';
+    // } else {
+    //     return '#CC6666';
+    // }
+    // return color;
+
 }

@@ -14,7 +14,7 @@ const ScheduledEventRecord = Record({
     description: '',
     recurrenceId: null,
     recurrenceRule: null,
-    recurrenceException: [],
+    recurrenceException: null,
     isAllDay: false,
     isCancelled: false,
     transportProviderId: 0,

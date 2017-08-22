@@ -14,6 +14,11 @@ import { VisitDocumentAdapter } from './adapters/visit-document-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { Consent } from '../../cases/models/consent';
+import { ImeVisit } from '../models/ime-visit';
+import { EoVisit } from '../models/eo-visit';
+import { ImeVisitAdapter } from './adapters/ime-visit-adapter';
+import { EoVisitAdapter } from './adapters/eo-visit-adapter';
+
 
 @Injectable()
 export class PatientVisitService {
@@ -404,6 +409,56 @@ export class PatientVisitService {
             //window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
+     addImeVisit(requestData: any): Observable<ImeVisit> {
+        let promise: Promise<ImeVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/IMEvisit/SaveIMEVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
+     getImeVisitByCompanyId(): Observable<ImeVisit[]> {
+         let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/IMEVisit/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let imeVisits =(<Object[]>data).map((data: any) => {
+                        return ImeVisitAdapter.parseResponse(data);
+                    });
+                    resolve(imeVisits);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
+
+     addEoVisit(requestData: any): Observable<EoVisit> {
+        let promise: Promise<EoVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/EOvisit/SaveEOVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<EoVisit>>Observable.fromPromise(promise);
     }
 }
 

@@ -322,7 +322,7 @@ export class EoVisitComponent implements OnInit {
         let eo = new EoVisit({
             patientId: this.eoScheduleForm.value.patientId,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
-            medicalProviderId: this.sessionStore.session.currentCompany.id,
+            VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             notes: this.eoScheduleForm.value.notes,
             createByUserID: this.sessionStore.session.account.user.id,
             calendarEvent: new ScheduledEvent({
