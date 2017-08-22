@@ -10,6 +10,7 @@ import { Schedule } from '../models/rooms-schedule';
 import { Tests } from '../models/tests';
 import { RoomsAdapter } from './adapters/rooms-adapter';
 import { TestsAdapter } from './adapters/tests-adapter';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Injectable()
 export class RoomsService {
@@ -19,14 +20,18 @@ export class RoomsService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getRoom(roomId: Number): Observable<Room> {
         let promise: Promise<Room> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Room/Get/' + roomId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Room/Get/' + roomId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((roomData: any) => {
                     let parsedData: Room = null;
                     parsedData = RoomsAdapter.parseResponse(roomData);
@@ -40,7 +45,7 @@ export class RoomsService {
     }
     getRooms(locationId: number): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Room/GetAll', JSON.stringify({ location: { id: locationId } }), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Room/GetAll', JSON.stringify({ location: { id: locationId } }), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((roomsData: any) => {
@@ -60,7 +65,9 @@ export class RoomsService {
     }
     getRoomsByTestInAllApp(testId: number): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/room/getByRoomInAllApp/' + testId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/room/getByRoomInAllApp/' + testId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((roomsData: any) => {
                     let rooms: any[] = [];
                     if (_.isArray(roomsData)) {
@@ -77,7 +84,7 @@ export class RoomsService {
     }
     getTests(): Observable<Tests[]> {
         let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/RoomTest/GetAll', JSON.stringify({}), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/RoomTest/GetAll', JSON.stringify({}), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((testsData: Array<Object>) => {
@@ -96,7 +103,7 @@ export class RoomsService {
             let requestData: any = roomDetail.toJS();
             requestData.contactersonName = requestData.contactPersonName;
             requestData = _.omit(requestData, 'contactPersonName');
-            return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((roomsData: any) => {
@@ -114,7 +121,7 @@ export class RoomsService {
             let requestData: any = roomDetail.toJS();
             requestData.contactersonName = requestData.contactPersonName;
             requestData = _.omit(requestData, 'contactPersonName');
-            return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((roomsData: any) => {
@@ -134,7 +141,7 @@ export class RoomsService {
             requestData.schedule = {
                 id: schedule.id
             };
-            return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
                 let parsedRoom: Room = null;
@@ -152,7 +159,7 @@ export class RoomsService {
             requestData.isDeleted = 1,
                 requestData.contactersonName = requestData.contactPersonName;
             requestData = _.omit(requestData, 'contactPersonName');
-            return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((roomsData: any) => {
@@ -167,7 +174,7 @@ export class RoomsService {
     }
     getTestsByLocationId(locationId: number): Observable<Tests[]> {
         let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/room/getByLocationId/${locationId}`, {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/room/getByLocationId/${locationId}`, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((testsData: Array<Object>) => {

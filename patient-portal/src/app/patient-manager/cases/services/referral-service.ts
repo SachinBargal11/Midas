@@ -14,13 +14,19 @@ export class ReferralService {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(
+        private _http: Http,
+        private _sessionStore: SessionStore
+    ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getReferralsByCaseId(caseId: Number): Observable<Referral[]> {
         let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByCaseId/' + caseId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/referral/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
@@ -36,7 +42,9 @@ export class ReferralService {
     }
     getReferralsByReferringCompanyId(comapanyId: Number): Observable<Referral[]> {
         let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferringCompanyId/' + comapanyId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/referral/getByReferringCompanyId/' + comapanyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
@@ -52,7 +60,9 @@ export class ReferralService {
     }
     getReferralsByReferredToCompanyId(comapanyId: Number): Observable<Referral[]> {
         let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferredToCompanyId/' + comapanyId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/referral/getByReferredToCompanyId/' + comapanyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
@@ -68,7 +78,9 @@ export class ReferralService {
     }
     getReferralsByReferringUserId(userId: Number): Observable<Referral[]> {
         let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferringUserId/' + userId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/referral/getByReferringUserId/' + userId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
@@ -84,7 +96,9 @@ export class ReferralService {
     }
     getReferralsByReferredToDoctorId(doctorId: Number): Observable<Referral[]> {
         let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/referral/getByReferredToDoctorId/' + doctorId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/referral/getByReferredToDoctorId/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referrals = (<Object[]>data).map((data: any) => {
@@ -102,7 +116,7 @@ export class ReferralService {
         let promise: Promise<Referral> = new Promise((resolve, reject) => {
             let requestData: any = referral.toJS();
             requestData = _.omit(requestData, 'room', 'case', 'referringUser', 'referringLocation', 'referringCompany', 'referredToDoctor', 'referredToLocation', 'referredToCompany', 'referralDocument');
-            return this._http.post(this._url + '/Referral/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Referral/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -118,7 +132,7 @@ export class ReferralService {
     }
     deleteReferral(referral: Referral): Observable<Referral> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Referral/Delete/' + referral.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Referral/Delete/' + referral.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

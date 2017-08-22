@@ -22,11 +22,14 @@ export class UsersService {
         public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
 
     getUser(userId: Number): Observable<User> {
         let promise: Promise<User> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/user/get/' + userId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/user/get/' + userId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((userData: any) => {
                     let parsedUser: User = null;
                     parsedUser = UserAdapter.parseResponse(userData);
@@ -46,7 +49,7 @@ export class UsersService {
             }]
         };
         let promise: Promise<User[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/user/GetAll', requestData, {
+            return this._http.post(environment.SERVICE_BASE_URL + '/user/GetAll', requestData, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -68,7 +71,7 @@ export class UsersService {
     }
     // getUsers(accountId: number): Observable<AccountDetail[]> {
     //     let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/Account/Get/' + accountId).map(res => res.json())
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/Account/Get/' + accountId).map(res => res.json())
     //             .subscribe((data: any) => {
     //                 let users = (<Object[]>data.users).map((userData: any) => {
     //                     return UserAdapter.parseResponse(userData);
@@ -99,7 +102,7 @@ export class UsersService {
             requestData.user = _.omit(requestData.user, 'roles', 'contact', 'address');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan', 'companies');
-            return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -133,7 +136,7 @@ export class UsersService {
             requestData.user = _.omit(requestData.user, 'roles', 'contact', 'address');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
-            return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -166,7 +169,7 @@ export class UsersService {
     //         userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
     //         userDetailRequestData.account = _.omit(userDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
-    //         return this._http.post(this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
+    //         return this._http.post(environment.SERVICE_BASE_URL + '/User/Add', JSON.stringify(userDetailRequestData), {
     //             headers: this._headers
     //         })
     //             .map(res => res.json())
@@ -200,7 +203,7 @@ export class UsersService {
             userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             userDetailRequestData.account = _.omit(userDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
-            return this._http.post(this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/Add', JSON.stringify(userDetailRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -234,7 +237,7 @@ export class UsersService {
             requestData.user = _.omit(requestData.user, 'roles', 'contact', 'address');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
-            return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

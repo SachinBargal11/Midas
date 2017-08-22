@@ -29,11 +29,14 @@ export class CaseService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getCase(caseId: Number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/get/' + caseId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/get/' + caseId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let cases = null;
                     if (data) {
@@ -52,7 +55,9 @@ export class CaseService {
 
     getCaseReadOnly(caseId: Number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getReadOnly/' + caseId + '/0').map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getReadOnly/' + caseId + '/0', {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                         resolve(data);
                 }, (error) => {
@@ -65,7 +70,9 @@ export class CaseService {
 
     getCases(patientId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByPatientId/' + patientId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getByPatientId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
@@ -81,7 +88,9 @@ export class CaseService {
     }
     getCasesByCompany(companyId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByCompanyId/' + companyId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
@@ -98,7 +107,9 @@ export class CaseService {
     getCasesByCompanyAndDoctorId(companyId: number): Observable<Case[]> {
         let doctorId = this._sessionStore.session.user.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByCompanyAndDoctorId/' + companyId + '/' + doctorId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {
@@ -115,7 +126,9 @@ export class CaseService {
 
     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/documentmanager/get/' + caseId + '/case')
+            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + caseId + '/case', {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -134,7 +147,9 @@ export class CaseService {
  //this is for compney consent list.
     getDocumentForCompneyCaseId(patientId: number): Observable<Case[]> {
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getOpenCaseForPatient/' + patientId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getOpenCaseForPatient/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -149,7 +164,7 @@ export class CaseService {
     }
     // getCaseCompanies(caseId: number): Observable<Company[]> {
     //     let promise: Promise<Company[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/Case/getCaseCompanies/' + caseId)
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/Case/getCaseCompanies/' + caseId)
     //             .map(res => res.json())
     //             .subscribe((data: Array<Object>) => {
     //                 let companies = (<Object[]>data).map((data: any) => {
@@ -165,7 +180,9 @@ export class CaseService {
 
     getCaseCompanies(patientId: number): Observable<CompanyConsent[]> {
         let promise: Promise<CompanyConsent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/GetOpenCaseCompaniesByPatientId/' + patientId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/GetOpenCaseCompaniesByPatientId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let companies = (<Object[]>data).map((data: any) => {
@@ -181,7 +198,9 @@ export class CaseService {
 
      getDocumentForCaseId(caseId: number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/case/GetConsentList/' + caseId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/case/GetConsentList/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let document: Case = null
@@ -199,7 +218,7 @@ export class CaseService {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
             // let requestData = _.extend(CaseDocument.toJS());
             // requestData = _.omit(requestData, 'caseId');
-            return this._http.post(this._url + '/fileupload/multiupload/' + currentCaseId + '/case', JSON.stringify(CaseDocument), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/fileupload/multiupload/' + currentCaseId + '/case', JSON.stringify(CaseDocument), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -221,7 +240,7 @@ export class CaseService {
             dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
             dwObject.HTTPUploadAllThroughPostAsPDF(
                 // 'midas.codearray.tk',
-                this._url,
+                environment.SERVICE_BASE_URL,
                 'fileupload/multiupload/' + currentCaseId + '/case',
                 `scanned_file_${currentCaseId}.pdf`,
                 (response: any) => {
@@ -248,7 +267,7 @@ export class CaseService {
                 }
             }];
             caseRequestData.caseCompanyMapping = caseCompanyMapping;
-            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -273,7 +292,7 @@ export class CaseService {
                 }
             }];
             caseRequestData.caseCompanyMapping = caseCompanyMapping;
-            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -291,7 +310,7 @@ export class CaseService {
 
     deleteCase(caseDetail: Case): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/delete/' + caseDetail.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/delete/' + caseDetail.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -306,7 +325,7 @@ export class CaseService {
     }
     deleteDocument(caseDocument: CaseDocument): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/delete/' + caseDocument.caseId + '/' + caseDocument.document.documentId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/delete/' + caseDocument.caseId + '/' + caseDocument.document.documentId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -325,7 +344,7 @@ export class CaseService {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/documentmanager/downloadfromnoproviderblob/' + documentId, {
+                .get(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromnoproviderblob/' + documentId, {
                 headers: this._headers
             })
                 .map(res => {
@@ -336,7 +355,7 @@ export class CaseService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/documentmanager/downloadfromnoproviderblob/' + documentId);
+                        window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromnoproviderblob/' + documentId);
                         // return res.arrayBuffer();
                     }
                 })
@@ -347,7 +366,7 @@ export class CaseService {
 
                 },
                 () => console.log('Completed file download.'));
-            //window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+            //window.location.assign(environment.SERVICE_BASE_URL + '/fileupload/download/' + CaseId + '/' + documentId);
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }

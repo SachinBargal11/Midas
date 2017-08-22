@@ -21,15 +21,17 @@ export class PatientsService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore,
         public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
 
     getPatient(patientId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getPatientById/' + patientId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getPatientById/' + patientId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let patient = null;
                     if (data) {
@@ -49,7 +51,9 @@ export class PatientsService {
     getPatientsWithOpenCases() {
         let companyId: number = this.sessionStore.session.user.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyWithOpenCases/' + companyId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyWithOpenCases/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {
@@ -87,7 +91,9 @@ export class PatientsService {
         getPatientsWithNoCase(): Observable<Patient[]> {
         let companyId: number = this.sessionStore.session.user.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyWithCloseCases/' + companyId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/getByCompanyWithCloseCases/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {

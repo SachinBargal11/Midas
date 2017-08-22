@@ -14,12 +14,18 @@ export class ReferringOfficeService {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(
+        private _http: Http,
+        private _sessionStore: SessionStore
+    ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getReferringOffice(referringOfficeId: Number): Observable<ReferringOffice> {
         let promise: Promise<ReferringOffice> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/RefferingOffice/get/' + referringOfficeId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/RefferingOffice/get/' + referringOfficeId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let referringOffice = null;
                     if (data) {
@@ -38,7 +44,9 @@ export class ReferringOfficeService {
 
     getReferringOffices(patientId: Number): Observable<ReferringOffice[]> {
         let promise: Promise<ReferringOffice[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/RefferingOffice/getByCaseId/' + patientId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/RefferingOffice/getByCaseId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let referringOffices = (<Object[]>data).map((data: any) => {
@@ -55,7 +63,7 @@ export class ReferringOfficeService {
     addReferringOffice(referringOffice: ReferringOffice): Observable<ReferringOffice> {
         let promise: Promise<ReferringOffice> = new Promise((resolve, reject) => {
             let requestData: any = referringOffice.toJS();
-            return this._http.post(this._url + '/RefferingOffice/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/RefferingOffice/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -72,7 +80,7 @@ export class ReferringOfficeService {
     updateReferringOffice(referringOffice: ReferringOffice): Observable<ReferringOffice> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = referringOffice.toJS();
-            return this._http.post(this._url + '/RefferingOffice/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/RefferingOffice/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -88,7 +96,7 @@ export class ReferringOfficeService {
     }
     deleteReferringOffice(referringOffice: ReferringOffice): Observable<ReferringOffice> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/RefferingOffice/Delete/' + referringOffice.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/RefferingOffice/Delete/' + referringOffice.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
