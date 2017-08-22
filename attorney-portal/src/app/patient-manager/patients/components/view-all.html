@@ -1,86 +1,86 @@
 <div class="row">
-<div class="col-xl-6 dahsboard-column">
-    <section class="box-typical box-typical-dashboard panel panel-default">
-        <!--<header class="box-typical-header panel-heading">
+    <div class="col-xl-6 dahsboard-column">
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <!--<header class="box-typical-header panel-heading">
             <h4 class="panel-title">Personal Information</h4>-->
-        <header class="card-header card-header-lg">
-            Personal Information
-        </header>
-        <div class="box-typical-body panel-body">
-            <div class="contact-row-list" *ngIf="patientInfo">
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">First Name</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.firstName}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Middle Name</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.middleName}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Last Name</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.lastName}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Gender</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.genderLabel}}</p>
+            <header class="card-header card-header-lg">
+                Personal Information
+            </header>
+            <div class="box-typical-body panel-body">
+                <div class="contact-row-list" *ngIf="patientInfo">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">First Name</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.firstName}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Middle Name</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.middleName}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Marital Status</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.maritalStatusLabel}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">SSN</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.ssn}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Date of Birth</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{dateOfBirth}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">First Treatment</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{dateOfFirstTreatment}}</p>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Last Name</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.lastName}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Gender</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.genderLabel}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <!--<article class="contact-row">
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Marital Status</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.maritalStatusLabel}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">SSN</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.ssn}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Date of Birth</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{dateOfBirth}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">First Treatment</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{dateOfFirstTreatment}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!--<article class="contact-row">
                     <div class="user-card-row">
                         <div class="tbl-row">
                             <div class="tbl-cell col-lg-3">
@@ -98,101 +98,101 @@
                         </div>
                     </div>
                 </article>-->
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Cellphone</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.contact.cellPhone | phoneFormat}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Home Phone</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.contact.homePhone}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Work Phone</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.contact.workPhone}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Fax No</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.contact.faxNo | faxNoFormat}}</p>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Cellphone</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.contact.cellPhone | phoneFormat}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Home Phone</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.contact.homePhone}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Address1</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.address.address1}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Address2</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.address.address2}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">State</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.address.state}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">City</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.address.city}}</p>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Work Phone</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.contact.workPhone}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Fax No</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.contact.faxNo | faxNoFormat}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Zipcode</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.address.zipCode}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Country</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.address.country}}</p>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Address1</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.address.address1}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Address2</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.address.address2}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">State</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.address.state}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">City</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.address.city}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Zipcode</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.address.zipCode}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Country</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.user.address.country}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
-</div>
-<!-- <div class="col-xl-6 dahsboard-column">
+        </section>
+    </div>
+    <!-- <div class="col-xl-6 dahsboard-column">
     <section class="box-typical box-typical-dashboard panel panel-default">
         <header class="card-header card-header-lg">
             Employer Information
@@ -337,7 +337,7 @@
     </section>
 </div> -->
 
-<div class="col-xl-6 dahsboard-column">
+    <!-- <div class="col-xl-6 dahsboard-column">
     <section class="box-typical box-typical-dashboard panel panel-default">
         <header class="card-header card-header-lg">
             Family Member
@@ -390,9 +390,9 @@
             </div>
         </div>
     </section>
-</div>
+</div> -->
 
-<div class="col-xl-6 dahsboard-column">
+    <!--<div class="col-xl-6 dahsboard-column">
     <section class="box-typical box-typical-dashboard panel panel-default">
         <header class="card-header card-header-lg">
             Insurance Information
@@ -451,5 +451,5 @@
             </div>
         </div>
     </section>
-</div>
+</div>-->
 </div>

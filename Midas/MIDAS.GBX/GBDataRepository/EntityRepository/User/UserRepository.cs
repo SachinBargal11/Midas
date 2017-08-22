@@ -477,8 +477,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.UserPersonalSettings.Add(UserSettings);
                 _context.SaveChanges();
-            }            
-
+            }
             #endregion
 
             #region Insert Invitation

@@ -53,7 +53,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 EOVisitBO.ID = EOVisit.ID;
                 EOVisitBO.CalendarEventId = EOVisit.CalendarEventId;
                 EOVisitBO.DoctorId = EOVisit.DoctorId;
-                EOVisitBO.MedicalProviderId = EOVisit.MedicalProviderId;
+                EOVisitBO.PatientId = EOVisit.PatientId;
+                EOVisitBO.VisitCreatedByCompanyId = EOVisit.PatientId;
                 EOVisitBO.InsuranceProviderId = EOVisit.InsuranceProviderId;
                 EOVisitBO.VisitStatusId = EOVisit.VisitStatusId;
                 EOVisitBO.EventStart = EOVisit.EventStart;
@@ -299,7 +300,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     EOVisitDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((EOVisitBO.CalendarEventId.HasValue == true) ? EOVisitBO.CalendarEventId.Value : EOVisitDB.CalendarEventId);
 
                     EOVisitDB.DoctorId = IsEditMode == true && EOVisitBO.DoctorId.HasValue == false ? EOVisitDB.DoctorId : (EOVisitBO.DoctorId.HasValue == false ? EOVisitDB.DoctorId : EOVisitBO.DoctorId.Value);
-                    EOVisitDB.MedicalProviderId = IsEditMode == true && EOVisitBO.MedicalProviderId.HasValue == false ? EOVisitDB.MedicalProviderId : (EOVisitBO.MedicalProviderId.HasValue == false ? EOVisitDB.MedicalProviderId : EOVisitBO.MedicalProviderId.Value);
+                    EOVisitDB.PatientId = IsEditMode == true && EOVisitBO.PatientId.HasValue == false ? EOVisitDB.PatientId : (EOVisitBO.PatientId.HasValue == false ? EOVisitDB.PatientId : EOVisitBO.PatientId.Value);
+                    EOVisitDB.VisitCreatedByCompanyId = IsEditMode == true && EOVisitBO.VisitCreatedByCompanyId.HasValue == false ? EOVisitDB.VisitCreatedByCompanyId : (EOVisitBO.VisitCreatedByCompanyId.HasValue == false ? EOVisitDB.VisitCreatedByCompanyId : EOVisitBO.VisitCreatedByCompanyId.Value);
                     EOVisitDB.InsuranceProviderId = IsEditMode == true && EOVisitBO.InsuranceProviderId.HasValue == false ? EOVisitDB.InsuranceProviderId : (EOVisitBO.InsuranceProviderId.HasValue == false ? EOVisitDB.InsuranceProviderId : EOVisitBO.InsuranceProviderId.Value);
                     EOVisitDB.EventStart = EOVisitBO.EventStart;
                     EOVisitDB.EventEnd = EOVisitBO.EventEnd;
@@ -368,16 +370,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
-            var companyId = _context.Companies.Where(p => p.id == id
-                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .Select(p => p.id);
+            //var companyId = _context.Companies.Where(p => p.id == id
+            //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                            .Select(p => p.id);
 
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
                                            .Include("Doctor.User")
                                            .Include("Company")
                                            .Include("InsuranceMaster")
-                                           .Where(p => companyId.Contains((int)p.MedicalProviderId)
+                                           .Where(p => p.VisitCreatedByCompanyId == id
                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                            .ToList();
 
@@ -403,15 +405,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID and DoctorId For
         public override object Get(int CompanyId, int DoctorId)
         {
-            var medicalProvider = _context.Companies.Where(p => p.id == CompanyId
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                .Select(p => p.id);
+            //var medicalProvider = _context.Companies.Where(p => p.id == CompanyId
+            //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                    .Select(p => p.id);
 
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
                                            .Include("Company")
                                            .Include("InsuranceMaster")
-                                           .Where(p => p.DoctorId == DoctorId && medicalProvider.Contains((int)p.MedicalProviderId)
+                                           .Where(p => p.VisitCreatedByCompanyId == CompanyId && p.DoctorId == DoctorId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                     .ToList();
             if (EOVisit == null)
@@ -428,6 +430,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 return lstEOVisit;
             }
+        }
+        #endregion
+
+        #region Get By Patient Id
+        public override object GetByPatientId(int id)
+        {
+            var EOVisit = _context.EOVisits.Include("CalendarEvent")
+                                           .Include("Doctor")
+                                           .Include("Doctor.User")
+                                           .Include("Company")
+                                           .Include("InsuranceMaster")
+                                           .Where(p => p.PatientId == id
+                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList();
+
+            List<BO.EOVisit> boEOVisit = new List<BO.EOVisit>();
+            if (EOVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachVisit in EOVisit)
+                {
+                    boEOVisit.Add(ConvertEOvisit<BO.EOVisit, EOVisit>(EachVisit));
+                }
+
+            }
+
+            return (object)boEOVisit;
         }
         #endregion
 

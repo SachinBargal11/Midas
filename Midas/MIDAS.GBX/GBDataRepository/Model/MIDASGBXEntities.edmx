@@ -510,7 +510,6 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DoctorId" Type="int" />
-          <Property Name="MedicalProviderId" Type="int" />
           <Property Name="InsuranceProviderId" Type="int" />
           <Property Name="CalendarEventId" Type="int" Nullable="false" />
           <Property Name="VisitStatusId" Type="int" />
@@ -522,6 +521,8 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="VisitCreatedByCompanyId" Type="int" Nullable="false" />
+          <Property Name="PatientId" Type="int" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -575,6 +576,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="DoctorName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VisitCreatedByCompanyId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="InsuranceMaster">
           <Key>
@@ -626,6 +628,18 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="LanguagePreference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -761,6 +775,12 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ParentOrGuardianName" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmergencyContactName" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmergencyContactPhone" Type="nvarchar" MaxLength="256" />
+          <Property Name="LegallyMarried" Type="bit" />
+          <Property Name="SpouseName" Type="nvarchar" MaxLength="256" />
+          <Property Name="SocialMediaOther" Type="nvarchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="PatientAccidentInfo">
           <Key>
@@ -867,6 +887,32 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="InsuranceMasterId" Type="int" />
           <Property Name="CaseId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PatientLanguagePreferenceMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="LanguagePreferenceId" Type="tinyint" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="PatientSocialMediaMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="SocialMediaId" Type="tinyint" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PatientType">
           <Key>
@@ -1185,6 +1231,17 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="SlotDate" Type="datetime2" Precision="7" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="SocialMedia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
@@ -2117,6 +2174,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EOVisit_Company_VisitCreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EOVisit">
+              <PropertyRef Name="VisitCreatedByCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EOVisit_Doctor_DoctorId">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
           <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
@@ -2141,15 +2210,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EOVisit_MedicalProvider_MedicalProviderId">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+        <Association Name="FK_EOVisit_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
           <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="id" />
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EOVisit">
-              <PropertyRef Name="MedicalProviderId" />
+              <PropertyRef Name="PatientId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2198,6 +2267,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="IMEVisit">
               <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IMEVisit_Company_VisitCreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="IMEVisit" Type="Self.IMEVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IMEVisit">
+              <PropertyRef Name="VisitCreatedByCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2630,6 +2711,54 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientInsuranceInfo">
               <PropertyRef Name="PolicyOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId">
+          <End Role="LanguagePreference" Type="Self.LanguagePreference" Multiplicity="1" />
+          <End Role="PatientLanguagePreferenceMapping" Type="Self.PatientLanguagePreferenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LanguagePreference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientLanguagePreferenceMapping">
+              <PropertyRef Name="LanguagePreferenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientLanguagePreferenceMapping_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientLanguagePreferenceMapping" Type="Self.PatientLanguagePreferenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientLanguagePreferenceMapping">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientSocialMediaMapping_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientSocialMediaMapping" Type="Self.PatientSocialMediaMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientSocialMediaMapping">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId">
+          <End Role="SocialMedia" Type="Self.SocialMedia" Multiplicity="1" />
+          <End Role="PatientSocialMediaMapping" Type="Self.PatientSocialMediaMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SocialMedia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientSocialMediaMapping">
+              <PropertyRef Name="SocialMediaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3575,6 +3704,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="InsuranceType" EntityType="Self.InsuranceType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invitation" EntityType="Self.Invitation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvitationType" EntityType="Self.InvitationType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LanguagePreference" EntityType="Self.LanguagePreference" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MailTemplates" EntityType="Self.MailTemplates" Schema="dbo" store:Type="Tables" />
@@ -3589,6 +3719,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientEmpInfo" EntityType="Self.PatientEmpInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientFamilyMembers" EntityType="Self.PatientFamilyMembers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientInsuranceInfo" EntityType="Self.PatientInsuranceInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientLanguagePreferenceMapping" EntityType="Self.PatientLanguagePreferenceMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientSocialMediaMapping" EntityType="Self.PatientSocialMediaMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientType" EntityType="Self.PatientType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientVisit" EntityType="Self.PatientVisit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientVisitDiagnosisCodes" EntityType="Self.PatientVisitDiagnosisCodes" Schema="dbo" store:Type="Tables" />
@@ -3610,6 +3742,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="RoomTest" EntityType="Self.RoomTest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScheduleDetail" EntityType="Self.ScheduleDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SocialMedia" EntityType="Self.SocialMedia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpecialtyDetails" EntityType="Self.SpecialtyDetails" Schema="dbo" store:Type="Tables" />
@@ -3860,6 +3993,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="CalendarEvent" EntitySet="CalendarEvent" />
             <End Role="EOVisit" EntitySet="EOVisit" />
           </AssociationSet>
+          <AssociationSet Name="FK_EOVisit_Company_VisitCreatedByCompanyId" Association="Self.FK_EOVisit_Company_VisitCreatedByCompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="EOVisit" EntitySet="EOVisit" />
+          </AssociationSet>
           <AssociationSet Name="FK_EOVisit_Doctor_DoctorId" Association="Self.FK_EOVisit_Doctor_DoctorId">
             <End Role="Doctor" EntitySet="Doctor" />
             <End Role="EOVisit" EntitySet="EOVisit" />
@@ -3868,8 +4005,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
             <End Role="EOVisit" EntitySet="EOVisit" />
           </AssociationSet>
-          <AssociationSet Name="FK_EOVisit_MedicalProvider_MedicalProviderId" Association="Self.FK_EOVisit_MedicalProvider_MedicalProviderId">
-            <End Role="Company" EntitySet="Company" />
+          <AssociationSet Name="FK_EOVisit_Patient_PatientId" Association="Self.FK_EOVisit_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
             <End Role="EOVisit" EntitySet="EOVisit" />
           </AssociationSet>
           <AssociationSet Name="FK_EOVisit_VisitStatus_VisitStatusId" Association="Self.FK_EOVisit_VisitStatus_VisitStatusId">
@@ -3886,6 +4023,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_IMEVisit_Case_CaseId" Association="Self.FK_IMEVisit_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
+            <End Role="IMEVisit" EntitySet="IMEVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IMEVisit_Company_VisitCreatedByCompanyId" Association="Self.FK_IMEVisit_Company_VisitCreatedByCompanyId">
+            <End Role="Company" EntitySet="Company" />
             <End Role="IMEVisit" EntitySet="IMEVisit" />
           </AssociationSet>
           <AssociationSet Name="FK_IMEVisit_Patient_PatientId" Association="Self.FK_IMEVisit_Patient_PatientId">
@@ -4031,6 +4172,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" Association="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId">
             <End Role="PolicyOwner" EntitySet="PolicyOwner" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId" Association="Self.FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId">
+            <End Role="LanguagePreference" EntitySet="LanguagePreference" />
+            <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientLanguagePreferenceMapping_Patient_PatientId" Association="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientSocialMediaMapping_Patient_PatientId" Association="Self.FK_PatientSocialMediaMapping_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="PatientSocialMediaMapping" EntitySet="PatientSocialMediaMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId" Association="Self.FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId">
+            <End Role="SocialMedia" EntitySet="SocialMedia" />
+            <End Role="PatientSocialMediaMapping" EntitySet="PatientSocialMediaMapping" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientVisit_CalendarEvent_CalendarEventId" Association="Self.FK_PatientVisit_CalendarEvent_CalendarEventId">
             <End Role="CalendarEvent" EntitySet="CalendarEvent" />
@@ -4641,9 +4798,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_Company_CompanyId" FromRole="Company" ToRole="CompanyCaseConsentApproval" />
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="DocumentNodeObjectMappings" Relationship="Self.FK_DocumentNodeObjectMapping_Company" FromRole="Company" ToRole="DocumentNodeObjectMapping" />
-          <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_MedicalProvider_MedicalProviderId" FromRole="Company" ToRole="EOVisit" />
+          <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Company_VisitCreatedByCompanyId" FromRole="Company" ToRole="EOVisit" />
           <NavigationProperty Name="GeneralSettings" Relationship="Self.FK_GeneralSettings_Company_CompanyId" FromRole="Company" ToRole="GeneralSettings" />
-          <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Transport_TransportProviderId" FromRole="Company" ToRole="IMEVisit" />
+          <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Company_VisitCreatedByCompanyId" FromRole="Company" ToRole="IMEVisit" />
+          <NavigationProperty Name="IMEVisits1" Relationship="Self.FK_IMEVisit_Transport_TransportProviderId" FromRole="Company" ToRole="IMEVisit" />
           <NavigationProperty Name="InsuranceMasters" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="Company" ToRole="InsuranceMaster" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
@@ -4974,7 +5132,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DoctorId" Type="Int32" />
-          <Property Name="MedicalProviderId" Type="Int32" />
           <Property Name="InsuranceProviderId" Type="Int32" />
           <Property Name="CalendarEventId" Type="Int32" Nullable="false" />
           <Property Name="VisitStatusId" Type="Int32" />
@@ -4986,10 +5143,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="VisitCreatedByCompanyId" Type="Int32" Nullable="false" />
+          <Property Name="PatientId" Type="Int32" />
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="EOVisit" ToRole="CalendarEvent" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_EOVisit_MedicalProvider_MedicalProviderId" FromRole="EOVisit" ToRole="Company" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_EOVisit_Company_VisitCreatedByCompanyId" FromRole="EOVisit" ToRole="Company" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_EOVisit_Doctor_DoctorId" FromRole="EOVisit" ToRole="Doctor" />
           <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_EOVisit_InsuranceMaster_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="EOVisit" ToRole="Patient" />
           <NavigationProperty Name="VisitStatu" Relationship="Self.FK_EOVisit_VisitStatus_VisitStatusId" FromRole="EOVisit" ToRole="VisitStatus" />
         </EntityType>
         <EntityType Name="Gender">
@@ -5048,9 +5208,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="DoctorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VisitCreatedByCompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_IMEVisit_Calender_CalendarEventId" FromRole="IMEVisit" ToRole="CalendarEvent" />
           <NavigationProperty Name="Case" Relationship="Self.FK_IMEVisit_Case_CaseId" FromRole="IMEVisit" ToRole="Case" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_IMEVisit_Transport_TransportProviderId" FromRole="IMEVisit" ToRole="Company" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_IMEVisit_Company_VisitCreatedByCompanyId" FromRole="IMEVisit" ToRole="Company" />
+          <NavigationProperty Name="Company1" Relationship="Self.FK_IMEVisit_Transport_TransportProviderId" FromRole="IMEVisit" ToRole="Company" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_IMEVisit_Patient_PatientId" FromRole="IMEVisit" ToRole="Patient" />
           <NavigationProperty Name="VisitStatu" Relationship="Self.FK_IMEVisit_VisitStatus_VisitStatusId" FromRole="IMEVisit" ToRole="VisitStatus" />
         </EntityType>
@@ -5118,6 +5280,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="LanguagePreference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PatientLanguagePreferenceMappings" Relationship="Self.FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId" FromRole="LanguagePreference" ToRole="PatientLanguagePreferenceMapping" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -5267,12 +5442,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="ParentOrGuardianName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContactName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContactPhone" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LegallyMarried" Type="Boolean" />
+          <Property Name="SpouseName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="SocialMediaOther" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_Patient_PatientId" FromRole="Patient" ToRole="AttorneyVisit" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient_PatientId" FromRole="Patient" ToRole="Case" />
+          <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="Patient" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Patient_PatientId" FromRole="Patient" ToRole="IMEVisit" />
           <NavigationProperty Name="MaritalStatu" Relationship="Self.FK_Patient_MaritalStatusId" FromRole="Patient" ToRole="MaritalStatus" />
           <NavigationProperty Name="User" Relationship="Self.FK_Patient_User_id" FromRole="Patient" ToRole="User" />
           <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_Patient_PatientId" FromRole="Patient" ToRole="PatientDocuments" />
+          <NavigationProperty Name="PatientLanguagePreferenceMappings" Relationship="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientLanguagePreferenceMapping" />
+          <NavigationProperty Name="PatientSocialMediaMappings" Relationship="Self.FK_PatientSocialMediaMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientSocialMediaMapping" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Patient_PatientId" FromRole="Patient" ToRole="PatientVisit" />
         </EntityType>
         <EntityType Name="PatientAccidentInfo">
@@ -5401,6 +5585,36 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="PatientInsuranceInfo" ToRole="InsuranceMaster" />
           <NavigationProperty Name="InsuranceType" Relationship="Self.FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId" FromRole="PatientInsuranceInfo" ToRole="InsuranceType" />
           <NavigationProperty Name="PolicyOwner" Relationship="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" FromRole="PatientInsuranceInfo" ToRole="PolicyOwner" />
+        </EntityType>
+        <EntityType Name="PatientLanguagePreferenceMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="LanguagePreferenceId" Type="Byte" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="LanguagePreference" Relationship="Self.FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId" FromRole="PatientLanguagePreferenceMapping" ToRole="LanguagePreference" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId" FromRole="PatientLanguagePreferenceMapping" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="PatientSocialMediaMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="SocialMediaId" Type="Byte" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_PatientSocialMediaMapping_Patient_PatientId" FromRole="PatientSocialMediaMapping" ToRole="Patient" />
+          <NavigationProperty Name="SocialMedia" Relationship="Self.FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId" FromRole="PatientSocialMediaMapping" ToRole="SocialMedia" />
         </EntityType>
         <EntityType Name="PatientType">
           <Key>
@@ -5815,6 +6029,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_ScheduleDetail_Schedule" FromRole="ScheduleDetail" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="SocialMedia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PatientSocialMediaMappings" Relationship="Self.FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId" FromRole="SocialMedia" ToRole="PatientSocialMediaMapping" />
         </EntityType>
         <EntityType Name="SpecialityDetail">
           <Key>
@@ -6808,15 +7034,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EOVisit_MedicalProvider_MedicalProviderId">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+        <Association Name="FK_EOVisit_Company_VisitCreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="EOVisit">
-              <PropertyRef Name="MedicalProviderId" />
+              <PropertyRef Name="VisitCreatedByCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6829,6 +7055,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="GeneralSettings">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IMEVisit_Company_VisitCreatedByCompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="IMEVisit" Type="Self.IMEVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IMEVisit">
+              <PropertyRef Name="VisitCreatedByCompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7432,6 +7670,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EOVisit_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EOVisit">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EOVisit_VisitStatus_VisitStatusId">
           <End Role="VisitStatus" Type="Self.VisitStatu" Multiplicity="0..1" />
           <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
@@ -7513,6 +7763,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Invitation">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId">
+          <End Role="LanguagePreference" Type="Self.LanguagePreference" Multiplicity="1" />
+          <End Role="PatientLanguagePreferenceMapping" Type="Self.PatientLanguagePreferenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LanguagePreference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientLanguagePreferenceMapping">
+              <PropertyRef Name="LanguagePreferenceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7672,6 +7934,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientLanguagePreferenceMapping_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientLanguagePreferenceMapping" Type="Self.PatientLanguagePreferenceMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientLanguagePreferenceMapping">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientSocialMediaMapping_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientSocialMediaMapping" Type="Self.PatientSocialMediaMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientSocialMediaMapping">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisit_Patient_PatientId">
           <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
           <End Role="PatientVisit" Type="Self.PatientVisit" Multiplicity="*" />
@@ -7717,6 +8003,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientInsuranceInfo">
               <PropertyRef Name="PolicyOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId">
+          <End Role="SocialMedia" Type="Self.SocialMedia" Multiplicity="1" />
+          <End Role="PatientSocialMediaMapping" Type="Self.PatientSocialMediaMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SocialMedia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientSocialMediaMapping">
+              <PropertyRef Name="SocialMediaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8232,6 +8530,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="InsuranceTypes" EntityType="Self.InsuranceType" />
           <EntitySet Name="Invitations" EntityType="Self.Invitation" />
           <EntitySet Name="InvitationTypes" EntityType="Self.InvitationType" />
+          <EntitySet Name="LanguagePreferences" EntityType="Self.LanguagePreference" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="MailTemplates" EntityType="Self.MailTemplate" />
@@ -8246,6 +8545,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientEmpInfoes" EntityType="Self.PatientEmpInfo" />
           <EntitySet Name="PatientFamilyMembers" EntityType="Self.PatientFamilyMember" />
           <EntitySet Name="PatientInsuranceInfoes" EntityType="Self.PatientInsuranceInfo" />
+          <EntitySet Name="PatientLanguagePreferenceMappings" EntityType="Self.PatientLanguagePreferenceMapping" />
+          <EntitySet Name="PatientSocialMediaMappings" EntityType="Self.PatientSocialMediaMapping" />
           <EntitySet Name="PatientTypes" EntityType="Self.PatientType" />
           <EntitySet Name="PatientVisits" EntityType="Self.PatientVisit" />
           <EntitySet Name="PatientVisitDiagnosisCodes" EntityType="Self.PatientVisitDiagnosisCode" />
@@ -8267,6 +8568,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="RoomTests" EntityType="Self.RoomTest" />
           <EntitySet Name="Schedules" EntityType="Self.Schedule" />
           <EntitySet Name="ScheduleDetails" EntityType="Self.ScheduleDetail" />
+          <EntitySet Name="SocialMedias" EntityType="Self.SocialMedia" />
           <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetail" />
           <EntitySet Name="Specialties" EntityType="Self.Specialty" />
           <EntitySet Name="SpecialtyDetails" EntityType="Self.SpecialtyDetail" />
@@ -8518,13 +8820,17 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Companies" />
             <End Role="DocumentNodeObjectMapping" EntitySet="DocumentNodeObjectMappings" />
           </AssociationSet>
-          <AssociationSet Name="FK_EOVisit_MedicalProvider_MedicalProviderId" Association="Self.FK_EOVisit_MedicalProvider_MedicalProviderId">
+          <AssociationSet Name="FK_EOVisit_Company_VisitCreatedByCompanyId" Association="Self.FK_EOVisit_Company_VisitCreatedByCompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="EOVisit" EntitySet="EOVisits" />
           </AssociationSet>
           <AssociationSet Name="FK_GeneralSettings_Company_CompanyId" Association="Self.FK_GeneralSettings_Company_CompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="GeneralSettings" EntitySet="GeneralSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IMEVisit_Company_VisitCreatedByCompanyId" Association="Self.FK_IMEVisit_Company_VisitCreatedByCompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="IMEVisit" EntitySet="IMEVisits" />
           </AssociationSet>
           <AssociationSet Name="FK_IMEVisit_Transport_TransportProviderId" Association="Self.FK_IMEVisit_Transport_TransportProviderId">
             <End Role="Company" EntitySet="Companies" />
@@ -8726,6 +9032,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
             <End Role="EOVisit" EntitySet="EOVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_EOVisit_Patient_PatientId" Association="Self.FK_EOVisit_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="EOVisit" EntitySet="EOVisits" />
+          </AssociationSet>
           <AssociationSet Name="FK_EOVisit_VisitStatus_VisitStatusId" Association="Self.FK_EOVisit_VisitStatus_VisitStatusId">
             <End Role="VisitStatus" EntitySet="VisitStatus" />
             <End Role="EOVisit" EntitySet="EOVisits" />
@@ -8753,6 +9063,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Invitation_User_Invitation" Association="Self.FK_Invitation_User_Invitation">
             <End Role="User" EntitySet="Users" />
             <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId" Association="Self.FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId">
+            <End Role="LanguagePreference" EntitySet="LanguagePreferences" />
+            <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMappings" />
           </AssociationSet>
           <AssociationSet Name="FK_Location_Schedule" Association="Self.FK_Location_Schedule">
             <End Role="Schedule" EntitySet="Schedules" />
@@ -8806,6 +9120,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient" EntitySet="Patients" />
             <End Role="PatientDocuments" EntitySet="PatientDocuments" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientLanguagePreferenceMapping_Patient_PatientId" Association="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientSocialMediaMapping_Patient_PatientId" Association="Self.FK_PatientSocialMediaMapping_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="PatientSocialMediaMapping" EntitySet="PatientSocialMediaMappings" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisit_Patient_PatientId" Association="Self.FK_PatientVisit_Patient_PatientId">
             <End Role="Patient" EntitySet="Patients" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
@@ -8821,6 +9143,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" Association="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId">
             <End Role="PolicyOwner" EntitySet="PolicyOwners" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId" Association="Self.FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId">
+            <End Role="SocialMedia" EntitySet="SocialMedias" />
+            <End Role="PatientSocialMediaMapping" EntitySet="PatientSocialMediaMappings" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientVisit_Room_RoomId" Association="Self.FK_PatientVisit_Room_RoomId">
             <End Role="Room" EntitySet="Rooms" />
@@ -9537,7 +9863,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="EOVisit">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
-                <ScalarProperty Name="MedicalProviderId" ColumnName="MedicalProviderId" />
                 <ScalarProperty Name="InsuranceProviderId" ColumnName="InsuranceProviderId" />
                 <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
                 <ScalarProperty Name="VisitStatusId" ColumnName="VisitStatusId" />
@@ -9549,6 +9874,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="VisitCreatedByCompanyId" ColumnName="VisitCreatedByCompanyId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9606,6 +9933,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="VisitCreatedByCompanyId" ColumnName="VisitCreatedByCompanyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9660,6 +9988,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <EntityTypeMapping TypeName="MIDASGBXModel.InvitationType">
               <MappingFragment StoreEntitySet="InvitationType">
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LanguagePreferences">
+            <EntityTypeMapping TypeName="MIDASGBXModel.LanguagePreference">
+              <MappingFragment StoreEntitySet="LanguagePreference">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
@@ -9805,6 +10146,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ParentOrGuardianName" ColumnName="ParentOrGuardianName" />
+                <ScalarProperty Name="EmergencyContactName" ColumnName="EmergencyContactName" />
+                <ScalarProperty Name="EmergencyContactPhone" ColumnName="EmergencyContactPhone" />
+                <ScalarProperty Name="LegallyMarried" ColumnName="LegallyMarried" />
+                <ScalarProperty Name="SpouseName" ColumnName="SpouseName" />
+                <ScalarProperty Name="SocialMediaOther" ColumnName="SocialMediaOther" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9916,6 +10263,34 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="InsuranceMasterId" ColumnName="InsuranceMasterId" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientLanguagePreferenceMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientLanguagePreferenceMapping">
+              <MappingFragment StoreEntitySet="PatientLanguagePreferenceMapping">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="LanguagePreferenceId" ColumnName="LanguagePreferenceId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientSocialMediaMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientSocialMediaMapping">
+              <MappingFragment StoreEntitySet="PatientSocialMediaMapping">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="SocialMediaId" ColumnName="SocialMediaId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10255,6 +10630,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="SlotDate" ColumnName="SlotDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SocialMedias">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SocialMedia">
+              <MappingFragment StoreEntitySet="SocialMedia">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />

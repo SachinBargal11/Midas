@@ -26,6 +26,10 @@ import { environment } from '../../../../environments/environment';
 })
 
 export class AddPatientComponent implements OnInit {
+    dob: moment.Moment;
+    isEighteenOrAbove:boolean = true;
+    languagePreference = '';
+    martialStatus = '';
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -65,11 +69,15 @@ export class AddPatientComponent implements OnInit {
                 height: [''],
                 maritalStatusId: ['', Validators.required],
                 dateOfFirstTreatment: [''],
-                dob: [''],
+                dob: ['', Validators.required],
                 firstname: ['', Validators.required],
                 middlename: [''],
                 lastname: ['', Validators.required],
-                gender: ['', Validators.required]
+                gender: ['', Validators.required],
+                parentName: ['', Validators.required],
+                languagePreference: [''],
+                otherLanguage: [''],
+                spouseName: [''],
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -79,7 +87,9 @@ export class AddPatientComponent implements OnInit {
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredCommunication: ['']
+                preferredCommunication: [''],
+                emergencyContactPerson: [''],
+                emergencyContactCellPhone: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -103,6 +113,18 @@ export class AddPatientComponent implements OnInit {
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+    }
+
+    calculateAge(){
+       let now = moment();
+    // let age =  moment(this.dob, "YYYYMMDD").fromNow();
+       let age =  now.diff(this.dob, 'years'); 
+       if(age < 18){
+       this.isEighteenOrAbove = false;
+       }else{
+       this.isEighteenOrAbove = true;
+       }
+       
     }
 
     onUpload(event) {

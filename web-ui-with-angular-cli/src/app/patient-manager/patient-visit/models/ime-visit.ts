@@ -17,7 +17,7 @@ const ImeVisitRecord = Record({
     isImeVisitType: true,
     case: null,
     caseId: 0,
-    // patient: null,
+    patient: null,
     patientId: 0,
     doctorName: '',
     transportProviderId: null,
@@ -31,6 +31,7 @@ const ImeVisitRecord = Record({
     updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null,//Moment
+    VisitCreatedByCompanyId: null,
 });
 
 
@@ -43,7 +44,7 @@ export class ImeVisit extends ImeVisitRecord {
     isImeVisitType: boolean;
     case: Case;
     caseId: number;
-    // patient: Patient;
+    patient: Patient;
     patientId: number;
     doctorName: string;
     transportProviderId: number;
@@ -57,9 +58,17 @@ export class ImeVisit extends ImeVisitRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    VisitCreatedByCompanyId: number;
 
     constructor(props) {
         super(props);
+    }
+     get visitStartAsDate(): Date {
+        return this.eventStart ? this.eventStart.toDate() : null;
+    }
+
+    get visitEndAsDate(): Date {
+        return this.eventEnd ? this.eventEnd.toDate() : null;
     }
 
     get isOriginalVisit(): boolean {
@@ -75,7 +84,15 @@ export class ImeVisit extends ImeVisitRecord {
     }
 
     get visitDisplayString(): string {
-        let visitInfo: string = `Ime Visit`;
+        let visitInfo: string = ``;
+
+        if (this.patientId && this.caseId && this.patient) {
+            visitInfo = `${visitInfo}Patient Name: ${this.patient.user.firstName} ${this.patient.user.lastName} - Case Id: ${this.caseId}  `;
+        }
+
+        if (this.eventStart) {
+            visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
+        }
         return visitInfo;
     }
 }

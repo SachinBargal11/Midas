@@ -60,6 +60,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 IMEVisitBO.VisitStatusId = IMEVisit.VisitStatusId;
                 IMEVisitBO.TransportProviderId = IMEVisit.TransportProviderId;
                 IMEVisitBO.DoctorName = IMEVisit.DoctorName;
+                IMEVisitBO.VisitCreatedByCompanyId = IMEVisit.VisitCreatedByCompanyId;
                 IMEVisitBO.IsDeleted = IMEVisit.IsDeleted;
                 IMEVisitBO.CreateByUserID = IMEVisit.CreateByUserID;
                 IMEVisitBO.UpdateByUserID = IMEVisit.UpdateByUserID;
@@ -351,6 +352,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     IMEVisitDB.VisitStatusId = IMEVisitBO.VisitStatusId;
                     IMEVisitDB.TransportProviderId = IMEVisitBO.TransportProviderId;
                     IMEVisitDB.DoctorName = IMEVisitBO.DoctorName;
+                    IMEVisitDB.VisitCreatedByCompanyId = IMEVisitBO.VisitCreatedByCompanyId;
 
                     if (IsEditMode == false)
                     {
@@ -535,12 +537,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
-            var caseId = _context.CaseCompanyMappings.Where(p => p.CompanyId == id
-                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                                 ).Select(p => p.CaseId);
+            //var caseId = _context.CaseCompanyMappings.Where(p => p.CompanyId == id
+            //                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            //                                                     ).Select(p => p.CaseId);
             var IMEVisit = _context.IMEVisits.Include("CalendarEvent")
                                              .Include("Patient").Include("Patient.Cases").Include("Patient.User")
-                                             .Where(p => caseId.Contains((int)p.CaseId)
+                                             .Where(p => p.VisitCreatedByCompanyId == id
                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .ToList();
 

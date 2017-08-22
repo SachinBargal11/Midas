@@ -192,6 +192,7 @@ export class ImeVisitComponent implements OnInit {
             transportProviderId: this.imeScheduleForm.value.transportProviderId,
             doctorName: this.imeScheduleForm.value.doctorName,
             createByUserID: this.sessionStore.session.account.user.id,
+            VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
                 eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),

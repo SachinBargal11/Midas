@@ -21,10 +21,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<PatientFamilyMember>();
         }
 
-
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -48,21 +46,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PatientFamilyMember data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
         }
-
 
         protected override void Dispose(bool disposing)
         {

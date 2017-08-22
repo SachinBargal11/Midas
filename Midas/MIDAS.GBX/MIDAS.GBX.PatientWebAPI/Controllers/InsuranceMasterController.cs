@@ -36,6 +36,11 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
-
+        [HttpGet]
+        [Route("getMasterAndByCaseId/{caseId}")]
+        public HttpResponseMessage GetMasterAndByCaseId(int caseId)
+        {
+            return requestHandler.GetMasterAndByCaseId(Request, caseId);
+        }
     }
 }

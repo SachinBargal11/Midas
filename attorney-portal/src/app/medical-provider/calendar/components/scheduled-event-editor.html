@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Duration<span class="color-red">*</span></label></div>
         <div class="col-md-2">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.duration.touched && !scheduledEventEditorFormControls.duration.valid">
@@ -73,10 +73,10 @@
             </div>
         </div>
         <div class="col-md-2"><label class="form-label">minutes</label></div>
-    </div>
-    <!--<div class="row">
+    </div>-->
+    <div class="row">
         <div class="col-md-2"><label class="form-label">End<span class="color-red">*</span></label></div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndDate.touched && !scheduledEventEditorFormControls.eventEndDate.valid">
                 <p-calendar [class.error]="!scheduledEventEditorFormControls.eventEndDate.valid" formControlName="eventEndDate" [(ngModel)]="eventEndAsDate"
                     dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndTime.touched && !scheduledEventEditorFormControls.eventEndTime.valid">
                 <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventEndTime.valid" formControlName="eventEndTime"
                     [(ngModel)]="eventEndAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
@@ -99,7 +99,7 @@
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
     <!--<div class="row">
         <div class="col-md-2"><label class="form-label">All Day</label></div>
         <div class="col-md-10">

@@ -19,7 +19,7 @@ export class ImeVisitAdapter {
             // location: data.location ? LocationAdapter.parseResponse(data.location) : null,
             case: CaseAdapter.parseResponse(data.case),
             caseId: data.caseId,
-            // patient: PatientAdapter.parseResponse(data.patient),
+            patient: PatientAdapter.parseResponse(data.patient),
             patientId: data.patientId,
             doctorName: data.doctorName,
             transportProviderId: data.transportProviderId,
@@ -33,6 +33,7 @@ export class ImeVisitAdapter {
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+            VisitCreatedByCompanyId: data.VisitCreatedByCompanyId,
 
         });
 

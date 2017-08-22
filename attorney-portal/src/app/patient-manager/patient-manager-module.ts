@@ -14,9 +14,9 @@ import { PatientsListComponent } from './patients/components/patients-list';
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientProfileComponent } from './patients/components/profile-patient';
-import { AddFamilyMemberComponent } from './patients/components/add-family-member';
-import { FamilyMemberListComponent } from './patients/components/family-member-list';
-import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
+import { AddFamilyMemberComponent } from './cases/components/add-family-member';
+import { FamilyMemberListComponent } from './cases/components/family-member-list';
+import { EditFamilyMemberComponent } from './cases/components/edit-family-member';
 import { AccidentInfoComponent } from './cases/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
 import { CaseEmployerComponent } from './cases/components/employer';
@@ -24,21 +24,21 @@ import { CaseShellComponent } from './cases/components/cases-shell';
 import { ReferringOfficeListComponent } from './cases/components/referring-office-list';
 import { AddReferringOfficeComponent } from './cases/components/add-referring-office';
 import { EditReferringOfficeComponent } from './cases/components/edit-referring-office';
-import { InsuranceListComponent } from './patients/components/insurance-list';
-import { AddInsuranceComponent } from './patients/components/add-insurance';
-import { EditInsuranceComponent } from './patients/components/edit-insurance';
+import { InsuranceListComponent } from './cases/components/insurance-list';
+import { AddInsuranceComponent } from './cases/components/add-insurance';
+import { EditInsuranceComponent } from './cases/components/edit-insurance';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
 import { AccidentService } from './cases/services/accident-services';
 import { AttorneyService } from './patients/services/attorney-services';
 import { EmployerService } from './cases/services/employer-service';
-import { FamilyMemberService } from './patients/services/family-member-service';
+import { FamilyMemberService } from './cases/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
 import { ReferringOfficeService } from './cases/services/referring-office-service';
 import { PatientsStore } from './patients/stores/patients-store';
 import { EmployerStore } from './cases/stores/employer-store';
-import { FamilyMemberStore } from './patients/stores/family-member-store';
+import { FamilyMemberStore } from './cases/stores/family-member-store';
 import { AccidentStore } from './cases/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
@@ -112,6 +112,8 @@ import { AvailableSlotsService } from './referals/services/available-slots-servi
 import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
 import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
 
+import { ImeVisitComponent } from './patient-visit/components/ime-visit';
+import { EoVisitComponent } from './patient-visit/components/eo-visit';
 
 @NgModule({
     imports: [
@@ -179,8 +181,9 @@ import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
         PendingReferralsComponent,
         BillingInfoComponent,
         PaymentListComponent,
-        CaseBasicLabelComponent
-
+        CaseBasicLabelComponent,
+        ImeVisitComponent,
+        EoVisitComponent,
 
     ],
     providers: [

@@ -1,3 +1,4 @@
+
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
