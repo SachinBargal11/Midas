@@ -47,12 +47,12 @@ import * as RRule from 'rrule';
 import { ProcedureStore } from '../../../commons/stores/procedure-store';
 import { VisitReferralStore } from '../stores/visit-referral-store';
 import { VisitReferral } from '../models/visit-referral';
-
 import { Location } from '../../../medical-provider/locations/models/location';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { Procedure } from '../../../commons/models/procedure';
 import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { ImeVisit } from '../models/ime-visit';
+import { EoVisit } from '../models/eo-visit';
 
 @Component({
     selector: 'patient-visit',
@@ -241,6 +241,8 @@ export class PatientVisitComponent implements OnInit {
         // this.loadAllVisits();
         this.loadAllVisitsForPatientId();
         this.loadImeVisits();
+        this.loadAttorneyVisits();
+        // this.loadClientEOVisits();
 
         this.header = {
             left: 'prev,next today',
@@ -1637,4 +1639,91 @@ export class PatientVisitComponent implements OnInit {
     //             this._progressBarService.hide();
     //         });
     // }
+
+    loadAttorneyVisits() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getAttorneyVisitsByPatientId(this.patientId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadClientEOVisits() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getEOVisitsByPatientId(this.patientId)
+            .subscribe(
+            (visits: EoVisit[]) => {
+                let events = this.getClientEOVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+    getClientEOVisitOccurrences(visits) {
+        let occurrences: ScheduledEventInstance[] = [];
+        let calendarEvents: ScheduledEvent[] = _.chain(visits)
+            .map((visit: ImeVisit) => {
+                return visit.calendarEvent;
+            })
+            .unique((event: ScheduledEvent) => {
+                return event.id;
+            })
+            .value();
+        _.forEach(calendarEvents, (event: ScheduledEvent) => {
+            occurrences.push(...event.getEventInstances(null));
+        });
+        _.forEach(occurrences, (occurrence: ScheduledEventInstance) => {
+            let matchingVisits: EoVisit[] = _.filter(visits, (currentVisit: EoVisit) => {
+                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
+            });
+            let visitForOccurrence: EoVisit = _.find(matchingVisits, (currentMatchingVisit: EoVisit) => {
+                if (!currentMatchingVisit.isOriginalVisit) {
+                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
+                }
+                return false;
+            });
+            if (visitForOccurrence) {
+                // occurrence.eventWrapper = visitForOccurrence;
+            } else {
+                let originalVisit: EoVisit = _.find(matchingVisits, (currentMatchingVisit: ImeVisit) => {
+                    return currentMatchingVisit.isOriginalVisit;
+                });
+                occurrence.eventWrapper = originalVisit;
+            }
+            return occurrence;
+        });
+        // occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
+        //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
+        // });
+        return occurrences;
+    }
+
 }

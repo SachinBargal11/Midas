@@ -19,8 +19,11 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.AttorneyVisits = new HashSet<AttorneyVisit>();
             this.Cases = new HashSet<Case>();
+            this.EOVisits = new HashSet<EOVisit>();
             this.IMEVisits = new HashSet<IMEVisit>();
             this.PatientDocuments = new HashSet<PatientDocument>();
+            this.PatientLanguagePreferenceMappings = new HashSet<PatientLanguagePreferenceMapping>();
+            this.PatientSocialMediaMappings = new HashSet<PatientSocialMediaMapping>();
             this.PatientVisits = new HashSet<PatientVisit>();
         }
     
@@ -35,17 +38,29 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string ParentOrGuardianName { get; set; }
+        public string EmergencyContactName { get; set; }
+        public string EmergencyContactPhone { get; set; }
+        public Nullable<bool> LegallyMarried { get; set; }
+        public string SpouseName { get; set; }
+        public string SocialMediaOther { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttorneyVisit> AttorneyVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Case> Cases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EOVisit> EOVisits { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IMEVisit> IMEVisits { get; set; }
         public virtual MaritalStatu MaritalStatu { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientDocument> PatientDocuments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientSocialMediaMapping> PatientSocialMediaMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit> PatientVisits { get; set; }
     }

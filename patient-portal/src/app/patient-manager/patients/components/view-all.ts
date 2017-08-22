@@ -117,21 +117,21 @@ export class ViewAllComponent implements OnInit {
         //         this.progressBarService.hide();
         //     });
 
-        this.progressBarService.show();
-        this._insuranceStore.getInsurances(this.patientId)
-            .subscribe(insurances => {
-                if (insurances.length) {
-                    this.insurances = insurances;
-                } else {
-                    this.noInsurances = 'No Insurance Information Available';
-                }
-            },
-            (error) => {
-                this.progressBarService.hide();
-            },
-            () => {
-                this.progressBarService.hide();
-            });
+        // this.progressBarService.show();
+        // this._insuranceStore.getInsurances(this.patientId)
+        //     .subscribe(insurances => {
+        //         if (insurances.length) {
+        //             this.insurances = insurances;
+        //         } else {
+        //             this.noInsurances = 'No Insurance Information Available';
+        //         }
+        //     },
+        //     (error) => {
+        //         this.progressBarService.hide();
+        //     },
+        //     () => {
+        //         this.progressBarService.hide();
+        //     });
 
         // });
 

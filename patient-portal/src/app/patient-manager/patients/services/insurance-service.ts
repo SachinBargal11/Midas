@@ -39,9 +39,9 @@ export class InsuranceService {
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
 
-    getInsurances(patientId: Number): Observable<Insurance[]> {
+    getInsurances(caseId: Number): Observable<Insurance[]> {
         let promise: Promise<Insurance[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientInsuranceInfo/getByPatientid/' + patientId)
+            return this._http.get(this._url + '/PatientInsuranceInfo/getByCaseId/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let insurances = (<Object[]>data).map((data: any) => {
@@ -132,9 +132,9 @@ export class InsuranceService {
         return <Observable<InsuranceMaster>>Observable.fromPromise(promise);
     }
 
-    getInsurancesMaster(): Observable<InsuranceMaster[]> {
+    getInsurancesMaster(caseId:number): Observable<InsuranceMaster[]> {
         let promise: Promise<InsuranceMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/getAll')
+            return this._http.get(this._url + '/InsuranceMaster/GetMasterAndByCaseId/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let insurancesMaster = (<Object[]>data).map((data: any) => {

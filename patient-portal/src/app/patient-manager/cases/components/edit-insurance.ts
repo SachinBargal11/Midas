@@ -12,10 +12,10 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
-import { Insurance } from '../models/insurance';
-import { InsuranceMaster } from '../models/insurance-master';
-import { InsuranceStore } from '../stores/insurance-store';
-import { PatientsStore } from '../stores/patients-store';
+import { Insurance } from '../../patients/models/insurance';
+import { InsuranceMaster } from '../../patients/models/insurance-master';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
@@ -43,7 +43,7 @@ export class EditInsuranceComponent implements OnInit {
     policyContact = new Contact({});
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
-    patientId;
+    caseId;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
 
@@ -55,7 +55,7 @@ export class EditInsuranceComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         public sessionStore: SessionStore,
@@ -65,10 +65,10 @@ export class EditInsuranceComponent implements OnInit {
         private _faxNoFormatPipe: FaxNoFormatPipe,
         private _elRef: ElementRef
     ) {
-        this.patientId = this.sessionStore.session.user.id;
-        // this._route.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId);
-        // });
+        // this.patientId = this.sessionStore.session.user.id;
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId);
+        });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
             this.progressBarService.show();
@@ -142,7 +142,7 @@ export class EditInsuranceComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
 
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMaster(this.caseId)
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
 
         // this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
@@ -242,7 +242,7 @@ export class EditInsuranceComponent implements OnInit {
         let result;
         let insurance = new Insurance({
             id: this.insurance.id,
-            patientId: this.patientId,
+            caseId: this.caseId,
             policyHoldersName: insuranceformValues.policyHolderName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNo,

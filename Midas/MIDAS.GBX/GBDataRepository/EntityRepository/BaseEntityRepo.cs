@@ -939,6 +939,11 @@ namespace MIDAS.GBX.EntityRepository
         //    throw new NotImplementedException();
         //}
 
+        public virtual Object GetMasterAndByCaseId(int CaseId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

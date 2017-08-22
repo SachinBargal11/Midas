@@ -27,7 +27,7 @@ export class AddAdjusterComponent implements OnInit {
     states: any[];
     insuranceMaster: any[];
     adjusterCities: any[];
-    patientId: number;
+    caseId: number;
     selectedCity = 0;
     isadjusterCitiesLoading = false;
 
@@ -54,7 +54,7 @@ export class AddAdjusterComponent implements OnInit {
         });
 
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.caseId = parseInt(routeParams.caseId, 10);
         });
         this.adjusterform = this.fb.group({
                 firstname: ['', Validators.required],
@@ -83,7 +83,7 @@ export class AddAdjusterComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
 
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMaster(this.caseId)
             .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
     }
 

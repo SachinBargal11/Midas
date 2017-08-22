@@ -215,6 +215,8 @@
     <Build Include="Tables\Latest Tables\PatientLanguagePreferenceMapping.sql" />
     <Build Include="Tables\Latest Tables\SocialMedia.sql" />
     <Build Include="Tables\Latest Tables\PatientSocialMediaMapping.sql" />
+    <Build Include="Tables\Latest Tables\IMEVisit.sql" />
+    <Build Include="Tables\Latest Tables\EOVisit.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
