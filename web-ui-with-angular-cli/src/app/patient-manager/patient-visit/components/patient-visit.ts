@@ -214,6 +214,10 @@ export class PatientVisitComponent implements OnInit {
         private confirmationService: ConfirmationService,
 
     ) {
+        this.loadAllVisitsByCompanyId();
+
+        this.loadEoVisits();
+        this.loadImeVisits();
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required],
             caseId: ['', Validators.required],
@@ -460,8 +464,6 @@ export class PatientVisitComponent implements OnInit {
             this.events = [];
         } else {
             this.loadLocationVisits();
-            this.loadEoVisits();
-            this.loadImeVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
                     let mappedDoctorLocationSchedules: {
@@ -698,6 +700,30 @@ export class PatientVisitComponent implements OnInit {
         //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
         // });
         return occurrences;
+    }
+
+    loadAllVisitsByCompanyId() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getPatientVisitsByCompanyId(this.companyId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     loadLocationDoctorSpeciatityVisits() {

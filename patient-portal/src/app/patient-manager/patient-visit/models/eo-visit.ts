@@ -8,19 +8,18 @@ import * as _ from 'underscore';
 import * as RRule from 'rrule';
 import { VisitStatus } from './enums/visit-status';
 import { Patient } from '../../../patient-manager/patients/models/patient';
+import { Doctor } from '../../../medical-provider/users/models/doctor';
 
-const ImeVisitRecord = Record({
+const EoVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
-    // location: null,
-    // locationId: 0,
-    isImeVisitType: true,
-    case: null,
-    caseId: 0,
-    patient: null,
-    patientId: 0,
-    doctorName: '',
-    transportProviderId: null,
+    location: null,
+    locationId: 0,
+    isEoVisitType: true,
+    doctor: null,
+    doctorId: 0,
+    insuranceProviderId: null,
+    medicalProviderId: null,
     eventStart: null,
     eventEnd: null,
     notes: '',
@@ -31,23 +30,20 @@ const ImeVisitRecord = Record({
     updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null,//Moment
-    VisitCreatedByCompanyId: null,
 });
 
 
-export class ImeVisit extends ImeVisitRecord {
+export class EoVisit extends EoVisitRecord {
 
     id: number;
     calendarEventId: number;
-    // location: Location;
-    // locationId: number;
-    isImeVisitType: boolean;
-    case: Case;
-    caseId: number;
-    patient: Patient;
-    patientId: number;
-    doctorName: string;
-    transportProviderId: number;
+    location: Location;
+    locationId: number;
+    isEoVisitType: boolean;
+    doctor: Doctor;
+    doctorId: number;
+    insuranceProviderId: number;
+    medicalProviderId: number;
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
     notes: string;
@@ -58,17 +54,9 @@ export class ImeVisit extends ImeVisitRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
-    VisitCreatedByCompanyId: number;
 
     constructor(props) {
         super(props);
-    }
-     get visitStartAsDate(): Date {
-        return this.eventStart ? this.eventStart.toDate() : null;
-    }
-
-    get visitEndAsDate(): Date {
-        return this.eventEnd ? this.eventEnd.toDate() : null;
     }
 
     get isOriginalVisit(): boolean {
@@ -80,19 +68,16 @@ export class ImeVisit extends ImeVisitRecord {
     }
 
     get eventColor(): string {
-        return '#FF8000';
+        return '#7A3DB8';
     }
 
-    get visitDisplayString(): string {
+     get visitDisplayString(): string {
         let visitInfo: string = ``;
 
-        if (this.patientId && this.caseId && this.patient) {
-            visitInfo = `${visitInfo}Patient Name: ${this.patient.user.firstName} ${this.patient.user.lastName} - Case Id: ${this.caseId}  `;
+        if (this.doctorId && this.doctor) {
+            visitInfo = `${visitInfo}Doctor Name: ${this.doctor.user.firstName} ${this.doctor.user.lastName}`;
         }
-
-        if (this.eventStart) {
-            visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
-        }
+       
         return visitInfo;
     }
 }

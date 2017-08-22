@@ -11,6 +11,8 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as _ from 'underscore';
 import { Consent } from '../../cases/models/consent';
+import { ImeVisit } from '../models/ime-visit';
+import { EoVisit } from '../models/eo-visit';
 
 @Injectable()
 export class PatientVisitsStore {
@@ -18,6 +20,8 @@ export class PatientVisitsStore {
     private _patientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _companyPatientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _consent: BehaviorSubject<List<Consent>> = new BehaviorSubject(List([]));
+    private _imeVisits: BehaviorSubject<List<ImeVisit>> = new BehaviorSubject(List([]));
+    private _eoVisits: BehaviorSubject<List<EoVisit>> = new BehaviorSubject(List([]));
 
     constructor(
         private _patientVisitsService: PatientVisitService,
@@ -153,11 +157,6 @@ export class PatientVisitsStore {
         });
         return <Observable<VisitDocument>>Observable.from(promise);
     }
-
-
-
-
-
 
     findPatientVisitById(id: number): PatientVisit {
         let patientVisits = this._patientVisits.getValue();
@@ -357,5 +356,40 @@ export class PatientVisitsStore {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
+     addImeVisit(imeVisitDetail: any): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.addImeVisit(imeVisitDetail).subscribe((imeVisitDetail: any) => {
+                this._imeVisits.next(this._imeVisits.getValue().push(imeVisitDetail));
+                resolve(imeVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
+
+    getImeVisitByCompanyId(companyId: number): Observable<ImeVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getImeVisitByCompanyId().subscribe((imeVisits: ImeVisit[]) => {
+                // this._imeVisits.next(List(imeVisits));
+                resolve(imeVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
+
+    addEoVisit(eoVisitDetail: any): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.addEoVisit(eoVisitDetail).subscribe((eoVisitDetail: any) => {
+                this._eoVisits.next(this._eoVisits.getValue().push(eoVisitDetail));
+                resolve(eoVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
 }
 

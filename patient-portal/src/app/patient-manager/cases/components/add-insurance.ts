@@ -12,11 +12,10 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
-import { Insurance } from '../models/insurance';
-import { InsuranceMaster } from '../models/insurance-master';
-import { InsuranceStore } from '../stores/insurance-store';
-import { PatientsStore } from '../stores/patients-store';
-
+import { Insurance } from '../../patients/models/insurance';
+import { InsuranceMaster } from '../../patients/models/insurance-master';
+import { InsuranceStore } from '../../patients/stores/insurance-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 @Component({
     selector: 'add-insurance',
     templateUrl: './add-insurance.html'
@@ -30,7 +29,7 @@ export class AddInsuranceComponent implements OnInit {
     insuranceMastersAdress: Address;
     policyCities: any[];
     insuranceCities: any[];
-    patientId: number;
+    caseId: number;
     selectedCity = 0;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
@@ -43,7 +42,7 @@ export class AddInsuranceComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         public sessionStore: SessionStore,
@@ -51,10 +50,10 @@ export class AddInsuranceComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
-         this.patientId = this.sessionStore.session.user.id;
-        // this._route.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId);
-        // });
+        //  this.patientId = this.sessionStore.session.user.id;
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+        });
         //  this._insuranceStore.getInsurancesMaster()
         //     .subscribe(
         //     (insuranceMasters) => {
@@ -102,12 +101,11 @@ export class AddInsuranceComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMaster(this.caseId)
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
     selectInsurance(event) {
-        // this.selectedInsurance = 0;
         let currentInsurance: number = parseInt(event.target.value);
         this.loadInsuranceMasterAddress(currentInsurance);
     }
@@ -126,49 +124,12 @@ export class AddInsuranceComponent implements OnInit {
         }
     }
 
-    // selectPolicyState(event) {
-    //     this.selectedCity = 0;
-    //     let currentState = event.target.value;
-    //     this.loadPolicyCities(currentState);
-    // }
-
-    // loadPolicyCities(stateName) {
-    //     this.isPolicyCitiesLoading = true;
-    //     if (stateName !== '') {
-    //         this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.policyCities = cities; },
-    //             null,
-    //             () => { this.isPolicyCitiesLoading = false; });
-    //     } else {
-    //         this.policyCities = [];
-    //         this.isPolicyCitiesLoading = false;
-    //     }
-    // }
-    // selectInsuranceState(event) {
-    //     this.selectedCity = 0;
-    //     let currentState = event.target.value;
-    //     this.loadInsuranceCities(currentState);
-    // }
-
-    // loadInsuranceCities(stateName) {
-    //     this.isInsuranceCitiesLoading = true;
-    //     if (stateName !== '') {
-    //         this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.insuranceCities = cities; },
-    //             null,
-    //             () => { this.isInsuranceCitiesLoading = false; });
-    //     } else {
-    //         this.insuranceCities = [];
-    //         this.isInsuranceCitiesLoading = false;
-    //     }
-    // }
-
     save() {
         this.isSaveProgress = true;
         let insuranceformValues = this.insuranceform.value;
         let result;
         let insurance = new Insurance({
-            patientId: this.patientId,
+            caseId: this.caseId,
             policyHoldersName: insuranceformValues.policyHolderName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNumber,
