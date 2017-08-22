@@ -452,6 +452,7 @@ export class PatientVisitService {
             })
             requestData.patientVisitProcedureCodes = procedures;
             requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
+            requestData.VisitCreatedByCompanyId = this._sessionStore.session.currentCompany.id;
             requestData = _.omit(requestData, 'calendarEvent');
             return this._http.post(this._url + '/IMEvisit/SaveIMEVisit', JSON.stringify(requestData), {
                 headers: this._headers

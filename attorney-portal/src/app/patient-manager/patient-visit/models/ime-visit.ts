@@ -79,7 +79,7 @@ export class ImeVisit extends ImeVisitRecord {
     get visitDisplayString(): string {
         let visitInfo: string = ``;
         if (this.patientId && this.caseId && this.patient) {
-            visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
+            visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
         }
 
         if (this.eventStart) {

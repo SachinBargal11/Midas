@@ -618,9 +618,9 @@ export class PatientVisitComponent implements OnInit {
             }
             return occurrence;
         });
-        occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
-            return !occurrence.eventWrapper.calendarEvent.isCancelled;
-        });
+        // occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
+        //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
+        // });
         return occurrences;
     }
 
@@ -1187,6 +1187,7 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.events = [];
+                this.loadAllVisitsByCompanyId();
                 this.loadVisits();
                 this.loadImeVisits();
                 this.loadEoVisits();
