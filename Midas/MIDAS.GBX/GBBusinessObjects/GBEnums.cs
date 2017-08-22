@@ -152,6 +152,24 @@ namespace MIDAS.GBX.BusinessObjects
         }
         #endregion
 
+        #region Prefered Mode of Comunication
+        public enum PreferedModeOfComunication
+        {
+            Email = 1,
+            SMS = 2,
+            Both = 3
+        }
+        #endregion
+
+        #region Push Notification Status
+        public enum PushNotificationStatus
+        {
+            Delivered = 1,
+            Failed = 2,
+            NotificationNotEnabled = 3,
+            EventNotSubscribed = 4
+        }
+        #endregion
 
     }
 }
