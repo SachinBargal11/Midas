@@ -16,6 +16,7 @@ import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { StatesStore } from '../../../commons/stores/states-store';
+import * as _ from 'underscore';
 
 
 @Component({
@@ -24,6 +25,11 @@ import { StatesStore } from '../../../commons/stores/states-store';
 })
 
 export class AddPatientComponent implements OnInit {
+    dob: moment.Moment;
+    isEighteenOrAbove: boolean = true;
+    languagePreference = '';
+    martialStatus = '';
+    selectedSocialMedia: any[] = [];
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -48,15 +54,18 @@ export class AddPatientComponent implements OnInit {
         this.patientform = this.fb.group({
             userInfo: this.fb.group({
                 ssn: [''],
-                // weight: [''],
-                // height: [''],
                 maritalStatusId: ['', Validators.required],
                 dateOfFirstTreatment: [''],
                 dob: [''],
                 firstname: ['', Validators.required],
                 middlename: [''],
                 lastname: ['', Validators.required],
-                gender: ['', Validators.required]
+                gender: ['', Validators.required],
+                parentName: ['', Validators.required],
+                languagePreference: [''],
+                otherLanguage: [''],
+                spouseName: [''],
+                socialMedia: [''],
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -64,9 +73,11 @@ export class AddPatientComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', AppValidators.emailValidator],
+                alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredCommunication: ['']
+                preferredCommunication: [''],
+                emergencyContactPerson: [''],
+                emergencyContactCellPhone: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -90,7 +101,30 @@ export class AddPatientComponent implements OnInit {
             .subscribe(states => this.states = states);
     }
 
+    calculateAge() {
+        let now = moment();
+        // let age =  moment(this.dob, "YYYYMMDD").fromNow();
+        let age = now.diff(this.dob, 'years');
+        if (age < 18) {
+            this.isEighteenOrAbove = false;
+        } else {
+            this.isEighteenOrAbove = true;
+        }
+
+    }
+
     savePatient() {
+        let patientSocialMediaMappings: any[] = [];
+        _.forEach(this.selectedSocialMedia, (currentSelectedSocialMedia: any) => {
+            patientSocialMediaMappings.push({
+                socialMediaId: parseInt(currentSelectedSocialMedia)
+            })
+        })
+        let patientLanguagePreferenceMappings: any[] = [];
+        patientLanguagePreferenceMappings.push({
+            languagePreferenceId: parseInt(this.languagePreference)
+        })
+
         this.isSavePatientProgress = true;
         let patientFormValues = this.patientform.value;
         let result;
@@ -102,6 +136,14 @@ export class AddPatientComponent implements OnInit {
             maritalStatusId: patientFormValues.userInfo.maritalStatusId,
             createByUserId: this._sessionStore.session.account.user.id,
             companyId: this._sessionStore.session.currentCompany.id,
+            patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+            languagePreferenceOther: parseInt(this.languagePreference) == 3 ? patientFormValues.userInfo.otherLanguage : null,
+            patientSocialMediaMappings: patientSocialMediaMappings,
+            parentOrGuardianName: !this.isEighteenOrAbove ? patientFormValues.userInfo.parentName : null,
+            emergencyContactName: patientFormValues.contact.emergencyContactPerson,
+            emergencyContactPhone: patientFormValues.contact.emergencyContactCellPhone,
+            legallyMarried: null,
+            spouseName: parseInt(this.martialStatus) == 2 ? patientFormValues.userInfo.spouseName : null,
             user: new User({
                 dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                 firstName: patientFormValues.userInfo.firstname,

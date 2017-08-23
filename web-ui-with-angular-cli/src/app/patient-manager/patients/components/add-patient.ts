@@ -74,7 +74,7 @@ export class AddPatientComponent implements OnInit {
                 middlename: [''],
                 lastname: ['', Validators.required],
                 gender: ['', Validators.required],
-                parentName: ['', Validators.required],
+                parentName: [''],
                 languagePreference: [''],
                 otherLanguage: [''],
                 spouseName: [''],
