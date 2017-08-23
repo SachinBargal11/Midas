@@ -10,43 +10,43 @@ namespace MIDAS.GBX.BusinessObjects
     public class PatientAccidentInfo : GbObject
     {
         [JsonProperty("caseId")]
-        public int caseId { get; set; }
+        public int CaseId { get; set; }
 
         [JsonProperty("accidentDate")]
-        public DateTime? accidentDate { get; set; }
+        public DateTime? AccidentDate { get; set; }
 
         [JsonProperty("plateNumber")]
-        public string plateNumber { get; set; }
+        public string PlateNumber { get; set; }
 
         [JsonProperty("reportNumber")]
-        public string reportNumber { get; set; }
+        public string ReportNumber { get; set; }
 
         [JsonProperty("accidentAddressInfoId")]
-        public int? accidentAddressInfoId { get; set; }
+        public int? AccidentAddressInfoId { get; set; }
 
         [JsonProperty("hospitalName")]
-        public string hospitalName { get; set; }
+        public string HospitalName { get; set; }
 
         [JsonProperty("hospitalAddressInfoId")]
-        public int? hospitalAddressInfoId { get; set; }
+        public int? HospitalAddressInfoId { get; set; }
 
         [JsonProperty("dateOfAdmission")]
-        public DateTime? dateOfAdmission { get; set; }
+        public DateTime? DateOfAdmission { get; set; }
 
         [JsonProperty("additionalPatients")]
-        public string additionalPatients { get; set; }
+        public string AdditionalPatients { get; set; }
 
         [JsonProperty("describeInjury")]
-        public string describeInjury { get; set; }
+        public string DescribeInjury { get; set; }
 
         [JsonProperty("patientTypeId")]
-        public byte? patientTypeId { get; set; }
+        public byte? PatientTypeId { get; set; }
 
         [JsonProperty("accidentAddressInfo")]
-        public AddressInfo accidentAddressInfo { get; set; }
+        public AddressInfo AccidentAddressInfo { get; set; }
 
         [JsonProperty("hospitalAddressInfo")]
-        public AddressInfo hospitalAddressInfo { get; set; }
+        public AddressInfo HospitalAddressInfo { get; set; }
 
         //[JsonProperty("case")]
         //public Case cases { get; set; }

@@ -91,6 +91,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientVisit> PatientVisits { get; set; }
         public virtual DbSet<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
         public virtual DbSet<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
+        public virtual DbSet<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
         public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
@@ -108,6 +109,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<RoomTest> RoomTests { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<ScheduleDetail> ScheduleDetails { get; set; }
+        public virtual DbSet<SchoolInformation> SchoolInformations { get; set; }
         public virtual DbSet<SocialMedia> SocialMedias { get; set; }
         public virtual DbSet<SpecialityDetail> SpecialityDetails { get; set; }
         public virtual DbSet<Specialty> Specialties { get; set; }
@@ -128,8 +130,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
-        public virtual DbSet<SchoolInformation> SchoolInformations { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

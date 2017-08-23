@@ -31,17 +31,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.PatientAccidentInfo PatientAccidentInfoBO = new BO.PatientAccidentInfo();
             PatientAccidentInfoBO.ID = patientAccidentInfo.Id;
-            PatientAccidentInfoBO.accidentDate = patientAccidentInfo.AccidentDate;
-            PatientAccidentInfoBO.plateNumber = patientAccidentInfo.PlateNumber;
-            PatientAccidentInfoBO.reportNumber = patientAccidentInfo.ReportNumber;
-            PatientAccidentInfoBO.accidentAddressInfoId = patientAccidentInfo.AccidentAddressInfoId;
-            PatientAccidentInfoBO.hospitalName = patientAccidentInfo.HospitalName;
-            PatientAccidentInfoBO.hospitalAddressInfoId = patientAccidentInfo.HospitalAddressInfoId;
-            PatientAccidentInfoBO.dateOfAdmission = patientAccidentInfo.DateOfAdmission;
-            PatientAccidentInfoBO.additionalPatients = patientAccidentInfo.AdditionalPatients;
-            PatientAccidentInfoBO.describeInjury = patientAccidentInfo.DescribeInjury;
-            PatientAccidentInfoBO.patientTypeId = patientAccidentInfo.PatientTypeId;
-            PatientAccidentInfoBO.caseId = patientAccidentInfo.CaseId;
+            PatientAccidentInfoBO.AccidentDate = patientAccidentInfo.AccidentDate;
+            PatientAccidentInfoBO.PlateNumber = patientAccidentInfo.PlateNumber;
+            PatientAccidentInfoBO.ReportNumber = patientAccidentInfo.ReportNumber;
+            PatientAccidentInfoBO.AccidentAddressInfoId = patientAccidentInfo.AccidentAddressInfoId;
+            PatientAccidentInfoBO.HospitalName = patientAccidentInfo.HospitalName;
+            PatientAccidentInfoBO.HospitalAddressInfoId = patientAccidentInfo.HospitalAddressInfoId;
+            PatientAccidentInfoBO.DateOfAdmission = patientAccidentInfo.DateOfAdmission;
+            PatientAccidentInfoBO.AdditionalPatients = patientAccidentInfo.AdditionalPatients;
+            PatientAccidentInfoBO.DescribeInjury = patientAccidentInfo.DescribeInjury;
+            PatientAccidentInfoBO.PatientTypeId = patientAccidentInfo.PatientTypeId;
+            PatientAccidentInfoBO.CaseId = patientAccidentInfo.CaseId;
 
             PatientAccidentInfoBO.MedicalReportNumber = patientAccidentInfo.MedicalReportNumber;
 
@@ -62,7 +62,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //[STATECODE-CHANGE]
                     boAddress.CreateByUserID = patientAccidentInfo.AddressInfo.CreateByUserID;
                     boAddress.ID = patientAccidentInfo.AddressInfo.id;
-                    PatientAccidentInfoBO.accidentAddressInfo = boAddress;
+                    PatientAccidentInfoBO.AccidentAddressInfo = boAddress;
                 }
             }
             if (patientAccidentInfo.AddressInfo1 != null)
@@ -82,7 +82,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //[STATECODE-CHANGE]
                     boAddress1.CreateByUserID = patientAccidentInfo.AddressInfo1.CreateByUserID;
                     boAddress1.ID = patientAccidentInfo.AddressInfo1.id;
-                    PatientAccidentInfoBO.hospitalAddressInfo = boAddress1;
+                    PatientAccidentInfoBO.HospitalAddressInfo = boAddress1;
                 }
             }
 
@@ -285,8 +285,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.PatientAccidentInfo PatientAccidentInfoBO = (BO.PatientAccidentInfo)(object)entity;
-            BO.AddressInfo AccidentAddressInfoBO = PatientAccidentInfoBO.accidentAddressInfo;
-            BO.AddressInfo HospitalAddressInfoBO = PatientAccidentInfoBO.hospitalAddressInfo;
+            BO.AddressInfo AccidentAddressInfoBO = PatientAccidentInfoBO.AccidentAddressInfo;
+            BO.AddressInfo HospitalAddressInfoBO = PatientAccidentInfoBO.HospitalAddressInfo;
 
             PatientAccidentInfo PatientAccidentInfoDB = new PatientAccidentInfo();
 
@@ -411,18 +411,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     if (IsEditMode == false)
                     {
-                        PatientAccidentInfoDB.CaseId = PatientAccidentInfoBO.caseId;
+                        PatientAccidentInfoDB.CaseId = PatientAccidentInfoBO.CaseId;
                     }
-                    PatientAccidentInfoDB.AccidentDate = (IsEditMode == true && PatientAccidentInfoBO.accidentDate == null) ? PatientAccidentInfoDB.AccidentDate : PatientAccidentInfoBO.accidentDate;
-                    PatientAccidentInfoDB.PlateNumber = (IsEditMode == true && PatientAccidentInfoBO.plateNumber == null) ? PatientAccidentInfoDB.PlateNumber : PatientAccidentInfoBO.plateNumber;
-                    PatientAccidentInfoDB.ReportNumber = (IsEditMode == true && PatientAccidentInfoBO.reportNumber == null) ? PatientAccidentInfoDB.ReportNumber : PatientAccidentInfoBO.reportNumber;
-                    PatientAccidentInfoDB.HospitalName = (IsEditMode == true && PatientAccidentInfoBO.hospitalName == null) ? PatientAccidentInfoDB.HospitalName : PatientAccidentInfoBO.hospitalName;
-                    PatientAccidentInfoDB.DateOfAdmission = (IsEditMode == true && PatientAccidentInfoBO.dateOfAdmission == null) ? PatientAccidentInfoDB.DateOfAdmission : PatientAccidentInfoBO.dateOfAdmission;
-                    PatientAccidentInfoDB.AdditionalPatients = (IsEditMode == true && PatientAccidentInfoBO.additionalPatients == null) ? PatientAccidentInfoDB.AdditionalPatients : PatientAccidentInfoBO.additionalPatients;
-                    PatientAccidentInfoDB.DescribeInjury = (IsEditMode == true && PatientAccidentInfoBO.describeInjury == null) ? PatientAccidentInfoDB.DescribeInjury :  PatientAccidentInfoBO.describeInjury;
-                    PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.patientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.patientTypeId.Value;
-                    PatientAccidentInfoDB.AccidentAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.accidentAddressInfoId == null) ? PatientAccidentInfoDB.AccidentAddressInfoId : AccidentAddressInfoDB.id;
-                    PatientAccidentInfoDB.HospitalAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.hospitalAddressInfoId == null) ? PatientAccidentInfoDB.HospitalAddressInfoId :  HospitalAddressInfoDB.id;
+                    PatientAccidentInfoDB.AccidentDate = (IsEditMode == true && PatientAccidentInfoBO.AccidentDate == null) ? PatientAccidentInfoDB.AccidentDate : PatientAccidentInfoBO.AccidentDate;
+                    PatientAccidentInfoDB.PlateNumber = (IsEditMode == true && PatientAccidentInfoBO.PlateNumber == null) ? PatientAccidentInfoDB.PlateNumber : PatientAccidentInfoBO.PlateNumber;
+                    PatientAccidentInfoDB.ReportNumber = (IsEditMode == true && PatientAccidentInfoBO.ReportNumber == null) ? PatientAccidentInfoDB.ReportNumber : PatientAccidentInfoBO.ReportNumber;
+                    PatientAccidentInfoDB.HospitalName = (IsEditMode == true && PatientAccidentInfoBO.HospitalName == null) ? PatientAccidentInfoDB.HospitalName : PatientAccidentInfoBO.HospitalName;
+                    PatientAccidentInfoDB.DateOfAdmission = (IsEditMode == true && PatientAccidentInfoBO.DateOfAdmission == null) ? PatientAccidentInfoDB.DateOfAdmission : PatientAccidentInfoBO.DateOfAdmission;
+                    PatientAccidentInfoDB.AdditionalPatients = (IsEditMode == true && PatientAccidentInfoBO.AdditionalPatients == null) ? PatientAccidentInfoDB.AdditionalPatients : PatientAccidentInfoBO.AdditionalPatients;
+                    PatientAccidentInfoDB.DescribeInjury = (IsEditMode == true && PatientAccidentInfoBO.DescribeInjury == null) ? PatientAccidentInfoDB.DescribeInjury :  PatientAccidentInfoBO.DescribeInjury;
+                    PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.PatientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.PatientTypeId.Value;
+                    PatientAccidentInfoDB.AccidentAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.AccidentAddressInfoId == null) ? PatientAccidentInfoDB.AccidentAddressInfoId : AccidentAddressInfoDB.id;
+                    PatientAccidentInfoDB.HospitalAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.HospitalAddressInfoId == null) ? PatientAccidentInfoDB.HospitalAddressInfoId :  HospitalAddressInfoDB.id;
 
                     PatientAccidentInfoDB.MedicalReportNumber = (IsEditMode == true && PatientAccidentInfoBO.MedicalReportNumber == null) ? PatientAccidentInfoDB.MedicalReportNumber : PatientAccidentInfoBO.MedicalReportNumber;
 

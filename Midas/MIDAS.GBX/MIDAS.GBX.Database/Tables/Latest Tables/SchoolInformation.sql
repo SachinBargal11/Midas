@@ -8,7 +8,7 @@
 BEGIN
     CREATE TABLE [dbo].[SchoolInformation]
     (
-        [Id] INT NOT NULL, 
+        [Id] INT NOT NULL IDENTITY, 
         [CaseId] INT NOT NULL,
         [NameOfSchool] NVARCHAR(256) NOT NULL, 
         [Grade] NVARCHAR(50) NULL, 
