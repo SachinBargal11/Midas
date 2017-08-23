@@ -287,6 +287,7 @@
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\SchoolInformationController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\TemplateManagerController.cs" />
     <Compile Include="Controllers\UserController.cs" />

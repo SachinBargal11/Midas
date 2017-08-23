@@ -201,6 +201,7 @@
     <Compile Include="Schedule\ScheduleDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\Role.cs" />
+    <Compile Include="SchoolInformation\SchoolInformation.cs" />
     <Compile Include="Speciality\CompanySpecialtyDetails.cs" />
     <Compile Include="Speciality\Specialty.cs" />
     <Compile Include="Speciality\SpecialtyDetails.cs" />
