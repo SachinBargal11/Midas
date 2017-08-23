@@ -18,12 +18,6 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseTypeId")]
         public byte? CaseTypeId { get; set; }
 
-        //[JsonProperty("locationId")]
-        //public int? LocationId { get; set; }
-
-        //[JsonProperty("patientEmpInfoId")]
-        //public int? PatientEmpInfoId { get; set; }
-
         [JsonProperty("carrierCaseNo")]
         public string CarrierCaseNo { get; set; }
        
@@ -68,7 +62,16 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("claimFileNumber")]
         public int? ClaimFileNumber { get; set; }
-        
+
+        [JsonProperty("medicare")]
+        public bool? Medicare { get; set; }
+
+        [JsonProperty("medicaid")]
+        public bool? Medicaid { get; set; }
+
+        [JsonProperty("ssdisabililtyIncome")]
+        public bool? SSDisabililtyIncome { get; set; }
+
     }
 
     public class mCase : GbObject
