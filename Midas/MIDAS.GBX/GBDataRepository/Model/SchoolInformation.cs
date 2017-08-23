@@ -12,28 +12,20 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientEmpInfo
+    public partial class SchoolInformation
     {
         public int Id { get; set; }
-        public string JobTitle { get; set; }
-        public string EmpName { get; set; }
-        public int AddressInfoId { get; set; }
-        public int ContactInfoId { get; set; }
+        public int CaseId { get; set; }
+        public string NameOfSchool { get; set; }
+        public string Grade { get; set; }
+        public Nullable<bool> LossOfTime { get; set; }
+        public string DatesOutOfSchool { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int CaseId { get; set; }
-        public string Salary { get; set; }
-        public Nullable<bool> HourOrYearly { get; set; }
-        public Nullable<bool> LossOfEarnings { get; set; }
-        public string DatesOutOfWork { get; set; }
-        public Nullable<decimal> HoursPerWeek { get; set; }
-        public Nullable<bool> AccidentAtEmployment { get; set; }
     
-        public virtual AddressInfo AddressInfo { get; set; }
         public virtual Case Case { get; set; }
-        public virtual ContactInfo ContactInfo { get; set; }
     }
 }

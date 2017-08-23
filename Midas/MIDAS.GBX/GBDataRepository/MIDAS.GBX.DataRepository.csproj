@@ -519,6 +519,9 @@
     <Compile Include="Model\ScheduleDetail.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SchoolInformation.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SocialMedia.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

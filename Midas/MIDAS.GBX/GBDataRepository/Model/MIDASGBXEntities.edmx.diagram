@@ -288,6 +288,8 @@
         <EntityTypeShape EntityType="MIDASGBXModel.PatientVisitUnscheduled" Width="1.5" PointX="30.75" PointY="92.375" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitUnscheduled_Case_CaseId" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisitUnscheduled_Patient_PatientId" />
+        <EntityTypeShape EntityType="MIDASGBXModel.SchoolInformation" Width="1.5" PointX="24.75" PointY="103.875" />
+        <AssociationConnector Association="MIDASGBXModel.FK_SchoolInformation_Case_CaseId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -33,6 +33,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Referrals = new HashSet<Referral>();
             this.RefferingOffices = new HashSet<RefferingOffice>();
             this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
+            this.SchoolInformations = new HashSet<SchoolInformation>();
         }
     
         public int Id { get; set; }
@@ -48,6 +49,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string CaseSource { get; set; }
         public Nullable<int> ClaimFileNumber { get; set; }
+        public Nullable<bool> Medicare { get; set; }
+        public Nullable<bool> Medicaid { get; set; }
+        public Nullable<bool> SSDisabililtyIncome { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AttorneyVisit> AttorneyVisits { get; set; }
@@ -84,5 +88,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SchoolInformation> SchoolInformations { get; set; }
     }
 }

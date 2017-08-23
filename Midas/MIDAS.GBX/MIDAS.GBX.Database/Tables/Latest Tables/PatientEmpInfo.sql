@@ -8,13 +8,18 @@
 BEGIN
     CREATE TABLE [dbo].[PatientEmpInfo](
 	    [Id] [int] IDENTITY(1,1) NOT NULL,
-	    --[PatientId] [int] NOT NULL,
         [CaseId] [int] NOT NULL,
 	    [JobTitle] [nvarchar](50) NULL,
 	    [EmpName] [nvarchar](50) NULL,
 	    [AddressInfoId] [int] NOT NULL,
 	    [ContactInfoId] [int] NOT NULL,
-	    --[IsCurrentEmp] [bit] NOT NULL DEFAULT (0),
+        [Salary] [NVARCHAR](32) NULL,
+        [HourOrYearly] [Bit] NULL CONSTRAINT [DF_PatientEmpInfo_PerHourOrYearly] DEFAULT 0,
+        [LossOfEarnings] [BIT] NULL CONSTRAINT [DF_PatientEmpInfo_LossOfEarnings] DEFAULT 0,
+        [DatesOutOfWork] [NVARCHAR](128) NULL,
+        [HoursPerWeek] [NUMERIC](3,2) NULL,
+        [AccidentAtEmployment] [BIT] NULL CONSTRAINT [DF_PatientEmpInfo_AccidentAtEmployment] DEFAULT 0,
+
 	    [IsDeleted] [bit] NULL DEFAULT 0,
 	    [CreateByUserID] [int] NOT NULL,
 	    [CreateDate] [datetime2](7) NOT NULL,
@@ -159,46 +164,110 @@ BEGIN
         DROP COLUMN [PatientEmpInfoId]
 END
 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientEmpInfo'
+	AND		COLUMN_NAME = 'Salary'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [Salary] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ADD [Salary] [NVARCHAR](32) NULL
+END
+GO
 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientEmpInfo'
+	AND		COLUMN_NAME = 'HourOrYearly'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [HourOrYearly] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ADD [HourOrYearly] [Bit] NULL CONSTRAINT [DF_PatientEmpInfo_PerHourOrYearly] DEFAULT 0
+END
+GO
 
-/*
---CREATE TABLE [dbo].[PatientEmpInfo]
---(
---	[Id] [INT] NOT NULL IDENTITY, 
---	[PatientId] [INT] NOT NULL, 
---	[JobTitle] [NVARCHAR](50) NULL, 
---	[EmpName] [NVARCHAR](50) NULL, 
---	[AddressInfoId] [INT] NOT NULL, 
---	[ContactInfoId] [INT] NOT NULL, 
---	[IsCurrentEmp] [BIT] NOT NULL DEFAULT 0, 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientEmpInfo'
+	AND		COLUMN_NAME = 'LossOfEarnings'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [LossOfEarnings] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ADD [LossOfEarnings] [BIT] NULL CONSTRAINT [DF_PatientEmpInfo_LossOfEarnings] DEFAULT 0
+END
+GO
 
---	[IsDeleted] [BIT] NULL DEFAULT (0),
---	[CreateByUserID] [INT] NOT NULL,
---	[CreateDate] [DATETIME2](7) NOT NULL,
---	[UpdateByUserID] [INT] NULL,
---	[UpdateDate] [DATETIME2](7) NULL, 
---    CONSTRAINT [PK_PatientEmpInfo] PRIMARY KEY ([Id])
---)
---GO
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientEmpInfo'
+	AND		COLUMN_NAME = 'DatesOutOfWork'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [DatesOutOfWork] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ADD [DatesOutOfWork] [NVARCHAR](128) NULL
+END
+GO
 
---ALTER TABLE [dbo].[PatientEmpInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientEmpInfo_Patient2_PatientId] FOREIGN KEY([PatientId])
---	REFERENCES [dbo].[Patient2] ([Id])
---GO
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientEmpInfo'
+	AND		COLUMN_NAME = 'HoursPerWeek'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [HoursPerWeek] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ADD [HoursPerWeek] [NUMERIC](3,2) NULL
+END
+GO
 
---ALTER TABLE [dbo].[PatientEmpInfo] CHECK CONSTRAINT [FK_PatientEmpInfo_Patient2_PatientId]
---GO
-
---ALTER TABLE [dbo].[PatientEmpInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientEmpInfo_AddressInfo_EmpAddressId] FOREIGN KEY([AddressInfoId])
---	REFERENCES [dbo].[AddressInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientEmpInfo] CHECK CONSTRAINT [FK_PatientEmpInfo_AddressInfo_EmpAddressId]
---GO
-
---ALTER TABLE [dbo].[PatientEmpInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientEmpInfo_ContactInfo_EmpContactInfoId] FOREIGN KEY([ContactInfoId])
---	REFERENCES [dbo].[ContactInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientEmpInfo] CHECK CONSTRAINT [FK_PatientEmpInfo_ContactInfo_EmpContactInfoId]
---GO
-*/
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientEmpInfo'
+	AND		COLUMN_NAME = 'AccidentAtEmployment'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [AccidentAtEmployment] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ADD [AccidentAtEmployment] [BIT] NULL CONSTRAINT [DF_PatientEmpInfo_AccidentAtEmployment] DEFAULT 0
+END
+GO

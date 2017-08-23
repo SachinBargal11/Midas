@@ -36,7 +36,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             PatientEmpInfoBO.EmpName = PatientEmpInfo.EmpName;
             PatientEmpInfoBO.AddressInfoId = PatientEmpInfo.AddressInfoId;
             PatientEmpInfoBO.ContactInfoId = PatientEmpInfo.ContactInfoId;
-            //PatientEmpInfoBO.IsCurrentEmp = PatientEmpInfo.IsCurrentEmp;
+            PatientEmpInfoBO.Salary = PatientEmpInfo.Salary;
+            PatientEmpInfoBO.HourOrYearly = PatientEmpInfo.HourOrYearly;
+            PatientEmpInfoBO.LossOfEarnings = PatientEmpInfo.LossOfEarnings;
+            PatientEmpInfoBO.DatesOutOfWork = PatientEmpInfo.DatesOutOfWork;
+            PatientEmpInfoBO.HoursPerWeek = PatientEmpInfo.HoursPerWeek;
+            PatientEmpInfoBO.AccidentAtEmployment = PatientEmpInfo.AccidentAtEmployment;
 
             if (PatientEmpInfo.AddressInfo != null)
             {
@@ -50,9 +55,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boAddress.State = PatientEmpInfo.AddressInfo.State;
                     boAddress.ZipCode = PatientEmpInfo.AddressInfo.ZipCode;
                     boAddress.Country = PatientEmpInfo.AddressInfo.Country;
-                    //[STATECODE-CHANGE]
-                    //boAddress.StateCode = PatientEmpInfo.AddressInfo.StateCode;
-                    //[STATECODE-CHANGE]
                     boAddress.CreateByUserID = PatientEmpInfo.AddressInfo.CreateByUserID;
                     boAddress.ID = PatientEmpInfo.AddressInfo.id;
                     PatientEmpInfoBO.AddressInfo = boAddress;
@@ -110,26 +112,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             return (object)acc_;
         }
-        #endregion
-
-        #region Get By Patient Id
-        //public override object GetByPatientId(int PatientId)
-        //{
-        //    var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientEmpInfo>();
-            
-        //    if (acc == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
-
-        //    List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
-        //    foreach (PatientEmpInfo item in acc)
-        //    {
-        //        lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
-        //    }
-
-        //    return lstpatientsEmpInfo;
-        //}
         #endregion
 
         #region save
@@ -244,12 +226,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #region patient Emp Info
                 if (patientEmpInfoBO != null)
                 {
-                    //if (patientEmpInfoBO.IsCurrentEmp.HasValue == true && patientEmpInfoBO.IsCurrentEmp == true)
-                    //{
-                    //    var existingPatientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.PatientId == patientEmpInfoBO.CaseId).ToList();
-                    //    existingPatientEmpInfoDB.ForEach(p => p.IsCurrentEmp = false);
-                    //}
-
                     bool Add_patientEmpInfoDB = false;
                     patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoBO.ID).FirstOrDefault();
 
@@ -269,7 +245,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     patientEmpInfoDB.EmpName = IsEditMode == true && patientEmpInfoBO.EmpName == null ? patientEmpInfoDB.EmpName : patientEmpInfoBO.EmpName;
                     patientEmpInfoDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : patientEmpInfoDB.AddressInfoId;
                     patientEmpInfoDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : patientEmpInfoDB.ContactInfoId;
-                    //patientEmpInfoDB.IsCurrentEmp = (patientEmpInfoBO.IsCurrentEmp.HasValue == false) ? patientEmpInfoDB.IsCurrentEmp : patientEmpInfoBO.IsCurrentEmp.Value;
+                    patientEmpInfoDB.Salary = IsEditMode == true && patientEmpInfoBO.Salary == null ? patientEmpInfoDB.Salary : patientEmpInfoBO.Salary;
+                    patientEmpInfoDB.HourOrYearly = IsEditMode == true && patientEmpInfoBO.HourOrYearly == null ? patientEmpInfoDB.HourOrYearly : patientEmpInfoBO.HourOrYearly;
+                    patientEmpInfoDB.LossOfEarnings = IsEditMode == true && patientEmpInfoBO.LossOfEarnings == null ? patientEmpInfoDB.LossOfEarnings : patientEmpInfoBO.LossOfEarnings;
+                    patientEmpInfoDB.DatesOutOfWork = IsEditMode == true && patientEmpInfoBO.DatesOutOfWork == null ? patientEmpInfoDB.DatesOutOfWork : patientEmpInfoBO.DatesOutOfWork;
+                    patientEmpInfoDB.HoursPerWeek = IsEditMode == true && patientEmpInfoBO.HoursPerWeek == null ? patientEmpInfoDB.HoursPerWeek : patientEmpInfoBO.HoursPerWeek;
+                    patientEmpInfoDB.AccidentAtEmployment = IsEditMode == true && patientEmpInfoBO.AccidentAtEmployment == null ? patientEmpInfoDB.AccidentAtEmployment : patientEmpInfoBO.AccidentAtEmployment;
 
                     if (Add_patientEmpInfoDB == true)
                     {
