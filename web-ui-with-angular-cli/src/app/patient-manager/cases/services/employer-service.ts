@@ -8,7 +8,8 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Employer } from '../models/employer';
 import { EmployerAdapter } from './adapters/employer-adapter';
-
+import { School } from '../models/school';
+import { SchoolAdapter } from './adapters/school-adapter';
 @Injectable()
 export class EmployerService {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
@@ -133,5 +134,42 @@ export class EmployerService {
                 });
         });
         return <Observable<Employer>>Observable.from(promise);
+    }
+
+
+    addSchool(school: School): Observable<School> {
+        let promise: Promise<School> = new Promise((resolve, reject) => {
+            let requestData: any = school.toJS();
+            return this._http.post(this._url + '/SchoolInformation/save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedschool: School = null;
+                    parsedschool = SchoolAdapter.parseResponse(data);
+                    resolve(parsedschool);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<School>>Observable.fromPromise(promise);
+    }
+
+    getSchoolInformation(caseId: Number): Observable<School> {
+        let promise: Promise<School> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/SchoolInformation/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data) => {
+                    let school = null;
+                    school = SchoolAdapter.parseResponse(data);
+                    resolve(school);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<School>>Observable.fromPromise(promise);
     }
 }
