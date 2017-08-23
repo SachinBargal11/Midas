@@ -45,6 +45,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Validate Entities
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
+        {
+            BO.SchoolInformation SchoolInformationBO = (BO.SchoolInformation)(object)entity;
+            var result = SchoolInformationBO.Validate(SchoolInformationBO);
+            return result;
+        }
+        #endregion
+
         #region save
         public override object Save<T>(T entity)
         {
