@@ -308,4 +308,67 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="OutOfSchoolStart" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="cd1610f4-d46b-4e37-a5d8-641b1b542e3b" ChangeDateTime="08/23/2017 14:51:26">
+    <Property Name="ElementName" Value="[dbo].[AccidentTreatment].[WitnessName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AccidentTreatment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MedicalFacilityName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c266cb43-c3c9-458b-a2e8-e4b8297c01ed" ChangeDateTime="08/23/2017 14:51:47">
+    <Property Name="ElementName" Value="[dbo].[AccidentTreatment].[WitnessContactNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AccidentTreatment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DoctorName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a8d8539e-83a4-4d78-bca3-e614ad5c5b92" ChangeDateTime="08/24/2017 10:41:12">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[Year]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MakeYear" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d761bee3-2816-4dc6-b247-39ab09761d9b" ChangeDateTime="08/24/2017 11:12:28">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[RelativeVehicle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RelativeVehicleMakeModel" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4a424506-a981-4815-bc58-d5563e840f83" ChangeDateTime="08/24/2017 11:14:40">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[RelativeVehicleMakeModel]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RelativeVehicleMakeYear" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="10512522-9fc1-4bfb-ab2b-4e585963f2e0" ChangeDateTime="08/24/2017 11:15:04">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[MakeYear]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RelativeVehicleOwner" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1656d061-0a24-4e07-ac3a-2742b2f4e8b0" ChangeDateTime="08/24/2017 11:15:25">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[RelativeVehicle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RelativeVehicleInsuranceCompanyName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="33eefe04-8545-4b3b-8501-cefaaa9031d2" ChangeDateTime="08/24/2017 11:16:23">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[RelativeVehicle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RelativeVehiclePolicyNumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4e636dd7-90ee-4c5e-983c-4135d7efd8ef" ChangeDateTime="08/24/2017 11:22:51">
+    <Property Name="ElementName" Value="[dbo].[PlaintiffVehicle].[VehicleLocation]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PlaintiffVehicle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RelativeVehicleLocation" />
+  </Operation>
 </Operations>

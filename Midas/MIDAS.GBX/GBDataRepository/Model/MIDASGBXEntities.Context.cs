@@ -27,6 +27,8 @@ namespace MIDAS.GBX.DataRepository.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AccidentTreatment> AccidentTreatments { get; set; }
+        public virtual DbSet<AccidentWitness> AccidentWitnesses { get; set; }
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }

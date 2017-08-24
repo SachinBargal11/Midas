@@ -5,6 +5,36 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccidentTreatment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientAccidentInfoId" Type="int" Nullable="false" />
+          <Property Name="MedicalFacilityName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DoctorName" Type="nvarchar" MaxLength="128" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="256" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="AccidentWitness">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientAccidentInfoId" Type="int" Nullable="false" />
+          <Property Name="WitnessName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="WitnessContactNumber" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -791,22 +821,35 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CaseId" Type="int" Nullable="false" />
-          <Property Name="AccidentDate" Type="datetime2" Precision="7" />
-          <Property Name="PlateNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="ReportNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccidentDate" Type="datetime" Nullable="false" />
+          <Property Name="PlateNumber" Type="nvarchar" MaxLength="64" />
+          <Property Name="ReportNumber" Type="nvarchar" MaxLength="128" />
           <Property Name="AccidentAddressInfoId" Type="int" Nullable="false" />
           <Property Name="HospitalName" Type="nvarchar" MaxLength="128" />
           <Property Name="HospitalAddressInfoId" Type="int" Nullable="false" />
-          <Property Name="DateOfAdmission" Type="datetime2" Precision="7" />
-          <Property Name="AdditionalPatients" Type="nvarchar" MaxLength="128" />
-          <Property Name="DescribeInjury" Type="nvarchar" MaxLength="128" />
+          <Property Name="DateOfAdmission" Type="datetime" />
+          <Property Name="AdditionalPatients" Type="nvarchar" MaxLength="512" />
+          <Property Name="DescribeInjury" Type="nvarchar" MaxLength="1024" />
           <Property Name="PatientTypeId" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="MedicalReportNumber" Type="nvarchar" MaxLength="150" />
+          <Property Name="MedicalReportNumber" Type="nvarchar" MaxLength="128" />
+          <Property Name="Weather" Type="nvarchar" MaxLength="128" />
+          <Property Name="PoliceAtScene" Type="bit" />
+          <Property Name="Precinct" Type="nvarchar" MaxLength="64" />
+          <Property Name="WearingSeatBelts" Type="bit" />
+          <Property Name="AirBagsDeploy" Type="bit" />
+          <Property Name="PhotosTaken" Type="bit" />
+          <Property Name="AccidentDescription" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Witness" Type="bit" />
+          <Property Name="Ambulance" Type="bit" />
+          <Property Name="TreatedAndReleased" Type="bit" />
+          <Property Name="Admitted" Type="bit" />
+          <Property Name="XRaysTaken" Type="bit" />
+          <Property Name="DurationAtHospital" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="PatientDocuments">
           <Key>
@@ -1584,6 +1627,30 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
             </Principal>
             <Dependent Role="DiagnosisCodeCompany">
               <PropertyRef Name="DiagnosisCodeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId">
+          <End Role="PatientAccidentInfo" Type="Self.PatientAccidentInfo" Multiplicity="1" />
+          <End Role="AccidentTreatment" Type="Self.AccidentTreatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientAccidentInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccidentTreatment">
+              <PropertyRef Name="PatientAccidentInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId">
+          <End Role="PatientAccidentInfo" Type="Self.PatientAccidentInfo" Multiplicity="1" />
+          <End Role="AccidentWitness" Type="Self.AccidentWitness" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientAccidentInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccidentWitness">
+              <PropertyRef Name="PatientAccidentInfoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3740,6 +3807,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Parameter Name="CompanyId" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="MIDASGBXModelStoreContainer">
+          <EntitySet Name="AccidentTreatment" EntityType="Self.AccidentTreatment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccidentWitness" EntityType="Self.AccidentWitness" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attorney" EntityType="Self.Attorney" Schema="dbo" store:Type="Tables" />
@@ -3865,6 +3934,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK__Diagnosis__Diagn__5634BA94" Association="Self.FK__Diagnosis__Diagn__5634BA94">
             <End Role="DiagnosisCode" EntitySet="DiagnosisCode" />
             <End Role="DiagnosisCodeCompany" EntitySet="DiagnosisCodeCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId" Association="Self.FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId">
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfo" />
+            <End Role="AccidentTreatment" EntitySet="AccidentTreatment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId" Association="Self.FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId">
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfo" />
+            <End Role="AccidentWitness" EntitySet="AccidentWitness" />
           </AssociationSet>
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
@@ -4584,6 +4661,38 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccidentTreatment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientAccidentInfoId" Type="Int32" Nullable="false" />
+          <Property Name="MedicalFacilityName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DoctorName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PatientAccidentInfo" Relationship="Self.FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId" FromRole="AccidentTreatment" ToRole="PatientAccidentInfo" />
+        </EntityType>
+        <EntityType Name="AccidentWitness">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientAccidentInfoId" Type="Int32" Nullable="false" />
+          <Property Name="WitnessName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WitnessContactNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PatientAccidentInfo" Relationship="Self.FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId" FromRole="AccidentWitness" ToRole="PatientAccidentInfo" />
+        </EntityType>
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -5564,22 +5673,37 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CaseId" Type="Int32" Nullable="false" />
-          <Property Name="AccidentDate" Type="DateTime" Precision="7" />
-          <Property Name="PlateNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReportNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccidentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PlateNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ReportNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="AccidentAddressInfoId" Type="Int32" Nullable="false" />
           <Property Name="HospitalName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="HospitalAddressInfoId" Type="Int32" Nullable="false" />
-          <Property Name="DateOfAdmission" Type="DateTime" Precision="7" />
-          <Property Name="AdditionalPatients" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DescribeInjury" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfAdmission" Type="DateTime" Precision="3" />
+          <Property Name="AdditionalPatients" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="DescribeInjury" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Name="PatientTypeId" Type="Byte" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="MedicalReportNumber" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalReportNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Weather" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PoliceAtScene" Type="Boolean" />
+          <Property Name="Precinct" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="WearingSeatBelts" Type="Boolean" />
+          <Property Name="AirBagsDeploy" Type="Boolean" />
+          <Property Name="PhotosTaken" Type="Boolean" />
+          <Property Name="AccidentDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Witness" Type="Boolean" />
+          <Property Name="Ambulance" Type="Boolean" />
+          <Property Name="TreatedAndReleased" Type="Boolean" />
+          <Property Name="Admitted" Type="Boolean" />
+          <Property Name="XRaysTaken" Type="Boolean" />
+          <Property Name="DurationAtHospital" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AccidentTreatments" Relationship="Self.FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId" FromRole="PatientAccidentInfo" ToRole="AccidentTreatment" />
+          <NavigationProperty Name="AccidentWitnesses" Relationship="Self.FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId" FromRole="PatientAccidentInfo" ToRole="AccidentWitness" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" FromRole="PatientAccidentInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="AddressInfo1" Relationship="Self.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" FromRole="PatientAccidentInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientAccidentInfo_Case_CaseId" FromRole="PatientAccidentInfo" ToRole="Case" />
@@ -6480,6 +6604,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NodeAbbr" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
+        <Association Name="FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId">
+          <End Role="PatientAccidentInfo" Type="Self.PatientAccidentInfo" Multiplicity="1" />
+          <End Role="AccidentTreatment" Type="Self.AccidentTreatment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientAccidentInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccidentTreatment">
+              <PropertyRef Name="PatientAccidentInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId">
+          <End Role="PatientAccidentInfo" Type="Self.PatientAccidentInfo" Multiplicity="1" />
+          <End Role="AccidentWitness" Type="Self.AccidentWitness" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientAccidentInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AccidentWitness">
+              <PropertyRef Name="PatientAccidentInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
           <End Role="AdjusterMaster" Type="Self.AdjusterMaster" Multiplicity="*" />
@@ -8665,6 +8813,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="MIDASGBXEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccidentTreatments" EntityType="Self.AccidentTreatment" />
+          <EntitySet Name="AccidentWitnesses" EntityType="Self.AccidentWitness" />
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="AdjusterMasters" EntityType="Self.AdjusterMaster" />
           <EntitySet Name="Attorneys" EntityType="Self.Attorney" />
@@ -8768,6 +8918,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="VisitStatus" EntityType="Self.VisitStatu" />
           <EntitySet Name="VisitTypes" EntityType="Self.VisitType" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
+          <AssociationSet Name="FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId" Association="Self.FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId">
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
+            <End Role="AccidentTreatment" EntitySet="AccidentTreatments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId" Association="Self.FK_AccidentWitness_PatientAccidentInfo_PatientAccidentInfoId">
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
+            <End Role="AccidentWitness" EntitySet="AccidentWitnesses" />
+          </AssociationSet>
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
@@ -9529,6 +9687,38 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MIDASGBXModelStoreContainer" CdmEntityContainer="MIDASGBXEntities">
+          <EntitySetMapping Name="AccidentTreatments">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AccidentTreatment">
+              <MappingFragment StoreEntitySet="AccidentTreatment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientAccidentInfoId" ColumnName="PatientAccidentInfoId" />
+                <ScalarProperty Name="MedicalFacilityName" ColumnName="MedicalFacilityName" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccidentWitnesses">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AccidentWitness">
+              <MappingFragment StoreEntitySet="AccidentWitness">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientAccidentInfoId" ColumnName="PatientAccidentInfoId" />
+                <ScalarProperty Name="WitnessName" ColumnName="WitnessName" />
+                <ScalarProperty Name="WitnessContactNumber" ColumnName="WitnessContactNumber" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AddressInfoes">
             <EntityTypeMapping TypeName="MIDASGBXModel.AddressInfo">
               <MappingFragment StoreEntitySet="AddressInfo">
@@ -10371,6 +10561,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="MedicalReportNumber" ColumnName="MedicalReportNumber" />
+                <ScalarProperty Name="Weather" ColumnName="Weather" />
+                <ScalarProperty Name="PoliceAtScene" ColumnName="PoliceAtScene" />
+                <ScalarProperty Name="Precinct" ColumnName="Precinct" />
+                <ScalarProperty Name="WearingSeatBelts" ColumnName="WearingSeatBelts" />
+                <ScalarProperty Name="AirBagsDeploy" ColumnName="AirBagsDeploy" />
+                <ScalarProperty Name="PhotosTaken" ColumnName="PhotosTaken" />
+                <ScalarProperty Name="AccidentDescription" ColumnName="AccidentDescription" />
+                <ScalarProperty Name="Witness" ColumnName="Witness" />
+                <ScalarProperty Name="Ambulance" ColumnName="Ambulance" />
+                <ScalarProperty Name="TreatedAndReleased" ColumnName="TreatedAndReleased" />
+                <ScalarProperty Name="Admitted" ColumnName="Admitted" />
+                <ScalarProperty Name="XRaysTaken" ColumnName="XRaysTaken" />
+                <ScalarProperty Name="DurationAtHospital" ColumnName="DurationAtHospital" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
