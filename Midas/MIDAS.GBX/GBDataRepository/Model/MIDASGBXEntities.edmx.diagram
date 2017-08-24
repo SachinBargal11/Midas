@@ -294,6 +294,10 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DefendantVehicle" Width="1.5" PointX="27.75" PointY="123.875" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PlaintiffVehicle" Width="1.5" PointX="27.75" PointY="85.125" />
+        <AssociationConnector Association="MIDASGBXModel.FK_DefendantVehicle_Case_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PlaintiffVehicle_Case_CaseId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

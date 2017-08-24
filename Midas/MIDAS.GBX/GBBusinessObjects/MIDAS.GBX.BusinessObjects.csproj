@@ -126,6 +126,7 @@
     <Compile Include="PatientVisitUnscheduled\PatientVisitUnscheduled.cs" />
     <Compile Include="Patient\PatientLanguagePreferenceMapping.cs" />
     <Compile Include="Patient\PatientSocialMediaMapping.cs" />
+    <Compile Include="PlaintiffVehicle\PlaintiffVehicle.cs" />
     <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
     <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
     <Compile Include="BoolConverter.cs" />

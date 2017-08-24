@@ -333,6 +333,10 @@ namespace MIDAS.GBX
             {
                 repo = new SchoolInformationRepository(context);
             }
+            else if (typeof(T) == typeof(BO.PlaintiffVehicle))
+            {
+                repo = new PlaintiffVehicleRepository(context);
+            }
 
             return repo;
         }

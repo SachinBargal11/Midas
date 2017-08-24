@@ -187,6 +187,7 @@
     <Compile Include="EntityRepository\ICDTypeCode\ICDTypeCodeRepository.cs" />
     <Compile Include="EntityRepository\IMEVisit\IMEvisitRepository.cs" />
     <Compile Include="EntityRepository\PatientVisitUnscheduled\PatientVisitUnscheduledRepository.cs" />
+    <Compile Include="EntityRepository\PlaintiffVehicle\PlaintiffVehicleRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
@@ -329,6 +330,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ContactInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DefendantVehicle.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DiagnosisCode.cs">
@@ -479,6 +483,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PendingReferralProcedureCode.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PlaintiffVehicle.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">

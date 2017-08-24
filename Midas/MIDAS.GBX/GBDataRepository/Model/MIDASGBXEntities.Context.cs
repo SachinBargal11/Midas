@@ -132,6 +132,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
+        public virtual DbSet<DefendantVehicle> DefendantVehicles { get; set; }
+        public virtual DbSet<PlaintiffVehicle> PlaintiffVehicles { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

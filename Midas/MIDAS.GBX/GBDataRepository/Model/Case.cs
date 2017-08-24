@@ -34,6 +34,8 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Referrals = new HashSet<Referral>();
             this.RefferingOffices = new HashSet<RefferingOffice>();
             this.SchoolInformations = new HashSet<SchoolInformation>();
+            this.DefendantVehicles = new HashSet<DefendantVehicle>();
+            this.PlaintiffVehicles = new HashSet<PlaintiffVehicle>();
         }
     
         public int Id { get; set; }
@@ -90,5 +92,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SchoolInformation> SchoolInformations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DefendantVehicle> DefendantVehicles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlaintiffVehicle> PlaintiffVehicles { get; set; }
     }
 }
