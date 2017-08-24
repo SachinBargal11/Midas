@@ -222,6 +222,7 @@
     <Build Include="Tables\Latest Tables\AccidentWitness.sql" />
     <Build Include="Tables\Latest Tables\AccidentTreatment.sql" />
     <Build Include="Tables\Latest Tables\PlaintiffVehicle.sql" />
+    <Build Include="Tables\Latest Tables\DefendantVehicle.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
