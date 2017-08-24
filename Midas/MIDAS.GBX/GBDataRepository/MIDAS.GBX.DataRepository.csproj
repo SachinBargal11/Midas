@@ -256,6 +256,12 @@
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="EntitySearch\FilterDefination.cs" />
+    <Compile Include="Model\AccidentTreatment.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AccidentWitness.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\AddressInfo.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

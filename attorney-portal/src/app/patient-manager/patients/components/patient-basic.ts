@@ -48,7 +48,8 @@ export class PatientBasicComponent implements OnInit {
     imageLink: SafeResourceUrl;
     url;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-
+    uploadedFiles: any[] = [];
+    imagePhotoIDLink: SafeResourceUrl;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -88,6 +89,9 @@ export class PatientBasicComponent implements OnInit {
                         if (currentPatientDocument.document.documentType == 'profile') {
                             this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
                         }
+                        if (currentPatientDocument.document.documentType == 'dl') {
+                            this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
+                        }
                     })
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth
                         ? this.patientInfo.user.dateOfBirth.toDate()
@@ -98,12 +102,12 @@ export class PatientBasicComponent implements OnInit {
 
                     this.martialStatus = this.patientInfo.maritalStatusId;
                     this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
-                    if(this.patientInfo.patientSocialMediaMappings.length > 0){
-                     this.selectedSocialMedia = _.map(this.patientInfo.patientSocialMediaMappings, (currentSocialMedia:any) =>{
-                        return currentSocialMedia.socialMediaId.toString();
-                    })
+                    if (this.patientInfo.patientSocialMediaMappings.length > 0) {
+                        this.selectedSocialMedia = _.map(this.patientInfo.patientSocialMediaMappings, (currentSocialMedia: any) => {
+                            return currentSocialMedia.socialMediaId.toString();
+                        })
                     }
-                   
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -224,5 +228,17 @@ export class PatientBasicComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
+    onBeforeSendEventPhotoID(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        // event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+    onFilesUploadCompletePhotoID(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadErrorPhotoID(event) {
+        let even = event;
+    }
 }
