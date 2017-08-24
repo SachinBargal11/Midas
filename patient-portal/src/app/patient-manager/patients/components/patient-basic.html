@@ -18,6 +18,17 @@
                 <p-fileUpload #fubauto  mode="basic" url={{url}} name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" (onBeforeSend)="onBeforeSendEvent($event)"
                     (onError)="onFilesUploadError($event)" (onUpload)="onFilesUploadComplete($event)" chooseLabel="Update"></p-fileUpload>
             </div>
+                 <br>
+            <div class="row">
+                <label class="form-label">Photo ID(Copy of license)</label>
+                <button type="button" class="avatar-preview avatar-preview-128">				
+                <object [attr.data]="imagePhotoIDLink" type="image/jpg" width="100%" height="100%"></object>			
+			</button>
+            </div><br>
+            <div class="row">
+                <p-fileUpload mode="basic" url={{url}} name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" (onBeforeSend)="onBeforeSendEventPhotoID($event)"
+                    (onError)="onFilesUploadErrorPhotoID($event)" (onUpload)="onFilesUploadCompletePhotoID($event)" chooseLabel="Update"></p-fileUpload>
+            </div>
         </div>
         <div class="col-lg-10">
             <div class="row">

@@ -46,7 +46,7 @@ export class PatientBasicComponent implements OnInit {
     url;
     uploadedFiles: any[] = [];
     imageLink: SafeResourceUrl;
-
+    imagePhotoIDLink: SafeResourceUrl;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -72,6 +72,9 @@ export class PatientBasicComponent implements OnInit {
                     if (currentPatientDocument.document.documentType == 'profile') {
                         this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
                     }
+                    if (currentPatientDocument.document.documentType == 'dl') {
+                        this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
+                    }
                 })
                 this.dateOfBirth = this.patientInfo.user.dateOfBirth
                     ? this.patientInfo.user.dateOfBirth.toDate()
@@ -81,15 +84,15 @@ export class PatientBasicComponent implements OnInit {
                 }
 
                 this.martialStatus = this.patientInfo.maritalStatusId;
-                 if(this.patientInfo.patientLanguagePreferenceMappings.length > 0){
-                this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
-                 }
-                if(this.patientInfo.patientSocialMediaMappings.length > 0){
-                  this.selectedSocialMedia = _.map(this.patientInfo.patientSocialMediaMappings, (currentSocialMedia:any) =>{
-                    return currentSocialMedia.socialMediaId.toString();
-                })
+                if (this.patientInfo.patientLanguagePreferenceMappings.length > 0) {
+                    this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
                 }
-                   
+                if (this.patientInfo.patientSocialMediaMappings.length > 0) {
+                    this.selectedSocialMedia = _.map(this.patientInfo.patientSocialMediaMappings, (currentSocialMedia: any) => {
+                        return currentSocialMedia.socialMediaId.toString();
+                    })
+                }
+
             },
             (error) => {
                 // this._router.navigate(['/patient-manager/profile/viewall']);
@@ -107,7 +110,7 @@ export class PatientBasicComponent implements OnInit {
             lastname: ['', Validators.required],
             gender: ['', Validators.required],
             maritalStatusId: ['', Validators.required],
-            parentName: ['', Validators.required],
+            parentName: [''],
             languagePreference: [''],
             otherLanguage: [''],
             spouseName: [''],
@@ -211,4 +214,17 @@ export class PatientBasicComponent implements OnInit {
             });
     }
 
+    onBeforeSendEventPhotoID(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        //event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+    onFilesUploadCompletePhotoID(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadErrorPhotoID(event) {
+        let even = event;
+    }
 }
