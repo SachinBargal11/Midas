@@ -29,9 +29,9 @@ import { ConsentService } from '../../cases/services/consent-service';
 })
 
 export class PatientBasicComponent implements OnInit {
-    isEighteenOrAbove:boolean = true;
+    isEighteenOrAbove: boolean = true;
     languagePreference: string;
-    martialStatus:number;
+    martialStatus: number;
     caseDetail: Case[];
     referredToMe: boolean = false;
     patientId: number;
@@ -53,7 +53,7 @@ export class PatientBasicComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     url;
     uploadedFiles: any[] = [];
-
+    imagePhotoIDLink: SafeResourceUrl;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -96,17 +96,21 @@ export class PatientBasicComponent implements OnInit {
                         if (currentPatientDocument.document.documentType == 'profile') {
                             this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
                         }
+                        if (currentPatientDocument.document.documentType == 'dl') {
+                            this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
+                        }
+
                     })
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth
                         ? this.patientInfo.user.dateOfBirth.toDate()
                         : null;
-                        if( this.dateOfBirth){
-                          this.calculateAge();  
-                        }
+                    if (this.dateOfBirth) {
+                        this.calculateAge();
+                    }
 
                     this.martialStatus = this.patientInfo.maritalStatusId;
                     this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
-                         
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -123,7 +127,7 @@ export class PatientBasicComponent implements OnInit {
             lastname: ['', Validators.required],
             gender: ['', Validators.required],
             maritalStatusId: ['', Validators.required],
-            parentName: ['', Validators.required],
+            parentName: [''],
             languagePreference: [''],
             otherLanguage: [''],
             spouseName: [''],
@@ -136,15 +140,15 @@ export class PatientBasicComponent implements OnInit {
         this.url = `${this._url}/documentmanager/uploadtoblob`;
     }
 
-    calculateAge(){
-       let now = moment();
-       let age =  now.diff(this.dateOfBirth, 'years'); 
-       if(age < 18){
-       this.isEighteenOrAbove = false;
-       }else{
-       this.isEighteenOrAbove = true;
-       }
-       
+    calculateAge() {
+        let now = moment();
+        let age = now.diff(this.dateOfBirth, 'years');
+        if (age < 18) {
+            this.isEighteenOrAbove = false;
+        } else {
+            this.isEighteenOrAbove = true;
+        }
+
     }
 
     onBeforeSendEvent(event) {
@@ -193,11 +197,11 @@ export class PatientBasicComponent implements OnInit {
     // }
 
     savePatient() {
-       let patientSocialMediaMappings:any[] = [];
-       let patientLanguagePreferenceMappings:any[] = [];
-       patientLanguagePreferenceMappings.push({
-         languagePreferenceId:(this.languagePreference)  
-       })
+        let patientSocialMediaMappings: any[] = [];
+        let patientLanguagePreferenceMappings: any[] = [];
+        patientLanguagePreferenceMappings.push({
+            languagePreferenceId: (this.languagePreference)
+        })
 
         this.isSavePatientProgress = true;
         let basicFormValues = this.basicform.value;
@@ -207,11 +211,11 @@ export class PatientBasicComponent implements OnInit {
             maritalStatusId: basicFormValues.maritalStatusId,
             updateByUserId: this._sessionStore.session.account.user.id,
             patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
-            languagePreferenceOther:parseInt(this.languagePreference) == 3 ? basicFormValues.otherLanguage : null,
-            patientSocialMediaMappings:patientSocialMediaMappings,
+            languagePreferenceOther: parseInt(this.languagePreference) == 3 ? basicFormValues.otherLanguage : null,
+            patientSocialMediaMappings: patientSocialMediaMappings,
             parentOrGuardianName: !this.isEighteenOrAbove ? basicFormValues.parentName : null,
-            legallyMarried:null,
-            spouseName:parseInt(basicFormValues.maritalStatusId) == 2 ? basicFormValues.spouseName : null,
+            legallyMarried: null,
+            spouseName: parseInt(basicFormValues.maritalStatusId) == 2 ? basicFormValues.spouseName : null,
             user: new User(_.extend(existingPatientJS.user, {
                 dateOfBirth: basicFormValues.dob ? moment(basicFormValues.dob) : null,
                 firstName: basicFormValues.firstname,
@@ -250,6 +254,20 @@ export class PatientBasicComponent implements OnInit {
                 this.isSavePatientProgress = false;
                 this._progressBarService.hide();
             });
+    }
+
+    onBeforeSendEventPhotoID(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+    onFilesUploadCompletePhotoID(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadErrorPhotoID(event) {
+        let even = event;
     }
 
 }

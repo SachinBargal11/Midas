@@ -155,14 +155,14 @@
                                         </label>
                     <div class="form-group" [class.error]="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
                         <div class='input-group date'>
-                            <p-calendar formControlName="dob" [(ngModel)]="dob" (onSelect)="calculateAge()" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
-                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            <p-calendar formControlName="dob" [(ngModel)]="dob" (onSelect)="calculateAge()" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                                [showIcon]="true" icon="font-icon font-icon-calend">
                             </p-calendar>
                             <div class='error-list' *ngIf="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
-                            <ul>
-                                <li *ngIf="patientformControls.userInfo.controls.dob.hasError('required')">Date Of Birth is required.</li>
-                            </ul>
-                        </div>
+                                <ul>
+                                    <li *ngIf="patientformControls.userInfo.controls.dob.hasError('required')">Date Of Birth is required.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -190,23 +190,23 @@
                 </div>-->
             </div><br>
             <div class="row">
-             <div class="col-lg-4">
+                <div class="col-lg-4">
                     <label class="form-label">Patient Photo
                             </label>
-                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
+                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)"  chooseLabel="Browse image to upload"></p-fileUpload>
                     <ul *ngIf="files.length">
                         <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
                     </ul>
-                </div>   
-            <div class="col-lg-4">
+                </div>
+                <div class="col-lg-4">
                     <label class="form-label"> Language Preference 
                          <!--<span class="color-red">*</span>-->
                     </label>
                     <div class="form-group">
                         <!--<p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="specialityDetailJS.isnitialEvaluation"></p-radioButton>-->
                         <p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="languagePreference"></p-radioButton>
-                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="2" label="Spanish"  [(ngModel)]="languagePreference"></p-radioButton>
-                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="3" label="Other"  [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="2" label="Spanish" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="3" label="Other" [(ngModel)]="languagePreference"></p-radioButton>
                     </div>
                 </div>
                 <div *ngIf="languagePreference == '3'" class="col-lg-4">
@@ -216,9 +216,20 @@
                     <div class="form-group">
                         <input formControlName="otherLanguage" type="text" class="form-control" placeholder="">
                     </div>
-                </div>   
+                </div>
             </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Photo ID(Obtain copy of licence)
+                            </label>
+                    <p-fileUpload mode="basic" name="licence[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="licenceUploader($event)"
+                        chooseLabel="Browse image to upload"></p-fileUpload>
+                    <ul *ngIf="fileLicence.length">
+                        <li *ngFor="let file of fileLicence">{{file.name}} - {{file.size}} bytes</li>
+                    </ul>
+                </div>
             </div>
+        </div>
     </section>
 
     <section class="card">
@@ -353,8 +364,7 @@
                                         </label>
                     <!--<div class="form-group" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">-->
                     <div class="form-group">
-                        <p-inputMask mask="999-999-9999" formControlName="emergencyContactCellPhone" 
-                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <p-inputMask mask="999-999-9999" formControlName="emergencyContactCellPhone" placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
                         <!--<div class='error-list' *ngIf="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
                             <ul>
                                 <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
@@ -363,7 +373,7 @@
                         </div>-->
                     </div>
                 </div>
-         </div>       
+            </div>
         </div>
     </section>
 
