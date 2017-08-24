@@ -31,7 +31,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.PlaintiffVehicle PlaintiffVehicleBO = new BO.PlaintiffVehicle();
             PlaintiffVehicleBO.ID = PlaintiffVehicleDB.Id;
             PlaintiffVehicleBO.CaseId = PlaintiffVehicleDB.CaseId;
-            PlaintiffVehicleBO.NumberPlate = PlaintiffVehicleDB.NumberPlate;
+            PlaintiffVehicleBO.VehicleNumberPlate = PlaintiffVehicleDB.VehicleNumberPlate;
             PlaintiffVehicleBO.State = PlaintiffVehicleDB.State;
             PlaintiffVehicleBO.VehicleMakeModel = PlaintiffVehicleDB.VehicleMakeModel;
             PlaintiffVehicleBO.VehicleMakeYear = PlaintiffVehicleDB.VehicleMakeYear;
@@ -105,7 +105,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PlaintiffVehicleDB.CaseId = PlaintiffVehicleBO.CaseId;
                     }
 
-                    PlaintiffVehicleDB.NumberPlate = (IsEditMode == true && PlaintiffVehicleBO.NumberPlate == null) ? PlaintiffVehicleDB.NumberPlate : PlaintiffVehicleBO.NumberPlate;
+                    PlaintiffVehicleDB.VehicleNumberPlate = (IsEditMode == true && PlaintiffVehicleBO.VehicleNumberPlate == null) ? PlaintiffVehicleDB.VehicleNumberPlate : PlaintiffVehicleBO.VehicleNumberPlate;
                     PlaintiffVehicleDB.State = (IsEditMode == true && PlaintiffVehicleBO.State == null) ? PlaintiffVehicleDB.State : PlaintiffVehicleBO.State;
                     PlaintiffVehicleDB.VehicleMakeModel = (IsEditMode == true && PlaintiffVehicleBO.VehicleMakeModel == null) ? PlaintiffVehicleDB.VehicleMakeModel : PlaintiffVehicleBO.VehicleMakeModel;
                     PlaintiffVehicleDB.VehicleMakeYear = (IsEditMode == true && PlaintiffVehicleBO.VehicleMakeYear == null) ? PlaintiffVehicleDB.VehicleMakeYear : PlaintiffVehicleBO.VehicleMakeYear;

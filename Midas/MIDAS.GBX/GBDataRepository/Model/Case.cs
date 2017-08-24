@@ -23,6 +23,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.CaseDocuments = new HashSet<CaseDocument>();
             this.CaseInsuranceMappings = new HashSet<CaseInsuranceMapping>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
+            this.DefendantVehicles = new HashSet<DefendantVehicle>();
             this.DoctorCaseConsentApprovals = new HashSet<DoctorCaseConsentApproval>();
             this.IMEVisits = new HashSet<IMEVisit>();
             this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
@@ -31,11 +32,10 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
             this.PatientVisits = new HashSet<PatientVisit>();
             this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
+            this.PlaintiffVehicles = new HashSet<PlaintiffVehicle>();
             this.Referrals = new HashSet<Referral>();
             this.RefferingOffices = new HashSet<RefferingOffice>();
             this.SchoolInformations = new HashSet<SchoolInformation>();
-            this.DefendantVehicles = new HashSet<DefendantVehicle>();
-            this.PlaintiffVehicles = new HashSet<PlaintiffVehicle>();
         }
     
         public int Id { get; set; }
@@ -71,6 +71,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DefendantVehicle> DefendantVehicles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IMEVisit> IMEVisits { get; set; }
@@ -87,14 +89,12 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlaintiffVehicle> PlaintiffVehicles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Referral> Referrals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SchoolInformation> SchoolInformations { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DefendantVehicle> DefendantVehicles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlaintiffVehicle> PlaintiffVehicles { get; set; }
     }
 }

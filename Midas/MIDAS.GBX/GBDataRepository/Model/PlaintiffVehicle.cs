@@ -16,7 +16,7 @@ namespace MIDAS.GBX.DataRepository.Model
     {
         public int Id { get; set; }
         public int CaseId { get; set; }
-        public string NumberPlate { get; set; }
+        public string VehicleNumberPlate { get; set; }
         public string State { get; set; }
         public string VehicleMakeModel { get; set; }
         public string VehicleMakeYear { get; set; }

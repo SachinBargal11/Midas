@@ -337,6 +337,10 @@ namespace MIDAS.GBX
             {
                 repo = new PlaintiffVehicleRepository(context);
             }
+            else if (typeof(T) == typeof(BO.DefendantVehicle))
+            {
+                repo = new DefendantVehicleRepository(context);
+            }
 
             return repo;
         }

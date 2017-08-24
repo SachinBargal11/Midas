@@ -12,8 +12,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseId")]
         public int CaseId { get; set; }
 
-        [JsonProperty("numberPlate")]
-        public string NumberPlate { get; set; }
+        [JsonProperty("vehicleNumberPlate")]
+        public string VehicleNumberPlate { get; set; }
 
         [JsonProperty("state")]
         public string State { get; set; }

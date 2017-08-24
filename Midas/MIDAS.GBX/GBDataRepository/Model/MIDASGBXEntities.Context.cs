@@ -52,6 +52,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
+        public virtual DbSet<DefendantVehicle> DefendantVehicles { get; set; }
         public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
         public virtual DbSet<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
@@ -96,6 +97,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
         public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
+        public virtual DbSet<PlaintiffVehicle> PlaintiffVehicles { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
         public virtual DbSet<PreferredAncillaryProvider> PreferredAncillaryProviders { get; set; }
         public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
@@ -132,8 +134,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<DefendantVehicle> DefendantVehicles { get; set; }
-        public virtual DbSet<PlaintiffVehicle> PlaintiffVehicles { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

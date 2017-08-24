@@ -112,6 +112,7 @@
     <Compile Include="Common\SocialMedia.cs" />
     <Compile Include="CompanyICDTypeCode\CompanyICDTypeCode.cs" />
     <Compile Include="Company\CompanyType.cs" />
+    <Compile Include="DefendantVehicle\DefendantVehicle.cs" />
     <Compile Include="EOVisit\EOVisit.cs" />
     <Compile Include="Doctor\DoctorRoomTestMapping.cs" />
     <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
