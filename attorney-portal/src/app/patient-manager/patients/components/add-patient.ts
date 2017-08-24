@@ -17,7 +17,7 @@ import { Address } from '../../../commons/models/address';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { StatesStore } from '../../../commons/stores/states-store';
 import * as _ from 'underscore';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'add-patient',
@@ -39,7 +39,13 @@ export class AddPatientComponent implements OnInit {
     patientformControls;
     isCitiesLoading = false;
     isSavePatientProgress = false;
-
+    uploadedFiles: any[] = [];
+    files: any[] = [];
+    method: string = 'POST';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    url;
+    uploadedFilesLicence: any[] = [];
+    fileLicence: any[] = [];
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -61,7 +67,7 @@ export class AddPatientComponent implements OnInit {
                 middlename: [''],
                 lastname: ['', Validators.required],
                 gender: ['', Validators.required],
-                parentName: ['', Validators.required],
+                parentName: [''],
                 languagePreference: [''],
                 otherLanguage: [''],
                 spouseName: [''],
@@ -93,6 +99,7 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
@@ -112,6 +119,8 @@ export class AddPatientComponent implements OnInit {
         }
 
     }
+
+
 
     savePatient() {
         let patientSocialMediaMappings: any[] = [];
@@ -179,6 +188,8 @@ export class AddPatientComponent implements OnInit {
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
+                this.uploadProfileImage(response.id);
+                this.uploadLicenceImage(response.id);
                 let notification = new Notification({
                     'title': 'Patient added successfully!',
                     'type': 'SUCCESS',
@@ -206,4 +217,48 @@ export class AddPatientComponent implements OnInit {
 
     }
 
+    onUpload(event) {
+        for (let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+        for (let file of event.fileLicence) {
+            this.uploadedFilesLicence.push(file);
+        }
+
+        //this.msgs = [];
+        //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
+    }
+    myUploader(event) {
+        this.files = event.files;
+    }
+    uploadProfileImage(patientId: number) {
+        let xhr = new XMLHttpRequest(),
+            formData = new FormData();
+
+        for (let i = 0; i < this.files.length; i++) {
+            formData.append(this.files[i].name, this.files[i], this.files[i].name);
+        }
+
+        xhr.open(this.method, this.url, true);
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        // xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.withCredentials = false;
+        xhr.send(formData);
+    }
+
+    licenceUploader(event) {
+        this.fileLicence = event.files;
+    }
+    uploadLicenceImage(patientId: number) {
+        let xhr = new XMLHttpRequest(),
+            formData = new FormData();
+        for (let i = 0; i < this.fileLicence.length; i++) {
+            formData.append(this.fileLicence[i].name, this.fileLicence[i], this.fileLicence[i].name);
+        }
+        xhr.open(this.method, this.url, true);
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        //xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.withCredentials = false;
+        xhr.send(formData);
+    }
 }
