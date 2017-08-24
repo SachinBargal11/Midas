@@ -109,17 +109,18 @@ export class CaseEmployerComponent implements OnInit {
                     this.accidentAtEmployment = this.employer.accidentAtEmployment;
                     this.currentEmployer = this.employer;
                     //this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
-                    this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
-                    if (this.currentEmployer.id) {
+                    // this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
+                    this.title = 'Employment/School Info';
+                    // if (this.currentEmployer.id) {
                         this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                         this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
 
-                    } else {
-                        this.currentEmployer = new Employer({
-                            address: new Address({}),
-                            contact: new Contact({})
-                        });
-                    }
+                    // } else {
+                    //     this.currentEmployer = new Employer({
+                    //         address: new Address({}),
+                    //         contact: new Contact({})
+                    //     });
+                    // }
 
                 },
                 (error) => {

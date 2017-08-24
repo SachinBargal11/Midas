@@ -7,7 +7,7 @@
             </header>
             <div class="card-block">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Policy Number
                                 <span class="color-red">*</span>
                             </label>
@@ -20,8 +20,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label"> Policy Number
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyNo}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Policy Holder Name
                                 <span class="color-red">*</span>
                             </label>
@@ -34,8 +42,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label"> Policy Holder Name
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyHoldersName}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Policy Owner
                                 <span class="color-red">*</span>
                             </label>
@@ -54,6 +70,14 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label"> Policy Owner
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{policyOwner}}
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,7 +88,7 @@
             </header>
             <div class="card-block">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> E-Mail
                                 <span class="color-red">*</span>
                             </label>
@@ -78,8 +102,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label"> E-Mail
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyContact.emailAddress}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Cellphone
                                 <span class="color-red">*</span>
                             </label>
@@ -93,27 +125,59 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">Cellphone
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{policyCellPhone}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Home Phone No</label>
                             <input formControlName="policyHomePhone" [ngModel]="insurance.policyContact.homePhone" type="text" class="form-control" placeholder=""
                             />
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Home Phone No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyContact.homePhone}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Work Phone No</label>
                             <input formControlName="policyWorkPhone" [ngModel]="insurance.policyContact.workPhone" type="text" class="form-control" placeholder=""
                             />
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Work Phone No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyContact.workPhone}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Fax No</label>
                             <p-inputMask mask="9-999-999 9999" formControlName="policyFaxNo" [ngModel]="policyFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">Fax No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{policyFaxNo}}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -125,7 +189,7 @@
             </header>
             <div class="card-block">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Address1
                          <span class="color-red">*</span>
                             </label>
@@ -138,8 +202,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Address1
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyAddress.address1}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Address2
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyAddress2.touched && !insuranceformControls.policyAddress2.valid">
@@ -151,10 +223,17 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Address2
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyAddress.address2}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> State
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                             <select formControlName="policyState" [ngModel]="insurance.policyAddress.state" type="text" class="form-control" placeholder=""
@@ -168,10 +247,18 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">State
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyAddress.state}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> City
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
@@ -182,6 +269,14 @@
                                     <li *ngIf="insuranceformControls.policyCity.hasError('required')">City is required.</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">City
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyAddress.city}}
+                            </label>
                         </div>
                     </div>
                     <!--<div class="col-lg-3">
@@ -200,9 +295,8 @@
                     </div>
                 </div>
                 <div class="col-lg-1 m-t-lg"><loader [visible]="isPolicyCitiesLoading"></loader></div>-->
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Zip code
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyZipcode.touched && !insuranceformControls.policyZipcode.valid">
                             <input formControlName="policyZipcode" [ngModel]="insurance.policyAddress.zipCode" type="text" class="form-control" placeholder=""
@@ -213,14 +307,19 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label"> Zip code
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyAddress.zipCode}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Country
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
-                            <!--<input formControlName="policyCountry" [ngModel]="insurance.policyAddress.country" type="text" class="form-control" placeholder=""
-                                [class.error]="!insuranceformControls.policyCountry.valid">-->
                             <select formControlName="country" type="text" [ngModel]="insurance.policyAddress.country" class="form-control" placeholder=""
                                 [class.error]="insurance.policyAddress.country.touched && !insurance.policyAddress.country.valid">
                                         <option value="">-Select -</option>
@@ -232,6 +331,14 @@
                                     <li *ngIf="insuranceformControls.policyCountry.hasError('required')">Country is required.</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label"> Country
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.policyAddress.country}}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -261,13 +368,11 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Insurance Type
                                 <span class="color-red">*</span>
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.insuranceType.touched && !insuranceformControls.insuranceType.valid">
-                            <!--<input type="text" formControlName="insuranceType" [ngModel]="insurance.insuranceType" [class.error]="!insuranceformControls.insuranceType.valid" class="form-control"
-                            type="text" placeholder="" />-->
                             <select formControlName="insuranceType" [ngModel]="insurance.insuranceType" type="text" class="form-control" placeholder=""
                                 [class.error]="insuranceformControls.insuranceType.touched && !insuranceformControls.insuranceType.valid">
                             <option value="">-Select -</option>
@@ -280,10 +385,17 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Insurance Type
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insuranceType}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Insurance Company Code
-                                <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="insuranceformControls.insuranceCompanyCode.touched && !insuranceformControls.insuranceCompanyCode.valid">
                             <input type="text" formControlName="insuranceCompanyCode" [ngModel]="insurance.insuranceCompanyCode" [class.error]="!insuranceformControls.insuranceCompanyCode.valid"
@@ -293,6 +405,14 @@
                                     <li *ngIf="insuranceformControls.insuranceCompanyCode.hasError('required')">Insurance Company Code is required.</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">Insurance Company Code
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.insuranceCompanyCode}}
+                            </label>
                         </div>
                     </div>
 
@@ -307,7 +427,7 @@
             </header>
             <div class="card-block">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <label class="form-label">Contact Person
                                 <span class="color-red">*</span>
                             </label>
@@ -320,8 +440,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Contact Person
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.contactPerson}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> E-Mail
                                 <span class="color-red">*</span>
                             </label>
@@ -335,8 +463,16 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">E-Mail
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.insuranceContact.emailAddress}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <label class="form-label"> Cellphone
                                 <span class="color-red">*</span>
                             </label>
@@ -350,27 +486,59 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label">Cellphone
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insuranceCellPhone}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Home Phone No</label>
                             <input formControlName="homePhone" [ngModel]="insurance.insuranceContact.homePhone" type="text" class="form-control" placeholder=""
                             />
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Home Phone No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.insuranceContact.homePhone}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Work Phone No</label>
                             <input formControlName="workPhone" [ngModel]="insurance.insuranceContact.workPhone" type="text" class="form-control" placeholder=""
                             />
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
+                        <label class="form-label">Work Phone No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insurance.insuranceContact.workPhone}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Fax No</label>
                             <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="insuranceFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>-->
+                    <div class="col-lg-4">
+                        <label class="form-label"> Fax No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{insuranceFaxNo}}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -517,9 +685,9 @@
                 </div>
             </div>
         </section>
-        <button [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <!--<button [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveProgress"></loader>
-    </button>
+    </button>-->
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

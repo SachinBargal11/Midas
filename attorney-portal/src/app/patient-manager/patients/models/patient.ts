@@ -5,6 +5,8 @@ import { User } from '../../../commons/models/user';
 import { Company } from '../../../account/models/company';
 import { MaritalStatus } from './enums/marital-status';
 import { PatientDocument } from './patient-document';
+import { PreferredLanguage } from './enums/preferred-language';
+import { SocialMedia } from './enums/social-media';
 
 const PatientRecord = Record({
     id: 0,
@@ -81,5 +83,41 @@ export class Patient extends PatientRecord {
             }
         });
         return isSessionCompany;
+    }
+    get prefferedLanguage(): string {
+        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getLanguageLabel(prefferedLanguage: PreferredLanguage): string {
+        switch (prefferedLanguage) {
+            case PreferredLanguage.ENGLISH:
+                return 'English';
+            case PreferredLanguage.SPANISH:
+                return 'Spanish';
+            case PreferredLanguage.OTHER:
+                return 'other';
+        }
+}
+
+get socialMedia(): string[] {
+        let patientSocialMediaMappings: any[] = [];
+        patientSocialMediaMappings = _.map(this.patientSocialMediaMappings, (currentSocialMedia: any) => {
+            return Patient.getSocialMediaLabel(currentSocialMedia.socialMediaId);
+        })
+        return patientSocialMediaMappings;
+    }
+    static getSocialMediaLabel(socialMedia: SocialMedia): string {
+        switch (socialMedia) {
+            case SocialMedia.Facebook:
+                return 'Facebook';
+            case SocialMedia.Twitter:
+                return 'Twitter';
+            case SocialMedia.Myspace:
+                return 'Myspace';
+            case SocialMedia.Instagram:
+                return 'Instagram';
+            case SocialMedia.LinkedIn:
+                return 'LinkedIn';
+        }
     }
 }
