@@ -148,6 +148,7 @@ export class PatientVisitComponent implements OnInit {
     @Input() idPatient: number;
     companyId: number = this.sessionStore.session.currentCompany.id;
     selectedVisitType = '1';
+    selectedEventDate;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -165,12 +166,12 @@ export class PatientVisitComponent implements OnInit {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
         } if (!this.sessionStore.isOnlyDoctorRole()) {
             if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
-                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EO-${event.eventWrapper.doctor.user.displayName}</span>`;
+                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.doctor.user.displayName}</span>`;
             }
         }
         if (this.sessionStore.isOnlyDoctorRole()) {
             if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
-                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EO-${event.eventWrapper.insuranceProvider.name}</span>`;
+                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.insuranceProvider.name}</span>`;
             }
         }
         else if (event.eventWrapper && event.eventWrapper.isImeVisitType) {
@@ -925,6 +926,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+        this.selectedEventDate = event.date.clone().local();
         this.selectedProcedures = null;
         this.eventDialogVisible = false;
         this.addNewPatientForm.reset();

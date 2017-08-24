@@ -98,16 +98,16 @@ export class PatientsStore {
 
     fetchPatientById(id: number): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
-            let matchedPatient: Patient = this.findPatientById(id);
-            if (matchedPatient) {
-                resolve(matchedPatient);
-            } else {
+            // let matchedPatient: Patient = this.findPatientById(id);
+            // if (matchedPatient) {
+            //     resolve(matchedPatient);
+            // } else {
                 this._patientsService.getPatient(id).subscribe((patient: Patient) => {
                     resolve(patient);
                 }, error => {
                     reject(error);
                 });
-            }
+            // }
         });
         return <Observable<Patient>>Observable.fromPromise(promise);
     }

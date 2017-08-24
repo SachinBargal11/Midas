@@ -1,3 +1,4 @@
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { EoVisit } from '../models/eo-visit';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -23,6 +24,7 @@ export class PatientVisitsStore {
     private _consent: BehaviorSubject<List<Consent>> = new BehaviorSubject(List([]));
     private _imeVisits: BehaviorSubject<List<ImeVisit>> = new BehaviorSubject(List([]));
     private _eoVisits: BehaviorSubject<List<EoVisit>> = new BehaviorSubject(List([]));
+    private _unscheduledVisits: BehaviorSubject<List<UnscheduledVisit>> = new BehaviorSubject(List([]));
 
     constructor(
         private _patientVisitsService: PatientVisitService,
@@ -67,6 +69,18 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getUnscheduledVisitsByCaseId(caseId).subscribe((unscheduledVisit: UnscheduledVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(unscheduledVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
     }
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
@@ -415,6 +429,18 @@ export class PatientVisitsStore {
             this._patientVisitsService.addImeVisit(imeVisitDetail).subscribe((imeVisitDetail: any) => {
                 this._imeVisits.next(this._imeVisits.getValue().push(imeVisitDetail));
                 resolve(imeVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
+
+    addUnscheduledVisit(unscheduledVisitDetail: any): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.addUnscheduledVisit(unscheduledVisitDetail).subscribe((unscheduledVisitDetail: any) => {
+                this._unscheduledVisits.next(this._unscheduledVisits.getValue().push(unscheduledVisitDetail));
+                resolve(unscheduledVisitDetail);
             }, error => {
                 reject(error);
             });

@@ -69,6 +69,7 @@ export class ImeVisitComponent implements OnInit {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
+    // @Input() selectedEventDate;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -103,9 +104,11 @@ export class ImeVisitComponent implements OnInit {
             notes: [''],
             name: ['', Validators.required],
             doctorName: ['', Validators.required],
-            eventStartDate: [''],
+            eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
+            // duration: ['', Validators.required],
             transportProviderId: [''],
         });
         this.loadPrefferdAncillaries();
@@ -136,6 +139,8 @@ export class ImeVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.eventStartAsDate = this.selectedEventDate;
+        // this.eventEndAsDate = this.selectedEventDate;
         // this.loadImeVisits();
         // this.header = {
         //     left: 'prev,next today',
@@ -195,7 +200,8 @@ export class ImeVisitComponent implements OnInit {
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
-                eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+                // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+                eventEnd: moment(this.eventEndAsDate),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
                 // eventStartDate: this.imeScheduleForm.value.eventStartDate,
                 // duration: this.imeScheduleForm.value.duration,

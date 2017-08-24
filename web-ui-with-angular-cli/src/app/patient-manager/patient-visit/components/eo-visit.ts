@@ -171,38 +171,38 @@ export class EoVisitComponent implements OnInit {
     // ancillaryProviderId: number = null;
     // allPrefferesAncillaries: AncillaryMaster[];
     // referredBy: string = '';
-    // private _selectedEvent: ScheduledEvent;
+    private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
     isAllDay: boolean;
     repeatType: string = '7';
-    name: string = 'Appointment for EO';
-
+    name: string = 'Appointment for EUO';
+    // @Input() selectedEventDate;
     scheduledEventEditorForm: FormGroup;
     scheduledEventEditorFormControls;
     @Output() isValid = new EventEmitter();
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
-    // @Input() set selectedEvent(value: ScheduledEvent) {
-    //     if (value) {
-    //         this._selectedEvent = value;
-    //         this.name = this._selectedEvent.name;
-    //         this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
-    //         this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
-    //         this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-    //         this.isAllDay = this._selectedEvent.isAllDay;
+    @Input() set selectedEvent(value: ScheduledEvent) {
+        if (value) {
+            this._selectedEvent = value;
+            this.name = this._selectedEvent.name;
+            this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
+            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
+            this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
+            this.isAllDay = this._selectedEvent.isAllDay;
 
-    //     } else {
-    //         this._selectedEvent = null;
-    //         this.eventStartAsDate = null;
-    //         this.eventEndAsDate = null;
-    //         this.isAllDay = false;
-    //     }
-    // }
+        } else {
+            this._selectedEvent = null;
+            this.eventStartAsDate = null;
+            this.eventEndAsDate = null;
+            this.isAllDay = false;
+        }
+    }
 
-    // get selectedEvent(): ScheduledEvent {
-    //     return this._selectedEvent;
-    // }
+    get selectedEvent(): ScheduledEvent {
+        return this._selectedEvent;
+    }
 
     constructor(
         public _route: ActivatedRoute,
@@ -236,9 +236,11 @@ export class EoVisitComponent implements OnInit {
             notes: [''],
             insuranceProviderId: [''],
             name: ['', Validators.required],
-            eventStartDate: [''],
+            eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
+            // duration: ['', Validators.required],
         });
         // this.loadPrefferdAncillaries();
         this.eoScheduleFormControls = this.eoScheduleForm.controls;
@@ -252,6 +254,7 @@ export class EoVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.eventStartAsDate = this.selectedEventDate;
         // this.loadVisits();
         this.header = {
             left: 'prev,next today',
@@ -315,7 +318,8 @@ export class EoVisitComponent implements OnInit {
             createByUserID: this.sessionStore.session.account.user.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
-                eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+                // eventEnd: moment(this.eventEndAsDate).add(this.duration, 'minutes'),
+                eventEnd: moment(this.eventEndAsDate),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
             })
         });
