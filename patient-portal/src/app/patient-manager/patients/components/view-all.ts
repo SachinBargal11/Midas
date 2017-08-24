@@ -33,6 +33,7 @@ export class ViewAllComponent implements OnInit {
     patientId: number;
     patientInfo: Patient;
     // familyMember: FamilyMember[];
+    socialMedia:any[];
     insurances: Insurance[];
     //   employer: Employer;
     dateOfFirstTreatment: string;
@@ -65,7 +66,7 @@ export class ViewAllComponent implements OnInit {
         result.subscribe(
             (patient: Patient) => {
                 this.patientInfo = patient;
-
+                this.socialMedia = patient.socialMedia;
                 this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ?
                     this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
                     : null;
