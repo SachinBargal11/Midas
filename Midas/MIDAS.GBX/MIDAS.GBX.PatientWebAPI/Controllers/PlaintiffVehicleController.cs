@@ -7,10 +7,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using MIDAS.GBX.PatientWebAPI.RequestHandler;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/PlaintiffVehicle")]
+    [RoutePrefix("midaspatientapi/PlaintiffVehicle")]
     public class PlaintiffVehicleController : ApiController
     {
         private IRequestHandler<PlaintiffVehicle> requestHandler;

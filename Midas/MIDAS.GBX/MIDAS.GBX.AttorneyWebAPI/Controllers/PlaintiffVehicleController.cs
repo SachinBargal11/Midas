@@ -8,9 +8,9 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/PlaintiffVehicle")]
+    [RoutePrefix("midasattorneyapi/PlaintiffVehicle")]
     public class PlaintiffVehicleController : ApiController
     {
         private IRequestHandler<PlaintiffVehicle> requestHandler;
