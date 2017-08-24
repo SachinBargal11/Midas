@@ -3,13 +3,13 @@
     <form [formGroup]="employerform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">
-                Case Employer Information
+                Employment Information
             </header>
             <div class="card-block">
 
                 <div class="row">
                     <div class="col-lg-4">
-                        <label class="form-label">Job Title
+                        <label class="form-label">Occupation/Job Title
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.jobTitle.touched && !employerformControls.jobTitle.valid">
@@ -36,28 +36,68 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> Is Current Employer
-                                        <span class="color-red">*</span>
-                                    </label>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Choose Salary Type                                          
+                                        </label>
+                        <div class="form-group">
+                            <p-radioButton formControlName="salaryType" name="salaryType" value="1" label="Hourly" [(ngModel)]="hourOrYearly"></p-radioButton>
+                            <p-radioButton formControlName="salaryType" name="salaryType" value="0" label="Yearly" [(ngModel)]="hourOrYearly"></p-radioButton>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Salary
+                                                                                   </label>
+                        <div class="form-group">
+                            <input formControlName="txtSalary" [ngModel]="currentEmployer.salary" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Any Loss of earnings,due to accident related injuries?                                          
+                                        </label>
+                        <div class="form-group">
+                            <p-radioButton formControlName="islossEarnings" name="islossEarnings" value="1" label="Yes" [(ngModel)]="lossOfEarnings"></p-radioButton>
+                            <p-radioButton formControlName="islossEarnings" name="islossEarnings" value="0" label="No" [(ngModel)]="lossOfEarnings"></p-radioButton>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Date(s) out of work                                            
+                                        </label>
+                        <div class="form-group">
+                            <input type="text" formControlName="txtDatesOutWork" [ngModel]="currentEmployer.datesOutOfWork" class="form-control" type="text"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">How many hours do you normally work per week?                                       
+                                        </label>
+                        <div class="form-group">
+                            <input type="text" formControlName="txtHoursPerWeek" [ngModel]="currentEmployer.hoursPerWeek" class="form-control" type="text"
+                                placeholder="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Did accident occur in course of employment?                                       
+                                        </label>
+                        <div class="form-group">
                             <div class="form-group">
-                                <label class="form-check-label">
-                                    <input type="radio" value="1" name="isCurrentEmployer" formControlName="isCurrentEmployer" [ngModel]="isCurrentEmp"> Yes
-                                </label>
-                                <label class="form-check-label">
-                                    <input type="radio" value="0" name="isCurrentEmployer" formControlName="isCurrentEmployer" [ngModel]="isCurrentEmp"> No
-                                </label>
-                             
+                                <p-radioButton formControlName="isAccidentAtEmployment" name="isAccidentAtEmployment" value="1" label="Yes" [(ngModel)]="accidentAtEmployment"></p-radioButton>
+                                <p-radioButton formControlName="isAccidentAtEmployment" name="isAccidentAtEmployment" value="0" label="No" [(ngModel)]="accidentAtEmployment"></p-radioButton>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
+
+
             </div>
         </section>
 
 
-        <section class="card">
+        <!-- <section class="card">
             <header class="card-header card-header-lg">
                 Contact Information
             </header>
@@ -156,14 +196,50 @@
                     </div>
                 </div>
             </div>
-        </section>
-
-
+        </section> -->
         <section class="card">
             <header class="card-header card-header-lg">
-                Address Information
+                Contanct And Address Information
             </header>
             <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.email.touched && !employerformControls.email.valid">
+                            <input type="email" formControlName="email" [ngModel]="currentEmployer.contact.emailAddress" [class.error]="!employerformControls.email.valid"
+                                class="form-control" type="text" placeholder="" />
+                            <div class='error-list' *ngIf="employerformControls.email.touched && !employerformControls.email.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.email.hasError('required')">Email is required.</li>
+                                    <li *ngIf="employerformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
+                            <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid"
+                                placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                    <li *ngIf="employerformControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Fax No</label>
+                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Address1
@@ -285,6 +361,59 @@
 
             </div>
         </section>
+
+        <div *ngIf="school">
+            <section class="card">
+                <header class="card-header card-header-lg">
+                    School Information
+                </header>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Name of School
+                                          
+                                        </label>
+                            <div class="form-group">
+                                <input type="text" formControlName="txtSchoolName" [ngModel]="nameOfSchool" class="form-control" type="text" placeholder=""
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Grade
+                                           
+                                        </label>
+                            <div class="form-group">
+                                <input type="text" formControlName="txtGrade" class="form-control" [ngModel]="grade" type="text" placeholder="" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Any Loss of time from school?
+                                          
+                                        </label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="1" label="Yes" [(ngModel)]="lossOfTime"></p-radioButton>
+                                    <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="0" label="No" [(ngModel)]="lossOfTime"></p-radioButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Date(s) out of school
+                                           
+                                        </label>
+                            <div class="form-group">
+                                <input type="text" formControlName="txtDateOutofSchool" [ngModel]="datesOutOfSchool" class="form-control" type="text" placeholder=""
+                                />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
         <!--button-->
         <button *ngIf="!referredToMe" [disabled]="!employerform.valid || isSaveEmployerProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveEmployerProgress"></loader>

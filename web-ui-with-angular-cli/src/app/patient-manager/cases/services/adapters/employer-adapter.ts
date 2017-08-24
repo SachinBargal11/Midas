@@ -17,7 +17,13 @@ export class EmployerAdapter {
                 createByUserID: data.createByUserID,
                 createDate: moment(data.createDate),
                 contact: ContactAdapter.parseResponse(data.contactInfo),
-                address: AddressAdapter.parseResponse(data.addressInfo)
+                address: AddressAdapter.parseResponse(data.addressInfo),
+                salary: data.salary,
+                hourOrYearly: data.hourOrYearly == true ? '1' : data.hourOrYearly == false ? '0' : null,
+                lossOfEarnings: data.lossOfEarnings == true ? '1' : data.lossOfEarnings == false ? '0' : null,
+                datesOutOfWork: data.datesOutOfWork,
+                hoursPerWeek: data.hoursPerWeek,
+                accidentAtEmployment: data.accidentAtEmployment == true ? '1' : data.accidentAtEmployment == false ? '0' : null
             });
         }
         return employer;

@@ -325,6 +325,14 @@ namespace MIDAS.GBX
             {
                 repo = new SocialMediaRepository(context);
             }
+            else if (typeof(T) == typeof(BO.PatientVisitUnscheduled))
+            {
+                repo = new PatientVisitUnscheduledRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.SchoolInformation))
+            {
+                repo = new SchoolInformationRepository(context);
+            }
 
             return repo;
         }

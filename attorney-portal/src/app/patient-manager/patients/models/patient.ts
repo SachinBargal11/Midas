@@ -16,6 +16,14 @@ const PatientRecord = Record({
     maritalStatusId: MaritalStatus.SINGLE,
     dateOfFirstTreatment: moment(),
     companies: [],
+    parentOrGuardianName: '',
+    emergencyContactName: '',
+    emergencyContactPhone: '',
+    legallyMarried: '',
+    spouseName: '',
+    patientLanguagePreferenceMappings:[],
+    languagePreferenceOther: '',
+    patientSocialMediaMappings:[],
     patientDocuments: [],
     isDeleted: false,
     createByUserID: 0,
@@ -34,6 +42,14 @@ export class Patient extends PatientRecord {
     height: number;
     maritalStatusId: MaritalStatus;
     dateOfFirstTreatment: moment.Moment;
+    parentOrGuardianName: string;
+    emergencyContactName: string;
+    emergencyContactPhone: string;
+    legallyMarried: string;
+    spouseName: string;
+    patientLanguagePreferenceMappings:any[];
+    languagePreferenceOther: '';
+    patientSocialMediaMappings:any[];
     companies: Company[];
     patientDocuments: PatientDocument[];
     isDeleted: boolean;

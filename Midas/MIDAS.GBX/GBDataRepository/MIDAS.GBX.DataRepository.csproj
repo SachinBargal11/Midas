@@ -244,6 +244,7 @@
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
     <Compile Include="EntityRepository\Schedule\ScheduleDetailRepository.cs" />
     <Compile Include="EntityRepository\Schedule\ScheduleRepository.cs" />
+    <Compile Include="EntityRepository\SchoolInformation\SchoolInformationRepository.cs" />
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityRepository.cs" />
@@ -517,6 +518,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ScheduleDetail.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SchoolInformation.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SocialMedia.cs">

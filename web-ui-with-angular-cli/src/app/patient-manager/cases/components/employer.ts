@@ -22,6 +22,8 @@ import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import { Case } from '../../cases/models/case';
 import { CasesStore } from '../../cases/stores/case-store';
+import { School } from '../models/school';
+
 
 @Component({
     selector: 'employer',
@@ -53,6 +55,26 @@ export class CaseEmployerComponent implements OnInit {
     isSaveProgress = false;
     isSaveEmployerProgress = false;
     patientId: number;
+    salaryType = '';
+    txtSalary = '';
+    islossEarnings: boolean = false;
+    txtDatesOutWork = '';
+    txtHoursPerWeek = '';
+    isAccidentAtEmployment: boolean = false;
+    txtSchoolName = '';
+    txtGrade = '';
+    islossTimeofSchool: boolean = false;
+    txtDateOutofSchool = '';
+    hourOrYearly = false;
+    lossOfEarnings = false;
+    accidentAtEmployment = false;
+    school: School;
+    id = 0;
+    lossOfTime = false;
+    nameOfSchool = '';
+    grade = '';
+    datesOutOfSchool = '';
+
 
     constructor(
         private fb: FormBuilder,
@@ -70,39 +92,33 @@ export class CaseEmployerComponent implements OnInit {
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe
 
-    ) {  this._route.parent.parent.params.subscribe((routeParams: any) => {
+    ) {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
         });
         this._route.parent.params.subscribe((routeParams: any) => {
-          
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
+
             let result = this._employerStore.getCurrentEmployer(this.caseId);
             result.subscribe(
                 (employer: Employer) => {
                     this.employer = employer;
+                    this.hourOrYearly = this.employer.hourOrYearly;
+                    this.lossOfEarnings = this.employer.lossOfEarnings;
+                    this.accidentAtEmployment = this.employer.accidentAtEmployment;
                     this.currentEmployer = this.employer;
                     //this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
-                    this.title = this.currentEmployer.id ? 'Edit Employer' : 'Add Employer';
+                    this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
                     if (this.currentEmployer.id) {
                         this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                         this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
-                        //     if (!this.currentEmployer.address) {
-                        //     this.currentEmployer = new Employer({
-                        //         address: new Address({})
-                        //     });
-                        // }
-                        // if (!this.currentEmployer.contact) {
-                        //     this.currentEmployer = new Employer({
-                        //         contact: new Contact({})
-                        //     });
-                        //     }
+
                     } else {
                         this.currentEmployer = new Employer({
                             address: new Address({}),
                             contact: new Contact({})
                         });
-
                     }
 
                 },
@@ -113,7 +129,29 @@ export class CaseEmployerComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
+
+            let schoolResult = this._employerStore.getSchoolInformation(this.caseId);
+            schoolResult.subscribe(
+                (school: School) => {
+                    this.school = school;
+                    this.id = this.school.id;
+                    this.lossOfTime = this.school.lossOfTime;
+                    this.datesOutOfSchool = this.school.datesOutOfSchool;
+                    this.nameOfSchool = this.school.nameOfSchool;
+                    this.grade = this.school.grade;
+
+                },
+                (error) => {
+                    this._router.navigate(['../../']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
+
+
+
         let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
         caseResult.subscribe(
             (cases: Case[]) => {
@@ -157,7 +195,17 @@ export class CaseEmployerComponent implements OnInit {
             faxNo: [''],
             alternateEmail: ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredCommunication: ['']
+            preferredCommunication: [''],
+            salaryType: [''],
+            txtSalary: [''],
+            islossEarnings: [''],
+            isAccidentAtEmployment: [''],
+            txtDatesOutWork: [''],
+            txtHoursPerWeek: [''],
+            txtSchoolName: [''],
+            txtGrade: [''],
+            islossTimeofSchool: [''],
+            txtDateOutofSchool: [''],
         });
 
         this.employerformControls = this.employerform.controls;
@@ -169,7 +217,6 @@ export class CaseEmployerComponent implements OnInit {
     }
 
     save() {
-
         this.isSaveEmployerProgress = true;
         let employerformValues = this.employerform.value;
         let result;
@@ -199,12 +246,29 @@ export class CaseEmployerComponent implements OnInit {
                 state: employerformValues.state,
                 zipCode: employerformValues.zipcode
 
-            })
+            }),
+            salary: employerformValues.txtSalary,
+            hourOrYearly: parseInt(employerformValues.salaryType),
+            lossOfEarnings: parseInt(employerformValues.islossEarnings),
+            datesOutOfWork: employerformValues.txtDatesOutWork,
+            hoursPerWeek: employerformValues.txtHoursPerWeek,
+            accidentAtEmployment: parseInt(employerformValues.isAccidentAtEmployment)
         });
+
+        let school = new School({
+            id: this.school.id,
+            caseId: this.caseId,
+            nameOfSchool: employerformValues.txtSchoolName,
+            grade: employerformValues.txtGrade,
+            lossOfTime: parseInt(employerformValues.islossTimeofSchool),
+            datesOutOfSchool: employerformValues.txtDateOutofSchool
+        });
+
         this._progressBarService.show();
 
         if (this.currentEmployer.id) {
             result = this._employerStore.updateEmployer(employer, this.currentEmployer.id);
+            let addSchool = this._employerStore.addSchool(school);
             result.subscribe(
                 (response) => {
                     let notification = new Notification({
@@ -234,6 +298,7 @@ export class CaseEmployerComponent implements OnInit {
         }
         else {
             addResult = this._employerStore.addEmployer(employer);
+            let addSchool = this._employerStore.addSchool(school);
 
             addResult.subscribe(
                 (response) => {
@@ -261,9 +326,8 @@ export class CaseEmployerComponent implements OnInit {
                     this.isSaveEmployerProgress = false;
                     this._progressBarService.hide();
                 });
+
+
         }
-
     }
-
-
 }

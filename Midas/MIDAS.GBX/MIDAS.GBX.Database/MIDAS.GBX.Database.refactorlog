@@ -294,4 +294,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Subject" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="fe25ed51-b685-4b84-afc3-8f2a73174250" ChangeDateTime="08/22/2017 15:06:56">
+    <Property Name="ElementName" Value="[dbo].[SchoolInformation].[Dates]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SchoolInformation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OutOfSchool" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5350b43f-0ac2-4ae2-b9ee-816825dae10b" ChangeDateTime="08/22/2017 15:07:04">
+    <Property Name="ElementName" Value="[dbo].[SchoolInformation].[OutOfSchool]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SchoolInformation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OutOfSchoolStart" />
+  </Operation>
 </Operations>

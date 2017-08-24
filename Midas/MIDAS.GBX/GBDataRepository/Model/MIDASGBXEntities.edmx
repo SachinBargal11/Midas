@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -129,6 +129,9 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="CaseSource" Type="varchar" MaxLength="50" />
           <Property Name="ClaimFileNumber" Type="int" />
+          <Property Name="Medicare" Type="bit" />
+          <Property Name="Medicaid" Type="bit" />
+          <Property Name="SSDisabililtyIncome" Type="bit" />
         </EntityType>
         <EntityType Name="CaseCompanyConsentDocuments">
           <Key>
@@ -835,6 +838,12 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="Salary" Type="nvarchar" MaxLength="32" />
+          <Property Name="HourOrYearly" Type="bit" />
+          <Property Name="LossOfEarnings" Type="bit" />
+          <Property Name="DatesOutOfWork" Type="nvarchar" MaxLength="128" />
+          <Property Name="HoursPerWeek" Type="numeric" Precision="3" Scale="2" />
+          <Property Name="AccidentAtEmployment" Type="bit" />
         </EntityType>
         <EntityType Name="PatientFamilyMembers">
           <Key>
@@ -1247,6 +1256,22 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="SlotEnd" Type="time" Precision="7" Nullable="false" />
           <Property Name="SlotDate" Type="datetime2" Precision="7" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="SchoolInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="NameOfSchool" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Grade" Type="nvarchar" MaxLength="50" />
+          <Property Name="LossOfTime" Type="bit" />
+          <Property Name="DatesOutOfSchool" Type="nvarchar" MaxLength="128" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -3548,6 +3573,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SchoolInformation_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="SchoolInformation" Type="Self.SchoolInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolInformation">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SpecialityDetails_Specialty">
           <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
           <End Role="SpecialityDetails" Type="Self.SpecialityDetails" Multiplicity="*" />
@@ -3785,6 +3822,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="RoomTest" EntityType="Self.RoomTest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScheduleDetail" EntityType="Self.ScheduleDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchoolInformation" EntityType="Self.SchoolInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SocialMedia" EntityType="Self.SocialMedia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
@@ -4488,6 +4526,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_SchoolInformation_Case_CaseId" Association="Self.FK_SchoolInformation_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
+            <End Role="SchoolInformation" EntitySet="SchoolInformation" />
+          </AssociationSet>
           <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
@@ -4537,7 +4579,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4694,6 +4737,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="CaseSource" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ClaimFileNumber" Type="Int32" />
+          <Property Name="Medicare" Type="Boolean" />
+          <Property Name="Medicaid" Type="Boolean" />
+          <Property Name="SSDisabililtyIncome" Type="Boolean" />
           <NavigationProperty Name="AttorneyVisits" Relationship="Self.FK_AttorneyVisit_Case_CaseId" FromRole="Case" ToRole="AttorneyVisit" />
           <NavigationProperty Name="CaseStatu" Relationship="Self.FK_Case_CaseStatus_CaseStatusId" FromRole="Case" ToRole="CaseStatus" />
           <NavigationProperty Name="CaseType" Relationship="Self.FK_Case_CaseType_CaseTypeId" FromRole="Case" ToRole="CaseType" />
@@ -4710,9 +4756,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientFamilyMembers" Relationship="Self.FK_PatientFamilyMembers_Case_CaseId" FromRole="Case" ToRole="PatientFamilyMembers" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_Case_CaseId" FromRole="Case" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Case_CaseId" FromRole="Case" ToRole="PatientVisit" />
+          <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="Case" ToRole="PatientVisitUnscheduled" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Case" ToRole="Referral" />
           <NavigationProperty Name="RefferingOffices" Relationship="Self.FK_RefferingOffice_Case_CaseId" FromRole="Case" ToRole="RefferingOffice" />
-          <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="MIDASGBXModel.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="Case" ToRole="PatientVisitUnscheduled" />
+          <NavigationProperty Name="SchoolInformations" Relationship="Self.FK_SchoolInformation_Case_CaseId" FromRole="Case" ToRole="SchoolInformation" />
         </EntityType>
         <EntityType Name="CaseCompanyConsentDocument">
           <Key>
@@ -5509,7 +5556,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientLanguagePreferenceMappings" Relationship="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientLanguagePreferenceMapping" />
           <NavigationProperty Name="PatientSocialMediaMappings" Relationship="Self.FK_PatientSocialMediaMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientSocialMediaMapping" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Patient_PatientId" FromRole="Patient" ToRole="PatientVisit" />
-          <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="MIDASGBXModel.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="Patient" ToRole="PatientVisitUnscheduled" />
+          <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="Patient" ToRole="PatientVisitUnscheduled" />
         </EntityType>
         <EntityType Name="PatientAccidentInfo">
           <Key>
@@ -5570,6 +5617,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="Salary" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="HourOrYearly" Type="Boolean" />
+          <Property Name="LossOfEarnings" Type="Boolean" />
+          <Property Name="DatesOutOfWork" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HoursPerWeek" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="AccidentAtEmployment" Type="Boolean" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_PatientEmpInfo_AddressInfo_EmpAddressId" FromRole="PatientEmpInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientEmpInfo_Case_CaseId" FromRole="PatientEmpInfo" ToRole="Case" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_PatientEmpInfo_ContactInfo_EmpContactInfoId" FromRole="PatientEmpInfo" ToRole="ContactInfo" />
@@ -5750,6 +5803,25 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="PatientVisit" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId" FromRole="PatientVisitProcedureCodes" ToRole="PatientVisit" />
           <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="PatientVisitProcedureCodes" ToRole="ProcedureCode" />
+        </EntityType>
+        <EntityType Name="PatientVisitUnscheduled">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="EventStart" Type="DateTime" Precision="7" />
+          <Property Name="MedicalProviderName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="PatientVisitUnscheduled" ToRole="Case" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="PatientVisitUnscheduled" ToRole="Patient" />
         </EntityType>
         <EntityType Name="PendingReferral">
           <Key>
@@ -6081,6 +6153,23 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_ScheduleDetail_Schedule" FromRole="ScheduleDetail" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="SchoolInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="NameOfSchool" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Grade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LossOfTime" Type="Boolean" />
+          <Property Name="DatesOutOfSchool" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_SchoolInformation_Case_CaseId" FromRole="SchoolInformation" ToRole="Case" />
         </EntityType>
         <EntityType Name="SocialMedia">
           <Key>
@@ -6883,6 +6972,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientVisitUnscheduled_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientVisitUnscheduled">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Referral_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
@@ -6903,6 +7004,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="RefferingOffice">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SchoolInformation_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="SchoolInformation" Type="Self.SchoolInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolInformation">
               <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
@@ -8023,6 +8136,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientVisitUnscheduled_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientVisitUnscheduled">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientAccidentInfo_PatientType_PatientTypeId">
           <End Role="PatientType" Type="Self.PatientType" Multiplicity="1" />
           <End Role="PatientAccidentInfo" Type="Self.PatientAccidentInfo" Multiplicity="*" />
@@ -8604,6 +8729,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisits" EntityType="Self.PatientVisit" />
           <EntitySet Name="PatientVisitDiagnosisCodes" EntityType="Self.PatientVisitDiagnosisCode" />
           <EntitySet Name="PatientVisitProcedureCodes" EntityType="Self.PatientVisitProcedureCode" />
+          <EntitySet Name="PatientVisitUnscheduleds" EntityType="Self.PatientVisitUnscheduled" />
           <EntitySet Name="PendingReferrals" EntityType="Self.PendingReferral" />
           <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCode" />
           <EntitySet Name="PolicyOwners" EntityType="Self.PolicyOwner" />
@@ -8621,6 +8747,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="RoomTests" EntityType="Self.RoomTest" />
           <EntitySet Name="Schedules" EntityType="Self.Schedule" />
           <EntitySet Name="ScheduleDetails" EntityType="Self.ScheduleDetail" />
+          <EntitySet Name="SchoolInformations" EntityType="Self.SchoolInformation" />
           <EntitySet Name="SocialMedias" EntityType="Self.SocialMedia" />
           <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetail" />
           <EntitySet Name="Specialties" EntityType="Self.Specialty" />
@@ -8805,6 +8932,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Case" EntitySet="Cases" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientVisitUnscheduled_Case_CaseId" Association="Self.FK_PatientVisitUnscheduled_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
+          </AssociationSet>
           <AssociationSet Name="FK_Referral_Case_CaseId" Association="Self.FK_Referral_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="Referral" EntitySet="Referrals" />
@@ -8812,6 +8943,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_RefferingOffice_Case_CaseId" Association="Self.FK_RefferingOffice_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="RefferingOffice" EntitySet="RefferingOffices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SchoolInformation_Case_CaseId" Association="Self.FK_SchoolInformation_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="SchoolInformation" EntitySet="SchoolInformations" />
           </AssociationSet>
           <AssociationSet Name="FK_CaseCompanyConsentDocuments_Company_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Company_CaseId">
             <End Role="Company" EntitySet="Companies" />
@@ -9185,6 +9320,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient" EntitySet="Patients" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientVisitUnscheduled_Patient_PatientId" Association="Self.FK_PatientVisitUnscheduled_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientAccidentInfo_PatientType_PatientTypeId" Association="Self.FK_PatientAccidentInfo_PatientType_PatientTypeId">
             <End Role="PatientType" EntitySet="PatientTypes" />
             <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
@@ -9358,21 +9497,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-          <Parameter Name="document_node" Mode="In" Type="String" />
+            <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASGBXModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="PatientVisitUnscheduleds" EntityType="MIDASGBXModel.PatientVisitUnscheduled" />
-          <AssociationSet Name="FK_PatientVisitUnscheduled_Case_CaseId" Association="MIDASGBXModel.FK_PatientVisitUnscheduled_Case_CaseId">
-            <End Role="Case" EntitySet="Cases" />
-            <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PatientVisitUnscheduled_Patient_PatientId" Association="MIDASGBXModel.FK_PatientVisitUnscheduled_Patient_PatientId">
-            <End Role="Patient" EntitySet="Patients" />
-            <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
-          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_CaseGetReadOnly_Result">
           <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -9393,49 +9523,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
           <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
         </ComplexType>
-        <EntityType Name="PatientVisitUnscheduled">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CaseId" Type="Int32" Nullable="false" />
-          <Property Name="PatientId" Type="Int32" Nullable="false" />
-          <Property Name="EventStart" Type="DateTime" Precision="7" />
-          <Property Name="MedicalProviderName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="DoctorName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="Notes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Case" Relationship="MIDASGBXModel.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="PatientVisitUnscheduled" ToRole="Case" />
-          <NavigationProperty Name="Patient" Relationship="MIDASGBXModel.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="PatientVisitUnscheduled" ToRole="Patient" />
-        </EntityType>
-        <Association Name="FK_PatientVisitUnscheduled_Case_CaseId">
-          <End Type="MIDASGBXModel.Case" Role="Case" Multiplicity="1" />
-          <End Type="MIDASGBXModel.PatientVisitUnscheduled" Role="PatientVisitUnscheduled" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PatientVisitUnscheduled">
-              <PropertyRef Name="CaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PatientVisitUnscheduled_Patient_PatientId">
-          <End Type="MIDASGBXModel.Patient" Role="Patient" Multiplicity="1" />
-          <End Type="MIDASGBXModel.PatientVisitUnscheduled" Role="PatientVisitUnscheduled" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patient">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PatientVisitUnscheduled">
-              <PropertyRef Name="PatientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9572,6 +9659,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CaseSource" ColumnName="CaseSource" />
                 <ScalarProperty Name="ClaimFileNumber" ColumnName="ClaimFileNumber" />
+                <ScalarProperty Name="Medicare" ColumnName="Medicare" />
+                <ScalarProperty Name="Medicaid" ColumnName="Medicaid" />
+                <ScalarProperty Name="SSDisabililtyIncome" ColumnName="SSDisabililtyIncome" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10314,6 +10404,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="HourOrYearly" ColumnName="HourOrYearly" />
+                <ScalarProperty Name="LossOfEarnings" ColumnName="LossOfEarnings" />
+                <ScalarProperty Name="DatesOutOfWork" ColumnName="DatesOutOfWork" />
+                <ScalarProperty Name="HoursPerWeek" ColumnName="HoursPerWeek" />
+                <ScalarProperty Name="AccidentAtEmployment" ColumnName="AccidentAtEmployment" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10460,6 +10556,24 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientVisitUnscheduleds">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientVisitUnscheduled">
+              <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="EventStart" ColumnName="EventStart" />
+                <ScalarProperty Name="MedicalProviderName" ColumnName="MedicalProviderName" />
+                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -10734,6 +10848,23 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="SlotEnd" ColumnName="SlotEnd" />
                 <ScalarProperty Name="SlotDate" ColumnName="SlotDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolInformations">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SchoolInformation">
+              <MappingFragment StoreEntitySet="SchoolInformation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="NameOfSchool" ColumnName="NameOfSchool" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="LossOfTime" ColumnName="LossOfTime" />
+                <ScalarProperty Name="DatesOutOfSchool" ColumnName="DatesOutOfSchool" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -11056,24 +11187,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="PatientVisitUnscheduleds">
-            <EntityTypeMapping TypeName="MIDASGBXModel.PatientVisitUnscheduled">
-              <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="DoctorName" ColumnName="DoctorName" />
-                <ScalarProperty Name="MedicalProviderName" ColumnName="MedicalProviderName" />
-                <ScalarProperty Name="EventStart" ColumnName="EventStart" />
-                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
-                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
