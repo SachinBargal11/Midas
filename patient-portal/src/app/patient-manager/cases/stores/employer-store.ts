@@ -7,17 +7,17 @@ import { EmployerService } from '../services/employer-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
-
+import { School } from '../models/school';
 @Injectable()
 export class EmployerStore {
 
     private _employers: BehaviorSubject<List<Employer>> = new BehaviorSubject(List([]));
-
+    private _schools: BehaviorSubject<List<School>> = new BehaviorSubject(List([]));
     constructor(
         private _employerService: EmployerService,
-        public sessionStore: SessionStore
+        private _sessionStore: SessionStore
     ) {
-        this.sessionStore.userLogoutEvent.subscribe(() => {
+        this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
@@ -38,10 +38,9 @@ export class EmployerStore {
         return <Observable<Employer[]>>Observable.fromPromise(promise);
     }
 
-   
-      getCurrentEmployer(patientId: Number): Observable<Employer> {
+    getCurrentEmployer(caseId: Number): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-            this._employerService.getCurrentEmployer(patientId).subscribe((employer: Employer) => {
+            this._employerService.getCurrentEmployer(caseId).subscribe((employer: Employer) => {
                 resolve(employer);
             }, error => {
                 reject(error);
@@ -113,6 +112,29 @@ export class EmployerStore {
                 });
         });
         return <Observable<Employer>>Observable.from(promise);
+    }
+
+    addSchool(school: School): Observable<School> {
+        let promise = new Promise((resolve, reject) => {
+            this._employerService.addSchool(school).subscribe((school: School) => {
+                this._schools.next(this._schools.getValue().push(school));
+                resolve(school);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<School>>Observable.from(promise);
+    }
+
+    getSchoolInformation(caseId: Number): Observable<School> {
+        let promise = new Promise((resolve, reject) => {
+            this._employerService.getSchoolInformation(caseId).subscribe((school: School) => {
+                resolve(school);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<School>>Observable.fromPromise(promise);
     }
 
     resetStore() {
