@@ -852,7 +852,12 @@ export class PatientVisitComponent implements OnInit {
     //     this.addImeVisitDialogVisible = false;
     //     this.addEoVisitDialogVisible = false;
     // }
-
+    refreshEvents(event) {
+        this.events = [];
+        this.loadAllVisitsByCompanyId();
+        this.loadEoVisits();
+        this.loadImeVisits();
+    }
     closeEventDialog() {
         this.eventDialogVisible = false;
         this.handleEventDialogHide();
@@ -1464,6 +1469,9 @@ export class PatientVisitComponent implements OnInit {
             // patientId: leaveEvent ? null : patientScheduleFormValues.patientId ? patientScheduleFormValues.patientId : this.idPatient,
             patientId: leaveEvent ? null : this.idPatient ? (this.idPatient) : patientScheduleFormValues.patientId,
             caseId: leaveEvent ? null : patientScheduleFormValues.caseId ? patientScheduleFormValues.caseId : this.caseId,
+            locationId: this.selectedLocationId,
+            doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+            roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
             isOutOfOffice: this.isGoingOutOffice,

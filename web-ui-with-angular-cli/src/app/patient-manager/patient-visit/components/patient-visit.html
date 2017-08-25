@@ -374,13 +374,13 @@
             </p-footer>
         </form>
     </div>
-    <div *ngIf="selectedVisitType =='2'">
+    <div *ngIf="selectedVisit && selectedVisitType =='2'">
         <br>
-        <ime-visit [selectedEvent]="selectedVisit.calendarEvent" (closeDialogBox)="closeEventDialog()"></ime-visit>
+        <ime-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
     </div>
-    <div *ngIf="selectedVisitType =='3'">
+    <div *ngIf="selectedVisit && selectedVisitType =='3'">
         <br>
-        <eo-visit [selectedEvent]="selectedVisit.calendarEvent" (closeDialogBox)="closeEventDialog()"></eo-visit>
+        <eo-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
     </div>
 </p-dialog>
 

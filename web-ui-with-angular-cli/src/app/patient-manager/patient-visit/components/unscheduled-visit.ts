@@ -62,6 +62,7 @@ export class UnscheduledVisitComponent implements OnInit {
     isAllDay: boolean;
     repeatType: string = '7';
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     cases: Case[];
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
@@ -221,6 +222,7 @@ export class UnscheduledVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshImeEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -239,6 +241,10 @@ export class UnscheduledVisitComponent implements OnInit {
 
     closeDialog() {
         this.closeDialogBox.emit();
+    }
+
+    refreshImeEvents() {
+        this.refreshEvents.emit();
     }
 
 }

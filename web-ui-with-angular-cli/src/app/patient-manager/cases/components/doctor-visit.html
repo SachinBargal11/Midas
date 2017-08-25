@@ -90,10 +90,10 @@
     </div>
 </p-dialog>
 
-<p-dialog *ngIf="selectedVisit && caseId && patientId" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
+<p-dialog *ngIf="caseId && patientId" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
     [(visible)]="unscheduledVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
     [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="unscheduledVisitDialogVisible && caseId && patientId">
-        <unscheduled-visit (closeDialogBox)="closeDialog()" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
+        <unscheduled-visit  (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
     </div>
 </p-dialog>

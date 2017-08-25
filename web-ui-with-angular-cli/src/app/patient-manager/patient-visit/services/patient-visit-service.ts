@@ -306,7 +306,7 @@ export class PatientVisitService {
             requestData.createByUserID = this._sessionStore.session.account.user.id;
             requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
             // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
-            requestData = _.omit(requestData, 'caseId');
+            // requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })

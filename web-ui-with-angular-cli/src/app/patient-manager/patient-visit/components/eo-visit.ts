@@ -183,6 +183,7 @@ export class EoVisitComponent implements OnInit {
     scheduledEventEditorFormControls;
     @Output() isValid = new EventEmitter();
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
             this._selectedEvent = value;
@@ -273,10 +274,10 @@ export class EoVisitComponent implements OnInit {
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
 
         this.userId = this.sessionStore.session.user.id;
@@ -287,10 +288,10 @@ export class EoVisitComponent implements OnInit {
                 this.userName = userDetail.firstName + ' ' + userDetail.lastName;
             },
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
 
         this._insuranceMasterStore.getAllInsuranceMasters()
@@ -298,10 +299,10 @@ export class EoVisitComponent implements OnInit {
                 this.insuranceMasters = insuranceMasters.reverse();
             },
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
@@ -313,7 +314,7 @@ export class EoVisitComponent implements OnInit {
         let eo = new EoVisit({
             doctorId: this.eoScheduleForm.value.doctorId,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
-            medicalProviderId: this.sessionStore.session.currentCompany.id,
+            VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             notes: this.eoScheduleForm.value.notes,
             createByUserID: this.sessionStore.session.account.user.id,
             calendarEvent: new ScheduledEvent({
@@ -324,7 +325,7 @@ export class EoVisitComponent implements OnInit {
             })
         });
 
-        this._progressBarService.show();
+        // this._progressBarService.show();
         result = this._patientVisitsStore.addEoVisit(eo);
         result.subscribe(
             (response) => {
@@ -335,6 +336,7 @@ export class EoVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshEuoEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -343,16 +345,19 @@ export class EoVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
     closeDialog() {
         this.closeDialogBox.emit();
+    }
+    refreshEuoEvents() {
+        this.refreshEvents.emit();
     }
 
     getDocuments() {

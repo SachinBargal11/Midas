@@ -318,6 +318,10 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.unscheduledVisitDialogVisible = false;
     }
 
+    refreshEvents(event) {
+        this.loadVisits();
+    }
+
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
