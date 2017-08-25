@@ -112,9 +112,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             using (UserPersonalSettingRepository cmp = new UserPersonalSettingRepository(_context))
 
             {
-                // BO.UserPersonalSetting userSettings = (BO.UserPersonalSetting)cmp.GetByUserAndCompanyId(userName, companyid);
-                BO.UserPersonalSetting userSettings = new BO.UserPersonalSetting();
-                userSettings.PreferredModeOfCommunication = 3;
+                 BO.UserPersonalSetting userSettings = (BO.UserPersonalSetting)cmp.GetByUserNameAndCompanyId(userName, companyid);
+                
+              
                 if (userSettings != null)
                 {
                     return (PreferedModeOfComunication)userSettings.PreferredModeOfCommunication;

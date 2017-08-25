@@ -120,6 +120,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Doctor DoctorBO = EOVisitBO.Doctor;
             string doctorUserName = string.Empty;
             bool sendNotification = false;
+            bool sendMessage = false;
 
             //CalenderEventBO
             if (CalendarEventBO != null)
@@ -251,20 +252,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     _context.SaveChanges();
 
                     #region send SMS notification 
-                    try
-                    {
-                        if (sendNotification)
-                        {
-                            if (doctorContactNumber != null && doctorContactNumber != string.Empty)
-                            {
-                                string to = doctorContactNumber;
-                                string body = "Your appointment has been scheduled at. ";
+                    //try
+                    //{
+                    //    if (sendNotification)
+                    //    {
+                    //        if (doctorContactNumber != null && doctorContactNumber != string.Empty)
+                    //        {
+                    //            string to = doctorContactNumber;
+                    //            string body = "Your appointment has been scheduled at. ";
 
-                                string msgid = SMSGateway.SendSMS(to, body);
-                            }
-                        }
-                    }
-                    catch (Exception) { }
+                    //            string msgid = SMSGateway.SendSMS(to, body);
+                    //        }
+                    //    }
+                    //}
+                    //catch (Exception) { }
                     #endregion
                 }
                 else
@@ -290,6 +291,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         EOVisitDB = new EOVisit();
                         Add_EOVisitDB = true;
+                        sendMessage = true;
                     }
                     else if (EOVisitDB == null && EOVisitBO.ID > 0)
                     {
@@ -359,6 +361,180 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             .Where(p => p.CalendarEvent.Id == CalendarEventDB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<EOVisit>();
+                }
+            }
+
+            if (sendMessage == true)
+            {
+                try
+                {
+                    IdentityHelper identityHelper = new IdentityHelper();
+
+                    User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                        .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault();
+
+                    int currentCompanyType = _context.Companies.Where(p => p.id == EOVisitBO.VisitCreatedByCompanyId).Select(p1 => p1.CompanyType).FirstOrDefault();
+
+
+                    List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                          .Where(p => p.UserType == 2 && p.UserCompanies.Where(p1 => p1.CompanyID == EOVisitBO.VisitCreatedByCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .ToList<User>();
+                    User patientInfo = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                      .Where(p => p.id == EOVisitBO.PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                          .FirstOrDefault();
+
+                    User doctorInfo = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                            .Where(p => p.id == EOVisitBO.DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    InsuranceMaster insuranceInfo = _context.InsuranceMasters
+                            .Where(p => p.Id == EOVisitBO.InsuranceProviderId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+
+                    string MailMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName+ "<br><br>Thanks";
+                    string NotificationForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName;
+                    string SmsMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName + "<br><br>Thanks";
+
+                    string MailMessageForDoctor = "Appointment has been scheduled with Insurance Company: "+ insuranceInfo.CompanyName + "<br><br>Thanks";
+                    string NotificationForDoctor = "Appointment has been scheduled with Insurance Company: " + insuranceInfo.CompanyName;
+                    string SmsMessageForDoctor = "Appointment has been scheduled with Insurance Company: " + insuranceInfo.CompanyName + "<br><br>Thanks";
+
+                    string MailMessageForStaff = "";
+                    string NotificationForStaff = "";
+                    string SmsMessageForStaff = "";
+                    if (currentCompanyType==2)
+                    {
+                        MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company"+ insuranceInfo.CompanyName + "<br><br>Thanks";
+                        NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName;
+                        SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName + "<br><br>Thanks";
+
+                    }
+                    else
+                    {
+                        MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName + "<br><br>Thanks";
+                        NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName;
+                        SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName + "<br><br>Thanks";
+
+                    }
+
+
+
+                    #region  patient mail object
+                    BO.EmailMessage emPatient = new BO.EmailMessage();
+                    if(patientInfo!=null)
+                    {
+                        emPatient.ApplicationName = "Midas";
+                        emPatient.ToEmail = patientInfo.UserName; //patientInfo.UserName;                 
+                        emPatient.EMailSubject = "MIDAS Notification";
+                        emPatient.EMailBody = MailMessageForPatient;
+                    }
+                    #endregion
+
+                    #region patient sms object
+                    BO.SMS smsPatient = new BO.SMS();
+                    if (patientInfo != null)
+                    {
+                        smsPatient.ApplicationName = "Midas";
+                        smsPatient.ToNumber = patientInfo.ContactInfo.CellPhone;
+                        smsPatient.Message = SmsMessageForPatient;
+                    }
+                    #endregion 
+
+                  
+
+                    #region  doctor mail object                 
+                    BO.EmailMessage emDoctor = new BO.EmailMessage();
+                    if(doctorInfo!=null)
+                    {
+                        emDoctor.ApplicationName = "Midas";
+                        emDoctor.ToEmail = doctorInfo.UserName; //doctorInfo.UserName;
+                        emDoctor.EMailSubject = "MIDAS Notification";
+                        emDoctor.EMailBody = MailMessageForDoctor;
+                    }                   
+                    #endregion                
+
+                    #region doctor sms object
+                    BO.SMS smsDoctor = new BO.SMS();
+                    if (doctorInfo != null)
+                    {
+                        smsDoctor.ApplicationName = "Midas";
+                        smsDoctor.ToNumber = doctorInfo.ContactInfo.CellPhone;
+                        smsDoctor.Message = SmsMessageForDoctor;
+                    }
+                    #endregion
+
+
+
+
+
+
+
+                    NotificationHelper nh = new NotificationHelper();
+                    MessagingHelper mh = new MessagingHelper();
+
+                    if(currentCompanyType == 2)   // 2 attorney
+                    {
+                        #region Patient
+                        nh.PushNotification(patientInfo.UserName, AdminUser.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForPatient, "New Patient Registration");  //patientInfo.UserName for Patient user email 
+                        mh.SendEmailAndSms(patientInfo.UserName, AdminUser.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emPatient, smsPatient);
+                        #endregion
+
+                        foreach (var item in lstStaff)
+                        {
+                            #region  staff mail object                 
+                            BO.EmailMessage emStaff = new BO.EmailMessage();
+                            emStaff.ApplicationName = "Midas";
+                            emStaff.ToEmail = item.UserName;
+                            emStaff.EMailSubject = "MIDAS Notification";
+                            emStaff.EMailBody = MailMessageForStaff;
+                            #endregion
+
+                            #region admin sms object
+                            BO.SMS smsStaff = new BO.SMS();
+                            smsStaff.ApplicationName = "Midas";
+                            smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                            smsStaff.Message = SmsMessageForStaff;
+                            #endregion
+
+                            nh.PushNotification(item.UserName, item.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForStaff, "New Appointment Schedule"); //item.UserName
+                            mh.SendEmailAndSms(item.UserName, item.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emStaff, smsStaff);
+                        }
+                    }
+                    else   // medical provider 
+                    {
+                        #region Doctor
+                        nh.PushNotification(doctorInfo.UserName, AdminUser.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForDoctor, "New Appointment Schedule");  //doctorInfo.UserName 
+                        mh.SendEmailAndSms(doctorInfo.UserName, AdminUser.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emDoctor, smsDoctor);
+                        #endregion
+
+                        foreach (var item in lstStaff)
+                        {
+                            #region  staff mail object                 
+                            BO.EmailMessage emStaff = new BO.EmailMessage();
+                            emStaff.ApplicationName = "Midas";
+                            emStaff.ToEmail = item.UserName;
+                            emStaff.EMailSubject = "MIDAS Notification";
+                            emStaff.EMailBody = MailMessageForStaff;
+                            #endregion
+
+                            #region staff sms object
+                            BO.SMS smsStaff = new BO.SMS();
+                            smsStaff.ApplicationName = "Midas";
+                            smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                            smsStaff.Message = SmsMessageForStaff;
+                            #endregion
+
+                            nh.PushNotification(item.UserName, item.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), NotificationForStaff, "New Appointment Schedule");
+                            mh.SendEmailAndSms(item.UserName, item.UserCompanies.Select(p => p.Company.id).FirstOrDefault(), emStaff, smsStaff);
+                        }
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+
                 }
             }
 
