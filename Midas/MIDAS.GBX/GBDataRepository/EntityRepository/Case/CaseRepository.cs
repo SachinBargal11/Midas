@@ -1100,13 +1100,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             if (lstStaff != null && patientInfo != null )
                             {
                                 string MailMessageForPatient = "<B> New Case Created</B></ BR >Medical provider has created your case from midas portal.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: "+AttorneyCompany.Name+"<br><br>Thanks";
-                                string NotificationForPatient = "<B> New Case Created</B></ BR >Medical provider has created your case with "+MedicalCompany.Name;
+                                string NotificationForPatient = "Medical provider has created your case with "+MedicalCompany.Name;
                                 string SmsMessageForPatient = "<B> New Case Created</B></ BR >Medical provider has created your case from midas portal.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
 
 
-                                string MailMessageForStaff = "<B> New Case Created</B></ BR >New case has been created for new patient.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
-                                string NotificationForStaff = "<B> New Case Created</B></ BR >New case has been created for new patient.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name;
-                                string SmsMessageForStaff = "<B> New Case Created</B></ BR >New case has been created for new patient.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
+                                string MailMessageForStaff = "<B> New Case Created</B></ BR >New case has been created for patient.<br>Patient Name: " + patientInfo.FirstName+" "+patientInfo.LastName + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
+                                string NotificationForStaff = "New case has been created for patient. Patient Name: " + patientInfo.FirstName + " " + patientInfo.LastName + " Attorney Provider Name: " + AttorneyCompany.Name;
+                                string SmsMessageForStaff = "<B> New Case Created</B></ BR >New case has been created for patient.<br>Patient Name: " + patientInfo.FirstName + " " + patientInfo.LastName + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
 
 
 
@@ -1203,6 +1203,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
                 #endregion
+
+                #region Case Edit
                 else if (IsEditMode)
                 {
                     var CurrentUser = _context.Users.Where(p => p.id == caseDB.UpdateByUserID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
@@ -1238,14 +1240,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                             if (lstStaff != null && patientInfo != null)
                             {
+                               
                                 string MailMessageForPatient = "<B>Case Updated</B></ BR >Medical provider has updated your case from midas portal.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
-                                string NotificationForPatient = "<B>Case Updated</B></ BR >Medical provider has updated your case with " + MedicalCompany.Name;
+                                string NotificationForPatient = "Medical provider has updated your case with " + MedicalCompany.Name;
                                 string SmsMessageForPatient = "<B>Case Updated</B></ BR >Medical provider has updated your case from midas portal.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
 
 
-                                string MailMessageForStaff = "<B>Case Updated</B></ BR >Necase has been updated .<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
-                                string NotificationForStaff = "<B>Case Updated</B></ BR >New case has been updated.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name;
-                                string SmsMessageForStaff = "<B>Case Updated</B></ BR >New case has been updated.<br>Medical Provider Name: " + MedicalCompany.Name + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
+                                string MailMessageForStaff = "<B>Case Updated</B></ BR >Case has been updated .<br>Patient Name: " + patientInfo.FirstName + " " + patientInfo.LastName + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
+                                string NotificationForStaff = "Case has been updated. Patient Name: " + patientInfo.FirstName + " " + patientInfo.LastName + " Attorney Provider Name: " + AttorneyCompany.Name;
+                                string SmsMessageForStaff = "<B>Case Updated</B></ BR >Case has been updated.<br>Patient Name: " + patientInfo.FirstName + " " + patientInfo.LastName + "<br>Attorney Provider Name: " + AttorneyCompany.Name + "<br><br>Thanks";
 
 
 
@@ -1339,6 +1342,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                 }
+                #endregion
             }
             catch (Exception ex)
             {

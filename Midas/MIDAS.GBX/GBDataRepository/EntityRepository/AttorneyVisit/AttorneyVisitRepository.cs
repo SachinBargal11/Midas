@@ -386,14 +386,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
 
-                    string MailMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Attorney: " + attorneyInfo.FirstName + " " + attorneyInfo.LastName + "<br><br>Thanks";                                                  
-                    string NotificationForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Attorney: " + attorneyInfo.FirstName + " " + attorneyInfo.LastName;                  
-                    string SmsMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Attorney: " + attorneyInfo.FirstName + " " + attorneyInfo.LastName + "<br><br>Thanks";
+                    string MailMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Attorney provider has scheduled a client visit with Attorney: " + attorneyInfo.FirstName + " " + attorneyInfo.LastName + "<br><br>Thanks";                                                  
+                    string NotificationForPatient = "Attorney provider has schedule a client visit with Attorney: " + attorneyInfo.FirstName + " " + attorneyInfo.LastName;                  
+                    string SmsMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Attorney provider has scheduled a patient visit with Attorney: " + attorneyInfo.FirstName + " " + attorneyInfo.LastName + "<br><br>Thanks";
                    
                                  
-                    string MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
-                    string NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
-                    string SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
+                    string MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment has been scheduled for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
+                    string NotificationForStaff = "A new Appointment has been scheduled for patient :" + patientInfo.FirstName + " " + patientInfo.LastName;
+                    string SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment has been scheduled for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
 
 
 

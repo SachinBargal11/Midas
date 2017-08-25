@@ -432,9 +432,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     string MailMessageForAdmin = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName + "<br><br>Thanks";
                     string MailMessageForAncillary= "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName + "<br><br>Thanks";
 
-                    string NotificationForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Doctor: " + IMEVisitBO.DoctorName;  
-                    string NotificationForAdmin = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName;                    
-                    string NotificationForAncillary = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName;
+                    string NotificationForPatient = "Medical provider has schedule a patient visit with Doctor: " + IMEVisitBO.DoctorName;  
+                    string NotificationForAdmin = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName;                    
+                    string NotificationForAncillary = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName;
 
                     string SmsMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Doctor: " + IMEVisitBO.DoctorName + "<br><br>Thanks";
                     string SmsMessageForAdmin = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + IMEVisitBO.DoctorName + "<br><br>Thanks";
@@ -442,7 +442,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                     string MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
-                    string NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
+                    string NotificationForStaff = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
                     string SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
 
 

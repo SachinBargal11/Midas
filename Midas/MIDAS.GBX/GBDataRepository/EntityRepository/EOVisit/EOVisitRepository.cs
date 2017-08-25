@@ -403,7 +403,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
                     string MailMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName+ "<br><br>Thanks";
-                    string NotificationForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName;
+                    string NotificationForPatient = "Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName;
                     string SmsMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has scheduled a visit with Insurance Company: " + insuranceInfo.CompanyName + "<br><br>Thanks";
 
                     string MailMessageForDoctor = "Appointment has been scheduled with Insurance Company: "+ insuranceInfo.CompanyName + "<br><br>Thanks";
@@ -416,14 +416,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (currentCompanyType==2)
                     {
                         MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company"+ insuranceInfo.CompanyName + "<br><br>Thanks";
-                        NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName;
+                        NotificationForStaff = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName;
                         SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName + "<br><br>Thanks";
 
                     }
                     else
                     {
                         MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName + "<br><br>Thanks";
-                        NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName;
+                        NotificationForStaff = "New Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName;
                         SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for doctor : " + doctorInfo.FirstName + " " + doctorInfo.LastName + "  with Insurance Company" + insuranceInfo.CompanyName + "<br><br>Thanks";
 
                     }

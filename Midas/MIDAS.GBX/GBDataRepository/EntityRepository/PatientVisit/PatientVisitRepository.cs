@@ -1702,10 +1702,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     string MailMessageForAncillary = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName + "<br><br>Thanks";
                     string MailMessageForDoctor = "Appointment has been scheduled for patient";
 
-                    string NotificationForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Doctor: " + doctorInfo.FirstName + " " + doctorInfo.LastName;
-                    string NotificationForAdmin = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" +doctorInfo.FirstName + " " + doctorInfo.LastName;
-                    string NotificationForAncillary = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName;
-                    string NotificationForDoctor = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
+                    string NotificationForPatient = "Medical provider has schedule a patient visit with Doctor: " + doctorInfo.FirstName + " " + doctorInfo.LastName;
+                    string NotificationForAdmin = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" +doctorInfo.FirstName + " " + doctorInfo.LastName;
+                    string NotificationForAncillary = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName;
+                    string NotificationForDoctor = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
 
                     string SmsMessageForPatient = "<B> New Appointment Scheduled</B></ BR >Medical provider has schedule a patient visit with Doctor: " + doctorInfo.FirstName + " " + doctorInfo.LastName + "<br><br>Thanks";
                     string SmsMessageForAdmin = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName + "<br><br>Thanks";
@@ -1713,11 +1713,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     string SmsMessageForDoctor = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
 
                     string MailMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
-                    string NotificationForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
+                    string NotificationForStaff = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName;
                     string SmsMessageForStaff = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + "<br><br>Thanks";
 
                     string MailMessageForAttorney = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName+"<br><br>Thanks";
-                    string NotificationForAttorney = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName;
+                    string NotificationForAttorney = "New Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName;
                     string SmsMessageForAttorney = "<B> New Appointment Scheduled</B></BR>A new Appointment schedule for patient : " + patientInfo.FirstName + " " + patientInfo.LastName + " is schedule with doctor:" + doctorInfo.FirstName + " " + doctorInfo.LastName + "<br><br>Thanks";
 
 

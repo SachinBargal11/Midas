@@ -1046,7 +1046,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new patient.<br><br> Patient email:- " + userBO.UserName + "";
 
                     string MailMessageForStaff = "<B> New Patient Registered</B></BR>Registration done for patient : " + PatientDB.User.FirstName + " " + PatientDB.User.LastName+"<br><br>Thanks";
-                    string NotificationForStaff = "<B> New Patient Registered</B></BR>Registration done for patient : " + PatientDB.User.FirstName + " " + PatientDB.User.LastName;
+                    string NotificationForStaff = "Registration done for patient : " + PatientDB.User.FirstName + " " + PatientDB.User.LastName;
                     string SmsMessageForStaff = "<B> New Patient Registered</B></BR>Registration done for patient :" + PatientDB.User.FirstName + " " + PatientDB.User.LastName + "<br><br>Thanks";
 
 
