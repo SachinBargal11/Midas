@@ -56,12 +56,14 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
-                        <label class="form-label">Choose Salary Type                                          
+                        <label class="form-label">Salary Type                                          
                                         </label>
-                        <div class="form-group">
+                        <label class="form-label"> {{hourOrYearly}}
+                                        </label>
+                        <!-- <div class="form-group">
                             <p-radioButton formControlName="salaryType" name="salaryType" value="1" label="Hourly" [(ngModel)]="hourOrYearly"></p-radioButton>
                             <p-radioButton formControlName="salaryType" name="salaryType" value="0" label="Yearly" [(ngModel)]="hourOrYearly"></p-radioButton>
-                        </div>
+                        </div> -->
                     </div>
                     <!--<div class="col-lg-4">
                         <label class="form-label"> Salary
@@ -70,7 +72,7 @@
                             <input formControlName="txtSalary" [ngModel]="currentEmployer.salary" type="text" class="form-control" placeholder="">
                         </div>
                     </div>-->
-                     <div class="col-lg-4">
+                    <div class="col-lg-4">
                         <label class="form-label"> Salary
                             </label>
                         <div class="form-group">
@@ -81,10 +83,11 @@
                     <div class="col-lg-4">
                         <label class="form-label">Any Loss of earnings,due to accident related injuries?                                          
                                         </label>
-                        <div class="form-group">
+                        <label class="form-label"> {{lossOfEarnings}}</label>
+                        <!-- <div class="form-group">
                             <p-radioButton formControlName="islossEarnings" name="islossEarnings" value="1" label="Yes" [(ngModel)]="lossOfEarnings"></p-radioButton>
                             <p-radioButton formControlName="islossEarnings" name="islossEarnings" value="0" label="No" [(ngModel)]="lossOfEarnings"></p-radioButton>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="row">
@@ -123,13 +126,14 @@
                     <div class="col-lg-4">
                         <label class="form-label">Did accident occur in course of employment?                                       
                                         </label>
-                        <div class="form-group">
+                        <label class="form-label"> {{accidentAtEmployment}}</label>
+                        <!-- <div class="form-group">
                             <div class="form-group">
                                 <p-radioButton formControlName="isAccidentAtEmployment" name="isAccidentAtEmployment" value="1" label="Yes" [(ngModel)]="accidentAtEmployment"></p-radioButton>
                                 <p-radioButton formControlName="isAccidentAtEmployment" name="isAccidentAtEmployment" value="0" label="No" [(ngModel)]="accidentAtEmployment"></p-radioButton>
                             </div>
-                        </div>
-                    </div>    
+                        </div> -->
+                    </div>
                 </div>
             </div>
         </section>
@@ -478,13 +482,13 @@
                             </div>
                         </div>-->
                         <div class="col-lg-4">
-                        <label class="form-label">Name of School
+                            <label class="form-label">Name of School
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{nameOfSchool}}
+                            <div class="form-group">
+                                <label class="form-label"> {{nameOfSchool}}
                             </label>
+                            </div>
                         </div>
-                    </div>
                         <!--<div class="col-lg-4">
                             <label class="form-label"> Grade
                                            
@@ -494,26 +498,27 @@
                             </div>
                         </div>-->
                         <div class="col-lg-4">
-                        <label class="form-label">Grade
+                            <label class="form-label">Grade
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{grade}}
+                            <div class="form-group">
+                                <label class="form-label"> {{grade}}
                             </label>
+                            </div>
                         </div>
-                    </div>
 
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <label class="form-label">Any Loss of time from school?
-                                          
                                         </label>
-                            <div class="form-group">
+                            <label class="form-label"> {{lossOfTime}}
+                                        </label>
+                            <!-- <div class="form-group">
                                 <div class="form-group">
                                     <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="1" label="Yes" [(ngModel)]="lossOfTime"></p-radioButton>
                                     <p-radioButton formControlName="islossTimeofSchool" name="islossTimeofSchool" value="0" label="No" [(ngModel)]="lossOfTime"></p-radioButton>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <!--<div class="col-lg-4">
                             <label class="form-label"> Date(s) out of school
@@ -524,14 +529,14 @@
                                 />
                             </div>
                         </div>-->
-                          <div class="col-lg-4">
-                        <label class="form-label">Date(s) out of school
+                        <div class="col-lg-4">
+                            <label class="form-label">Date(s) out of school
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{datesOutOfSchool}}
+                            <div class="form-group">
+                                <label class="form-label"> {{datesOutOfSchool}}
                             </label>
+                            </div>
                         </div>
-                    </div>
 
                     </div>
                 </div>

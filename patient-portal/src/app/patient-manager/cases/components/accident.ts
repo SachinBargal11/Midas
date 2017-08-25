@@ -15,6 +15,9 @@ import { Address } from '../../../commons/models/address';
 import { AccidentStore } from '../stores/accident-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
 import * as _ from 'underscore';
+import { environment } from '../../../../environments/environment';
+import { AccidentTreatment } from '../models/accident-treatment';
+import { AccidentWitness } from '../models/accident-witness';
 
 @Component({
     selector: 'accident',
@@ -46,6 +49,20 @@ export class AccidentInfoComponent implements OnInit {
     dateOfAdmissionLabel: string;
     accidentDateLabel: string;
 
+    policeAtScene = '0';
+    isWearingSeatbelt = '0';
+    isAirBagDeploy = '0';
+    isPhotoTaken = '0';
+    isAnyWitnesses = '0';
+    ambulance = '0';
+    treatedAndReleased = '0';
+    admitted = '0';
+    xraysTaken = '0';
+
+    witnesses: AccidentWitness[] = [];
+    selectedWitnesses: AccidentWitness[] = [];
+    treatmentMedicalFacilities: AccidentTreatment[] = [];
+    selectedTreatmentMedicalFacilities: AccidentTreatment[] = [];
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -89,11 +106,25 @@ export class AccidentInfoComponent implements OnInit {
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                         }
 
+                        this.witnesses = this.currentAccident.accidentWitnesses;
+                        this.treatmentMedicalFacilities = this.currentAccident.accidentTreatments;
+                        this.policeAtScene = String(this.currentAccident.policeAtScene) == '1' ? 'Yes' : 'No';
+                        this.isWearingSeatbelt = String(this.currentAccident.wearingSeatBelts) == '1' ? 'Yes' : 'No';
+                        this.isAirBagDeploy = String(this.currentAccident.airBagsDeploy) == '1' ? 'Yes' : 'No';
+                        this.isPhotoTaken = String(this.currentAccident.photosTaken) == '1' ? 'Yes' : 'No';
+                        this.isAnyWitnesses = String(this.currentAccident.witness) == '1' ? 'Yes' : 'No';
+                        this.ambulance = String(this.currentAccident.ambulance) == '1' ? 'Yes' : 'No';
+                        this.treatedAndReleased = String(this.currentAccident.treatedAndReleased) == '1' ? 'Yes' : 'No';
+                        this.admitted = String(this.currentAccident.admitted) == '1' ? 'Yes' : 'No';
+                        this.xraysTaken = String(this.currentAccident.xraysTaken) == '1' ? 'Yes' : 'No';
+
 
                     } else {
                         this.currentAccident = new Accident({
                             accidentAddress: new Address({}),
-                            hospitalAddress: new Address({})
+                            hospitalAddress: new Address({}),
+                            accidentWitnesses: new AccidentWitness({}),
+                            accidentTreatments: new AccidentTreatment({})
                         });
                     }
                 },

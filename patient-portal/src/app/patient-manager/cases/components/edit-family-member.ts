@@ -30,6 +30,7 @@ export class EditFamilyMemberComponent implements OnInit {
     isSaveProgress = false;
     familyMember: FamilyMember;
     caseId: number;
+    primaryContact: string
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -57,6 +58,7 @@ export class EditFamilyMemberComponent implements OnInit {
                     this.ethnicities = familyMember.ethnicitiesLabel;
                     this.relation = familyMember.relationLabel
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+                    this.primaryContact = String(this.familyMember.primaryContact) == '1' ? 'Yes' : 'No';
                 },
                 (error) => {
                     // this._router.navigate(['../../'], { relativeTo: this._route });
