@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c33ccc804f904856a68ed91753d03e44" Name="Diagram1">
+      <Diagram DiagramId="5ff30056bb1747e5bde49fa9ca7cab36" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AccidentTreatment" Width="1.5" PointX="11.25" PointY="106.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AccidentWitness" Width="1.5" PointX="11.25" PointY="119.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="112.125" IsExpanded="true" />

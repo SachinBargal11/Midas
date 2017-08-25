@@ -906,7 +906,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="HourOrYearly" Type="bit" />
           <Property Name="LossOfEarnings" Type="bit" />
           <Property Name="DatesOutOfWork" Type="nvarchar" MaxLength="128" />
-          <Property Name="HoursPerWeek" Type="numeric" Precision="3" Scale="2" />
+          <Property Name="HoursPerWeek" Type="numeric" Precision="5" Scale="2" />
           <Property Name="AccidentAtEmployment" Type="bit" />
         </EntityType>
         <EntityType Name="PatientFamilyMembers">
@@ -5859,7 +5859,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="HourOrYearly" Type="Boolean" />
           <Property Name="LossOfEarnings" Type="Boolean" />
           <Property Name="DatesOutOfWork" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="HoursPerWeek" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="HoursPerWeek" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="AccidentAtEmployment" Type="Boolean" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_PatientEmpInfo_AddressInfo_EmpAddressId" FromRole="PatientEmpInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientEmpInfo_Case_CaseId" FromRole="PatientEmpInfo" ToRole="Case" />

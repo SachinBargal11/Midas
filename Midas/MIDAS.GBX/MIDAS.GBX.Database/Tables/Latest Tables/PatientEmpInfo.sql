@@ -17,7 +17,7 @@ BEGIN
         [HourOrYearly] [Bit] NULL CONSTRAINT [DF_PatientEmpInfo_PerHourOrYearly] DEFAULT 0,
         [LossOfEarnings] [BIT] NULL CONSTRAINT [DF_PatientEmpInfo_LossOfEarnings] DEFAULT 0,
         [DatesOutOfWork] [NVARCHAR](128) NULL,
-        [HoursPerWeek] [NUMERIC](3,2) NULL,
+        [HoursPerWeek] [NUMERIC](5,2) NULL,
         [AccidentAtEmployment] [BIT] NULL CONSTRAINT [DF_PatientEmpInfo_AccidentAtEmployment] DEFAULT 0,
 
 	    [IsDeleted] [bit] NULL DEFAULT 0,
