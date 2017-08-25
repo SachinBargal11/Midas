@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-xl-6 dahsboard-column">
-        <section class="box-typical box-typical-dashboard panel panel-default">
+    <div class="col-xl-12 dahsboard-column">
+        <!--<section class="box-typical box-typical-dashboard panel panel-default">-->
             <!--<header class="box-typical-header panel-heading">
             <h4 class="panel-title">Personal Information</h4>-->
             <header class="card-header card-header-lg">
@@ -80,24 +80,24 @@
                             </div>
                         </div>
                     </article>
-                    <!--<article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Weight</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.weight}}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Height (cms)</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.height}}</p>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Weight</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.weight}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Height (cms)</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.height}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>-->
+                    </article>
                     <article class="contact-row">
                         <div class="user-card-row">
                             <div class="tbl-row">
@@ -188,9 +188,67 @@
                             </div>
                         </div>
                     </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Parent Or Guardian Name</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.parentOrGuardianName}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Emergency Contact Person</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.emergencyContactName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Emergency Contact Person Phone</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.emergencyContactPhone}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Spouse Name</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.spouseName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Preffered Language</p>
+                                </div>
+                                <div *ngIf="patientInfo.prefferedLanguage != 'other'" class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.prefferedLanguage}}</p>
+                                </div>
+                                <div *ngIf="patientInfo.prefferedLanguage == 'other'" class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{patientInfo.languagePreferenceOther}}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Social Media</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail" 
+                                    *ngFor="let media of socialMedia">{{media}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </section>
+        <!--</section>-->
     </div>
     <!-- <div class="col-xl-6 dahsboard-column">
     <section class="box-typical box-typical-dashboard panel panel-default">
@@ -338,118 +396,118 @@
 </div> -->
 
     <!-- <div class="col-xl-6 dahsboard-column">
-    <section class="box-typical box-typical-dashboard panel panel-default">
-        <header class="card-header card-header-lg">
-            Family Member
-        </header>
-        <div class="box-typical-body panel-body" *ngIf="noFamilyMember">
-            <div class="contact-row-list">
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-6">
-                                <p class="user-card-row-mail">{{noFamilyMember}}</p>
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="card-header card-header-lg">
+                Family Member
+            </header>
+            <div class="box-typical-body panel-body" *ngIf="noFamilyMember">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-6">
+                                    <p class="user-card-row-mail">{{noFamilyMember}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                </div>
             </div>
-        </div>
-        <div class="box-typical-body panel-body" *ngIf="familyMember">
-            <div class="contact-row-list">
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-name">Relation to patient</p>
-                            </div>
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-name">Name</p>
-                            </div>
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-name">Cellphone</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="contact-row" *ngFor="let family of familyMember">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{ family.relationLabel }}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{ family.displayName }}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{ family.cellPhone | phoneFormat }}</p>
+            <div class="box-typical-body panel-body" *ngIf="familyMember">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-name">Relation to patient</p>
+                                </div>
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-name">Name</p>
+                                </div>
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-name">Cellphone</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                    <article class="contact-row" *ngFor="let family of familyMember">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-mail">{{ family.relationLabel }}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-mail">{{ family.displayName }}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-mail">{{ family.cellPhone | phoneFormat }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
-</div> -->
+        </section>
+    </div> -->
 
     <!--<div class="col-xl-6 dahsboard-column">
-    <section class="box-typical box-typical-dashboard panel panel-default">
-        <header class="card-header card-header-lg">
-            Insurance Information
-        </header>
-        <div class="box-typical-body panel-body" *ngIf="noInsurances">
-            <div class="contact-row-list">
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-6">
-                                <p class="user-card-row-mail">{{noInsurances}}</p>
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="card-header card-header-lg">
+                Insurance Information
+            </header>
+            <div class="box-typical-body panel-body" *ngIf="noInsurances">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-6">
+                                    <p class="user-card-row-mail">{{noInsurances}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                </div>
             </div>
-        </div>
-        <div class="box-typical-body panel-body" *ngIf="insurances">
-            <div class="contact-row-list">
-                <article class="contact-row">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Policy Holder</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-name">Policy Owner</p>
-                            </div>
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-name">Insurance Company Code</p>
-                            </div>
-                            <div class="tbl-cell col-lg-2">
-                                <p class="user-card-row-name">Policy No</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="contact-row" *ngFor="let insurance of insurances">
-                    <div class="user-card-row">
-                        <div class="tbl-row">
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{ insurance.policyHoldersName  }}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{ insurance.policyOwnerLabel }}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{ insurance.insuranceCompanyCode }}</p>
-                            </div>
-                            <div class="tbl-cell col-lg-2">
-                                <p class="user-card-row-mail">{{ insurance.policyNo }}</p>
+            <div class="box-typical-body panel-body" *ngIf="insurances">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Policy Holder</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-name">Policy Owner</p>
+                                </div>
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-name">Insurance Company Code</p>
+                                </div>
+                                <div class="tbl-cell col-lg-2">
+                                    <p class="user-card-row-name">Policy No</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                    <article class="contact-row" *ngFor="let insurance of insurances">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{ insurance.policyHoldersName }}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-3">
+                                    <p class="user-card-row-mail">{{ insurance.policyOwnerLabel }}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-4">
+                                    <p class="user-card-row-mail">{{ insurance.insuranceCompanyCode }}</p>
+                                </div>
+                                <div class="tbl-cell col-lg-2">
+                                    <p class="user-card-row-mail">{{ insurance.policyNo }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
-</div>-->
+        </section>
+    </div>-->
 </div>

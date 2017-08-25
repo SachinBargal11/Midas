@@ -1,3 +1,5 @@
+import { UnscheduledVisitAdapter } from './adapters/unscheduled-visit-adapter';
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { Procedure } from '../../../commons/models/procedure';
 import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
@@ -91,6 +93,25 @@ export class PatientVisitService {
 
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
+        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let unscheduledVisit = (<Object[]>data).map((data: any) => {
+                        return UnscheduledVisitAdapter.parseResponse(data);
+                    });
+                    resolve(unscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
     }
 
     getVisitsByDatesAndDoctorId(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
@@ -285,7 +306,7 @@ export class PatientVisitService {
             requestData.createByUserID = this._sessionStore.session.account.user.id;
             requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
             // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
-            requestData = _.omit(requestData, 'caseId');
+            // requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -452,6 +473,7 @@ export class PatientVisitService {
             })
             requestData.patientVisitProcedureCodes = procedures;
             requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
+            requestData.VisitCreatedByCompanyId = this._sessionStore.session.currentCompany.id;
             requestData = _.omit(requestData, 'calendarEvent');
             return this._http.post(this._url + '/IMEvisit/SaveIMEVisit', JSON.stringify(requestData), {
                 headers: this._headers
@@ -545,6 +567,22 @@ export class PatientVisitService {
                 });
         });
         return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
+    addUnscheduledVisit(requestData: any): Observable<UnscheduledVisit> {
+        let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/patientVisitUnscheduled/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
     }
 
     getPatientVisitsByCompanyId(): Observable<PatientVisit[]> {

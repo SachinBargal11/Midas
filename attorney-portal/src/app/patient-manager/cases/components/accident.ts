@@ -17,6 +17,9 @@ import { PatientsStore } from '../../patients/stores/patients-store';
 import * as _ from 'underscore';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
+import { environment } from '../../../../environments/environment';
+import { AccidentTreatment } from '../models/accident-treatment';
+import { AccidentWitness } from '../models/accident-witness';
 
 @Component({
     selector: 'accident',
@@ -26,7 +29,7 @@ import { Case } from '../models/case';
 export class AccidentInfoComponent implements OnInit {
     states: any[];
     dateOfAdmission: Date;
-    dateOfAdmissionLabel:string;
+    dateOfAdmissionLabel: string;
     accidentDate: Date;
     accidentDateLabel: string;
     maxDate: Date;
@@ -49,8 +52,27 @@ export class AccidentInfoComponent implements OnInit {
     hospAddId: number;
     caseDetail: Case;
     caseStatusId: number;
-    caseViewedByOriginator:boolean = false;
+    caseViewedByOriginator: boolean = false;
 
+    policeAtScene = '0';
+    isWearingSeatbelt = '0';
+    isAirBagDeploy = '0';
+    isPhotoTaken = '0';
+    isAnyWitnesses = '0';
+    ambulance = '0';
+    treatedAndReleased = '0';
+    admitted = '0';
+    xraysTaken = '0';
+
+    witnesses: AccidentWitness[] = [];
+    selectedWitnesses: AccidentWitness[] = [];
+    treatmentMedicalFacilities: AccidentTreatment[] = [];
+    selectedTreatmentMedicalFacilities: AccidentTreatment[] = [];
+
+    files: any[] = [];
+    method: string = 'POST';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    url;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -83,24 +105,38 @@ export class AccidentInfoComponent implements OnInit {
                             ? this.currentAccident.dateOfAdmission.toDate()
                             : null;
 
-                       this.dateOfAdmissionLabel =  this.currentAccident.dateOfAdmission.format('MMM Do YY');
+                        this.dateOfAdmissionLabel = this.currentAccident.dateOfAdmission.format('MMM Do YY');
 
                         this.accidentDate = this.currentAccident.accidentDate
                             ? this.currentAccident.accidentDate.toDate()
                             : null;
-                            
+
                         this.accidentDateLabel = this.currentAccident.accidentDate.format('MMM Do YY');
 
                         if (this.currentAccident.accidentAddress.state || this.currentAccident.hospitalAddress.state) {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                         }
+                        
+                        this.witnesses = this.currentAccident.accidentWitnesses;
+                        this.treatmentMedicalFacilities = this.currentAccident.accidentTreatments;
+                        this.policeAtScene = String(this.currentAccident.policeAtScene);
+                        this.isWearingSeatbelt = String(this.currentAccident.wearingSeatBelts);
+                        this.isAirBagDeploy = String(this.currentAccident.airBagsDeploy);
+                        this.isPhotoTaken = String(this.currentAccident.photosTaken);
+                        this.isAnyWitnesses = String(this.currentAccident.witness);
+                        this.ambulance = String(this.currentAccident.ambulance);
+                        this.treatedAndReleased = String(this.currentAccident.treatedAndReleased);
+                        this.admitted = String(this.currentAccident.admitted);
+                        this.xraysTaken = String(this.currentAccident.xraysTaken);
 
 
                     } else {
                         this.currentAccident = new Accident({
                             accidentAddress: new Address({}),
-                            hospitalAddress: new Address({})
+                            hospitalAddress: new Address({}),
+                            accidentWitnesses: new AccidentWitness({}),
+                            accidentTreatments: new AccidentTreatment({}),
                         });
                     }
                 },
@@ -119,10 +155,10 @@ export class AccidentInfoComponent implements OnInit {
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
-                    if(caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id){
-                    this.caseViewedByOriginator = false;
-                    }else{
-                    this.caseViewedByOriginator = true;
+                    if (caseDetail.orignatorCompanyId != _sessionStore.session.currentCompany.id) {
+                        this.caseViewedByOriginator = false;
+                    } else {
+                        this.caseViewedByOriginator = true;
                     }
                     this.caseStatusId = caseDetail.caseStatusId;
                 },
@@ -157,18 +193,103 @@ export class AccidentInfoComponent implements OnInit {
             accidentCity: [''],
             accidentZipcode: [''],
             accidentCountry: [''],
-            medicalReportNumber: ['']
+            medicalReportNumber: [''],
+            weather: [''],
+            policeAtScene: [''],
+            precinct: [''],
+            isWearingSeatbelt: [''],
+            isAirBagDeploy: [''],
+            isPhotoTaken: [''],
+            accidentDescription: [''],
+            isAnyWitnesses: [''],
+            witnessName: [''],
+            witnessPhoneNumber: [''],
+            ambulance: [''],
+            treatedAndReleased: [''],
+            admitted: [''],
+            xraysTaken: [''],
+            durationAtHospital: [''],
+            treatmentMedicalFacilityName: [''],
+            treatmentDoctorName: [''],
+            treatmentContactNumber: [''],
+            treatmentAddress: [''],
         });
         this.accidentformControls = this.accidentform.controls;
     }
 
     ngOnInit() {
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+    }
+    deletePhoto(file) {
+        this.files = _.reject(this.files, (currFile) => {
+            return currFile == file;
+        })
+        this.files = _.union(this.files);
+    }
+
+    myUploader(event) {
+        this.files = event.files;
+    }
+
+    uploadProfileImage(patientId: number) {
+        if (this.files.length != 0 && this.isPhotoTaken == '1') {
+            let xhr = new XMLHttpRequest(),
+                formData = new FormData();
+
+            for (let i = 0; i < this.files.length; i++) {
+                formData.append(this.files[i].name, this.files[i], this.files[i].name);
+            }
+
+            xhr.open(this.method, this.url, true);
+            xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+            // xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+
+            xhr.withCredentials = false;
+
+            xhr.send(formData);
+        }
+    }
+
+    addWitness() {
+        let accidentformValues = this.accidentform.value;
+        if (accidentformValues.witnessName != '') {
+            let witness = new AccidentWitness({
+                witnessName: accidentformValues.witnessName,
+                witnessContactNumber: accidentformValues.witnessPhoneNumber
+            })
+            this.witnesses.push(witness);
+            this.witnesses = _.union(this.witnesses);
+        }
+    }
+    removeWitnessFromList(witnessName, witnessPhoneNumber) {
+        this.witnesses = _.reject(this.witnesses, (currWitness: any) => {
+            return currWitness.witnessName == witnessName && currWitness.witnessPhoneNumber == witnessPhoneNumber;
+        })
+    }
+
+    addTreatmentMedicalFacility() {
+        let accidentformValues = this.accidentform.value;
+        if (accidentformValues.treatmentMedicalFacilityName != '' && accidentformValues.treatmentContactNumber != '' && accidentformValues.treatmentAddress != '') {
+            let treatmentMedicalFacility = new AccidentTreatment({
+                medicalFacilityName: accidentformValues.treatmentMedicalFacilityName,
+                doctorName: accidentformValues.treatmentDoctorName,
+                contactNumber: accidentformValues.treatmentContactNumber,
+                address: accidentformValues.treatmentAddress
+            })
+            this.treatmentMedicalFacilities.push(treatmentMedicalFacility);
+            this.treatmentMedicalFacilities = _.union(this.treatmentMedicalFacilities);
+        }
+    }
+    removeTreatmentMedicalFacilityFromList(treatmentMedicalFacilityName, treatmentContactNumber) {
+        this.treatmentMedicalFacilities = _.reject(this.treatmentMedicalFacilities, (currTreatmentMedicalFacility: any) => {
+            return currTreatmentMedicalFacility.treatmentMedicalFacilityName == treatmentMedicalFacilityName && currTreatmentMedicalFacility.treatmentContactNumber == treatmentContactNumber;
+        })
     }
 
     save() {
@@ -177,6 +298,23 @@ export class AccidentInfoComponent implements OnInit {
         let accidentformValues = this.accidentform.value;
         let addResult;
         let result;
+        let accidentWitnesses: any[] = [];
+        let accidentTreatments: any[] = [];
+        _.forEach(this.witnesses, (currWitness: AccidentWitness) => {
+            accidentWitnesses.push({
+                WitnessName: currWitness.witnessName,
+                WitnessContactNumber: currWitness.witnessContactNumber,
+            })
+        })
+        _.forEach(this.treatmentMedicalFacilities, (currAccidentTreatment: AccidentTreatment) => {
+            accidentTreatments.push({
+                MedicalFacilityName: currAccidentTreatment.medicalFacilityName,
+                DoctorName: currAccidentTreatment.doctorName,
+                ContactNumber: currAccidentTreatment.contactNumber,
+                Address: currAccidentTreatment.address,
+            })
+        })
+
         let accident = new Accident({
 
             caseId: this.caseId,
@@ -190,6 +328,23 @@ export class AccidentInfoComponent implements OnInit {
             additionalPatients: accidentformValues.additionalPatient,
             accidentDate: accidentformValues.doa ? moment(accidentformValues.doa) : null,
             medicalReportNumber: accidentformValues.medicalReportNumber,
+
+            weather: accidentformValues.weather,
+            policeAtScene: parseInt(accidentformValues.policeAtScene),
+            precinct: accidentformValues.precinct,
+            wearingSeatBelts: parseInt(accidentformValues.isWearingSeatbelt),
+            airBagsDeploy: parseInt(accidentformValues.isAirBagDeploy),
+            photosTaken: parseInt(accidentformValues.isPhotoTaken),
+            accidentDescription: accidentformValues.accidentDescription,
+            witness: parseInt(accidentformValues.isAnyWitnesses),
+            ambulance: parseInt(accidentformValues.ambulance),
+            treatedAndReleased: parseInt(accidentformValues.treatedAndReleased),
+            admitted: parseInt(accidentformValues.admitted),
+            xraysTaken: parseInt(accidentformValues.xraysTaken),
+            durationAtHospital: accidentformValues.durationAtHospital,
+            accidentWitnesses: this.isAnyWitnesses == '1' ? accidentWitnesses : [],
+            accidentTreatments: accidentTreatments,
+
             accidentAddress: new Address({
                 id: this.currentAccident.accidentAddress.id,
                 address1: accidentformValues.accidentAddress,
@@ -216,6 +371,7 @@ export class AccidentInfoComponent implements OnInit {
             result = this._accidentStore.updateAccident(accident, this.currentAccident.id);
             result.subscribe(
                 (response) => {
+                    this.uploadProfileImage(response.id);
                     let notification = new Notification({
                         'title': 'Accident information updated successfully!',
                         'type': 'SUCCESS',

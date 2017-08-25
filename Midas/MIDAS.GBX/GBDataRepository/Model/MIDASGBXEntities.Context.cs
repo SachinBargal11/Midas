@@ -27,6 +27,8 @@ namespace MIDAS.GBX.DataRepository.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AccidentTreatment> AccidentTreatments { get; set; }
+        public virtual DbSet<AccidentWitness> AccidentWitnesses { get; set; }
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
@@ -50,6 +52,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
+        public virtual DbSet<DefendantVehicle> DefendantVehicles { get; set; }
         public virtual DbSet<DiagnosisCode> DiagnosisCodes { get; set; }
         public virtual DbSet<DiagnosisCodeCompany> DiagnosisCodeCompanies { get; set; }
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
@@ -91,8 +94,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientVisit> PatientVisits { get; set; }
         public virtual DbSet<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
         public virtual DbSet<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
+        public virtual DbSet<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
         public virtual DbSet<PendingReferral> PendingReferrals { get; set; }
         public virtual DbSet<PendingReferralProcedureCode> PendingReferralProcedureCodes { get; set; }
+        public virtual DbSet<PlaintiffVehicle> PlaintiffVehicles { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
         public virtual DbSet<PreferredAncillaryProvider> PreferredAncillaryProviders { get; set; }
         public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
@@ -108,6 +113,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<RoomTest> RoomTests { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<ScheduleDetail> ScheduleDetails { get; set; }
+        public virtual DbSet<SchoolInformation> SchoolInformations { get; set; }
         public virtual DbSet<SocialMedia> SocialMedias { get; set; }
         public virtual DbSet<SpecialityDetail> SpecialityDetails { get; set; }
         public virtual DbSet<Specialty> Specialties { get; set; }

@@ -171,38 +171,39 @@ export class EoVisitComponent implements OnInit {
     // ancillaryProviderId: number = null;
     // allPrefferesAncillaries: AncillaryMaster[];
     // referredBy: string = '';
-    // private _selectedEvent: ScheduledEvent;
+    private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
     isAllDay: boolean;
     repeatType: string = '7';
-    name: string = 'Appointment for EO';
-
+    name: string = 'Appointment for EUO';
+    // @Input() selectedEventDate;
     scheduledEventEditorForm: FormGroup;
     scheduledEventEditorFormControls;
     @Output() isValid = new EventEmitter();
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
-    // @Input() set selectedEvent(value: ScheduledEvent) {
-    //     if (value) {
-    //         this._selectedEvent = value;
-    //         this.name = this._selectedEvent.name;
-    //         this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
-    //         this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
-    //         this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-    //         this.isAllDay = this._selectedEvent.isAllDay;
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
+    @Input() set selectedEvent(value: ScheduledEvent) {
+        if (value) {
+            this._selectedEvent = value;
+            this.name = this._selectedEvent.name;
+            this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
+            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
+            this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
+            this.isAllDay = this._selectedEvent.isAllDay;
 
-    //     } else {
-    //         this._selectedEvent = null;
-    //         this.eventStartAsDate = null;
-    //         this.eventEndAsDate = null;
-    //         this.isAllDay = false;
-    //     }
-    // }
+        } else {
+            this._selectedEvent = null;
+            this.eventStartAsDate = null;
+            this.eventEndAsDate = null;
+            this.isAllDay = false;
+        }
+    }
 
-    // get selectedEvent(): ScheduledEvent {
-    //     return this._selectedEvent;
-    // }
+    get selectedEvent(): ScheduledEvent {
+        return this._selectedEvent;
+    }
 
     constructor(
         public _route: ActivatedRoute,
@@ -236,9 +237,11 @@ export class EoVisitComponent implements OnInit {
             notes: [''],
             insuranceProviderId: [''],
             name: ['', Validators.required],
-            eventStartDate: [''],
+            eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
+            // duration: ['', Validators.required],
         });
         // this.loadPrefferdAncillaries();
         this.eoScheduleFormControls = this.eoScheduleForm.controls;
@@ -252,6 +255,7 @@ export class EoVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.eventStartAsDate = this.selectedEventDate;
         // this.loadVisits();
         this.header = {
             left: 'prev,next today',
@@ -270,10 +274,10 @@ export class EoVisitComponent implements OnInit {
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
 
         this.userId = this.sessionStore.session.user.id;
@@ -284,10 +288,10 @@ export class EoVisitComponent implements OnInit {
                 this.userName = userDetail.firstName + ' ' + userDetail.lastName;
             },
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
 
         this._insuranceMasterStore.getAllInsuranceMasters()
@@ -295,10 +299,10 @@ export class EoVisitComponent implements OnInit {
                 this.insuranceMasters = insuranceMasters.reverse();
             },
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
@@ -310,17 +314,18 @@ export class EoVisitComponent implements OnInit {
         let eo = new EoVisit({
             doctorId: this.eoScheduleForm.value.doctorId,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
-            medicalProviderId: this.sessionStore.session.currentCompany.id,
+            VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             notes: this.eoScheduleForm.value.notes,
             createByUserID: this.sessionStore.session.account.user.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
-                eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+                // eventEnd: moment(this.eventEndAsDate).add(this.duration, 'minutes'),
+                eventEnd: moment(this.eventEndAsDate),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
             })
         });
 
-        this._progressBarService.show();
+        // this._progressBarService.show();
         result = this._patientVisitsStore.addEoVisit(eo);
         result.subscribe(
             (response) => {
@@ -331,6 +336,7 @@ export class EoVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshEuoEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -339,16 +345,19 @@ export class EoVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
     closeDialog() {
         this.closeDialogBox.emit();
+    }
+    refreshEuoEvents() {
+        this.refreshEvents.emit();
     }
 
     getDocuments() {

@@ -5,20 +5,26 @@ import { Contact } from '../../commons/models/contact';
 
 const EmployerRecord = Record({
     id: 0,
-    patientId: 0,
+    caseId: 0,
     jobTitle: '',
     empName: '',
-    isCurrentEmp: true,
+    isCurrentEmp: false,
     createByUserID: 0,
     createDate: moment(),
     address: null,
-    contact: null
+    contact: null,
+    salary: null,
+    hourOrYearly: false,
+    lossOfEarnings: false,
+    datesOutOfWork: null,
+    hoursPerWeek: null,
+    accidentAtEmployment: false,
 });
 
 export class Employer extends EmployerRecord {
 
     id: number;
-    patientId: number;
+    caseId: number;
     jobTitle: string;
     empName: string;
     isCurrentEmp: boolean;
@@ -26,6 +32,12 @@ export class Employer extends EmployerRecord {
     createDate: moment.Moment;
     address: Address;
     contact: Contact;
+    salary: string;
+    hourOrYearly: boolean;
+    lossOfEarnings: boolean;
+    datesOutOfWork: string;
+    hoursPerWeek: string;
+    accidentAtEmployment: boolean;
 
     constructor(props) {
         super(props);

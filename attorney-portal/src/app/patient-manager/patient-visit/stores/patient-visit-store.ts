@@ -391,5 +391,51 @@ export class PatientVisitsStore {
         });
         return <Observable<any>>Observable.from(promise);
     }
+
+     getEoVisitByCompanyId(companyId: number): Observable<EoVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getEoVisitByCompanyId().subscribe((eoVisits: EoVisit[]) => {
+                // this._eoVisits.next(List(eoVisits));
+                resolve(eoVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<EoVisit[]>>Observable.fromPromise(promise);
+    }
+    
+    updateEoVisitDetail(eoVisit: EoVisit): Observable<EoVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.updateEoVisitDetail(eoVisit).subscribe((updatedPatientVisit: EoVisit) => {
+                let eoVisitDetail: List<EoVisit> = this._eoVisits.getValue();
+                let index = eoVisitDetail.findIndex((currentPatientVisit: EoVisit) => currentPatientVisit.id === updatedPatientVisit.id);
+                eoVisitDetail = eoVisitDetail.update(index, function () {
+                    return updatedPatientVisit;
+                });
+                this._eoVisits.next(eoVisitDetail);
+                resolve(updatedPatientVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<EoVisit>>Observable.from(promise);
+    }
+
+    updateImeVisitDetail(imeVisit: ImeVisit): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.updateImeVisitDetail(imeVisit).subscribe((updatedPatientVisit: ImeVisit) => {
+                let imeVisitDetail: List<ImeVisit> = this._imeVisits.getValue();
+                let index = imeVisitDetail.findIndex((currentPatientVisit: ImeVisit) => currentPatientVisit.id === updatedPatientVisit.id);
+                imeVisitDetail = imeVisitDetail.update(index, function () {
+                    return updatedPatientVisit;
+                });
+                this._imeVisits.next(imeVisitDetail);
+                resolve(updatedPatientVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit>>Observable.from(promise);
+    }
 }
 

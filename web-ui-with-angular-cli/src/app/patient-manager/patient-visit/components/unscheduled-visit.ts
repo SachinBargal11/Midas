@@ -1,5 +1,5 @@
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { Session } from '../../../commons/models/session';
-import { ImeVisit } from '../models/ime-visit';
 import { User } from '../../../commons/models/user';
 import { Case } from '../../cases/models/case';
 import { Observable } from 'rxjs/Observable';
@@ -24,25 +24,27 @@ import { Document } from '../../../commons/models/document';
 import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
-import { AncillaryMasterStore } from '../../../account-setup/stores/ancillary-store';
-import { AncillaryMaster } from '../../../account-setup/models/ancillary-master';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { CasesStore } from '../../../patient-manager/cases/stores/case-store';
+import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
+import { Speciality } from '../../../account-setup/models/speciality';
+import { LeaveEventEditorComponent } from '../../../medical-provider/calendar/components/leave-event-editor';
+import { LeaveEvent } from '../../../commons/models/leave-event';
 
 @Component({
-    selector: 'unschedule-visit',
-    templateUrl: './unschedule-visit.html'
+    selector: 'unscheduled-visit',
+    templateUrl: './unscheduled-visit.html'
 })
 
-export class UnscheduleVisitComponent implements OnInit {
+export class UnscheduledVisitComponent implements OnInit {
 
     patients: Patient[] = [];
     eventDialogVisible: boolean = false;
     visitDialogVisible: boolean = false;
-    unscheduleForm: FormGroup;
-    unscheduleFormControls;
-    unscheduleVisitForm: FormGroup;
-    unscheduleVisitFormControls;
+    unscheduledForm: FormGroup;
+    unscheduledFormControls;
+    unscheduledVisitForm: FormGroup;
+    unscheduledVisitFormControls;
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     documents: VisitDocument[] = [];
@@ -60,11 +62,17 @@ export class UnscheduleVisitComponent implements OnInit {
     isAllDay: boolean;
     repeatType: string = '7';
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     cases: Case[];
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
+    specialities: Speciality[];
+    @Input() caseId: number;
+    @Input() idPatient: number;
+    caseDetail: Case;
+    patient: Patient;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -89,32 +97,52 @@ export class UnscheduleVisitComponent implements OnInit {
         private _confirmationService: ConfirmationService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
-        private _ancillaryMasterStore: AncillaryMasterStore,
         private _casesStore: CasesStore,
+        private _specialityStore: SpecialityStore,
+
     ) {
-        this.unscheduleForm = this._fb.group({
+        this.unscheduledForm = this._fb.group({
             patientId: ['', Validators.required],
             caseId: ['', Validators.required],
             notes: [''],
             medicalProviderName: ['', Validators.required],
             doctorName: ['', Validators.required],
+            speciality: [''],
             eventStartDate: [''],
-            eventStartTime: [''],
-            duration: ['', Validators.required],
+            // eventStartTime: [''],
+            // duration: ['', Validators.required],
         });
 
-        this.unscheduleFormControls = this.unscheduleForm.controls;
+        this.unscheduledFormControls = this.unscheduledForm.controls;
 
-        this.unscheduleVisitForm = this._fb.group({
+        this.unscheduledVisitForm = this._fb.group({
             notes: ['', Validators.required],
             visitStatusId: [''],
             readingDoctor: ['']
         });
 
-        this.unscheduleVisitFormControls = this.unscheduleVisitForm.controls;
+        this.unscheduledVisitFormControls = this.unscheduledVisitForm.controls;
     }
 
     ngOnInit() {
+        if (this.idPatient && this.caseId) {
+            let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
+            Observable.forkJoin([fetchPatient, fetchCaseDetail])
+                .subscribe(
+                (results) => {
+                    this.patient = results[0];
+                    this.caseDetail = results[1];
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
         this._patientsStore.getPatientsWithOpenCases()
             .subscribe(
             (patient: Patient[]) => {
@@ -127,6 +155,28 @@ export class UnscheduleVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+
+        this.loadAllSpecialitiesAndTests();
+    }
+
+    loadAllSpecialitiesAndTests() {
+        this._progressBarService.show();
+        let fetchAllSpecialities = this._specialityStore.getSpecialities();
+        // let fetchAllTestFacilties = this._roomsStore.getTests();
+        Observable.forkJoin([fetchAllSpecialities])
+            .subscribe(
+            (results: any) => {
+                this.specialities = results[0];
+                // this.tests = results[1];
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+
     }
 
     selectPatient(event) {
@@ -139,28 +189,30 @@ export class UnscheduleVisitComponent implements OnInit {
 
     saveEvent() {
         this.isSaveProgress = true;
-        let unscheduleFormValues = this.unscheduleForm.value;
+        let unscheduledFormValues = this.unscheduledForm.value;
         let result;
-        let ime = new ImeVisit({
-            patientId: this.unscheduleForm.value.patientId,
-            caseId: this.unscheduleForm.value.caseId,
-            medicalProviderName: this.unscheduleForm.value.medicalProviderName,
-            doctorName: this.unscheduleForm.value.doctorName,
-            notes: this.unscheduleForm.value.notes,
+        let unscheduled = new UnscheduledVisit({
+            patientId: this.idPatient,
+            caseId: this.caseId,
+            medicalProviderName: this.unscheduledForm.value.medicalProviderName,
+            doctorName: this.unscheduledForm.value.doctorName,
+            speciality: this.unscheduledForm.value.speciality,
+            notes: this.unscheduledForm.value.notes,
             createByUserID: this.sessionStore.session.account.user.id,
+            eventStart: moment(this.eventStartAsDate),
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
                 eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
-                // eventStartDate: this.unscheduleForm.value.eventStartDate,
-                // duration: this.unscheduleForm.value.duration,
-                // ancillaryProviderId: this.unscheduleForm.value.ancillaryProviderId,
+                // eventStartDate: this.unscheduledForm.value.eventStartDate,
+                // duration: this.unscheduledForm.value.duration,
+                // ancillaryProviderId: this.unscheduledForm.value.ancillaryProviderId,
             })
         });
 
         this._progressBarService.show();
 
-        result = this._patientVisitsStore.addImeVisit(ime);
+        result = this._patientVisitsStore.addUnscheduledVisit(unscheduled);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -170,6 +222,7 @@ export class UnscheduleVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshImeEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -188,6 +241,10 @@ export class UnscheduleVisitComponent implements OnInit {
 
     closeDialog() {
         this.closeDialogBox.emit();
+    }
+
+    refreshImeEvents() {
+        this.refreshEvents.emit();
     }
 
 }

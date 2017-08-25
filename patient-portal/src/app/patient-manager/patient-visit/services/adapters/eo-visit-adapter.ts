@@ -6,7 +6,7 @@ import { ScheduledEventAdapter } from '../../../../medical-provider/locations/se
 import { PatientAdapter } from '../../../../patient-manager/patients/services/adapters/patient-adapter';
 import { LocationAdapter } from '../../../../medical-provider/users/services/adapters/location-adapter';
 import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
-
+import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 export class EoVisitAdapter {
     static parseResponse(data: any): EoVisit {
 
@@ -22,7 +22,7 @@ export class EoVisitAdapter {
             doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
             doctorId: data.doctorId,
             insuranceProviderId: data.insuranceProviderId,
-            medicalProviderId: data.medicalProviderId,
+            VisitCreatedByCompanyId: data.VisitCreatedByCompanyId,
             eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
             eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,
             notes: data.notes,
@@ -33,7 +33,8 @@ export class EoVisitAdapter {
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-
+            company: data.medicalProvider ? CompanyAdapter.parseResponse(data.medicalProvider) : null,
+            patient: data.patient ? PatientAdapter.parseResponse(data.patient) : null,
         });
 
         return eoVisit;

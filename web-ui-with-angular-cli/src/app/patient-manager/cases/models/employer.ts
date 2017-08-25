@@ -12,7 +12,13 @@ const EmployerRecord = Record({
     createByUserID: 0,
     createDate: moment(),
     address: null,
-    contact: null
+    contact: null,
+    salary: null,
+    hourOrYearly: false,
+    lossOfEarnings: false,
+    datesOutOfWork: null,
+    hoursPerWeek: null,
+    accidentAtEmployment: false,
 });
 
 export class Employer extends EmployerRecord {
@@ -26,6 +32,12 @@ export class Employer extends EmployerRecord {
     createDate: moment.Moment;
     address: Address;
     contact: Contact;
+    salary: string;
+    hourOrYearly: boolean;
+    lossOfEarnings: boolean;
+    datesOutOfWork: string;
+    hoursPerWeek: string;
+    accidentAtEmployment: boolean;
 
     constructor(props) {
         super(props);

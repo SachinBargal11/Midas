@@ -259,6 +259,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\DefendantVehicleController.cs" />
     <Compile Include="Controllers\DocumentManagerController.cs" />
     <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -282,11 +283,13 @@
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
     <Compile Include="Controllers\PendingReferralController.cs" />
+    <Compile Include="Controllers\PlaintiffVehicleController.cs" />
     <Compile Include="Controllers\ReferralController.cs" />
     <Compile Include="Controllers\RefferingOfficeController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\SchoolInformationController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\TemplateManagerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -384,6 +387,9 @@
       <Project>{52c99831-9ca0-4024-811c-2a311bfa182d}</Project>
       <Name>MIDAS.GBX.DataRepository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

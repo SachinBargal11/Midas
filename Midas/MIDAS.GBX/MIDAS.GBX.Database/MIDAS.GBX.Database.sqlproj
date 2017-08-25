@@ -217,6 +217,12 @@
     <Build Include="Tables\Latest Tables\PatientSocialMediaMapping.sql" />
     <Build Include="Tables\Latest Tables\IMEVisit.sql" />
     <Build Include="Tables\Latest Tables\EOVisit.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisitUnscheduled.sql" />
+    <Build Include="Tables\Latest Tables\SchoolInformation.sql" />
+    <Build Include="Tables\Latest Tables\AccidentWitness.sql" />
+    <Build Include="Tables\Latest Tables\AccidentTreatment.sql" />
+    <Build Include="Tables\Latest Tables\PlaintiffVehicle.sql" />
+    <Build Include="Tables\Latest Tables\DefendantVehicle.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

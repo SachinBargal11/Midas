@@ -14,9 +14,16 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class PatientAccidentInfo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PatientAccidentInfo()
+        {
+            this.AccidentTreatments = new HashSet<AccidentTreatment>();
+            this.AccidentWitnesses = new HashSet<AccidentWitness>();
+        }
+    
         public int Id { get; set; }
         public int CaseId { get; set; }
-        public Nullable<System.DateTime> AccidentDate { get; set; }
+        public System.DateTime AccidentDate { get; set; }
         public string PlateNumber { get; set; }
         public string ReportNumber { get; set; }
         public int AccidentAddressInfoId { get; set; }
@@ -32,7 +39,24 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string MedicalReportNumber { get; set; }
+        public string Weather { get; set; }
+        public Nullable<bool> PoliceAtScene { get; set; }
+        public string Precinct { get; set; }
+        public Nullable<bool> WearingSeatBelts { get; set; }
+        public Nullable<bool> AirBagsDeploy { get; set; }
+        public Nullable<bool> PhotosTaken { get; set; }
+        public string AccidentDescription { get; set; }
+        public Nullable<bool> Witness { get; set; }
+        public Nullable<bool> Ambulance { get; set; }
+        public Nullable<bool> TreatedAndReleased { get; set; }
+        public Nullable<bool> Admitted { get; set; }
+        public Nullable<bool> XRaysTaken { get; set; }
+        public string DurationAtHospital { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccidentTreatment> AccidentTreatments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccidentWitness> AccidentWitnesses { get; set; }
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual AddressInfo AddressInfo1 { get; set; }
         public virtual Case Case { get; set; }

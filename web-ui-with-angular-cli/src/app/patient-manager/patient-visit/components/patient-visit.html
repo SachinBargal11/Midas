@@ -75,7 +75,7 @@
             <!--<option value="">-Select -</option>-->
             <option value="1">Patient Visit</option>
             <option value="2">IME Visit</option>
-            <option value="3">EO Visit</option>
+            <option value="3">EUO Visit</option>
         </select>
         </div>
     </div>
@@ -84,6 +84,7 @@
         <div *ngIf="selectedVisitType =='1'">
             <!--<section class="card">
                 <div class="card-block">-->
+            <div class="col-md-2"><label class="form-label">Location<span class="color-red">*</span></label></div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
@@ -91,7 +92,7 @@
             <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
                 </div>
-                <div *ngIf="selectedLocationId == 0" style="color:red;">Select location</div>
+                <!--<div *ngIf="selectedLocationId == 0" style="color:red;">Select location</div>-->
             </div>
             <div *ngIf="sessionStore.isOnlyDoctorRole()">
                 <div class="col-lg-3">
@@ -104,6 +105,7 @@
                 </div>
             </div>
             <div *ngIf="!sessionStore.isOnlyDoctorRole()">
+                <div class="col-md-2"><label class="form-label">Specialty<span class="color-red">*</span></label></div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
@@ -116,7 +118,7 @@
              </optgroup>
         </select>
                     </div>
-                    <div *ngIf="selectedMode == 0" style="color:red;">Select specialty</div>
+                    <!--<div *ngIf="selectedMode == 0" style="color:red;">Select specialty</div>-->
                 </div>
             </div>
             <!--</div>
@@ -372,13 +374,13 @@
             </p-footer>
         </form>
     </div>
-    <div *ngIf="selectedVisitType =='2'">
+    <div *ngIf="selectedVisit && selectedVisitType =='2'">
         <br>
-        <ime-visit (closeDialogBox)="closeEventDialog()"></ime-visit>
+        <ime-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
     </div>
-    <div *ngIf="selectedVisitType =='3'">
+    <div *ngIf="selectedVisit && selectedVisitType =='3'">
         <br>
-        <eo-visit (closeDialogBox)="closeEventDialog()"></eo-visit>
+        <eo-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
     </div>
 </p-dialog>
 

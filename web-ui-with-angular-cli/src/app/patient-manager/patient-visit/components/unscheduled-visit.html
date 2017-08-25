@@ -1,122 +1,117 @@
 <!--<h3 class="with-border">Ime Visits</h3>-->
 <!--<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">-->
-<form [formGroup]="unscheduleForm" name="unscheduleForm" (ngSubmit)="saveEvent()">
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
-        <div class="col-md-4">
-            <div class="form-group" [class.error]="unscheduleFormControls.patientId && unscheduleFormControls.patientId.touched && !unscheduleFormControls.patientId.valid">
-                <select formControlName="patientId" [ngModel]="patientId" class="select2-arrow form-control" (change)="selectPatient($event)">
-                        <option value="null">--Select Patient--</option>
-                        <option *ngFor="let patient of patients" [value]="patient.id">{{patient.user.displayName}}</option>                                       
-                    </select>
-                <div class='error-list' *ngIf="unscheduleFormControls.patientId && unscheduleFormControls.patientId.touched && !unscheduleFormControls.patientId.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.patientId.hasError('required')">Please select any Patient.</li>
-                    </ul>
+<div *ngIf="patient">
+    <form [formGroup]="unscheduledForm" name="unscheduledForm" (ngSubmit)="saveEvent()">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
+            <div class="col-md-4">
+                <input disabled type="text" class="form-control" [ngModel]="patient.user.displayName" formControlName="patientId">
+            </div>
+        </div><br>
+
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Case<span class="color-red">*</span></label></div>
+            <div class="col-md-4">
+                <input disabled type="text" class="form-control" [ngModel]="caseDetail.id" formControlName="caseId">
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Visit Date<span class="color-red">*</span></label></div>
+            <div class="col-md-3">
+                <div class="form-group" [class.error]="unscheduledFormControls.eventStartDate.touched && !unscheduledFormControls.eventStartDate.valid">
+                    <p-calendar [class.error]="!unscheduledFormControls.eventStartDate.valid" formControlName="eventStartDate" [(ngModel)]="eventStartAsDate"
+                        dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                        [showIcon]="true" icon="font-icon font-icon-calend">
+                    </p-calendar>
+                    <div class='error-list' *ngIf="unscheduledFormControls.eventStartDate.touched && !unscheduledFormControls.eventStartDate.valid">
+                        <ul>
+                            <li *ngIf="unscheduledFormControls.eventStartDate.hasError('required')">Start Date is required.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">Case No<span class="color-red">*</span></label></div>
-        <div class="col-md-4">
-            <div class="form-group" [class.error]="unscheduleFormControls.caseId && unscheduleFormControls.caseId.touched && !unscheduleFormControls.caseId.valid">
-                <select formControlName="caseId" [ngModel]="caseId" class="select2-arrow form-control">
-                        <option value=""> -- Select Case -- </option>
-                        <option *ngFor="let case of cases" [value]="case.id">{{case.id}}</option>                                       
-                    </select>
-                <div class='error-list' *ngIf="unscheduleFormControls.caseId && unscheduleFormControls.caseId.touched && !unscheduleFormControls.caseId.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.caseId.hasError('required')">Please select any case number.</li>
-                    </ul>
+            <!--<div class="col-md-3">
+                <div class="form-group" [class.error]="unscheduledFormControls.eventStartTime.touched && !unscheduledFormControls.eventStartTime.valid">
+                    <p-calendar *ngIf="!isAllDay" [class.error]="!unscheduledFormControls.eventStartTime.valid" formControlName="eventStartTime"
+                        [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                    <div class='error-list' *ngIf="unscheduledFormControls.eventStartTime.touched && !unscheduledFormControls.eventStartTime.valid">
+                        <ul>
+                            <li *ngIf="unscheduledFormControls.eventStartTime.hasError('required')">Start Time is required.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </div>-->
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">Visit Date<span class="color-red">*</span></label></div>
-        <div class="col-md-3">
-            <div class="form-group" [class.error]="unscheduleFormControls.eventStartDate.touched && !unscheduleFormControls.eventStartDate.valid">
-                <p-calendar [class.error]="!unscheduleFormControls.eventStartDate.valid" formControlName="eventStartDate" [(ngModel)]="eventStartAsDate"
-                    dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
-                    [showIcon]="true" icon="font-icon font-icon-calend">
-                </p-calendar>
-                <div class='error-list' *ngIf="unscheduleFormControls.eventStartDate.touched && !unscheduleFormControls.eventStartDate.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.eventStartDate.hasError('required')">Start Date is required.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group" [class.error]="unscheduleFormControls.eventStartTime.touched && !unscheduleFormControls.eventStartTime.valid">
-                <p-calendar *ngIf="!isAllDay" [class.error]="!unscheduleFormControls.eventStartTime.valid" formControlName="eventStartTime"
-                    [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
-                <div class='error-list' *ngIf="unscheduleFormControls.eventStartTime.touched && !unscheduleFormControls.eventStartTime.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.eventStartTime.hasError('required')">Start Time is required.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-     <div class="row">
-        <div class="col-md-2"><label class="form-label">Medical Provider Name<span class="color-red">*</span>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Medical Provider Name<span class="color-red">*</span>
                     </label></div>
-        <div class="col-md-4">
-            <div class="form-group" [class.error]="unscheduleFormControls.medicalProviderName.touched && !unscheduleFormControls.medicalProviderName.valid">
-                <input formControlName="medicalProviderName" type="text" class="form-control" [class.error]="!unscheduleFormControls.medicalProviderName.valid"
-                />
-                <div class='error-list' *ngIf="unscheduleFormControls.medicalProviderName && unscheduleFormControls.medicalProviderName.touched && !unscheduleFormControls.medicalProviderName.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.medicalProviderName.hasError('required')">Please enter Doctor Name.</li>
-                    </ul>
+            <div class="col-md-4">
+                <div class="form-group" [class.error]="unscheduledFormControls.medicalProviderName.touched && !unscheduledFormControls.medicalProviderName.valid">
+                    <input formControlName="medicalProviderName" type="text" class="form-control" [class.error]="!unscheduledFormControls.medicalProviderName.valid"
+                    />
+                    <div class='error-list' *ngIf="unscheduledFormControls.medicalProviderName && unscheduledFormControls.medicalProviderName.touched && !unscheduledFormControls.medicalProviderName.valid">
+                        <ul>
+                            <li *ngIf="unscheduledFormControls.medicalProviderName.hasError('required')">Please enter Doctor Name.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">Doctor Name<span class="color-red">*</span>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Doctor Name<span class="color-red">*</span>
                     </label></div>
-        <div class="col-md-4">
-            <div class="form-group" [class.error]="unscheduleFormControls.doctorName.touched && !unscheduleFormControls.doctorName.valid">
-                <input formControlName="doctorName" type="text" class="form-control" [class.error]="!unscheduleFormControls.doctorName.valid"
-                />
-                <div class='error-list' *ngIf="unscheduleFormControls.doctorName && unscheduleFormControls.doctorName.touched && !unscheduleFormControls.doctorName.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.doctorName.hasError('required')">Please enter Doctor Name.</li>
-                    </ul>
+            <div class="col-md-4">
+                <div class="form-group" [class.error]="unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
+                    <input formControlName="doctorName" type="text" class="form-control" [class.error]="!unscheduledFormControls.doctorName.valid"
+                    />
+                    <div class='error-list' *ngIf="unscheduledFormControls.doctorName && unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
+                        <ul>
+                            <li *ngIf="unscheduledFormControls.doctorName.hasError('required')">Please enter Doctor Name.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><label class="form-label">Notes
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Specialty</label></div>
+            <div class="col-lg-3">
+                <select formControlName="speciality" class="select2-arrow form-control">
+        <option value="0">- Select specialty -</option>
+        <!--<optgroup label="Select Specialty">-->
+           <option *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        <!--</optgroup>-->
+            </select>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Notes
                     </label></div>
-        <div class="col-md-6">
-            <div class="form-group" [class.error]="unscheduleFormControls.notes && unscheduleFormControls.notes.touched && !unscheduleFormControls.notes.valid">
-                <textarea [ngModel]="notes" formControlName="notes" class="form-control" rows="3"></textarea>
-                <div class='error-list' *ngIf="unscheduleFormControls.notes && unscheduleFormControls.notes.touched && !unscheduleFormControls.notes.valid">
-                    <ul>
-                        <li *ngIf="unscheduleFormControls.notes.hasError('required')">Please enter Notes.</li>
-                    </ul>
+            <div class="col-md-6">
+                <div class="form-group" [class.error]="unscheduledFormControls.notes && unscheduledFormControls.notes.touched && !unscheduledFormControls.notes.valid">
+                    <textarea [ngModel]="notes" formControlName="notes" class="form-control" rows="3"></textarea>
+                    <div class='error-list' *ngIf="unscheduledFormControls.notes && unscheduledFormControls.notes.touched && !unscheduledFormControls.notes.valid">
+                        <ul>
+                            <li *ngIf="unscheduledFormControls.notes.hasError('required')">Please enter Notes.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-4">
-            <button [disabled]="!unscheduleForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <button [disabled]="!unscheduledForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">
                         Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-            <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
-            <!--<button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>-->
+                <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+                <!--<button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>-->
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 <!--</p-dialog>-->
 
 <p-dialog [minWidth]="600" [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
@@ -237,3 +232,7 @@
                     <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
                         (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 </p-dialog>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</p-dialog>

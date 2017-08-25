@@ -21,6 +21,7 @@ export class EoVisitAdapter {
             caseId: data.caseId,
             doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
             doctorId: data.doctorId,
+            patient: PatientAdapter.parseResponse(data.patient),
             patientId: data.patientId,
             insuranceProviderId: data.insuranceProviderId,
             VisitCreatedByCompanyId: data.VisitCreatedByCompanyId,

@@ -32,6 +32,7 @@ import { DateFormatPipe } from '../../../commons/pipes/date-format-pipe';
 export class ViewAllComponent implements OnInit {
     patientId: number;
     patientInfo: Patient;
+    socialMedia:any[];
     // familyMember: FamilyMember[];
     insurances: Insurance[];
     employer: Employer;
@@ -64,7 +65,7 @@ export class ViewAllComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
-
+                    this.socialMedia = patient.socialMedia;
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ?
                         this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
                         : null;

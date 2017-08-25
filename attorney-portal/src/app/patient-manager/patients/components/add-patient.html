@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <!--<div class="col-lg-4">
                     <label class="form-label"> Marital Status
                                             <span class="color-red">*</span>
                                         </label>
@@ -78,8 +78,35 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-lg-4">
+                    <label class="form-label"> Marital Status
+                                            <span class="color-red">*</span>
+                                        </label>
+
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                        <select formControlName="maritalStatusId" type="text" class="form-control" [(ngModel)]="martialStatus" placeholder="" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="1">Single</option>
+                                        <option value="2">Married</option>
+                                    </select>
+                        <div class='error-list' *ngIf="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.maritalStatusId.hasError('required')">Marital Status is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="martialStatus == '2'" class="col-lg-4">
+                    <label class="form-label"> Name of Spouse
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                    <div class="form-group">
+                        <input formControlName="spouseName" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
+                <!--<div class="col-lg-4">
                     <label class="form-label"> Date of Birth
                                         </label>
                     <div class="form-group">
@@ -89,14 +116,57 @@
                             </p-calendar>
                         </div>
                     </div>
+                </div>-->
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of Birth
+                         <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dob" [(ngModel)]="dob" (onSelect)="calculateAge()" [readonlyInput]="true" dateFormat="M d, yy"
+                                [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                                [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                            <div class='error-list' *ngIf="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
+                                <ul>
+                                    <li *ngIf="patientformControls.userInfo.controls.dob.hasError('required')">Date Of Birth is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!isEighteenOrAbove" class="col-lg-4">
+                    <label class="form-label"> If client is under 18 year of age,Parent's or Guardian's Name
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                    <!--<div class="form-group" [class.error]="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">-->
+                    <div class="form-group">
+                        <input formControlName="parentName" type="text" class="form-control" placeholder="">
+                        <!--<div class='error-list' *ngIf="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.controls.parentName.hasError('required')">Parent's or Guardian's Name is required.</li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of First Treatment
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
-
-
                 <div class="col-lg-4">
                     <label class="form-label"> SSN
-                                            <!--<span class="color-red">*</span>-->
+                                            <span class="color-red">*</span>
                                         </label>
                     <div class="form-group" [class.error]="patientformControls.userInfo.controls.ssn.touched && !patientformControls.userInfo.controls.ssn.valid">
                         <input formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!patientformControls.userInfo.controls.ssn.valid">
@@ -108,41 +178,80 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <label class="form-label"> Date of First Treatment
+                    <label class="form-label"> Language Preference 
+                         <!--<span class="color-red">*</span>-->
+                    </label>
+                    <div class="form-group">
+                        <!--<p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="specialityDetailJS.isnitialEvaluation"></p-radioButton>-->
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="2" label="Spanish" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="3" label="Other" [(ngModel)]="languagePreference"></p-radioButton>
+                    </div>
+                </div>
+                <div *ngIf="languagePreference == '3'" class="col-lg-4">
+                    <label class="form-label"> Other Language
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                     <div class="form-group">
-                        <div class='input-group date'>
-                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
-                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                            </p-calendar>
-                        </div>
+                        <input formControlName="otherLanguage" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Patient Photo
+                            </label>
+                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)"
+                        chooseLabel="Browse image to upload"></p-fileUpload>
+                    <ul *ngIf="files.length">
+                        <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Photo ID(Obtain copy of licence)
+                            </label>
+                    <p-fileUpload mode="basic" name="licence[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="licenceUploader($event)"
+                        chooseLabel="Browse image to upload"></p-fileUpload>
+                    <ul *ngIf="fileLicence.length">
+                        <li *ngFor="let file of fileLicence">{{file.name}} - {{file.size}} bytes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label"> Social Media Cricle
+                        <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group">
+                        <p-checkbox name="socialMedia" label="Facebook" formControlName="socialMedia" [(ngModel)]="selectedSocialMedia" value="1"></p-checkbox>
+                        <p-checkbox name="socialMedia" label="Twitter" formControlName="socialMedia" [(ngModel)]="selectedSocialMedia" value="2"></p-checkbox>
+                        <p-checkbox name="socialMedia" label="Myspace" formControlName="socialMedia" [(ngModel)]="selectedSocialMedia" value="3"></p-checkbox>
+                        <p-checkbox name="socialMedia" label="Instagram" formControlName="socialMedia" [(ngModel)]="selectedSocialMedia" value="4"></p-checkbox>
+                        <p-checkbox name="socialMedia" label="Linked In" formControlName="socialMedia" [(ngModel)]="selectedSocialMedia" value="5"></p-checkbox>
                     </div>
                 </div>
                 <!--<div class="col-lg-4">
-                    <label class="form-label"> Weight (lbs)</label>
+                    <label class="form-label"> Social Media Cricle 
+                    </label>
                     <div class="form-group">
-                        <input formControlName="weight" type="text" class="form-control" placeholder="">
-                    </div>
-                </div>-->
-                <!--<div class="col-lg-4">
-                    <label class="form-label"> Height (cms)</label>
-                    <div class="form-group">
-                        <input formControlName="height" type="text" class="form-control" placeholder="">
+                        <p-radioButton formControlName="socialMedia" name="socialMedia" value="1" label="Facebook" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="socialMedia" name="socialMedia" value="2" label="Twitter" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="socialMedia" name="socialMedia" value="3" label="Myspace" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="socialMedia" name="socialMedia" value="4" label="Instagram" [(ngModel)]="languagePreference"></p-radioButton>
+                        <p-radioButton formControlName="socialMedia" name="socialMedia" value="5" label="Linked In" [(ngModel)]="languagePreference"></p-radioButton>
                     </div>
                 </div>-->
             </div>
             <div class="row">
-                <!--<div class="col-lg-4">
-                    <label class="form-label"> Date of First Treatment
-                                        </label>
-                    <div class="form-group">
-                        <div class='input-group date'>
-                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
-                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                            </p-calendar>
-                        </div>
-                    </div>
-                </div>-->
+                <label class="form-label"> SOCIAL NETWORKING SITES: Any information about you on social networking sites (i.e Myspace,Facebook,blogs,etc) is readily available
+                        for insurance company(s).It is a means for them to evaluate your personality,credibility and character.You can guarantee that an insurance company and its legal representatives
+                        will search these sites and the web in general for information they can use against you to avoid or limit payment.Therefore you must remove an refrain from placing any content that could 
+                        paint you in negative light.
+                         <!--<span class="color-red">*</span>-->
+                    </label>
             </div>
         </div>
     </section>
@@ -241,6 +350,24 @@
                                         <option value="3">Work Phone</option>
                                         <option value="4">Post</option>
                         </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Name
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                    <div class="form-group">
+                        <input formControlName="emergencyContactPerson" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Cellphone
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                    <div class="form-group">
+                        <p-inputMask mask="999-999-9999" formControlName="emergencyContactCellPhone" placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
                     </div>
                 </div>
             </div>

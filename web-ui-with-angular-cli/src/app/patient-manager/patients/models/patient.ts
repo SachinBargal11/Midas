@@ -5,6 +5,7 @@ import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { Company } from '../../../account/models/company';
 import { MaritalStatus } from './enums/marital-status';
+import { PreferredLanguage } from './enums/preferred-language';
 
 const PatientRecord = Record({
     id: 0,
@@ -15,6 +16,14 @@ const PatientRecord = Record({
     height: 0,
     maritalStatusId: MaritalStatus.SINGLE,
     dateOfFirstTreatment: moment(),
+    parentOrGuardianName: '',
+    emergencyContactName: '',
+    emergencyContactPhone: '',
+    legallyMarried: '',
+    spouseName: '',
+    patientLanguagePreferenceMappings:[],
+    languagePreferenceOther: '',
+    patientSocialMediaMappings:[],
     companies: [],
     patientDocuments: [],
     isDeleted: false,
@@ -34,6 +43,14 @@ export class Patient extends PatientRecord {
     height: number;
     maritalStatusId: MaritalStatus;
     dateOfFirstTreatment: moment.Moment;
+    parentOrGuardianName: string;
+    emergencyContactName: string;
+    emergencyContactPhone: string;
+    legallyMarried: string;
+    spouseName: string;
+    patientLanguagePreferenceMappings:any[];
+    languagePreferenceOther: '';
+    patientSocialMediaMappings:any[];
     companies: Company[];
     patientDocuments: PatientDocument[];
     isDeleted: boolean;
@@ -65,5 +82,20 @@ export class Patient extends PatientRecord {
             }
         });
         return isSessionCompany;
+    }
+
+    get prefferedLanguage(): string {
+        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getLanguageLabel(prefferedLanguage: PreferredLanguage): string {
+        switch (prefferedLanguage) {
+            case PreferredLanguage.ENGLISH:
+                return 'English';
+            case PreferredLanguage.SPANISH:
+                return 'Spanish';
+            case PreferredLanguage.OTHER:
+                return 'other';
+        }
     }
 }

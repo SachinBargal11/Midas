@@ -36,11 +36,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.PatientId = cases.PatientId;
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
-            //caseBO.LocationId = cases.LocationId;
-            //caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.ClaimFileNumber = cases.ClaimFileNumber;
+            caseBO.Medicare = cases.Medicare;
+            caseBO.Medicaid = cases.Medicaid;
+            caseBO.SSDisabililtyIncome = cases.SSDisabililtyIncome;
 
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
@@ -72,10 +73,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             
             if (cases.CaseCompanyMappings != null)
             {
-                //caseBO.OrignatorCompanyId = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true).Select(p => p.CompanyId).FirstOrDefault();
-                //caseBO.OrignatorCompanyName = cases.CaseCompanyMappings.Where(p2 => p2.IsOriginator == true).Select(p3 => p3.Company.Name).FirstOrDefault();
-                
-
                 List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
                 foreach (var casemap in cases.CaseCompanyMappings)
                 {
@@ -108,11 +105,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                         }
                     }
-
-                    //if (casemap.Company.CompanyType == 2)
-                    //{
-                    //    caseBO.AttorneyProviderId = casemap.CompanyId;
-                    //}
                 }
 
                 caseBO.CaseCompanyMappings = boCaseCompanyMapping;
@@ -679,27 +671,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-
-                    //if (IsEditMode == false && caseBO.CaseStatusId.HasValue == true && caseBO.CaseStatusId.Value == 1)
-                    //{
-                    //    bool ExistingOpenCase = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.CaseStatusId == 1
-                    //                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
-                    //    if (ExistingOpenCase == true)
-                    //    {
-                    //        dbContextTransaction.Rollback();
-                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot add another open case.", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //}
-                    //else if (IsEditMode == true && caseBO.CaseStatusId.HasValue == true && caseBO.CaseStatusId.Value == 1)
-                    //{
-                    //    bool ExistinAnotherOpenCase = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.CaseStatusId == 1 && p.Id != caseBO.ID
-                    //                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
-                    //    if (ExistinAnotherOpenCase == true)
-                    //    {
-                    //        dbContextTransaction.Rollback();
-                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot update this as open case.", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //}
+                    
                     if (IsEditMode == true)
                     {
                         bool matchCaseAndPatient = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.Id == caseBO.ID
@@ -709,49 +681,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "The case is not associated with the given patient", ErrorLevel = ErrorLevel.Error };
                         }
-                    }
-
-                    //Commented, need to be implemented
-                    //if (IsEditMode == false)
-                    //{
-                    //    Patient2 patientDB = _context.Patient2.Where(p => p.Id == caseBO.PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault();
-                    //    bool machCompanyAndLocation= _context.Locations.Any(p => (p.id == caseBO.LocationId && p.CompanyID == patientDB.CompanyId) &&(p.IsDeleted.HasValue == false || p.IsDeleted == false));
-                    //    if (machCompanyAndLocation == false)
-                    //    {
-                    //        dbContextTransaction.Rollback();
-                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company location for this user is invalid.", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //}
+                    }                    
 
                     caseDB.PatientId = caseBO.PatientId;
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
-                    //caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue == false ? caseDB.LocationId : caseBO.LocationId.Value;
-                    //caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
                     caseDB.ClaimFileNumber = IsEditMode == true && caseBO.ClaimFileNumber.HasValue == false ? caseDB.ClaimFileNumber : caseBO.ClaimFileNumber;
                     caseDB.CreateByUserID = IsEditMode == true && caseBO.CreateByUserID == 0 ? caseDB.CreateByUserID : caseBO.CreateByUserID;
                     caseDB.UpdateByUserID = IsEditMode == true && caseBO.UpdateByUserID == 0 ? caseDB.UpdateByUserID : caseBO.UpdateByUserID;
-                    //if (!string.IsNullOrEmpty(caseBO.caseSource))
-                    //{ caseDB.AttorneyId = null; }
-                    //else
-                    //{
-                    //    caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
-                    //}
-                    //if (caseBO.AttorneyId > 0)
-                    //{ caseDB.CaseSource = null; }
-                    //else
-                    //{
-                    //    caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
-                    //}
-                    //caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : (caseBO.AttorneyId.HasValue == true ? caseBO.AttorneyId.Value : caseDB.AttorneyId);
                     caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
+                    caseDB.Medicare = IsEditMode == true && caseBO.Medicare == null ? caseDB.Medicare : caseBO.Medicare;
+                    caseDB.Medicaid = IsEditMode == true && caseBO.Medicaid == null ? caseDB.Medicaid : caseBO.Medicaid;
+                    caseDB.SSDisabililtyIncome = IsEditMode == true && caseBO.SSDisabililtyIncome == null ? caseDB.SSDisabililtyIncome : caseBO.SSDisabililtyIncome;
 
                     if (Add_caseDB == true)
                     {
-                        //caseDB.CreatedByCompanyId = caseBO.CreatedByCompanyId; // This column need to be set only once while adding the record.
-
                         caseDB = _context.Cases.Add(caseDB);
                     }
                     _context.SaveChanges();

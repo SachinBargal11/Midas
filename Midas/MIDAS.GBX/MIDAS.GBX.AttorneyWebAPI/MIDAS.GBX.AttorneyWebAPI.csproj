@@ -267,6 +267,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DefendantVehicleController.cs" />
     <Compile Include="Controllers\DiagnosisCodeController.cs" />
     <Compile Include="Controllers\DiagnosisTypeController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
@@ -291,12 +292,15 @@
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
+    <Compile Include="Controllers\PatientVisitUnscheduledController.cs" />
+    <Compile Include="Controllers\PlaintiffVehicleController.cs" />
     <Compile Include="Controllers\PreferredAttorneyProviderController.cs" />
     <Compile Include="Controllers\PreferredMedicalProviderController.cs" />
     <Compile Include="Controllers\ProcedureCodeController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\SchoolInformationController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
     <Compile Include="Controllers\TemplateManagerController.cs" />

@@ -317,6 +317,30 @@ namespace MIDAS.GBX
             {
                 repo = new AttorneyVisitRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Common.LanguagePreference))
+            {
+                repo = new LanguagePreferenceRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.Common.SocialMedia))
+            {
+                repo = new SocialMediaRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.PatientVisitUnscheduled))
+            {
+                repo = new PatientVisitUnscheduledRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.SchoolInformation))
+            {
+                repo = new SchoolInformationRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.PlaintiffVehicle))
+            {
+                repo = new PlaintiffVehicleRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.DefendantVehicle))
+            {
+                repo = new DefendantVehicleRepository(context);
+            }
 
             return repo;
         }

@@ -25,6 +25,12 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public int CaseId { get; set; }
+        public string Salary { get; set; }
+        public Nullable<bool> HourOrYearly { get; set; }
+        public Nullable<bool> LossOfEarnings { get; set; }
+        public string DatesOutOfWork { get; set; }
+        public Nullable<decimal> HoursPerWeek { get; set; }
+        public Nullable<bool> AccidentAtEmployment { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual Case Case { get; set; }

@@ -64,11 +64,13 @@ export class ImeVisitComponent implements OnInit {
     repeatType: string = '7';
     name: string = 'Appointment for IME ';
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     cases: Case[];
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
+    // @Input() selectedEventDate;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -103,9 +105,11 @@ export class ImeVisitComponent implements OnInit {
             notes: [''],
             name: ['', Validators.required],
             doctorName: ['', Validators.required],
-            eventStartDate: [''],
+            eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
+            // duration: ['', Validators.required],
             transportProviderId: [''],
         });
         this.loadPrefferdAncillaries();
@@ -136,6 +140,8 @@ export class ImeVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.eventStartAsDate = this.selectedEventDate;
+        // this.eventEndAsDate = this.selectedEventDate;
         // this.loadImeVisits();
         // this.header = {
         //     left: 'prev,next today',
@@ -166,10 +172,10 @@ export class ImeVisitComponent implements OnInit {
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
@@ -195,7 +201,8 @@ export class ImeVisitComponent implements OnInit {
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
-                eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+                // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
+                eventEnd: moment(this.eventEndAsDate),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
                 // eventStartDate: this.imeScheduleForm.value.eventStartDate,
                 // duration: this.imeScheduleForm.value.duration,
@@ -203,7 +210,7 @@ export class ImeVisitComponent implements OnInit {
             })
         });
 
-        this._progressBarService.show();
+        // this._progressBarService.show();
 
         result = this._patientVisitsStore.addImeVisit(ime);
         result.subscribe(
@@ -215,6 +222,7 @@ export class ImeVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshImeEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -223,16 +231,21 @@ export class ImeVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this._progressBarService.hide();
+                // this.closeDialog();
+                // this.refreshImeEvents();
+                // this._progressBarService.hide();
             });
     }
 
     closeDialog() {
         this.closeDialogBox.emit();
+    }
+    refreshImeEvents() {
+        this.refreshEvents.emit();
     }
 
     // getDocuments() {

@@ -32,7 +32,8 @@
                                 <div class='input-group date'>
                                     <p-calendar formControlName="doa" [ngModel]="accidentDate" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
                                         [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" [class.error]="accidentformControls.doa.touched && !accidentformControls.doa.valid"
-                                        showAnim="slideDown" [showIcon]="true" placeholder="Date of Accident" icon="font-icon font-icon-calend">
+                                        showAnim="slideDown" [showIcon]="true" [showTime]="true" hourFormat="12" placeholder="Date of Accident"
+                                        icon="font-icon font-icon-calend">
                                     </p-calendar>
                                 </div>
                                 <div class='error-list' *ngIf="accidentformControls.doa.touched && !accidentformControls.doa.valid">
@@ -84,17 +85,11 @@
                     </div>
                     <div class="col-lg-4">
                         <div>
-                            <label class="form-label">Hospital Name
-                         <span class="color-red">*</span>
-                            </label>
-                            <div class="form-group" [class.error]="accidentformControls.hospitalName.touched && !accidentformControls.hospitalName.valid">
-                                <input formControlName="hospitalName" [ngModel]="currentAccident.hospitalName" type="text" class="form-control" placeholder=""
-                                    [class.error]="!accidentformControls.hospitalName.valid">
-                                <div class='error-list' *ngIf="accidentformControls.hospitalName.touched && !accidentformControls.hospitalName.valid">
-                                    <ul>
-                                        <li *ngIf="accidentformControls.hospitalName.hasError('required')">Hospital Name is required.</li>
-                                    </ul>
-                                </div>
+                            <label class="form-label"> Medical Report Number                                   
+                               </label>
+                            <div class="form-group" [class.error]="accidentformControls.additionalPatient.touched && !accidentformControls.additionalPatient.valid">
+                                <input formControlName="medicalReportNumber" [ngModel]="currentAccident.medicalReportNumber" type="text" class="form-control"
+                                    placeholder="" [class.error]="!accidentformControls.additionalPatient.valid">
                             </div>
                         </div>
                     </div>
@@ -119,42 +114,6 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div>
-                            <label class="form-label"> Patient Type 
-                        <span class="color-red">*</span>
-                    </label>
-                            <div class="form-group">
-                                <label class="form-check-label">
-                                <input type="radio" value="1" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Bicyclist
-                            </label>
-                                <label class="form-check-label">
-                                <input type="radio" value="2" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Driver
-                            </label>
-                                <label class="form-check-label">
-                                <input type="radio" value="3" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Passenger
-                            </label>
-                                <label class="form-check-label">
-                                <input type="radio" value="4" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Pedestrain
-                            </label>
-                                <label class="form-check-label">
-                                <input type="radio" value="5" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> OD
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">  
-                        <div>
-                            <label class="form-label"> Medical Report Number                                   
-                               </label>
-                            <div class="form-group" [class.error]="accidentformControls.additionalPatient.touched && !accidentformControls.additionalPatient.valid">
-                                <input formControlName="medicalReportNumber" [ngModel]="currentAccident.medicalReportNumber" type="text" class="form-control"
-                                    placeholder="" [class.error]="!accidentformControls.additionalPatient.valid">
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
                             <label class="form-label">Additional Patient
                                </label>
                             <div class="form-group" [class.error]="accidentformControls.additionalPatient.touched && !accidentformControls.additionalPatient.valid">
@@ -168,7 +127,394 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label">Weather
+                               </label>
+                            <div class="form-group" [class.error]="accidentformControls.weather.touched && !accidentformControls.weather.valid">
+                                <input formControlName="weather" [ngModel]="currentAccident.weather" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.weather.valid">
+                                <div class='error-list' *ngIf="accidentformControls.weather.touched && !accidentformControls.weather.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.weather.hasError('required')">Weather is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label">Precinct
+                               </label>
+                            <div class="form-group" [class.error]="accidentformControls.precinct.touched && !accidentformControls.precinct.valid">
+                                <input formControlName="precinct" [ngModel]="currentAccident.precinct" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.precinct.valid">
+                                <div class='error-list' *ngIf="accidentformControls.precinct.touched && !accidentformControls.precinct.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.precinct.hasError('required')">Precinct is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label"> Patient Type 
+                            <span class="color-red">*</span>
+                        </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                    <input type="radio" value="1" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Bicyclist
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="radio" value="2" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Driver
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="radio" value="3" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Passenger
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="radio" value="4" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> Pedestrain
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="radio" value="5" name="patientType" formControlName="patientType" [ngModel]="patientTypeId"> OD
+                                    </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Police at the scene? 
+                                <!-- <span class="color-red">*</span> -->
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="policeAtScene" formControlName="policeAtScene" [ngModel]="policeAtScene"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="policeAtScene" formControlName="policeAtScene" [ngModel]="policeAtScene"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Wearing seatbelt? 
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="isWearingSeatbelt" formControlName="isWearingSeatbelt" [ngModel]="isWearingSeatbelt"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="isWearingSeatbelt" formControlName="isWearingSeatbelt" [ngModel]="isWearingSeatbelt"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Did the airbags deploy? 
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="isAirBagDeploy" formControlName="isAirBagDeploy" [ngModel]="isAirBagDeploy"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="isAirBagDeploy" formControlName="isAirBagDeploy" [ngModel]="isAirBagDeploy"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Ambulance? 
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="ambulance" formControlName="ambulance" [ngModel]="ambulance"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="ambulance" formControlName="ambulance" [ngModel]="ambulance"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label"> Photos taken? 
+                                </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                    <input type="radio" value="1" name="isPhotoTaken" formControlName="isPhotoTaken" [(ngModel)]="isPhotoTaken"> Yes
+                                </label>
+                                <label class="form-check-label">
+                                    <input type="radio" value="0" name="isPhotoTaken" formControlName="isPhotoTaken" [(ngModel)]="isPhotoTaken"> No
+                                </label> &nbsp;&nbsp;&nbsp;(if yes, please provide)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label"> Any witnesses 
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="isAnyWitnesses" formControlName="isAnyWitnesses" [(ngModel)]="isAnyWitnesses"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="isAnyWitnesses" formControlName="isAnyWitnesses" [(ngModel)]="isAnyWitnesses"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4" *ngIf="isPhotoTaken=='1'">
+                        <label class="form-label">Upload Photo
+                                    </label>
+                        <!-- <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)"
+                            multiple="multiple" chooseLabel="Browse image to upload"></p-fileUpload>
+                        <ul *ngIf="files.length">
+                            <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes<a (click)="deletePhoto(file)"><i class="fa fa-close" style="color:red"></i></a></li>
+                        </ul> -->
+                        <p-fileUpload name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)"
+                            multiple="multiple" chooseLabel="Browse image to upload"></p-fileUpload>
+                    </div>
+                    <div class="col-lg-8" *ngIf="isAnyWitnesses=='1'">
+                        <div class="col-lg-3">
+                            <div>
+                                <label class="form-label">Name of witness
+                                   </label>
+                                <div class="form-group" [class.error]="accidentformControls.witnessName.touched && !accidentformControls.witnessName.valid">
+                                    <input formControlName="witnessName" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.witnessName.valid">
+                                    <div class='error-list' *ngIf="accidentformControls.witnessName.touched && !accidentformControls.witnessName.valid">
+                                        <ul>
+                                            <li *ngIf="accidentformControls.witnessName.hasError('required')">Additional Patient is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div>
+                                <label class="form-label">Phone number of witness
+                                   </label>
+                                <div class="form-group" [class.error]="accidentformControls.witnessPhoneNumber.touched && !accidentformControls.witnessPhoneNumber.valid">
+                                    <input formControlName="witnessPhoneNumber" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.witnessPhoneNumber.valid">
+                                    <div class='error-list' *ngIf="accidentformControls.witnessPhoneNumber.touched && !accidentformControls.witnessPhoneNumber.valid">
+                                        <ul>
+                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('required')">Additional Patient is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 m-t-lg">
+                            <a class="btn btn-add btn-sm" (click)="addWitness()"><i class="fa fa-plus" aria-hidden="true"></i>
+                                    <span class="hidden-md-down">Add</span>
+                                  </a>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="form-label">Witness list
+                        </label>
+                            <p-dataTable [value]="witnesses" [(selection)]="selectedWitnesses" [responsive]="true">
+                                <header>Witnesses</header>
+                                <!-- <p-column selectionMode="multiple"></p-column> -->
+                                <p-column field="witnessName" header="Witness Name" [sortable]="true"></p-column>
+                                <p-column field="witnessContactNumber" header="Witness Phone Number" [sortable]="true"></p-column>
+                                <p-column styleClass="actions-cell">
+                                    <ng-template let-rowData="rowData" pTemplate="body">
+                                        <a (click)="removeWitnessFromList(rowData.witnessName, rowData.witnessContactNumber)"><i class="fa fa-trash-o"></i></a>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label">Accident description
+                                   </label>
+                            <div class="form-group" [class.error]="accidentformControls.accidentDescription.touched && !accidentformControls.accidentDescription.valid">
+                                <textarea rows="5" formControlName="accidentDescription" [ngModel]="currentAccident.accidentDescription" class="form-control"
+                                    placeholder="" [class.error]="!accidentformControls.accidentDescription.valid"></textarea>
+                                <div class='error-list' *ngIf="accidentformControls.accidentDescription.touched && !accidentformControls.accidentDescription.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.accidentDescription.hasError('required')">Additional Patient is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label">Hospital Name
+                     <span class="color-red">*</span>
+                        </label>
+                            <div class="form-group" [class.error]="accidentformControls.hospitalName.touched && !accidentformControls.hospitalName.valid">
+                                <input formControlName="hospitalName" [ngModel]="currentAccident.hospitalName" type="text" class="form-control" placeholder=""
+                                    [class.error]="!accidentformControls.hospitalName.valid">
+                                <div class='error-list' *ngIf="accidentformControls.hospitalName.touched && !accidentformControls.hospitalName.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.hospitalName.hasError('required')">Hospital Name is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Treadted and Released? 
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="treatedAndReleased" formControlName="treatedAndReleased" [ngModel]="treatedAndReleased"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="treatedAndReleased" formControlName="treatedAndReleased" [ngModel]="treatedAndReleased"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Admitted?
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="admitted" formControlName="admitted" [ngModel]="admitted"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="admitted" formControlName="admitted" [ngModel]="admitted"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label"> Did they take x-rays? 
+                            </label>
+                            <div class="form-group">
+                                <label class="form-check-label">
+                                <input type="radio" value="1" name="xraysTaken" formControlName="xraysTaken" [ngModel]="xraysTaken"> Yes
+                            </label>
+                                <label class="form-check-label">
+                                <input type="radio" value="0" name="xraysTaken" formControlName="xraysTaken" [ngModel]="xraysTaken"> No
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div>
+                            <label class="form-label">How long were you in the hospital?
+                            </label>
+                            <div class="form-group" [class.error]="accidentformControls.durationAtHospital.touched && !accidentformControls.durationAtHospital.valid">
+                                <input formControlName="durationAtHospital" [ngModel]="currentAccident.durationAtHospital" type="text" class="form-control"
+                                    placeholder="" [class.error]="!accidentformControls.durationAtHospital.valid">
+                                <div class='error-list' *ngIf="accidentformControls.durationAtHospital.touched && !accidentformControls.durationAtHospital.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.durationAtHospital.hasError('required')">Duration at hospital is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-lg-12">
+                    <label class="form-label">Name(s) of medical facility and/or doctor you are treating with the accident:
+                       </label>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div>
+                            <label class="form-label">Medical facility name
+                                   </label>
+                            <div class="form-group" [class.error]="accidentformControls.treatmentMedicalFacilityName.touched && !accidentformControls.treatmentMedicalFacilityName.valid">
+                                <input formControlName="treatmentMedicalFacilityName" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.treatmentMedicalFacilityName.valid">
+                                <div class='error-list' *ngIf="accidentformControls.treatmentMedicalFacilityName.touched && !accidentformControls.treatmentMedicalFacilityName.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.treatmentMedicalFacilityName.hasError('required')">Medical facility name is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div>
+                            <label class="form-label">Doctor name
+                                   </label>
+                            <div class="form-group" [class.error]="accidentformControls.treatmentDoctorName.touched && !accidentformControls.treatmentDoctorName.valid">
+                                <input formControlName="treatmentDoctorName" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.treatmentDoctorName.valid">
+                                <div class='error-list' *ngIf="accidentformControls.treatmentDoctorName.touched && !accidentformControls.treatmentDoctorName.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.treatmentDoctorName.hasError('required')">Doctor name is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div>
+                            <label class="form-label">Contact number
+                                   </label>
+                            <div class="form-group" [class.error]="accidentformControls.treatmentContactNumber.touched && !accidentformControls.treatmentContactNumber.valid">
+                                <input formControlName="treatmentContactNumber" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.treatmentContactNumber.valid">
+                                <div class='error-list' *ngIf="accidentformControls.treatmentContactNumber.touched && !accidentformControls.treatmentContactNumber.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.treatmentContactNumber.hasError('required')">Contact number is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div>
+                            <label class="form-label">Address
+                                   </label>
+                            <div class="form-group" [class.error]="accidentformControls.treatmentAddress.touched && !accidentformControls.treatmentAddress.valid">
+                                <input formControlName="treatmentAddress" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.treatmentAddress.valid">
+                                <div class='error-list' *ngIf="accidentformControls.treatmentAddress.touched && !accidentformControls.treatmentAddress.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.treatmentAddress.hasError('required')">Address is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 m-t-lg">
+                        <a class="btn btn-add btn-sm" (click)="addTreatmentMedicalFacility()"><i class="fa fa-plus" aria-hidden="true"></i>
+                                    <span class="hidden-md-down">Add</span>
+                                  </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="form-label">List of medical facility 
+                        </label>
+                        <p-dataTable [value]="treatmentMedicalFacilities" [(selection)]="selectedTreatmentMedicalFacilities" [responsive]="true">
+                            <header>Witnesses</header>
+                            <!-- <p-column selectionMode="multiple"></p-column> -->
+                            <p-column field="medicalFacilityName" header="Medical Facility Name" [sortable]="true"></p-column>
+                            <p-column field="doctorName" header="Doctor Name" [sortable]="true"></p-column>
+                            <p-column field="contactNumber" header="Contact Number" [sortable]="true"></p-column>
+                            <p-column field="address" header="Address" [sortable]="true"></p-column>
+                            <p-column styleClass="actions-cell">
+                                <ng-template let-rowData="rowData" pTemplate="body">
+                                    <a (click)="removeTreatmentMedicalFacilityFromList(rowData.medicalFacilityName, rowData.contactNumber)"><i class="fa fa-trash-o"></i></a>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+                <br>
             </div>
         </section>
         <section class="card">
@@ -390,204 +736,203 @@
     </form>
 </div>
 <div *ngIf="currentAccident && (!caseViewedByOriginator || caseStatusId === 2)">
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Patient Accident Information
-            </header>
-            <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Plate Number
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Patient Accident Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Plate Number
                             </label>
 
-                            <label class="form-label">{{currentAccident.plateNumber}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Date of Accident
-                            </label>
-                            <label class="form-label">{{accidentDateLabel}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Date of Admission
-                            </label>
-
-                            <label class="form-label">{{dateOfAdmissionLabel}}</label>
-                        </div>
+                        <label class="form-label">{{currentAccident.plateNumber}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Report Number
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Date of Accident
                             </label>
-
-                            <label class="form-label">{{currentAccident.reportNumber}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Hospital Name
-                            </label>
-                            <label class="form-label">{{currentAccident.hospitalName}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Describe Injury
-                            </label>
-
-                            <label class="form-label">{{currentAccident.describeInjury}}</label>
-                        </div>
+                        <label class="form-label">{{accidentDateLabel}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Patient Type 
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Date of Admission
                             </label>
 
-                            <label class="form-label">{{currentAccident.patientTypeLabel}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Medical Report Number 
-                            </label>
-                            <label class="form-label">{{currentAccident.medicalReportNumber}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Additional Patient 
-                            </label>
-
-                            <label class="form-label">{{currentAccident.additionalPatients}}</label>
-                        </div>
+                        <label class="form-label">{{dateOfAdmissionLabel}}</label>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Accident Address
-            </header>
-            <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Accident Address1 
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Report Number
                             </label>
 
-                            <label class="form-label">{{currentAccident.accidentAddress.address1}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Accident Address2 
-                            </label>
-                            <label class="form-label">{{currentAccident.accidentAddress.address2}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Accident State 
-                            </label>
-                            <label class="form-label">{{currentAccident.accidentAddress.state}}</label>
-                        </div>
+                        <label class="form-label">{{currentAccident.reportNumber}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Accident City 
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Hospital Name
+                            </label>
+                        <label class="form-label">{{currentAccident.hospitalName}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Describe Injury
                             </label>
 
-                            <label class="form-label">{{currentAccident.accidentAddress.city}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Accident Zip code
-                            </label>
-                            <label class="form-label">{{currentAccident.accidentAddress.zipCode}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Accident Country
-                            </label>
-                            <label class="form-label">{{currentAccident.accidentAddress.country}}</label>
-                        </div>
+                        <label class="form-label">{{currentAccident.describeInjury}}</label>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Hospital Address
-            </header>
-            <div class="card-block">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Address1
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Patient Type 
                             </label>
 
-                            <label class="form-label">{{currentAccident.hospitalAddress.address1}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Address2
-                            </label>
-
-                            <label class="form-label">{{currentAccident.hospitalAddress.address2}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> State
-                            </label>
-
-                            <label class="form-label">{{currentAccident.hospitalAddress.state}}</label>
-                        </div>
+                        <label class="form-label">{{currentAccident.patientTypeLabel}}</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> City
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Medical Report Number 
                             </label>
-                            <label class="form-label">{{currentAccident.hospitalAddress.city}}</label>
-                        </div>
+                        <label class="form-label">{{currentAccident.medicalReportNumber}}</label>
                     </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Zip code
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Additional Patient 
                             </label>
 
-                            <label class="form-label">{{currentAccident.hospitalAddress.zipCode}}</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div>
-                            <label class="form-label"> Country
-                            </label>
-
-                            <label class="form-label">{{currentAccident.hospitalAddress.country}}</label>
-                        </div>
+                        <label class="form-label">{{currentAccident.additionalPatients}}</label>
                     </div>
                 </div>
             </div>
-        </section>
-        <a *ngIf="caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Accident Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Accident Address1 
+                            </label>
+
+                        <label class="form-label">{{currentAccident.accidentAddress.address1}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Accident Address2 
+                            </label>
+                        <label class="form-label">{{currentAccident.accidentAddress.address2}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Accident State 
+                            </label>
+                        <label class="form-label">{{currentAccident.accidentAddress.state}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Accident City 
+                            </label>
+
+                        <label class="form-label">{{currentAccident.accidentAddress.city}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Accident Zip code
+                            </label>
+                        <label class="form-label">{{currentAccident.accidentAddress.zipCode}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Accident Country
+                            </label>
+                        <label class="form-label">{{currentAccident.accidentAddress.country}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Hospital Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Address1
+                            </label>
+
+                        <label class="form-label">{{currentAccident.hospitalAddress.address1}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Address2
+                            </label>
+
+                        <label class="form-label">{{currentAccident.hospitalAddress.address2}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> State
+                            </label>
+
+                        <label class="form-label">{{currentAccident.hospitalAddress.state}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> City
+                            </label>
+                        <label class="form-label">{{currentAccident.hospitalAddress.city}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Zip code
+                            </label>
+
+                        <label class="form-label">{{currentAccident.hospitalAddress.zipCode}}</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label"> Country
+                            </label>
+
+                        <label class="form-label">{{currentAccident.hospitalAddress.country}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <a *ngIf="caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
 </div>
-<!--<div *ngIf="accidents.length == 0 && caseViewedByOriginator == false">
+<!--<div *ngIf="accidents.length == 0 && caseViewedByOriginator == false ">
  <h3>No Information Available</h3>    
 </div>-->
-

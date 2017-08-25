@@ -75,6 +75,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (EOVisit.Patient != null)
+                {
+                    BO.Patient PatientBO = new BO.Patient();
+                    using (PatientRepository patientRepo = new PatientRepository(_context))
+                    {
+                        PatientBO = patientRepo.Convert<BO.Patient, Patient>(EOVisit.Patient);
+                        EOVisitBO.Patient = PatientBO;
+                    }
+                }
+
                 if (EOVisit.Company != null)
                 {
                     BO.Company CompanyBO = new BO.Company();
@@ -280,7 +290,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 #region EO Visit
-                if (EOVisitBO != null && ((EOVisitBO.ID <= 0 && EOVisitBO.DoctorId.HasValue == true) || (EOVisitBO.ID > 0)))
+                if (EOVisitBO != null && ((EOVisitBO.ID <= 0 && (EOVisitBO.DoctorId.HasValue == true || EOVisitBO.PatientId.HasValue == true)) || (EOVisitBO.ID > 0)))
                 {
                     bool Add_EOVisitDB = false;
                     EOVisitDB = _context.EOVisits.Where(p => p.ID == EOVisitBO.ID
@@ -347,12 +357,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (EOVisitDB != null)
                 {
                     EOVisitDB = _context.EOVisits.Include("CalendarEvent")
-                                                  .Include("Doctor")
-                                                  .Include("Company")
-                                                  .Include("InsuranceMaster")
-                                                  .Where(p => p.ID == EOVisitDB.ID
-                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                            .FirstOrDefault<EOVisit>();
+                                                 .Include("Doctor")
+                                                 .Include("Patient")
+                                                 .Include("Company")
+                                                 .Include("InsuranceMaster")
+                                                 .Where(p => p.ID == EOVisitDB.ID
+                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .FirstOrDefault<EOVisit>();
 
                 }
                 else if (CalendarEventDB != null)
@@ -553,6 +564,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
                                            .Include("Doctor.User")
+                                           .Include("Patient")
+                                           .Include("Patient.User")
                                            .Include("Company")
                                            .Include("InsuranceMaster")
                                            .Where(p => p.VisitCreatedByCompanyId == id
@@ -615,6 +628,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var EOVisit = _context.EOVisits.Include("CalendarEvent")
                                            .Include("Doctor")
                                            .Include("Doctor.User")
+                                           .Include("Patient")
+                                           .Include("Patient.User")
                                            .Include("Company")
                                            .Include("InsuranceMaster")
                                            .Where(p => p.PatientId == id
