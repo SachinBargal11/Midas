@@ -74,7 +74,6 @@ export class EditFamilyMemberComponent implements OnInit {
 
                     this._route.params.subscribe((routeParams: any) => {
                         let familyMemberId: number = parseInt(routeParams.id);
-                        debugger;
                         let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
                         result.subscribe(
                             (familyMember: any) => {

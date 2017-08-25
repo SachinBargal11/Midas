@@ -21,6 +21,8 @@ import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 
 export class EditFamilyMemberComponent implements OnInit {
     cellPhone: string;
+    race: string;
+    ethnicities: string;
     relation: string;
     patientId: number;
     familyMemberForm: FormGroup;
@@ -51,6 +53,8 @@ export class EditFamilyMemberComponent implements OnInit {
             result.subscribe(
                 (familyMember: any) => {
                     this.familyMember = familyMember.toJS();
+                    this.race = familyMember.raceLabel;
+                    this.ethnicities = familyMember.ethnicitiesLabel;
                     this.relation = familyMember.relationLabel
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
                 },
