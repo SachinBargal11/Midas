@@ -120,6 +120,24 @@ ALTER TABLE [dbo].[IMEVisit]
 ADD CONSTRAINT FK_IMEVisit_VisitStatus_VisitStatusId FOREIGN KEY (VisitStatusId)
 REFERENCES [dbo].[VisitStatus](id)
 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'IMEVisit'
+	AND		COLUMN_NAME = 'DoctorName'
+)
+BEGIN
+	PRINT 'Table [dbo].[IMEVisit] already have column [DoctorName] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[IMEVisit] ADD [DoctorName] VARCHAR(50) NULL
+    UPDATE [dbo].[IMEVisit] SET [DoctorName] = ''
+    ALTER TABLE [dbo].[IMEVisit] ALTER COLUMN [DoctorName] VARCHAR(50) NOT NULL
+END
+GO
 
 IF EXISTS
 (
