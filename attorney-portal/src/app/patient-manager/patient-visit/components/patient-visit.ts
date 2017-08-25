@@ -464,6 +464,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     loadVisits() {
+        this.events = [];
         if (this.selectedOption == 1) {
             this.loadLocationDoctorVisits();
         } else if (this.selectedOption == 2) {
@@ -708,6 +709,13 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
+    refreshEvents(event) {
+        this.events = [];
+        this.loadAllVisitsForAttorneyCompany();
+        this.loadImeVisits();
+        this.loadEoVisits();
+    }
+
     closeEventDialog() {
         this.eventDialogVisible = false;
         this.handleEventDialogHide();
@@ -798,7 +806,7 @@ export class PatientVisitComponent implements OnInit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
         if (eventInstance.isInPast) {
-            if (scheduledEventForInstance.isChangedInstanceOfSeries) {
+            // if (scheduledEventForInstance.isChangedInstanceOfSeries) {
                 // Edit Existing Single Occurance of Visit
                 patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
                     calendarEvent: scheduledEventForInstance,
@@ -811,39 +819,39 @@ export class PatientVisitComponent implements OnInit {
                         user: new User(_.extend(patientVisit.patient.user.toJS()))
                     })) : null
                 }));
-            } else {
-                // Create Visit Instance 
-                if (patientVisit.isExistingVisit) {
-                    patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-                        eventStart: moment.utc(eventInstance.start),
-                        eventEnd: moment.utc(eventInstance.end),
-                        calendarEvent: scheduledEventForInstance,
-                        // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-                        // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-                        //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
-                        // })) : null,
-                        // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-                        patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-                            user: new User(_.extend(patientVisit.patient.user.toJS()))
-                        })) : null
-                    }));
-                } else {
-                    patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-                        id: 0,
-                        eventStart: moment.utc(eventInstance.start),
-                        eventEnd: moment.utc(eventInstance.end),
-                        calendarEvent: scheduledEventForInstance,
-                        // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-                        // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-                        //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
-                        // })) : null,
-                        // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-                        patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-                            user: new User(_.extend(patientVisit.patient.user.toJS()))
-                        })) : null
-                    }));
-                }
-            }
+            // } else {
+            //     // Create Visit Instance 
+            //     if (patientVisit.isExistingVisit) {
+            //         patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+            //             eventStart: moment.utc(eventInstance.start),
+            //             eventEnd: moment.utc(eventInstance.end),
+            //             calendarEvent: scheduledEventForInstance,
+            //             case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+            //             doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+            //                 user: new User(_.extend(patientVisit.doctor.user.toJS()))
+            //             })) : null,
+            //             room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+            //             patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+            //                 user: new User(_.extend(patientVisit.patient.user.toJS()))
+            //             })) : null
+            //         }));
+            //     } else {
+            //         patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+            //             id: 0,
+            //             eventStart: moment.utc(eventInstance.start),
+            //             eventEnd: moment.utc(eventInstance.end),
+            //             calendarEvent: scheduledEventForInstance,
+            //             case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+            //             doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+            //                 user: new User(_.extend(patientVisit.doctor.user.toJS()))
+            //             })) : null,
+            //             room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+            //             patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+            //                 user: new User(_.extend(patientVisit.patient.user.toJS()))
+            //             })) : null
+            //         }));
+            //     }
+            // }
 
         } else {
             patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
@@ -966,7 +974,7 @@ export class PatientVisitComponent implements OnInit {
         if (this.selectedVisit.isPatientVisitType) {
             let updatedVisit: PatientVisit;
             updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-                notes: patientVisitFormValues.notes,
+                agenda: patientVisitFormValues.notes,
                 visitStatusId: patientVisitFormValues.visitStatusId
             }));
             result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);

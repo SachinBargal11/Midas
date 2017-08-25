@@ -49,7 +49,7 @@
             <!--<option value="">-Select -</option>-->
             <option value="1">Client Visit</option>
             <option value="2">IME Visit</option>
-            <option value="3">EO Visit</option>
+            <option value="3">EUO Visit</option>
         </select>
         </div>
     </div>
@@ -232,13 +232,13 @@
             </p-footer>
         </form>
     </div>
-    <div *ngIf="selectedVisitType =='2'">
+    <div *ngIf="selectedVisit && selectedVisitType =='2'">
         <br>
-        <ime-visit (closeDialogBox)="closeEventDialog()"></ime-visit>
+        <ime-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
     </div>
-    <div *ngIf="selectedVisitType =='3'">
+    <div *ngIf="selectedVisit && selectedVisitType =='3'">
         <br>
-        <eo-visit (closeDialogBox)="closeEventDialog()"></eo-visit>
+        <eo-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
     </div>
 </p-dialog>
 
@@ -251,7 +251,17 @@
 
                     <div class="row">
                         <div class="col-md-1"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
-                        <div class="col-md-6">
+                        <div *ngIf="selectedVisit.agenda" class="col-md-6">
+                            <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
+                                <textarea [ngModel]="selectedVisit.agenda" formControlName="notes" class="form-control" rows="3"></textarea>
+                                <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
+                                    <ul>
+                                        <li *ngIf="patientVisitFormControls.notes.hasError('required')">Please enter Notes.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div  *ngIf="selectedVisit.notes" class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
                                 <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">

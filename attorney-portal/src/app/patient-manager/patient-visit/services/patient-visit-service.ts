@@ -35,7 +35,7 @@ export class PatientVisitService {
 
     getPatientVisit(patientVisitId: Number): Observable<PatientVisit> {
         let promise: Promise<PatientVisit> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/get/' + patientVisitId).map(res => res.json())
+            return this._http.get(this._url + '/AttorneyVisit/get/' + patientVisitId).map(res => res.json())
                 .subscribe((data: any) => {
                     let patientVisits = null;
                     if (data) {
@@ -55,7 +55,7 @@ export class PatientVisitService {
     getPatientVisitsByAttorneyCompanyId(): Observable<PatientVisit[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/attorneyVisit/getByCompanyAndAttorneyId/' + companyId + '/' + 0)
+            return this._http.get(this._url + '/AttorneyVisit/getByCompanyAndAttorneyId/' + companyId + '/' + 0)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -72,7 +72,7 @@ export class PatientVisitService {
 
     getPatientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByCaseId/' + caseId)
+            return this._http.get(this._url + '/AttorneyVisit/getByCaseId/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -91,7 +91,7 @@ export class PatientVisitService {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDates/' + doctorId + '/' + fromDate + '/' + toDate)
+            return this._http.get(this._url + '/AttorneyVisit/getByDates/' + doctorId + '/' + fromDate + '/' + toDate)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -110,7 +110,7 @@ export class PatientVisitService {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDoctorAndDates/' + doctorId + '/' + fromDate + '/' + toDate)
+            return this._http.get(this._url + '/AttorneyVisit/getByDoctorAndDates/' + doctorId + '/' + fromDate + '/' + toDate)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -129,7 +129,7 @@ export class PatientVisitService {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDoctorDatesAndName/' + fromDate + '/' + toDate + '/' + doctorName)
+            return this._http.get(this._url + '/AttorneyVisit/getByDoctorDatesAndName/' + fromDate + '/' + toDate + '/' + doctorName)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -182,7 +182,7 @@ export class PatientVisitService {
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByDoctorId/' + doctorId)
+            return this._http.get(this._url + '/AttorneyVisit/getByDoctorId/' + doctorId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -199,7 +199,7 @@ export class PatientVisitService {
 
     getPatientVisitsByLocationAndRoomId(locationId: number, roomId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationAndRoomId/' + locationId + '/' + roomId)
+            return this._http.get(this._url + '/AttorneyVisit/getByLocationAndRoomId/' + locationId + '/' + roomId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -216,7 +216,7 @@ export class PatientVisitService {
 
     getPatientVisitsByLocationAndDoctorId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationAndDoctorId/' + locationId + '/' + doctorId)
+            return this._http.get(this._url + '/AttorneyVisit/getByLocationAndDoctorId/' + locationId + '/' + doctorId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -270,7 +270,7 @@ export class PatientVisitService {
                 })
             };
             requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
-            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/AttorneyVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -299,7 +299,7 @@ export class PatientVisitService {
             });
             requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
             requestData = _.omit(requestData, 'caseId');
-            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/AttorneyVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -316,7 +316,7 @@ export class PatientVisitService {
 
     cancelPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/CancleCalendarEvent/' + patientVisitDetail.calendarEvent.id)
+            return this._http.get(this._url + '/AttorneyVisit/CancleCalendarEvent/' + patientVisitDetail.calendarEvent.id)
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedCalendarEvent: ScheduledEvent = null;
@@ -334,7 +334,7 @@ export class PatientVisitService {
         let promise = new Promise((resolve, reject) => {
             let requestData = patientVisitDetail.toJS();
             requestData = _.omit(requestData, 'calendarEvent');
-            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/AttorneyVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -390,7 +390,7 @@ export class PatientVisitService {
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
 
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/DeleteVisit/' + patientVisitDetail.id)
+            return this._http.get(this._url + '/AttorneyVisit/DeleteVisit/' + patientVisitDetail.id)
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);

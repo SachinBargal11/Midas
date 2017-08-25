@@ -64,6 +64,7 @@ export class ImeVisitComponent implements OnInit {
     repeatType: string = '7';
     name: string = 'Appointment for IME ';
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     cases: Case[];
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
@@ -189,7 +190,6 @@ export class ImeVisitComponent implements OnInit {
             patientId: this.imeScheduleForm.value.patientId,
             caseId: this.imeScheduleForm.value.caseId,
             notes: this.imeScheduleForm.value.notes,
-            // transportProviderId: this.imeScheduleForm.value.transportProviderId,
             doctorName: this.imeScheduleForm.value.doctorName,
             createByUserID: this.sessionStore.session.account.user.id,
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
@@ -203,7 +203,7 @@ export class ImeVisitComponent implements OnInit {
             })
         });
 
-        this._progressBarService.show();
+        // this._progressBarService.show();
 
         result = this._patientVisitsStore.addImeVisit(ime);
         result.subscribe(
@@ -215,6 +215,7 @@ export class ImeVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshImeEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -223,16 +224,20 @@ export class ImeVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
     closeDialog() {
         this.closeDialogBox.emit();
+    }
+
+     refreshImeEvents() {
+        this.refreshEvents.emit();
     }
  
 }
