@@ -73,6 +73,7 @@ export class UnscheduledVisitComponent implements OnInit {
     @Input() idPatient: number;
     caseDetail: Case;
     patient: Patient;
+    selectedVisit;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -246,5 +247,6 @@ export class UnscheduledVisitComponent implements OnInit {
     refreshImeEvents() {
         this.refreshEvents.emit();
     }
+    handleVisitDialogHide() {}
 
 }

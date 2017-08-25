@@ -16,7 +16,7 @@ import { ShellComponent } from '../../commons/shell-component';
 // import { FamilyMemberListComponent } from './components/family-member-list';
 // import { EditFamilyMemberComponent } from './components/edit-family-member';
 import { AttorneyComponent } from './components/attorney';
-import { PatientEmployerComponent } from './components/employer';
+// import { PatientEmployerComponent } from './components/employer';
 // import { InsuranceListComponent } from './components/insurance-list';
 // import { AddInsuranceComponent } from './components/add-insurance';
 // import { EditInsuranceComponent } from './components/edit-insurance';

@@ -130,6 +130,7 @@ export class PatientVisitComponent implements OnInit {
     // selectedProcedures: Procedure[];
     // selectedSpeciality: Speciality;
     companyId: number = this.sessionStore.session.currentCompany.id;
+    dayRenderer;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {

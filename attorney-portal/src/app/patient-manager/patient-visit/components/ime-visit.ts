@@ -70,6 +70,10 @@ export class ImeVisitComponent implements OnInit {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
+    transportProviderId = null;
+    caseId;
+    notes;
+    selectedVisit;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -239,5 +243,6 @@ export class ImeVisitComponent implements OnInit {
      refreshImeEvents() {
         this.refreshEvents.emit();
     }
+    handleVisitDialogHide() {}
  
 }

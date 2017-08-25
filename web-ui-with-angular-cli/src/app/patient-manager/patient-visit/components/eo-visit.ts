@@ -143,6 +143,9 @@ export class EoVisitComponent implements OnInit {
     user: string;
     userName: string;
     insuranceMasters: InsuranceMaster[];
+    insuranceProviderId;
+    notes = '';
+    selectedVisit;
 
     // eventRenderer: Function = (event, element) => {
     //     // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -358,6 +361,9 @@ export class EoVisitComponent implements OnInit {
     }
     refreshEuoEvents() {
         this.refreshEvents.emit();
+    }
+    handleVisitDialogHide() {
+
     }
 
     getDocuments() {

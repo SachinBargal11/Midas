@@ -70,6 +70,10 @@ export class ImeVisitComponent implements OnInit {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
+    transportProviderId = null;
+    caseId;
+    notes;
+    selectedVisit;
     // @Input() selectedEventDate;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
@@ -247,6 +251,7 @@ export class ImeVisitComponent implements OnInit {
     refreshImeEvents() {
         this.refreshEvents.emit();
     }
+    handleVisitDialogHide() {}
 
     // getDocuments() {
     // this._progressBarService.show();

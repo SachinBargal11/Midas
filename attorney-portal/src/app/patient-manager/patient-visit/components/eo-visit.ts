@@ -143,6 +143,10 @@ export class EoVisitComponent implements OnInit {
     user: string;
     userName: string;
     insuranceMasters: InsuranceMaster[];
+    insuranceProviderId;
+    notes = '';
+    selectedVisit;
+    patientId: number;
 
     // eventRenderer: Function = (event, element) => {
     //     // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -365,6 +369,7 @@ export class EoVisitComponent implements OnInit {
     closeDialog() {
         this.closeDialogBox.emit();
     }
+    handleVisitDialogHide() {}
 
     getDocuments() {
         // this._progressBarService.show();

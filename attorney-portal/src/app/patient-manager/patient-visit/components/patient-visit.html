@@ -26,7 +26,7 @@
 <p-schedule [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
-<p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
+<!-- <p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
     <p-footer>
         <button [disabled]="isSaveProgress" type="button" class="btn btn-primary" (click)="cancelSeries()">
             Cancel Series
@@ -39,7 +39,7 @@
         </button>
         <button type="button" pButton icon="" label="Edit Current Occurrence" (click)="cd.accept()"></button>
     </p-footer>
-</p-confirmDialog>
+</p-confirmDialog> -->
 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div class="row">
