@@ -89,6 +89,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         public virtual DbSet<PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappings { get; set; }
+        public virtual DbSet<PatientPriorAccidentInjury> PatientPriorAccidentInjuries { get; set; }
         public virtual DbSet<PatientSocialMediaMapping> PatientSocialMediaMappings { get; set; }
         public virtual DbSet<PatientType> PatientTypes { get; set; }
         public virtual DbSet<PatientVisit> PatientVisits { get; set; }
@@ -134,7 +135,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<PatientPriorAccidentInjury> PatientPriorAccidentInjuries { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {
