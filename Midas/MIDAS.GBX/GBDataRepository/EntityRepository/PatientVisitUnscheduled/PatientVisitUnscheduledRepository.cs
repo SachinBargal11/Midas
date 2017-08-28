@@ -236,26 +236,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Id
         public override object Get(int id)
         {
-            var acc = _context.PatientVisitUnscheduleds.Include("Patient")
+            PatientVisitUnscheduled acc = _context.PatientVisitUnscheduleds.Include("Patient")
                                                        .Include("Patient.User")
                                                        .Include("Specialty")
                                                        .Include("RoomTest")
                                                        .Where(p => p.Id == id
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .ToList<PatientVisitUnscheduled>();
+                                                       .FirstOrDefault<PatientVisitUnscheduled>();
 
             if (acc == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
-            {
-                List<BO.PatientVisitUnscheduled> lstpatientvisit = new List<BO.PatientVisitUnscheduled>();
-                foreach (PatientVisitUnscheduled item in acc)
-                {
-                    lstpatientvisit.Add(Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(item));
-                }
-                return lstpatientvisit;
+            {              
+               var res = Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(acc);              
+                return (object)res;
             }
         }
         #endregion
