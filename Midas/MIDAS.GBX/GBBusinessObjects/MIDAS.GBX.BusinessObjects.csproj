@@ -124,6 +124,7 @@
     <Compile Include="PatientAccidentInfo\AccidentTreatment.cs" />
     <Compile Include="PatientAccidentInfo\AccidentWitness.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />
+    <Compile Include="PatientPriorAccidentInjury\PatientPriorAccidentInjury.cs" />
     <Compile Include="PatientVisitUnscheduled\PatientVisitUnscheduled.cs" />
     <Compile Include="Patient\PatientLanguagePreferenceMapping.cs" />
     <Compile Include="Patient\PatientSocialMediaMapping.cs" />
