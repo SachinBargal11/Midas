@@ -120,6 +120,10 @@ import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
 import { UnscheduledVisitComponent } from './patient-visit/components/unscheduled-visit';
 import { AutoInformationInfoComponent } from './cases/components/autoInformation';
+import { AutoInformationService } from './cases/services/autoInformation-service';
+import { AutoInformationStore } from './cases/stores/autoInformation-store';
+
+
 
 
 @NgModule({
@@ -230,7 +234,8 @@ import { AutoInformationInfoComponent } from './cases/components/autoInformation
         PendingReferralService,
         PendingReferralStore,
         AvailableSlotsService,
-        AvailableSlotsStore, AncillaryMasterStore, AncillaryMasterService
+        AvailableSlotsStore, AncillaryMasterStore, AncillaryMasterService,
+        AutoInformationService, AutoInformationStore
     ]
 })
 export class PatientManagerModule { }

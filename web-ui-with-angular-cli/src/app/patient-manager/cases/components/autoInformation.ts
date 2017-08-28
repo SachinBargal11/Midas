@@ -24,6 +24,17 @@ import { environment } from '../../../../environments/environment';
 
 export class AutoInformationInfoComponent implements OnInit {
     caseId: number;
+    states: any[];
+    cities: any[];
+    autoInfoform: FormGroup;
+    autoInfoformControls;
+    isSaveProgress = false;
+    relativesVehicle = '';
+    helpinDamageResolved = '';
+    vehicleDrivable = '';
+    titletoVehicle = '';
+
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -40,9 +51,39 @@ export class AutoInformationInfoComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
             //   this._progressBarService.show();
         });
+        this.autoInfoform = this.fb.group({
+            txtPlate: ['', Validators.required],
+            txtModelYear: ['', Validators.required],
+            state: [''],
+            insuranceCompany: [''],
+            txtPolicy: [''],
+            txtClaim: [''],
+            txtVehicalLocated: [''],
+            txtVehicalDesc: [''],
+            relativesVehicle: [''],
+            relModelYear: [''],
+            relOwnerName: [''],
+            relInsuranceCompany: [''],
+            relPolicy: [''],
+            helpinDamageResolved: [''],
+            vehicleDrivable: [''],
+            txtEstimatedDamage: [''],
+            titletoVehicle: [''],
+            txtDefendantPlate: [''],
+            defendantState: [''],
+            txtDefendantModelYear: [''],
+            txtDefendantOwnerName: [''],
+            txtDefendantOperatorName: [''],
+            defendantInsuranceCompany: [''],
+            txtDefendantPolicy: [''],
+            txtDefendantClaim: [''],          
 
+        });
+        this.autoInfoformControls = this.autoInfoform.controls;
 
     }
     ngOnInit() {
+        this._statesStore.getStates()
+            .subscribe(states => this.states = states);
     }
 }
