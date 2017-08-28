@@ -483,4 +483,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="VehicleNumberPlate" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="2750fbc8-a883-4cab-97b5-34cf3eb1418b" ChangeDateTime="08/28/2017 06:42:36">
+    <Property Name="ElementName" Value="[dbo].[PatientPriorAccidentInjuries].[Law]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PatientPriorAccidentInjuries]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LawsuitWorkerComp" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="aeb0c419-f62c-4236-ab4a-b87b0308bb85" ChangeDateTime="08/28/2017 06:42:47">
+    <Property Name="ElementName" Value="[dbo].[PatientPriorAccidentInjuries].[LawsuitWorkerComp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PatientPriorAccidentInjuries]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LawsuitWorkerCompBefore" />
+  </Operation>
 </Operations>
