@@ -370,6 +370,27 @@
           <Property Name="AlternateEmail" Type="nvarchar" MaxLength="100" />
           <Property Name="PreferredCommunication" Type="tinyint" />
         </EntityType>
+        <EntityType Name="DefendantVehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="VehicleNumberPlate" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleMakeModel" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleMakeYear" Type="nvarchar" MaxLength="32" />
+          <Property Name="VehicleOwnerName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VehicleOperatorName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VehicleInsuranceCompanyName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VehiclePolicyNumber" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleClaimNumber" Type="nvarchar" MaxLength="64" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="DiagnosisCode">
           <Key>
             <PropertyRef Name="Id" />
@@ -885,7 +906,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="HourOrYearly" Type="bit" />
           <Property Name="LossOfEarnings" Type="bit" />
           <Property Name="DatesOutOfWork" Type="nvarchar" MaxLength="128" />
-          <Property Name="HoursPerWeek" Type="numeric" Precision="3" Scale="2" />
+          <Property Name="HoursPerWeek" Type="numeric" Precision="5" Scale="2" />
           <Property Name="AccidentAtEmployment" Type="bit" />
         </EntityType>
         <EntityType Name="PatientFamilyMembers">
@@ -1075,6 +1096,41 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PendingReferralId" Type="int" Nullable="false" />
           <Property Name="ProcedureCodeId" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="PlaintiffVehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="VehicleNumberPlate" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleMakeModel" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleMakeYear" Type="nvarchar" MaxLength="32" />
+          <Property Name="VehicleOwnerName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VehicleOperatorName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VehicleInsuranceCompanyName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VehiclePolicyNumber" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleClaimNumber" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleLocation" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleDamageDiscription" Type="nvarchar" MaxLength="1024" />
+          <Property Name="RelativeVehicle" Type="bit" />
+          <Property Name="RelativeVehicleMakeModel" Type="nvarchar" MaxLength="64" />
+          <Property Name="RelativeVehicleMakeYear" Type="nvarchar" MaxLength="32" />
+          <Property Name="RelativeVehicleOwnerName" Type="nvarchar" MaxLength="128" />
+          <Property Name="RelativeVehicleInsuranceCompanyName" Type="nvarchar" MaxLength="128" />
+          <Property Name="RelativeVehiclePolicyNumber" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleResolveDamage" Type="bit" />
+          <Property Name="VehicleDriveable" Type="bit" />
+          <Property Name="VehicleEstimatedDamage" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="RelativeVehicleLocation" Type="nvarchar" MaxLength="64" />
+          <Property Name="VehicleClientHaveTitle" Type="bit" />
+          <Property Name="RelativeVehicleOwner" Type="nvarchar" MaxLength="128" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -2101,6 +2157,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="CompanySpecialtyDetails">
               <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DefendantVehicle_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="DefendantVehicle" Type="Self.DefendantVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DefendantVehicle">
+              <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3172,6 +3240,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PlaintiffVehicle_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="PlaintiffVehicle" Type="Self.PlaintiffVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaintiffVehicle">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PreferredAncillaryProvider_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="PreferredAncillaryProvider" Type="Self.PreferredAncillaryProvider" Multiplicity="*" />
@@ -3832,6 +3912,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyType" EntityType="Self.CompanyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsentGivenType" EntityType="Self.ConsentGivenType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefendantVehicle" EntityType="Self.DefendantVehicle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiagnosisCode" EntityType="Self.DiagnosisCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiagnosisCodeCompany" EntityType="Self.DiagnosisCodeCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiagnosisType" EntityType="Self.DiagnosisType" Schema="dbo" store:Type="Tables" />
@@ -3876,6 +3957,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisitUnscheduled" EntityType="Self.PatientVisitUnscheduled" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PendingReferral" EntityType="Self.PendingReferral" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlaintiffVehicle" EntityType="Self.PlaintiffVehicle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyOwner" EntityType="Self.PolicyOwner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredAncillaryProvider" EntityType="Self.PreferredAncillaryProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredAttorneyProvider" EntityType="Self.PreferredAttorneyProvider" Schema="dbo" store:Type="Tables" />
@@ -4090,6 +4172,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="Self.FK_CompanySpecialtyDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DefendantVehicle_Case_CaseId" Association="Self.FK_DefendantVehicle_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
+            <End Role="DefendantVehicle" EntitySet="DefendantVehicle" />
           </AssociationSet>
           <AssociationSet Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" Association="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
             <End Role="DiagnosisType" EntitySet="DiagnosisType" />
@@ -4446,6 +4532,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
             <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaintiffVehicle_Case_CaseId" Association="Self.FK_PlaintiffVehicle_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
+            <End Role="PlaintiffVehicle" EntitySet="PlaintiffVehicle" />
           </AssociationSet>
           <AssociationSet Name="FK_PreferredAncillaryProvider_Company_CompanyId" Association="Self.FK_PreferredAncillaryProvider_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
@@ -4858,6 +4948,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_Case_CaseId" FromRole="Case" ToRole="CaseDocuments" />
           <NavigationProperty Name="CaseInsuranceMappings" Relationship="Self.FK_CaseInsuranceMapping_Case_CaseId" FromRole="Case" ToRole="CaseInsuranceMapping" />
           <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="CompanyCaseConsentApproval" />
+          <NavigationProperty Name="DefendantVehicles" Relationship="Self.FK_DefendantVehicle_Case_CaseId" FromRole="Case" ToRole="DefendantVehicle" />
           <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Case_CaseId" FromRole="Case" ToRole="IMEVisit" />
           <NavigationProperty Name="PatientAccidentInfoes" Relationship="Self.FK_PatientAccidentInfo_Case_CaseId" FromRole="Case" ToRole="PatientAccidentInfo" />
@@ -4866,6 +4957,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_Case_CaseId" FromRole="Case" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Case_CaseId" FromRole="Case" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="Case" ToRole="PatientVisitUnscheduled" />
+          <NavigationProperty Name="PlaintiffVehicles" Relationship="Self.FK_PlaintiffVehicle_Case_CaseId" FromRole="Case" ToRole="PlaintiffVehicle" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Case" ToRole="Referral" />
           <NavigationProperty Name="RefferingOffices" Relationship="Self.FK_RefferingOffice_Case_CaseId" FromRole="Case" ToRole="RefferingOffice" />
           <NavigationProperty Name="SchoolInformations" Relationship="Self.FK_SchoolInformation_Case_CaseId" FromRole="Case" ToRole="SchoolInformation" />
@@ -5145,6 +5237,28 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId" FromRole="ContactInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes1" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId" FromRole="ContactInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
+        </EntityType>
+        <EntityType Name="DefendantVehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="VehicleNumberPlate" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleMakeModel" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleMakeYear" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleOwnerName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleOperatorName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleInsuranceCompanyName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VehiclePolicyNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleClaimNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_DefendantVehicle_Case_CaseId" FromRole="DefendantVehicle" ToRole="Case" />
         </EntityType>
         <EntityType Name="DiagnosisCode">
           <Key>
@@ -5745,7 +5859,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="HourOrYearly" Type="Boolean" />
           <Property Name="LossOfEarnings" Type="Boolean" />
           <Property Name="DatesOutOfWork" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="HoursPerWeek" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="HoursPerWeek" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="AccidentAtEmployment" Type="Boolean" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_PatientEmpInfo_AddressInfo_EmpAddressId" FromRole="PatientEmpInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientEmpInfo_Case_CaseId" FromRole="PatientEmpInfo" ToRole="Case" />
@@ -5991,6 +6105,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="PendingReferral" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferralProcedureCodes" ToRole="PendingReferral" />
           <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" FromRole="PendingReferralProcedureCodes" ToRole="ProcedureCode" />
+        </EntityType>
+        <EntityType Name="PlaintiffVehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="VehicleNumberPlate" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleMakeModel" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleMakeYear" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleOwnerName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleOperatorName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleInsuranceCompanyName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VehiclePolicyNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleClaimNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleLocation" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleDamageDiscription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="RelativeVehicle" Type="Boolean" />
+          <Property Name="RelativeVehicleMakeModel" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="RelativeVehicleMakeYear" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="RelativeVehicleOwnerName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RelativeVehicleInsuranceCompanyName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RelativeVehiclePolicyNumber" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleResolveDamage" Type="Boolean" />
+          <Property Name="VehicleDriveable" Type="Boolean" />
+          <Property Name="VehicleEstimatedDamage" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="RelativeVehicleLocation" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleClientHaveTitle" Type="Boolean" />
+          <Property Name="RelativeVehicleOwner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_PlaintiffVehicle_Case_CaseId" FromRole="PlaintiffVehicle" ToRole="Case" />
         </EntityType>
         <EntityType Name="PolicyOwner">
           <Key>
@@ -7036,6 +7186,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DefendantVehicle_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="DefendantVehicle" Type="Self.DefendantVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DefendantVehicle">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DoctorCaseConsentApproval_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
           <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
@@ -7128,6 +7290,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PatientVisitUnscheduled">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaintiffVehicle_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="PlaintiffVehicle" Type="Self.PlaintiffVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaintiffVehicle">
               <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
@@ -8838,6 +9012,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
           <EntitySet Name="ConsentGivenTypes" EntityType="Self.ConsentGivenType" />
           <EntitySet Name="ContactInfoes" EntityType="Self.ContactInfo" />
+          <EntitySet Name="DefendantVehicles" EntityType="Self.DefendantVehicle" />
           <EntitySet Name="DiagnosisCodes" EntityType="Self.DiagnosisCode" />
           <EntitySet Name="DiagnosisCodeCompanies" EntityType="Self.DiagnosisCodeCompany" />
           <EntitySet Name="DiagnosisTypes" EntityType="Self.DiagnosisType" />
@@ -8882,6 +9057,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisitUnscheduleds" EntityType="Self.PatientVisitUnscheduled" />
           <EntitySet Name="PendingReferrals" EntityType="Self.PendingReferral" />
           <EntitySet Name="PendingReferralProcedureCodes" EntityType="Self.PendingReferralProcedureCode" />
+          <EntitySet Name="PlaintiffVehicles" EntityType="Self.PlaintiffVehicle" />
           <EntitySet Name="PolicyOwners" EntityType="Self.PolicyOwner" />
           <EntitySet Name="PreferredAncillaryProviders" EntityType="Self.PreferredAncillaryProvider" />
           <EntitySet Name="PreferredAttorneyProviders" EntityType="Self.PreferredAttorneyProvider" />
@@ -9062,6 +9238,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Case" EntitySet="Cases" />
             <End Role="CompanyCaseConsentApproval" EntitySet="CompanyCaseConsentApprovals" />
           </AssociationSet>
+          <AssociationSet Name="FK_DefendantVehicle_Case_CaseId" Association="Self.FK_DefendantVehicle_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="DefendantVehicle" EntitySet="DefendantVehicles" />
+          </AssociationSet>
           <AssociationSet Name="FK_DoctorCaseConsentApproval_Case_CaseId" Association="Self.FK_DoctorCaseConsentApproval_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
@@ -9093,6 +9273,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisitUnscheduled_Case_CaseId" Association="Self.FK_PatientVisitUnscheduled_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaintiffVehicle_Case_CaseId" Association="Self.FK_PlaintiffVehicle_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="PlaintiffVehicle" EntitySet="PlaintiffVehicles" />
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Case_CaseId" Association="Self.FK_Referral_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
@@ -10077,6 +10261,28 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DefendantVehicles">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DefendantVehicle">
+              <MappingFragment StoreEntitySet="DefendantVehicle">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="VehicleNumberPlate" ColumnName="VehicleNumberPlate" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="VehicleMakeModel" ColumnName="VehicleMakeModel" />
+                <ScalarProperty Name="VehicleMakeYear" ColumnName="VehicleMakeYear" />
+                <ScalarProperty Name="VehicleOwnerName" ColumnName="VehicleOwnerName" />
+                <ScalarProperty Name="VehicleOperatorName" ColumnName="VehicleOperatorName" />
+                <ScalarProperty Name="VehicleInsuranceCompanyName" ColumnName="VehicleInsuranceCompanyName" />
+                <ScalarProperty Name="VehiclePolicyNumber" ColumnName="VehiclePolicyNumber" />
+                <ScalarProperty Name="VehicleClaimNumber" ColumnName="VehicleClaimNumber" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DiagnosisCodes">
             <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisCode">
               <MappingFragment StoreEntitySet="DiagnosisCode">
@@ -10812,6 +11018,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PendingReferralId" ColumnName="PendingReferralId" />
                 <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlaintiffVehicles">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PlaintiffVehicle">
+              <MappingFragment StoreEntitySet="PlaintiffVehicle">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="VehicleNumberPlate" ColumnName="VehicleNumberPlate" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="VehicleMakeModel" ColumnName="VehicleMakeModel" />
+                <ScalarProperty Name="VehicleMakeYear" ColumnName="VehicleMakeYear" />
+                <ScalarProperty Name="VehicleOwnerName" ColumnName="VehicleOwnerName" />
+                <ScalarProperty Name="VehicleOperatorName" ColumnName="VehicleOperatorName" />
+                <ScalarProperty Name="VehicleInsuranceCompanyName" ColumnName="VehicleInsuranceCompanyName" />
+                <ScalarProperty Name="VehiclePolicyNumber" ColumnName="VehiclePolicyNumber" />
+                <ScalarProperty Name="VehicleClaimNumber" ColumnName="VehicleClaimNumber" />
+                <ScalarProperty Name="VehicleLocation" ColumnName="VehicleLocation" />
+                <ScalarProperty Name="VehicleDamageDiscription" ColumnName="VehicleDamageDiscription" />
+                <ScalarProperty Name="RelativeVehicle" ColumnName="RelativeVehicle" />
+                <ScalarProperty Name="RelativeVehicleMakeModel" ColumnName="RelativeVehicleMakeModel" />
+                <ScalarProperty Name="RelativeVehicleMakeYear" ColumnName="RelativeVehicleMakeYear" />
+                <ScalarProperty Name="RelativeVehicleOwnerName" ColumnName="RelativeVehicleOwnerName" />
+                <ScalarProperty Name="RelativeVehicleInsuranceCompanyName" ColumnName="RelativeVehicleInsuranceCompanyName" />
+                <ScalarProperty Name="RelativeVehiclePolicyNumber" ColumnName="RelativeVehiclePolicyNumber" />
+                <ScalarProperty Name="VehicleResolveDamage" ColumnName="VehicleResolveDamage" />
+                <ScalarProperty Name="VehicleDriveable" ColumnName="VehicleDriveable" />
+                <ScalarProperty Name="VehicleEstimatedDamage" ColumnName="VehicleEstimatedDamage" />
+                <ScalarProperty Name="RelativeVehicleLocation" ColumnName="RelativeVehicleLocation" />
+                <ScalarProperty Name="VehicleClientHaveTitle" ColumnName="VehicleClientHaveTitle" />
+                <ScalarProperty Name="RelativeVehicleOwner" ColumnName="RelativeVehicleOwner" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

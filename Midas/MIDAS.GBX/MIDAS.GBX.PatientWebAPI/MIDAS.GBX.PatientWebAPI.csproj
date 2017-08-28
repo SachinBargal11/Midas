@@ -259,6 +259,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\DefendantVehicleController.cs" />
     <Compile Include="Controllers\DocumentManagerController.cs" />
     <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -282,6 +283,7 @@
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
     <Compile Include="Controllers\PendingReferralController.cs" />
+    <Compile Include="Controllers\PlaintiffVehicleController.cs" />
     <Compile Include="Controllers\ReferralController.cs" />
     <Compile Include="Controllers\RefferingOfficeController.cs" />
     <Compile Include="Controllers\RoomController.cs" />

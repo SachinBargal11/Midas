@@ -1,6 +1,8 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Relation } from './enums/relation';
+import { Races } from './enums/race';
+import { Ethnicities } from './enums/ethnicities';
 
 const FamilyMemberRecord = Record({
     id: 0,
@@ -62,6 +64,40 @@ export class FamilyMember extends FamilyMemberRecord {
             //     return 'Sister';
             // case Relation.BROTHER:
             //     return 'Brother';
+        }
+    }
+
+    get raceLabel(): string {
+        return FamilyMember.getRaceLabel(this.raceId);
+    }
+    static getRaceLabel(race: Races): string {
+        switch (race) {
+            case Races.AMERICAN_INDIAN_OR_ALASKA_NATIVE:
+                return 'American Indian or Alaska Native';
+            case Races.ASIAN:
+                return 'Asian';
+            case Races.BLACK_OR_AFRICAN_AMERICAN:
+                return 'Black or African American';
+            case Races.NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER:
+                return 'Native Hawaiian Or Other Pacific Islander';
+            case Races.WHITE:
+                return 'White';
+            case Races.DECLINED_TO_SPECIFY:
+                return 'Declined tO Specify';
+        }
+    }
+
+    get ethnicitiesLabel(): string {
+        return FamilyMember.getEthnicitiesLabel(this.ethnicitiesId);
+    }
+    static getEthnicitiesLabel(ethnicities: Ethnicities): string {
+        switch (ethnicities) {
+            case Ethnicities.HISPANIC_OR_LATINO:
+                return 'Hispanic Or Latino';
+            case Ethnicities.NOT_HISPANIC_OR_LATINO:
+                return 'Not Hispanic Or Latino';
+            case Ethnicities.DECLINED_TO_SPECIFY:
+                return 'Declined tO Specify';
         }
     }
 

@@ -27,6 +27,8 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 export class EditInsuranceComponent implements OnInit {
     insuranceMasters: InsuranceMaster[];
+    policyOwner:string;
+    insuranceType:string;
     insuranceMastersAdress: Address;
     insuranceMaster: InsuranceMaster;
     policyCellPhone: string;
@@ -76,7 +78,8 @@ export class EditInsuranceComponent implements OnInit {
             result.subscribe(
                 (insurance: any) => {
                     this.insurance = insurance.toJS();
-
+                    this.policyOwner = insurance.policyOwnerLabel;
+                    this.insuranceType = insurance.insuranceTypeLabel;
                     this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
                     this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);

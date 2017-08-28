@@ -97,3 +97,57 @@ GO
 ALTER TABLE [dbo].[InsuranceMaster]  WITH CHECK ADD  CONSTRAINT [FK_InsuranceMaster_Company_CreatedByCompanyId] FOREIGN KEY([CreatedByCompanyId])
 	REFERENCES [dbo].[Company] ([Id])
 GO
+
+
+IF NOT EXISTS
+(
+	SELECT	'X' 
+	FROM	INFORMATION_SCHEMA.COLUMNS 
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'InsuranceMaster'
+	AND		COLUMN_NAME = 'ZeusID'
+)
+
+ALTER TABLE [dbo].[InsuranceMaster]
+ADD ZeusID NVARCHAR (50) NULL
+GO
+---------------------------------------------
+
+IF NOT EXISTS
+(
+	SELECT	'X' 
+	FROM	INFORMATION_SCHEMA.COLUMNS 
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'InsuranceMaster'
+	AND		COLUMN_NAME = 'PriorityBilling'
+)
+
+ALTER TABLE [dbo].[InsuranceMaster]
+ADD PriorityBilling INT NULL
+GO
+----------------------------------------------
+IF NOT EXISTS
+(
+	SELECT	'X' 
+	FROM	INFORMATION_SCHEMA.COLUMNS 
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'InsuranceMaster'
+	AND		COLUMN_NAME = 'Only1500Form'
+)
+
+ALTER TABLE [dbo].[InsuranceMaster]
+ADD Only1500Form INT NULL
+GO
+-----------------------------------------------
+IF NOT EXISTS
+(
+	SELECT	'X' 
+	FROM	INFORMATION_SCHEMA.COLUMNS 
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'InsuranceMaster'
+	AND		COLUMN_NAME = 'PaperAuthorization'
+)
+
+ALTER TABLE [dbo].[InsuranceMaster]
+ADD PaperAuthorization INT NULL
+GO

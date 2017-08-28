@@ -3,7 +3,9 @@ import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { MaritalStatus } from './enums/marital-status';
 import { PreferredLanguage } from './enums/preferred-language';
+import { SocialMedia } from './enums/social-media';
 import { PatientDocument } from './patient-document';
+import * as _ from 'underscore';
 
 const PatientRecord = Record({
     id: 0,
@@ -82,7 +84,29 @@ export class Patient extends PatientRecord {
             case PreferredLanguage.SPANISH:
                 return 'Spanish';
             case PreferredLanguage.OTHER:
-                return 'patientInfo.languagePreferenceOther';
+                return 'other';
+        }
+    }
+
+    get socialMedia(): string[] {
+        let patientSocialMediaMappings: any[] = [];
+        patientSocialMediaMappings = _.map(this.patientSocialMediaMappings, (currentSocialMedia: any) => {
+            return Patient.getSocialMediaLabel(currentSocialMedia.socialMediaId);
+        })
+        return patientSocialMediaMappings;
+    }
+    static getSocialMediaLabel(socialMedia: SocialMedia): string {
+        switch (socialMedia) {
+            case SocialMedia.Facebook:
+                return 'Facebook';
+            case SocialMedia.Twitter:
+                return 'Twitter';
+            case SocialMedia.Myspace:
+                return 'Myspace';
+            case SocialMedia.Instagram:
+                return 'Instagram';
+            case SocialMedia.LinkedIn:
+                return 'LinkedIn';
         }
     }
 }

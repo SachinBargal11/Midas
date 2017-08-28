@@ -36,9 +36,9 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         //{
         //    return requestHandler.GetByPatientId(Request, PatientId);
         //}
+
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);

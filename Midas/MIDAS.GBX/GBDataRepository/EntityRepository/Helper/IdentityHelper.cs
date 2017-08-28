@@ -19,11 +19,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             get
             {
-                // var identity = (ClaimsIdentity)HttpContext.Current.User.Identity;
-                // var username =  identity.Claims.Where(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").FirstOrDefault().Value; ;
-
-               // return username;
-                return "m1@allfriendshub.tk";
+                var identity = (ClaimsIdentity)HttpContext.Current.User.Identity;
+                if(identity.Claims.Count()>0)
+                {
+                    var username = identity.Claims.Where(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").FirstOrDefault().Value;
+                    if (username != null)
+                    {
+                        return username;
+                    }
+                    return "m1@allfriendshub.tk";
+                }              
+                else
+                {
+                    return "m1@allfriendshub.tk";
+                }
+                            
             }        
         }
 

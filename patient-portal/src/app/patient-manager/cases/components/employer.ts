@@ -65,12 +65,12 @@ export class CaseEmployerComponent implements OnInit {
     txtGrade = '';
     islossTimeofSchool: boolean = false;
     txtDateOutofSchool = '';
-    hourOrYearly = false;
-    lossOfEarnings = false;
-    accidentAtEmployment = false;
+    hourOrYearly = '';
+    lossOfEarnings = '';
+    accidentAtEmployment = '';
     school: School;
     id = 0;
-    lossOfTime = false;
+    lossOfTime = '';
     nameOfSchool = '';
     grade = '';
     datesOutOfSchool = '';
@@ -104,22 +104,23 @@ export class CaseEmployerComponent implements OnInit {
             result.subscribe(
                 (employer: Employer) => {
                     this.employer = employer;
-                    this.hourOrYearly = this.employer.hourOrYearly;
-                    this.lossOfEarnings = this.employer.lossOfEarnings;
-                    this.accidentAtEmployment = this.employer.accidentAtEmployment;
+                    this.hourOrYearly = String(this.employer.hourOrYearly) == '1' ? 'Hourly' : 'Yearly';    
+                    this.lossOfEarnings = String(this.employer.lossOfEarnings) == '1' ? 'Yes' : 'No';
+                    this.accidentAtEmployment = String(this.employer.accidentAtEmployment) == '1' ? 'Yes' : 'No';
                     this.currentEmployer = this.employer;
                     //this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
-                    this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
-                    if (this.currentEmployer.id) {
+                    // this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
+                    this.title = 'Employment/School Info';
+                    // if (this.currentEmployer.id) {
                         this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                         this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
 
-                    } else {
-                        this.currentEmployer = new Employer({
-                            address: new Address({}),
-                            contact: new Contact({})
-                        });
-                    }
+                    // } else {
+                    //     this.currentEmployer = new Employer({
+                    //         address: new Address({}),
+                    //         contact: new Contact({})
+                    //     });
+                    // }
 
                 },
                 (error) => {
@@ -135,7 +136,7 @@ export class CaseEmployerComponent implements OnInit {
                 (school: School) => {
                     this.school = school;
                     this.id = this.school.id;
-                    this.lossOfTime = this.school.lossOfTime;
+                    this.lossOfTime = String(this.school.lossOfTime) == '1' ? 'Yes' : 'No';
                     this.datesOutOfSchool = this.school.datesOutOfSchool;
                     this.nameOfSchool = this.school.nameOfSchool;
                     this.grade = this.school.grade;

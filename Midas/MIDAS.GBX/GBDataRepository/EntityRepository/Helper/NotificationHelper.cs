@@ -118,9 +118,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 using (UserPersonalSettingRepository cmp = new UserPersonalSettingRepository(_context))
                 {
-                    //BO.UserPersonalSetting userSettings = (UserPersonalSetting)cmp.GetByUserAndCompanyId(username, compnayid);
-                    BO.UserPersonalSetting userSettings = new BusinessObjects.UserPersonalSetting();
-                    userSettings.IsPushNotificationEnabled = true;
+                    BO.UserPersonalSetting userSettings = (BO.UserPersonalSetting)cmp.GetByUserNameAndCompanyId(username, compnayid);
+                    
                     if (userSettings != null)
                     {
                         if (userSettings.IsPushNotificationEnabled)

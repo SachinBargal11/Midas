@@ -2,7 +2,7 @@
     <h3 class="with-border">Edit Family Member</h3>
     <form [formGroup]="familyMemberForm" (ngSubmit)="save()">
         <div class="row">
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label">First Name
                                 <span class="color-red">*</span>
                             </label>
@@ -15,10 +15,17 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="col-lg-4">
+                        <label class="form-label"> First Name
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{familyMember.firstName}}
+                            </label>
+                        </div>
+                    </div>
+            <!--<div class="col-lg-4">
                 <label class="form-label">Middle Name
-                                <!--<span class="color-red">*</span>-->
                             </label>
                 <div class="form-group" [class.error]="familyMemberFormControls.middleName.touched && !familyMemberFormControls.middleName.valid">
                     <input type="text" formControlName="middleName" [ngModel]="familyMember.middleName" [class.error]="!familyMemberFormControls.middleName.valid" class="form-control"
@@ -29,8 +36,16 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="col-lg-4">
+                        <label class="form-label"> Middle Name
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{familyMember.middleName}}
+                            </label>
+                        </div>
+                    </div>
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Last Name
                                 <span class="color-red">*</span>
                             </label>
@@ -43,10 +58,18 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
+            <div class="col-lg-4">
+                        <label class="form-label"> Last Name
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{familyMember.lastName}}
+                            </label>
+                        </div>
+                    </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Relation to patient
                                 <span class="color-red">*</span>
                             </label>
@@ -55,8 +78,6 @@
                             <option value="">-Select -</option>
                             <option value="1">Spouse</option>
                             <option value="2">Child</option>
-                            <!--<option value="3">Sister</option>
-                            <option value="4">Brother</option>-->
                         </select>
                     <div class='error-list' *ngIf="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
                         <ul>
@@ -64,15 +85,24 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
+            <div class="col-lg-4">
+                        <label class="form-label"> Relation to patient
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{relation}}
+                            </label>
+                        </div>
+                    </div>
             <div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Primary Contact</label>
-                    <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
-                    <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
+                    <label class="form-label"> {{primaryContact}}</label>
+                    <!-- <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
+                    <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="0" label="No"></p-radioButton> -->
                 </div>
             </div>
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Age
                                 <span class="color-red">*</span>
                             </label>
@@ -85,7 +115,15 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
+            <div class="col-lg-4">
+                        <label class="form-label"> Age
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{familyMember.age}}
+                            </label>
+                        </div>
+                    </div>
         </div>
         <div class="row">
             <div class="col-lg-4">
@@ -106,7 +144,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Races
                                 <span class="color-red">*</span>
                             </label>
@@ -127,8 +165,16 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="col-lg-4">
+                        <label class="form-label"> Races
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{race}}
+                            </label>
+                        </div>
+                    </div>
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Ethnicities
                                 <span class="color-red">*</span>
                             </label>
@@ -147,10 +193,18 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
+            <div class="col-lg-4">
+                        <label class="form-label"> Ethnicities
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{ethnicities}}
+                            </label>
+                        </div>
+                    </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <!--<div class="col-lg-4">
                 <label class="form-label"> Cellphone
                                             <span class="color-red">*</span>
                                         </label>
@@ -164,13 +218,29 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="col-lg-4">
+                        <label class="form-label"> Cellphone
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{cellPhone}}
+                            </label>
+                        </div>
+                    </div>
+            <!--<div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Work Phone No</label>
                     <input formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
                 </div>
-            </div>
+            </div>-->
+            <div class="col-lg-4">
+                        <label class="form-label"> Work Phone No
+                            </label>
+                        <div class="form-group">
+                            <label class="form-label"> {{familyMember.workPhone}}
+                            </label>
+                        </div>
+                    </div>
             <!--<div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Primary Contact</label>
@@ -179,9 +249,9 @@
                 </div>
             </div>-->
         </div>
-        <button [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <!--<button [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveProgress"></loader>
-    </button>
+    </button>-->
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

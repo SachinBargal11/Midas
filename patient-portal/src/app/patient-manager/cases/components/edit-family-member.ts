@@ -21,12 +21,16 @@ import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 
 export class EditFamilyMemberComponent implements OnInit {
     cellPhone: string;
+    race: string;
+    ethnicities: string;
+    relation: string;
     patientId: number;
     familyMemberForm: FormGroup;
     familyMemberFormControls;
     isSaveProgress = false;
     familyMember: FamilyMember;
     caseId: number;
+    primaryContact: string
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -50,7 +54,11 @@ export class EditFamilyMemberComponent implements OnInit {
             result.subscribe(
                 (familyMember: any) => {
                     this.familyMember = familyMember.toJS();
+                    this.race = familyMember.raceLabel;
+                    this.ethnicities = familyMember.ethnicitiesLabel;
+                    this.relation = familyMember.relationLabel
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+                    this.primaryContact = String(this.familyMember.primaryContact) == '1' ? 'Yes' : 'No';
                 },
                 (error) => {
                     // this._router.navigate(['../../'], { relativeTo: this._route });

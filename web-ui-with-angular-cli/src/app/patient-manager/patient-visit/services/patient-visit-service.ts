@@ -1,3 +1,5 @@
+import { UnscheduledVisitAdapter } from './adapters/unscheduled-visit-adapter';
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { Procedure } from '../../../commons/models/procedure';
 import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
@@ -91,6 +93,25 @@ export class PatientVisitService {
 
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
+        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/patientVisitUnscheduled/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let unscheduledVisit = (<Object[]>data).map((data: any) => {
+                        return UnscheduledVisitAdapter.parseResponse(data);
+                    });
+                    resolve(unscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
     }
 
     getVisitsByDatesAndDoctorId(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
@@ -515,7 +536,6 @@ export class PatientVisitService {
                     }
                     // If everything went fine, return the response
                     else {
-
                         window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
                         // return res.arrayBuffer();
                     }
@@ -546,6 +566,22 @@ export class PatientVisitService {
                 });
         });
         return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
+    addUnscheduledVisit(requestData: any): Observable<UnscheduledVisit> {
+        let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(environment.SERVICE_BASE_URL + '/patientVisitUnscheduled/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
     }
 
     getPatientVisitsByCompanyId(): Observable<PatientVisit[]> {

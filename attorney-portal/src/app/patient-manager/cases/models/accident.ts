@@ -2,6 +2,8 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { PatientType } from './enums/patient-type';
+import { AccidentWitness } from './accident-witness';
+import { AccidentTreatment } from './accident-treatment';
 
 const AccidentRecord = Record({
     id: 0,
@@ -21,7 +23,23 @@ const AccidentRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
-    medicalReportNumber: ''
+    medicalReportNumber: '',
+
+    weather: '',
+    policeAtScene: false,
+    precinct: '',
+    wearingSeatBelts: false,
+    airBagsDeploy: false,
+    photosTaken: false,
+    accidentDescription: '',
+    witness: false,
+    ambulance: false,
+    treatedAndReleased: false,
+    admitted: false,
+    xraysTaken: false,
+    durationAtHospital: '',
+    accidentWitnesses: [],
+    accidentTreatments: []
 });
 
 export class Accident extends AccidentRecord {
@@ -44,6 +62,22 @@ export class Accident extends AccidentRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     medicalReportNumber: string;
+
+    weather: string;
+    policeAtScene: boolean;
+    precinct: string;
+    wearingSeatBelts: boolean;
+    airBagsDeploy: boolean;
+    photosTaken: boolean;
+    accidentDescription: string;
+    witness: boolean;
+    ambulance: boolean;
+    treatedAndReleased: boolean;
+    admitted: boolean;
+    xraysTaken: boolean;
+    durationAtHospital: string;
+    accidentWitnesses: AccidentWitness[];
+    accidentTreatments: AccidentTreatment[];
 
     constructor(props) {
         super(props);

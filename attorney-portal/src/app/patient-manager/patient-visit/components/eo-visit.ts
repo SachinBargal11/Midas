@@ -143,6 +143,10 @@ export class EoVisitComponent implements OnInit {
     user: string;
     userName: string;
     insuranceMasters: InsuranceMaster[];
+    insuranceProviderId;
+    notes = '';
+    selectedVisit;
+    patientId: number;
 
     // eventRenderer: Function = (event, element) => {
     //     // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -171,7 +175,7 @@ export class EoVisitComponent implements OnInit {
     // ancillaryProviderId: number = null;
     // allPrefferesAncillaries: AncillaryMaster[];
     // referredBy: string = '';
-    // private _selectedEvent: ScheduledEvent;
+    private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
@@ -183,26 +187,27 @@ export class EoVisitComponent implements OnInit {
     scheduledEventEditorFormControls;
     @Output() isValid = new EventEmitter();
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
-    // @Input() set selectedEvent(value: ScheduledEvent) {
-    //     if (value) {
-    //         this._selectedEvent = value;
-    //         this.name = this._selectedEvent.name;
-    //         this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
-    //         this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
-    //         this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-    //         this.isAllDay = this._selectedEvent.isAllDay;
+    @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
+    @Input() set selectedEvent(value: ScheduledEvent) {
+        if (value) {
+            this._selectedEvent = value;
+            this.name = this._selectedEvent.name;
+            this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
+            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
+            this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
+            this.isAllDay = this._selectedEvent.isAllDay;
 
-    //     } else {
-    //         this._selectedEvent = null;
-    //         this.eventStartAsDate = null;
-    //         this.eventEndAsDate = null;
-    //         this.isAllDay = false;
-    //     }
-    // }
+        } else {
+            this._selectedEvent = null;
+            this.eventStartAsDate = null;
+            this.eventEndAsDate = null;
+            this.isAllDay = false;
+        }
+    }
 
-    // get selectedEvent(): ScheduledEvent {
-    //     return this._selectedEvent;
-    // }
+    get selectedEvent(): ScheduledEvent {
+        return this._selectedEvent;
+    }
 
     constructor(
         public _route: ActivatedRoute,
@@ -344,6 +349,7 @@ export class EoVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
+                this.refreshImeEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -363,6 +369,7 @@ export class EoVisitComponent implements OnInit {
     closeDialog() {
         this.closeDialogBox.emit();
     }
+    handleVisitDialogHide() {}
 
     getDocuments() {
         // this._progressBarService.show();
@@ -415,6 +422,10 @@ export class EoVisitComponent implements OnInit {
     showDialog(currentCaseId: number) {
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
+    }
+
+     refreshImeEvents() {
+        this.refreshEvents.emit();
     }
 
     downloadPdf(documentId) {
