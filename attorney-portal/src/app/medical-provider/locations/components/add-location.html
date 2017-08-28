@@ -96,8 +96,8 @@
                             </label>
             <div class="form-group" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
                 <!--<input type="text" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid" class="form-control"/>-->
-                <p-inputMask mask="999-999-9999" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid"
-                    placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                <p-inputMask mask="+1 999-999-9999" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid"
+                    placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                 <div class='error-list' *ngIf="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
                     <ul>
                         <li *ngIf="addlocationformControls.officePhone.hasError('required')">Office Phone is required.</li>

@@ -169,8 +169,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                     <div class="form-group" [class.error]="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid">
-                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid"
-                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [class.error]="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                         <div class='error-list' *ngIf="referralOutOfMidasFormControls.cellPhone.touched && !referralOutOfMidasFormControls.cellPhone.valid">
                             <ul>
                                 <li *ngIf="referralOutOfMidasFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
