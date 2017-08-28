@@ -51,7 +51,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string DoctorName { get; set; }
 
         [JsonProperty("visitCreatedByCompanyId")]
-        public int VisitCreatedByCompanyId { get; set; }
+        public int? VisitCreatedByCompanyId { get; set; }
 
     }
 }
