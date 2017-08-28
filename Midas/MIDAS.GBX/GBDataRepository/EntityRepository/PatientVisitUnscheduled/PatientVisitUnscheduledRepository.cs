@@ -41,6 +41,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.MedicalProviderName = PatientVisitUnscheduledDB.MedicalProviderName;
                 PatientVisitUnscheduledBO.DoctorName = PatientVisitUnscheduledDB.DoctorName;
                 PatientVisitUnscheduledBO.Notes = PatientVisitUnscheduledDB.Notes;
+                PatientVisitUnscheduledBO.SpecialtyId = PatientVisitUnscheduledDB.SpecialtyId;
+                PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
+                PatientVisitUnscheduledBO.ReferralId = PatientVisitUnscheduledDB.ReferralId;
 
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;
@@ -53,6 +56,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         PatientBO = patientRepo.Convert<BO.Patient, Patient>(PatientVisitUnscheduledDB.Patient);
                         PatientVisitUnscheduledBO.Patient = PatientBO;
+                    }
+                }
+
+                if (PatientVisitUnscheduledDB.Specialty != null)
+                {
+                    BO.Specialty SpecialtyBO = new BO.Specialty();
+                    using (SpecialityRepository specialtyRepo = new SpecialityRepository(_context))
+                    {
+                        SpecialtyBO = specialtyRepo.Convert<BO.Specialty, Specialty>(PatientVisitUnscheduledDB.Specialty);
+                        PatientVisitUnscheduledBO.Specialty = SpecialtyBO;
+                    }
+                }
+
+                if (PatientVisitUnscheduledDB.RoomTest != null)
+                {
+                    BO.RoomTest RoomTestBO = new BO.RoomTest();
+                    using (RoomTestRepository roomTestRepo = new RoomTestRepository(_context))
+                    {
+                        RoomTestBO = roomTestRepo.Convert<BO.RoomTest, RoomTest>(PatientVisitUnscheduledDB.RoomTest);
+                        PatientVisitUnscheduledBO.RoomTest = RoomTestBO;
                     }
                 }
 
@@ -139,6 +162,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisitUnscheduledDB.DoctorName = PatientVisitUnscheduledBO.DoctorName;
 
                     PatientVisitUnscheduledDB.Notes = PatientVisitUnscheduledBO.Notes;
+                    PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
+                    PatientVisitUnscheduledDB.RoomTestId = PatientVisitUnscheduledBO.RoomTestId;
+                    PatientVisitUnscheduledDB.ReferralId = PatientVisitUnscheduledBO.ReferralId;
 
                     if (IsEditMode == false)
                     {
@@ -166,6 +192,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds
                                                         .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")
+                                                        .Include("Specialty")
+                                                        .Include("RoomTest")
                                                         .Where(p => p.Id == PatientVisitUnscheduledDB.Id
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                         .FirstOrDefault<PatientVisitUnscheduled>();
@@ -181,7 +209,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByCaseId(int CaseId)
         {
             var acc = _context.PatientVisitUnscheduleds.Include("Patient")
-                                                       .Include("Patient.User")                                            
+                                                       .Include("Patient.User") 
+                                                       .Include("Specialty")      
+                                                       .Include("RoomTest")                                    
                                                        .Where(p => p.CaseId == CaseId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .ToList<PatientVisitUnscheduled>();
