@@ -57,6 +57,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 AttorneyVisitBO.Subject = AttorneyVisitDB.Subject;
                 AttorneyVisitBO.VisitStatusId = AttorneyVisitDB.VisitStatusId;
                 AttorneyVisitBO.ContactPerson = AttorneyVisitDB.ContactPerson;
+                AttorneyVisitBO.Agenda = AttorneyVisitDB.Agenda;
 
                 AttorneyVisitBO.IsDeleted = AttorneyVisitDB.IsDeleted;
                 AttorneyVisitBO.CreateByUserID = AttorneyVisitDB.CreateByUserID;

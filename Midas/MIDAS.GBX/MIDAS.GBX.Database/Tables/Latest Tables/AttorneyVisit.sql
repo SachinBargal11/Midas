@@ -109,7 +109,7 @@ IF EXISTS
 	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 	WHERE	TABLE_SCHEMA = 'dbo'
 	AND		TABLE_NAME = 'AttorneyVisit'
-	AND		CONSTRAINT_NAME = 'FK_AttorneyVisit_Location_LocationID'
+	AND		CONSTRAINT_NAME = 'FK_AttorneyVisit_Company_CompanyId'
 )
 BEGIN
 	ALTER TABLE [dbo].[AttorneyVisit] 
