@@ -1,4 +1,5 @@
-<div>
+<h3 class="with-border">{{title}}</h3>
+<div *ngIf="autoInformation">
     <form [formGroup]="autoInfoform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">
@@ -37,6 +38,22 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
+                        <label class="form-label"> Make/Model
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="autoInfoformControls.txtModel.touched && !autoInfoformControls.txtModel.valid">
+                            <input type="text" formControlName="txtModel" [class.error]="!autoInfoformControls.txtModel.valid" class="form-control" type="text"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="autoInfoformControls.txtModel.touched && !autoInfoformControls.txtModel.valid">
+                                <ul>
+                                    <li *ngIf="autoInfoformControls.txtModel.hasError('required')">Model is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
                         <label class="form-label"> Make/Model And Year
                                             <span class="color-red">*</span>
                                         </label>
@@ -50,8 +67,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Insurance Company
                                             <!--<span class="color-red">*</span>-->
@@ -75,6 +90,8 @@
                         </div>
                     </div>
 
+                </div>
+                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Claim
                                             <span class="color-red">*</span>
@@ -84,9 +101,6 @@
 
                         </div>
                     </div>
-
-                </div>
-                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Where is the vehicle located?
                                             <!--<span class="color-red">*</span>-->
@@ -116,8 +130,15 @@
                     </div>
                 </div>
                 <div class="row" *ngIf="relativesVehicle == '1'">
-                    <div class="col-lg-3">
-                        <label class="form-label">  Make/Model And Year                                          
+                    <div class="col-lg-2">
+                        <label class="form-label">  Make/Model                                         
+                                        </label>
+                        <div class="form-group">
+                            <input formControlName="relModel" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Year                                       
                                         </label>
                         <div class="form-group">
                             <input formControlName="relModelYear" type="text" class="form-control" placeholder="">
@@ -137,7 +158,7 @@
                             <input formControlName="relInsuranceCompany" type="text" class="form-control" placeholder="">
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label class="form-label">  Policy                                         
                                         </label>
                         <div class="form-group">
@@ -184,6 +205,21 @@
                             <p-radioButton formControlName="titletoVehicle" name="titletoVehicle" value="2" label="No" [(ngModel)]="titletoVehicle"></p-radioButton>
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Owner Name
+                                        </label>
+                        <div class="form-group">
+                            <input type="text" formControlName="txtOwnerName" class="form-control" type="text" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Operator Name
+                                        </label>
+                        <div class="form-group">
+                            <input type="text" formControlName="txtOperatorName" class="form-control" type="text" placeholder="" />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -218,10 +254,16 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-lg-4">
-                        <label class="form-label"> Make/Model And Year
+                        <label class="form-label"> Make/Model 
+                                        </label>
+                        <div class="form-group">
+                            <input type="text" formControlName="txtDefendantModel" class="form-control" type="text" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Make/Model Year
                                         </label>
                         <div class="form-group">
                             <input type="text" formControlName="txtDefendantModelYear" class="form-control" type="text" placeholder="" />
@@ -234,6 +276,9 @@
                             <input type="text" formControlName="txtDefendantOperatorName" class="form-control" type="text" placeholder="" />
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="col-lg-4">
 
                         <label class="form-label">  Insurance Company                                          
@@ -242,8 +287,6 @@
                             <input formControlName="defendantInsuranceCompany" type="text" class="form-control" placeholder="">
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label">Policy                                         
                                         </label>
