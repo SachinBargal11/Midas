@@ -18,6 +18,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public RoomTest()
         {
             this.DoctorRoomTestMappings = new HashSet<DoctorRoomTestMapping>();
+            this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
             this.PendingReferrals = new HashSet<PendingReferral>();
             this.ProcedureCodes = new HashSet<ProcedureCode>();
             this.Referrals = new HashSet<Referral>();
@@ -35,6 +36,8 @@ namespace MIDAS.GBX.DataRepository.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorRoomTestMapping> DoctorRoomTestMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PendingReferral> PendingReferrals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

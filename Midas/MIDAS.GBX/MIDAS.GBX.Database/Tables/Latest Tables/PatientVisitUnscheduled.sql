@@ -14,10 +14,10 @@ BEGIN
 	    [EventStart] [DATETIME2] NULL,
         [MedicalProviderName] [NVARCHAR](256) NULL,
         [DoctorName] [NVARCHAR](256) NULL,
-        --[SpecialtyId] INT NULL,
-        --[RoomTestId] INT NULL,
+        [SpecialtyId] INT NULL,
+        [RoomTestId] INT NULL,
         [Notes] [NVARCHAR](512) NULL,
-        --[ReferralId] INT NULL,
+        [ReferralId] INT NULL,
 
 	    [IsDeleted] [bit] NULL DEFAULT 0,
 	    [CreateByUserID] [int] NOT NULL,
@@ -69,56 +69,56 @@ ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnsch
 	REFERENCES [dbo].[Patient] ([Id])
 GO
 
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'PatientVisitUnscheduled'
---	AND		CONSTRAINT_NAME = 'FK_PatientVisitUnscheduled_Specialty_SpecialtyId'
---)
---BEGIN
---	ALTER TABLE [dbo].[PatientVisitUnscheduled] 
---        DROP CONSTRAINT [FK_PatientVisitUnscheduled_Specialty_SpecialtyId]
---END
---GO
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientVisitUnscheduled'
+	AND		CONSTRAINT_NAME = 'FK_PatientVisitUnscheduled_Specialty_SpecialtyId'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientVisitUnscheduled] 
+        DROP CONSTRAINT [FK_PatientVisitUnscheduled_Specialty_SpecialtyId]
+END
+GO
 
---ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnscheduled_Specialty_SpecialtyId] FOREIGN KEY([SpecialtyId])
---	REFERENCES [dbo].[Specialty] ([Id])
---GO
+ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnscheduled_Specialty_SpecialtyId] FOREIGN KEY([SpecialtyId])
+	REFERENCES [dbo].[Specialty] ([Id])
+GO
 
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'PatientVisitUnscheduled'
---	AND		CONSTRAINT_NAME = 'FK_PatientVisitUnscheduled_RoomTest_RoomTestId'
---)
---BEGIN
---	ALTER TABLE [dbo].[PatientVisitUnscheduled] 
---        DROP CONSTRAINT [FK_PatientVisitUnscheduled_RoomTest_RoomTestId]
---END
---GO
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientVisitUnscheduled'
+	AND		CONSTRAINT_NAME = 'FK_PatientVisitUnscheduled_RoomTest_RoomTestId'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientVisitUnscheduled] 
+        DROP CONSTRAINT [FK_PatientVisitUnscheduled_RoomTest_RoomTestId]
+END
+GO
 
---ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnscheduled_RoomTest_RoomTestId] FOREIGN KEY([RoomTestId])
---	REFERENCES [dbo].[RoomTest] ([Id])
---GO
+ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnscheduled_RoomTest_RoomTestId] FOREIGN KEY([RoomTestId])
+	REFERENCES [dbo].[RoomTest] ([Id])
+GO
 
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'PatientVisitUnscheduled'
---	AND		CONSTRAINT_NAME = 'FK_PatientVisitUnscheduled_Referral_ReferralId'
---)
---BEGIN
---	ALTER TABLE [dbo].[PatientVisitUnscheduled] 
---        DROP CONSTRAINT [FK_PatientVisitUnscheduled_Referral_ReferralId]
---END
---GO
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientVisitUnscheduled'
+	AND		CONSTRAINT_NAME = 'FK_PatientVisitUnscheduled_Referral_ReferralId'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientVisitUnscheduled] 
+        DROP CONSTRAINT [FK_PatientVisitUnscheduled_Referral_ReferralId]
+END
+GO
 
---ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnscheduled_Referral_ReferralId] FOREIGN KEY([ReferralId])
---	REFERENCES [dbo].[Referral] ([Id])
---GO
+ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnscheduled_Referral_ReferralId] FOREIGN KEY([ReferralId])
+	REFERENCES [dbo].[Referral] ([Id])
+GO
