@@ -44,6 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.SpecialtyId = PatientVisitUnscheduledDB.SpecialtyId;
                 PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
                 PatientVisitUnscheduledBO.ReferralId = PatientVisitUnscheduledDB.ReferralId;
+                PatientVisitUnscheduledBO.Status = "Unscheduled";
 
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;
@@ -213,6 +214,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        .Include("Specialty")      
                                                        .Include("RoomTest")                                    
                                                        .Where(p => p.CaseId == CaseId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .ToList<PatientVisitUnscheduled>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisitUnscheduled> lstpatientvisit = new List<BO.PatientVisitUnscheduled>();
+                foreach (PatientVisitUnscheduled item in acc)
+                {
+                    lstpatientvisit.Add(Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(item));
+                }
+                return lstpatientvisit;
+            }
+        }
+        #endregion
+
+        #region Get By Id
+        public override object Get(int id)
+        {
+            var acc = _context.PatientVisitUnscheduleds.Include("Patient")
+                                                       .Include("Patient.User")
+                                                       .Include("Specialty")
+                                                       .Include("RoomTest")
+                                                       .Where(p => p.Id == id
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .ToList<PatientVisitUnscheduled>();
 
