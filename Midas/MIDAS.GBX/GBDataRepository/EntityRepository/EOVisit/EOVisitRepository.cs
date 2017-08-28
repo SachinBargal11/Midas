@@ -313,13 +313,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     EOVisitDB.DoctorId = IsEditMode == true && EOVisitBO.DoctorId.HasValue == false ? EOVisitDB.DoctorId : (EOVisitBO.DoctorId.HasValue == false ? EOVisitDB.DoctorId : EOVisitBO.DoctorId.Value);
                     EOVisitDB.PatientId = IsEditMode == true && EOVisitBO.PatientId.HasValue == false ? EOVisitDB.PatientId : (EOVisitBO.PatientId.HasValue == false ? EOVisitDB.PatientId : EOVisitBO.PatientId.Value);
-                    EOVisitDB.VisitCreatedByCompanyId = IsEditMode == true && EOVisitBO.VisitCreatedByCompanyId.HasValue == false ? EOVisitDB.VisitCreatedByCompanyId : (EOVisitBO.VisitCreatedByCompanyId.HasValue == false ? EOVisitDB.VisitCreatedByCompanyId : EOVisitBO.VisitCreatedByCompanyId.Value);
+                    
                     EOVisitDB.InsuranceProviderId = IsEditMode == true && EOVisitBO.InsuranceProviderId.HasValue == false ? EOVisitDB.InsuranceProviderId : (EOVisitBO.InsuranceProviderId.HasValue == false ? EOVisitDB.InsuranceProviderId : EOVisitBO.InsuranceProviderId.Value);
                     EOVisitDB.EventStart = EOVisitBO.EventStart;
                     EOVisitDB.EventEnd = EOVisitBO.EventEnd;
 
                     EOVisitDB.Notes = EOVisitBO.Notes;
                     EOVisitDB.VisitStatusId = EOVisitBO.VisitStatusId;
+
+                    EOVisitDB.VisitCreatedByCompanyId = IsEditMode == true ? EOVisitDB.VisitCreatedByCompanyId : EOVisitBO.VisitCreatedByCompanyId.Value;
 
                     if (IsEditMode == false)
                     {

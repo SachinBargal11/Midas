@@ -352,7 +352,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     IMEVisitDB.VisitStatusId = IMEVisitBO.VisitStatusId;
                     IMEVisitDB.TransportProviderId = IMEVisitBO.TransportProviderId;
                     IMEVisitDB.DoctorName = IMEVisitBO.DoctorName;
-                    IMEVisitDB.VisitCreatedByCompanyId = IMEVisitBO.VisitCreatedByCompanyId;
+                    IMEVisitDB.VisitCreatedByCompanyId = IsEditMode == true ? IMEVisitDB.VisitCreatedByCompanyId : IMEVisitBO.VisitCreatedByCompanyId.Value;
 
                     if (IsEditMode == false)
                     {
