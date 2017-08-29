@@ -50,6 +50,8 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
             this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
+            this.OTPCompanyMappings = new HashSet<OTPCompanyMapping>();
+            this.OTPCompanyMappings1 = new HashSet<OTPCompanyMapping>();
         }
     
         public int id { get; set; }
@@ -140,5 +142,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserPersonalSetting> UserPersonalSettings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OTPCompanyMapping> OTPCompanyMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OTPCompanyMapping> OTPCompanyMappings1 { get; set; }
     }
 }

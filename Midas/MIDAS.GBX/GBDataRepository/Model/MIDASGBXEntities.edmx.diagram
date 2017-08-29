@@ -303,6 +303,9 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.OTPCompanyMapping" Width="1.5" PointX="8.25" PointY="127.75" />
+        <AssociationConnector Association="MIDASGBXModel.FK_OTPCompanyMapping_Company_CompanyId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_OTPCompanyMapping_Company_UsedByCompanyId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
