@@ -79,7 +79,7 @@ export class AutoInformationInfoComponent implements OnInit {
                 });
 
             let resultDefendant = this._autoInformationStore.getDefendantByCaseId(this.caseId);
-            result.subscribe(
+            resultDefendant.subscribe(
                 (defendantAutoInformation: DefendantAutoInformation) => {
                     this.defendantAutoInformation = defendantAutoInformation;
                 },
@@ -154,11 +154,6 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleLocation: formValues.txtVehicalLocated,
             vehicleDamageDiscription: formValues.txtVehicalDesc,
             relativeVehicle: parseInt(formValues.relativesVehicle),
-            relativeVehicleMakeModel: formValues.relModel,
-            relativeVehicleMakeYear: formValues.relModelYear,
-            relativeVehicleOwnerName: formValues.relOwnerName,
-            relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
-            relativeVehiclePolicyNumber: formValues.relPolicy,
             vehicleResolveDamage: parseInt(formValues.helpinDamageResolved),
             vehicleDriveable: parseInt(formValues.vehicleDrivable),
             vehicleEstimatedDamage: formValues.txtEstimatedDamage,
@@ -167,9 +162,8 @@ export class AutoInformationInfoComponent implements OnInit {
             relativeVehicleOwner: formValues.relOwnerName,
 
         });
-        debugger;
-        let defendantAutoInfoform = new DefendantAutoInformation({
 
+        let defendantAutoInfoform = new DefendantAutoInformation({
             id: this.defendantAutoInformation.id ? this.defendantAutoInformation.id : 0,
             caseId: this.caseId,
             vehicleNumberPlate: formValues.txtDefendantPlate,

@@ -1,7 +1,5 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
-import { Address } from '../../../commons/models/address';
-import { Contact } from '../../../commons/models/contact';
 
 const DefendantAutoInformationRecord = Record({
     id: 0,

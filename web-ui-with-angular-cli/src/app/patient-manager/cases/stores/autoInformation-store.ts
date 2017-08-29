@@ -60,9 +60,9 @@ export class AutoInformationStore {
 
     saveDefendantAutoInformation(defendantAutoInformation: DefendantAutoInformation): Observable<DefendantAutoInformation> {
         let promise = new Promise((resolve, reject) => {
-            this._autoInformationService.saveDefendantAutoInformation(defendantAutoInformation).subscribe((autoInformation: DefendantAutoInformation) => {
+            this._autoInformationService.saveDefendantAutoInformation(defendantAutoInformation).subscribe((defendantAutoInformation: DefendantAutoInformation) => {
                 this._defendantAutoInformation.next(this._defendantAutoInformation.getValue().push(defendantAutoInformation));
-                resolve(autoInformation);
+                resolve(defendantAutoInformation);
             }, error => {
                 reject(error);
             });
@@ -72,5 +72,7 @@ export class AutoInformationStore {
 
     resetStore() {
         this._autoInformation.next(this._autoInformation.getValue().clear());
+        this._defendantAutoInformation.next(this._defendantAutoInformation.getValue().clear());
+
     }
 }
