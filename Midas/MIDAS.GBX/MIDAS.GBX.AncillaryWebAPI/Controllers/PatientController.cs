@@ -34,6 +34,8 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         [Route("savePatient")]
         public HttpResponseMessage SavePatient([FromBody]Patient patient)
         {
+            //Since Ancillary cannot update social media info, only attorney can view or update.
+            patient.PatientSocialMediaMappings = null;
             return requestHandlerPatient.CreateGbObject(Request, patient);
         }
 

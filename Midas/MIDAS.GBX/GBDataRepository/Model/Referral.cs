@@ -30,7 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> ForSpecialtyId { get; set; }
         public Nullable<int> ForRoomId { get; set; }
         public Nullable<int> ForRoomTestId { get; set; }
-        public int ToCompanyId { get; set; }
+        public Nullable<int> ToCompanyId { get; set; }
         public Nullable<int> ToLocationId { get; set; }
         public Nullable<int> ToDoctorId { get; set; }
         public Nullable<int> ToRoomId { get; set; }
