@@ -115,7 +115,9 @@ import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
 import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
 import { PriorAccidentComponent } from './cases/components/prior-accident';
-
+import { AutoInformationInfoComponent } from './cases/components/auto-Information';
+import { AutoInformationService } from './cases/services/autoInformation-service';
+import { AutoInformationStore } from './cases/stores/autoInformation-store';
 
 @NgModule({
     imports: [
@@ -186,7 +188,8 @@ import { PriorAccidentComponent } from './cases/components/prior-accident';
         CaseBasicLabelComponent,
         ImeVisitComponent,
         EoVisitComponent,
-        PriorAccidentComponent
+        PriorAccidentComponent,
+        AutoInformationInfoComponent
     ],
     providers: [
         PatientsService,
@@ -222,7 +225,9 @@ import { PriorAccidentComponent } from './cases/components/prior-accident';
         PendingReferralService,
         PendingReferralStore,
         AvailableSlotsService,
-        AvailableSlotsStore
+        AvailableSlotsStore,
+        AutoInformationService,
+        AutoInformationStore
     ]
 })
 export class PatientManagerModule { }

@@ -38,7 +38,7 @@ import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
 import { EditFamilyMemberComponent } from './components/edit-family-member';
 import { PriorAccidentComponent } from './components/prior-accident';
-
+import { AutoInformationInfoComponent } from './components/auto-Information';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -487,6 +487,14 @@ export const CasesShellRoutes: Routes = [
                                 }
                             }
                         ]
+                    },
+                    {
+                        path: 'autoInformation',
+                        component: AutoInformationInfoComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'AutoInformation'
+                        }
                     }
                 ]
             }
