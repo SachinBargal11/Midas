@@ -38,7 +38,7 @@ import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
 import { EditFamilyMemberComponent } from './components/edit-family-member';
 
-import { AutoInformationInfoComponent } from './components/autoInformation';
+import { AutoInformationInfoComponent } from './components/auto-Information';
 import { PriorAccidentComponent } from './components/prior-accident';
 
 export const CasesShellRoutes: Routes = [

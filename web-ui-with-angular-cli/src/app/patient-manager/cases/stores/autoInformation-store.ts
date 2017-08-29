@@ -7,14 +7,15 @@ import { AutoInformationService } from '../services/autoInformation-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { School } from '../models/school';
+import { DefendantAutoInformation } from '../models/defendantAutoInformation';
 @Injectable()
 export class AutoInformationStore {
 
     private _autoInformation: BehaviorSubject<List<AutoInformation>> = new BehaviorSubject(List([]));
-    private _schools: BehaviorSubject<List<School>> = new BehaviorSubject(List([]));
+    private _defendantAutoInformation: BehaviorSubject<List<DefendantAutoInformation>> = new BehaviorSubject(List([]));
     constructor(
         private _autoInformationService: AutoInformationService,
+
         private _sessionStore: SessionStore
     ) {
         this._sessionStore.userLogoutEvent.subscribe(() => {
@@ -44,6 +45,31 @@ export class AutoInformationStore {
         });
         return <Observable<AutoInformation>>Observable.from(promise);
     }
+
+
+    getDefendantByCaseId(caseId: Number): Observable<DefendantAutoInformation> {
+        let promise = new Promise((resolve, reject) => {
+            this._autoInformationService.getDefendantByCaseId(caseId).subscribe((defendantAutoInformation: DefendantAutoInformation) => {
+                resolve(defendantAutoInformation);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<DefendantAutoInformation>>Observable.fromPromise(promise);
+    }
+
+    saveDefendantAutoInformation(defendantAutoInformation: DefendantAutoInformation): Observable<DefendantAutoInformation> {
+        let promise = new Promise((resolve, reject) => {
+            this._autoInformationService.saveDefendantAutoInformation(defendantAutoInformation).subscribe((autoInformation: DefendantAutoInformation) => {
+                this._defendantAutoInformation.next(this._defendantAutoInformation.getValue().push(defendantAutoInformation));
+                resolve(autoInformation);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<DefendantAutoInformation>>Observable.from(promise);
+    }
+
     resetStore() {
         this._autoInformation.next(this._autoInformation.getValue().clear());
     }

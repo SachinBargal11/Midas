@@ -1,7 +1,5 @@
 import * as moment from 'moment';
 import { AutoInformation } from '../../models/autoInformation';
-import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
-import { ContactAdapter } from '../../../../commons/services/adapters/contact-adapter';
 
 export class AutoInformationAdapter {
     static parseResponse(data: any): AutoInformation {
