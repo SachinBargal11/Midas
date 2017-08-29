@@ -31,6 +31,7 @@ import { InsuranceListComponent } from './components/insurance-list';
 import { AddInsuranceComponent } from './components/add-insurance';
 import { EditInsuranceComponent } from './components/edit-insurance';
 import { PriorAccidentComponent } from './components/prior-accident';
+import { AutoInformationInfoComponent } from './components/auto-Information';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -382,6 +383,14 @@ export const CasesShellRoutes: Routes = [
                             }
                         ]
                     },
+                    {
+                        path: 'autoInformation',
+                        component: AutoInformationInfoComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'AutoInformation'
+                        }
+                    }
                 ]
             }
         ]
