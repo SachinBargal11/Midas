@@ -58,7 +58,7 @@ export class AutoInformation extends AutoInformationRecord {
     vehicleDriveable: boolean;
     vehicleEstimatedDamage: string;
     relativeVehicleLocation: string;
-    vehicleClientHaveTitle: string;
+    vehicleClientHaveTitle: boolean;
     relativeVehicleOwner: string;
 
     isDeleted: false

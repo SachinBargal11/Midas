@@ -30,12 +30,17 @@ export class AutoInformationInfoComponent implements OnInit {
     autoInfoform: FormGroup;
     autoInfoformControls;
     isSaveProgress = false;
-    relativesVehicle = '';
-    helpinDamageResolved = '';
-    vehicleDrivable = '';
-    titletoVehicle = '';
     autoInformation: AutoInformation;
     title: string;
+    isrelativesVehicle: boolean = false;
+    ishelpinDamageResolved: boolean = false;
+    isvehicleDrivable: boolean = false;
+    istitletoVehicle: boolean = false;
+    titletoVehicle: false;
+    relativeVehicle: false;
+    vehicleResolveDamage: false;
+    vehicleDriveable: false;
+    vehicleClientHaveTitle: false;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -57,12 +62,12 @@ export class AutoInformationInfoComponent implements OnInit {
             result.subscribe(
                 (autoInformation: AutoInformation) => {
                     this.autoInformation = autoInformation;
-                    // this.hourOrYearly = this.employer.hourOrYearly;
-                    // this.lossOfEarnings = this.employer.lossOfEarnings;
-                    // this.accidentAtEmployment = this.employer.accidentAtEmployment;
-                    // this.currentEmployer = this.employer;
-
                     this.title = this.autoInformation.id ? 'Edit Auto Information' : 'Add Auto Information';
+                    this.isrelativesVehicle = this.autoInformation.relativeVehicle;
+                    this.ishelpinDamageResolved = this.autoInformation.vehicleResolveDamage;
+                    this.isvehicleDrivable = this.autoInformation.vehicleDriveable;
+                    this.istitletoVehicle = this.autoInformation.vehicleClientHaveTitle;
+
 
                 },
                 (error) => {
@@ -133,17 +138,17 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleClaimNumber: formValues.txtClaim,
             vehicleLocation: formValues.txtVehicalLocated,
             vehicleDamageDiscription: formValues.txtVehicalDesc,
-            relativeVehicle: false,
+            relativeVehicle: parseInt(formValues.relativesVehicle),
             relativeVehicleMakeModel: formValues.relModel,
             relativeVehicleMakeYear: formValues.relModelYear,
             relativeVehicleOwnerName: formValues.relOwnerName,
             relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
             relativeVehiclePolicyNumber: formValues.relPolicy,
-            vehicleResolveDamage: formValues.helpinDamageResolved,
-            vehicleDriveable: formValues.vehicleDrivable,
+            vehicleResolveDamage: parseInt(formValues.helpinDamageResolved),
+            vehicleDriveable: parseInt(formValues.vehicleDrivable),
             vehicleEstimatedDamage: formValues.txtEstimatedDamage,
             relativeVehicleLocation: '',
-            vehicleClientHaveTitle: formValues.titletoVehicle,
+            vehicleClientHaveTitle: parseInt(formValues.titletoVehicle),
             relativeVehicleOwner: formValues.relOwnerName,
 
         });
