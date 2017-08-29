@@ -122,8 +122,7 @@ import { UnscheduledVisitComponent } from './patient-visit/components/unschedule
 import { AutoInformationInfoComponent } from './cases/components/autoInformation';
 import { AutoInformationService } from './cases/services/autoInformation-service';
 import { AutoInformationStore } from './cases/stores/autoInformation-store';
-
-
+import { PriorAccidentComponent } from './cases/components/prior-accident';
 
 
 @NgModule({
@@ -197,8 +196,8 @@ import { AutoInformationStore } from './cases/stores/autoInformation-store';
         ImeVisitComponent,
         EoVisitComponent,
         UnscheduledVisitComponent,
-        AutoInformationInfoComponent
-
+        AutoInformationInfoComponent,
+        PriorAccidentComponent
     ],
     providers: [
         PatientsService,

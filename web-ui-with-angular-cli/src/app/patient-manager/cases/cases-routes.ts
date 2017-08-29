@@ -37,7 +37,9 @@ import { EditInsuranceComponent } from './components/edit-insurance';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
 import { EditFamilyMemberComponent } from './components/edit-family-member';
+
 import { AutoInformationInfoComponent } from './components/autoInformation';
+import { PriorAccidentComponent } from './components/prior-accident';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -313,6 +315,14 @@ export const CasesShellRoutes: Routes = [
                             //     }
                             // }
                         ]
+                    },
+                    {
+                        path: 'prior-accident',
+                        component: PriorAccidentComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Prior Accident'
+                        }
                     },
                     {
                         path: 'accident',
