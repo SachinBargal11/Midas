@@ -26,7 +26,7 @@
                                             <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
-                            <select formControlName="state" type="text" class="form-control" placeholder="" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
+                            <select formControlName="state" type="text" [ngModel]="autoInformation.state" class="form-control" placeholder="" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
                                 </select>
@@ -129,7 +129,7 @@
                     </label>
                         <div class="form-group">
                             <p-radioButton formControlName="relativesVehicle" name="relativesVehicle" value="1" label="Yes" [(ngModel)]="isrelativesVehicle"></p-radioButton>
-                            <p-radioButton formControlName="relativesVehicle" name="relativesVehicle" value="2" label="No" [(ngModel)]="isrelativesVehicle"></p-radioButton>
+                            <p-radioButton formControlName="relativesVehicle" name="relativesVehicle" value="0" label="No" [(ngModel)]="isrelativesVehicle"></p-radioButton>
                         </div>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                                         </label>
                         <div class="form-group">
                             <p-radioButton formControlName="helpinDamageResolved" name="helpinDamageResolved" value="1" label="Yes" [(ngModel)]="ishelpinDamageResolved"></p-radioButton>
-                            <p-radioButton formControlName="helpinDamageResolved" name="helpinDamageResolved" value="2" label="No" [(ngModel)]="ishelpinDamageResolved"></p-radioButton>
+                            <p-radioButton formControlName="helpinDamageResolved" name="helpinDamageResolved" value="0" label="No" [(ngModel)]="ishelpinDamageResolved"></p-radioButton>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -190,7 +190,7 @@
                                         </label>
                         <div class="form-group">
                             <p-radioButton formControlName="vehicleDrivable" name="vehicleDrivable" value="1" label="Yes" [(ngModel)]="isvehicleDrivable"></p-radioButton>
-                            <p-radioButton formControlName="vehicleDrivable" name="vehicleDrivable" value="2" label="No" [(ngModel)]="isvehicleDrivable"></p-radioButton>
+                            <p-radioButton formControlName="vehicleDrivable" name="vehicleDrivable" value="0" label="No" [(ngModel)]="isvehicleDrivable"></p-radioButton>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -212,7 +212,7 @@
                         <div class="form-group ">
                             <p-radioButton formControlName="titletoVehicle" name="titletoVehicle" value="1 " label="Yes
                                 " [(ngModel)]="istitletoVehicle "></p-radioButton>
-                            <p-radioButton formControlName="titletoVehicle" name="titletoVehicle" value="2 " label="No
+                            <p-radioButton formControlName="titletoVehicle" name="titletoVehicle" value="0 " label="No
                                 " [(ngModel)]="istitletoVehicle "></p-radioButton>
                         </div>
                     </div>
@@ -236,97 +236,106 @@
                 </div>
             </div>
         </section>
-        <section class="card ">
-            <header class="card-header card-header-lg ">
-                Defendant's Vehicle
-            </header>
-            <div class="card-block ">
-                <div class="row ">
-                    <div class="col-lg-4 ">
-                        <label class="form-label ">Plate
+        <div *ngIf="defendantAutoInformation">
+            <section class="card ">
+                <header class="card-header card-header-lg ">
+                    Defendant's Vehicle
+                </header>
+                <div class="card-block">
+                    <div class="row ">
+                        <div class="col-lg-4 ">
+                            <label class="form-label ">Plate
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantPlate" class="form-control " type="text
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantPlate" [ngModel]="defendantAutoInformation.vehicleNumberPlate" class="form-control "
+                                    type="text
                                 " placeholder=" " />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 ">
-                        <label class="form-label "> State                                            
+                        <div class="col-lg-4 ">
+                            <label class="form-label "> State                                            
                                         </label>
-                        <div class="form-group ">
-                            <select formControlName="defendantState" type="text" class="form-control " placeholder=" ">
+                            <div class="form-group ">
+                                <select formControlName="defendantState" [ngModel]="defendantAutoInformation.state" type="text" class="form-control " placeholder=" ">
                                 <option value=" ">-Select State-</option>
                                 <option *ngFor="let state of states " value="{{state.statetext}} ">{{state.statetext}}</option>
                                 </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 ">
-                        <label class="form-label ">Owner Name
+                        <div class="col-lg-4 ">
+                            <label class="form-label ">Owner Name
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantOwnerName" class="form-control " type="text
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantOwnerName" [ngModel]="defendantAutoInformation.vehicleOwnerName" class="form-control "
+                                    type="text
                                 " placeholder=" " />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row ">
-                    <div class="col-lg-4 ">
-                        <label class="form-label "> Make/Model 
+                    <div class="row ">
+                        <div class="col-lg-4 ">
+                            <label class="form-label "> Make/Model 
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantModel" class="form-control " type="text
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantModel" [ngModel]="defendantAutoInformation.vehicleMakeModel" class="form-control "
+                                    type="text
                                 " placeholder=" " />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 ">
-                        <label class="form-label "> Make/Model Year
+                        <div class="col-lg-4 ">
+                            <label class="form-label "> Make/Model Year
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantModelYear" class="form-control " type="text
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantModelYear" [ngModel]="defendantAutoInformation.vehicleMakeYear" class="form-control "
+                                    type="text
                                 " placeholder=" " />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 ">
-                        <label class="form-label ">Operator Name
+                        <div class="col-lg-4 ">
+                            <label class="form-label ">Operator Name
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantOperatorName" class="form-control
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantOperatorName" [ngModel]="defendantAutoInformation.vehicleOperatorName" class="form-control
                                 " type="text " placeholder=" " />
+                            </div>
                         </div>
+
                     </div>
+                    <div class="row ">
+                        <div class="col-lg-4 ">
 
-                </div>
-                <div class="row ">
-                    <div class="col-lg-4 ">
-
-                        <label class="form-label ">  Insurance Company                                          
+                            <label class="form-label ">  Insurance Company                                          
                                         </label>
-                        <div class="form-group ">
-                            <input formControlName="defendantInsuranceCompany" type="text " class="form-control
+                            <div class="form-group ">
+                                <input formControlName="defendantInsuranceCompany" type="text " [ngModel]="defendantAutoInformation.vehicleInsuranceCompanyName"
+                                    class="form-control
                                 " placeholder=" ">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 ">
-                        <label class="form-label ">Policy                                         
+                        <div class="col-lg-4 ">
+                            <label class="form-label ">Policy                                         
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantPolicy" class="form-control " type="text
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantPolicy" class="form-control" [ngModel]="defendantAutoInformation.vehiclePolicyNumber"
+                                    type="text
                                 " placeholder=" " />
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 ">
-                        <label class="form-label "> Claim                                         
+                        <div class="col-lg-4 ">
+                            <label class="form-label "> Claim                                         
                                         </label>
-                        <div class="form-group ">
-                            <input type="text " formControlName="txtDefendantClaim" class="form-control " type="text
+                            <div class="form-group ">
+                                <input type="text " formControlName="txtDefendantClaim" class="form-control " [ngModel]="defendantAutoInformation.vehicleClaimNumber"
+                                    type="text
                                 " placeholder=" " />
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
         <button [disabled]="!autoInfoform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up ">Save
                     <loader [visible]="isSaveProgress "></loader>
                 </button>

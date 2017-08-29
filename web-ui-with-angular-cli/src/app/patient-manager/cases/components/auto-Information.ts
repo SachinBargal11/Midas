@@ -18,9 +18,10 @@ import { Case } from '../models/case';
 import { environment } from '../../../../environments/environment';
 import { AutoInformation } from '../models/autoInformation';
 import { AutoInformationStore } from '../stores/autoInformation-store';
+import { DefendantAutoInformation } from '../models/defendantAutoInformation';
 @Component({
     selector: 'autoInformation',
-    templateUrl: './autoInformation.html'
+    templateUrl: './auto-Information.html'
 })
 
 export class AutoInformationInfoComponent implements OnInit {
@@ -41,6 +42,7 @@ export class AutoInformationInfoComponent implements OnInit {
     vehicleResolveDamage: false;
     vehicleDriveable: false;
     vehicleClientHaveTitle: false;
+    defendantAutoInformation: DefendantAutoInformation;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -67,8 +69,6 @@ export class AutoInformationInfoComponent implements OnInit {
                     this.ishelpinDamageResolved = this.autoInformation.vehicleResolveDamage;
                     this.isvehicleDrivable = this.autoInformation.vehicleDriveable;
                     this.istitletoVehicle = this.autoInformation.vehicleClientHaveTitle;
-
-
                 },
                 (error) => {
                     this._router.navigate(['../../']);
@@ -77,6 +77,21 @@ export class AutoInformationInfoComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
+
+            let resultDefendant = this._autoInformationStore.getDefendantByCaseId(this.caseId);
+            resultDefendant.subscribe(
+                (defendantAutoInformation: DefendantAutoInformation) => {
+                    this.defendantAutoInformation = defendantAutoInformation;
+                },
+                (error) => {
+                    this._router.navigate(['../../']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+
+
         });
         this.autoInfoform = this.fb.group({
             txtPlate: ['', Validators.required],
@@ -139,11 +154,6 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleLocation: formValues.txtVehicalLocated,
             vehicleDamageDiscription: formValues.txtVehicalDesc,
             relativeVehicle: parseInt(formValues.relativesVehicle),
-            relativeVehicleMakeModel: formValues.relModel,
-            relativeVehicleMakeYear: formValues.relModelYear,
-            relativeVehicleOwnerName: formValues.relOwnerName,
-            relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
-            relativeVehiclePolicyNumber: formValues.relPolicy,
             vehicleResolveDamage: parseInt(formValues.helpinDamageResolved),
             vehicleDriveable: parseInt(formValues.vehicleDrivable),
             vehicleEstimatedDamage: formValues.txtEstimatedDamage,
@@ -152,9 +162,24 @@ export class AutoInformationInfoComponent implements OnInit {
             relativeVehicleOwner: formValues.relOwnerName,
 
         });
+
+        let defendantAutoInfoform = new DefendantAutoInformation({
+            id: this.defendantAutoInformation.id ? this.defendantAutoInformation.id : 0,
+            caseId: this.caseId,
+            vehicleNumberPlate: formValues.txtDefendantPlate,
+            state: formValues.defendantState,
+            vehicleMakeModel: formValues.txtDefendantModel,
+            vehicleMakeYear: formValues.txtDefendantModelYear,
+            vehicleOwnerName: formValues.txtDefendantOwnerName,
+            vehicleOperatorName: formValues.txtDefendantOperatorName,
+            vehicleInsuranceCompanyName: formValues.defendantInsuranceCompany,
+            vehiclePolicyNumber: formValues.txtDefendantPolicy,
+            vehicleClaimNumber: formValues.txtDefendantClaim,
+        });
+
         this._progressBarService.show();
         result = this._autoInformationStore.saveAutoInformation(autoInfoform);
-        //  let addSchool = this._autoInformationStore.addSchool(school);
+        let addDefendantAutoInfo = this._autoInformationStore.saveDefendantAutoInformation(defendantAutoInfoform);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

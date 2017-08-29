@@ -7,11 +7,14 @@ import { AccidentService } from '../services/accident-services';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
 import {SessionStore} from '../../../commons/stores/session-store';
+import { PriorAccidentAdapter } from '../services/adapters/prior-accident-adapter';
+import { PriorAccident } from '../models/prior-accident';
 
 @Injectable()
 export class AccidentStore {
 
     private _accident: BehaviorSubject<List<Accident>> = new BehaviorSubject(List([]));
+    private _priorAccident: BehaviorSubject<List<PriorAccident>> = new BehaviorSubject(List([]));
 
     constructor(
         private _accidentService:  AccidentService,
@@ -25,10 +28,15 @@ export class AccidentStore {
 
     resetStore() {
         this._accident.next(this._accident.getValue().clear());
+        this._priorAccident.next(this._priorAccident.getValue().clear());
     }
 
     get accidents() {
         return this._accident.asObservable();
+    }
+
+    get priorAccidents() {
+        return this._priorAccident.asObservable();
     }
 
     getAccidents(caseId: Number): Observable<Accident[]> {
@@ -106,5 +114,29 @@ export class AccidentStore {
             });
         });
         return <Observable<Accident>>Observable.from(promise);
+    }
+
+// Prior Accident/Injuries service
+    getPriorAccidentByCaseId(caseId: Number): Observable<PriorAccident[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._accidentService.getPriorAccidentByCaseId(caseId).subscribe((priorAccidentDetail: PriorAccident[]) => {
+                this._priorAccident.next(List(priorAccidentDetail));
+                resolve(priorAccidentDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PriorAccident[]>>Observable.fromPromise(promise);
+    }
+    savePriorAccident(priorAccidentDetail: PriorAccident): Observable<PriorAccident> {
+        let promise = new Promise((resolve, reject) => {
+            this._accidentService.savePriorAccident(priorAccidentDetail).subscribe((priorAccidentDetail: PriorAccident) => {
+                this._priorAccident.next(this._priorAccident.getValue().push(priorAccidentDetail));
+                resolve(priorAccidentDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PriorAccident>>Observable.from(promise);
     }
 }

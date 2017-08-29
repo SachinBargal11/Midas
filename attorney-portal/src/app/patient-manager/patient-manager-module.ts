@@ -114,6 +114,8 @@ import { CaseBasicLabelComponent } from './cases/components/case-basic-label';
 
 import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
+import { PriorAccidentComponent } from './cases/components/prior-accident';
+
 
 @NgModule({
     imports: [
@@ -184,7 +186,7 @@ import { EoVisitComponent } from './patient-visit/components/eo-visit';
         CaseBasicLabelComponent,
         ImeVisitComponent,
         EoVisitComponent,
-
+        PriorAccidentComponent
     ],
     providers: [
         PatientsService,

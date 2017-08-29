@@ -119,11 +119,10 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
 import { ImeVisitComponent } from './patient-visit/components/ime-visit';
 import { EoVisitComponent } from './patient-visit/components/eo-visit';
 import { UnscheduledVisitComponent } from './patient-visit/components/unscheduled-visit';
-import { AutoInformationInfoComponent } from './cases/components/autoInformation';
+import { AutoInformationInfoComponent } from './cases/components/auto-Information';
 import { AutoInformationService } from './cases/services/autoInformation-service';
 import { AutoInformationStore } from './cases/stores/autoInformation-store';
-
-
+import { PriorAccidentComponent } from './cases/components/prior-accident';
 
 
 @NgModule({
@@ -197,8 +196,8 @@ import { AutoInformationStore } from './cases/stores/autoInformation-store';
         ImeVisitComponent,
         EoVisitComponent,
         UnscheduledVisitComponent,
-        AutoInformationInfoComponent
-
+        AutoInformationInfoComponent,
+        PriorAccidentComponent
     ],
     providers: [
         PatientsService,
