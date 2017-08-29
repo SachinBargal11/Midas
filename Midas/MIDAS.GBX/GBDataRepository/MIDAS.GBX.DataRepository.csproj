@@ -187,6 +187,7 @@
     <Compile Include="EntityRepository\Helper\NotificationHelper.cs" />
     <Compile Include="EntityRepository\ICDTypeCode\ICDTypeCodeRepository.cs" />
     <Compile Include="EntityRepository\IMEVisit\IMEvisitRepository.cs" />
+    <Compile Include="EntityRepository\PatientPriorAccidentInjury\PatientPriorAccidentInjuryRepository.cs" />
     <Compile Include="EntityRepository\PatientVisitUnscheduled\PatientVisitUnscheduledRepository.cs" />
     <Compile Include="EntityRepository\PlaintiffVehicle\PlaintiffVehicleRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
@@ -438,6 +439,9 @@
     <Compile Include="Model\OTP.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\OTPCompanyMapping.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\PasswordToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -460,6 +464,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientLanguagePreferenceMapping.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientPriorAccidentInjury.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientSocialMediaMapping.cs">

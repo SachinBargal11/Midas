@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Referral()
         {
+            this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
             this.ReferralDocuments = new HashSet<ReferralDocument>();
             this.ReferralProcedureCodes = new HashSet<ReferralProcedureCode>();
         }
@@ -51,6 +52,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Location Location { get; set; }
         public virtual Location Location1 { get; set; }
         public virtual PatientVisit PatientVisit { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisitUnscheduled> PatientVisitUnscheduleds { get; set; }
         public virtual PendingReferral PendingReferral { get; set; }
         public virtual Room Room { get; set; }
         public virtual Room Room1 { get; set; }

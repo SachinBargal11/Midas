@@ -57,6 +57,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 AttorneyVisitBO.Subject = AttorneyVisitDB.Subject;
                 AttorneyVisitBO.VisitStatusId = AttorneyVisitDB.VisitStatusId;
                 AttorneyVisitBO.ContactPerson = AttorneyVisitDB.ContactPerson;
+                AttorneyVisitBO.Agenda = AttorneyVisitDB.Agenda;
 
                 AttorneyVisitBO.IsDeleted = AttorneyVisitDB.IsDeleted;
                 AttorneyVisitBO.CreateByUserID = AttorneyVisitDB.CreateByUserID;
@@ -525,6 +526,58 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (lstAttorneyVisit == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No visit found for this Company and Attorney Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.AttorneyVisit> lstBOAttorneyVisit = new List<BO.AttorneyVisit>();
+                lstAttorneyVisit.ForEach(p => lstBOAttorneyVisit.Add(Convert<BO.AttorneyVisit, AttorneyVisit>(p)));
+
+                return lstBOAttorneyVisit;
+            }
+        }
+        #endregion
+
+        #region Get By Id
+        public override object Get(int id)
+        {
+            AttorneyVisit AttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                                                          .Include("Patient")
+                                                                          .Include("Patient.User")
+                                                                          .Include("Case")
+                                                                          .Include("Company")
+                                                                          .Where(p => p.Id == id
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .FirstOrDefault<AttorneyVisit>();
+
+            if (AttorneyVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.AttorneyVisit> lstBOAttorneyVisit = new List<BO.AttorneyVisit>();
+                var res =  Convert<BO.AttorneyVisit, AttorneyVisit>(AttorneyVisit);
+
+                return (object)res;
+            }
+        }
+        #endregion
+
+        #region Get By Case Id
+        public override object GetByCaseId(int caseId)
+        {
+            List<AttorneyVisit> lstAttorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                                                          .Include("Patient")
+                                                                          .Include("Patient.User")
+                                                                          .Include("Case")
+                                                                          .Include("Company")
+                                                                          .Where(p => p.CaseId == caseId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .ToList<AttorneyVisit>();
+
+            if (lstAttorneyVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {

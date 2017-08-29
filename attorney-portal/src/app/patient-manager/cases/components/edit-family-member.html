@@ -161,8 +161,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                 <div class="form-group" [class.error]="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid">
-                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid"
-                        placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                    <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid"
+                        placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                     <div class='error-list' *ngIf="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid">
                         <ul>
                             <li *ngIf="familyMemberFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>

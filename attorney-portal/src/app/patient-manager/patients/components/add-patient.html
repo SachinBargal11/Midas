@@ -284,8 +284,8 @@
                                         </label>
                     <div class="form-group" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
                         <!--<input type="text" formControlName="cellPhone" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid" class="form-control"/>-->
-                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid"
-                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                         <div class='error-list' *ngIf="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
                             <ul>
                                 <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>

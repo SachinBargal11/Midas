@@ -29,10 +29,28 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("notes")]
         public string Notes { get; set; }
 
+        [JsonProperty("specialtyId")]
+        public int? SpecialtyId { get; set; }
+
+        [JsonProperty("roomTestId")]
+        public int? RoomTestId { get; set; }
+
+        [JsonProperty("referralId")]
+        public int? ReferralId { get; set; }
+
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
         [JsonProperty("patient")]
         public Patient Patient { get; set; }
 
         [JsonProperty("case")]
         public Case Case { get; set; }
+
+        [JsonProperty("roomTest")]
+        public RoomTest RoomTest { get; set; }
+
+        [JsonProperty("specialty")]
+        public Specialty Specialty { get; set; }
     }
 }

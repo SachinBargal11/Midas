@@ -908,22 +908,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         LanguagePreferenceId = p.LanguagePreferenceId
                     }));
 
-                    List<BO.PatientSocialMediaMapping> PatientSocialMediaMappingsBO = PatientBO.PatientSocialMediaMappings;
-
-                    var PatientSocialMediaMappingsDB = _context.PatientSocialMediaMappings.Where(p => p.PatientId == PatientDB.Id
-                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                    .ToList();
-
-                    if (PatientSocialMediaMappingsDB != null)
+                    if (PatientBO.PatientSocialMediaMappings != null)
                     {
-                        PatientSocialMediaMappingsDB.ForEach(p => p.IsDeleted = true);
+                        List<BO.PatientSocialMediaMapping> PatientSocialMediaMappingsBO = PatientBO.PatientSocialMediaMappings;
+
+                        var PatientSocialMediaMappingsDB = _context.PatientSocialMediaMappings.Where(p => p.PatientId == PatientDB.Id
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList();
+
+                        if (PatientSocialMediaMappingsDB != null)
+                        {
+                            PatientSocialMediaMappingsDB.ForEach(p => p.IsDeleted = true);
+                        }
+
+                        PatientSocialMediaMappingsBO.ForEach(p => _context.PatientSocialMediaMappings.Add(new PatientSocialMediaMapping()
+                        {
+                            PatientId = PatientDB.Id,
+                            SocialMediaId = p.SocialMediaId
+                        }));
                     }
-
-                    PatientSocialMediaMappingsBO.ForEach(p => _context.PatientSocialMediaMappings.Add(new PatientSocialMediaMapping()
-                    {
-                        PatientId = PatientDB.Id,
-                        SocialMediaId = p.SocialMediaId
-                    }));
 
                     _context.SaveChanges();
                 }

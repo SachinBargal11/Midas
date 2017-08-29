@@ -94,8 +94,8 @@
                                             <span class="color-red">*</span>
                                         </label>
                         <div class="form-group" [class.error]="providerformControls.phoneNo.touched && !providerformControls.attorneyCellPhone.valid">
-                            <p-inputMask mask="999-999-9999" formControlName="phoneNo" [ngModel]="medicalProviderMaster.signup.contactInfo.cellPhone"
-                                [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" placeholder="999-999-9999"
+                            <p-inputMask mask="+1 999-999-9999" formControlName="phoneNo" [ngModel]="medicalProviderMaster.signup.contactInfo.cellPhone"
+                                [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" placeholder="+1 999-999-9999"
                                 styleClass="form-control"></p-inputMask>
                             <div class='error-list' *ngIf="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
                                 <ul>

@@ -12,7 +12,8 @@ export class AppValidators {
         }
     }
     static mobileNoValidator(control: FormControl) {
-        let regEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        // let regEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        let regEx = /^\(?([+1]{2})\)?[-. ]?([0-9]{3})?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if (control.value && !regEx.test(control.value)) {
             return { mobileNoValidator: true };
         }
