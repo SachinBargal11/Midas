@@ -109,8 +109,9 @@ export class PatientBasicComponent implements OnInit {
                     }
 
                     this.martialStatus = this.patientInfo.maritalStatusId;
-                    this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
-
+                     if (this.patientInfo.patientLanguagePreferenceMappings.length > 0){
+                     this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
+                    }
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });

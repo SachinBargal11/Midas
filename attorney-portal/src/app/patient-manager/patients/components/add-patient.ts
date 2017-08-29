@@ -124,15 +124,24 @@ export class AddPatientComponent implements OnInit {
 
     savePatient() {
         let patientSocialMediaMappings: any[] = [];
+        if(this.selectedSocialMedia.length > 0){
         _.forEach(this.selectedSocialMedia, (currentSelectedSocialMedia: any) => {
             patientSocialMediaMappings.push({
                 socialMediaId: parseInt(currentSelectedSocialMedia)
             })
         })
+        }else{
+         patientSocialMediaMappings;
+        }
+        
         let patientLanguagePreferenceMappings: any[] = [];
-        patientLanguagePreferenceMappings.push({
+         if(this.languagePreference != ''){
+         patientLanguagePreferenceMappings.push({
             languagePreferenceId: parseInt(this.languagePreference)
         })
+        }else{
+         patientLanguagePreferenceMappings;
+        }
 
         this.isSavePatientProgress = true;
         let patientFormValues = this.patientform.value;

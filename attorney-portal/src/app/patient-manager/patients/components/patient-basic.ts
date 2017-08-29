@@ -101,7 +101,9 @@ export class PatientBasicComponent implements OnInit {
                     }
 
                     this.martialStatus = this.patientInfo.maritalStatusId;
-                    this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
+                    if (this.patientInfo.patientLanguagePreferenceMappings.length > 0){
+                     this.languagePreference = this.patientInfo.patientLanguagePreferenceMappings[0].languagePreferenceId;
+                    }
                     if (this.patientInfo.patientSocialMediaMappings.length > 0) {
                         this.selectedSocialMedia = _.map(this.patientInfo.patientSocialMediaMappings, (currentSocialMedia: any) => {
                             return currentSocialMedia.socialMediaId.toString();

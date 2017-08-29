@@ -85,7 +85,9 @@ export class Patient extends PatientRecord {
         return isSessionCompany;
     }
     get prefferedLanguage(): string {
-        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+        if(this.patientLanguagePreferenceMappings.length > 0){
+        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);   
+        }    
     }
     // tslint:disable-next-line:member-ordering
     static getLanguageLabel(prefferedLanguage: PreferredLanguage): string {
@@ -100,11 +102,13 @@ export class Patient extends PatientRecord {
 }
 
 get socialMedia(): string[] {
-        let patientSocialMediaMappings: any[] = [];
+        if(this.patientSocialMediaMappings.length > 0){
+         let patientSocialMediaMappings: any[] = [];
         patientSocialMediaMappings = _.map(this.patientSocialMediaMappings, (currentSocialMedia: any) => {
             return Patient.getSocialMediaLabel(currentSocialMedia.socialMediaId);
         })
         return patientSocialMediaMappings;
+        }
     }
     static getSocialMediaLabel(socialMedia: SocialMedia): string {
         switch (socialMedia) {

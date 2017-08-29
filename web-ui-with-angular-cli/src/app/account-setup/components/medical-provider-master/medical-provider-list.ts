@@ -19,6 +19,7 @@ import { Account } from '../../../account/models/account';
 })
 
 export class MedicalProviderListComponent implements OnInit {
+    displayToken: boolean = false;
     currentProviderId: number = 0;
     selectedProviders: MedicalProviderMaster[] = [];
     providers: MedicalProviderMaster[];
@@ -28,6 +29,7 @@ export class MedicalProviderListComponent implements OnInit {
     companyId: number;
     patientId: number;
     isDeleteProgress: boolean = false;
+    displayValidation: boolean = false;
 
     constructor(
         private _router: Router,
@@ -52,6 +54,15 @@ export class MedicalProviderListComponent implements OnInit {
         // this.loadAllProviders();
         this.loadMedicalProviders();
     }
+
+    showDialog() {
+        this.displayToken = true;
+    }
+
+    showValidation() {
+        this.displayValidation = true;
+    }
+
     loadAllProviders() {
         this._progressBarService.show();
         this._medicalProviderMasterStore.getAllProviders()
