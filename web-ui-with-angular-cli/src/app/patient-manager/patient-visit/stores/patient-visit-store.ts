@@ -187,16 +187,16 @@ export class PatientVisitsStore {
 
     fetchPatientVisitById(id: number): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
-            let matchedPatientVisit: PatientVisit = this.findPatientVisitById(id);
-            if (matchedPatientVisit) {
-                resolve(matchedPatientVisit);
-            } else {
+            // let matchedPatientVisit: PatientVisit = this.findPatientVisitById(id);
+            // if (matchedPatientVisit) {
+            //     resolve(matchedPatientVisit);
+            // } else {
                 this._patientVisitsService.getPatientVisit(id).subscribe((patientVisitDetail: PatientVisit) => {
                     resolve(patientVisitDetail);
                 }, error => {
                     reject(error);
                 });
-            }
+            // }
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }

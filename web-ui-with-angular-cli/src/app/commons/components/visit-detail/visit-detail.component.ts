@@ -250,8 +250,8 @@ export class VisitDetailComponent implements OnInit {
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: visitDetailFormValues.notes,
-            visitStatusId: parseInt(visitDetailFormValues.visitStatusId),
-            doctorId: parseInt(visitDetailFormValues.readingDoctor)
+            visitStatusId: this.routeFrom == 2 ? this.selectedVisit.visitStatusId : parseInt(visitDetailFormValues.visitStatusId),
+            doctorId: this.selectedVisit.specialtyId ? this.selectedVisit.doctorId : parseInt(visitDetailFormValues.readingDoctor)
         }));
         this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);

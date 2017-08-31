@@ -48,7 +48,7 @@ export class ProcedureComponent implements OnInit {
   ngOnInit() {
     if (this.selectedVisit.specialtyId) {
       this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
-    } else if (this.selectedVisit.roomId) {
+    } else if (this.selectedVisit.roomId && this.selectedVisit.room) {
       this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
     }
     this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
