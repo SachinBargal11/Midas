@@ -1,5 +1,5 @@
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { Session } from '../../../commons/models/session';
-import { ImeVisit } from '../models/ime-visit';
 import { User } from '../../../commons/models/user';
 import { Case } from '../../cases/models/case';
 import { Observable } from 'rxjs/Observable';
@@ -24,26 +24,34 @@ import { Document } from '../../../commons/models/document';
 import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
-// import { AncillaryMasterStore } from '../../../account-setup/stores/ancillary-store';
-// import { AncillaryMaster } from '../../../account-setup/models/ancillary-master';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { CasesStore } from '../../../patient-manager/cases/stores/case-store';
+import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
+import { Speciality } from '../../../account-setup/models/speciality';
+import { LeaveEventEditorComponent } from '../../../medical-provider/calendar/components/leave-event-editor';
+import { LeaveEvent } from '../../../commons/models/leave-event';
+import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
+import { Tests } from '../../../medical-provider/rooms/models/tests';
 
 @Component({
-    selector: 'ime-visit',
-    templateUrl: './ime-visit.html'
+    selector: 'unscheduled-visit',
+    templateUrl: './unscheduled-visit.html'
 })
 
-export class ImeVisitComponent implements OnInit {
-
+export class UnscheduledVisitComponent implements OnInit {
+    selectedMode: number = 0;
+    selectedDoctorId: number;
+    selectedRoomId: number;
+    selectedOption: number = 0;
+    selectedSpecialityId: number;
+    selectedTestId: number;
     patients: Patient[] = [];
     eventDialogVisible: boolean = false;
     visitDialogVisible: boolean = false;
-    addImeVisitDialogVisible: boolean = false;
-    imeScheduleForm: FormGroup;
-    imeScheduleFormControls;
-    imeVisitForm: FormGroup;
-    imeVisitFormControls;
+    unscheduledForm: FormGroup;
+    unscheduledFormControls;
+    unscheduledVisitForm: FormGroup;
+    unscheduledVisitFormControls;
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     documents: VisitDocument[] = [];
@@ -57,12 +65,9 @@ export class ImeVisitComponent implements OnInit {
     companyId: number;
     patientId: number;
     isSaveProgress: boolean = false;
-    ancillaryProviderId: number = null;
-    // allPrefferesAncillaries: AncillaryMaster[];
     referredBy: string = '';
     isAllDay: boolean;
     repeatType: string = '7';
-    name: string = 'Appointment for IME ';
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
     @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     cases: Case[];
@@ -70,15 +75,17 @@ export class ImeVisitComponent implements OnInit {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
-    transportProviderId = null;
-    caseId;
-    notes;
+    specialities: Speciality[];
+    tests: Tests[];
+    @Input() caseId: number;
+    @Input() idPatient: number;
+    caseDetail: Case;
+    patient: Patient;
     selectedVisit;
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
             this._selectedEvent = value;
-            this.name = this._selectedEvent.name;
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
             this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
@@ -99,73 +106,52 @@ export class ImeVisitComponent implements OnInit {
         private _confirmationService: ConfirmationService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
-        // private _ancillaryMasterStore: AncillaryMasterStore,
         private _casesStore: CasesStore,
+        private _specialityStore: SpecialityStore,
+        private _roomsStore: RoomsStore,
     ) {
-        this.imeScheduleForm = this._fb.group({
+        this.unscheduledForm = this._fb.group({
             patientId: ['', Validators.required],
             caseId: ['', Validators.required],
             notes: [''],
-            name: ['', Validators.required],
+            medicalProviderName: ['', Validators.required],
             doctorName: ['', Validators.required],
-            eventStartDate: ['', Validators.required],
-            eventStartTime: [''],
-            eventEndDate: ['', Validators.required],
-            eventEndTime: [''],
+            speciality: [''],
+            eventStartDate: [''],
+            // eventStartTime: [''],
             // duration: ['', Validators.required],
-            // transportProviderId: [''],
         });
-        // this.loadPrefferdAncillaries();
 
-        this.imeScheduleFormControls = this.imeScheduleForm.controls;
+        this.unscheduledFormControls = this.unscheduledForm.controls;
 
-        this.imeVisitForm = this._fb.group({
+        this.unscheduledVisitForm = this._fb.group({
             notes: ['', Validators.required],
             visitStatusId: [''],
             readingDoctor: ['']
         });
 
-        this.imeVisitFormControls = this.imeVisitForm.controls;
+        this.unscheduledVisitFormControls = this.unscheduledVisitForm.controls;
     }
 
-    // loadPrefferdAncillaries() {
-    //     // this._progressBarService.show();
-    //     this._ancillaryMasterStore.getAncillaryMasters()
-    //         .subscribe((allPrefferesAncillaries: AncillaryMaster[]) => {
-    //             this.allPrefferesAncillaries = allPrefferesAncillaries;
-    //         },
-    //         (error) => {
-    //             // this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             // this._progressBarService.hide();
-    //         });
-    // }
-
     ngOnInit() {
-        // this.loadImeVisits();
-        // this.header = {
-        //     left: 'prev,next today',
-        //     center: 'title',
-        //     right: 'month,agendaWeek,agendaDay,listWeek,listDay'
-        // };
-        // this.views = {
-        //     listDay: { buttonText: 'list day' },
-        //     listWeek: { buttonText: 'list week' }
-        // };
+        if (this.idPatient && this.caseId) {
+            let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
 
-        // this._patientsStore.getOpenCasesByCompanyWithPatient()
-        //     .subscribe(
-        //     (patient: Patient[]) => {
-        //         this.patients = patient;
-        //     },
-        //     (error) => {
-        //         this._router.navigate(['../'], { relativeTo: this._route });
-        //         this._progressBarService.hide();
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
+            Observable.forkJoin([fetchPatient, fetchCaseDetail])
+                .subscribe(
+                (results) => {
+                    this.patient = results[0];
+                    this.caseDetail = results[1];
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
         this._patientsStore.getPatientsWithOpenCases()
             .subscribe(
             (patient: Patient[]) => {
@@ -178,6 +164,44 @@ export class ImeVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+
+        this.loadAllSpecialitiesAndTests();
+    }
+
+    loadAllSpecialitiesAndTests() {
+        this._progressBarService.show();
+        let fetchAllSpecialities = this._specialityStore.getSpecialities();
+        let fetchAllTestFacilties = this._roomsStore.getTests();
+        Observable.forkJoin([fetchAllSpecialities, fetchAllTestFacilties])
+            .subscribe(
+            (results: any) => {
+                this.specialities = results[0];
+                this.tests = results[1];
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    selectOption(event) {
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+        if (event.target.value == '0') {
+            this.selectedOption = 0;
+            this.selectedSpecialityId = 0;
+            this.selectedTestId = 0;
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedOption = 1;
+            this.selectedSpecialityId = parseInt(event.target.value);
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedOption = 2;
+            this.selectedTestId = parseInt(event.target.value);
+        } else {
+            this.selectedMode = 0;   
+        }
     }
 
     selectPatient(event) {
@@ -190,28 +214,31 @@ export class ImeVisitComponent implements OnInit {
 
     saveEvent() {
         this.isSaveProgress = true;
-        let imeScheduleFormValues = this.imeScheduleForm.value;
+        let unscheduledFormValues = this.unscheduledForm.value;
         let result;
-        let ime = new ImeVisit({
-            patientId: this.imeScheduleForm.value.patientId,
-            caseId: this.imeScheduleForm.value.caseId,
-            notes: this.imeScheduleForm.value.notes,
-            doctorName: this.imeScheduleForm.value.doctorName,
+        let unscheduled = new UnscheduledVisit({
+            patientId: this.idPatient,
+            caseId: this.caseId,
+            medicalProviderName: this.unscheduledForm.value.medicalProviderName,
+            doctorName: this.unscheduledForm.value.doctorName,
+            specialtyId:this.selectedSpecialityId ? this.selectedSpecialityId : null ,
+            roomTestId:this.selectedTestId ? this.selectedTestId : null ,
+            notes: this.unscheduledForm.value.notes,
+            referralId:null,
+            patient:null,
+            case:null,
             createByUserID: this.sessionStore.session.account.user.id,
-            VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
+            eventStart: moment(this.eventStartAsDate),
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
                 eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
-                // eventStartDate: this.imeScheduleForm.value.eventStartDate,
-                // duration: this.imeScheduleForm.value.duration,
-                // ancillaryProviderId: this.imeScheduleForm.value.ancillaryProviderId,
             })
         });
 
-        // this._progressBarService.show();
+        this._progressBarService.show();
 
-        result = this._patientVisitsStore.addImeVisit(ime);
+        result = this._patientVisitsStore.addUnscheduledVisit(unscheduled);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -230,11 +257,11 @@ export class ImeVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
             });
     }
 
