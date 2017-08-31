@@ -39,7 +39,10 @@ const CaseRecord = Record({
     caseCompanyMapping: null,
     orignatorCompanyName: '',
     attorneyProviderId:0,
-    medicalProviderId:0
+    medicalProviderId:0,
+    medicare:false,
+    medicaid:false,
+    ssdisabililtyIncome:false
 
 
 });
@@ -75,6 +78,9 @@ export class Case extends CaseRecord {
     orignatorCompanyName: string;
     attorneyProviderId:number;
     medicalProviderId:number;
+    medicare:boolean;
+    medicaid:boolean;
+    ssdisabililtyIncome:boolean;
     constructor(props) {
         super(props);
     }
