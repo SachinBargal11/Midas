@@ -47,5 +47,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandlerReferralVisitUnscheduled.SaveReferralPatientVisitUnscheduled(Request, data);
         }
+
+        [HttpGet]
+        [Route("getReferralPatientVisitUnscheduledByCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralPatientVisitUnscheduledByCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralPatientVisitUnscheduledByCompanyId(Request, companyId);
+        }
     }
 }

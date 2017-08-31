@@ -4056,5 +4056,26 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
         #endregion
+
+        public object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var refid = baseRepo.GetReferralPatientVisitUnscheduledByCompanyId(CompanyId);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

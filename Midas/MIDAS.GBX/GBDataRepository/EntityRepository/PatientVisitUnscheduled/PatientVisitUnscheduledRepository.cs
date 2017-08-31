@@ -380,6 +380,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Referral Patient Visit Unscheduled By CompanyId
+        public override object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId)
+        {
+            var CaseIds = _context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .Select(p => p.CaseId);
+
+            var acc = _context.PatientVisitUnscheduleds.Include("Patient")
+                                                       .Include("Patient.User")
+                                                       .Include("Specialty")
+                                                       .Include("RoomTest")
+                                                       .Where(p => CaseIds.Contains(p.CaseId) == true
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .ToList<PatientVisitUnscheduled>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisitUnscheduled> lstpatientvisit = new List<BO.PatientVisitUnscheduled>();
+                foreach (PatientVisitUnscheduled item in acc)
+                {
+                    lstpatientvisit.Add(Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(item));
+                }
+                return lstpatientvisit;
+            }
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
