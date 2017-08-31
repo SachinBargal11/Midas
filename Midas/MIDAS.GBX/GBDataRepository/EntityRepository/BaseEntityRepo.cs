@@ -959,6 +959,16 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveReferralPatientVisitUnscheduled<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

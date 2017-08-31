@@ -31,5 +31,12 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             return requestHandler.GetByCaseId(Request, CaseId);
         }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
     }
 }

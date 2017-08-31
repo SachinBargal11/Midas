@@ -103,6 +103,10 @@ import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
 import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
 import { VisitReferralService } from './patient-visit/services/visit-referral-service';
+import { PriorAccidentComponent } from './cases/components/prior-accident';
+import { AutoInformationInfoComponent } from './cases/components/auto-Information';
+import { AutoInformationService } from './cases/services/autoInformation-service';
+import { AutoInformationStore } from './cases/stores/autoInformation-store';
 
 @NgModule({
     imports: [
@@ -164,6 +168,8 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
         VisitShellComponent,
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,
+        PriorAccidentComponent,
+        AutoInformationInfoComponent
     ],
     providers: [
         PatientsService,
@@ -199,7 +205,9 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
         ReferralService,
         ReferralStore,
         VisitReferralStore,
-        VisitReferralService
+        VisitReferralService,
+        AutoInformationService,
+        AutoInformationStore
     ]
 })
 export class PatientManagerModule { }

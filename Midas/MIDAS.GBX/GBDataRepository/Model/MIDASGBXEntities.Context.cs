@@ -81,6 +81,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
+        public virtual DbSet<OTPCompanyMapping> OTPCompanyMappings { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
@@ -135,7 +136,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<OTPCompanyMapping> OTPCompanyMappings { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

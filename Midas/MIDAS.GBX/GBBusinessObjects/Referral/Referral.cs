@@ -34,7 +34,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int? ForRoomTestId { get; set; }
 
         [JsonProperty("toCompanyId")]
-        public int ToCompanyId { get; set; }
+        public int? ToCompanyId { get; set; }
 
         [JsonProperty("toLocationId")]
         public int? ToLocationId { get; set; }
@@ -130,7 +130,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int? ForRoomTestId { get; set; }
 
         [JsonProperty("toCompanyId")]
-        public int ToCompanyId { get; set; }
+        public int? ToCompanyId { get; set; }
 
         [JsonProperty("toLocationId")]
         public int? ToLocationId { get; set; }

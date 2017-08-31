@@ -12,10 +12,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
     public class PatientVisitUnscheduledController : ApiController
     {
         private IRequestHandler<PatientVisitUnscheduled> requestHandler;
+        private IRequestHandler<ReferralVisitUnscheduled> requestHandlerReferralVisitUnscheduled;
 
         public PatientVisitUnscheduledController()
         {
             requestHandler = new GbApiRequestHandler<PatientVisitUnscheduled>();
+            requestHandlerReferralVisitUnscheduled = new GbApiRequestHandler<ReferralVisitUnscheduled>();
         }
 
         [HttpPost]
@@ -37,6 +39,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request,id);
+        }
+
+        [HttpPost]
+        [Route("saveReferralPatientVisitUnscheduled")]
+        public HttpResponseMessage SaveReferralPatientVisitUnscheduled([FromBody]ReferralVisitUnscheduled data)
+        {
+            return requestHandlerReferralVisitUnscheduled.SaveReferralPatientVisitUnscheduled(Request, data);
+        }
+
+        [HttpGet]
+        [Route("getReferralPatientVisitUnscheduledByCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralPatientVisitUnscheduledByCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralPatientVisitUnscheduledByCompanyId(Request, companyId);
         }
     }
 }

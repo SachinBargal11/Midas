@@ -53,4 +53,13 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("specialty")]
         public Specialty Specialty { get; set; }
     }
+
+    public class ReferralVisitUnscheduled : GbObject
+    {
+        [JsonProperty("pendingReferralId")]
+        public int PendingReferralId { get; set; }
+
+        [JsonProperty("patientVisitUnscheduled")]
+        public PatientVisitUnscheduled PatientVisitUnscheduled { get; set; }
+    }
 }

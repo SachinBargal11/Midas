@@ -84,8 +84,11 @@ export class Patient extends PatientRecord {
         return isSessionCompany;
     }
 
+
     get prefferedLanguage(): string {
-        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+        if(this.patientLanguagePreferenceMappings.length > 0){
+        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);   
+        }    
     }
     // tslint:disable-next-line:member-ordering
     static getLanguageLabel(prefferedLanguage: PreferredLanguage): string {
