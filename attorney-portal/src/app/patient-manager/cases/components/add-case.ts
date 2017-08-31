@@ -31,6 +31,9 @@ import { MedicalProviderMaster } from '../../../account-setup/models/medical-pro
 })
 
 export class AddCaseComponent implements OnInit {
+    medicare = '0';
+    medicaid = '0';
+    ssdisabililtyIncome = '0';
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
@@ -91,16 +94,17 @@ export class AddCaseComponent implements OnInit {
 
 
         this.caseform = this.fb.group({
-            // caseName: [''],
             patientId: ['', Validators.required],
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
-            // locationId: ['', Validators.required],
-            // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['1', Validators.required],
             providerId: [''],
             caseSource: [''],
-            claimNumber: ['']
+            claimNumber: [''],
+            medicare: [''],
+            medicaid: [''],
+            ssdisabililtyIncome: ['']
+
         });
 
         this.caseformControls = this.caseform.controls;
@@ -154,27 +158,10 @@ export class AddCaseComponent implements OnInit {
         }
     }
 
-
-    // loadPatients() {
-    //     this._progressBarService.show();
-    //     this._patientsStore.getPatients()
-    //         .subscribe(patients => {
-    //             this.patients = patients;
-    //         },
-    //         (error) => {
-    //             this._progressBarService.hide();
-    //         },
-    //         () => {
-    //             this._progressBarService.hide();
-    //         });
-    // }
-
     loadPatientsWithoutCase() {
         this._progressBarService.show();
         this._patientsStore.getPatients()
             .subscribe(patients => {
-                // this.patientsWithoutCase = patients;
-                // this.idPatient = patients[0].id;
                 let defaultLabel: any[] = [{
                     label: '-Select Patient-',
                     value: ''
@@ -200,21 +187,16 @@ export class AddCaseComponent implements OnInit {
         let caseFormValues = this.caseform.value;
         let result;
         let caseDetail: Case = new Case({
-            // patientId: this.patientId,
             patientId: (this.patientId) ? this.patientId : parseInt(this.idPatient),
-            // patientId: caseFormValues.patientId,
             caseName: 'caseName',
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
-            // locationId: caseFormValues.locationId,
-            // patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
             claimFileNumber: caseFormValues.claimNumber,
-            // attorneyId: caseFormValues.providerId,
-            // caseStatus: caseFormValues.caseStatus,
-            // transportation: caseFormValues.transportation,
-            //transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
+            medicare: caseFormValues.medicare == '1'? true : false,
+            medicaid: caseFormValues.medicaid == '1'? true : false,
+            ssdisabililtyIncome: caseFormValues.ssdisabililtyIncome == '1'? true : false,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
             createdByCompanyId: this._sessionStore.session.currentCompany.id,

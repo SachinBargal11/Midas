@@ -155,16 +155,16 @@ export class CasesStore {
 
     fetchCaseById(id: number): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            let matchedCase: Case = this.findCaseById(id);
-            if (matchedCase) {
-                resolve(matchedCase);
-            } else {
+            // let matchedCase: Case = this.findCaseById(id);
+            // if (matchedCase) {
+            //     resolve(matchedCase);
+            // } else {
                 this._casesService.getCase(id).subscribe((caseDetail: Case) => {
                     resolve(caseDetail);
                 }, error => {
                     reject(error);
                 });
-            }
+            // }
         });
         return <Observable<Case>>Observable.fromPromise(promise);
     }
