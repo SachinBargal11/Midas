@@ -30,6 +30,7 @@ export class ClientVisitListComponent implements OnInit {
     selectedDoctorsVisits: PatientVisit[] = [];
     selectedRoomsVisits: PatientVisit[] = [];
     visits: PatientVisit[];
+    selectedClientVisits: PatientVisit[];
     caseId: number;
     patientId: number;
     datasource: PatientVisit[];
@@ -48,6 +49,8 @@ export class ClientVisitListComponent implements OnInit {
     caseStatusId: number;
     clientDialogVisible = false;
     selectedVisitId: number;
+    visitInfo = '';
+    clientVisit;
 
     constructor(
         private _router: Router,
@@ -168,8 +171,12 @@ export class ClientVisitListComponent implements OnInit {
 
       closePatientVisitDialog() {
         this.clientDialogVisible = false;
+        this.handleClientDialogHide();
       }
 
+      handleClientDialogHide(){
+          this.selectedVisitId = null;
+      }
 
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
