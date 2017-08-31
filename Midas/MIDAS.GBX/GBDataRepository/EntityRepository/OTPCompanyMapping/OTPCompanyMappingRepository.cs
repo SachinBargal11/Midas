@@ -45,8 +45,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             otpCompanyMappingBO.IsCancelled = otpCompanyMapping.IsCancelled;
             otpCompanyMappingBO.OTPForDate = otpCompanyMapping.OTPForDate;
 
+            if (otpCompanyMapping.Company != null)
+            {
+                Company company = otpCompanyMapping.Company;
+                BO.Company boCompany = new BO.Company();
+                boCompany.ID = company.id;
+                boCompany.Name = company.Name;
+                boCompany.TaxID = company.TaxID == null ? null : company.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+                if (company.SubscriptionPlanType != null)
+                {
+                    boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+                }
+                else
+                {
+                    boCompany.SubsCriptionType = null;
+                }
+                boCompany.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
 
-           
+                otpCompanyMappingBO.Company = boCompany;
+            }
 
             if (otpCompanyMapping.IsDeleted.HasValue)
                 otpCompanyMappingBO.IsDeleted = otpCompanyMapping.IsDeleted.Value;
@@ -80,7 +99,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             OTPCompanyMapping.OTP = Utility.GenerateRandomNo().ToString();
             OTPCompanyMapping.CompanyId = companyId;
             OTPCompanyMapping.ValidUntil = DateTime.UtcNow.AddMinutes(30);
-            OTPCompanyMapping.OTPForDate = DateTime.UtcNow;
+            //OTPCompanyMapping.OTPForDate = DateTime.UtcNow;
 
             OTPCompanyMapping.CreateDate = DateTime.UtcNow;
             OTPCompanyMapping.CreateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
@@ -88,13 +107,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _dbSet.Add(OTPCompanyMapping);
             _context.SaveChanges();
 
-            var OTPCompanyMappingsDB = _context.OTPCompanyMappings.Where(p => (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))
+            //var OTPCompanyMappingsDB = _context.OTPCompanyMappings.Where(p => (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))
+            //                                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            //                                                                  && p.ValidUntil >= DateTime.UtcNow)
+            //                                                      .FirstOrDefault<OTPCompanyMapping>();
+
+            var OTPCompanyMappingsDB = _context.OTPCompanyMappings.Where(p => p.Id == OTPCompanyMapping.Id
+                                                                              && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))
                                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                                               && p.ValidUntil >= DateTime.UtcNow)
                                                                   .FirstOrDefault<OTPCompanyMapping>();
 
-   
-           var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappingsDB);
+
+            var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappingsDB);
           
             return (object)res;
         }
@@ -104,10 +129,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object ValidateOTPForCompany(string otp)
         {
             
-            var OTPCompanyMappings = _context.OTPCompanyMappings.Where(p => p.OTP == otp && p.UsedByCompanyId == null && p.ValidUntil >= DateTime.UtcNow
-                                                                            && p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)
-                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                                       ).FirstOrDefault();
+            var OTPCompanyMappings = _context.OTPCompanyMappings.Include("Company")
+                                                                .Where(p => p.OTP == otp && p.UsedByCompanyId == null && p.ValidUntil >= DateTime.UtcNow
+                                                                            && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                .FirstOrDefault();
 
             if (OTPCompanyMappings == null)
             {
@@ -134,85 +160,84 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    int companyType = _context.Companies.Where(p => p.id == OTPCompanyMapping.CompanyId
-                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                                           ).Select(p1 => p1.CompanyType).FirstOrDefault();
+                    BO.GBEnums.CompanyType companyType = OTPCompanyMapping.Company.CompanyType;
 
-                    int currentCompanyType = _context.Companies.Where(p => p.id == currentCompanyId
-                                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                                          ).Select(p1 => p1.CompanyType).FirstOrDefault();
+                    BO.GBEnums.CompanyType currentCompanyType = _context.Companies.Where(p => p.id == currentCompanyId
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                  .Select(p1 => (BO.GBEnums.CompanyType)p1.CompanyType)
+                                                                                  .FirstOrDefault();
 
-
-                    if (companyType == 1)
+                    using (var dbContextTransaction = _context.Database.BeginTransaction())
                     {
+                        if (companyType == BO.GBEnums.CompanyType.MedicalProvider)
+                        {
+                            using (PreferredMedicalProviderRepository cmp = new PreferredMedicalProviderRepository(_context))
+                            {
+                                cmp.AssociateMedicalProviderWithCompany(OTPCompanyMapping.CompanyId, currentCompanyId);
+                            }
+                        }
+                        else if (companyType == BO.GBEnums.CompanyType.Attorney)
+                        {
+                            using (PreferredAttorneyProviderRepository cmp = new PreferredAttorneyProviderRepository(_context))
+                            {
+                                cmp.AssociatePrefAttorneyProviderWithCompany(OTPCompanyMapping.CompanyId, currentCompanyId);
+                            }
+                        }
+                        else if (companyType == BO.GBEnums.CompanyType.Ancillary)
+                        {
+                            using (PreferredAncillaryProviderRepository cmp = new PreferredAncillaryProviderRepository(_context))
+                            {
+                                cmp.AssociateAncillaryProviderWithCompany(OTPCompanyMapping.CompanyId, currentCompanyId);
+                            }
+                        }
 
-                        using (PreferredMedicalProviderRepository cmp = new PreferredMedicalProviderRepository(_context))
+                        if (currentCompanyType == BO.GBEnums.CompanyType.MedicalProvider)
                         {
-                            cmp.AssociateMedicalProviderWithCompany(OTPCompanyMapping.CompanyId, currentCompanyId);
+                            using (PreferredMedicalProviderRepository cmp = new PreferredMedicalProviderRepository(_context))
+                            {
+                                cmp.AssociateMedicalProviderWithCompany(currentCompanyId, OTPCompanyMapping.CompanyId);
+                            }
                         }
-                    }
-                    else if (companyType == 2)
-                    {
-                        using (PreferredAttorneyProviderRepository cmp = new PreferredAttorneyProviderRepository(_context))
+                        else if (currentCompanyType == BO.GBEnums.CompanyType.Attorney)
                         {
-                            cmp.AssociatePrefAttorneyProviderWithCompany(OTPCompanyMapping.CompanyId, currentCompanyId);
+                            using (PreferredAttorneyProviderRepository cmp = new PreferredAttorneyProviderRepository(_context))
+                            {
+                                cmp.AssociatePrefAttorneyProviderWithCompany(currentCompanyId, OTPCompanyMapping.CompanyId);
+                            }
                         }
-                    }
-                    else if (companyType == 6)
-                    {
-                        using (PreferredAncillaryProviderRepository cmp = new PreferredAncillaryProviderRepository(_context))
+                        else if (currentCompanyType == BO.GBEnums.CompanyType.Ancillary)
                         {
-                            cmp.AssociateAncillaryProviderWithCompany(OTPCompanyMapping.CompanyId, currentCompanyId);
+                            using (PreferredAncillaryProviderRepository cmp = new PreferredAncillaryProviderRepository(_context))
+                            {
+                                cmp.AssociateAncillaryProviderWithCompany(currentCompanyId, OTPCompanyMapping.CompanyId);
+                            }
                         }
-                    }
 
+                        var OTPCompanyMappingDB = _context.OTPCompanyMappings.Include("Company")
+                                                                     .Where(p => p.OTP == otp && p.UsedByCompanyId == null && p.ValidUntil >= DateTime.UtcNow
+                                                                        && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                     .FirstOrDefault();
+                        if (OTPCompanyMappingDB != null)
+                        {
+                            OTPCompanyMappingDB.UsedByCompanyId = currentCompanyId;
+                            OTPCompanyMappingDB.UsedAtDate = DateTime.UtcNow;
+                            OTPCompanyMappingDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            OTPCompanyMappingDB.UpdateDate = DateTime.UtcNow;
+                            _context.SaveChanges();
 
-                    if (currentCompanyType == 1)
-                    {
+                            dbContextTransaction.Commit();
+                        }
 
-                        using (PreferredMedicalProviderRepository cmp = new PreferredMedicalProviderRepository(_context))
-                        {
-                            cmp.AssociateMedicalProviderWithCompany(currentCompanyId, OTPCompanyMapping.CompanyId);
-                        }
-                    }
-                    else if (currentCompanyType == 2)
-                    {
-                        using (PreferredAttorneyProviderRepository cmp = new PreferredAttorneyProviderRepository(_context))
-                        {
-                            cmp.AssociatePrefAttorneyProviderWithCompany(currentCompanyId, OTPCompanyMapping.CompanyId);
-                        }
-                    }
-                    else if (currentCompanyType == 6)
-                    {
-                        using (PreferredAncillaryProviderRepository cmp = new PreferredAncillaryProviderRepository(_context))
-                        {
-                            cmp.AssociateAncillaryProviderWithCompany(currentCompanyId, OTPCompanyMapping.CompanyId);
-                        }
-                    }
+                        var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappingDB);
+                        return (object)res;
+                    }                    
                 }
-
-                OTPCompanyMapping OTPCompanyMappingDB = _context.OTPCompanyMappings.Where(p => p.OTP == otp && p.UsedByCompanyId == null && p.ValidUntil >= DateTime.UtcNow
-                                                                          && p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)
-                                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                                     ).FirstOrDefault();
-                if (OTPCompanyMappingDB != null)
-                {
-                    OTPCompanyMappingDB.UsedByCompanyId = currentCompanyId;
-                    OTPCompanyMappingDB.UsedAtDate= DateTime.UtcNow;
-                    OTPCompanyMappingDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
-                    OTPCompanyMappingDB.UpdateDate = DateTime.UtcNow;
-                    _context.SaveChanges();
-                }
-
-
-                return "Company has been associated successfully.";
-
             }
             catch (Exception ex)
             {
                 return new BO.ErrorObject { ErrorMessage = "Error occured while associating company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-                             
+            }                             
         }
         #endregion
 

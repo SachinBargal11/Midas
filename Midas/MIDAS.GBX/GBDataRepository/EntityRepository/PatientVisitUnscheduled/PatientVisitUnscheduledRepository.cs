@@ -391,7 +391,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        .Include("Patient.User")
                                                        .Include("Specialty")
                                                        .Include("RoomTest")
-                                                       .Where(p => CaseIds.Contains(p.CaseId) == true
+                                                       .Where(p => CaseIds.Contains(p.CaseId) == true && p.ReferralId != null
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .ToList<PatientVisitUnscheduled>();
 
