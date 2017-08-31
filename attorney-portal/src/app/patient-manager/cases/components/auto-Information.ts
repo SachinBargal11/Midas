@@ -160,7 +160,11 @@ export class AutoInformationInfoComponent implements OnInit {
             relativeVehicleLocation: '',
             vehicleClientHaveTitle: parseInt(formValues.titletoVehicle),
             relativeVehicleOwner: formValues.relOwnerName,
-
+            relativeVehicleMakeModel: formValues.relModel,
+            relativeVehicleMakeYear: formValues.relModelYear,
+            relativeVehicleOwnerName: formValues.relOwnerName,
+            relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
+            relativeVehiclePolicyNumber: formValues.relPolicy
         });
 
         let defendantAutoInfoform = new DefendantAutoInformation({

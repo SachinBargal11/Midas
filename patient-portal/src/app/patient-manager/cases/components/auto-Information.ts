@@ -33,10 +33,10 @@ export class AutoInformationInfoComponent implements OnInit {
     isSaveProgress = false;
     autoInformation: AutoInformation;
     title: string;
-    isrelativesVehicle: boolean = false;
-    ishelpinDamageResolved: boolean = false;
-    isvehicleDrivable: boolean = false;
-    istitletoVehicle: boolean = false;
+    isrelativesVehicle = '';
+    ishelpinDamageResolved = '';
+    isvehicleDrivable = '';
+    istitletoVehicle = '';
     titletoVehicle: false;
     relativeVehicle: false;
     vehicleResolveDamage: false;
@@ -63,12 +63,13 @@ export class AutoInformationInfoComponent implements OnInit {
             let result = this._autoInformationStore.getByCaseId(this.caseId);
             result.subscribe(
                 (autoInformation: AutoInformation) => {
+                    debugger;
                     this.autoInformation = autoInformation;
-                    this.title = this.autoInformation.id ? 'Edit Auto Information' : 'Add Auto Information';
-                    this.isrelativesVehicle = this.autoInformation.relativeVehicle;
-                    this.ishelpinDamageResolved = this.autoInformation.vehicleResolveDamage;
-                    this.isvehicleDrivable = this.autoInformation.vehicleDriveable;
-                    this.istitletoVehicle = this.autoInformation.vehicleClientHaveTitle;
+                    //this.title = this.autoInformation.id ? 'Edit Auto Information' : 'Add Auto Information';
+                    this.isrelativesVehicle = String(this.autoInformation.relativeVehicle) == 'true' ? 'Yes' : 'No';
+                    this.ishelpinDamageResolved = String(this.autoInformation.vehicleResolveDamage) == 'true' ? 'Yes' : 'No';
+                    this.isvehicleDrivable = String(this.autoInformation.vehicleDriveable) == 'true' ? 'Yes' : 'No';
+                    this.istitletoVehicle = String(this.autoInformation.vehicleClientHaveTitle) == 'true' ? 'Yes' : 'No';
                 },
                 (error) => {
                     this._router.navigate(['../../']);
