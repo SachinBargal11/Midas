@@ -40,7 +40,7 @@ import { Procedure } from '../../../commons/models/procedure';
 export class PendingReferralsComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     companyId: number = this.sessionStore.session.currentCompany.id;
-    addMedicalDialogVisible: boolean = false
+    addMedicalDialogVisible: boolean = false;
     selectedCancel: number;
     currentCancel: string;
     userSetting: UserSetting;
@@ -71,6 +71,9 @@ export class PendingReferralsComponent implements OnInit {
     roomTestId = 0;
     specialityIdArray = [];
     isAvailableSlotsSavingInProgress: boolean = false;
+
+    externalReferralDialogVisible: boolean = false;
+    routeFrom = 'pendingReferral';
 
     constructor(
         private _router: Router,
@@ -223,9 +226,26 @@ export class PendingReferralsComponent implements OnInit {
         this.addMedicalDialogVisible = true;
         this.selectedCancel = 1;
     }
+    showUnscheduleVisitDialog() {
+        if (this.selectedReferrals) {
+            this.externalReferralDialogVisible = true;
+        } else {            
+            this._notificationsService.error('Please select pending referral');
+        }
+    }
+    handleExternalReferralDialogHide() {
+        // this.availableSlots = [];
+        // this.locations = [];
+    }
     closeDialog() {
         this.addMedicalDialogVisible = false;
         this.loadPreferredCompanyDoctorsAndRoomByCompanyId(this.companyId, this.specialityId, this.roomTestId);
+    }
+    closeExternalReferralDialog() {
+        this.externalReferralDialogVisible = false;
+    }
+    refreshEvents(event) {
+        this.loadPendingReferralsForCompany(this.companyId);
     }
 
     assign() {
@@ -253,9 +273,9 @@ export class PendingReferralsComponent implements OnInit {
                 header: 'Confirmation',
                 icon: 'fa fa-question-circle',
                 accept: () => {
-                    if(this.selectedOption == 1){
-                    this.selectedLocationId = 0;
-                    } 
+                    if (this.selectedOption == 1) {
+                        this.selectedLocationId = 0;
+                    }
                     this.availableSlotsDialogVisible = true;
                     let startDate: moment.Moment = moment();
                     let endDate: moment.Moment = moment().add(7, 'days');
@@ -271,7 +291,7 @@ export class PendingReferralsComponent implements OnInit {
                     }
 
                     if (this.selectedMedicalProviderId && this.selectedOption === 1) {
-                      
+
                         this.locationsStore.getLocationsByCompanyDoctorId(this.selectedMedicalProviderId, this.selectedDoctorId)
                             .subscribe((locations: LocationDetails[]) => {
                                 this.locations = locations;

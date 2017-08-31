@@ -77,6 +77,9 @@
         <a class="btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Medical Provider</span>
         </a>
+        <a class="btn btn-primary btn-sm" (click)="showUnscheduleVisitDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+            <span class="hidden-md-down">Add External Referral</span>
+        </a>
     </div>
 </div>
 <p-dialog *ngIf="selectedCancel == 1" [minWidth]="600" [width]="1200" (onAfterHide)="handleAddMedicalDialogHide()" [(visible)]="addMedicalDialogVisible"
@@ -84,6 +87,11 @@
     <add-medical-provider [inputCancel]="selectedCancel" (closeDialogBox)="closeDialog()"></add-medical-provider>
 </p-dialog>
 <!--<router-outlet></router-outlet>-->
+<p-dialog *ngIf="selectedReferrals && externalReferralDialogVisible" [minWidth]="600" [width]="1200" (onAfterHide)="handleExternalReferralDialogHide()"
+    [(visible)]="externalReferralDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+        <unscheduled-visit [routeFrom]="routeFrom" [pendingReferral]="selectedReferrals" [caseId]="selectedReferrals.caseId" [idPatient]="selectedReferrals.patientId" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeExternalReferralDialog()"></unscheduled-visit>
+</p-dialog>
 
 <p-dialog [minWidth]="500" [width]="800" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
     header="Available Slots" [(visible)]="availableSlotsDialogVisible" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'overflow':'visible'}"

@@ -11,6 +11,10 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { visitReferralAdapter } from './adapters/visit-referral-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
+import { UnscheduledVisitReferralAdapter } from './adapters/unscheduled-visit-referral-adapter';
+import { UnscheduledVisitAdapter } from './adapters/unscheduled-visit-adapter';
+import { UnscheduledVisitReferral } from '../models/unscheduled-visit-referral';
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 
 
 @Injectable()
@@ -129,6 +133,40 @@ export class VisitReferralService {
                 });
         });
         return <Observable<VisitReferral[]>>Observable.fromPromise(promise);
+    }
+
+    saveUnscheduledVisitReferral(unscheduledVisitReferralDetail: UnscheduledVisitReferral): Observable<UnscheduledVisitReferral> {
+        let promise: Promise<UnscheduledVisitReferral> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/patientVisitUnscheduled/saveReferralPatientVisitUnscheduled', JSON.stringify(unscheduledVisitReferralDetail), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data) => {
+                    // let parsedData: UnscheduledVisitReferral = null;
+                    // parsedData = UnscheduledVisitReferralAdapter.parseResponse(parsedData);
+                    // resolve(parsedData);
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisitReferral>>Observable.fromPromise(promise);
+    }
+    getUnscheduledVisitReferralByCompanyId(): Observable<UnscheduledVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/getReferralPatientVisitUnscheduledByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+            .subscribe((data: Array<Object>) => {
+                let parsedData = (<Object[]>data).map((data: any) => {
+                    return UnscheduledVisitAdapter.parseResponse(data);
+                });
+                resolve(parsedData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
     }
 }
 
