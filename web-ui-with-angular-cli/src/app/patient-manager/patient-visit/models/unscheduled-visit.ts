@@ -1,3 +1,5 @@
+import { Room } from '../../../medical-provider/rooms/models/room';
+import { Speciality } from '../../../account-setup/models/speciality';
 import { Status } from 'tslint/lib/runner';
 import { Case } from '../../cases/models/case';
 import { IEventWrapper } from '../../../commons/models/i-event-wrapper';
@@ -20,9 +22,13 @@ const UnscheduledVisitRecord = Record({
     eventStart: null,
     medicalProviderName: '' ,
     doctorName: '',
-    speciality: null,
+    specialty: null,
+    specialtyId: 0,
+    roomTest: null,
+    roomTestId:0,
     notes: '',
-    status: '',
+    referralId: null,
+    status:''
     // visitStatusId: VisitStatus.SCHEDULED,
     // calendarEvent: null,
     // isDeleted: false,
@@ -44,9 +50,13 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
     eventStart: moment.Moment;
     medicalProviderName: string;
     doctorName: string;
-    speciality: string;
+    specialty: Speciality;
+    specialtyId: number;
+    roomTest: Room;
+    roomTestId: number
     notes: string;
-    status: string;
+    referralId: number;
+    status:string
     // visitStatusId: VisitStatus;
     // calendarEvent: ScheduledEvent;
     // isDeleted: boolean;

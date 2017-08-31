@@ -932,6 +932,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+        this.selectedVisitType = '1';
         this.selectedEventDate = event.date.clone().local();
         this.selectedProcedures = null;
         this.eventDialogVisible = false;
