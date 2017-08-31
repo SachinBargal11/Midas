@@ -117,9 +117,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.PatientVisitUnscheduled PatientVisitUnscheduledBO = (BO.PatientVisitUnscheduled)(object)entity;
-            var result = PatientVisitUnscheduledBO.Validate(PatientVisitUnscheduledBO);
-            return result;
+            if (entity is BO.PatientVisitUnscheduled)
+            {
+                BO.PatientVisitUnscheduled PatientVisitUnscheduledBO = (BO.PatientVisitUnscheduled)(object)entity;
+                var result = PatientVisitUnscheduledBO.Validate(PatientVisitUnscheduledBO);
+                return result;
+            }
+            else if (entity is BO.ReferralVisitUnscheduled)
+            {
+                BO.ReferralVisitUnscheduled ReferralVisitUnscheduledBO = (BO.ReferralVisitUnscheduled)(object)entity;
+                var result = ReferralVisitUnscheduledBO.Validate(ReferralVisitUnscheduledBO);
+                return result;
+            }
+
+            return null;
         }
         #endregion
 
