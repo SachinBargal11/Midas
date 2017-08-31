@@ -37,7 +37,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
         specialityName: string,
         visitStatusLabel: string,
         isPatientVisitType: boolean,
-        isUnscheduledVisitType: boolean
+        isUnscheduledVisitType: boolean,
+        medicalProviderName: string
     }[] = [];
     selectedVisits: PatientVisit[] = [];
     selectedDoctorsVisits: PatientVisit[] = [];
@@ -70,8 +71,10 @@ export class PatientVisitListDoctorComponent implements OnInit {
     case: Case;
     routeFromCase: true;
     unscheduledVisits: UnscheduledVisit[];
+    unscheduledVisit: UnscheduledVisit;
     visit: any[] = [];
     selectedUnscheduledVisit: UnscheduledVisit[] = [];
+    patientVisitId: number;
 
     constructor(
         private _fb: FormBuilder,
@@ -220,7 +223,8 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     specialityName: string,
                     visitStatusLabel: string,
                     isPatientVisitType: boolean,
-                    isUnscheduledVisitType: boolean
+                    isUnscheduledVisitType: boolean,
+                    medicalProviderName: string
                 }[] = [];
                 _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {
                     mappedAllVisits.push({
@@ -230,19 +234,24 @@ export class PatientVisitListDoctorComponent implements OnInit {
                         specialityName: currDoctorVisit.specialty.displayName,
                         visitStatusLabel: currDoctorVisit.visitStatusLabel,
                         isPatientVisitType: true,
-                        isUnscheduledVisitType: false
+                        isUnscheduledVisitType: false,
+                        medicalProviderName: null
                     })
                 })
                 _.forEach(unscheduledVisits, (currDoctorVisit: UnscheduledVisit) => {
-                    mappedAllVisits.push({
-                        id: currDoctorVisit.id,
-                        eventStart: currDoctorVisit.eventStart,
-                        doctorName: currDoctorVisit.doctorName,
-                        specialityName: '',
-                        visitStatusLabel: '',
-                        isPatientVisitType: false,
-                        isUnscheduledVisitType: true
-                    })
+                    if (currDoctorVisit.specialtyId != null) {
+                        mappedAllVisits.push({
+                            id: currDoctorVisit.id,
+                            eventStart: currDoctorVisit.eventStart,
+                            doctorName: currDoctorVisit.doctorName,
+                            specialityName: currDoctorVisit.specialty ? currDoctorVisit.specialty.name : '',
+                            visitStatusLabel: currDoctorVisit.status,
+                            isPatientVisitType: false,
+                            isUnscheduledVisitType: true,
+                            medicalProviderName: currDoctorVisit.medicalProviderName
+                        })
+                    }
+
                 })
                 this.allVisits = mappedAllVisits;
 
@@ -281,13 +290,17 @@ export class PatientVisitListDoctorComponent implements OnInit {
     }
 
     showDialog(visit: any) {
-        
+
         if (visit.isPatientVisitType) {
             this.fetchPatientVisit(visit.id);
-        this.selectedVisitId = visit.id;
+            this.selectedVisitId = visit.id;
             this.visitDialogVisible = true;
         } else if (visit.isUnscheduledVisitType) {
-            this.unscheduledDialogVisible = true;
+            this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
+                .subscribe((visit: UnscheduledVisit) => {
+                    this.unscheduledVisit = visit;
+                    this.unscheduledDialogVisible = true;
+                });
         }
     }
 
@@ -305,6 +318,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     closePatientVisitDialog() {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
+        this.unscheduledDialogVisible = false;
         this.unscheduledDialogVisible = false;
     }
 

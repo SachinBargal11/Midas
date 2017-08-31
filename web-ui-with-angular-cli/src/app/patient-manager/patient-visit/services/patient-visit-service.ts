@@ -95,25 +95,6 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
-        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/patientVisitUnscheduled/getByCaseId/' + caseId, {
-                headers: this._headers
-            })
-                .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let unscheduledVisit = (<Object[]>data).map((data: any) => {
-                        return UnscheduledVisitAdapter.parseResponse(data);
-                    });
-                    resolve(unscheduledVisit);
-                }, (error) => {
-                    reject(error);
-                });
-
-        });
-        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
-    }
-
     getVisitsByDatesAndDoctorId(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
@@ -581,6 +562,64 @@ export class PatientVisitService {
                 }, (error) => {
                     reject(error);
                 });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+      updateUnscheduledVisitDetail(unscheduledVisitDetail: UnscheduledVisit): Observable<UnscheduledVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = unscheduledVisitDetail.toJS();
+            return this._http.post(this._url + '/patientVisitUnscheduled/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedUnscheduledVisit: UnscheduledVisit = null;
+                    parsedUnscheduledVisit = UnscheduledVisitAdapter.parseResponse(data);
+                    resolve(parsedUnscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+      getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
+        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let unscheduledVisit = (<Object[]>data).map((data: any) => {
+                        return UnscheduledVisitAdapter.parseResponse(data);
+                    });
+                    resolve(unscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
+    }
+
+     getUnscheduledVisitDetailById(patientVisitId: Number): Observable<UnscheduledVisit> {
+        let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/get/' + patientVisitId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let unscheduledVisits = null;
+                    if (data) {
+                        unscheduledVisits = UnscheduledVisitAdapter.parseResponse(data);
+                        resolve(unscheduledVisits);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
         });
         return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
     }

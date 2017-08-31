@@ -97,3 +97,10 @@
         <unscheduled-visit  (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
     </div>
 </p-dialog>
+
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="unscheduledDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledVisit && unscheduledDialogVisible">
+        <unscheduled-visit-detail [selectedVisit]="unscheduledVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></unscheduled-visit-detail>
+    </div>
+</p-dialog>

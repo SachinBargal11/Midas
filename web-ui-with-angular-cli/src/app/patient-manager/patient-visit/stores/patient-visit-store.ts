@@ -71,18 +71,6 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getUnscheduledVisitsByCaseId(caseId).subscribe((unscheduledVisit: UnscheduledVisit[]) => {
-                // this._patientVisits.next(List(patientVisits));
-                resolve(unscheduledVisit);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
-    }
-
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getPatientVisitsByDoctorId(doctorId).subscribe((patientVisits: PatientVisit[]) => {
@@ -446,6 +434,47 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<any>>Observable.from(promise);
+    }
+
+    getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getUnscheduledVisitsByCaseId(caseId).subscribe((unscheduledVisit: UnscheduledVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(unscheduledVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getUnscheduledVisitDetailById(id: number): Observable<UnscheduledVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getUnscheduledVisitDetailById(id).subscribe((unscheduledVisit: UnscheduledVisit) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(unscheduledVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+    updateUnscheduledVisitDetail(unscheduledVisit: UnscheduledVisit): Observable<UnscheduledVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.updateUnscheduledVisitDetail(unscheduledVisit).subscribe((updatedPatientVisit: UnscheduledVisit) => {
+                let unscheduledVisitDetail: List<UnscheduledVisit> = this._unscheduledVisits.getValue();
+                let index = unscheduledVisitDetail.findIndex((currentPatientVisit: UnscheduledVisit) => currentPatientVisit.id === updatedPatientVisit.id);
+                unscheduledVisitDetail = unscheduledVisitDetail.update(index, function () {
+                    return updatedPatientVisit;
+                });
+                this._unscheduledVisits.next(unscheduledVisitDetail);
+                resolve(updatedPatientVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisit>>Observable.from(promise);
     }
 
      getPatientVisitsByCompanyId(companyId: number): Observable<PatientVisit[]> {

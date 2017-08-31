@@ -30,6 +30,8 @@ import { SpecialityStore } from '../../../account-setup/stores/speciality-store'
 import { Speciality } from '../../../account-setup/models/speciality';
 import { LeaveEventEditorComponent } from '../../../medical-provider/calendar/components/leave-event-editor';
 import { LeaveEvent } from '../../../commons/models/leave-event';
+import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
+import { Tests } from '../../../medical-provider/rooms/models/tests';
 
 @Component({
     selector: 'unscheduled-visit',
@@ -37,7 +39,12 @@ import { LeaveEvent } from '../../../commons/models/leave-event';
 })
 
 export class UnscheduledVisitComponent implements OnInit {
-
+    selectedMode: number = 0;
+    selectedDoctorId: number;
+    selectedRoomId: number;
+    selectedOption: number = 0;
+    selectedSpecialityId: number;
+    selectedTestId: number;
     patients: Patient[] = [];
     eventDialogVisible: boolean = false;
     visitDialogVisible: boolean = false;
@@ -69,6 +76,7 @@ export class UnscheduledVisitComponent implements OnInit {
     eventEndAsDate: Date;
     duration: number;
     specialities: Speciality[];
+    tests: Tests[];
     @Input() caseId: number;
     @Input() idPatient: number;
     caseDetail: Case;
@@ -100,7 +108,7 @@ export class UnscheduledVisitComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
         private _specialityStore: SpecialityStore,
-
+        private _roomsStore: RoomsStore,
     ) {
         this.unscheduledForm = this._fb.group({
             patientId: ['', Validators.required],
@@ -163,12 +171,12 @@ export class UnscheduledVisitComponent implements OnInit {
     loadAllSpecialitiesAndTests() {
         this._progressBarService.show();
         let fetchAllSpecialities = this._specialityStore.getSpecialities();
-        // let fetchAllTestFacilties = this._roomsStore.getTests();
-        Observable.forkJoin([fetchAllSpecialities])
+        let fetchAllTestFacilties = this._roomsStore.getTests();
+        Observable.forkJoin([fetchAllSpecialities, fetchAllTestFacilties])
             .subscribe(
             (results: any) => {
                 this.specialities = results[0];
-                // this.tests = results[1];
+                this.tests = results[1];
             },
             (error) => {
                 this._progressBarService.hide();
@@ -176,8 +184,24 @@ export class UnscheduledVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
 
-
+    selectOption(event) {
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+        if (event.target.value == '0') {
+            this.selectedOption = 0;
+            this.selectedSpecialityId = 0;
+            this.selectedTestId = 0;
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedOption = 1;
+            this.selectedSpecialityId = parseInt(event.target.value);
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedOption = 2;
+            this.selectedTestId = parseInt(event.target.value);
+        } else {
+            this.selectedMode = 0;   
+        }
     }
 
     selectPatient(event) {
@@ -197,17 +221,18 @@ export class UnscheduledVisitComponent implements OnInit {
             caseId: this.caseId,
             medicalProviderName: this.unscheduledForm.value.medicalProviderName,
             doctorName: this.unscheduledForm.value.doctorName,
-            speciality: this.unscheduledForm.value.speciality,
+            specialtyId:this.selectedSpecialityId ? this.selectedSpecialityId : null ,
+            roomTestId:this.selectedTestId ? this.selectedTestId : null ,
             notes: this.unscheduledForm.value.notes,
+            referralId:null,
+            patient:null,
+            case:null,
             createByUserID: this.sessionStore.session.account.user.id,
             eventStart: moment(this.eventStartAsDate),
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
                 eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
-                // eventStartDate: this.unscheduledForm.value.eventStartDate,
-                // duration: this.unscheduledForm.value.duration,
-                // ancillaryProviderId: this.unscheduledForm.value.ancillaryProviderId,
             })
         });
 
@@ -247,6 +272,6 @@ export class UnscheduledVisitComponent implements OnInit {
     refreshImeEvents() {
         this.refreshEvents.emit();
     }
-    handleVisitDialogHide() {}
+    handleVisitDialogHide() { }
 
 }
