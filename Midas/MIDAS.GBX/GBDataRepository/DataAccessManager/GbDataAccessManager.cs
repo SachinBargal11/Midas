@@ -1480,6 +1480,50 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GenerateOTPForCompany(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GenerateOTPForCompany(CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object ValidateOTPForCompany(string otp, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.ValidateOTPForCompany(otp);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         public Object GetByCompanyIdForAncillary(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
@@ -2589,6 +2633,26 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object AssociatePreferredCompany(string otp, int currentCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AssociatePreferredCompany(otp, currentCompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }        
 
         public Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {

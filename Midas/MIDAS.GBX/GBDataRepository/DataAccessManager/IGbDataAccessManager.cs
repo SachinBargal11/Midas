@@ -50,6 +50,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByLocationAndSpecialty(int locationId, int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetBySpecialityInAllApp(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GenerateOTPForCompany(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object ValidateOTPForCompany(string otp, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
         Object GetByRoomInAllApp(int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateToken(int userId);
         Object ValidateToken(string tokenId);
@@ -120,6 +122,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByRoomTestAndCompanyId(int roomTestId, int companyId, bool showAll, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateReferralDocument(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateAttorneyWithCompany(int AttorneyId,int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object AssociatePreferredCompany(string otp, int currentCompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);    
         Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociatePatientWithCompany(int PatientId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

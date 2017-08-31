@@ -944,6 +944,21 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual object GenerateOTPForCompany(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object ValidateOTPForCompany(string otp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object AssociatePreferredCompany(string otp, int currentCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object SaveReferralPatientVisitUnscheduled<T>(T entity)
         {
             throw new NotImplementedException();
