@@ -969,6 +969,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual object DeletePreferredCompany(int preferredCompanyId, int currentCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
