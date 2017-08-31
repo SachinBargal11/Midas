@@ -116,8 +116,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappings);
             return (object)res;
-
-            //return true;
+           
         }
         #endregion
 
@@ -213,11 +212,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "Error occured while associating company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-          
-            
-            //var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMapping);
-
-            //return (object)res;
+                             
         }
         #endregion
 
