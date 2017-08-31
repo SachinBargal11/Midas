@@ -113,6 +113,36 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
+    generateToken(companyId: Number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/OTPCompanyMapping/GenerateOTPForCompany/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    validateToken(token:number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/OTPCompanyMapping/validateOTPForCompany/' + token, {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {

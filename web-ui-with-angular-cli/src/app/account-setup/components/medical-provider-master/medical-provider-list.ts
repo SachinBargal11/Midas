@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -30,6 +31,11 @@ export class MedicalProviderListComponent implements OnInit {
     patientId: number;
     isDeleteProgress: boolean = false;
     displayValidation: boolean = false;
+    otp: string;
+    medicalProviderName: string;
+    validateOtpResponse: any;
+    addMedicalProviderByToken: FormGroup;
+    addMedicalProviderByTokenControls;
 
     constructor(
         private _router: Router,
@@ -41,8 +47,13 @@ export class MedicalProviderListComponent implements OnInit {
         private _sessionStore: SessionStore,
         private confirmationService: ConfirmationService,
         private _elRef: ElementRef,
+        private fb: FormBuilder,
 
     ) {
+        this.addMedicalProviderByToken = this.fb.group({
+            token: ['', Validators.required],
+        })
+        this.addMedicalProviderByTokenControls = this.addMedicalProviderByToken.controls
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             // this.loadAllProviders();
@@ -56,11 +67,41 @@ export class MedicalProviderListComponent implements OnInit {
     }
 
     showDialog() {
+        this.generateToken();
         this.displayToken = true;
     }
 
     showValidation() {
         this.displayValidation = true;
+    }
+
+    generateToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.generateToken()
+            .subscribe((data: any) => {
+                this.otp = data.otp;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    validateGeneratedToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.validateToken(this.addMedicalProviderByToken.value.token)
+            .subscribe((data: any) => {
+                this.validateOtpResponse = data;
+                this.medicalProviderName = this.validateOtpResponse.company.name
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     loadAllProviders() {
