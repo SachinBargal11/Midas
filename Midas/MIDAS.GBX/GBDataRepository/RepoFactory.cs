@@ -345,6 +345,10 @@ namespace MIDAS.GBX
             {
                 repo = new PatientPriorAccidentInjuryRepository(context);
             }
+            else if (typeof(T) == typeof(BO.ReferralVisitUnscheduled))
+            {
+                repo = new PatientVisitUnscheduledRepository(context);
+            }
 
             return repo;
         }

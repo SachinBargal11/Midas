@@ -944,6 +944,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveReferralPatientVisitUnscheduled<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
