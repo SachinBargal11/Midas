@@ -2652,7 +2652,27 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 return ex;
             }
-        }        
+        }
+
+        public Object DeletePreferredCompany(int preferredCompanyId, int currentCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.DeletePreferredCompany(preferredCompanyId, currentCompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
 
         public Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {

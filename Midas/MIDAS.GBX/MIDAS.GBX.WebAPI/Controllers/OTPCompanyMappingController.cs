@@ -47,8 +47,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.AssociatePreferredCompany(Request, otp, currentCompanyId);
         }
 
-        
-
+        [HttpGet]
+        [Route("deletePreferredCompany/{preferredCompanyId}/{currentCompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeletePreferredCompany(int preferredCompanyId, int currentCompanyId)
+        {
+            return requestHandler.DeletePreferredCompany(Request, preferredCompanyId, currentCompanyId);
+        }
+       
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

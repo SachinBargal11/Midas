@@ -87,13 +87,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         #region GenerateOTP For Company
         public override object GenerateOTPForCompany(int companyId)
-        {           
-            var OTPCompanyMappings = _context.OTPCompanyMappings.Where(p =>p.CompanyId== companyId && p.UsedByCompanyId == null && p.ValidUntil>=DateTime.UtcNow).ToList();
-            if (OTPCompanyMappings.Count>0)
+        {
+            var OTPCompanyMappings = _context.OTPCompanyMappings.Where(p => p.CompanyId == companyId && p.UsedByCompanyId == null && p.ValidUntil >= DateTime.UtcNow).ToList();
+            if (OTPCompanyMappings.Count > 0)
             {
-                OTPCompanyMappings.ForEach(a => { a.IsCancelled = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });          
+                OTPCompanyMappings.ForEach(a => { a.IsCancelled = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });
                 _context.SaveChanges();
-            }           
+            }
 
             OTPCompanyMapping OTPCompanyMapping = new OTPCompanyMapping();
             OTPCompanyMapping.OTP = Utility.GenerateRandomNo().ToString();
@@ -120,7 +120,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
             var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappingsDB);
-          
+
             return (object)res;
         }
         #endregion
@@ -128,7 +128,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate OTP For Company
         public override object ValidateOTPForCompany(string otp)
         {
-            
+
             var OTPCompanyMappings = _context.OTPCompanyMappings.Include("Company")
                                                                 .Where(p => p.OTP == otp && p.UsedByCompanyId == null && p.ValidUntil >= DateTime.UtcNow
                                                                             && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))
@@ -142,14 +142,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappings);
             return (object)res;
-           
+
         }
         #endregion
 
         #region Associate preferred comapny
         public override object AssociatePreferredCompany(string otp, int currentCompanyId)
         {
-               
+
             try
             {
                 BO.OTPCompanyMapping OTPCompanyMapping = (BO.OTPCompanyMapping)ValidateOTPForCompany(otp);
@@ -231,13 +231,165 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappingDB);
                         return (object)res;
-                    }                    
+                    }
                 }
             }
             catch (Exception ex)
             {
                 return new BO.ErrorObject { ErrorMessage = "Error occured while associating company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }                             
+            }
+        }
+        #endregion
+
+        #region Delete preferred comapny
+        public override object DeletePreferredCompany(int preferredCompanyId, int currentCompanyId)
+        {
+
+            try
+            {
+                BO.GBEnums.CompanyType prferredCompanyType = _context.Companies.Where(p => p.id == preferredCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .Select(p1 => (BO.GBEnums.CompanyType)p1.CompanyType)
+                                                                               .FirstOrDefault();
+
+                BO.GBEnums.CompanyType currentCompanyType = _context.Companies.Where(p => p.id == currentCompanyId
+                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                  .Select(p1 => (BO.GBEnums.CompanyType)p1.CompanyType)
+                                                                                  .FirstOrDefault();
+
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                {
+                    if (prferredCompanyType == BO.GBEnums.CompanyType.MedicalProvider)
+                    {
+                        PreferredMedicalProvider PreferredMedicalProviderDB = null;
+                        PreferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == preferredCompanyId
+                                                                                      && p.CompanyId == currentCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                                             ).FirstOrDefault();
+                        if (PreferredMedicalProviderDB != null)
+                        {
+                            PreferredMedicalProviderDB.IsDeleted = true;
+                            PreferredMedicalProviderDB.UpdateDate = DateTime.UtcNow;
+                            PreferredMedicalProviderDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            _context.SaveChanges();
+
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "This Medical provider is not associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                    else if (prferredCompanyType == BO.GBEnums.CompanyType.Attorney)
+                    {
+                        PreferredAttorneyProvider PreferredAttorneyProviderDB = null;
+                        PreferredAttorneyProviderDB = _context.PreferredAttorneyProviders.Where(p => p.PrefAttorneyProviderId == preferredCompanyId
+                                                                                      && p.CompanyId == currentCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                                             ).FirstOrDefault();
+                        if (PreferredAttorneyProviderDB != null)
+                        {
+                            PreferredAttorneyProviderDB.IsDeleted = true;
+                            PreferredAttorneyProviderDB.UpdateDate = DateTime.UtcNow;
+                            PreferredAttorneyProviderDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            _context.SaveChanges();
+
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "This Attorney provider is not associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                    else if (prferredCompanyType == BO.GBEnums.CompanyType.Ancillary)
+                    {
+                        PreferredAncillaryProvider PreferredAncillaryProviderDB = null;
+                        PreferredAncillaryProviderDB = _context.PreferredAncillaryProviders.Where(p => p.PrefAncillaryProviderId == preferredCompanyId
+                                                                                      && p.CompanyId == currentCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                                             ).FirstOrDefault();
+                        if (PreferredAncillaryProviderDB != null)
+                        {
+                            PreferredAncillaryProviderDB.IsDeleted = true;
+                            PreferredAncillaryProviderDB.UpdateDate = DateTime.UtcNow;
+                            PreferredAncillaryProviderDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            _context.SaveChanges();
+
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "This Ancillary provider is not associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
+                    if (currentCompanyType == BO.GBEnums.CompanyType.MedicalProvider)
+                    {
+                        PreferredMedicalProvider PreferredMedicalProviderDB = null;
+                        PreferredMedicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.PrefMedProviderId == currentCompanyId
+                                                                                      && p.CompanyId == preferredCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                                             ).FirstOrDefault();
+                        if (PreferredMedicalProviderDB != null)
+                        {
+                            PreferredMedicalProviderDB.IsDeleted = true;
+                            PreferredMedicalProviderDB.UpdateDate = DateTime.UtcNow;
+                            PreferredMedicalProviderDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            _context.SaveChanges();
+
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "This Medical provider is not associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                    else if (currentCompanyType == BO.GBEnums.CompanyType.Attorney)
+                    {
+                        PreferredAttorneyProvider PreferredAttorneyProviderDB = null;
+                        PreferredAttorneyProviderDB = _context.PreferredAttorneyProviders.Where(p => p.PrefAttorneyProviderId == currentCompanyId
+                                                                                      && p.CompanyId == preferredCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                                             ).FirstOrDefault();
+                        if (PreferredAttorneyProviderDB != null)
+                        {
+                            PreferredAttorneyProviderDB.IsDeleted = true;
+                            PreferredAttorneyProviderDB.UpdateDate = DateTime.UtcNow;
+                            PreferredAttorneyProviderDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            _context.SaveChanges();
+
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "This Attorney provider is not associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+                    else if (currentCompanyType == BO.GBEnums.CompanyType.Ancillary)
+                    {
+                        PreferredAncillaryProvider PreferredAncillaryProviderDB = null;
+                        PreferredAncillaryProviderDB = _context.PreferredAncillaryProviders.Where(p => p.PrefAncillaryProviderId == currentCompanyId
+                                                                                      && p.CompanyId == preferredCompanyId
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                                                             ).FirstOrDefault();
+                        if (PreferredAncillaryProviderDB != null)
+                        {
+                            PreferredAncillaryProviderDB.IsDeleted = true;
+                            PreferredAncillaryProviderDB.UpdateDate = DateTime.UtcNow;
+                            PreferredAncillaryProviderDB.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+                            _context.SaveChanges();
+
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "This Ancillary provider is not associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
+                    dbContextTransaction.Commit();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Error occured while associating company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
         }
         #endregion
 
