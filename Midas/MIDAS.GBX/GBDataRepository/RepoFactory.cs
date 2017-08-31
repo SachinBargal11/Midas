@@ -345,6 +345,10 @@ namespace MIDAS.GBX
             {
                 repo = new PatientPriorAccidentInjuryRepository(context);
             }
+            else if (typeof(T) == typeof(BO.OTPCompanyMapping))
+            {
+                repo = new OTPCompanyMappingRepository(context);
+            }
 
             return repo;
         }

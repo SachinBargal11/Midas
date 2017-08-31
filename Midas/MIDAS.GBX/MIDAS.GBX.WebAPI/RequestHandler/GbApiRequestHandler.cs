@@ -819,6 +819,42 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GenerateOTPForCompany(HttpRequestMessage request, int companyId)
+        {
+            var objResult = dataAccessManager.GenerateOTPForCompany(companyId);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage ValidateOTPForCompany(HttpRequestMessage request, string otp)
+        {
+            var objResult = dataAccessManager.ValidateOTPForCompany(otp);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }       
+
         public HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request)
         {
             var objResult = dataAccessManager.GetAllCompanyAndLocation();
@@ -1527,6 +1563,26 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage AssociatePreferredCompany(HttpRequestMessage request, string otp, int currentCompanyId)
+        {
+            var objResult = dataAccessManager.AssociatePreferredCompany(otp, currentCompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+      
 
         public HttpResponseMessage DisassociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId)
         {
