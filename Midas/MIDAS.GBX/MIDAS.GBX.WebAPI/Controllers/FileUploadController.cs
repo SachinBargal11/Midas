@@ -19,8 +19,7 @@ using System.Net.Http.Headers;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
-    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
+    [Authorize]
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;

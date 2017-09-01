@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/RefferingOffice")]
-    //[AllowAnonymous]
+    [Authorize]
     public class RefferingOfficeController : ApiController
     {
         private IRequestHandler<RefferingOffice> requestHandler;

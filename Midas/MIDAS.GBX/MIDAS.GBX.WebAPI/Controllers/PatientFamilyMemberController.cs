@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/PatientFamilyMember")]
-
+    [Authorize]
     public class PatientFamilyMemberController : ApiController
     {
         private IRequestHandler<PatientFamilyMember> requestHandler;

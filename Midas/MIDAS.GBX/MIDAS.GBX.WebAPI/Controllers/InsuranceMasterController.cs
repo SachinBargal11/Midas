@@ -9,6 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/InsuranceMaster")]
+    [Authorize]
     public class InsuranceMasterController : ApiController
     {
         private IRequestHandler<InsuranceMaster> requestHandler;

@@ -10,6 +10,7 @@ using MIDAS.GBX.EntityRepository;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Reports")]
+    [Authorize]
     public class ReportsController : ApiController
     {
         private IRequestHandler<VisitReports> requestHandler;

@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/PreferredAncillaryProvider")]
-
+    [Authorize]
     public class PreferredAncillaryProviderController : ApiController
     {
         private IRequestHandler<PreferredAncillarProviderSignUp> requestHandler;

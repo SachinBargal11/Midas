@@ -10,17 +10,14 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/OTPCompanyMapping")]
-    
+    [Authorize]
     public class OTPCompanyMappingController : ApiController
     {
         private IRequestHandler<OTPCompanyMapping> requestHandler;
-        //private IRequestHandler<ValidateOTP> validateotprequestHandler;
         public OTPCompanyMappingController()
         {
             requestHandler = new GbApiRequestHandler<OTPCompanyMapping>();
-            //validateotprequestHandler = new GbApiRequestHandler<ValidateOTP>();
         }
-
      
         [HttpGet]
         [Route("generateOTPForCompany/{companyId}")]
@@ -29,7 +26,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GenerateOTPForCompany(Request, companyId);
         }
-
 
         [HttpGet]
         [Route("validateOTPForCompany/{otp}")]
@@ -59,6 +55,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }
