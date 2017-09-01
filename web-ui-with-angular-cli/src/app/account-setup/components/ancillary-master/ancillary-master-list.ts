@@ -80,6 +80,7 @@ export class AncillaryListComponent implements OnInit {
     closeDialog(){
   this.displayValidation = false;
     }
+    deleteAncillaryProviders() {}
 
     generateToken() {
         this._progressBarService.show();

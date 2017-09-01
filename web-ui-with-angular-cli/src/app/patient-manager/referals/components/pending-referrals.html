@@ -89,7 +89,7 @@
 <!--<router-outlet></router-outlet>-->
 <p-dialog *ngIf="selectedReferrals && externalReferralDialogVisible" [minWidth]="600" [width]="1200" (onAfterHide)="handleExternalReferralDialogHide()"
     [(visible)]="externalReferralDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
-    [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    [contentStyle]="{'overflow':'auto', 'max-height':'700px'}">
         <unscheduled-visit [routeFrom]="routeFrom" [pendingReferral]="selectedReferrals" [caseId]="selectedReferrals.caseId" [idPatient]="selectedReferrals.patientId" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeExternalReferralDialog()"></unscheduled-visit>
 </p-dialog>
 

@@ -42,7 +42,7 @@ import { VisitReferralStore } from '../stores/visit-referral-store';
 })
 
 export class UnscheduledVisitComponent implements OnInit {
-    selectedMode: number = 0;
+    selectedMode: any = 0;
     selectedDoctorId: number;
     selectedRoomId: number;
     selectedOption: number = 0;
@@ -95,7 +95,9 @@ export class UnscheduledVisitComponent implements OnInit {
             this.duration = moment.duration(moment().diff(this.eventStartAsDate)).asMinutes();
             this.eventEndAsDate = moment().toDate();
             this.doctorName = value.displayDoctorName;
-            this.selectedMode = value.forSpecialtyId;
+            this.selectedMode = value.forSpecialtyId ? value.speciality : value.forRoomTestId ? value.roomTest : 0;
+            this.selectedSpecialityId = value.forSpecialtyId ? value.forSpecialtyId : null;
+            this.selectedTestId = value.forRoomTestId ? value.forRoomTestId : null;
         }
     };
 
@@ -206,20 +208,37 @@ export class UnscheduledVisitComponent implements OnInit {
     selectOption(event) {
         this.selectedRoomId = 0;
         this.selectedOption = 0;
-        if (event.target.value == '0') {
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '0') {
             this.selectedOption = 0;
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedSpecialityId = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityId'));
             this.selectedOption = 1;
-            this.selectedSpecialityId = parseInt(event.target.value);
         } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedTestId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
             this.selectedOption = 2;
-            this.selectedTestId = parseInt(event.target.value);
         } else {
             this.selectedMode = 0;
         }
     }
+    // selectOption(event) {
+    //     this.selectedRoomId = 0;
+    //     this.selectedOption = 0;
+    //     if (event.target.value == '0') {
+    //         this.selectedOption = 0;
+    //         this.selectedSpecialityId = 0;
+    //         this.selectedTestId = 0;
+    //     } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+    //         this.selectedOption = 1;
+    //         this.selectedSpecialityId = parseInt(event.target.value);
+    //     } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+    //         this.selectedOption = 2;
+    //         this.selectedTestId = parseInt(event.target.value);
+    //     } else {
+    //         this.selectedMode = 0;
+    //     }
+    // }
 
     selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
@@ -284,8 +303,8 @@ export class UnscheduledVisitComponent implements OnInit {
                     caseId: this.caseId,
                     medicalProviderName: this.unscheduledForm.value.medicalProviderName,
                     doctorName: this.unscheduledForm.value.doctorName,
-                    specialtyId: this.selectedPendingReferral.forSpecialtyId ? this.selectedPendingReferral.forSpecialtyId : null,
-                    roomTestId: this.selectedPendingReferral.forRoomTestId ? this.selectedPendingReferral.forRoomTestId : null,
+                    specialtyId: this.selectedSpecialityId ? this.selectedSpecialityId : null,
+                    roomTestId: this.selectedTestId ? this.selectedTestId : null,
                     notes: this.unscheduledForm.value.notes,
                     referralId: null,
                     patient: null,

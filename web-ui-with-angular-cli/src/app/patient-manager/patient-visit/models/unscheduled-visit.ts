@@ -1,4 +1,5 @@
 import { Room } from '../../../medical-provider/rooms/models/room';
+import { Tests } from '../../../medical-provider/rooms/models/tests';
 import { Speciality } from '../../../account-setup/models/speciality';
 import { Status } from 'tslint/lib/runner';
 import { Case } from '../../cases/models/case';
@@ -52,7 +53,7 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
     doctorName: string;
     specialty: Speciality;
     specialtyId: number;
-    roomTest: Room;
+    roomTest: Tests;
     roomTestId: number;
     notes: string;
     referralId: number;

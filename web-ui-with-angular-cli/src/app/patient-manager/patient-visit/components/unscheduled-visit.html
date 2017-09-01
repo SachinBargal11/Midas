@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="routeFrom != 'pendingReferral'">
+        <div class="row">
             <div class="col-md-2"><label class="form-label">Doctor Name<span class="color-red">*</span>
                     </label></div>
             <div class="col-md-4">
@@ -73,46 +73,17 @@
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="routeFrom != 'pendingReferral'">
+        <div class="row">
             <div class="col-md-2"><label class="form-label">Specialty</label></div>
             <div class="col-lg-3">
                 <select formControlName="speciality" [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                    <option value="0">- Select specialty -</option>
+                    <option data-type="0">- Select specialty -</option>
                     <optgroup label="Select Specialty">
-                       <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+                       <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality">{{speciality.name}}</option>                                       
                     </optgroup>
                     <optgroup label="Select Test">
-                       <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+                       <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test">{{test.name}}</option>                                       
                     </optgroup>
-            </select>
-            </div>
-        </div>
-        <div class="row" *ngIf="routeFrom == 'pendingReferral'">
-            <div class="col-md-2"><label class="form-label">Doctor Name<span class="color-red">*</span>
-                    </label></div>
-            <div class="col-md-4">
-                <div class="form-group" [class.error]="unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
-                    <input disabled formControlName="doctorName" type="text" [ngModel]="doctorName" class="form-control" [class.error]="!unscheduledFormControls.doctorName.valid"
-                    />
-                    <div class='error-list' *ngIf="unscheduledFormControls.doctorName && unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
-                        <ul>
-                            <li *ngIf="unscheduledFormControls.doctorName.hasError('required')">Please enter Doctor Name.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" *ngIf="routeFrom == 'pendingReferral'">
-            <div class="col-md-2"><label class="form-label">Specialty</label></div>
-            <div class="col-lg-3">
-                <select disabled formControlName="speciality" [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                <option value="0">- Select specialty -</option>
-                <optgroup label="Select Specialty">
-                   <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
-                </optgroup>
-                <optgroup label="Select Test">
-                   <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
-                </optgroup>
             </select>
             </div>
         </div>
