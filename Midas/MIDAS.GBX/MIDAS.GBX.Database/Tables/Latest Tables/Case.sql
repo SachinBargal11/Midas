@@ -145,93 +145,90 @@ GO
 --ALTER TABLE [dbo].[Case] DROP [LocationId]
 --ALTER TABLE [dbo].[Case] ADD [FileUploadPath] [NVARCHAR](250) NULL
 
-/*
-ALTER TABLE [dbo].[Case] DROP CONSTRAINT [DF__Case__Transporta__1387E197]
+
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		CONSTRAINT_NAME = 'FK_Case_Company_AttorneyId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case]
+	DROP CONSTRAINT FK_Case_Company_AttorneyId
+END
 GO
-ALTER TABLE [dbo].[Case] DROP COLUMN [Transportation]
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		CONSTRAINT_NAME = 'FK_Case_Company_CreatedByCompanyId'
+
+)
+BEGIN
+	ALTER TABLE [dbo].[Case]
+	DROP CONSTRAINT FK_Case_Company_CreatedByCompanyId
+END
 GO
-ALTER TABLE [dbo].[Case] DROP COLUMN [FileUploadPath]
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND     COLUMN_NAME = 'AttorneyId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case]
+	DROP COLUMN [AttorneyId]
+END
 GO
-*/
 
-
-
-/*
-ALTER TABLE [dbo].[Case] ADD [CreatedByCompanyId] [INT] NULL
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND    COLUMN_NAME = 'CreatedByCompanyId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case]
+	DROP COLUMN [CreatedByCompanyId]
+END
 GO
-UPDATE [dbo].[Case] SET [dbo].[Case].[CreatedByCompanyId] = (SELECT TOP 1 [CompanyId] FROM [dbo].[CaseCompanyMapping] AS tbl2 WHERE tbl2.[CaseId] = [dbo].[Case].[Id] AND (tbl2.[IsDeleted] = 0 OR tbl2.[IsDeleted] IS NULL))
+
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND		CONSTRAINT_NAME = 'FK_Case_Location_LocationID'
+
+)
+BEGIN
+	ALTER TABLE [dbo].[Case] DROP CONSTRAINT [FK_Case_Location_LocationID]
+END
 GO
-UPDATE [dbo].[Case] SET [dbo].[Case].[CreatedByCompanyId] = (SELECT TOP 1 [CompanyId] FROM [dbo].[CaseCompanyMapping] AS tbl2 WHERE tbl2.[CaseId] = [dbo].[Case].[Id]) 
-    WHERE [dbo].[Case].[CreatedByCompanyId] IS NULL
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'Case'
+	AND    COLUMN_NAME = 'LocationId'
+)
+BEGIN
+	ALTER TABLE [dbo].[Case] DROP COLUMN [LocationId]
+END
 GO
-UPDATE [dbo].[Case] SET [dbo].[Case].[CreatedByCompanyId] = 1 WHERE [dbo].[Case].[CreatedByCompanyId] IS NULL
-GO
-ALTER TABLE [dbo].[Case] ALTER COLUMN [CreatedByCompanyId] [INT] NOT NULL
-GO
-*/
-
-
-
-
-
-
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'Case'
---	AND		CONSTRAINT_NAME = 'FK_Case_Company_AttorneyId'
---)
---BEGIN
---	ALTER TABLE [dbo].[Case]
---	DROP CONSTRAINT FK_Case_Company_AttorneyId
---END
---GO
-
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'Case'
---	AND		CONSTRAINT_NAME = 'FK_Case_Company_CreatedByCompanyId'
-
---)
---BEGIN
---	ALTER TABLE [dbo].[Case]
---	DROP CONSTRAINT FK_Case_Company_CreatedByCompanyId
---END
---GO
-
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.COLUMNS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'Case'
---	AND     COLUMN_NAME = 'AttorneyId'
---)
---BEGIN
---	ALTER TABLE [dbo].[Case]
---	DROP COLUMN [AttorneyId]
---END
---GO
-
-
-
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.COLUMNS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'Case'
---	AND    COLUMN_NAME = 'CreatedByCompanyId'
---)
---BEGIN
---	ALTER TABLE [dbo].[Case]
---	DROP COLUMN [CreatedByCompanyId]
---END
---GO
-
 
