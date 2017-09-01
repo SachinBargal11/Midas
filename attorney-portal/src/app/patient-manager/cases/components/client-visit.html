@@ -20,7 +20,7 @@
     <p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
             <a (click)="showDialog(visit)">
-            {{visit.eventStart | dateTimeFormat}}
+            {{visit.calendarEvent.eventStart | dateTimeFormat}}
             </a>
         </ng-template>
     </p-column>
@@ -52,7 +52,7 @@
 
 <p-dialog [width]="1200" [height]="500" (onAfterHide)="handleClientDialogHide()" header="{{visitInfo}}" [(visible)]="clientDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
-    <div *ngIf="clientVisit && clientDialogVisible">
-        <client-visit-detail [selectedVisit]="unscheduledVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></client-visit-detail>
+    <div *ngIf="selectedVisit && clientDialogVisible">
+        <client-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></client-visit-detail>
     </div>
 </p-dialog>

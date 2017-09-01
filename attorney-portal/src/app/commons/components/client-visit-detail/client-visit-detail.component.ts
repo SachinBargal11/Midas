@@ -38,7 +38,7 @@ import { VisitReferralStore } from '../../../patient-manager/patient-visit/store
 })
 
 export class ClientVisitDetailComponent implements OnInit {
-    selectedVisits: PatientVisit[] = [];
+    // selectedVisits: PatientVisit[] = [];
     selectedDoctorsVisits: PatientVisit[] = [];
     selectedRoomsVisits: PatientVisit[] = [];
     visits: PatientVisit[];
@@ -62,7 +62,7 @@ export class ClientVisitDetailComponent implements OnInit {
     clientVisitDetailForm: FormGroup;
     clientVisitDetailFormControls;
     visitInfo: string;
-    //   selectedVisit: PatientVisit;
+    // selectedVisit: PatientVisit;
     visitUploadDocumentUrl: string;
     documents: VisitDocument[] = [];
     selectedDocumentList = [];
@@ -73,9 +73,9 @@ export class ClientVisitDetailComponent implements OnInit {
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
-    @Input() selectedVisit: UnscheduledVisit;
+    @Input() selectedVisit: PatientVisit;
     @Input() routeFrom: number;
-    //   @Input() selectedVisitId: number;
+    @Input() selectedVisitId: number;
     @Output() closeDialog: EventEmitter<boolean> = new EventEmitter();
     // @Output() saveComplete: EventEmitter<PatientVisit> = new EventEmitter();
     constructor(
@@ -227,14 +227,13 @@ export class ClientVisitDetailComponent implements OnInit {
 
     saveVisit() {
         let clientVisitDetailFormValues = this.clientVisitDetailForm.value;
-        let updatedVisit: UnscheduledVisit;
-        updatedVisit = new UnscheduledVisit(_.extend(this.selectedVisit.toJS(), {
-            notes: clientVisitDetailFormValues.notes,
+        let updatedVisit: PatientVisit;
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            agenda: clientVisitDetailFormValues.notes,
             visitStatusId: parseInt(clientVisitDetailFormValues.visitStatusId),
-            // doctorId: parseInt(clientVisitDetailFormValues.readingDoctor)
         }));
         this._progressBarService.show();
-        let result = this._patientVisitStore.updateUnscheduledVisitDetail(updatedVisit);
+        let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

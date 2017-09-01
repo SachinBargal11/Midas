@@ -19,6 +19,7 @@ import * as _ from 'underscore';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'client-visit-list',
@@ -49,8 +50,11 @@ export class ClientVisitListComponent implements OnInit {
     caseStatusId: number;
     clientDialogVisible = false;
     selectedVisitId: number;
-    visitInfo = '';
+    visitInfo = 'Visit Info';
     clientVisit;
+    case: Case;
+    selectedVisit: PatientVisit;
+    routeFromCase: true;
 
     constructor(
         private _router: Router,
@@ -69,28 +73,22 @@ export class ClientVisitListComponent implements OnInit {
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
         });
-
         this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
+            let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
+            Observable.forkJoin([fetchPatient, fetchCaseDetail])
                 .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                (results) => {
+                    this.patient = results[0];
+                    this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
+                    this.case = results[1];
+                    this.caseStatusId = this.case.caseStatusId;
+                    this.visitInfo = `${this.visitInfo} - Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -100,7 +98,6 @@ export class ClientVisitListComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-
     }
 
     ngOnInit() {
@@ -161,22 +158,22 @@ export class ClientVisitListComponent implements OnInit {
     // }
 
     showDialog(visit: any) {
-
         this._patientVisitStore.getPatientVisitDetailById(visit.id)
             .subscribe((visit: PatientVisit) => {
+                this.selectedVisit = visit;
                 this.selectedVisitId = visit.id;
                 this.clientDialogVisible = true;
             });
     }
 
-      closePatientVisitDialog() {
+    closePatientVisitDialog() {
         this.clientDialogVisible = false;
         this.handleClientDialogHide();
-      }
+    }
 
-      handleClientDialogHide(){
-          this.selectedVisitId = null;
-      }
+    handleClientDialogHide() {
+        this.selectedVisitId = null;
+    }
 
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);

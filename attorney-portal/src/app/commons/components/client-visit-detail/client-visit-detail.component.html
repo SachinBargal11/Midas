@@ -7,7 +7,7 @@
           <div class="col-md-1"><label class="form-label">Visit Time</label></div>
           <div class="col-md-5">
             <div class="form-group">
-              <label class="form-label"> {{selectedVisit.eventStart | dateTimeFormat}}
+              <label class="form-label"> {{selectedVisit.calendarEvent.eventStart | dateTimeFormat}}
                                     </label>
             </div>
           </div>
@@ -55,7 +55,7 @@
         </div>
         <div class="row">
           <!--<div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>-->
-          <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+          <div class="col-md-1"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
           <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
             <div class="form-group">
               <label class="form-label">{{selectedVisit.notes}}
@@ -65,10 +65,10 @@
           <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
           <div class="col-md-6">
             <div class="form-group" [class.error]="clientVisitDetailFormControls.notes && clientVisitDetailFormControls.notes.touched && !clientVisitDetailFormControls.notes.valid">
-              <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
+              <textarea [ngModel]="selectedVisit.agenda" formControlName="notes" class="form-control" rows="3"></textarea>
               <div class='error-list' *ngIf="clientVisitDetailFormControls.notes && clientVisitDetailFormControls.notes.touched && !clientVisitDetailFormControls.notes.valid">
                 <ul>
-                  <li *ngIf="clientVisitDetailFormControls.notes.hasError('required')">Please enter Notes.</li>
+                  <li *ngIf="clientVisitDetailFormControls.notes.hasError('required')">Please enter Agenda.</li>
                 </ul>
               </div>
             </div>
@@ -78,7 +78,7 @@
           <div class="col-md-1"><label class="form-label">Status</label></div>
           <div class="col-md-6">
             <div class="form-group">
-              <label class="form-label">{{selectedVisit.status}}
+              <label class="form-label">{{selectedVisit.visitStatusLabel}}
                                 </label>
             </div>
           </div>
