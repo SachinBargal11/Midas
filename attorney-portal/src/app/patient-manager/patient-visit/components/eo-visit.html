@@ -61,7 +61,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Duration<span class="color-red">*</span></label></div>
         <div class="col-md-2">
             <div class="form-group" [class.error]="eoScheduleFormControls.duration.touched && !eoScheduleFormControls.duration.valid">
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="col-md-2"><label class="form-label">minutes</label></div>
-    </div>
+    </div>-->
     <!--<div class="row">
                 <div class="col-md-2"><label class="form-label">Transportation Required</label></div>
                 <div class="col-md-4">
@@ -86,6 +86,32 @@
                     </div>
                 </div>
             </div>-->
+    <div class="row">
+        <div class="col-md-2"><label class="form-label">End Time<span class="color-red">*</span></label></div>
+        <div class="col-md-3">
+            <div class="form-group" [class.error]="eoScheduleFormControls.eventEndDate.touched && !eoScheduleFormControls.eventEndDate.valid">
+                <p-calendar [class.error]="!eoScheduleFormControls.eventEndDate.valid" formControlName="eventEndDate" [(ngModel)]="eventEndAsDate"
+                    dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                    [showIcon]="true" icon="font-icon font-icon-calend"></p-calendar>
+                <div class='error-list' *ngIf="eoScheduleFormControls.eventEndDate.touched && !eoScheduleFormControls.eventEndDate.valid">
+                    <ul>
+                        <li *ngIf="eoScheduleFormControls.eventEndDate.hasError('required')">End Date is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" [class.error]="eoScheduleFormControls.eventEndTime.touched && !eoScheduleFormControls.eventEndTime.valid">
+                <p-calendar *ngIf="!isAllDay" [class.error]="!eoScheduleFormControls.eventEndTime.valid" formControlName="eventEndTime" [(ngModel)]="eventEndAsDate"
+                    hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                <div class='error-list' *ngIf="eoScheduleFormControls.eventEndTime.touched && !eoScheduleFormControls.eventEndTime.valid">
+                    <ul>
+                        <li *ngIf="eoScheduleFormControls.eventEndTime.hasError('required')">End Time is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-2"><label class="form-label">Insurance Provider<span class="color-red">*</span></label></div>
         <div class="col-md-4">

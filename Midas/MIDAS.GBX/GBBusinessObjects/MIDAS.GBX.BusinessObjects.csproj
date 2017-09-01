@@ -121,6 +121,7 @@
     <Compile Include="MesssagingService\Subscription.cs" />
     <Compile Include="MesssagingService\SMS.cs" />
     <Compile Include="MesssagingService\EmailMessage.cs" />
+    <Compile Include="OTPCompanyMapping\OTPCompanyMapping.cs" />
     <Compile Include="PatientAccidentInfo\AccidentTreatment.cs" />
     <Compile Include="PatientAccidentInfo\AccidentWitness.cs" />
     <Compile Include="PatientDocument\PatientDocument.cs" />

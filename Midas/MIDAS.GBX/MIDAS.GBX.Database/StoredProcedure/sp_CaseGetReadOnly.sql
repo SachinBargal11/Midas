@@ -1,13 +1,7 @@
-﻿/****** Object:  StoredProcedure [dbo].[sp_CaseGetReadOnly]    Script Date: 28-06-2017 18:51:52 ******/
---DROP PROCEDURE [dbo].[sp_CaseGetReadOnly]
---GO
+﻿
+DROP PROCEDURE [dbo].[sp_CaseGetReadOnly]
+GO
 
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-/*
 CREATE PROCEDURE [dbo].[sp_CaseGetReadOnly]
 (
     @CaseId         INT,
@@ -22,11 +16,15 @@ BEGIN
     DECLARE @CompanyType INT = NULL;
     DECLARE @CompanyName NVARCHAR(50) = NULL;
     DECLARE @CaseSource NVARCHAR(50) = NULL;
+    DECLARE @MedicalProvider NVARCHAR(50) = NULL;
+    DECLARE @AttorneyProvider NVARCHAR(50) = NULL;
 
     SELECT TOP 1
             @OriginatorCompanyId = tblCaseCompanyMapping.[CompanyId],
             @OriginatorCompanyName = tblCompany.[Name],
-            @CompanyType = tblCompany.[CompanyType]
+            @CompanyType = tblCompany.[CompanyType],
+            @MedicalProvider = (CASE WHEN tblCompany.[CompanyType] = 1 THEN tblCompany.[Name] ELSE NULL END),
+            @AttorneyProvider = (CASE WHEN tblCompany.[CompanyType] = 2 THEN tblCompany.[Name] ELSE NULL END)
         FROM [dbo].[CaseCompanyMapping] tblCaseCompanyMapping
         INNER JOIN [dbo].[Company] tblCompany 
             ON tblCaseCompanyMapping.[CompanyId] = tblCompany.[id]
@@ -37,10 +35,12 @@ BEGIN
     IF (@CompanyType = 1)
     BEGIN
         SELECT TOP 1
-                @CompanyName = tblCompany.[Name]
+                @CompanyName = tblCompany.[Name], 
+                @AttorneyProvider = tblCompany.[Name]
             FROM [dbo].[CaseCompanyMapping] tblCaseCompanyMapping
             INNER JOIN [dbo].[Company] tblCompany
                 ON tblCaseCompanyMapping.[CompanyId] = tblCompany.[id]
+                    AND tblCaseCompanyMapping.[CaseId] = @CaseId
             WHERE tblCaseCompanyMapping.[AddedByCompanyId] = @OriginatorCompanyId
                 AND tblCaseCompanyMapping.[IsOriginator] = 0
                 AND tblCompany.[CompanyType] = 2;
@@ -48,10 +48,12 @@ BEGIN
     ELSE IF (@CompanyType = 2)
     BEGIN
         SELECT TOP 1
-                @CompanyName = tblCompany.[Name]
+                @CompanyName = tblCompany.[Name],
+                @MedicalProvider = tblCompany.[Name]
             FROM [dbo].[CaseCompanyMapping] tblCaseCompanyMapping
             INNER JOIN [dbo].[Company] tblCompany
                 ON tblCaseCompanyMapping.[CompanyId] = tblCompany.[id]
+                    AND tblCaseCompanyMapping.[CaseId] = @CaseId
             WHERE tblCaseCompanyMapping.[AddedByCompanyId] = @OriginatorCompanyId
                 AND tblCaseCompanyMapping.[IsOriginator] = 0
                 AND tblCompany.[CompanyType] = 1;
@@ -62,6 +64,7 @@ BEGIN
         FROM [dbo].[CaseCompanyMapping] tblCaseCompanyMapping
         INNER JOIN [dbo].[Company] tblCompany
             ON tblCaseCompanyMapping.[AddedByCompanyId] = tblCompany.[id]
+                AND tblCaseCompanyMapping.[CaseId] = @CaseId
         WHERE tblCaseCompanyMapping.[CompanyId] = @CompanyId;
 
     SELECT 
@@ -72,10 +75,13 @@ BEGIN
             [PatientName] = tblUser.[FirstName] + ' ' + tblUser.[MiddleName] + ' ' + tblUser.[LastName],
             [CaseTypeText] = tblCaseType.[CaseTypeText],
             [CaseStatusText] = tblCaseStatus.[CaseStatusText],
-            [LocationName] = tblLocation.[Name],
+            --[LocationName] = tblLocation.[Name],
             [CarrierCaseNo] = tblCase.[CarrierCaseNo],
             [CompanyName] = @CompanyName,
             [CaseSource] = (CASE WHEN @OriginatorCompanyId = @CompanyId THEN tblCase.[CaseSource] ELSE @CaseSource END),
+            [MedicalProvider] = @MedicalProvider,
+            [AttorneyProvider] = @AttorneyProvider,
+            [ClaimFileNumber] = tblCase.ClaimFileNumber,
             [CreateByUserID] = tblCase.CreateByUserID,
             [CreateDate] = tblCase.CreateDate,
             [UpdateByUserID] = tblCase.UpdateByUserID,
@@ -87,11 +93,10 @@ BEGIN
             ON tblCase.[CaseTypeId] = tblCaseType.[Id]
         INNER JOIN [dbo].[CaseStatus] tblCaseStatus
             ON tblCase.[CaseStatusId] = tblCaseStatus.[Id]
-        INNER JOIN [dbo].[Location] tblLocation
-            ON tblCase.[LocationId] = tblLocation.[Id]
+        --INNER JOIN [dbo].[Location] tblLocation
+        --    ON tblCase.[LocationId] = tblLocation.[Id]
         WHERE tblCase.[Id] = @CaseId 
             AND (tblCase.[IsDeleted] IS NULL OR tblCase.[IsDeleted] = 0)
             AND (tblUser.[IsDeleted] IS NULL OR tblUser.[IsDeleted] = 0);
 END
-*/
 GO

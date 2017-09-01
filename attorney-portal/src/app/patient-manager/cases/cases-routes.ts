@@ -38,6 +38,8 @@ import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
 import { EditFamilyMemberComponent } from './components/edit-family-member';
 import { PriorAccidentComponent } from './components/prior-accident';
+import { AutoInformationInfoComponent } from './components/auto-Information';
+import { ClientVisitListComponent } from './components/client-visit';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -161,8 +163,26 @@ export const CasesShellRoutes: Routes = [
                         children: [
                             {
                                 path: '',
-                                redirectTo: 'doctor-visit',
+                                redirectTo: 'client-visit',
                                 pathMatch: 'full'
+                            },
+                            {
+                                path: 'client-visit',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Client Visits'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: ClientVisitListComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 path: 'doctor-visit',
@@ -487,6 +507,14 @@ export const CasesShellRoutes: Routes = [
                                 }
                             }
                         ]
+                    },
+                    {
+                        path: 'autoInformation',
+                        component: AutoInformationInfoComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'AutoInformation'
+                        }
                     }
                 ]
             }

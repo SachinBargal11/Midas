@@ -274,7 +274,7 @@ export class CaseEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['/patient-manager/cases']);
                 },
                 (error) => {
                     let errString = 'Unable to update employer.';
@@ -305,7 +305,7 @@ export class CaseEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['/patient-manager/cases']);
                 },
                 (error) => {
                     let errString = 'Unable to add employer.';

@@ -31,6 +31,9 @@ import { MedicalProviderMaster } from '../../../account-setup/models/medical-pro
 })
 
 export class CaseBasicComponent implements OnInit {
+    medicare:  string;
+    medicaid:  string;
+    ssdisabililtyIncome:string;
     caseDetail: Case;
     caseform: FormGroup;
     caseformControls;
@@ -83,6 +86,9 @@ export class CaseBasicComponent implements OnInit {
                     this.employer = results[1];
                     this.allProviders = results[2];
                     this.caseDetail = results[3];
+                    this.medicaid = this.caseDetail.medicaid ? '1' : '0';
+                    this.medicare = this.caseDetail.medicare ? '1' : '0';
+                    this.ssdisabililtyIncome = this.caseDetail.ssdisabililtyIncome ? '1' : '0';
 
                     // if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
                     //     this.caseform.get("caseSource").disable();
@@ -128,7 +134,10 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: ['', Validators.required],
             providerId: [''],
             caseSource: [''],
-            claimNumber: ['']
+            claimNumber: [''],
+            medicare: [''],
+            medicaid: [''],
+            ssdisabililtyIncome: ['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -176,7 +185,10 @@ export class CaseBasicComponent implements OnInit {
             claimFileNumber: caseFormValues.claimNumber,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment(),
-            createdByCompanyId: this.sessionStore.session.currentCompany.id
+            createdByCompanyId: this.sessionStore.session.currentCompany.id,
+            medicare: caseFormValues.medicare  == '1'? true : false,
+            medicaid: caseFormValues.medicaid  == '1'? true : false,
+            ssdisabililtyIncome: caseFormValues.ssdisabililtyIncome == '1'? true : false,
         }));
 
         this._progressBarService.show();

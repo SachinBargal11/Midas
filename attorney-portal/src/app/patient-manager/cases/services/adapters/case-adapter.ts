@@ -79,7 +79,10 @@ export class CaseAdapter {
                 orignatorCompanyName: data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
                 attorneyProviderId: data.attorneyProviderId,
-                medicalProviderId: data.medicalProviderId
+                medicalProviderId: data.medicalProviderId,
+                medicare:data.medicare,
+                medicaid:data.medicaid,
+                ssdisabililtyIncome:data.ssdisabililtyIncome
             });
         }
         return patient_case;
@@ -150,7 +153,10 @@ export class CaseAdapter {
                 orignatorCompanyName: data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
                 attorneyProviderId: data.attorneyProviderId,
-                medicalProviderId: data.medicalProviderId
+                medicalProviderId: data.medicalProviderId,
+                medicare:data.medicare,
+                medicaid:data.medicaid,
+                ssdisabililtyIncome:data.ssdisabililtyIncome
             });
         }
         return patient_case;

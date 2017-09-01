@@ -79,7 +79,7 @@ export class AutoInformationInfoComponent implements OnInit {
                 });
 
             let resultDefendant = this._autoInformationStore.getDefendantByCaseId(this.caseId);
-            result.subscribe(
+            resultDefendant.subscribe(
                 (defendantAutoInformation: DefendantAutoInformation) => {
                     this.defendantAutoInformation = defendantAutoInformation;
                 },
@@ -119,7 +119,7 @@ export class AutoInformationInfoComponent implements OnInit {
             defendantInsuranceCompany: [''],
             txtDefendantPolicy: [''],
             txtDefendantClaim: [''],
-            txtModel: [''],
+            txtModel: ['', Validators.required],
             relModel: [''],
             txtDefendantModel: [''],
             txtOwnerName: [''],
@@ -149,27 +149,26 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleOwnerName: formValues.txtOwnerName,
             vehicleOperatorName: formValues.txtOperatorName,
             vehicleInsuranceCompanyName: formValues.insuranceCompany,
-            vehiclePolicyNumber: formValues.txtPlate,
+            vehiclePolicyNumber: formValues.txtPolicy,
             vehicleClaimNumber: formValues.txtClaim,
             vehicleLocation: formValues.txtVehicalLocated,
             vehicleDamageDiscription: formValues.txtVehicalDesc,
             relativeVehicle: parseInt(formValues.relativesVehicle),
-            relativeVehicleMakeModel: formValues.relModel,
-            relativeVehicleMakeYear: formValues.relModelYear,
-            relativeVehicleOwnerName: formValues.relOwnerName,
-            relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
-            relativeVehiclePolicyNumber: formValues.relPolicy,
             vehicleResolveDamage: parseInt(formValues.helpinDamageResolved),
             vehicleDriveable: parseInt(formValues.vehicleDrivable),
             vehicleEstimatedDamage: formValues.txtEstimatedDamage,
             relativeVehicleLocation: '',
             vehicleClientHaveTitle: parseInt(formValues.titletoVehicle),
             relativeVehicleOwner: formValues.relOwnerName,
+            relativeVehicleMakeModel: formValues.relModel,
+            relativeVehicleMakeYear: formValues.relModelYear,
+            relativeVehicleOwnerName: formValues.relOwnerName,
+            relativeVehicleInsuranceCompanyName: formValues.relInsuranceCompany,
+            relativeVehiclePolicyNumber: formValues.relPolicy
 
         });
-        debugger;
-        let defendantAutoInfoform = new DefendantAutoInformation({
 
+        let defendantAutoInfoform = new DefendantAutoInformation({
             id: this.defendantAutoInformation.id ? this.defendantAutoInformation.id : 0,
             caseId: this.caseId,
             vehicleNumberPlate: formValues.txtDefendantPlate,

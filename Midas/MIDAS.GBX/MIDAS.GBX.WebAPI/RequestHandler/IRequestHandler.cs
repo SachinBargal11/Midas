@@ -51,7 +51,9 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
         HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId);
         HttpResponseMessage GetByCompanyId(HttpRequestMessage request, int companyId);
-        HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId);
+        HttpResponseMessage GenerateOTPForCompany(HttpRequestMessage request, int companyId);
+        HttpResponseMessage ValidateOTPForCompany(HttpRequestMessage request, string otp);       
+      HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId);
 
         HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
@@ -107,6 +109,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
         HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage AssociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId);
+        HttpResponseMessage AssociatePreferredCompany(HttpRequestMessage request, string otp, int currentCompanyId);
+        HttpResponseMessage DeletePreferredCompany(HttpRequestMessage request, int preferredCompanyId, int currentCompanyId);
         HttpResponseMessage DisassociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId);
         HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
         HttpResponseMessage AssociatePatientWithCompany(HttpRequestMessage request, int PatientId, int CompanyId);
@@ -165,5 +169,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetInsuranceDetails(HttpRequestMessage request, int id, int companyId);
         HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart);
         HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialtyId);
+        HttpResponseMessage SaveReferralPatientVisitUnscheduled(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetReferralPatientVisitUnscheduledByCompanyId(HttpRequestMessage request, int CompanyId);
     }
 }

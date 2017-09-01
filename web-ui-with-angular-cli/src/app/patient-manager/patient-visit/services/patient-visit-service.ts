@@ -584,6 +584,45 @@ export class PatientVisitService {
         return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
     }
 
+      updateUnscheduledVisitDetail(unscheduledVisitDetail: UnscheduledVisit): Observable<UnscheduledVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = unscheduledVisitDetail.toJS();
+            return this._http.post(this._url + '/patientVisitUnscheduled/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedUnscheduledVisit: UnscheduledVisit = null;
+                    parsedUnscheduledVisit = UnscheduledVisitAdapter.parseResponse(data);
+                    resolve(parsedUnscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+     getUnscheduledVisitDetailById(patientVisitId: Number): Observable<UnscheduledVisit> {
+        let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/get/' + patientVisitId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let unscheduledVisits = null;
+                    if (data) {
+                        unscheduledVisits = UnscheduledVisitAdapter.parseResponse(data);
+                        resolve(unscheduledVisits);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
     getPatientVisitsByCompanyId(): Observable<PatientVisit[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {

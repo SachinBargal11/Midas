@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Duration<span class="color-red">*</span></label></div>
         <div class="col-md-2">
             <div class="form-group" [class.error]="imeScheduleFormControls.duration.touched && !imeScheduleFormControls.duration.valid">
@@ -100,7 +100,7 @@
             </div>
         </div>
         <div class="col-md-2"><label class="form-label">minutes</label></div>
-    </div>
+    </div>-->
     <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Transportation Required</label></div>
         <div class="col-md-4">
@@ -112,6 +112,32 @@
             </div>
         </div>
     </div>-->
+    <div class="row">
+        <div class="col-md-2"><label class="form-label">End Time<span class="color-red">*</span></label></div>
+        <div class="col-md-3">
+            <div class="form-group" [class.error]="imeScheduleFormControls.eventEndDate.touched && !imeScheduleFormControls.eventEndDate.valid">
+                <p-calendar [class.error]="!imeScheduleFormControls.eventEndDate.valid" formControlName="eventEndDate" [(ngModel)]="eventEndAsDate"
+                    dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                    [showIcon]="true" icon="font-icon font-icon-calend"></p-calendar>
+                <div class='error-list' *ngIf="imeScheduleFormControls.eventEndDate.touched && !imeScheduleFormControls.eventEndDate.valid">
+                    <ul>
+                        <li *ngIf="imeScheduleFormControls.eventEndDate.hasError('required')">End Date is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" [class.error]="imeScheduleFormControls.eventEndTime.touched && !imeScheduleFormControls.eventEndTime.valid">
+                <p-calendar *ngIf="!isAllDay" [class.error]="!imeScheduleFormControls.eventEndTime.valid" formControlName="eventEndTime"
+                    [(ngModel)]="eventEndAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                <div class='error-list' *ngIf="imeScheduleFormControls.eventEndTime.touched && !imeScheduleFormControls.eventEndTime.valid">
+                    <ul>
+                        <li *ngIf="imeScheduleFormControls.eventEndTime.hasError('required')">End Time is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-2"><label class="form-label">Notes
                     </label></div>

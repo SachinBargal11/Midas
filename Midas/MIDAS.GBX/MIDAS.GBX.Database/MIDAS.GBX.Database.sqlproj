@@ -174,7 +174,6 @@
     <Build Include="Tables\Latest Tables\CaseStatus.sql" />
     <Build Include="Tables\Latest Tables\InsuranceMaster.sql" />
     <Build Include="Tables\Latest Tables\AdjusterMaster.sql" />
-    <Build Include="Tables\Latest Tables\PatientVisitEvent.sql" />
     <Build Include="Tables\Latest Tables\CalendarEvent.sql" />
     <Build Include="Tables\Latest Tables\PatientVisit.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />

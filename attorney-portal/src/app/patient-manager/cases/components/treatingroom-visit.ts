@@ -16,9 +16,11 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import * as _ from 'underscore';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
+import { Observable } from 'rxjs/Rx';
+import { UnscheduledVisit } from '../../patient-visit/models/unscheduled-visit';
 
 @Component({
     selector: 'patient-visit-treatingroom-list',
@@ -43,9 +45,32 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     doctor: Doctor;
     room: Room;
     patientName: string;
-    patient:Patient;
-    isDeleteProgress:boolean = false;
+    patient: Patient;
+    isDeleteProgress: boolean = false;
     caseStatusId: number;
+
+    selectedVisitId: number;
+    selectedVisit: PatientVisit;
+    visitInfo = 'Visit Info';
+    visitDialogVisible = false;
+    routeFromCase: true;
+    addVisitDialogVisible = false;
+    unscheduledVisits: UnscheduledVisit[];
+    unscheduledVisit: UnscheduledVisit;
+    allVisits: {
+        id: number,
+        eventStart: any,
+        // doctorName: string,
+        roomTestName: string,
+        visitStatusLabel: string,
+        isPatientVisitType: boolean,
+        isUnscheduledVisitType: boolean,
+        medicalProviderName: string
+    }[] = [];
+    case: Case;
+    visit: any[] = [];
+    unscheduledDialogVisible = false;
+    unscheduledVisitDialogVisible = false;
 
     constructor(
         private _router: Router,
@@ -64,10 +89,22 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-               let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
+        });
+        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this._progressBarService.show();
+            let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+
+            Observable.forkJoin([fetchPatient, fetchCaseDetail])
+                .subscribe(
+                (results) => {
+                    this.patient = results[0];
+                    this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
+                    this.case = results[1];
+                    this.caseStatusId = this.case.caseStatusId;
+                    this.visitInfo = `${this.visitInfo} - Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
+
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -78,57 +115,135 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 });
         });
 
-          this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
-             this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
+        // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        //     this._progressBarService.show();
+        //     this._patientStore.fetchPatientById(this.patientId)
+        //         .subscribe(
+        //         (patient: Patient) => {
+        //             this.patient = patient;
+        //             this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+        //         },
+        //         (error) => {
+        //             this._router.navigate(['../'], { relativeTo: this._route });
+        //             this._progressBarService.hide();
+        //         },
+        //         () => {
+        //             this._progressBarService.hide();
+        //         });
+        // });
 
     }
 
     ngOnInit() {
-        this.loadPatientVisits();
+        this.loadVisits();
     }
 
     loadPatientVisits() {
-        // this._progressBarService.show();
-        // this._patientVisitStore.getPatientVisitsByCaseId(this.caseId)
-        //     .subscribe((visits: PatientVisit[]) => {
-        //         let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
-        //             return currentVisit.eventStart != null && currentVisit.eventEnd != null;
-        //         });
+        this._progressBarService.show();
+        this._patientVisitStore.getPatientVisitsByCaseId(this.caseId)
+            .subscribe((visits: PatientVisit[]) => {
+                let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
+                    return currentVisit.eventStart != null && currentVisit.eventEnd != null;
+                });
 
-        //         // this.visits = matchingVisits.reverse();
-        //         let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-        //             return currentVisit.doctor != null;
-        //         });
-        //         this.doctorsVisits = matchingDoctorVisits.reverse();
+                // this.visits = matchingVisits.reverse();
+                let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+                    return currentVisit.doctor != null;
+                });
+                this.doctorsVisits = matchingDoctorVisits.reverse();
 
-        //         let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-        //             return currentVisit.room != null;
-        //         });
-        //         this.roomsVisits = matchingRoomVisits.reverse();
+                let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+                    return currentVisit.room != null;
+                });
+                this.roomsVisits = matchingRoomVisits.reverse();
 
-        //     },
-        //     (error) => {
-        //         this._progressBarService.hide();
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
+
+    loadUnscheduledVisits() {
+        this._progressBarService.show();
+        this._patientVisitStore.getUnscheduledVisitsByCaseId(this.caseId)
+            .subscribe((unscheduledVisits: UnscheduledVisit[]) => {
+                this.unscheduledVisits = unscheduledVisits;
+            })
+    }
+
+    loadVisits() {
+        let patientVisits = this._patientVisitStore.getPatientVisitsByCaseId(this.caseId);
+        let unscheduleVisits = this._patientVisitStore.getUnscheduledVisitsByCaseId(this.caseId);
+        Observable.forkJoin([patientVisits, unscheduleVisits])
+            .subscribe((results: any[]) => {
+                let patientVisitDetails = results[0];
+                let matchingVisits: PatientVisit[] = _.filter(patientVisitDetails, (currentVisit: PatientVisit) => {
+                    return currentVisit.eventStart != null && currentVisit.eventEnd != null;
+                });
+
+                // this.visits = matchingVisits.reverse();
+                // let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+                //     return currentVisit.doctor != null && currentVisit.specialtyId != null;
+                // });
+                let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+                    return currentVisit.room != null  && currentVisit.roomId != null;
+                });
+                let roomsVisits = matchingRoomVisits.reverse();
+                let unscheduledVisits = results[1];
+
+                let mappedAllVisits: {
+                    id: number,
+                    eventStart: any,
+                    // doctorName: string,
+                    roomTestName: string,
+                    visitStatusLabel: string,
+                    isPatientVisitType: boolean,
+                    isUnscheduledVisitType: boolean,
+                    medicalProviderName: string
+                }[] = [];
+                _.forEach(roomsVisits, (currRoomVisit: PatientVisit) => {
+                    mappedAllVisits.push({
+                        id: currRoomVisit.id,
+                        eventStart: currRoomVisit.eventStart,
+                        // doctorName: currRoomVisit.doctor.user.displayName,
+                        roomTestName: currRoomVisit.room.name,
+                        visitStatusLabel: currRoomVisit.visitStatusLabel,
+                        isPatientVisitType: true,
+                        isUnscheduledVisitType: false,
+                        medicalProviderName: null
+                    })
+                })
+                _.forEach(unscheduledVisits, (currRoomVisit: UnscheduledVisit) => {
+                    if (currRoomVisit.roomTestId != null) {
+                        mappedAllVisits.push({
+                            id: currRoomVisit.id,
+                            eventStart: currRoomVisit.eventStart,
+                            // doctorName: currRoomVisit.doctorName,
+                            roomTestName: currRoomVisit.roomTest ? currRoomVisit.roomTest.name : '',
+                            visitStatusLabel: currRoomVisit.status,
+                            isPatientVisitType: false,
+                            isUnscheduledVisitType: true,
+                            medicalProviderName: currRoomVisit.medicalProviderName
+                        })
+                    }
+
+                })
+                this.allVisits = mappedAllVisits;
+
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+    }
+
     loadPatientVisitsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
@@ -137,71 +252,110 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
         }, 250);
     }
 
-    // doctorName(doctorId: number) {
+    fetchPatientVisit(visitId: number) {
+        this._progressBarService.show();
+        this._patientVisitStore.fetchPatientVisitById(visitId)
+            .subscribe((visit: PatientVisit) => {
+                this.selectedVisit = visit;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
-    //     this._doctorsStore.fetchDoctorById(doctorId)
-    //         .subscribe(doctor => {
-    //             this.doctor = doctor;
-    //             this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
+    showDialog(visit: any) {
+        if (visit.isPatientVisitType) {
+            this.fetchPatientVisit(visit.id);
+            this.selectedVisitId = visit.id;
+            this.visitDialogVisible = true;
+        } else if (visit.isUnscheduledVisitType) {
+            this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
+                .subscribe((visit: UnscheduledVisit) => {
+                    this.unscheduledVisit = visit;
+                    this.unscheduledDialogVisible = true;
+                });
+        }
+    }
 
-    //         });
+    addVisitDialog() {
+        this.addVisitDialogVisible = true;
+    }
 
-    // }
-    // return this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
+    closeAddVisitDialog() {
+        this.addVisitDialogVisible = false;
+    }
 
-    // roomName(roomId: number) {
+    handleVisitDialogHide() {
+        this.selectedVisitId = null;
+    }
 
-    //     this._roomsStore.fetchRoomById(roomId)
-    //         .subscribe(room => {
-    //             this.room = room;
-    //             this.currentRoomName = room.roomTest.name;
-    //         });
+    closePatientVisitDialog() {
+        this.visitDialogVisible = false;
+        this.handleVisitDialogHide();
+        this.unscheduledDialogVisible = false;
+        this.unscheduledDialogVisible = false;
+    }
 
-    // }
+    unscheduledVisitDialog() {
+        this.caseId;
+        this.patientId;
+        this.unscheduledVisitDialogVisible = true;
+    }
+
+    closeDialog() {
+        this.unscheduledVisitDialogVisible = false;
+    }
+
+    refreshEvents(event) {
+        this.loadVisits();
+    }
 
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
-            this.selectedVisits.forEach(currentVisit => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                let result;
-                result = this._patientVisitStore.deletePatientVisit(currentVisit);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Visit deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadPatientVisits();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedVisits = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete visits';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedVisits = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedVisits.forEach(currentVisit => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        let result;
+                        result = this._patientVisitStore.deletePatientVisit(currentVisit);
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Visit deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadPatientVisits();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedVisits = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete visits';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedVisits = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
-            });
-            }
+                }
             });
         } else {
             let notification = new Notification({
@@ -213,7 +367,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'Select visit to delete');
         }
     }
-       bill(){
+    bill() {
         this._notificationsService.success('Success', 'Bill No AB69852 has been successfully created');
     }
 

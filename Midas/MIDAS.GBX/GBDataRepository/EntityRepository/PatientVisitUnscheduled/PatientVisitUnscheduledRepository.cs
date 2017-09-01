@@ -44,7 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.SpecialtyId = PatientVisitUnscheduledDB.SpecialtyId;
                 PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
                 PatientVisitUnscheduledBO.ReferralId = PatientVisitUnscheduledDB.ReferralId;
-                PatientVisitUnscheduledBO.Status = "Unscheduled";
+                PatientVisitUnscheduledBO.Status = "Completed";
 
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;
@@ -117,9 +117,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.PatientVisitUnscheduled PatientVisitUnscheduledBO = (BO.PatientVisitUnscheduled)(object)entity;
-            var result = PatientVisitUnscheduledBO.Validate(PatientVisitUnscheduledBO);
-            return result;
+            if (entity is BO.PatientVisitUnscheduled)
+            {
+                BO.PatientVisitUnscheduled PatientVisitUnscheduledBO = (BO.PatientVisitUnscheduled)(object)entity;
+                var result = PatientVisitUnscheduledBO.Validate(PatientVisitUnscheduledBO);
+                return result;
+            }
+            else if (entity is BO.ReferralVisitUnscheduled)
+            {
+                BO.ReferralVisitUnscheduled ReferralVisitUnscheduledBO = (BO.ReferralVisitUnscheduled)(object)entity;
+                var result = ReferralVisitUnscheduledBO.Validate(ReferralVisitUnscheduledBO);
+                return result;
+            }
+
+            return null;
         }
         #endregion
 
@@ -165,10 +176,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisitUnscheduledDB.Notes = PatientVisitUnscheduledBO.Notes;
                     PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
                     PatientVisitUnscheduledDB.RoomTestId = PatientVisitUnscheduledBO.RoomTestId;
-                    PatientVisitUnscheduledDB.ReferralId = PatientVisitUnscheduledBO.ReferralId;
 
                     if (IsEditMode == false)
                     {
+                        PatientVisitUnscheduledDB.ReferralId = PatientVisitUnscheduledBO.ReferralId;
+
                         PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                         PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
                     }
@@ -252,6 +264,170 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {              
                var res = Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(acc);              
                 return (object)res;
+            }
+        }
+        #endregion
+
+        #region save
+        public override object SaveReferralPatientVisitUnscheduled<T>(T entity)
+        {
+            BO.ReferralVisitUnscheduled ReferralVisitUnscheduledBO = (BO.ReferralVisitUnscheduled)(object)entity;
+
+            BO.PatientVisitUnscheduled PatientVisitUnscheduledBO = ReferralVisitUnscheduledBO.PatientVisitUnscheduled;
+            PatientVisitUnscheduled PatientVisitUnscheduledDB = new PatientVisitUnscheduled();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                var ReferralDB = _context.Referrals.Where(p => p.PendingReferralId == ReferralVisitUnscheduledBO.PendingReferralId
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .FirstOrDefault();
+
+                if (ReferralDB != null)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Referral already exists for the pending referral.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    ReferralDB = new Referral();
+
+                    var PendingReferralDB = _context.PendingReferrals.Include("PatientVisit")
+                                                                     .Where(p => p.Id == ReferralVisitUnscheduledBO.PendingReferralId
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                     .FirstOrDefault();
+
+                    if (PendingReferralDB == null)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Pending Referral dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    else
+                    {
+                        PendingReferralDB.IsReferralCreated = true;
+
+                        ReferralDB.PendingReferralId = PendingReferralDB.Id;
+                        ReferralDB.FromCompanyId = PendingReferralDB.FromCompanyId;
+                        ReferralDB.FromLocationId = PendingReferralDB.FromLocationId;
+                        ReferralDB.FromDoctorId = PendingReferralDB.FromDoctorId;
+                        ReferralDB.FromUserId = null;
+                        ReferralDB.ForSpecialtyId = PendingReferralDB.ForSpecialtyId;
+                        ReferralDB.ForRoomId = PendingReferralDB.ForRoomId;
+                        ReferralDB.ForRoomTestId = PendingReferralDB.ForRoomTestId;
+                        ReferralDB.ToCompanyId = null;
+                        ReferralDB.ToLocationId = null;
+                        ReferralDB.ToDoctorId = null;
+                        ReferralDB.ToRoomId = null;
+                        ReferralDB.ScheduledPatientVisitId = null;
+                        ReferralDB.DismissedBy = null;
+
+                        if (PendingReferralDB.PatientVisit != null && PendingReferralDB.PatientVisit.CaseId.HasValue == true)
+                        {
+                            ReferralDB.CaseId = PendingReferralDB.PatientVisit.CaseId.Value;
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid CaseId.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        ReferralDB = _context.Referrals.Add(ReferralDB);
+
+                        _context.SaveChanges();
+
+                        #region Patient Visit Unscheduled
+                        if (PatientVisitUnscheduledBO == null || (PatientVisitUnscheduledBO != null && PatientVisitUnscheduledBO.ID > 0))
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Unscheduled Patient Visit can only be added while referral.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else
+                        {
+                            bool Add_patientVisitUnscheduledDB = false;
+                            PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Where(p => p.Id == PatientVisitUnscheduledBO.ID
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .FirstOrDefault();
+
+                            if (PatientVisitUnscheduledDB == null && PatientVisitUnscheduledBO.ID <= 0)
+                            {
+                                PatientVisitUnscheduledDB = new PatientVisitUnscheduled();
+                                Add_patientVisitUnscheduledDB = true;
+                            }
+                            else
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Unscheduled Patient Visit doesn't exists.", ErrorLevel = ErrorLevel.Error };
+                            }
+
+                            PatientVisitUnscheduledDB.CaseId = PatientVisitUnscheduledBO.CaseId.Value;
+                            PatientVisitUnscheduledDB.PatientId = PatientVisitUnscheduledBO.PatientId.Value;
+
+                            PatientVisitUnscheduledDB.EventStart = PatientVisitUnscheduledBO.EventStart;
+                            PatientVisitUnscheduledDB.MedicalProviderName = PatientVisitUnscheduledBO.MedicalProviderName;
+                            PatientVisitUnscheduledDB.DoctorName = PatientVisitUnscheduledBO.DoctorName;
+
+                            PatientVisitUnscheduledDB.Notes = PatientVisitUnscheduledBO.Notes;
+                            PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
+                            PatientVisitUnscheduledDB.RoomTestId = PatientVisitUnscheduledBO.RoomTestId;
+                            PatientVisitUnscheduledDB.ReferralId = ReferralDB.Id;
+
+                            PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
+                            PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
+
+                            if (Add_patientVisitUnscheduledDB == true)
+                            {
+                                PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
+                            }
+                            _context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+                        }
+                        #endregion
+                    }
+                }
+
+                if (PatientVisitUnscheduledDB != null)
+                {
+                    PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds
+                                                        .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")
+                                                        .Include("Specialty")
+                                                        .Include("RoomTest")
+                                                        .Where(p => p.Id == PatientVisitUnscheduledDB.Id
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                        .FirstOrDefault<PatientVisitUnscheduled>();
+                }
+            }
+
+            var res = Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(PatientVisitUnscheduledDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region Get Referral Patient Visit Unscheduled By CompanyId
+        public override object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId)
+        {
+            var CaseIds = _context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .Select(p => p.CaseId);
+
+            var acc = _context.PatientVisitUnscheduleds.Include("Patient")
+                                                       .Include("Patient.User")
+                                                       .Include("Specialty")
+                                                       .Include("RoomTest")
+                                                       .Where(p => CaseIds.Contains(p.CaseId) == true && p.ReferralId != null
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .ToList<PatientVisitUnscheduled>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisitUnscheduled> lstpatientvisit = new List<BO.PatientVisitUnscheduled>();
+                foreach (PatientVisitUnscheduled item in acc)
+                {
+                    lstpatientvisit.Add(Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(item));
+                }
+                return lstpatientvisit;
             }
         }
         #endregion

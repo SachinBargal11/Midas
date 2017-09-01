@@ -72,6 +72,7 @@ import { ReferralStore } from './cases/stores/referral-store';
 import { ReferralsShellComponent } from './referals/components/referrals-shell';
 import { InboundReferralsComponent } from './referals/components/inbound-referrals';
 import { OutboundReferralsComponent } from './referals/components/outbound-referrals';
+import { ExternalReferralComponent } from './referals/components/external-referral';
 
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
@@ -185,6 +186,7 @@ import { PriorAccidentComponent } from './cases/components/prior-accident';
         ReferralsShellComponent,
         InboundReferralsComponent,
         OutboundReferralsComponent,
+        ExternalReferralComponent,
         VisitShellComponent,
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,

@@ -30,6 +30,11 @@ import { SpecialityStore } from '../../../account-setup/stores/speciality-store'
 import { Speciality } from '../../../account-setup/models/speciality';
 import { LeaveEventEditorComponent } from '../../../medical-provider/calendar/components/leave-event-editor';
 import { LeaveEvent } from '../../../commons/models/leave-event';
+import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
+import { Tests } from '../../../medical-provider/rooms/models/tests';
+import { PendingReferralList } from "../../referals/models/pending-referral-list";
+import { UnscheduledVisitReferral } from '../models/unscheduled-visit-referral';
+import { VisitReferralStore } from '../stores/visit-referral-store';
 
 @Component({
     selector: 'unscheduled-visit',
@@ -37,7 +42,12 @@ import { LeaveEvent } from '../../../commons/models/leave-event';
 })
 
 export class UnscheduledVisitComponent implements OnInit {
-
+    selectedMode: any = 0;
+    selectedDoctorId: number;
+    selectedRoomId: number;
+    selectedOption: number = 0;
+    selectedSpecialityId: number;
+    selectedTestId: number;
     patients: Patient[] = [];
     eventDialogVisible: boolean = false;
     visitDialogVisible: boolean = false;
@@ -69,11 +79,27 @@ export class UnscheduledVisitComponent implements OnInit {
     eventEndAsDate: Date;
     duration: number;
     specialities: Speciality[];
+    tests: Tests[];
     @Input() caseId: number;
     @Input() idPatient: number;
     caseDetail: Case;
     patient: Patient;
     selectedVisit;
+    doctorName: string;
+    selectedPendingReferral: PendingReferralList;
+    @Input() routeFrom = 'doctorVisit';
+    @Input() set pendingReferral(value: PendingReferralList) {
+        if (value) {
+            this.selectedPendingReferral = value;
+            this.eventStartAsDate = moment().toDate();
+            this.duration = moment.duration(moment().diff(this.eventStartAsDate)).asMinutes();
+            this.eventEndAsDate = moment().toDate();
+            this.doctorName = value.displayDoctorName;
+            this.selectedMode = value.forSpecialtyId ? value.speciality : value.forRoomTestId ? value.roomTest : 0;
+            this.selectedSpecialityId = value.forSpecialtyId ? value.forSpecialtyId : null;
+            this.selectedTestId = value.forRoomTestId ? value.forRoomTestId : null;
+        }
+    };
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -100,7 +126,8 @@ export class UnscheduledVisitComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private _casesStore: CasesStore,
         private _specialityStore: SpecialityStore,
-
+        private _roomsStore: RoomsStore,
+        private _visitReferralStore: VisitReferralStore,
     ) {
         this.unscheduledForm = this._fb.group({
             patientId: ['', Validators.required],
@@ -132,7 +159,7 @@ export class UnscheduledVisitComponent implements OnInit {
 
             Observable.forkJoin([fetchPatient, fetchCaseDetail])
                 .subscribe(
-                (results) => {
+                (results: any) => {
                     this.patient = results[0];
                     this.caseDetail = results[1];
                 },
@@ -163,12 +190,12 @@ export class UnscheduledVisitComponent implements OnInit {
     loadAllSpecialitiesAndTests() {
         this._progressBarService.show();
         let fetchAllSpecialities = this._specialityStore.getSpecialities();
-        // let fetchAllTestFacilties = this._roomsStore.getTests();
-        Observable.forkJoin([fetchAllSpecialities])
+        let fetchAllTestFacilties = this._roomsStore.getTests();
+        Observable.forkJoin([fetchAllSpecialities, fetchAllTestFacilties])
             .subscribe(
             (results: any) => {
                 this.specialities = results[0];
-                // this.tests = results[1];
+                this.tests = results[1];
             },
             (error) => {
                 this._progressBarService.hide();
@@ -176,9 +203,42 @@ export class UnscheduledVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-
-
     }
+
+    selectOption(event) {
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '0') {
+            this.selectedOption = 0;
+            this.selectedSpecialityId = 0;
+            this.selectedTestId = 0;
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+            this.selectedSpecialityId = parseInt(event.target.selectedOptions[0].getAttribute('data-specialityId'));
+            this.selectedOption = 1;
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+            this.selectedTestId = parseInt(event.target.selectedOptions[0].getAttribute('data-testId'));
+            this.selectedOption = 2;
+        } else {
+            this.selectedMode = 0;
+        }
+    }
+    // selectOption(event) {
+    //     this.selectedRoomId = 0;
+    //     this.selectedOption = 0;
+    //     if (event.target.value == '0') {
+    //         this.selectedOption = 0;
+    //         this.selectedSpecialityId = 0;
+    //         this.selectedTestId = 0;
+    //     } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+    //         this.selectedOption = 1;
+    //         this.selectedSpecialityId = parseInt(event.target.value);
+    //     } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
+    //         this.selectedOption = 2;
+    //         this.selectedTestId = parseInt(event.target.value);
+    //     } else {
+    //         this.selectedMode = 0;
+    //     }
+    // }
 
     selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
@@ -192,52 +252,95 @@ export class UnscheduledVisitComponent implements OnInit {
         this.isSaveProgress = true;
         let unscheduledFormValues = this.unscheduledForm.value;
         let result;
-        let unscheduled = new UnscheduledVisit({
-            patientId: this.idPatient,
-            caseId: this.caseId,
-            medicalProviderName: this.unscheduledForm.value.medicalProviderName,
-            doctorName: this.unscheduledForm.value.doctorName,
-            speciality: this.unscheduledForm.value.speciality,
-            notes: this.unscheduledForm.value.notes,
-            createByUserID: this.sessionStore.session.account.user.id,
-            eventStart: moment(this.eventStartAsDate),
-            calendarEvent: new ScheduledEvent({
-                eventStart: moment(this.eventStartAsDate),
-                eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
-                timezone: this.eventStartAsDate.getTimezoneOffset(),
-                // eventStartDate: this.unscheduledForm.value.eventStartDate,
-                // duration: this.unscheduledForm.value.duration,
-                // ancillaryProviderId: this.unscheduledForm.value.ancillaryProviderId,
-            })
-        });
-
-        this._progressBarService.show();
-
-        result = this._patientVisitsStore.addUnscheduledVisit(unscheduled);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Event added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this.closeDialog();
-                this.refreshImeEvents();
-            },
-            (error) => {
-                let errString = 'Unable to add event!';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this._progressBarService.hide();
+        if (this.routeFrom == 'doctorVisit') {
+            let unscheduled = new UnscheduledVisit({
+                patientId: this.idPatient,
+                caseId: this.caseId,
+                medicalProviderName: this.unscheduledForm.value.medicalProviderName,
+                doctorName: this.unscheduledForm.value.doctorName,
+                specialtyId: this.selectedSpecialityId ? this.selectedSpecialityId : null,
+                roomTestId: this.selectedTestId ? this.selectedTestId : null,
+                notes: this.unscheduledForm.value.notes,
+                referralId: null,
+                patient: null,
+                case: null,
+                createByUserID: this.sessionStore.session.account.user.id,
+                eventStart: moment(this.eventStartAsDate)
             });
+
+            this._progressBarService.show();
+
+            result = this._patientVisitsStore.addUnscheduledVisit(unscheduled);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Event added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.closeDialog();
+                    this.refreshImeEvents();
+                },
+                (error) => {
+                    let errString = 'Unable to add event!';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._progressBarService.hide();
+                    this._notificationsStore.addNotification(notification);
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        } else if (this.routeFrom == 'pendingReferral') {
+            let unscheduledVisitReferral = new UnscheduledVisitReferral({
+                pendingReferralId: this.selectedPendingReferral.id,
+                patientVisitUnscheduled: new UnscheduledVisit({
+                    patientId: this.idPatient,
+                    caseId: this.caseId,
+                    medicalProviderName: this.unscheduledForm.value.medicalProviderName,
+                    doctorName: this.unscheduledForm.value.doctorName,
+                    specialtyId: this.selectedSpecialityId ? this.selectedSpecialityId : null,
+                    roomTestId: this.selectedTestId ? this.selectedTestId : null,
+                    notes: this.unscheduledForm.value.notes,
+                    referralId: null,
+                    patient: null,
+                    case: null,
+                    createByUserID: this.sessionStore.session.account.user.id,
+                    eventStart: moment(this.eventStartAsDate)
+                })
+            });
+
+            this._progressBarService.show();
+            result = this._visitReferralStore.saveUnscheduledVisitReferral(unscheduledVisitReferral);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Unscheduled visit referral added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.closeDialog();
+                    this.refreshEvents.emit();
+                },
+                (error) => {
+                    let errString = 'Unable to add unscheduled visit referral!';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._progressBarService.hide();
+                    this._notificationsStore.addNotification(notification);
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
     }
 
     closeDialog() {
@@ -247,6 +350,6 @@ export class UnscheduledVisitComponent implements OnInit {
     refreshImeEvents() {
         this.refreshEvents.emit();
     }
-    handleVisitDialogHide() {}
+    handleVisitDialogHide() { }
 
 }

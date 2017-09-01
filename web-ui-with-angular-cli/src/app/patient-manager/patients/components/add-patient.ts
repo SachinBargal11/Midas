@@ -162,9 +162,13 @@ export class AddPatientComponent implements OnInit {
         //this.isExist = this.checkForExist(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn);
         let patientSocialMediaMappings: any[] = [];
         let patientLanguagePreferenceMappings: any[] = [];
-        patientLanguagePreferenceMappings.push({
+        if(this.languagePreference != ''){
+         patientLanguagePreferenceMappings.push({
             languagePreferenceId: parseInt(this.languagePreference)
         })
+        }else{
+         patientLanguagePreferenceMappings;
+        }
 
         this.usersStore.getIsExistingUser(this.patientform.value.contact.email)
             .subscribe((data: any) => {

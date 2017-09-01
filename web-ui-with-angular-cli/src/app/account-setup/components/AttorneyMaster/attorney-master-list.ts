@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { AttorneyMasterStore } from '../../stores/attorney-store';
 import { Attorney } from '../../models/attorney';
@@ -12,6 +13,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { MedicalProviderMasterStore } from '../../stores/medical-provider-master-store';
 
 @Component({
     selector: 'attorney-master-list',
@@ -19,6 +21,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 })
 
 export class AttorneyMasterListComponent implements OnInit {
+    displayToken: boolean = false;
     currentAttorneyId: number = 0;
     selectedAttorneys: Attorney[] = [];
     attorneys: Attorney[];
@@ -28,6 +31,12 @@ export class AttorneyMasterListComponent implements OnInit {
     companyId: number;
     patientId: number;
     isDeleteProgress: boolean = false;
+    displayValidation: boolean = false;
+    otp: string;
+    medicalProviderName: string;
+    validateOtpResponse: any;
+    addAttorneyByToken: FormGroup;
+    addAttorneyByTokenControls;
 
     constructor(
         private _router: Router,
@@ -38,8 +47,13 @@ export class AttorneyMasterListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private confirmationService: ConfirmationService,
+        private fb: FormBuilder,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
     ) {
-
+         this.addAttorneyByToken = this.fb.group({
+            token: ['', Validators.required],
+        })
+        this.addAttorneyByTokenControls = this.addAttorneyByToken.controls
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadAttorney();
         });
@@ -48,6 +62,84 @@ export class AttorneyMasterListComponent implements OnInit {
 
     ngOnInit() {
         this.loadAttorney();
+    }
+
+     showDialog() {
+        this.generateToken();
+        this.displayToken = true;
+    }
+
+    showValidation() {
+        this.displayValidation = true;
+    }
+
+    closeDialog(){
+  this.displayValidation = false;
+    }
+
+    generateToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.generateToken()
+            .subscribe((data: any) => {
+                this.otp = data.otp;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    validateGeneratedToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.validateToken(this.addAttorneyByToken.value.token)
+            .subscribe((data: any) => {
+                this.validateOtpResponse = data;
+                this.medicalProviderName = this.validateOtpResponse.company.name
+            },
+            (error) => {
+               let errString = 'Invalid token.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this.closeDialog();
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    associateAttorney() {
+        this._medicalProviderMasterStore.associateValidateTokenWithCompany(this.addAttorneyByToken.value.token)
+            .subscribe((data: any) => {
+                let notification = new Notification({
+                    'title': 'Attorney added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                // this.loadAllProviders();
+                this.loadAttorney();
+                this._notificationsStore.addNotification(notification);
+                this.closeDialog()
+            },
+            (error) => {
+                let errString = 'Unable to associate attorney.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     loadAttorney() {

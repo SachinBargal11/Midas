@@ -1,11 +1,11 @@
 // import { LocationAdapter } from '../../../../medical-provider/users/services/adapters/location-adapter';
-// import { SpecialityAdapter } from '../../../../account-setup/services/adapters/speciality-adapter';
+import { SpecialityAdapter } from '../../../../account-setup/services/adapters/speciality-adapter';
 // import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { PatientVisit } from '../../models/patient-visit';
-// import { RoomsAdapter } from '../../../../medical-provider/rooms/services/adapters/rooms-adapter';
-// import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
+import { RoomsAdapter } from '../../../../medical-provider/rooms/services/adapters/rooms-adapter';
+import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
 import { ScheduledEventAdapter } from '../../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { PatientAdapter } from '../../../../patient-manager/patients/services/adapters/patient-adapter';
 // import { DiagnosisCode } from '../../../../commons/models/diagnosis-code';
@@ -36,12 +36,12 @@ export class PatientVisitAdapter {
                 patient: PatientAdapter.parseResponse(data.patient),
                 // locationId: data.locationId,
                 // location: data.location ? LocationAdapter.parseResponse(data.location) : null,
-                // roomId: data.roomId,
-                // room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
-                // doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
-                // doctorId: data.doctorId,
-                // specialty: data.specialty ? SpecialityAdapter.parseResponse(data.specialty) : null,
-                // specialtyId: data.specialtyId,
+                roomId: data.roomId,
+                room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
+                doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
+                doctorId: data.doctorId,
+                specialty: data.specialty ? SpecialityAdapter.parseResponse(data.specialty) : null,
+                specialtyId: data.specialtyId,
                 eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
                 eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,
                 visitStatusId: data.visitStatusId,
