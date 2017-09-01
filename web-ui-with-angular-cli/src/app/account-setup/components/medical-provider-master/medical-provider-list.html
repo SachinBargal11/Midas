@@ -15,47 +15,60 @@
         <loader [visible]="isDeleteProgress"></loader>
     </a>
     <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showValidation()"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Add Medical Provider</span>
+      <span class="hidden-md-down">Validate Generated Token</span>
     </a>
-<a type="text" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()"><i class="fa-external-link-square" aria-hidden="true"></i>
+    <a type="text" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()"><i class="fa-external-link-square" aria-hidden="true"></i>
     <span class="hidden-md-down">Generate Token</span></a>
 </div>
 </div>
 
-<p-dialog header="Validation" [(visible)]="displayValidation" [width]="500" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
+<p-dialog header="Validation" [(visible)]="displayValidation" [width]="700" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <label class="form-label">Enter Generated Token Number</label>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <form [formGroup]="addMedicalProviderByToken" (ngSubmit)="validateGeneratedToken()">
-                <div class="form-group" [class.error]="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
-                    <input formControlName="token" type="text" class="form-control" placeholder="" [class.error]="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
-                    <div class='error-list' *ngIf="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
-                        <ul>
-                            <li *ngIf="addMedicalProviderByTokenControls.token.hasError('required')">Please enter generated OTP.</li>
-                        </ul>
+                <div class="col-lg-4">
+                    <div class="form-group" [class.error]="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
+                        <input formControlName="token" type="text" class="form-control" placeholder="" [class.error]="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
+                        <div class='error-list' *ngIf="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
+                            <ul>
+                                <li *ngIf="addMedicalProviderByTokenControls.token.hasError('required')">Please enter generated OTP.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <!--</div>-->
-                <button class="btn btn-success sign-up" [disabled]="!addMedicalProviderByToken.valid" type="submit"><i aria-hidden="true"></i>
-      Validate Generated Token
-    </button>
+                <div class="col-lg-4">
+                    <button class="btn btn-success sign-up" [disabled]="!addMedicalProviderByToken.valid" type="submit"><i aria-hidden="true"></i>
+                  Validate Generated Token
+                </button>
+                </div>
             </form>
-            <!--amba-->
-         <div class="row">   
-        <div class="col-lg-4">
-        <label class="form-label">Validated Medical Provider                              
-                            </label>
-        <div class="form-group">
+        </div>
+    </div>
+    <div *ngIf="validateOtpResponse" class="row" style="text-align: left;">
+        <div class="col-lg-6">
+            <label class="form-label">Validated Medical Provider:                              
+                                    </label>
+        </div>
+        <div class="col-lg-6">
             <label class="form-label">{{medicalProviderName}}
-                        </label>
+                                </label>
         </div>
     </div>
+<div *ngIf="validateOtpResponse" class="row">
+     <div class="col-lg-6">
+        <a class="btn btn-primary btn-sm" (click)="associateMedicalProvider()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Associate Medical Provider</span>
+    </a>
     </div>
-    <!--</amb>-->
-        </div>
+    <div class="col-lg-6">
+        <a class="btn btn-danger btn-sm" (click)="closeDialog()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Dismiss Medical Provider</span>
+        </a>
     </div>
+</div>
 </p-dialog>
 <p-dialog header="Generated Token Number" [(visible)]="displayToken" [width]="300" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
     <div class="row">

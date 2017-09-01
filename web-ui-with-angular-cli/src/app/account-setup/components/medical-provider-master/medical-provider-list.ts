@@ -75,6 +75,10 @@ export class MedicalProviderListComponent implements OnInit {
         this.displayValidation = true;
     }
 
+    closeDialog(){
+  this.displayValidation = false;
+    }
+
     generateToken() {
         this._progressBarService.show();
         this._medicalProviderMasterStore.generateToken()
@@ -97,7 +101,43 @@ export class MedicalProviderListComponent implements OnInit {
                 this.medicalProviderName = this.validateOtpResponse.company.name
             },
             (error) => {
+               let errString = 'Invalid token.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this.closeDialog();
                 this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    associateMedicalProvider() {
+        this._medicalProviderMasterStore.associateValidateTokenWithCompany(this.addMedicalProviderByToken.value.token)
+            .subscribe((data: any) => {
+                let notification = new Notification({
+                    'title': 'Medical provider added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                // this.loadAllProviders();
+                this.loadMedicalProviders();
+                this._notificationsStore.addNotification(notification);
+                this.closeDialog()
+            },
+            (error) => {
+                let errString = 'Unable to associate medical provider.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
             },
             () => {
                 this._progressBarService.hide();

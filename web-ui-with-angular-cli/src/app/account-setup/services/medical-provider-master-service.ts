@@ -143,6 +143,21 @@ export class MedicalProviderMasterService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
+    associateValidateTokenWithCompany(token:number,companyId): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/OTPCompanyMapping/associatePreferredCompany/' + token + '/' + companyId , {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {

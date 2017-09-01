@@ -138,6 +138,18 @@ export class MedicalProviderMasterStore {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+    
+     associateValidateTokenWithCompany(token:number): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.associateValidateTokenWithCompany(token,companyId).subscribe((data: any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
         let providers = this._medicalProviderMaster.getValue();
