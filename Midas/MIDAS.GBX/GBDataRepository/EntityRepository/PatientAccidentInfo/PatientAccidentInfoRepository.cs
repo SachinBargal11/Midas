@@ -295,6 +295,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientAccidentInfoDB.Weather = (IsEditMode == true && PatientAccidentInfoBO.Weather == null) ? PatientAccidentInfoDB.Weather : PatientAccidentInfoBO.Weather;
                     PatientAccidentInfoDB.PlateNumber = (IsEditMode == true && PatientAccidentInfoBO.PlateNumber == null) ? PatientAccidentInfoDB.PlateNumber : PatientAccidentInfoBO.PlateNumber;
                     PatientAccidentInfoDB.AccidentAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.AccidentAddressInfoId == null) ? PatientAccidentInfoDB.AccidentAddressInfoId : AccidentAddressInfoDB.id;
+                    PatientAccidentInfoDB.HospitalName = (IsEditMode == true && PatientAccidentInfoBO.HospitalName == null) ? PatientAccidentInfoDB.HospitalName : PatientAccidentInfoBO.HospitalName;
                     PatientAccidentInfoDB.PoliceAtScene = (IsEditMode == true && PatientAccidentInfoBO.PoliceAtScene == null) ? PatientAccidentInfoDB.PoliceAtScene : PatientAccidentInfoBO.PoliceAtScene;
                     PatientAccidentInfoDB.Precinct = (IsEditMode == true && PatientAccidentInfoBO.Precinct == null) ? PatientAccidentInfoDB.Precinct : PatientAccidentInfoBO.Precinct;
                     PatientAccidentInfoDB.ReportNumber = (IsEditMode == true && PatientAccidentInfoBO.ReportNumber == null) ? PatientAccidentInfoDB.ReportNumber : PatientAccidentInfoBO.ReportNumber;

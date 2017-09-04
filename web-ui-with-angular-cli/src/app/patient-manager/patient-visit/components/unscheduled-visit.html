@@ -21,7 +21,7 @@
             <div class="col-md-3">
                 <div class="form-group" [class.error]="unscheduledFormControls.eventStartDate.touched && !unscheduledFormControls.eventStartDate.valid">
                     <p-calendar [class.error]="!unscheduledFormControls.eventStartDate.valid" formControlName="eventStartDate" [(ngModel)]="eventStartAsDate"
-                        dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                        dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [readonlyInput]="true"
                         [showIcon]="true" icon="font-icon font-icon-calend">
                     </p-calendar>
                     <div class='error-list' *ngIf="unscheduledFormControls.eventStartDate.touched && !unscheduledFormControls.eventStartDate.valid">
@@ -52,7 +52,7 @@
                     />
                     <div class='error-list' *ngIf="unscheduledFormControls.medicalProviderName && unscheduledFormControls.medicalProviderName.touched && !unscheduledFormControls.medicalProviderName.valid">
                         <ul>
-                            <li *ngIf="unscheduledFormControls.medicalProviderName.hasError('required')">Please enter Doctor Name.</li>
+                            <li *ngIf="unscheduledFormControls.medicalProviderName.hasError('required')">Please enter medical provider Name.</li>
                         </ul>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     />
                     <div class='error-list' *ngIf="unscheduledFormControls.doctorName && unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
                         <ul>
-                            <li *ngIf="unscheduledFormControls.doctorName.hasError('required')">Please enter Doctor Name.</li>
+                            <li *ngIf="unscheduledFormControls.doctorName.hasError('required')">Please enter doctor Name.</li>
                         </ul>
                     </div>
                 </div>
@@ -77,13 +77,13 @@
             <div class="col-md-2"><label class="form-label">Specialty</label></div>
             <div class="col-lg-3">
                 <select formControlName="speciality" [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-        <option value="0">- Select specialty -</option>
-        <optgroup label="Select Specialty">
-           <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
-        </optgroup>
-        <optgroup label="Select Test">
-           <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
-        </optgroup>
+                    <option data-type="0">- Select specialty -</option>
+                    <optgroup label="Select Specialty">
+                       <option data-type="1" [attr.data-specialityId]="speciality.id" *ngFor="let speciality of specialities" [value]="speciality">{{speciality.name}}</option>                                       
+                    </optgroup>
+                    <optgroup label="Select Test">
+                       <option data-type="2" [attr.data-testId]="test.id" *ngFor="let test of tests" [value]="test">{{test.name}}</option>                                       
+                    </optgroup>
             </select>
             </div>
         </div>

@@ -108,9 +108,11 @@ export class ImeVisitComponent implements OnInit {
             notes: [''],
             name: ['', Validators.required],
             doctorName: ['', Validators.required],
-            eventStartDate: [''],
+            eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
+            // duration: ['', Validators.required],
             // transportProviderId: [''],
         });
         // this.loadPrefferdAncillaries();
@@ -240,9 +242,9 @@ export class ImeVisitComponent implements OnInit {
         this.closeDialogBox.emit();
     }
 
-     refreshImeEvents() {
+    refreshImeEvents() {
         this.refreshEvents.emit();
     }
-    handleVisitDialogHide() {}
- 
+    handleVisitDialogHide() { }
+
 }

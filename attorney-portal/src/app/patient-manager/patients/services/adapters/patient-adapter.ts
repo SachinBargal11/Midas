@@ -11,27 +11,29 @@ export class PatientAdapter {
 
         let patient: Patient = null;
         let companies: Company[] = [];
-        let LanguagePreferenceMappings:any[] = [];
-        let SocialMediaMappings:any[] = [];
+        let LanguagePreferenceMappings: any[] = [];
+        let SocialMediaMappings: any[] = [];
 
         let patientDocuments: PatientDocument[] = [];
         if (data) {
-             if (data.patientLanguagePreferenceMappings) {
+            if (data.patientLanguagePreferenceMappings) {
                 for (let language of data.patientLanguagePreferenceMappings) {
                     LanguagePreferenceMappings.push(language);
                 }
-             }
+            }
 
-             if (data.patientSocialMediaMappings) {
+            if (data.patientSocialMediaMappings) {
                 for (let socialMedia of data.patientSocialMediaMappings) {
                     SocialMediaMappings.push(socialMedia);
                 }
-             }
+            }
 
-            if (data.user.userCompanies) {
-                for (let company of data.user.userCompanies) {
-                    // companies.push(CompanyAdapter.parseResponse(company));
-                    companies.push(company);
+            if (data.user) {
+                if (data.user.userCompanies) {
+                    for (let company of data.user.userCompanies) {
+                        // companies.push(CompanyAdapter.parseResponse(company));
+                        companies.push(company);
+                    }
                 }
             }
             if (data.patientDocuments) {
@@ -49,7 +51,7 @@ export class PatientAdapter {
                 dateOfFirstTreatment: data.dateOfFirstTreatment ? moment(data.dateOfFirstTreatment) : null,
                 user: UserAdapter.parseResponse(data.user),
                 companyId: data.companyId,
-                companies: companies,   
+                companies: companies,
                 patientDocuments: patientDocuments,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
@@ -60,9 +62,9 @@ export class PatientAdapter {
                 emergencyContactName: data.emergencyContactName,
                 emergencyContactPhone: data.emergencyContactPhone,
                 spouseName: data.spouseName,
-                patientLanguagePreferenceMappings:LanguagePreferenceMappings,
+                patientLanguagePreferenceMappings: LanguagePreferenceMappings,
                 languagePreferenceOther: data.languagePreferenceOther,
-                patientSocialMediaMappings:SocialMediaMappings
+                patientSocialMediaMappings: SocialMediaMappings
             });
         }
         return patient;

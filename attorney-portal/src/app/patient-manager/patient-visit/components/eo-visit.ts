@@ -241,9 +241,11 @@ export class EoVisitComponent implements OnInit {
             notes: [''],
             insuranceProviderId: [''],
             name: ['', Validators.required],
-            eventStartDate: [''],
+            eventStartDate: ['', Validators.required],
             eventStartTime: [''],
-            duration: ['', Validators.required],
+            eventEndDate: ['', Validators.required],
+            eventEndTime: [''],
+            // duration: ['', Validators.required],
         });
         // this.loadPrefferdAncillaries();
         this.eoScheduleFormControls = this.eoScheduleForm.controls;
@@ -280,7 +282,7 @@ export class EoVisitComponent implements OnInit {
         //     () => {
         //         this._progressBarService.hide();
         //     });
-         this._patientsStore.getPatientsWithOpenCases()
+        this._patientsStore.getPatientsWithOpenCases()
             .subscribe(
             (patient: Patient[]) => {
                 this.patients = patient;
@@ -369,7 +371,7 @@ export class EoVisitComponent implements OnInit {
     closeDialog() {
         this.closeDialogBox.emit();
     }
-    handleVisitDialogHide() {}
+    handleVisitDialogHide() { }
 
     getDocuments() {
         // this._progressBarService.show();
@@ -424,7 +426,7 @@ export class EoVisitComponent implements OnInit {
         this.selectedCaseId = currentCaseId;
     }
 
-     refreshImeEvents() {
+    refreshImeEvents() {
         this.refreshEvents.emit();
     }
 

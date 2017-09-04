@@ -99,17 +99,35 @@ export class UnscheduledVisitDetailComponent implements OnInit {
             visitStatusId: [''],
             readingDoctor: ['']
         });
-        this.unscheduledVisitDetailFormControls = this.unscheduledVisitDetailForm.controls;
+        this.unscheduledVisitDetailFormControls = this.unscheduledVisitDetailForm.controls;        
+    }
 
+    ngOnInit() {
+        this.fetchPatient();
+        this.selectedVisit = this.selectedVisit;
+        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+        this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
+        this.getDocuments();
+
+        // this.checkVisitForCompany();
+    }
+
+    fetchPatient() {
         this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
+            let result;
+            if(this.patientId) {
+                result = this._patientStore.fetchPatientById(this.patientId);
+            } else {
+                result = this._patientStore.fetchPatientById(this.selectedVisit.patientId);
+                this.patientId = this.selectedVisit.patientId;
+            }
+                result.subscribe(
                 (patient: Patient) => {
                     this.patient = patient;
                     this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
-                    this.visitInfo = `${this.visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
+                    // this.visitInfo = `${this.visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -119,15 +137,6 @@ export class UnscheduledVisitDetailComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         })
-    }
-
-    ngOnInit() {
-        this.selectedVisit = this.selectedVisit;
-        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-        this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-        this.getDocuments();
-
-        // this.checkVisitForCompany();
     }
 
     // checkVisitForCompany() {

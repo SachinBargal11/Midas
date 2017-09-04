@@ -1,0 +1,190 @@
+<!--<div *ngIf="selectedVisit && visitDialogVisible">-->
+<div *ngIf="selectedVisit">
+  <p-tabView>
+    <p-tabPanel header="Client Visit Details" [selected]="true">
+      <form [formGroup]="clientVisitDetailForm" (ngSubmit)="saveVisit()">
+        <div class="row">
+          <div class="col-md-1"><label class="form-label">Visit Time</label></div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label class="form-label"> {{selectedVisit.calendarEvent.eventStart | dateTimeFormat}}
+                                    </label>
+            </div>
+          </div>
+        </div>
+        <!--<div *ngIf="selectedVisit.specialtyId" class="row">
+          <div class="col-md-2"><label class="form-label">Doctor Name</label></div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.doctorName}}
+                                    </label>
+            </div>
+          </div>
+          <div class="col-md-1"><label class="form-label">Specialty</label></div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.specialty.name}}
+                                    </label>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!selectedVisit.specialtyId && selectedVisit.roomId" class="row">
+          <div class="col-md-1"><label class="form-label">Room Name</label></div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.room.name}}
+                                    </label>
+            </div>
+          </div>
+          <div class="col-md-1"><label class="form-label">Test Specialty</label></div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.room.roomTest.name}}
+                                    </label>
+            </div>
+          </div>
+        </div>-->
+         <div class="row">
+          <div class="col-md-2"><label class="form-label">Contact Person</label></div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label"> {{selectedVisit.contactPerson}}
+                                    </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!--<div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>-->
+          <div class="col-md-1"><label class="form-label">Agenda<span class="color-red">*</span></label></div>
+          <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.notes}}
+                  </label>
+            </div>
+          </div>-->
+          <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
+          <div class="col-md-6">
+            <div class="form-group" [class.error]="clientVisitDetailFormControls.notes && clientVisitDetailFormControls.notes.touched && !clientVisitDetailFormControls.notes.valid">
+              <textarea [ngModel]="selectedVisit.agenda" formControlName="notes" class="form-control" rows="3"></textarea>
+              <div class='error-list' *ngIf="clientVisitDetailFormControls.notes && clientVisitDetailFormControls.notes.touched && !clientVisitDetailFormControls.notes.valid">
+                <ul>
+                  <li *ngIf="clientVisitDetailFormControls.notes.hasError('required')">Please enter Agenda.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"><label class="form-label">Status</label></div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.visitStatusLabel}}
+                                </label>
+            </div>
+          </div>
+        </div>
+        <!--<div class="row">-->
+        <!--<div class="col-md-1"><label class="form-label">Status<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>-->
+        <!--<div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>-->
+        <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
+            <div class="form-group">
+              <label class="form-label">{{selectedVisit.visitStatusLabel}}
+                  </label>
+            </div>
+          </div>-->
+        <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
+        <!--<div class="col-md-6">
+            <div class="form-group">
+              <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
+                <option value="2">Complete</option>
+                <option value="4">No Show</option>
+            </select>
+            </div>
+          </div>
+        </div>-->
+        <!--<div class="row" *ngIf="!selectedVisit.specialtyId">
+          <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <select formControlName="readingDoctor" [(ngModel)]="readingDoctor" class="select2-arrow form-control">
+                <option value="0">-Select Reading Doctor-</option>
+                <option *ngFor="let doctor of readingDoctors" [value]="doctor.id">{{doctor.user.displayName}}</option>
+            </select>
+            </div>
+          </div>
+        </div>-->
+        <div class="row">
+          <div class="col-md-4">
+            <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!clientVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
+            <button [disabled]="!clientVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                <loader [visible]="isSaveProgress"></loader>
+            </button>
+            <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
+            <button type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </p-tabPanel>
+
+    <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
+      <p-confirmDialog width="425"></p-confirmDialog>
+      <div class="input-group">
+        <h3 class="with-border">Uploaded Documents
+          <a *ngIf="!disableSaveDelete" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+          <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
+          <loader [visible]="isDeleteProgress"></loader>
+        </a>
+          <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
+            <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
+         </a>
+        </h3>
+      </div>
+      <div class="ui-widget-header row">
+        <div class="col-lg-4 input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+        </div>
+      </div>
+      <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+        [globalFilter]="gb" [responsive]="true">
+        <header> List</header>
+        <p-column selectionMode="multiple"></p-column>
+        <p-column header="Document Name">
+          <ng-template let-document="rowData" pTemplate="body">
+            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+              <u>{{document.document.originalResponse.documentName}}</u>
+            </a>
+          </ng-template>
+        </p-column>
+        <p-column header="Document Type" [sortable]="true">
+          <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.documentType }}
+          </ng-template>
+        </p-column>
+        <p-column field="createDate" header="Created Date" [sortable]="true">
+          <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.createDate | dateTimeFormat }}
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+      <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+        [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
+          (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+      </p-dialog>
+    </p-tabPanel>
+
+    <!--<p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
+      <app-referrals [selectedVisit]="selectedVisit" [routeFrom]="routeFrom" (save)="saveReferral($event)"></app-referrals>
+    </p-tabPanel>
+
+    <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
+      <app-dignosis [selectedVisit]="selectedVisit" [routeFrom]="routeFrom" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
+    </p-tabPanel>
+
+    <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+      <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
+    </p-tabPanel>-->
+
+  </p-tabView>
+</div>

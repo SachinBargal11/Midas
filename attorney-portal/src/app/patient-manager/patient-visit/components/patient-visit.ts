@@ -151,7 +151,7 @@ export class PatientVisitComponent implements OnInit {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.patient.user.displayName}</span>`;
         }
         else if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
-            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EO-${event.eventWrapper.patient.user.displayName}</span>`;
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.patient.user.displayName}</span>`;
         }
         element.find('.fc-content').html(content);
     }
@@ -759,6 +759,7 @@ export class PatientVisitComponent implements OnInit {
     // }
 
     handleDayClick(event) {
+        this.selectedVisitType = '1';
 
         // let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
@@ -1004,6 +1005,8 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.loadVisits();
+                this.loadEoVisits();
+                this.loadImeVisits();
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {

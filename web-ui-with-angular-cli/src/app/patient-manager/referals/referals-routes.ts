@@ -8,6 +8,8 @@ import { ReferralsShellComponent } from './components/referrals-shell';
 import { InboundReferralsComponent } from './components/inbound-referrals';
 import { OutboundReferralsComponent } from './components/outbound-referrals';
 import { PendingReferralsComponent } from './components/pending-referrals';
+import { ExternalReferralComponent } from './components/external-referral';
+
 export const ReferralsShellRoutes: Routes = [
     {
         path: '',
@@ -49,6 +51,14 @@ export const ReferralsShellRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Outbound'
+                }
+            },
+            {
+                path: 'external-referral',
+                component: ExternalReferralComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'External'
                 }
             },
             {

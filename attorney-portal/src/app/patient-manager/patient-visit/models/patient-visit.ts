@@ -24,12 +24,12 @@ const PatientVisitRecord = Record({
     caseId: 0,
     patient: null,
     patientId: 0,
-    // room: null,
-    // roomId: null,
-    // doctor: null,
-    // doctorId: null,
-    // specialty: null,
-    // specialtyId: null,
+    room: null,
+    roomId: null,
+    doctor: null,
+    doctorId: null,
+    specialty: null,
+    specialtyId: null,
     eventStart: null,
     eventEnd: null,
     // notes: '',
@@ -68,12 +68,12 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     caseId: number;
     patient: Patient;
     patientId: number;
-    // room: Room;
-    // roomId: number;
-    // doctor: Doctor;
-    // doctorId: number;
-    // specialtyId: number;
-    // specialty: Speciality;
+    room: Room;
+    roomId: number;
+    doctor: Doctor;
+    doctorId: number;
+    specialtyId: number;
+    specialty: Speciality;
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
     // notes: string;

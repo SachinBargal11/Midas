@@ -44,7 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.SpecialtyId = PatientVisitUnscheduledDB.SpecialtyId;
                 PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
                 PatientVisitUnscheduledBO.ReferralId = PatientVisitUnscheduledDB.ReferralId;
-                PatientVisitUnscheduledBO.Status = "Unscheduled";
+                PatientVisitUnscheduledBO.Status = "Completed";
 
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;
@@ -291,7 +291,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     ReferralDB = new Referral();
 
-                    var PendingReferralDB = _context.PendingReferrals.Where(p => p.Id == ReferralVisitUnscheduledBO.PendingReferralId
+                    var PendingReferralDB = _context.PendingReferrals.Include("PatientVisit")
+                                                                     .Where(p => p.Id == ReferralVisitUnscheduledBO.PendingReferralId
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                      .FirstOrDefault();
 
@@ -318,6 +319,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         ReferralDB.ToRoomId = null;
                         ReferralDB.ScheduledPatientVisitId = null;
                         ReferralDB.DismissedBy = null;
+
+                        if (PendingReferralDB.PatientVisit != null && PendingReferralDB.PatientVisit.CaseId.HasValue == true)
+                        {
+                            ReferralDB.CaseId = PendingReferralDB.PatientVisit.CaseId.Value;
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid CaseId.", ErrorLevel = ErrorLevel.Error };
+                        }
 
                         ReferralDB = _context.Referrals.Add(ReferralDB);
 

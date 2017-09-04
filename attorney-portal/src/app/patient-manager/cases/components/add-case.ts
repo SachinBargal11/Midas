@@ -186,6 +186,30 @@ export class AddCaseComponent implements OnInit {
         this.isSaveProgress = true;
         let caseFormValues = this.caseform.value;
         let result;
+          let caseCompanyMapping: any[] = [];
+        if (caseFormValues.providerId) {
+            caseCompanyMapping = [{
+                company: {
+                    id: caseFormValues.providerId
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            },
+            {
+                isOriginator: 'true',
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            }]
+        } else {
+            caseCompanyMapping = [{
+                isOriginator: 'true',
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                addedByCompanyId: this._sessionStore.session.currentCompany.id
+            }]
+        }
         let caseDetail: Case = new Case({
             patientId: (this.patientId) ? this.patientId : parseInt(this.idPatient),
             caseName: 'caseName',
@@ -200,19 +224,8 @@ export class AddCaseComponent implements OnInit {
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment(),
             createdByCompanyId: this._sessionStore.session.currentCompany.id,
-            caseCompanyMapping: [{
-                company: {
-                    id: caseFormValues.providerId
-                },
-                addedByCompanyId: this._sessionStore.session.currentCompany.id
-            },
-            {
-                isOriginator: 'true',
-                company: {
-                    id: this._sessionStore.session.currentCompany.id
-                },
-                addedByCompanyId: this._sessionStore.session.currentCompany.id
-            }]
+            caseCompanyMapping: caseCompanyMapping
+          
         });
 
         this._progressBarService.show();

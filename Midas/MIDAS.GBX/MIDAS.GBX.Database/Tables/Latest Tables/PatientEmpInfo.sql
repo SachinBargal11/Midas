@@ -245,12 +245,14 @@ IF EXISTS
 	AND		COLUMN_NAME = 'HoursPerWeek'
 )
 BEGIN
+    ALTER TABLE [dbo].[PatientEmpInfo] 
+        ALTER COLUMN [HoursPerWeek] [NUMERIC](5,2) NULL
 	PRINT 'Table [dbo].[PatientEmpInfo] already have a Column [HoursPerWeek] in database: ' + DB_NAME()
 END
 ELSE
 BEGIN
     ALTER TABLE [dbo].[PatientEmpInfo] 
-        ADD [HoursPerWeek] [NUMERIC](3,2) NULL
+        ADD [HoursPerWeek] [NUMERIC](5,2) NULL
 END
 GO
 
