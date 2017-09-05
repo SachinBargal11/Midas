@@ -9,6 +9,6 @@ export class PhoneFormatPipe implements PipeTransform {
 
         value = String(value);
         let inputString = value.replace(/\-/g, '');
-        return inputString.substring(0, 3) + '-' + inputString.substring(3, 6) + '-' + inputString.substring(6, 10);
+        return inputString.substring(0, 2) + ' ' + inputString.substring(2, 5) + '-' + inputString.substring(5, 8) + '-' + inputString.substring(8, 12);
     }
 }
