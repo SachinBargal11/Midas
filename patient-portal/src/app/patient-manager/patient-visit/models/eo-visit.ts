@@ -75,6 +75,23 @@ export class EoVisit extends EoVisitRecord {
         return '#7A3DB8';
     }
 
+     get visitStatusLabel(): string {
+        return EoVisit.getvisitStatusLabel(this.visitStatusId);
+    }
+
+    static getvisitStatusLabel(visitStatus: VisitStatus): string {
+        switch (visitStatus) {
+            case VisitStatus.SCHEDULED:
+                return 'Scheduled';
+            case VisitStatus.COMPLETE:
+                return 'Complete';
+            case VisitStatus.RESCHEDULE:
+                return 'Rescheduled';
+            case VisitStatus.NOSHOW:
+                return 'Noshow';
+        }
+    }
+
     get visitDisplayString(): string {
         let visitInfo: string = `EO Visit`;        return visitInfo;
     }
