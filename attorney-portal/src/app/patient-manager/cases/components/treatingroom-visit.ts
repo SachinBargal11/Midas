@@ -60,7 +60,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     allVisits: {
         id: number,
         eventStart: any,
-        // doctorName: string,
+        doctorName: string,
         roomTestName: string,
         visitStatusLabel: string,
         isPatientVisitType: boolean,
@@ -198,7 +198,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 let mappedAllVisits: {
                     id: number,
                     eventStart: any,
-                    // doctorName: string,
+                    doctorName: string,
                     roomTestName: string,
                     visitStatusLabel: string,
                     isPatientVisitType: boolean,
@@ -209,7 +209,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                     mappedAllVisits.push({
                         id: currRoomVisit.id,
                         eventStart: currRoomVisit.eventStart,
-                        // doctorName: currRoomVisit.doctor.user.displayName,
+                        doctorName: currRoomVisit.doctor.user.displayName,
                         roomTestName: currRoomVisit.room.name,
                         visitStatusLabel: currRoomVisit.visitStatusLabel,
                         isPatientVisitType: true,
@@ -222,7 +222,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                         mappedAllVisits.push({
                             id: currRoomVisit.id,
                             eventStart: currRoomVisit.eventStart,
-                            // doctorName: currRoomVisit.doctorName,
+                            doctorName: currRoomVisit.doctorName,
                             roomTestName: currRoomVisit.roomTest ? currRoomVisit.roomTest.name : '',
                             visitStatusLabel: currRoomVisit.status,
                             isPatientVisitType: false,

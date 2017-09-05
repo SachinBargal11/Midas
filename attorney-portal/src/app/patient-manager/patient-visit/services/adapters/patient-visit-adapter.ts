@@ -44,6 +44,7 @@ export class PatientVisitAdapter {
                 specialtyId: data.specialtyId,
                 eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
                 eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,
+                notes: data.notes,
                 visitStatusId: data.visitStatusId,
                 // visitType: data.visitType,
                 calendarEvent: data.calendarEvent ? ScheduledEventAdapter.parseResponse(data.calendarEvent) : null,

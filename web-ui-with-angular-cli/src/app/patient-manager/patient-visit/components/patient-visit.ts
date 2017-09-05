@@ -172,7 +172,7 @@ export class PatientVisitComponent implements OnInit {
         }
         if (this.sessionStore.isOnlyDoctorRole()) {
             if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
-                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.insuranceProvider.name}</span>`;
+                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO</span>`;
             }
         }
         else if (event.eventWrapper && event.eventWrapper.isImeVisitType) {
@@ -826,27 +826,29 @@ export class PatientVisitComponent implements OnInit {
     }
 
     loadImeVisits() {
-        this._progressBarService.show();
-        this._patientVisitsStore.getImeVisitByCompanyId(this.companyId)
-            .subscribe(
-            (visits: ImeVisit[]) => {
-                let events = this.getImeVisitOccurrences(visits);
-                this.events = _.union(this.events, events);
-                console.log(this.events);
-            },
-            (error) => {
-                this.events = [];
-                let notification = new Notification({
-                    'title': error.message,
-                    'type': 'ERROR',
-                    'createdAt': moment()
+        if (!this.sessionStore.isOnlyDoctorRole()) {
+            this._progressBarService.show();
+            this._patientVisitsStore.getImeVisitByCompanyId(this.companyId)
+                .subscribe(
+                (visits: ImeVisit[]) => {
+                    let events = this.getImeVisitOccurrences(visits);
+                    this.events = _.union(this.events, events);
+                    console.log(this.events);
+                },
+                (error) => {
+                    this.events = [];
+                    let notification = new Notification({
+                        'title': error.message,
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
                 });
-                this._notificationsStore.addNotification(notification);
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+        }
     }
 
     // closeDialog() {

@@ -17,7 +17,7 @@ const EoVisitRecord = Record({
     locationId: 0,
     isEoVisitType: true,
     doctor: null,
-    patieny: null,
+    patient: null,
     doctorId: 0,
     patientId: null,
     insuranceProviderId: null,
