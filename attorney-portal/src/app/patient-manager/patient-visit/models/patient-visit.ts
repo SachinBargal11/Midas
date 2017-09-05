@@ -32,7 +32,7 @@ const PatientVisitRecord = Record({
     specialtyId: null,
     eventStart: null,
     eventEnd: null,
-    // notes: '',
+    notes: '',
     visitStatusId: VisitStatus.SCHEDULED,
     // visitType: 0,
     calendarEvent: null,
@@ -76,7 +76,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     specialty: Speciality;
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
-    // notes: string;
+    notes: string;
     visitStatusId: VisitStatus;
     // visitType: number;
     calendarEvent: ScheduledEvent;

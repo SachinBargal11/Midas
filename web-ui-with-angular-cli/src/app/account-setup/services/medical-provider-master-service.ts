@@ -161,7 +161,11 @@ export class MedicalProviderMasterService {
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
+<<<<<<< .mine
             return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Delete/' + medicalProviderMaster.id, {
+=======
+            return this._http.get(this._url + '/OTPCompanyMapping/deletePreferredCompany/' + medicalProviderMaster.prefMedProviderId + '/' + companyId, {
+>>>>>>> .theirs
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

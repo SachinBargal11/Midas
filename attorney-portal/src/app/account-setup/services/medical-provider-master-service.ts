@@ -81,6 +81,25 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
     }
 
+    getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
+        let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let provider = (<Object[]>data).map((data: any) => {
+                        return MedicalProviderMasterAdapter.parseResponse(data);
+                    });
+                    resolve(provider);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
+    }
+
     addMedicalProvider(requestData: any): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();
@@ -111,6 +130,51 @@ export class MedicalProviderMasterService {
                 });
         });
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
+    }
+
+    generateToken(companyId: Number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/OTPCompanyMapping/GenerateOTPForCompany/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    validateToken(token:number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/OTPCompanyMapping/validateOTPForCompany/' + token, {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    associateValidateTokenWithCompany(token:number,companyId): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/OTPCompanyMapping/associatePreferredCompany/' + token + '/' + companyId , {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {

@@ -153,6 +153,7 @@ export class UnscheduledVisitComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.eventStartAsDate = moment().toDate();
         if (this.idPatient && this.caseId) {
             let fetchPatient = this._patientsStore.fetchPatientById(this.idPatient);
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);

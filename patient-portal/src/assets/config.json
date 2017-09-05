@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://caserver:7010/midaspatientapi",
+    "baseUrl": "http://caserver:7010/midaspatientapi"
     "identityServerUrl": "https://identityserverdev.codearray.tk",
     "notificationServerUrl": "http://caserver:7011",
     "home_url": "http://localhost:4200/home",

@@ -1,4 +1,5 @@
 {
+    //"baseUrl": "http://attorneydevapi.codearray.tk/midasattorneyapi"
     "baseUrl": "http://caserver:7003/midasattorneyapi",
     "identityServerUrl": "https://identityserverdev.codearray.tk",
     "notificationServerUrl": "http://caserver:7011",
