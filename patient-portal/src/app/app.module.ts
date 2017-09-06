@@ -91,6 +91,12 @@ export function createConfig(): SignalRConfiguration {
   providers: [
     {
       provide: APP_INITIALIZER,
+      useFactory: configServiceFactory,
+      deps: [ConfigService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
       useFactory: tokenServiceFactory,
       deps: [SessionStore],
       multi: true

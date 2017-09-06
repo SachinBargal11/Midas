@@ -277,7 +277,8 @@ export class SessionStore {
                                                 window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
                                                 resolve(account);
                                             }, error => {
-                                                window.location.assign(this._homeUrl);
+                                                let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                                                window.location.assign(url);
                                                 reject(error);
                                             });
                                     });
@@ -288,13 +289,15 @@ export class SessionStore {
                                 }
                                 resolve(userInfo);
                             }, error => {
-                                window.location.assign(this._homeUrl);
+                                let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                                window.location.assign(url);
                                 reject(error);
                             });
                         });
                         resolve(metadata);
                     }, error => {
-                        window.location.assign(this._homeUrl);
+                        let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                        window.location.assign(url);
                         reject(error);
                     });
             });

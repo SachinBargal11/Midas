@@ -126,7 +126,7 @@ export class PatientBasicComponent implements OnInit {
             lastname: ['', Validators.required],
             gender: ['', Validators.required],
             maritalStatusId: ['', Validators.required],
-            parentName: ['', Validators.required],
+            parentName: [''],
             languagePreference: [''],
             otherLanguage: [''],
             spouseName: [''],

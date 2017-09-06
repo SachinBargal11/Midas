@@ -19,6 +19,8 @@ export class SessionStore {
     private _identityServerUrl: string = `${environment.IDENTITY_SERVER_URL}`;
     private _homeUrl: string = `${environment.HOME_URL}`;
     private _appDomainUrl: string = `${environment.APP_URL}`;
+    private _clientId: string = `${environment.CLIENT_ID}`;
+    private _identityScope: string = `${environment.IDENTITY_SCOPE}`;
     @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
     @Output() userCompanyChangeEvent: EventEmitter<{}> = new EventEmitter(true);
 
@@ -163,12 +165,33 @@ export class SessionStore {
         this.userCompanyChangeEvent.emit(null);
     }
 
+    getToken() {
+        var authorizationUrl = this._identityServerUrl + '/core/connect/authorize';
+        var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
+        var response_type = "id_token token";
+        var scope = this._identityScope;
+        var client_id = this._clientId
+
+        var state = this.rand();
+        var nonce = this.rand();
+        localStorage["state"] = state;
+        localStorage["nonce"] = nonce;
+
+        var url =
+            authorizationUrl + "?" +
+            "client_id=" + encodeURI(client_id) + "&" +
+            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
+            "response_type=" + encodeURI(response_type) + "&" +
+            "scope=" + encodeURI(scope) + "&" +
+            "state=" + encodeURI(state) + "&" +
+            "nonce=" + encodeURI(nonce);
+        url;
+        window.location.assign(url);
+    }
+
     public Load() {
+        debugger
         var result: any;
-        let baseUrl: string;
-            this._configService.Load().then((config: any) => {
-                baseUrl = config.SERVICE_BASE_URL;
-            });
         if (window.location.hash.search("#/") == -1 && window.location.hash != '') {
             var hash = window.location.hash.substr(1);
             result = hash.split('&').reduce(function (result, item) {
@@ -176,7 +199,7 @@ export class SessionStore {
                 result[parts[0]] = parts[1];
                 return result;
             }, {});
-            window.location.assign(this._appDomainUrl + '/#/');
+            window.location.assign(window.location.protocol + "//" + window.location.host + '/#/');
             var metadata_url = this._identityServerUrl + '/core/.well-known/openid-configuration';
             let promise = new Promise((resolve, reject) => {
                 this.getJson(metadata_url, null)
@@ -192,15 +215,15 @@ export class SessionStore {
                                     let promise = new Promise((resolve, reject) => {
                                         let accessToken: any = 'bearer ' + result.access_token;
                                         let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
-                                        this._authenticationService.signinWithUserName(baseUrl, userInfo.email, accessToken, tokenExpiresAt, result)
+                                        this._authenticationService.signinWithUserName(environment.SERVICE_BASE_URL, userInfo.email, accessToken, tokenExpiresAt, result)
                                             .subscribe((accountData) => {
                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
                                                 this._populateSession(account);
-                                                window.location.assign(this._appDomainUrl + '/#/patient-manager/profile/viewall');
+                                                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
                                                 resolve(account);
                                             }, error => {
-                                                window.location.assign(this._homeUrl);
-                                                // this.logout();
+                                                let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                                                window.location.assign(url);
                                                 reject(error);
                                             });
                                     });
@@ -211,13 +234,15 @@ export class SessionStore {
                                 }
                                 resolve(userInfo);
                             }, error => {
-                                window.location.assign(this._homeUrl);
+                                let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                                window.location.assign(url);
                                 reject(error);
                             });
                         });
                         resolve(metadata);
                     }, error => {
-                        window.location.assign(this._homeUrl);
+                        let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                        window.location.assign(url);
                         reject(error);
                     });
             });
@@ -232,10 +257,10 @@ export class SessionStore {
                 if (window.location.hash != '' && window.location.hash != '#/404') {
                     window.location.assign(window.location.href);
                 } else {
-                    window.location.assign(this._appDomainUrl + '/#/patient-manager/profile/viewall');
+                    window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
                 }
             } else {
-                window.location.assign(this._homeUrl);
+                this.getToken();
             }
         }
     }
@@ -251,15 +276,18 @@ export class SessionStore {
                 let account: Account = AccountAdapter.parseStoredData(accountData);
                 this._populateSession(account);
                 resolve(this._session);
-                window.location.assign(this._appDomainUrl + '/#/patient-manager/profile/viewall');
+                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
             }
             else {
                 reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
                 window.location.assign(this._homeUrl);
             }
         });
-        window.location.assign(this._appDomainUrl + '/#/patient-manager/profile/viewall');
+        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/patient-manager/profile/viewall');
         return Observable.from(promise);
+    }
+    rand() {
+        return (Date.now() + "" + Math.random()).replace(".", "");
     }
     getJson(url, token) {
         let headers = new Headers();
