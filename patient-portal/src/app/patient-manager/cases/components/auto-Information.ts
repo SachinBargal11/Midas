@@ -63,7 +63,6 @@ export class AutoInformationInfoComponent implements OnInit {
             let result = this._autoInformationStore.getByCaseId(this.caseId);
             result.subscribe(
                 (autoInformation: AutoInformation) => {
-                    debugger;
                     this.autoInformation = autoInformation;
                     //this.title = this.autoInformation.id ? 'Edit Auto Information' : 'Add Auto Information';
                     this.isrelativesVehicle = String(this.autoInformation.relativeVehicle) == 'true' ? 'Yes' : 'No';

@@ -15,6 +15,7 @@ import { Patient } from '../../../patient-manager/patients/models/patient';
 import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { Procedure } from '../../../commons/models/procedure';
 import { Company } from '../../../account/models/company';
+
 const AttorneyVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
@@ -39,7 +40,6 @@ const AttorneyVisitRecord = Record({
     company: null,
     isAttorneyVisitType: true,
 });
-
 
 export class AttorneyVisit extends AttorneyVisitRecord implements IEventWrapper {
     id: number;

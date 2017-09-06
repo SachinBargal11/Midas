@@ -1711,7 +1711,6 @@ export class PatientVisitComponent implements OnInit {
         return occurrences;
     }
 
-
     loadClientEOVisits() {
         this._progressBarService.show();
         this._patientVisitsStore.getEOVisitsByPatientId(this.patientId)
@@ -1735,10 +1734,11 @@ export class PatientVisitComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
     getClientEOVisitOccurrences(visits) {
         let occurrences: ScheduledEventInstance[] = [];
         let calendarEvents: ScheduledEvent[] = _.chain(visits)
-            .map((visit: ImeVisit) => {
+            .map((visit: EoVisit) => {
                 return visit.calendarEvent;
             })
             .unique((event: ScheduledEvent) => {
@@ -1761,7 +1761,7 @@ export class PatientVisitComponent implements OnInit {
             if (visitForOccurrence) {
                 // occurrence.eventWrapper = visitForOccurrence;
             } else {
-                let originalVisit: EoVisit = _.find(matchingVisits, (currentMatchingVisit: ImeVisit) => {
+                let originalVisit: EoVisit = _.find(matchingVisits, (currentMatchingVisit: EoVisit) => {
                     return currentMatchingVisit.isOriginalVisit;
                 });
                 occurrence.eventWrapper = originalVisit;
