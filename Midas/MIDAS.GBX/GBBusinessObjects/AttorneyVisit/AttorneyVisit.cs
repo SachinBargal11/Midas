@@ -39,7 +39,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("companyId")]
         public int? CompanyId { get; set; }
 
-        [JsonProperty("agenda")]
+        [JsonProperty("notes")]
         public string Agenda { get; set; }
 
         [JsonProperty("calendarEvent")]
