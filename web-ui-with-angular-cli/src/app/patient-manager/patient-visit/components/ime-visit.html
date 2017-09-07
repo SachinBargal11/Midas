@@ -77,6 +77,19 @@
         </div>
         <div class="col-md-3">
             <div class="form-group" [class.error]="imeScheduleFormControls.eventStartTime.touched && !imeScheduleFormControls.eventStartTime.valid">
+                <select [(ngModel)]="setTimeSlot" *ngIf="!isAllDay" [class.error]="!imeScheduleFormControls.eventStartTime.valid"
+                    formControlName="eventStartTime" hourFormat="12" icon="fa fa-clock-o" class="select2-arrow form-control">                          
+                              <option *ngFor="let time of timeSlots" [value]="time.time">{{time.time}}</option>                                       
+                        </select>
+                <div class='error-list' *ngIf="imeScheduleFormControls.eventStartTime.touched && !imeScheduleFormControls.eventStartTime.valid">
+                    <ul>
+                        <li *ngIf="imeScheduleFormControls.eventStartTime.hasError('required')">Start Time is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-3">
+            <div class="form-group" [class.error]="imeScheduleFormControls.eventStartTime.touched && !imeScheduleFormControls.eventStartTime.valid">
                 <p-calendar *ngIf="!isAllDay" [class.error]="!imeScheduleFormControls.eventStartTime.valid" formControlName="eventStartTime"
                     [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
                 <div class='error-list' *ngIf="imeScheduleFormControls.eventStartTime.touched && !imeScheduleFormControls.eventStartTime.valid">
@@ -85,7 +98,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Duration<span class="color-red">*</span></label></div>
@@ -117,6 +130,19 @@
         </div>
         <div class="col-md-3">
             <div class="form-group" [class.error]="imeScheduleFormControls.eventEndTime.touched && !imeScheduleFormControls.eventEndTime.valid">
+                <select [(ngModel)]="setEndTimeSlot" [class.error]="!imeScheduleFormControls.eventEndTime.valid"
+                    formControlName="eventEndTime" hourFormat="12" icon="fa fa-clock-o" class="select2-arrow form-control">                          
+                              <option *ngFor="let time of timeSlots" [value]="time.time">{{time.time}}</option>                                       
+                        </select>
+                <div class='error-list' *ngIf="imeScheduleFormControls.eventEndTime.touched && !imeScheduleFormControls.eventEndTime.valid">
+                    <ul>
+                        <li *ngIf="imeScheduleFormControls.eventEndTime.hasError('required')">End Time is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-3">
+            <div class="form-group" [class.error]="imeScheduleFormControls.eventEndTime.touched && !imeScheduleFormControls.eventEndTime.valid">
                 <p-calendar *ngIf="!isAllDay" [class.error]="!imeScheduleFormControls.eventEndTime.valid" formControlName="eventEndTime"
                     [(ngModel)]="eventEndAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
                 <div class='error-list' *ngIf="imeScheduleFormControls.eventEndTime.touched && !imeScheduleFormControls.eventEndTime.valid">
@@ -125,7 +151,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-md-2"><label class="form-label">Transportation Required</label></div>

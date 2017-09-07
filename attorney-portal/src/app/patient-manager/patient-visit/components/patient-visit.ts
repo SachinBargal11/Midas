@@ -153,7 +153,11 @@ export class PatientVisitComponent implements OnInit {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.patient.user.displayName}</span>`;
         }
         else if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
-            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.patient.user.displayName}</span>`;
+            if (event.eventWrapper.patient) {
+                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.patient.user.displayName}</span>`;
+            } else if (event.eventWrapper.doctor) {
+                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.doctor.user.displayName}</span>`;
+            }
         }
         element.find('.fc-content').html(content);
     }
