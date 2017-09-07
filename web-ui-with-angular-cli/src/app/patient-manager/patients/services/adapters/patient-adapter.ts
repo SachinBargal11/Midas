@@ -11,18 +11,20 @@ export class PatientAdapter {
 
         let patient: Patient = null;
         let companies: Company[] = [];
-        let LanguagePreferenceMappings:any[] = [];
+        let LanguagePreferenceMappings: any[] = [];
         let patientDocuments: PatientDocument[] = [];
         if (data) {
             if (data.patientLanguagePreferenceMappings) {
                 for (let language of data.patientLanguagePreferenceMappings) {
                     LanguagePreferenceMappings.push(language);
                 }
-            }
-            if (data.user.userCompanies) {
-                for (let company of data.user.userCompanies) {
-                    // companies.push(CompanyAdapter.parseResponse(company));
-                    companies.push(company);
+            } 
+            if (data.user) {
+                if (data.user.userCompanies) {
+                    for (let company of data.user.userCompanies) {
+                        // companies.push(CompanyAdapter.parseResponse(company));
+                        companies.push(company);
+                    }
                 }
             }
             if (data.patientDocuments) {
@@ -51,7 +53,7 @@ export class PatientAdapter {
                 emergencyContactName: data.emergencyContactName,
                 emergencyContactPhone: data.emergencyContactPhone,
                 spouseName: data.spouseName,
-                patientLanguagePreferenceMappings:LanguagePreferenceMappings,
+                patientLanguagePreferenceMappings: LanguagePreferenceMappings,
                 languagePreferenceOther: data.languagePreferenceOther
             });
         }

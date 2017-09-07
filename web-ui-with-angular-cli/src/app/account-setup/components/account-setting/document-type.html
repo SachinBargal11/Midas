@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-2">
             <div class="form-group">
-                <select type="text" formControlName="currentId" [(ngModel)]="currentId" class="form-control" placeholder="" (change)="selectDocument($event)">
+                <select type="text" formControlName="currentId" [(ngModel)]="documentTypes" class="form-control" placeholder="" (change)="selectDocument($event)">
         <option value="0">- Select -</option>
         <option value="1">Patient</option>
         <option value="2">Case</option>
