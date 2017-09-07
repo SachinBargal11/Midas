@@ -284,3 +284,7 @@
                     <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
                         (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 </p-dialog>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</p-dialog>

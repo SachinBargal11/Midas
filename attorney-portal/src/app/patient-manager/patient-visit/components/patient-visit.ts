@@ -120,6 +120,8 @@ export class PatientVisitComponent implements OnInit {
     selectedDocumentList = [];
     isDeleteProgress: boolean = false;
 
+    selectedCaseId: number;
+    addConsentDialogVisible: boolean = false;
     visitInfo: string = '';
     isAddNewPatient: boolean = false;
     isGoingOutOffice: boolean = false;
@@ -809,18 +811,18 @@ export class PatientVisitComponent implements OnInit {
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
         if (eventInstance.isInPast) {
             // if (scheduledEventForInstance.isChangedInstanceOfSeries) {
-                // Edit Existing Single Occurance of Visit
-                patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-                    calendarEvent: scheduledEventForInstance,
-                    // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
-                    // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
-                    //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
-                    // })) : null,
-                    // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
-                    patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
-                        user: new User(_.extend(patientVisit.patient.user.toJS()))
-                    })) : null
-                }));
+            // Edit Existing Single Occurance of Visit
+            patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                // case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                // doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                //     user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                // })) : null,
+                // room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                    user: new User(_.extend(patientVisit.patient.user.toJS()))
+                })) : null
+            }));
             // } else {
             //     // Create Visit Instance 
             //     if (patientVisit.isExistingVisit) {
@@ -1421,6 +1423,16 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', currentDocument.message);
+            } else if (currentDocument.status == 'Success') {
+                let notification = new Notification({
+                    'title': 'Document uploaded successfully',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Document uploaded successfully');
+                this.addConsentDialogVisible = false;
             }
         });
         this.getDocuments();
@@ -1503,6 +1515,12 @@ export class PatientVisitComponent implements OnInit {
         this.isAddNewPatient = false;
         this.addNewPatientForm.reset();
     }
+
+    showDialog(currentCaseId: number) {
+        this.addConsentDialogVisible = true;
+        this.selectedCaseId = currentCaseId;
+    }
+
 
     saveNewPatient() {
         this.isSaveProgress = true;
