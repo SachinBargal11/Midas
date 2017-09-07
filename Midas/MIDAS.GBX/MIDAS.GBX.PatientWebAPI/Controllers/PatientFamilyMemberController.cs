@@ -10,7 +10,6 @@ using MIDAS.GBX.PatientWebAPI.RequestHandler;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/PatientFamilyMember")]
-
     public class PatientFamilyMemberController : ApiController
     {
         private IRequestHandler<PatientFamilyMember> requestHandler;
@@ -25,15 +24,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
-        }
-
-        //[HttpGet]
-        //[Route("getByPatientId/{PatientId}")]
-        ////[AllowAnonymous]
-        //public HttpResponseMessage GetByPatientId(int PatientId)
-        //{
-        //    return requestHandler.GetByPatientId(Request, PatientId);
-        //}
+        }        
 
         [HttpGet]
         [Route("getByCaseId/{caseId}")]
@@ -60,6 +51,5 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

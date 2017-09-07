@@ -23,7 +23,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -31,7 +30,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{id}")]
-
         public HttpResponseMessage GetByCompanyId(int id)
         {
             return requestHandler.GetGbObjects(Request, id);
@@ -39,7 +37,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByDoctorId/{doctorId}")]
-
         public HttpResponseMessage GetByDoctorId(int doctorId)
         {
             return requestHandler.GetByDoctorId(Request, doctorId);
@@ -47,7 +44,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getBySpecialityId/{specialtyId}")]
-
         public HttpResponseMessage GetBySpecialityId(int specialtyId)
         {
             return requestHandler.GetBySpecialityId(Request, specialtyId);
@@ -55,7 +51,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByRoomId/{roomId}")]
-
         public HttpResponseMessage GetByRoomId(int roomId)
         {
             return requestHandler.GetByRoomId(Request, roomId);
@@ -70,23 +65,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("dismissPendingReferral/{PendingReferralId}/{userId}")]
-
         public HttpResponseMessage DismissPendingReferral(int PendingReferralId,int userId)
         {
             return requestHandler.DismissPendingReferral(Request, PendingReferralId, userId);
-        }
-        
-
-        //[HttpPost]
-        //[Route("Add")]
-        //public HttpResponseMessage Post([FromBody]PendingReferral pendingReferral)
-        //{
-        //    return requestHandler.CreateGbObject(Request, pendingReferral);
-        //}
+        }        
 
         [HttpPost]
         [Route("SaveList")]
-
         public HttpResponseMessage Post([FromBody]List<PendingReferral> pendingReferral)
         {
             return requestHandler.CreateGbObject(Request, pendingReferral);
@@ -117,6 +102,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

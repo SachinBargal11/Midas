@@ -22,8 +22,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
     [Authorize]
     public class LogController : ApiController
     {
-
         private IRequestHandler<Log> requestHandler;
+
         public LogController()
         {
             requestHandler = new GbApiRequestHandler<Log>();
@@ -31,7 +31,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("GetAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Log data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -39,16 +38,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
-        // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Log data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -56,7 +52,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [Route("Update")]
         [HttpPut]
-        //[AllowAnonymous]
         public HttpResponseMessage Put([FromBody]Log User)
         {
             return requestHandler.UpdateGbObject(Request, User);
@@ -64,7 +59,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpDelete]
         [Route("Delete")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete([FromBody]Log User)
         {
             return requestHandler.DeleteGbObject(Request, User);
@@ -77,14 +71,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, User);
         }
 
-        
-
-
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

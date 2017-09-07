@@ -58,6 +58,8 @@ namespace MIDAS.GBX.WebAPI
             json.SerializerSettings.PreserveReferencesHandling =
                 Newtonsoft.Json.PreserveReferencesHandling.None;
 
+            config.Filters.Add(new AuthorizeAttribute());
+
             return config;
         }
     }

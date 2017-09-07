@@ -104,7 +104,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("addUploadedFileData/{id}/{FileUploadPath}")]
-        //[AllowAnonymous]
         public HttpResponseMessage AddUploadedFileData(int id,string FileUploadPath)
         {
             return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
@@ -112,7 +111,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getDocumentList/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetDocumentList(int id)
         {
             return requestHandler.GetDocumentList(Request, id);

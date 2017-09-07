@@ -20,42 +20,34 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<PasswordToken>();
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
-        [Route("Get/{id}")]
-        
+        [Route("Get/{id}")]        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
         [HttpGet]
-        [Route("GetAll")]
-        
+        [Route("GetAll")]        
         public HttpResponseMessage Get([FromBody]PasswordToken data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
 
-        // POST: api/Organizations
         [HttpPost]
-        [Route("Add")]
-        
+        [Route("Add")]        
         public HttpResponseMessage Post([FromBody]PasswordToken data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        // PUT: api/Organizations/5
         [Route("Update")]
-        [HttpPut]
-        
+        [HttpPut]        
         public HttpResponseMessage Put([FromBody]PasswordToken account)
         {
             return requestHandler.UpdateGbObject(Request, account);
         }
 
-        // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
         
@@ -64,10 +56,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.DeleteGbObject(Request, account);
         }
 
-        // Unique Name Validation
         [HttpPost]
-        [Route("IsUnique")]
-        
+        [Route("IsUnique")]        
         public HttpResponseMessage IsUnique([FromBody]PasswordToken account)
         {
             return requestHandler.ValidateUniqueName(Request, account);
@@ -93,6 +83,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

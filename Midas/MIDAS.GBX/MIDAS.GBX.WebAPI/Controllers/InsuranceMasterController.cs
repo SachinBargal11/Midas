@@ -18,14 +18,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             requestHandler = new GbApiRequestHandler<InsuranceMaster>();
         }
-       
-        //[HttpGet]
-        //[Route("getAll")]
-        ////[AllowAnonymous]
-        //public HttpResponseMessage Get()
-        //{
-        //    return requestHandler.GetObjects(Request);
-        //}
 
         [HttpGet]
         [Route("getInsuranceDetails/{id}/{companyId}")]
@@ -55,6 +47,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GetMasterAndByCompanyId(Request, companyId);
         }
-
     }
 }

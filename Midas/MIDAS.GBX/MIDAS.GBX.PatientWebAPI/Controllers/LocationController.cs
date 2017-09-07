@@ -10,11 +10,10 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/Location")]
-
     public class LocationController : ApiController
     {
-
         private IRequestHandler<Location> requestHandler;
+
         public LocationController()
         {
             requestHandler = new GbApiRequestHandler<Location>();
@@ -22,7 +21,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("GetAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Location data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -30,17 +28,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getAllLocationAndCompany")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetAllLocationAndCompany()
         {
             return requestHandler.GetObjects(Request);
         }
 
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

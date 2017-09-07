@@ -10,7 +10,6 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/Patient")]
-    //[AllowAnonymous]
     public class PatientController : ApiController
     {
         private IRequestHandler<Patient> requestHandlerPatient;

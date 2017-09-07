@@ -19,10 +19,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<AdjusterMaster>();
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -30,7 +28,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
@@ -38,7 +35,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByInsuranceMasterId/{InsuranceMasterId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByInsuranceMasterId(int InsuranceMasterId)
         {
             return requestHandler.GetgbObjects(Request, InsuranceMasterId);
@@ -46,7 +42,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetByCompanyAndInsuranceMasterId/{CompanyId}/{InsuranceMasterId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyAndInsuranceMasterId(int CompanyId, int InsuranceMasterId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId, InsuranceMasterId);
@@ -54,7 +49,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get([FromBody]AdjusterMaster data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -62,16 +56,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AdjusterMaster data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);

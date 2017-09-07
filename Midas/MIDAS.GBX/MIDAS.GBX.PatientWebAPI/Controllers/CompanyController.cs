@@ -9,7 +9,6 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-
     [RoutePrefix("midaspatientapi/Company")]
     public class CompanyController : ApiController
     {

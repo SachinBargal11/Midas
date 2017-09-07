@@ -21,7 +21,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
      
         [HttpGet]
         [Route("generateOTPForCompany/{companyId}")]
-        [AllowAnonymous]
         public HttpResponseMessage GenerateOTPForCompany(int companyId)
         {
             return requestHandler.GenerateOTPForCompany(Request, companyId);
@@ -29,7 +28,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("validateOTPForCompany/{otp}")]
-        [AllowAnonymous]
         public HttpResponseMessage ValidateOTPForCompany(string otp)
         {
             return requestHandler.ValidateOTPForCompany(Request, otp);
@@ -37,7 +35,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("associatePreferredCompany/{otp}/{currentCompanyId}")]
-        [AllowAnonymous]
         public HttpResponseMessage AssociatePreferredCompany(string otp,int currentCompanyId)
         {
             return requestHandler.AssociatePreferredCompany(Request, otp, currentCompanyId);
@@ -45,7 +42,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("deletePreferredCompany/{preferredCompanyId}/{currentCompanyId}")]
-        [AllowAnonymous]
         public HttpResponseMessage DeletePreferredCompany(int preferredCompanyId, int currentCompanyId)
         {
             return requestHandler.DeletePreferredCompany(Request, preferredCompanyId, currentCompanyId);

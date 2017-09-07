@@ -12,7 +12,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/CaseInsuranceMapping")]
-
     public class CaseInsuranceMappingController : ApiController
     {
         private IRequestHandler<CaseInsuranceMapping> requestHandler;
@@ -24,7 +23,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -32,7 +30,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]CaseInsuranceMapping data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -42,6 +39,5 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }
