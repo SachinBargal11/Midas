@@ -12,6 +12,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class LocationSchedule : GbObject
     {
         public Location _location;
+        [JsonProperty("location")]
         public Location location
         {
             get
@@ -23,7 +24,9 @@ namespace MIDAS.GBX.BusinessObjects
                 _location = value;
             }
         }
+
         public Schedule _schedule;
+        [JsonProperty("schedule")]
         public Schedule schedule
         {
             get

@@ -12,6 +12,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class Room : GbObject
     {
         private string _name;
+        [JsonProperty("name")]
         public string name
         {
             get
@@ -25,6 +26,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private string _contactpersonname;
+        [JsonProperty("contactersonName")]
         public string contactersonName
         {
             get
@@ -38,6 +40,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private string _phone;
+        [JsonProperty("phone")]
         public string phone
         {
             get
@@ -51,6 +54,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private RoomTest _roomtest;
+        [JsonProperty("roomTest")]
         public RoomTest roomTest
         {
             get
@@ -62,7 +66,9 @@ namespace MIDAS.GBX.BusinessObjects
                 _roomtest = value;
             }
         }
+
         private Location _location;
+        [JsonProperty("location")]
         public Location location
         {
             get
@@ -74,7 +80,9 @@ namespace MIDAS.GBX.BusinessObjects
                 _location = value;
             }
         }
+
         private Schedule _schedule;
+        [JsonProperty("schedule")]
         public Schedule schedule
         {
             get

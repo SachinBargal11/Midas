@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -6,29 +7,35 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class SaveLocation : GbObject
     {
+        [JsonProperty("addressInfo")]
         public AddressInfo addressInfo
         {
             get;
             set;
         }
 
+        [JsonProperty("company")]
         public Company company
         {
             get;
             set;
         }
 
+        [JsonProperty("contactInfo")]
         public ContactInfo contactInfo
         {
             get;
             set;
         }
 
+        [JsonProperty("location")]
         public Location location
         {
             get;
             set;
         }
+
+        [JsonProperty("schedule")]
         public Schedule schedule
         {
             get;
