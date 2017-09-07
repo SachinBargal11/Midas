@@ -100,7 +100,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     BO.InsuranceMaster InsuranceMasterBO = new BO.InsuranceMaster();
                     using (InsuranceMasterRepository InsuranceMasterRepo = new InsuranceMasterRepository(_context))
                     {
-                        InsuranceMasterBO = InsuranceMasterRepo.Convert<BO.InsuranceMaster, InsuranceMaster>(EOVisit.InsuranceMaster);
+                        InsuranceMasterBO = InsuranceMasterRepo.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(EOVisit.InsuranceMaster);
                         EOVisitBO.InsuranceMaster = InsuranceMasterBO;
                     }
                 }
