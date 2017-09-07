@@ -139,5 +139,9 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
         HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GenerateOTPForCompany(HttpRequestMessage request, int companyId);
+        HttpResponseMessage ValidateOTPForCompany(HttpRequestMessage request, string otp);
+        HttpResponseMessage AssociatePreferredCompany(HttpRequestMessage request, string otp, int currentCompanyId);
+        HttpResponseMessage DeletePreferredCompany(HttpRequestMessage request, int preferredCompanyId, int currentCompanyId);
     }
 }

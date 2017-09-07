@@ -278,6 +278,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\OTPCompanyMappingController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
