@@ -75,6 +75,54 @@ export class ImeVisitComponent implements OnInit {
     notes;
     selectedVisit;
     // @Input() selectedEventDate;
+    setTimeSlot: string = '12:00 AM';
+    setEndTimeSlot: string = '12:00 AM';
+    timeSlots: any[] = [
+        { time: '12:00 AM', id: '1' },
+        { time: '12:30 AM', id: '2' },
+        { time: '1:00 AM', id: '3' },
+        { time: '1:30 AM', id: '4' },
+        { time: '2:00 AM', id: '5' },
+        { time: '2:30 AM', id: '6' },
+        { time: '3:00 AM', id: '7' },
+        { time: '3:30 AM', id: '8' },
+        { time: '4:00 AM', id: '9' },
+        { time: '4:30 AM', id: '10' },
+        { time: '5:00 AM', id: '11' },
+        { time: '6:30 AM', id: '12' },
+        { time: '7:00 AM', id: '13' },
+        { time: '7:30 AM', id: '14' },
+        { time: '8:00 AM', id: '15' },
+        { time: '8:30 AM', id: '16' },
+        { time: '9:00 AM', id: '17' },
+        { time: '9:30 AM', id: '18' },
+        { time: '10:00 AM', id: '19' },
+        { time: '10:30 AM', id: '20' },
+        { time: '11:00 AM', id: '21' },
+        { time: '11:30 AM', id: '22' },
+        { time: '12:00 PM', id: '1' },
+        { time: '12:30 PM', id: '2' },
+        { time: '1:00 PM', id: '3' },
+        { time: '1:30 PM', id: '4' },
+        { time: '2:00 PM', id: '5' },
+        { time: '2:30 PM', id: '6' },
+        { time: '3:00 PM', id: '7' },
+        { time: '3:30 PM', id: '8' },
+        { time: '4:00 PM', id: '9' },
+        { time: '4:30 PM', id: '10' },
+        { time: '5:00 PM', id: '11' },
+        { time: '6:30 PM', id: '12' },
+        { time: '7:00 PM', id: '13' },
+        { time: '7:30 PM', id: '14' },
+        { time: '8:00 PM', id: '15' },
+        { time: '8:30 PM', id: '16' },
+        { time: '9:00 PM', id: '17' },
+        { time: '9:30 PM', id: '18' },
+        { time: '10:00 PM', id: '19' },
+        { time: '10:30 PM', id: '20' },
+        { time: '11:00 PM', id: '21' },
+        { time: '11:30 PM', id: '22' },
+    ];
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
@@ -84,6 +132,14 @@ export class ImeVisitComponent implements OnInit {
             this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
             this.isAllDay = this._selectedEvent.isAllDay;
+
+            var startTimeString = this._selectedEvent.eventStartAsDate.toLocaleTimeString();
+            let startTimeArray = startTimeString.split(':');
+            this.setTimeSlot = startTimeArray[0] + ':' + startTimeArray[1] + ' ' + startTimeArray[2].slice(3);
+
+            var endTimeString = this._selectedEvent.eventEndAsDate.toLocaleTimeString();
+            let endTimeArray = endTimeString.split(':');
+            this.setEndTimeSlot = endTimeArray[0] + ':' + endTimeArray[1] + ' ' + endTimeArray[2].slice(3);
         }
     }
 
@@ -195,6 +251,10 @@ export class ImeVisitComponent implements OnInit {
         this.isSaveProgress = true;
         let imeScheduleFormValues = this.imeScheduleForm.value;
         let result;
+        let startDate = moment(this.eventStartAsDate).format('YYYY-MM-DD');
+        let startDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventStartTime) ;
+        let endDate = moment(this.eventEndAsDate).format('YYYY-MM-DD');
+        let endDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventEndTime) ;
         let ime = new ImeVisit({
             patientId: this.imeScheduleForm.value.patientId,
             caseId: this.imeScheduleForm.value.caseId,
@@ -204,9 +264,11 @@ export class ImeVisitComponent implements OnInit {
             createByUserID: this.sessionStore.session.account.user.id,
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             calendarEvent: new ScheduledEvent({
-                eventStart: moment(this.eventStartAsDate),
+                // eventStart: moment(this.eventStartAsDate),
                 // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
-                eventEnd: moment(this.eventEndAsDate),
+                // eventEnd: moment(this.eventEndAsDate),
+                eventStart: moment(startDateTime),
+                eventEnd: moment(endDateTime),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),
                 // eventStartDate: this.imeScheduleForm.value.eventStartDate,
                 // duration: this.imeScheduleForm.value.duration,
@@ -251,7 +313,7 @@ export class ImeVisitComponent implements OnInit {
     refreshImeEvents() {
         this.refreshEvents.emit();
     }
-    handleVisitDialogHide() {}
+    handleVisitDialogHide() { }
 
     // getDocuments() {
     // this._progressBarService.show();

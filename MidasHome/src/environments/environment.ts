@@ -10,7 +10,7 @@ export const environment = {
   // CLIENT_ID: 'MidasPortal',                  //staging production
   CLIENT_ID: 'MidasPortalLocal',          //local
   // CLIENT_ID: 'MidasPortalDev',            //staging dev
-  // MEDICAL_PROVIDER_URI: 'http://localhost:4201/',
+  MEDICAL_PROVIDER_URI: 'http://localhost:4201/',
   // PATIENT_PORTAL_URI: 'http://localhost:4202/',
   // ATTORNEY_PORTAL_URI: 'http://localhost:4203/',
   // ANCILLARY_PORTAL_URI: 'http://localhost:4204/',
@@ -18,7 +18,7 @@ export const environment = {
   // PATIENT_PORTAL_URI: 'http://patientdev.codearray.tk/',
   // ATTORNEY_PORTAL_URI: 'http://attorneydev.codearray.tk/',
   // ANCILLARY_PORTAL_URI: 'http://ancillarydev.codearray.tk/',
-  MEDICAL_PROVIDER_URI: 'http://caserver:7001/',
+  // MEDICAL_PROVIDER_URI: 'http://caserver:7001/',
   PATIENT_PORTAL_URI: 'http://caserver:7009/',
   ATTORNEY_PORTAL_URI: 'http://caserver:7004/',
   ANCILLARY_PORTAL_URI: 'http://caserver:7007/',

@@ -1,10 +1,12 @@
 <div *ngIf="patientInfo">
     <form [formGroup]="basicform" (ngSubmit)="savePatient()">
         <!--<div class="col-lg-2 profile-side-user">-->
-        <div class="col-lg-2">
-            <div class="row">
-                <label class="form-label">Profile Photo</label>
-                <button type="button" class="avatar-preview avatar-preview-128">
+        <section class="card">
+            <div class="card-block">
+                <div class="col-lg-2">
+                    <div class="row">
+                        <label class="form-label">Profile Photo</label>
+                        <button type="button" class="avatar-preview avatar-preview-128">
 				<!--<img src={{imageLink}} alt="" />-->
                 <object [attr.data]="imageLink" type="image/jpg" width="100%" height="100%"></object>
 				<!--<span class="update">
@@ -13,167 +15,170 @@
 				</span>-->
 				<!--<input type="file" (change)=uploadProfileImage($event)/>-->
 			</button>
-            </div><br>
-            <div class="row">
-                <p-fileUpload mode="basic" url={{url}} name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" (onBeforeSend)="onBeforeSendEvent($event)"
-                    (onError)="onFilesUploadError($event)" (onUpload)="onFilesUploadComplete($event)" chooseLabel="Update"></p-fileUpload>
-            </div>
-            <br>
-            <div class="row">
-                <label class="form-label">Photo ID(Copy of license)</label>
-                <button type="button" class="avatar-preview avatar-preview-128">				
+                    </div><br>
+                    <div class="row">
+                        <p-fileUpload mode="basic" url={{url}} name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" (onBeforeSend)="onBeforeSendEvent($event)"
+                            (onError)="onFilesUploadError($event)" (onUpload)="onFilesUploadComplete($event)" chooseLabel="Update"></p-fileUpload>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <label class="form-label">Photo ID(Copy of license)</label>
+                        <button type="button" class="avatar-preview avatar-preview-128">				
                 <object [attr.data]="imagePhotoIDLink" type="image/jpg" width="100%" height="100%"></object>			
 			</button>
-            </div><br>
-            <div class="row">
-                <p-fileUpload mode="basic" url={{url}} name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" (onBeforeSend)="onBeforeSendEventPhotoID($event)"
-                    (onError)="onFilesUploadErrorPhotoID($event)" (onUpload)="onFilesUploadCompletePhotoID($event)" chooseLabel="Update"></p-fileUpload>
-            </div>
-        </div>
+                    </div><br>
+                    <div class="row">
+                        <p-fileUpload mode="basic" url={{url}} name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" (onBeforeSend)="onBeforeSendEventPhotoID($event)"
+                            (onError)="onFilesUploadErrorPhotoID($event)" (onUpload)="onFilesUploadCompletePhotoID($event)" chooseLabel="Update"></p-fileUpload>
+                    </div>
+                </div>
 
-        <div class="col-lg-10">
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> First Name
+                <div class="col-lg-10">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="basicformControls.firstname.touched && !basicformControls.firstname.valid">
-                        <input [ngModel]="patientInfo.user.firstName" formControlName="firstname" type="text" class="form-control" placeholder=""
-                            [class.error]="!basicformControls.firstname.valid">
-                        <div class='error-list' *ngIf="basicformControls.firstname.touched && !basicformControls.firstname.valid">
-                            <ul>
-                                <li *ngIf="basicformControls.firstname.hasError('required')">First Name is required.</li>
-                            </ul>
+                            <div class="form-group" [class.error]="basicformControls.firstname.touched && !basicformControls.firstname.valid">
+                                <input [ngModel]="patientInfo.user.firstName" formControlName="firstname" type="text" class="form-control" placeholder=""
+                                    [class.error]="!basicformControls.firstname.valid">
+                                <div class='error-list' *ngIf="basicformControls.firstname.touched && !basicformControls.firstname.valid">
+                                    <ul>
+                                        <li *ngIf="basicformControls.firstname.hasError('required')">First Name is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Middle Name</label>
-                    <div class="form-group">
-                        <input [ngModel]="patientInfo.user.middleName" formControlName="middlename" type="text" class="form-control" placeholder="">
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Last Name
+                        <div class="col-lg-4">
+                            <label class="form-label"> Middle Name</label>
+                            <div class="form-group">
+                                <input [ngModel]="patientInfo.user.middleName" formControlName="middlename" type="text" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="basicformControls.lastname.touched && !basicformControls.lastname.valid">
-                        <input [ngModel]="patientInfo.user.lastName" formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.lastname.valid">
-                        <div class='error-list' *ngIf="basicformControls.lastname.touched && !basicformControls.lastname.valid">
-                            <ul>
-                                <li *ngIf="basicformControls.lastname.hasError('required')">Last Name is required.</li>
-                            </ul>
+                            <div class="form-group" [class.error]="basicformControls.lastname.touched && !basicformControls.lastname.valid">
+                                <input [ngModel]="patientInfo.user.lastName" formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.lastname.valid">
+                                <div class='error-list' *ngIf="basicformControls.lastname.touched && !basicformControls.lastname.valid">
+                                    <ul>
+                                        <li *ngIf="basicformControls.lastname.hasError('required')">Last Name is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> Gender
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Gender
                                     <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
-                        <select [ngModel]="patientInfo.user.gender" formControlName="gender" class="select2-arrow form-control" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
+                            <div class="form-group" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
+                                <select [ngModel]="patientInfo.user.gender" formControlName="gender" class="select2-arrow form-control" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
                                              <option value="">-Select Gender-</option>
                                              <option disabled>────────────────────</option>
                                              <option value="1">Male</option>
                                              <option value="2">Female</option>
                                              <option value="3">Others</option>
                                          </select>
-                        <div class='error-list' *ngIf="basicformControls.gender.touched && !basicformControls.gender.valid">
-                            <ul>
-                                <li *ngIf="basicformControls.gender.hasError('required')">Gender is required.</li>
-                            </ul>
+                                <div class='error-list' *ngIf="basicformControls.gender.touched && !basicformControls.gender.valid">
+                                    <ul>
+                                        <li *ngIf="basicformControls.gender.hasError('required')">Gender is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> Marital Status
+                        <div class="col-lg-4">
+                            <label class="form-label"> Marital Status
                                             <span class="color-red">*</span>
                                         </label>
 
-                    <div class="form-group" [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
-                        <select formControlName="maritalStatusId" type="text" class="form-control" [(ngModel)]="martialStatus" placeholder="" [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                            <div class="form-group" [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                                <select formControlName="maritalStatusId" type="text" class="form-control" [(ngModel)]="martialStatus" placeholder="" [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Single</option>
                                         <option value="2">Married</option>
                                     </select>
-                        <div class='error-list' *ngIf="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
-                            <ul>
-                                <li *ngIf="basicformControls.maritalStatusId.hasError('required')">Marital Status is required.</li>
-                            </ul>
+                                <div class='error-list' *ngIf="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                                    <ul>
+                                        <li *ngIf="basicformControls.maritalStatusId.hasError('required')">Marital Status is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div *ngIf="martialStatus == '2'" class="col-lg-4">
-                    <label class="form-label"> Name of Spouse
+                        <div *ngIf="martialStatus == '2'" class="col-lg-4">
+                            <label class="form-label"> Name of Spouse
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                    <div class="form-group">
-                        <input formControlName="spouseName" [ngModel]="patientInfo.spouseName" type="text" class="form-control" placeholder="">
+                            <div class="form-group">
+                                <input formControlName="spouseName" [ngModel]="patientInfo.spouseName" type="text" class="form-control" placeholder="">
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> Date of Birth
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Date of Birth
                                         </label>
-                    <div class="form-group" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid">
-                        <div class='input-group date'>
-                            <p-calendar [(ngModel)]="dateOfBirth" (onSelect)="calculateAge()" formControlName="dob" [readonlyInput]="true" dateFormat="M d, yy"
-                                [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid"
-                                showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                            </p-calendar>
+                            <div class="form-group" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid">
+                                <div class='input-group date'>
+                                    <p-calendar [(ngModel)]="dateOfBirth" (onSelect)="calculateAge()" formControlName="dob" [readonlyInput]="true" dateFormat="M d, yy"
+                                        [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                                        [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid" showAnim="slideDown"
+                                        [showIcon]="true" icon="font-icon font-icon-calend">
+                                    </p-calendar>
+                                </div>
+                                <div class='error-list' *ngIf="basicformControls.dob.touched && !basicformControls.dob.valid">
+                                    <ul>
+                                        <li *ngIf="basicformControls.dob.hasError('required')">Date Of Birth is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class='error-list' *ngIf="basicformControls.dob.touched && !basicformControls.dob.valid">
-                            <ul>
-                                <li *ngIf="basicformControls.dob.hasError('required')">Date Of Birth is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="!isEighteenOrAbove" class="col-lg-4">
-                    <label class="form-label"> If patient is under 18 year of age,Parent's or Guardian's Name
+                        <div *ngIf="!isEighteenOrAbove" class="col-lg-4">
+                            <label class="form-label"> If patient is under 18 year of age,Parent's or Guardian's Name
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                    <!--<div class="form-group" [class.error]="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">-->
-                    <div class="form-group">
-                        <input formControlName="parentName" [ngModel]="patientInfo.parentOrGuardianName" type="text" class="form-control" placeholder="">
-                        <!--<div class='error-list' *ngIf="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">
+                            <!--<div class="form-group" [class.error]="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">-->
+                            <div class="form-group">
+                                <input formControlName="parentName" [ngModel]="patientInfo.parentOrGuardianName" type="text" class="form-control" placeholder="">
+                                <!--<div class='error-list' *ngIf="patientformControls.controls.parentName.touched && !patientformControls.controls.parentName.valid">
                             <ul>
                                 <li *ngIf="patientformControls.controls.parentName.hasError('required')">Parent's or Guardian's Name is required.</li>
                             </ul>
                         </div>-->
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> Language Preference 
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Language Preference 
                          <!--<span class="color-red">*</span>-->
                     </label>
-                    <div class="form-group">
-                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="languagePreference"></p-radioButton>
-                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="2" label="Spanish" [(ngModel)]="languagePreference"></p-radioButton>
-                        <p-radioButton formControlName="languagePreference" name="languagePreference" value="3" label="Other" [(ngModel)]="languagePreference"></p-radioButton>
-                    </div>
-                </div>
-                <div *ngIf="languagePreference == '3'" class="col-lg-4">
-                    <label class="form-label"> Other Language
+                            <div class="form-group">
+                                <p-radioButton formControlName="languagePreference" name="languagePreference" value="1" label="English" [(ngModel)]="languagePreference"></p-radioButton>
+                                <p-radioButton formControlName="languagePreference" name="languagePreference" value="2" label="Spanish" [(ngModel)]="languagePreference"></p-radioButton>
+                                <p-radioButton formControlName="languagePreference" name="languagePreference" value="3" label="Other" [(ngModel)]="languagePreference"></p-radioButton>
+                            </div>
+                        </div>
+                        <div *ngIf="languagePreference == '3'" class="col-lg-4">
+                            <label class="form-label"> Other Language
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                    <div class="form-group">
-                        <input formControlName="otherLanguage" [ngModel]="patientInfo.languagePreferenceOther" type="text" class="form-control" placeholder="">
+                            <div class="form-group">
+                                <input formControlName="otherLanguage" [ngModel]="patientInfo.languagePreferenceOther" type="text" class="form-control" placeholder="">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="text-center">
-            <button *ngIf="!referredToMe" [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+                <div class="text-center">
+                    <button *ngIf="!referredToMe" [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSavePatientProgress"></loader>
                 </button>
-            <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
-        </div>
+                    <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </section>
     </form>
 </div>

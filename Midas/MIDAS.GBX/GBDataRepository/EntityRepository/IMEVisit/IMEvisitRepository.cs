@@ -175,12 +175,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     }
                                     else
                                     {
-                                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
+                                        //return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient dosent have free slots on the planned visit time of " + ForDate.ToShortDateString() + " (" + StartTime.ToShortTimeString() + " - " + EndTime.ToShortTimeString() + ").", ErrorLevel = ErrorLevel.Error };
                                     }
                                 }
                                 else
                                 {
-                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
+                                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "The patient is not availabe on " + ForDate.ToShortDateString() + ".", ErrorLevel = ErrorLevel.Error };
                                 }
                             }
                         }
