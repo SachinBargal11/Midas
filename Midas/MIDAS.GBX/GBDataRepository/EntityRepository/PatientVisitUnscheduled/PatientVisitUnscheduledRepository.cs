@@ -44,6 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.SpecialtyId = PatientVisitUnscheduledDB.SpecialtyId;
                 PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
                 PatientVisitUnscheduledBO.ReferralId = PatientVisitUnscheduledDB.ReferralId;
+                PatientVisitUnscheduledBO.OrignatorCompanyId = PatientVisitUnscheduledDB.OrignatorCompanyId;
                 PatientVisitUnscheduledBO.Status = "Completed";
 
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
@@ -180,6 +181,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (IsEditMode == false)
                     {
                         PatientVisitUnscheduledDB.ReferralId = PatientVisitUnscheduledBO.ReferralId;
+                        PatientVisitUnscheduledDB.OrignatorCompanyId = PatientVisitUnscheduledBO.OrignatorCompanyId;
 
                         PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                         PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;
@@ -368,6 +370,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
                             PatientVisitUnscheduledDB.RoomTestId = PatientVisitUnscheduledBO.RoomTestId;
                             PatientVisitUnscheduledDB.ReferralId = ReferralDB.Id;
+                            PatientVisitUnscheduledDB.OrignatorCompanyId = PatientVisitUnscheduledBO.OrignatorCompanyId;
 
                             PatientVisitUnscheduledDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
                             PatientVisitUnscheduledDB.CreateDate = DateTime.UtcNow;

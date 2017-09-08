@@ -922,6 +922,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                .FirstOrDefault();
 
+            if (preferredMedicalProviderDB != null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "PrefMedProvider Company already associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
             bool IsAddPreferredMedicalProvider = false;
             if (preferredMedicalProviderDB == null)
             {

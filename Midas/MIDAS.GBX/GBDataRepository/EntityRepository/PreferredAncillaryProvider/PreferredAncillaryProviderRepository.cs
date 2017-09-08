@@ -934,6 +934,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                .FirstOrDefault();
 
+            if (preferredAncillaryProviderDB != null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "PrefAncillaryProviderId Company already associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
             bool IsAddPreferredAncillaryProvider = false;
             if (preferredAncillaryProviderDB == null)
             {

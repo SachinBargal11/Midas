@@ -723,6 +723,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                .FirstOrDefault();
 
+            if (AttorneyProviderDB != null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "PrefAttorneyProviderId Company already associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
             bool AttorneyProvider = false;
             if (AttorneyProviderDB == null)
             {
