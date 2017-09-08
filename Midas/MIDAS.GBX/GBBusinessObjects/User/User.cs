@@ -82,6 +82,12 @@ namespace MIDAS.GBX.BusinessObjects
         }
     }
 
+    public class UserNameValidate : GbObject
+    {
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+    }
+
     public class mUser : GbObject
     {
         [Required]

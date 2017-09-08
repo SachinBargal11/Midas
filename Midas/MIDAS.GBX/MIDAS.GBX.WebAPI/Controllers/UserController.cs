@@ -24,11 +24,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
         private IRequestHandler<User> requestHandler;
         private IRequestHandler<AddUser> adduserrequestHandler;
+        private IRequestHandler<UserNameValidate> requestHandlerUserNameValidate;
 
         public UserController()
         {
             requestHandler = new GbApiRequestHandler<User>();
             adduserrequestHandler = new GbApiRequestHandler<AddUser>();
+            requestHandlerUserNameValidate = new GbApiRequestHandler<UserNameValidate>();
         }
 
         [HttpPost]
@@ -114,11 +116,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetIsExistingUser(Request, User,SSN);
         }
 
-        [HttpGet]
-        [Route("checkIsExistingUser/{User}")]
-        public HttpResponseMessage CheckIsExistingUser(string User)
+        [HttpPost]
+        [Route("checkIsExistingUser")]
+        public HttpResponseMessage CheckIsExistingUser(UserNameValidate User)
         {
-            return requestHandler.GetObjects(Request, User);
+            return requestHandlerUserNameValidate.GetObjects(Request, User.UserName);
         }
 
         [HttpPost]
