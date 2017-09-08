@@ -48,7 +48,7 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "ngx-bootstrap": "^1.7.1",
-    "primeng": "^4.1.0",
+    "primeng": "4.0.3",
     "primeui": "^4.1.15",
     "reflect-metadata": "^0.1.10",
     "rrule": "^2.2.0",
