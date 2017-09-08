@@ -138,6 +138,7 @@ export class MedicalProviderListComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this._progressBarService.hide();

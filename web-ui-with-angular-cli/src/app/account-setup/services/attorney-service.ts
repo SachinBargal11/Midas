@@ -126,12 +126,13 @@ export class AttorneyMasterService {
     deleteAttorney(attorney: Attorney): Observable<Attorney> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            // return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyMaster/delete/' + attorney.id, {
-            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredAttorneyProvider/Delete/' + attorney.id).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/OTPCompanyMapping/deletePreferredCompany/' + attorney.prefAttorneyProviderId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data) => {
-                    let parsedAttorney: Attorney = null;
-                    parsedAttorney = AttorneyAdapter.parseResponse(data);
-                    resolve(parsedAttorney);
+                    let parsedProvider: Attorney = null;
+                    parsedProvider = AttorneyAdapter.parseResponse(data);
+                    resolve(parsedProvider);
                 }, (error) => {
                     reject(error);
                 });

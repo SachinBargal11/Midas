@@ -162,9 +162,9 @@ export class MedicalProviderMasterStore {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
-    deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
+  deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
         let providers = this._medicalProviderMaster.getValue();
-        let index = providers.findIndex((currentAttorney: MedicalProviderMaster) => currentAttorney.id === medicalProviderMaster.id);
+        let index = providers.findIndex((currentMedicalProvider: MedicalProviderMaster) => currentMedicalProvider.id === medicalProviderMaster.id);
         let promise = new Promise((resolve, reject) => {
             this._medicalProviderMasterService.deleteMedicalProvider(medicalProviderMaster)
                 .subscribe((provider: MedicalProviderMaster) => {
