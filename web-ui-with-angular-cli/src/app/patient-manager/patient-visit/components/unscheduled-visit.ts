@@ -266,7 +266,9 @@ export class UnscheduledVisitComponent implements OnInit {
                 patient: null,
                 case: null,
                 createByUserID: this.sessionStore.session.account.user.id,
-                eventStart: moment(this.eventStartAsDate)
+                eventStart: moment(this.eventStartAsDate),
+                orignatorCompanyId: this.sessionStore.session.currentCompany.id,
+
             });
 
             this._progressBarService.show();
@@ -311,7 +313,8 @@ export class UnscheduledVisitComponent implements OnInit {
                     patient: null,
                     case: null,
                     createByUserID: this.sessionStore.session.account.user.id,
-                    eventStart: moment(this.eventStartAsDate)
+                    eventStart: moment(this.eventStartAsDate),
+                    orignatorCompanyId: this.sessionStore.session.currentCompany.id,
                 })
             });
 

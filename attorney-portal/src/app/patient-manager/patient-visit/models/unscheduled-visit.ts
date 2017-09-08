@@ -28,7 +28,8 @@ const UnscheduledVisitRecord = Record({
     roomTestId: 0,
     notes: '',
     referralId: null,
-    status: ''
+    status: '',
+    orignatorCompanyId: 0,
     // visitStatusId: VisitStatus.SCHEDULED,
     // calendarEvent: null,
     // isDeleted: false,
@@ -56,7 +57,8 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
     roomTestId: number
     notes: string;
     referralId: number;
-    status: string
+    status: string;
+    orignatorCompanyId: number;
     // visitStatusId: VisitStatus;
     // calendarEvent: ScheduledEvent;
     // isDeleted: boolean;

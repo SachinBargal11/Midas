@@ -27,8 +27,8 @@ export class UnscheduledVisitAdapter {
             roomTestId: data.roomTestId,
             notes: data.notes,
             referralId: data.referralId,
-            status:data.status
-
+            status:data.status,
+            orignatorCompanyId: data.orignatorCompanyId,
 
         });
 

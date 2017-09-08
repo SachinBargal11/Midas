@@ -201,7 +201,7 @@ export class UnscheduledVisitComponent implements OnInit {
             this.selectedOption = 2;
             this.selectedTestId = parseInt(event.target.value);
         } else {
-            this.selectedMode = 0;   
+            this.selectedMode = 0;
         }
     }
 
@@ -222,14 +222,15 @@ export class UnscheduledVisitComponent implements OnInit {
             caseId: this.caseId,
             medicalProviderName: this.unscheduledForm.value.medicalProviderName,
             doctorName: this.unscheduledForm.value.doctorName,
-            specialtyId:this.selectedSpecialityId ? this.selectedSpecialityId : null ,
-            roomTestId:this.selectedTestId ? this.selectedTestId : null ,
+            specialtyId: this.selectedSpecialityId ? this.selectedSpecialityId : null,
+            roomTestId: this.selectedTestId ? this.selectedTestId : null,
             notes: this.unscheduledForm.value.notes,
-            referralId:null,
-            patient:null,
-            case:null,
+            referralId: null,
+            patient: null,
+            case: null,
             createByUserID: this.sessionStore.session.account.user.id,
             eventStart: moment(this.eventStartAsDate),
+            orignatorCompanyId: this.sessionStore.session.currentCompany.id,
             calendarEvent: new ScheduledEvent({
                 eventStart: moment(this.eventStartAsDate),
                 eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
