@@ -112,10 +112,10 @@ export class AncillaryMasterService {
         return <Observable<AncillaryMaster>>Observable.fromPromise(promise);
     }
 
-    deleteMedicalProvider(AncillaryMaster: AncillaryMaster): Observable<AncillaryMaster> {
+    deleteAncillary(AncillaryMaster: AncillaryMaster): Observable<AncillaryMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/Delete/' + AncillaryMaster.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/OTPCompanyMapping/deletePreferredCompany/' + AncillaryMaster.prefferedProvider.id + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
@@ -128,6 +128,8 @@ export class AncillaryMasterService {
         });
         return <Observable<AncillaryMaster>>Observable.from(promise);
     }
+
+
 
     getMedicalProviderById(providerId: Number): Observable<AncillaryMaster> {
         let promise: Promise<AncillaryMaster> = new Promise((resolve, reject) => {

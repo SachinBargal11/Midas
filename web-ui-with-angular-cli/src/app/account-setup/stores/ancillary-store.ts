@@ -113,11 +113,11 @@ export class AncillaryMasterStore {
         return <Observable<AncillaryMaster>>Observable.from(promise);
     }
 
-    deleteMedicalProvider(AncillaryMaster: AncillaryMaster) {
+    deleteAncillary(AncillaryMaster: AncillaryMaster) {
         let providers = this._ancillaryMaster.getValue();
         let index = providers.findIndex((currentAttorney: AncillaryMaster) => currentAttorney.id === AncillaryMaster.id);
         let promise = new Promise((resolve, reject) => {
-            this._ancillaryMasterService.deleteMedicalProvider(AncillaryMaster)
+            this._ancillaryMasterService.deleteAncillary(AncillaryMaster)
                 .subscribe((provider: AncillaryMaster) => {
                     this._ancillaryMaster.next(providers.delete(index));
                     resolve(AncillaryMaster);
@@ -127,4 +127,19 @@ export class AncillaryMasterStore {
         });
         return <Observable<AncillaryMaster>>Observable.from(promise);
     }
+
+    // deleteAttorney(attorney: Attorney) {
+    //     let attorneys = this._attorneyMaster.getValue();
+    //     let index = attorneys.findIndex((currentAttorney: Attorney) => currentAttorney.id === attorney.id);
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._attorneyMasterService.deleteAttorney(attorney)
+    //             .subscribe((attorney: Attorney) => {
+    //                 this._attorneyMaster.next(attorneys.delete(index));
+    //                 resolve(attorney);
+    //             }, error => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<Attorney>>Observable.from(promise);
+    // }
 }

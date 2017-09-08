@@ -193,7 +193,7 @@ export class AncillaryListComponent implements OnInit {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
                         let result;
-                        result = this._ancillaryMasterStore.deleteMedicalProvider(CurrentProvider);
+                        result = this._ancillaryMasterStore.deleteAncillary(CurrentProvider);
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
