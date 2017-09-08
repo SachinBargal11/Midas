@@ -58,10 +58,6 @@ export const CasesShellRoutes: Routes = [
                 data: {
                     breadcrumb: 'Add Case'
                 }
-            },
-            {
-                path: 'upload-consent/:caseId',
-                // component: PopupFileUpload
             }
         ]
     },

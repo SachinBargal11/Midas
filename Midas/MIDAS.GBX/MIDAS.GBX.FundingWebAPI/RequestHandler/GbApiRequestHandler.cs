@@ -766,18 +766,18 @@ namespace MIDAS.GBX.FundingWebAPI
             }
         }
 
-        public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id)
         {
@@ -831,18 +831,18 @@ namespace MIDAS.GBX.FundingWebAPI
             }
         }
 
-        public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id)
         {
@@ -1180,9 +1180,9 @@ namespace MIDAS.GBX.FundingWebAPI
             }
         }
 
-        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
+        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, int MedicalProviderId, DateTime FromDate, DateTime ToDate)
         {
-            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
+            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, MedicalProviderId, FromDate, ToDate);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

@@ -14,31 +14,31 @@ import { PatientsListComponent } from './patients/components/patients-list';
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientProfileComponent } from './patients/components/profile-patient';
-import { AddFamilyMemberComponent } from './patients/components/add-family-member';
-import { FamilyMemberListComponent } from './patients/components/family-member-list';
-import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
+import { AddFamilyMemberComponent } from './cases/components/add-family-member';
+import { FamilyMemberListComponent } from './cases/components/family-member-list';
+import { EditFamilyMemberComponent } from './cases/components/edit-family-member';
 import { AccidentInfoComponent } from './cases/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
-import { PatientEmployerComponent } from './patients/components/employer';
+import { CaseEmployerComponent } from './cases/components/employer';
 import { CaseShellComponent } from './cases/components/cases-shell';
 import { ReferringOfficeListComponent } from './cases/components/referring-office-list';
 import { AddReferringOfficeComponent } from './cases/components/add-referring-office';
 import { EditReferringOfficeComponent } from './cases/components/edit-referring-office';
-import { InsuranceListComponent } from './patients/components/insurance-list';
-import { AddInsuranceComponent } from './patients/components/add-insurance';
-import { EditInsuranceComponent } from './patients/components/edit-insurance';
+import { InsuranceListComponent } from './cases/components/insurance-list';
+import { AddInsuranceComponent } from './cases/components/add-insurance';
+import { EditInsuranceComponent } from './cases/components/edit-insurance';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
 import { AccidentService } from './cases/services/accident-services';
 import { AttorneyService } from './patients/services/attorney-services';
-import { EmployerService } from './patients/services/employer-service';
-import { FamilyMemberService } from './patients/services/family-member-service';
+import { EmployerService } from './cases/services/employer-service';
+import { FamilyMemberService } from './cases/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
 import { ReferringOfficeService } from './cases/services/referring-office-service';
 import { PatientsStore } from './patients/stores/patients-store';
-import { EmployerStore } from './patients/stores/employer-store';
-import { FamilyMemberStore } from './patients/stores/family-member-store';
+import { EmployerStore } from './cases/stores/employer-store';
+import { FamilyMemberStore } from './cases/stores/family-member-store';
 import { AccidentStore } from './cases/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
@@ -72,6 +72,7 @@ import { ReferralStore } from './cases/stores/referral-store';
 import { ReferralsShellComponent } from './referals/components/referrals-shell';
 import { InboundReferralsComponent } from './referals/components/inbound-referrals';
 import { OutboundReferralsComponent } from './referals/components/outbound-referrals';
+import { ExternalReferralComponent } from './referals/components/external-referral';
 
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
@@ -115,6 +116,16 @@ import { AvailableSlotsStore } from './referals/stores/available-slots-stores';
 import { AncillaryMasterStore } from '../account-setup/stores/ancillary-store';
 import { AncillaryMasterService } from '../account-setup/services/ancillary-service';
 
+// import { PatientVisitShellComponent } from './patient-visit/components/patient-visit-shell';
+import { ImeVisitComponent } from './patient-visit/components/ime-visit';
+import { EoVisitComponent } from './patient-visit/components/eo-visit';
+import { UnscheduledVisitComponent } from './patient-visit/components/unscheduled-visit';
+import { AutoInformationInfoComponent } from './cases/components/auto-Information';
+import { AutoInformationService } from './cases/services/autoInformation-service';
+import { AutoInformationStore } from './cases/stores/autoInformation-store';
+import { PriorAccidentComponent } from './cases/components/prior-accident';
+
+
 @NgModule({
     imports: [
         CommonModule,
@@ -143,7 +154,7 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
         EditFamilyMemberComponent,
         AccidentInfoComponent,
         AttorneyComponent,
-        PatientEmployerComponent,
+        CaseEmployerComponent,
         AddInsuranceComponent,
         CaseShellComponent,
         ReferringOfficeListComponent,
@@ -175,15 +186,20 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
         ReferralsShellComponent,
         InboundReferralsComponent,
         OutboundReferralsComponent,
+        ExternalReferralComponent,
         VisitShellComponent,
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,
         PendingReferralsComponent,
         BillingInfoComponent,
         PaymentListComponent,
-        CaseBasicLabelComponent
-
-
+        CaseBasicLabelComponent,
+        // PatientVisitShellComponent,
+        ImeVisitComponent,
+        EoVisitComponent,
+        UnscheduledVisitComponent,
+        AutoInformationInfoComponent,
+        PriorAccidentComponent
     ],
     providers: [
         PatientsService,
@@ -219,7 +235,8 @@ import { AncillaryMasterService } from '../account-setup/services/ancillary-serv
         PendingReferralService,
         PendingReferralStore,
         AvailableSlotsService,
-        AvailableSlotsStore, AncillaryMasterStore, AncillaryMasterService
+        AvailableSlotsStore, AncillaryMasterStore, AncillaryMasterService,
+        AutoInformationService, AutoInformationStore
     ]
 })
 export class PatientManagerModule { }

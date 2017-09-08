@@ -26,6 +26,8 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 })
 
 export class DemographicsComponent implements OnInit {
+    emergencyContactCellPhone: string;
+    emergencyContactPerson: string;
     cellPhone: string;
     faxNo: string;
     patientId: number;
@@ -67,6 +69,8 @@ export class DemographicsComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
+                    this.emergencyContactPerson = this.patientInfo.emergencyContactName;
+                    this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
                     this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
@@ -96,7 +100,9 @@ export class DemographicsComponent implements OnInit {
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
-                faxNo: ['']
+                faxNo: [''],
+                emergencyContactPerson: [''],
+                emergencyContactCellPhone: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -127,6 +133,8 @@ export class DemographicsComponent implements OnInit {
             height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             updateByUserId: this.sessionStore.session.account.user.id,
+            emergencyContactName:demographicsFormValues.contact.emergencyContactPerson,
+            emergencyContactPhone:demographicsFormValues.contact.emergencyContactCellPhone,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this.sessionStore.session.account.user.id,
                 contact: new Contact(_.extend(existingPatientJS.user.contact, {

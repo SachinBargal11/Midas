@@ -16,7 +16,8 @@ import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { StatesStore } from '../../../commons/stores/states-store';
-
+import * as _ from 'underscore';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'add-patient',
@@ -24,6 +25,11 @@ import { StatesStore } from '../../../commons/stores/states-store';
 })
 
 export class AddPatientComponent implements OnInit {
+    dob: moment.Moment;
+    isEighteenOrAbove: boolean = true;
+    languagePreference = '';
+    martialStatus = '';
+    selectedSocialMedia: any[] = [];
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -33,7 +39,13 @@ export class AddPatientComponent implements OnInit {
     patientformControls;
     isCitiesLoading = false;
     isSavePatientProgress = false;
-
+    uploadedFiles: any[] = [];
+    files: any[] = [];
+    method: string = 'POST';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    url;
+    uploadedFilesLicence: any[] = [];
+    fileLicence: any[] = [];
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -47,16 +59,19 @@ export class AddPatientComponent implements OnInit {
     ) {
         this.patientform = this.fb.group({
             userInfo: this.fb.group({
-                ssn: ['', Validators.required],
-                weight: [''],
-                height: [''],
+                ssn: [''],
                 maritalStatusId: ['', Validators.required],
                 dateOfFirstTreatment: [''],
                 dob: [''],
                 firstname: ['', Validators.required],
                 middlename: [''],
                 lastname: ['', Validators.required],
-                gender: ['', Validators.required]
+                gender: ['', Validators.required],
+                parentName: [''],
+                languagePreference: [''],
+                otherLanguage: [''],
+                spouseName: [''],
+                socialMedia: [''],
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -64,9 +79,11 @@ export class AddPatientComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', AppValidators.emailValidator],
+                alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredCommunication: ['']
+                preferredCommunication: [''],
+                emergencyContactPerson: [''],
+                emergencyContactCellPhone: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -82,6 +99,7 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.url = `${this._url}/documentmanager/uploadtoblob`;
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
@@ -90,18 +108,60 @@ export class AddPatientComponent implements OnInit {
             .subscribe(states => this.states = states);
     }
 
+    calculateAge() {
+        let now = moment();
+        // let age =  moment(this.dob, "YYYYMMDD").fromNow();
+        let age = now.diff(this.dob, 'years');
+        if (age < 18) {
+            this.isEighteenOrAbove = false;
+        } else {
+            this.isEighteenOrAbove = true;
+        }
+
+    }
+
+
+
     savePatient() {
+        let patientSocialMediaMappings: any[] = [];
+        if(this.selectedSocialMedia.length > 0){
+        _.forEach(this.selectedSocialMedia, (currentSelectedSocialMedia: any) => {
+            patientSocialMediaMappings.push({
+                socialMediaId: parseInt(currentSelectedSocialMedia)
+            })
+        })
+        }else{
+         patientSocialMediaMappings;
+        }
+        
+        let patientLanguagePreferenceMappings: any[] = [];
+         if(this.languagePreference != ''){
+         patientLanguagePreferenceMappings.push({
+            languagePreferenceId: parseInt(this.languagePreference)
+        })
+        }else{
+         patientLanguagePreferenceMappings;
+        }
+
         this.isSavePatientProgress = true;
         let patientFormValues = this.patientform.value;
         let result;
         let patient = new Patient({
             ssn: patientFormValues.userInfo.ssn,
-            weight: patientFormValues.userInfo.weight,
-            height: patientFormValues.userInfo.height,
+            // weight: patientFormValues.userInfo.weight,
+            // height: patientFormValues.userInfo.height,
             dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
             maritalStatusId: patientFormValues.userInfo.maritalStatusId,
             createByUserId: this._sessionStore.session.account.user.id,
             companyId: this._sessionStore.session.currentCompany.id,
+            patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+            languagePreferenceOther: parseInt(this.languagePreference) == 3 ? patientFormValues.userInfo.otherLanguage : null,
+            patientSocialMediaMappings: patientSocialMediaMappings,
+            parentOrGuardianName: !this.isEighteenOrAbove ? patientFormValues.userInfo.parentName : null,
+            emergencyContactName: patientFormValues.contact.emergencyContactPerson,
+            emergencyContactPhone: patientFormValues.contact.emergencyContactCellPhone,
+            legallyMarried: null,
+            spouseName: parseInt(this.martialStatus) == 2 ? patientFormValues.userInfo.spouseName : null,
             user: new User({
                 dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                 firstName: patientFormValues.userInfo.firstname,
@@ -137,6 +197,8 @@ export class AddPatientComponent implements OnInit {
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
+                this.uploadProfileImage(response.id);
+                this.uploadLicenceImage(response.id);
                 let notification = new Notification({
                     'title': 'Patient added successfully!',
                     'type': 'SUCCESS',
@@ -164,4 +226,48 @@ export class AddPatientComponent implements OnInit {
 
     }
 
+    onUpload(event) {
+        for (let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+        for (let file of event.fileLicence) {
+            this.uploadedFilesLicence.push(file);
+        }
+
+        //this.msgs = [];
+        //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
+    }
+    myUploader(event) {
+        this.files = event.files;
+    }
+    uploadProfileImage(patientId: number) {
+        let xhr = new XMLHttpRequest(),
+            formData = new FormData();
+
+        for (let i = 0; i < this.files.length; i++) {
+            formData.append(this.files[i].name, this.files[i], this.files[i].name);
+        }
+
+        xhr.open(this.method, this.url, true);
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        // xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.withCredentials = false;
+        xhr.send(formData);
+    }
+
+    licenceUploader(event) {
+        this.fileLicence = event.files;
+    }
+    uploadLicenceImage(patientId: number) {
+        let xhr = new XMLHttpRequest(),
+            formData = new FormData();
+        for (let i = 0; i < this.fileLicence.length; i++) {
+            formData.append(this.fileLicence[i].name, this.fileLicence[i], this.fileLicence[i].name);
+        }
+        xhr.open(this.method, this.url, true);
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        //xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.withCredentials = false;
+        xhr.send(formData);
+    }
 }

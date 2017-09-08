@@ -7,135 +7,228 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-   //public class Referral : GbObject
-   // {
-   //     [JsonProperty("caseId")]
-   //     public int CaseId { get; set; }
+    public class Referral : GbObject
+    {
+        [JsonProperty("pendingReferralId")]
+        public int? PendingReferralId { get; set; }
 
-   //     [JsonProperty("referringCompanyId")]
-   //     public int ReferringCompanyId { get; set; }
+        [JsonProperty("fromCompanyId")]
+        public int FromCompanyId { get; set; }
 
-   //     [JsonProperty("referringLocationId")]
-   //     public int ReferringLocationId { get; set; }
+        [JsonProperty("fromLocationId")]
+        public int? FromLocationId { get; set; }
 
-   //     [JsonProperty("referringUserId")]
-   //     public int ReferringUserId { get; set; }
+        [JsonProperty("fromDoctorId")]
+        public int? FromDoctorId { get; set; }
 
-   //     [JsonProperty("referredToCompanyId")]
-   //     public int? ReferredToCompanyId { get; set; }
+        [JsonProperty("fromUserId")]
+        public int? FromUserId { get; set; }
 
-   //     [JsonProperty("referredToLocationId")]
-   //     public int? ReferredToLocationId{ get; set; }
+        [JsonProperty("forSpecialtyId")]
+        public int? ForSpecialtyId { get; set; }
 
-   //     [JsonProperty("referredToDoctorId")]
-   //     public int? ReferredToDoctorId{ get; set; }
+        [JsonProperty("forRoomId")]
+        public int? ForRoomId { get; set; }
 
-   //     [JsonProperty("referredToRoomId")]
-   //     public int? ReferredToRoomId{ get; set; }
+        [JsonProperty("forRoomTestId")]
+        public int? ForRoomTestId { get; set; }
 
-   //     [JsonProperty("note")]
-   //     public string Note{ get; set; }
+        [JsonProperty("toCompanyId")]
+        public int? ToCompanyId { get; set; }
 
-   //     [JsonProperty("referredByEmail")]
-   //     public string ReferredByEmail{ get; set; }
+        [JsonProperty("toLocationId")]
+        public int? ToLocationId { get; set; }
 
-   //     [JsonProperty("referredToEmail")]
-   //     public string ReferredToEmail{ get; set; }
+        [JsonProperty("toDoctorId")]
+        public int? ToDoctorId { get; set; }
 
-   //     [JsonProperty("referralAccepted")]
-   //     public bool? ReferralAccepted{ get; set; }
+        [JsonProperty("toRoomId")]
+        public int? ToRoomId { get; set; }
 
-   //     [JsonProperty("referredToDoctor")]
-   //     public Doctor Doctor { get; set; }
+        [JsonProperty("scheduledPatientVisitId")]
+        public int? ScheduledPatientVisitId { get; set; }
 
-   //     [JsonProperty("referringUser")]
-   //     public User User { get; set; }
+        [JsonProperty("dismissedBy")]
+        public int? DismissedBy { get; set; }
 
-   //     [JsonProperty("referredToLocation")]
-   //     public Location Location { get; set; }
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
-   //     [JsonProperty("referringLocation")]
-   //     public Location Location1 { get; set; }
+        [JsonProperty("fromCompany")]
+        public Company Company { get; set; }
 
-   //     [JsonProperty("ReferredToCompany")]
-   //     public Company Company { get; set; }
+        [JsonProperty("toCompany")]
+        public Company Company1 { get; set; }
 
-   //     [JsonProperty("referringCompany")]
-   //     public Company Company1 { get; set; }
+        [JsonProperty("fromDoctor")]
+        public Doctor Doctor { get; set; }
 
-   //     [JsonProperty("referredToSpecialtyId")]
-   //     public int? ReferredToSpecialtyId { get; set; }
+        [JsonProperty("toDoctor")]
+        public Doctor Doctor1 { get; set; }
 
-   //     [JsonProperty("referredToRoomTestId")]
-   //     public int? ReferredToRoomTestId { get; set; }
+        [JsonProperty("fromLocation")]
+        public Location Location { get; set; }
 
-   //     [JsonProperty("firstName")]
-   //     public string FirstName { get; set; }
+        [JsonProperty("toLocation")]
+        public Location Location1 { get; set; }
 
-   //     [JsonProperty("lastName")]
-   //     public string LastName { get; set; }
+        [JsonProperty("scheduledPatientVisit")]
+        public PatientVisit PatientVisit { get; set; }
 
-   //     [JsonProperty("cellPhone")]
-   //     public string CellPhone { get; set; }
+        [JsonProperty("pendingReferral")]
+        public PendingReferral PendingReferral { get; set; }
 
-   //     [JsonProperty("room")]
-   //     public Room Room { get; set; }
+        [JsonProperty("forRoom")]
+        public Room Room { get; set; }
 
-   //     [JsonProperty("case")]
-   //     public Case Case { get; set; }
+        [JsonProperty("toRoom")]
+        public Room Room1 { get; set; }
 
-   //     [JsonProperty("referredToRoomTest")]
-   //     public RoomTest RoomTest { get; set; }
+        [JsonProperty("forRoomTest")]
+        public RoomTest RoomTest { get; set; }
 
-   //     [JsonProperty("referredToSpecialty")]
-   //     public Specialty Specialty { get; set; }
+        [JsonProperty("forSpecialty")]
+        public Specialty Specialty { get; set; }
 
-   //     [JsonProperty("referralDocument")]
-   //     public List<ReferralDocument> ReferralDocument { get; set; }
-   // }
+        [JsonProperty("dismissedByUser")]
+        public User User { get; set; }
 
-    //public class mReferral : GbObject
-    //{
-    //    [JsonProperty("caseId")]
-    //    public int CaseId { get; set; }
+        [JsonProperty("fromUser")]
+        public User User1 { get; set; }
 
-    //    [JsonProperty("referringCompanyId")]
-    //    public int ReferringCompanyId { get; set; }
+        [JsonProperty("case")]
+        public Case Case { get; set; }
 
-    //    [JsonProperty("referringLocationId")]
-    //    public int ReferringLocationId { get; set; }
+        [JsonProperty("referralProcedureCode")]
+        public List<ReferralProcedureCode> ReferralProcedureCode { get; set; }
+    }
 
-    //    [JsonProperty("referringUserId")]
-    //    public int ReferringUserId { get; set; }
+    public class ReferralList : GbObject
+    {
+        [JsonProperty("pendingReferralId")]
+        public int? PendingReferralId { get; set; }
 
-    //    [JsonProperty("referredByEmail")]
-    //    public string ReferredByEmail { get; set; }
+        [JsonProperty("fromCompanyId")]
+        public int FromCompanyId { get; set; }
 
-    //    [JsonProperty("referredToEmail")]
-    //    public string ReferredToEmail { get; set; }
+        [JsonProperty("fromLocationId")]
+        public int? FromLocationId { get; set; }
 
-    //    [JsonProperty("referralAccepted")]
-    //    public bool? ReferralAccepted { get; set; }
+        [JsonProperty("fromDoctorId")]
+        public int? FromDoctorId { get; set; }
 
-    //    [JsonProperty("mReferredToDoctor")]
-    //    public mDoctor mDoctor { get; set; }
+        [JsonProperty("fromUserId")]
+        public int? FromUserId { get; set; }
 
-    //    [JsonProperty("mReferringUser")]
-    //    public mUser mUser { get; set; }
+        [JsonProperty("forSpecialtyId")]
+        public int? ForSpecialtyId { get; set; }
 
-    //    [JsonProperty("referringLocation")]
-    //    public Location Location1 { get; set; }
+        [JsonProperty("forRoomId")]
+        public int? ForRoomId { get; set; }
 
-    //    [JsonProperty("ReferredToCompany")]
-    //    public Company Company { get; set; }
+        [JsonProperty("forRoomTestId")]
+        public int? ForRoomTestId { get; set; }
 
-    //    [JsonProperty("referringCompany")]
-    //    public Company Company1 { get; set; }
+        [JsonProperty("toCompanyId")]
+        public int? ToCompanyId { get; set; }
 
-    //    [JsonProperty("firstName")]
-    //    public string FirstName { get; set; }
+        [JsonProperty("toLocationId")]
+        public int? ToLocationId { get; set; }
 
-    //    [JsonProperty("mReferralDocument")]
-    //    public List<mReferralDocument> mReferralDocument { get; set; }
-    //}
+        [JsonProperty("toDoctorId")]
+        public int? ToDoctorId { get; set; }
+
+        [JsonProperty("toRoomId")]
+        public int? ToRoomId { get; set; }
+
+        [JsonProperty("scheduledPatientVisitId")]
+        public int? ScheduledPatientVisitId { get; set; }
+
+        [JsonProperty("dismissedBy")]
+        public int? DismissedBy { get; set; }
+
+        [JsonProperty("patientId")]
+        public int? PatientId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int? CaseId { get; set; }
+
+        [JsonProperty("patientVisitId")]
+        public int? PatientVisitId { get; set; }
+
+        [JsonProperty("patientFirstName")]
+        public string PatientFirstName { get; set; }
+
+        [JsonProperty("patientLastName")]
+        public string PatientLastName { get; set; }
+
+        //[JsonProperty("fromCompany")]
+        //public Company Company { get; set; }
+        [JsonProperty("fromCompanyName")]
+        public string FromCompanyName { get; set; }
+
+        //[JsonProperty("toCompany")]
+        //public Company Company1 { get; set; }
+        [JsonProperty("toCompanyName")]
+        public string ToCompanyName { get; set; }
+
+        //[JsonProperty("fromDoctor")]
+        //public Doctor Doctor { get; set; }
+        [JsonProperty("fromDoctorFirstName")]
+        public string FromDoctorFirstName { get; set; }
+
+        [JsonProperty("fromDoctorLastName")]
+        public string FromDoctorLastName { get; set; }
+
+        //[JsonProperty("toDoctor")]
+        //public Doctor Doctor1 { get; set; }
+        [JsonProperty("toDoctorFirstName")]
+        public string ToDoctorFirstName { get; set; }
+
+        [JsonProperty("toDoctorLastName")]
+        public string ToDoctorLastName { get; set; }
+
+        //[JsonProperty("fromLocation")]
+        //public Location Location { get; set; }
+        [JsonProperty("fromLocationName")]
+        public string FromLocationName { get; set; }
+
+        //[JsonProperty("toLocation")]
+        //public Location Location1 { get; set; }
+        [JsonProperty("toLocationName")]
+        public string ToLocationName { get; set; }
+
+        //[JsonProperty("scheduledPatientVisit")]
+        //public PatientVisit2 PatientVisit2 { get; set; }
+
+        [JsonProperty("pendingReferral")]
+        public PendingReferral PendingReferral { get; set; }
+
+        [JsonProperty("forRoom")]
+        public Room Room { get; set; }
+
+        [JsonProperty("toRoom")]
+        public Room Room1 { get; set; }
+
+        [JsonProperty("forRoomTest")]
+        public RoomTest RoomTest { get; set; }
+
+        [JsonProperty("forSpecialty")]
+        public Specialty Specialty { get; set; }
+
+        //[JsonProperty("dismissedByUser")]
+        //public User User { get; set; }
+
+        [JsonProperty("referralProcedureCode")]
+        public List<ReferralProcedureCode> ReferralProcedureCode { get; set; }
+
+        [JsonProperty("referralDocument")]
+        public List<ReferralDocument> ReferralDocument { get; set; }
+
+        [JsonProperty("case")]
+        public Case Case { get; set; }
+
+        [JsonProperty("fromUser")]
+        public User User1 { get; set; }
+    }
 }

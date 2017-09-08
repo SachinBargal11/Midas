@@ -86,31 +86,31 @@ export class PatientVisitListComponent implements OnInit {
     }
 
     loadPatientVisits() {
-        this._progressBarService.show();
-        this._patientVisitStore.getPatientVisitsByCaseId(this.caseId)
-            .subscribe((visits: PatientVisit[]) => {
-                let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
-                    return currentVisit.eventStart != null && currentVisit.eventEnd != null;
-                });
+        // this._progressBarService.show();
+        // this._patientVisitStore.getPatientVisitsByCaseId(this.caseId)
+        //     .subscribe((visits: PatientVisit[]) => {
+        //         let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
+        //             return currentVisit.eventStart != null && currentVisit.eventEnd != null;
+        //         });
 
-                // this.visits = matchingVisits.reverse();
-                let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.doctor != null;
-                });
-                this.doctorsVisits = matchingDoctorVisits.reverse();
+        //         // this.visits = matchingVisits.reverse();
+        //         let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+        //             return currentVisit.doctor != null;
+        //         });
+        //         this.doctorsVisits = matchingDoctorVisits.reverse();
 
-                let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.room != null;
-                });
-                this.roomsVisits = matchingRoomVisits.reverse();
+        //         let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+        //             return currentVisit.room != null;
+        //         });
+        //         this.roomsVisits = matchingRoomVisits.reverse();
 
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+        //     },
+        //     (error) => {
+        //         this._progressBarService.hide();
+        //     },
+        //     () => {
+        //         this._progressBarService.hide();
+        //     });
     }
     loadPatientVisitsLazy(event: LazyLoadEvent) {
         setTimeout(() => {

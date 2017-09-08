@@ -1,3 +1,5 @@
+import { UnscheduledVisitAdapter } from './adapters/unscheduled-visit-adapter';
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 import { Procedure } from '../../../commons/models/procedure';
 import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
@@ -15,6 +17,10 @@ import { VisitDocumentAdapter } from './adapters/visit-document-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { Consent } from '../../cases/models/consent';
+import { ImeVisit } from '../models/ime-visit';
+import { EoVisit } from '../models/eo-visit';
+import { ImeVisitAdapter } from './adapters/ime-visit-adapter';
+import { EoVisitAdapter } from './adapters/eo-visit-adapter';
 
 @Injectable()
 export class PatientVisitService {
@@ -109,11 +115,13 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByDoctorAndDates(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
             let toDate = endDate.format('YYYY-MM-DD');
-            return this._http.get(this._url + '/patientVisit/getByDoctorAndDates/' + doctorId + '/' + fromDate + '/' + toDate, {
+            return this._http.get(this._url + '/patientVisit/getByDoctorAndDates/' + doctorId + '/' + companyId + '/' + fromDate + '/' + toDate, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -129,6 +137,7 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByDoctorDatesAndName(starDate: any, endDate: any, doctorName: string): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             let fromDate = starDate.format('YYYY-MM-DD');
@@ -149,7 +158,6 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
-
 
     getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
@@ -247,6 +255,25 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getPatientVisitsByLocationDoctorAndSpecialityId(locationId: number, doctorId: number, specialtyId:number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/getByLocationDoctorAndSpecialityId/' + locationId + '/' + doctorId + '/' + specialtyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
     addPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise: Promise<PatientVisit> = new Promise((resolve, reject) => {
             let requestData = _.extend(patientVisitDetail.toJS(), {
@@ -260,7 +287,7 @@ export class PatientVisitService {
             requestData.createByUserID = this._sessionStore.session.account.user.id;
             requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
             // requestData.calendarEvent = _.omit(requestData.calendarEvent, 'transportProviderId');
-            requestData = _.omit(requestData, 'caseId');
+            // requestData = _.omit(requestData, 'caseId');
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -351,8 +378,25 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
-
     }
+    
+    // cancelCurrentOccurrenceVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/patientVisit/cancelSingleEventOccurrence/' + patientVisitDetail.calendarEvent.id , {
+    //             headers: this._headers
+    //         })
+    //             .map(res => res.json())
+    //             .subscribe((data: any) => {
+    //                 let parsedCalendarEvent: ScheduledEvent = null;
+    //                 parsedCalendarEvent = ScheduledEventAdapter.parseResponse(data);
+    //                 let updatedPatientVisitDetail: PatientVisit = <PatientVisit>patientVisitDetail.set('calendarEvent', parsedCalendarEvent);
+    //                 resolve(updatedPatientVisitDetail);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    // }
 
     updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
@@ -376,11 +420,58 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
 
+    updateEoVisitDetail(eoVisitDetail: EoVisit): Observable<EoVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = eoVisitDetail.toJS();
+            let procedures = _.map(requestData.patientVisitProcedureCodes, (currentProcedure: Procedure) => {
+                return { 'procedureCodeId': currentProcedure.id };
+            })
+            requestData.patientVisitProcedureCodes = procedures;
+            requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
+            requestData = _.omit(requestData, 'calendarEvent');
+            return this._http.post(this._url + '/EOvisit/SaveEOVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedEoVisit: EoVisit = null;
+                    parsedEoVisit = EoVisitAdapter.parseResponse(data);
+                    resolve(parsedEoVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<EoVisit>>Observable.fromPromise(promise);
+    }
+
+    updateImeVisitDetail(imeVisitDetail: ImeVisit): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = imeVisitDetail.toJS();
+            let procedures = _.map(requestData.patientVisitProcedureCodes, (currentProcedure: Procedure) => {
+                return { 'procedureCodeId': currentProcedure.id };
+            })
+            requestData.patientVisitProcedureCodes = procedures;
+            requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;
+            requestData.VisitCreatedByCompanyId = this._sessionStore.session.currentCompany.id;
+            requestData = _.omit(requestData, 'calendarEvent');
+            return this._http.post(this._url + '/IMEvisit/SaveIMEVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedImeVisit: ImeVisit = null;
+                    parsedImeVisit = ImeVisitAdapter .parseResponse(data);
+                    resolve(parsedImeVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
     }
 
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
-
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PatientVisit/DeleteVisit/' + patientVisitDetail.id, {
                 headers: this._headers
@@ -410,6 +501,7 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit>>Observable.from(promise);
     }
+
     downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
         let thefile = {};
         let companyId = this._sessionStore.session.currentCompany.id;
@@ -442,5 +534,185 @@ export class PatientVisitService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
+    addImeVisit(requestData: any): Observable<ImeVisit> {
+        let promise: Promise<ImeVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/IMEvisit/SaveIMEVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
+    addUnscheduledVisit(requestData: any): Observable<UnscheduledVisit> {
+        let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/patientVisitUnscheduled/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+      updateUnscheduledVisitDetail(unscheduledVisitDetail: UnscheduledVisit): Observable<UnscheduledVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = unscheduledVisitDetail.toJS();
+            return this._http.post(this._url + '/patientVisitUnscheduled/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedUnscheduledVisit: UnscheduledVisit = null;
+                    parsedUnscheduledVisit = UnscheduledVisitAdapter.parseResponse(data);
+                    resolve(parsedUnscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+      getUnscheduledVisitsByCaseId(caseId: number): Observable<UnscheduledVisit[]> {
+        let promise: Promise<UnscheduledVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let unscheduledVisit = (<Object[]>data).map((data: any) => {
+                        return UnscheduledVisitAdapter.parseResponse(data);
+                    });
+                    resolve(unscheduledVisit);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.fromPromise(promise);
+    }
+
+     getUnscheduledVisitDetailById(patientVisitId: Number): Observable<UnscheduledVisit> {
+        let promise: Promise<UnscheduledVisit> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/patientVisitUnscheduled/get/' + patientVisitId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let unscheduledVisits = null;
+                    if (data) {
+                        unscheduledVisits = UnscheduledVisitAdapter.parseResponse(data);
+                        resolve(unscheduledVisits);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UnscheduledVisit>>Observable.fromPromise(promise);
+    }
+
+    getPatientVisitsByCompanyId(): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getImeVisitByCompanyId(): Observable<ImeVisit[]> {
+         let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/IMEVisit/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let imeVisits =(<Object[]>data).map((data: any) => {
+                        return ImeVisitAdapter.parseResponse(data);
+                    });
+                    resolve(imeVisits);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
+
+    
+    addEoVisit(requestData: any): Observable<EoVisit> {
+        let promise: Promise<EoVisit> = new Promise((resolve, reject) => {
+          let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/EOvisit/SaveEOVisit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<EoVisit>>Observable.fromPromise(promise);
+    }
+
+    getEoVisitByCompanyId(): Observable<EoVisit[]> {
+         let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<EoVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/EOvisit/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let eoVisits =(<Object[]>data).map((data: any) => {
+                        return EoVisitAdapter.parseResponse(data);
+                    });
+                    resolve(eoVisits);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<EoVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getEoVisitByCompanyAndDoctorId(doctorId: number): Observable<EoVisit[]> {
+         let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<EoVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/EOvisit/getByCompanyAndDoctorId/' + companyId +  '/' + doctorId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let eoVisits =(<Object[]>data).map((data: any) => {
+                        return EoVisitAdapter.parseResponse(data);
+                    });
+                    resolve(eoVisits);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<EoVisit[]>>Observable.fromPromise(promise);
+    }
 }
 

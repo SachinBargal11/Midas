@@ -30,6 +30,7 @@ import { SignatureFieldComponent } from '../commons/components/signature-field/s
 import { AddMedicalProviderComponent } from '../account-setup/components/medical-provider-master/add-medical-provider';
 import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
 import { AssociateUsersComponent } from '../commons/components/associate-users/associate-users-component';
+import { UnscheduledVisitDetailComponent } from '../commons/components/unscheduled-visit-detail/unscheduled-visit-detail.component'
 
 import {
   AccordionModule,
@@ -115,7 +116,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReferralsComponent,
     AddMedicalProviderComponent,
     VisitDetailComponent,
-    AssociateUsersComponent
+    AssociateUsersComponent,
+    UnscheduledVisitDetailComponent
   ],
   exports: [
     CommonModule,
@@ -169,7 +171,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReferralsComponent,
     AddMedicalProviderComponent,
     VisitDetailComponent,
-    AssociateUsersComponent
+    AssociateUsersComponent,
+    UnscheduledVisitDetailComponent
   ]
 })
 export class CommonsModule { }

@@ -73,12 +73,16 @@ export class CaseAdapter {
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
+                claimFileNumber: data.claimFileNumber,
                 createdByCompanyId: data.createdByCompanyId,
                 orignatorCompanyId: data.orignatorCompanyId,
                 orignatorCompanyName: data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
                 attorneyProviderId: data.attorneyProviderId,
-                medicalProviderId: data.medicalProviderId
+                medicalProviderId: data.medicalProviderId,
+                medicare:data.medicare,
+                medicaid:data.medicaid,
+                ssdisabililtyIncome:data.ssdisabililtyIncome
             });
         }
         return patient_case;
@@ -143,12 +147,16 @@ export class CaseAdapter {
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
+                claimFileNumber: data.claimFileNumber,
                 createdByCompanyId: data.createdByCompanyId,
                 orignatorCompanyId: data.orignatorCompanyId,
                 orignatorCompanyName: data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
                 attorneyProviderId: data.attorneyProviderId,
-                medicalProviderId: data.medicalProviderId
+                medicalProviderId: data.medicalProviderId,
+                medicare:data.medicare,
+                medicaid:data.medicaid,
+                ssdisabililtyIncome:data.ssdisabililtyIncome
             });
         }
         return patient_case;

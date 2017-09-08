@@ -116,7 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <!--<div class="col-lg-4">
                     <label class="form-label"> Tax type
                                 <span class="color-red">*</span>
                             </label>
@@ -130,6 +130,21 @@
                         <div class='error-list' *ngIf="userformControls.doctor.controls.taxType.touched && !userformControls.doctor.controls.taxType.valid">
                             <ul>
                                 <li *ngIf="userformControls.doctor.controls.taxType.hasError('required')">Tax Type is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> Tax type
+                            </label>
+                    <div class="form-group" [class.error]="userformControls.doctor.controls.taxType.touched && !userformControls.doctor.controls.taxType.valid">
+                        <select formControlName="taxType" type="text" class="form-control" placeholder="" [class.error]="userformControls.doctor.controls.taxType.touched && !userformControls.doctor.controls.taxType.valid">
+                            <option value="">-Select Tax Type-</option>
+                            <option *ngFor="let taxType of taxTypes" value="{{taxType.id}}">{{taxType.name}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="userformControls.doctor.controls.taxType.touched && !userformControls.doctor.controls.taxType.valid">
+                            <ul>
+                                <li *ngIf="userformControls.address.controls.state.hasError('required')">Tax Type is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -200,8 +215,8 @@
                             </label>
                     <div class="form-group" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
                         <!--<input type="text" formControlName="cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid" class="form-control"/>-->
-                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid"
-                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                         <div class='error-list' *ngIf="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
                             <ul>
                                 <li *ngIf="userformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>

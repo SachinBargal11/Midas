@@ -34,6 +34,7 @@ export class DocumentTypeComponent implements OnInit {
     isDeleteProgress: boolean = false;
     length: number;
     documentList: string;
+    documentTypes = '0';
 
     constructor(
         private _router: Router,
@@ -111,6 +112,7 @@ export class DocumentTypeComponent implements OnInit {
                 this._notificationsService.success('Success!', 'Document type added successfully');
                 this.loadDocumentForObjectType(this.companyId, this.currentId)
                 this.documentList = '';
+                this.documentTypes = '0';
             },
             (error) => {
                 let errString = 'Unable to add document type.';

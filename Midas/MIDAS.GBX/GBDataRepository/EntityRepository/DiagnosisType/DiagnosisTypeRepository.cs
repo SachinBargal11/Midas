@@ -38,6 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             diagnosisTypeBO.ID = diagnosisType.Id;
             diagnosisTypeBO.DiagnosisTypeText = diagnosisType.DiagnosisTypeText;
             //diagnosisTypeBO.CompanyId = diagnosisType.CompanyId;
+            diagnosisTypeBO.ICDTypeCodeID = diagnosisType.ICDTypeCodeID;
 
             if (diagnosisType.IsDeleted.HasValue)
                 diagnosisTypeBO.IsDeleted = diagnosisType.IsDeleted.Value;
@@ -80,6 +81,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         //    return (object)boDiagnosisType;
         //}
+        #endregion
+
+        #region GetDiagnosisType By CompanyID and ICDTypeCodeId
+        public override object Get(int companyId, int ICDTypeCodeId)
+        {
+            var DiagnosisTypeDB = from dt in _context.DiagnosisTypes
+                                  join dtc in _context.DiagnosisTypeCompanies on dt.Id equals dtc.DiagnosisTypeID
+                                  where
+                                  dt.ICDTypeCodeID == ICDTypeCodeId
+                                  && dtc.CompanyID == companyId
+                                  && (dt.IsDeleted.HasValue == false || (dt.IsDeleted.HasValue == true && dt.IsDeleted.Value == false))
+                                  && (dtc.IsDeleted.HasValue == false || (dtc.IsDeleted.HasValue == true && dtc.IsDeleted.Value == false))
+                                  select new
+                                  {
+                                      dt.Id,
+                                      dt.DiagnosisTypeText,
+                                      dt.ICDTypeCodeID
+                                  };
+
+
+            if (DiagnosisTypeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this CompanyId and ICDTypeCodeId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)DiagnosisTypeDB;
+        }
         #endregion
 
         #region GetAll

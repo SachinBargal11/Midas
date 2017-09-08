@@ -29,8 +29,7 @@
     </div>
 </section>-->
 <p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
-    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer"
-    [businessHours]="businessHours">
+    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
 <p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
     <p-footer>
@@ -155,7 +154,7 @@
     </form>
 </p-dialog>
 
-<p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+<p-dialog [minWidth]="500" [width]="1200" [height]="300" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <p-tabView>
@@ -251,13 +250,13 @@
                         (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 </p-dialog>
             </p-tabPanel>
-            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
                 <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
             </p-tabPanel>
-            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
                 <app-diagnosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-diagnosis>
             </p-tabPanel>
-            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
                 <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
             </p-tabPanel>
         </p-tabView>

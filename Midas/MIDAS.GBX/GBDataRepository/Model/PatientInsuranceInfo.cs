@@ -21,7 +21,6 @@ namespace MIDAS.GBX.DataRepository.Model
         }
     
         public int Id { get; set; }
-        public int PatientId { get; set; }
         public string PolicyHolderName { get; set; }
         public Nullable<int> PolicyHolderAddressInfoId { get; set; }
         public Nullable<int> PolicyHolderContactInfoId { get; set; }
@@ -39,16 +38,17 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> InsuranceMasterId { get; set; }
+        public int CaseId { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual AddressInfo AddressInfo1 { get; set; }
+        public virtual Case Case { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual InsuranceMaster InsuranceMaster { get; set; }
         public virtual InsuranceType InsuranceType { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
         public virtual PolicyOwner PolicyOwner { get; set; }
     }
 }

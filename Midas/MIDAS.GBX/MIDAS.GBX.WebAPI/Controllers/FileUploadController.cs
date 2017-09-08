@@ -73,7 +73,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                         }
                         else if (type == "visit")
                         {
-                            PatientVisit2Controller visitAPI = new PatientVisit2Controller();
+                            PatientVisitController visitAPI = new PatientVisitController();
                             visitAPI.ControllerContext = ControllerContext;
                             return visitAPI.AddUploadedFileData(id, Path.Combine(directinfo.FullName, fileName));
                         }

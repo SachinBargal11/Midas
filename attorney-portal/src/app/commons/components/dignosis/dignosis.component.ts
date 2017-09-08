@@ -47,7 +47,7 @@ export class DignosisComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllDiagnosisTypes();
-    this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
+    // this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
   }
 
   loadAllDiagnosisTypes() {
@@ -104,11 +104,6 @@ export class DignosisComponent implements OnInit {
 
 
   saveDiagnosisCodes() {
-    // let diagnosisCodes = [];
-    // this.selectedDiagnosisCodes.forEach(currentDiagnosisCode => {
-    //   diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
-    // });
-    // this.saveComplete.emit(diagnosisCodes);
     this.save.emit(this.selectedDiagnosisCodes);
   }
 

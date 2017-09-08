@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> SSN
-                                            <span class="color-red">*</span>
+                                            <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="demographicsformControls.userInfo.controls.ssn.touched && !demographicsformControls.userInfo.controls.ssn.valid">
                             <input [ngModel]="patientInfo.ssn" formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.userInfo.controls.ssn.valid">
@@ -19,20 +19,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Weight (lbs)</label>
-                        <div class="form-group">
-                            <input [ngModel]="patientInfo.weight" formControlName="weight" type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Height (cms)</label>
-                        <div class="form-group">
-                            <input [ngModel]="patientInfo.height" formControlName="height" type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label"> Date of First Treatment
                                         </label>
@@ -45,6 +31,32 @@
                             </div>
                         </div>
                     </div>
+                    <!--<div class="col-lg-4">
+                        <label class="form-label"> Weight (lbs)</label>
+                        <div class="form-group">
+                            <input [ngModel]="patientInfo.weight" formControlName="weight" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Height (cms)</label>
+                        <div class="form-group">
+                            <input [ngModel]="patientInfo.height" formControlName="height" type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>-->
+                </div>
+                <div class="row">
+                    <!--<div class="col-lg-4">
+                        <label class="form-label"> Date of First Treatment
+                                        </label>
+                        <div class="form-group">
+                            <div class='input-group date'>
+                                <p-calendar [ngModel]="dateOfFirstTreatment" formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
+                                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
+                                    [showIcon]="true" icon="font-icon font-icon-calend">
+                                    </p-calendar>
+                            </div>
+                        </div>
+                    </div>-->
                     <!--<div class="col-lg-4">
                         <label class="form-label"> Races
                                 <span class="color-red">*</span>
@@ -102,7 +114,7 @@
                                 <span class="color-red">*</span>
                             </label>
                         <div class="form-group" [class.error]="demographicsformControls.contact.controls.cellPhone.touched && !demographicsformControls.contact.controls.cellPhone.valid">
-                            <p-inputMask [ngModel]="cellPhone" mask="999-999-9999" placeholder="999-999-9999" formControlName="cellPhone" styleClass="form-control"></p-inputMask>
+                            <p-inputMask [ngModel]="cellPhone" mask="+1 999-999-9999" placeholder="+1 999-999-9999" formControlName="cellPhone" styleClass="form-control"></p-inputMask>
                             <div class='error-list' *ngIf="demographicsformControls.contact.controls.cellPhone.touched && !demographicsformControls.contact.controls.cellPhone.valid">
                                 <ul>
                                     <li *ngIf="demographicsformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
@@ -168,6 +180,35 @@
                                         <option value="3">Work Phone</option>
                                         <option value="4">Post</option>
                         </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group">
+                        <input formControlName="emergencyContactPerson" [ngModel]="emergencyContactPerson" type="text" class="form-control" placeholder="">
+                        <!--<div class='error-list' *ngIf="patientformControls.userInfo.controls.firstname.touched && !patientformControls.userInfo.controls.firstname.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.firstname.hasError('required')">First Name is required.</li>
+                            </ul>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Emergency Contact Person Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <!--<div class="form-group" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">-->
+                    <div class="form-group">
+                        <p-inputMask mask="+1 999-999-9999" formControlName="emergencyContactCellPhone" [ngModel]="emergencyContactCellPhone"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
+                        <!--<div class='error-list' *ngIf="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                            </ul>
+                        </div>-->
                     </div>
                 </div>
             </div>

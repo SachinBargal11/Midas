@@ -34,6 +34,7 @@ import { SelectItem } from 'primeng/primeng';
 
 export class AddUserComponent implements OnInit {
     states: any[];
+    taxTypes: any[];
     cities: any[];
     selectedRole: any[] = ['1'];
     isCalendarPublic: boolean = false;
@@ -123,6 +124,8 @@ export class AddUserComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+        this._doctorsStore.getDoctorsTaxType()
+            .subscribe(taxType => this.taxTypes = taxType);
     }
 
     onSelectedRoleChange(roleValues: any) {
@@ -241,7 +244,7 @@ export class AddUserComponent implements OnInit {
                     if (data.isDoctor == true) {
                         this.isExist = true;
                         this.displayExistPopup = true;
-                    } else if (data.isDoctor == false && data.isPatient == false) {
+                    } else if (data.isDoctor == false && data.isPatient == false && data.user != null) {
                         let errString = 'User already exists & it is staff.';
                         let notification = new Notification({
                             'title': errString,

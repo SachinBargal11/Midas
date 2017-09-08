@@ -35,6 +35,7 @@ const PatientVisitRecord = Record({
     notes: '',
     visitStatusId: VisitStatus.SCHEDULED,
     visitType: 0,
+    isPatientVisitType: true,
     calendarEvent: null,
     patientVisitDiagnosisCodes: [],
     patientVisitProcedureCodes: [],
@@ -73,6 +74,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     notes: string;
     visitStatusId: VisitStatus;
     visitType: number;
+    isPatientVisitType: boolean;
     calendarEvent: ScheduledEvent;
     patientVisitDiagnosisCodes: DiagnosisCode[];
     patientVisitProcedureCodes: Procedure[];
@@ -130,7 +132,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
         if (this.locationId && this.location) {
             visitInfo = `${visitInfo}Location Name: ${this.location.name} - `;
         }
-        if (this.patientId && this.caseId) {
+        if (this.patientId && this.caseId && this.patient) {
             visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
         }
         if (this.doctorId && this.doctor) {

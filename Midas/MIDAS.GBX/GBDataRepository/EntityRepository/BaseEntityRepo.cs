@@ -66,6 +66,16 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveIMEVisit<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object SaveEOVisit<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
         {
             throw new NotImplementedException();
@@ -191,10 +201,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object IsInsuranceInfoAdded(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public virtual Object IsInsuranceInfoAdded(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public virtual object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail)
         {
@@ -203,6 +213,11 @@ namespace MIDAS.GBX.EntityRepository
 
 
         public virtual Object Login<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object LoginWithUserName<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -356,10 +371,15 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByLocationWithOpenCases(int LocationId)
+        public virtual Object GetOpenCaseForPatient(int PatientId, int CompanyId)
         {
             throw new NotImplementedException();
         }
+
+        //public virtual Object GetByLocationWithOpenCases(int LocationId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public virtual Object GetByCompanyWithCloseCases(int CompanyId)
         {
@@ -398,6 +418,11 @@ namespace MIDAS.GBX.EntityRepository
 
 
         public virtual Object GetByDoctorId(int DoctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByDoctorAndCompanyId(int doctorId, int companyId)
         {
             throw new NotImplementedException();
         }
@@ -518,7 +543,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
+        public virtual Object GetByDoctorAndDates(int DoctorId,int medicalProviderId, DateTime FromDate, DateTime ToDate)
         {
             throw new NotImplementedException();
         }
@@ -589,6 +614,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object AssociatePatientWithAttorneyCompany(int PatientId, int CaseId, int AttorneyCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociatePatientWithMedicalCompany(int PatientId, int CaseId, int MedicalCompanyId)
         {
             throw new NotImplementedException();
         }
@@ -737,6 +767,16 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        
+        public virtual Object GetBusySlotsForPatients(int PatientId, DateTime StartDate, DateTime EndDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetBusySlotsForDoctors(int DoctorId, DateTime StartDate, DateTime EndDate)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual Object GetFreeSlotsForRoomByLocationId(int RoomId, int LocationId, DateTime StartDate, DateTime EndDate)
         {
@@ -842,9 +882,98 @@ namespace MIDAS.GBX.EntityRepository
         public virtual Object GetRecurrenceByCaseAndSpecialtyAndDoctorId(int caseId,int specialtyId, int doctorId)
         {
             throw new NotImplementedException();
+        }        
+
+        public virtual Object GetICDTypeCodeByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
         }
 
-        
+        public virtual Object GetDoctorTaxTypes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByPatientVisitIdWithProcedureCodes(int PatientVisitId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetMasterAndByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object Delete(int id, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetInsuranceDetails(int id, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object CancelSingleEventOccurrence(int PatientVisitId, DateTime CancelEventStart)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetByLocationDoctorAndSpecialityId(int LocationId, int DoctorId, int SpecialtyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetByCompanyAndAttorneyId(int CompanyId, int AttorneyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public virtual object GetByLocationAndAttorneyId(int LocationId, int AttorneyId)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public virtual Object GetMasterAndByCaseId(int CaseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GenerateOTPForCompany(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object ValidateOTPForCompany(string otp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object AssociatePreferredCompany(string otp, int currentCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object SaveReferralPatientVisitUnscheduled<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object DeletePreferredCompany(int preferredCompanyId, int currentCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

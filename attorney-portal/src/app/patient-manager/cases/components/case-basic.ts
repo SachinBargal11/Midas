@@ -7,10 +7,10 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
-import { Employer } from '../../patients/models/employer';
+import { Employer } from '../../cases/models/employer';
 import { Patient } from '../../patients/models/patient';
 import { PatientsStore } from '../../patients/stores/patients-store';
-import { EmployerStore } from '../../patients/stores/employer-store';
+import { EmployerStore } from '../../cases/stores/employer-store';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import * as moment from 'moment';
@@ -23,12 +23,17 @@ import { NotificationsService } from 'angular2-notifications';
 import { Attorney } from '../../../account-setup/models/attorney';
 import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 import { Account } from '../../../account/models/account';
+import { MedicalProviderMasterStore } from '../../../account-setup/stores/medical-provider-master-store';
+import { MedicalProviderMaster } from '../../../account-setup/models/medical-provider-master';
 @Component({
     selector: 'case-basic',
     templateUrl: './case-basic.html'
 })
 
 export class CaseBasicComponent implements OnInit {
+    medicare:  string;
+    medicaid:  string;
+    ssdisabililtyIncome:string;
     caseDetail: Case;
     caseform: FormGroup;
     caseformControls;
@@ -42,7 +47,7 @@ export class CaseBasicComponent implements OnInit {
     patientId: number;
     patientName: string;
     // transportation: any;
-    allProviders: Account[];
+    allProviders: MedicalProviderMaster[];
     attorneyId: number = 0;
     constructor(
         private fb: FormBuilder,
@@ -55,7 +60,7 @@ export class CaseBasicComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _patientStore: PatientsStore,
-        private _attorneyMasterStore: AttorneyMasterStore,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
         private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
@@ -67,20 +72,23 @@ export class CaseBasicComponent implements OnInit {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
             let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
-            let fetchlocations = this._locationsStore.getLocations();
+            // let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
-            let fetchAttorneys = this._attorneyMasterStore.getAllProviders();
+            let fetchMedicalProviders = this._medicalProviderMasterStore.getAllPreferredMedicalProviders();
 
             let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
-            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
+            Observable.forkJoin([fetchPatient, fetchEmployer, fetchMedicalProviders, fetchCaseDetail])
                 .subscribe(
                 (results) => {
                     this.patient = results[0];
                     this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
-                    this.locations = results[1];
-                    this.employer = results[2];
-                    this.allProviders = results[3];
-                    this.caseDetail = results[4];
+                    // this.locations = results[1];
+                    this.employer = results[1];
+                    this.allProviders = results[2];
+                    this.caseDetail = results[3];
+                    this.medicaid = this.caseDetail.medicaid ? '1' : '0';
+                    this.medicare = this.caseDetail.medicare ? '1' : '0';
+                    this.ssdisabililtyIncome = this.caseDetail.ssdisabililtyIncome ? '1' : '0';
 
                     // if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
                     //     this.caseform.get("caseSource").disable();
@@ -121,11 +129,15 @@ export class CaseBasicComponent implements OnInit {
             patientId: [{ value: '', disabled: true }],
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             providerId: [''],
-            caseSource: ['']
+            caseSource: [''],
+            claimNumber: [''],
+            medicare: [''],
+            medicaid: [''],
+            ssdisabililtyIncome: ['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -164,15 +176,19 @@ export class CaseBasicComponent implements OnInit {
             patientId: this.patientId,
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
-            locationId: parseInt(caseFormValues.locationId, 10),
+            // locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.providerId,
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
+            claimFileNumber: caseFormValues.claimNumber,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment(),
-            createdByCompanyId: this.sessionStore.session.currentCompany.id
+            createdByCompanyId: this.sessionStore.session.currentCompany.id,
+            medicare: caseFormValues.medicare  == '1'? true : false,
+            medicaid: caseFormValues.medicaid  == '1'? true : false,
+            ssdisabililtyIncome: caseFormValues.ssdisabililtyIncome == '1'? true : false,
         }));
 
         this._progressBarService.show();
@@ -180,7 +196,7 @@ export class CaseBasicComponent implements OnInit {
         result.subscribe(
             (response) => {
                 if (this.attorneyId > 0) {
-                    let result1 = this._patientStore.assignPatientToMP(this.patientId, this.caseId, this.attorneyId);
+                    let result1 = this._patientStore.assignPatientToMedicalProvider(this.patientId, this.caseId, this.attorneyId);
                     result1.subscribe(
                         (response) => {
                             let notification = new Notification({

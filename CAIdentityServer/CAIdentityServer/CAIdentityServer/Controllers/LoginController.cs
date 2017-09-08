@@ -39,7 +39,7 @@ namespace CAIdentityServer.Controllers
             var context = Request.GetOwinContext();
             var env = Request.GetOwinContext().Environment;
             var signInMessage = env.GetSignInMessage(id);
-
+            
             var authenticationContext = new LocalAuthenticationContext
             {
                 UserName = model.Username.Trim(),
@@ -52,13 +52,22 @@ namespace CAIdentityServer.Controllers
             await userService.AuthenticateLocalAsync(authenticationContext);
 
             var authResult = authenticationContext.AuthenticateResult;
-            if (authResult == null)
+            if (authResult == null || (authResult.ErrorMessage != null && authResult.ErrorMessage != string.Empty))
             {
-                return Redirect("Error");
+                string errorMessage = null;
+                if (authResult != null && authResult.ErrorMessage != string.Empty)
+                {
+                    errorMessage = authResult.ErrorMessage;
+                }
+                else
+                {
+                    errorMessage = "Unable to process you authentication request due an error";
+                }
+                ModelState.AddModelError("AuthError", errorMessage);
+                return View();
             }
             else
             {
-                signInMessage = env.GetSignInMessage(id);
                 ClearAuthenticationCookiesForNewSignIn(context, authResult);
                 IssueAuthenticationCookie(context, id, authResult, model.RememberMe);
 

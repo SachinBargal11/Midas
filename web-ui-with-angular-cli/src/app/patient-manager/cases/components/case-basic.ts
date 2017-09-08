@@ -7,10 +7,10 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
-import { Employer } from '../../patients/models/employer';
+import { Employer } from '../../cases/models/employer';
 import { Patient } from '../../patients/models/patient';
 import { PatientsStore } from '../../patients/stores/patients-store';
-import { EmployerStore } from '../../patients/stores/employer-store';
+import { EmployerStore } from '../../cases/stores/employer-store';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
 import * as moment from 'moment';
@@ -131,11 +131,12 @@ export class CaseBasicComponent implements OnInit {
             patientId: [{ value: '', disabled: true }],
             caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
-            locationId: ['', Validators.required],
+            // locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
-            caseSource: ['']
+            caseSource: [''],
+            claimNumber:['']
             // transportation: [1, Validators.required],
         });
 
@@ -207,12 +208,13 @@ export class CaseBasicComponent implements OnInit {
             patientId: this.patientId,
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
-            locationId: parseInt(caseFormValues.locationId, 10),
+            // locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: parseInt(caseFormValues.attorneyId, 10),
             caseStatus: caseFormValues.caseStatusId,
             caseSource: caseFormValues.caseSource,
+            claimFileNumber: caseFormValues.claimNumber,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment(),
             createdByCompanyId: this.sessionStore.session.currentCompany.id

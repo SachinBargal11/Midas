@@ -13,43 +13,35 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
     //[AllowAnonymous]
     public class PatientController : ApiController
     {
-        //private IRequestHandler<Patient> requestHandler;
-        private IRequestHandler<Patient2> requestHandlerPatient2;
+        private IRequestHandler<Patient> requestHandlerPatient;
 
         public PatientController()
         {
-            //requestHandler = new GbApiRequestHandler<Patient>();
-            requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
+            requestHandlerPatient = new GbApiRequestHandler<Patient>();
         }
-
 
         [HttpGet]
         [Route("getPatientById/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetPatientById2(int id)
         {
-            return requestHandlerPatient2.GetObject(Request, id);
+            return requestHandlerPatient.GetObject(Request, id);
         }
 
         [HttpGet]
         [Route("getByCompanyWithOpenCases/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyWithOpenCases(int CompanyId)
         {
-            return requestHandlerPatient2.GetGbObjects2(Request, CompanyId);
+            return requestHandlerPatient.GetGbObjects2(Request, CompanyId);
         }
 
         [HttpPost]
         [Route("savePatient")]
-        //[AllowAnonymous]
-        public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
+        public HttpResponseMessage SavePatient([FromBody]Patient patient)
         {
-            return requestHandlerPatient2.CreateGbObject(Request, patient2);
+            //Since Patient cannot update social media info, only attorney can view or update.
+            patient.PatientSocialMediaMappings = null;
+            return requestHandlerPatient.CreateGbObject(Request, patient);
         }
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {

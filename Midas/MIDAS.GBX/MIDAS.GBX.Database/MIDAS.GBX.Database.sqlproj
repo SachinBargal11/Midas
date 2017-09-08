@@ -152,7 +152,7 @@
     <Build Include="Tables\DoctorLocationSchedule.sql" />
     <Build Include="Tables\RoomTest.sql" />
     <Build Include="Tables\ScheduleDetail.sql" />
-    <Build Include="Tables\Latest Tables\Patient2.sql" />
+    <Build Include="Tables\Latest Tables\Patient.sql" />
     <Build Include="Tables\Latest Tables\PatientEmpInfo.sql" />
     <Build Include="Tables\Latest Tables\PatientInsuranceInfo.sql" />
     <Build Include="Tables\Latest Tables\State.sql" />
@@ -160,7 +160,6 @@
     <Build Include="Tables\Latest Tables\MaritalStatus.sql" />
     <Build Include="Tables\Latest Tables\Gender.sql" />
     <Build Include="Tables\Latest Tables\Case.sql" />
-    <Build Include="Tables\Latest Tables\Patient.sql" />
     <Build Include="Tables\Latest Tables\PatientFamilyMembers.sql" />
     <Build Include="Tables\Latest Tables\Relations.sql" />
     <Build Include="Tables\Latest Tables\RefferingOffice.sql" />
@@ -174,11 +173,8 @@
     <Build Include="Tables\Latest Tables\CaseStatus.sql" />
     <Build Include="Tables\Latest Tables\InsuranceMaster.sql" />
     <Build Include="Tables\Latest Tables\AdjusterMaster.sql" />
-    <Build Include="Tables\Latest Tables\PatientVisit.sql" />
-    <Build Include="Tables\Latest Tables\PatientVisitEvent.sql" />
     <Build Include="Tables\Latest Tables\CalendarEvent.sql" />
-    <Build Include="Tables\Latest Tables\PatientVisit2.sql" />
-    <Build Include="Tables\Latest Tables\Referral.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisit.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
     <Build Include="Tables\Latest Tables\CaseCompanyMapping.sql" />
     <Build Include="Tables\Latest Tables\CompanyCaseConsentApproval.sql" />
@@ -201,7 +197,7 @@
     <Build Include="Tables\Latest Tables\DocumentNodes.sql" />
     <Build Include="Tables\Latest Tables\DocumentNodeObjectMapping.sql" />
     <Build Include="Tables\VisitDocuments.sql" />
-    <Build Include="Tables\Latest Tables\Referral2.sql" />
+    <Build Include="Tables\Latest Tables\Referral.sql" />
     <Build Include="Tables\Latest Tables\ReferralProcedureCodes.sql" />
     <Build Include="Tables\Latest Tables\MailTemplates.sql" />
     <Build Include="Tables\Latest Tables\GeneralSettings.sql" />
@@ -211,6 +207,22 @@
     <Build Include="StoredProcedure\sp_CaseGetReadOnly.sql" />
     <Build Include="Tables\Latest Tables\DoctorTaxType.sql" />
     <Build Include="Tables\Latest Tables\VisitType.sql" />
+    <Build Include="Tables\Latest Tables\DoctorRoomTestMapping.sql" />
+    <Build Include="Tables\Latest Tables\AttorneyVisit.sql" />
+    <Build Include="Tables\Latest Tables\LanguagePreference.sql" />
+    <Build Include="Tables\Latest Tables\PatientLanguagePreferenceMapping.sql" />
+    <Build Include="Tables\Latest Tables\SocialMedia.sql" />
+    <Build Include="Tables\Latest Tables\PatientSocialMediaMapping.sql" />
+    <Build Include="Tables\Latest Tables\IMEVisit.sql" />
+    <Build Include="Tables\Latest Tables\EOVisit.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisitUnscheduled.sql" />
+    <Build Include="Tables\Latest Tables\SchoolInformation.sql" />
+    <Build Include="Tables\Latest Tables\AccidentWitness.sql" />
+    <Build Include="Tables\Latest Tables\AccidentTreatment.sql" />
+    <Build Include="Tables\Latest Tables\PlaintiffVehicle.sql" />
+    <Build Include="Tables\Latest Tables\DefendantVehicle.sql" />
+    <Build Include="Tables\Latest Tables\PatientPriorAccidentInjury.sql" />
+    <Build Include="Tables\Latest Tables\OTPCompanyMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

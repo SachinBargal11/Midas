@@ -36,15 +36,16 @@ export const AncillaryRoutes: Routes = [
                 data: {
                     breadcrumb: 'Add Ancillary'
                 }
-            },
-            {
+            }
+            // },
+            // {
                 // path: 'edit/:id',
                 // component: EditMedicalProviderComponent,
                 // canActivate: [ValidateActiveSession],
                 // data: {
                 //     breadcrumb: 'Edit Medical Provider'
                 // }
-            }
+            // }
         ]
     }
 

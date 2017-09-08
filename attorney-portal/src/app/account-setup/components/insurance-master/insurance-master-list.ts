@@ -52,9 +52,6 @@ export class InsuranceMasterListComponent implements OnInit {
         this._insuranceMasterStore.getAllInsuranceMasters()
             .subscribe(insuranceMasters => {
                 this.insuranceMasters = insuranceMasters.reverse();
-                // this.datasource = attorneys.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.attorneys = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();

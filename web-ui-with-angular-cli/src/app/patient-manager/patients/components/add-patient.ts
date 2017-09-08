@@ -26,6 +26,10 @@ import { environment } from '../../../../environments/environment';
 })
 
 export class AddPatientComponent implements OnInit {
+    dob: moment.Moment;
+    isEighteenOrAbove: boolean = true;
+    languagePreference = '';
+    martialStatus = '';
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -38,7 +42,7 @@ export class AddPatientComponent implements OnInit {
     uploadedFiles: any[] = [];
     displayExistPopup: boolean = false;
     isExist: boolean = false;
-    users:any;
+    users: any;
     isPatientOrDoctor: string = 'patient';
     isuserCompany: boolean = false;
     isAlreadyUser: boolean = false;
@@ -46,6 +50,9 @@ export class AddPatientComponent implements OnInit {
     method: string = 'POST';
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     url;
+    uploadedFilesLicence: any[] = [];
+    fileLicence: any[] = [];
+
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -65,11 +72,15 @@ export class AddPatientComponent implements OnInit {
                 height: [''],
                 maritalStatusId: ['', Validators.required],
                 dateOfFirstTreatment: [''],
-                dob: [''],
+                dob: ['', Validators.required],
                 firstname: ['', Validators.required],
                 middlename: [''],
                 lastname: ['', Validators.required],
-                gender: ['', Validators.required]
+                gender: ['', Validators.required],
+                parentName: [''],
+                languagePreference: [''],
+                otherLanguage: [''],
+                spouseName: ['']
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -79,7 +90,9 @@ export class AddPatientComponent implements OnInit {
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredCommunication: ['']
+                preferredCommunication: [''],
+                emergencyContactPerson: [''],
+                emergencyContactCellPhone: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -105,10 +118,24 @@ export class AddPatientComponent implements OnInit {
             .subscribe(states => this.states = states);
     }
 
-    onUpload(event) {
+    calculateAge() {
+        let now = moment();
+        // let age =  moment(this.dob, "YYYYMMDD").fromNow();
+        let age = now.diff(this.dob, 'years');
+        if (age < 18) {
+            this.isEighteenOrAbove = false;
+        } else {
+            this.isEighteenOrAbove = true;
+        }
 
+    }
+
+    onUpload(event) {
         for (let file of event.files) {
             this.uploadedFiles.push(file);
+        }
+        for (let file of event.fileLicence) {
+            this.uploadedFilesLicence.push(file);
         }
 
         //this.msgs = [];
@@ -117,7 +144,6 @@ export class AddPatientComponent implements OnInit {
     myUploader(event) {
         this.files = event.files;
     }
-
     uploadProfileImage(patientId: number) {
         let xhr = new XMLHttpRequest(),
             formData = new FormData();
@@ -129,14 +155,20 @@ export class AddPatientComponent implements OnInit {
         xhr.open(this.method, this.url, true);
         xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
         xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
-
         xhr.withCredentials = false;
-
         xhr.send(formData);
     }
-
     savePatient() {
         //this.isExist = this.checkForExist(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn);
+        let patientSocialMediaMappings: any[] = [];
+        let patientLanguagePreferenceMappings: any[] = [];
+        if(this.languagePreference != ''){
+         patientLanguagePreferenceMappings.push({
+            languagePreferenceId: parseInt(this.languagePreference)
+        })
+        }else{
+         patientLanguagePreferenceMappings;
+        }
 
         this.usersStore.getIsExistingUser(this.patientform.value.contact.email)
             .subscribe((data: any) => {
@@ -146,26 +178,26 @@ export class AddPatientComponent implements OnInit {
                 if (data.isPatient == true) {
                     this.isExist = true;
                     this.displayExistPopup = true;
-                }else if (data.isDoctor == false && data.isPatient == false) {
-                        let errString = 'User already exists & it is staff.';
-                        let notification = new Notification({
-                            'title': errString,
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', errString);
-                    } else if (data.isDoctor == true && data.isPatient == false) {
-                        let errString = 'User already exists & it is doctor.';
-                        let notification = new Notification({
-                            'title': errString,
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', errString);
+                } else if (data.isDoctor == false && data.isPatient == false && data.user != null) {
+                    let errString = 'User already exists & it is staff.';
+                    let notification = new Notification({
+                        'title': errString,
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', errString);
+                } else if (data.isDoctor == true && data.isPatient == false) {
+                    let errString = 'User already exists & it is doctor.';
+                    let notification = new Notification({
+                        'title': errString,
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', errString);
 
-                    }
+                }
                 else {
                     this.isSavePatientProgress = true;
                     let patientFormValues = this.patientform.value;
@@ -178,6 +210,14 @@ export class AddPatientComponent implements OnInit {
                         maritalStatusId: patientFormValues.userInfo.maritalStatusId,
                         createByUserId: this._sessionStore.session.account.user.id,
                         companyId: this._sessionStore.session.currentCompany.id,
+                        patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+                        languagePreferenceOther: parseInt(this.languagePreference) == 3 ? patientFormValues.userInfo.otherLanguage : null,
+                        patientSocialMediaMappings: patientSocialMediaMappings,
+                        parentOrGuardianName: !this.isEighteenOrAbove ? patientFormValues.userInfo.parentName : null,
+                        emergencyContactName: patientFormValues.contact.emergencyContactPerson,
+                        emergencyContactPhone: patientFormValues.contact.emergencyContactCellPhone,
+                        legallyMarried: null,
+                        spouseName: parseInt(this.martialStatus) == 2 ? patientFormValues.userInfo.spouseName : null,
                         user: new User({
                             dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                             firstName: patientFormValues.userInfo.firstname,
@@ -214,6 +254,7 @@ export class AddPatientComponent implements OnInit {
                     result.subscribe(
                         (response) => {
                             this.uploadProfileImage(response.id);
+                            this.uploadLicenceImage(response.id);
                             let notification = new Notification({
                                 'title': 'Patient added successfully!',
                                 'type': 'SUCCESS',
@@ -243,4 +284,19 @@ export class AddPatientComponent implements OnInit {
             (error) => { });
     }
 
+    licenceUploader(event) {
+        this.fileLicence = event.files;
+    }
+    uploadLicenceImage(patientId: number) {
+        let xhr = new XMLHttpRequest(),
+            formData = new FormData();
+        for (let i = 0; i < this.fileLicence.length; i++) {
+            formData.append(this.fileLicence[i].name, this.fileLicence[i], this.fileLicence[i].name);
+        }
+        xhr.open(this.method, this.url, true);
+        xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
+        xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.withCredentials = false;
+        xhr.send(formData);
+    }
 }

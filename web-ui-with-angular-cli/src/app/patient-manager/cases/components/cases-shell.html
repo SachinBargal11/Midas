@@ -4,7 +4,8 @@
 		<div class="tbl">
 			<ul class="nav" role="tablist" *ngIf="caseDetail">
 				<li class="nav-item">
-					<a class="nav-link" *ngIf="caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basic" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" *ngIf="caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basic" [routerLinkActive]="['active']"
+					 role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Basic
 						</span>
@@ -14,7 +15,8 @@
 					Basic
 						</span>
 					</a>-->
-					<a class="nav-link" *ngIf="!caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basicLabel" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" *ngIf="!caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basicLabel"
+					 [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Basic
 						</span>
@@ -35,9 +37,24 @@
 					</a>
 				</li>	-->
 				<li class="nav-item">
-					<a class="nav-link" routerLink="insurance-mapping" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" routerLink="insurances" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Insurance
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="family-members" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Family Member
+						</span>
+					</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" routerLink="employer" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Employment/School
 						</span>
 					</a>
 				</li>
@@ -45,6 +62,13 @@
 					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Documents
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="prior-accident" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Prior Accident/Injuries
 						</span>
 					</a>
 				</li>
@@ -69,7 +93,7 @@
 						</span>
 					</a>
 				</li>
-				<li class="nav-item">
+				<!--<li class="nav-item">
 					<a class="nav-link" routerLink="billings" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Bills
@@ -82,8 +106,15 @@
 					Payment
 						</span>
 					</a>
-				</li>
+				</li>-->
 
+				<li class="nav-item">
+					<a class="nav-link" routerLink="autoInformation" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Auto Information
+						</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>

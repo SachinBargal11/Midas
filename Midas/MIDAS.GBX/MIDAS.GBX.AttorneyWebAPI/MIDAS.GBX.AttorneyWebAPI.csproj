@@ -259,6 +259,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdjusterMasterController.cs" />
     <Compile Include="Controllers\AttorneyMasterController.cs" />
+    <Compile Include="Controllers\AttorneyVisitController.cs" />
     <Compile Include="Controllers\CalendarEventController.cs" />
     <Compile Include="Controllers\CaseCompanyMappingController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DefendantVehicleController.cs" />
     <Compile Include="Controllers\DiagnosisCodeController.cs" />
     <Compile Include="Controllers\DiagnosisTypeController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
@@ -273,10 +275,13 @@
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
     <Compile Include="Controllers\DocumentManagerController.cs" />
     <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
+    <Compile Include="Controllers\EOVisitController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\GeneralSettingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InsuranceController.cs" />
+    <Compile Include="Controllers\IMEVisitController.cs" />
+    <Compile Include="Controllers\OTPCompanyMappingController.cs" />
+    <Compile Include="Controllers\PatientInsuranceInfoController.cs" />
     <Compile Include="Controllers\InsuranceMasterController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
@@ -286,14 +291,18 @@
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
-    <Compile Include="Controllers\PatientVisit2Controller.cs" />
+    <Compile Include="Controllers\PatientPriorAccidentInjuryController.cs" />
+    <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
+    <Compile Include="Controllers\PatientVisitUnscheduledController.cs" />
+    <Compile Include="Controllers\PlaintiffVehicleController.cs" />
     <Compile Include="Controllers\PreferredAttorneyProviderController.cs" />
     <Compile Include="Controllers\PreferredMedicalProviderController.cs" />
     <Compile Include="Controllers\ProcedureCodeController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\SchoolInformationController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
     <Compile Include="Controllers\TemplateManagerController.cs" />
@@ -452,7 +461,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53438</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

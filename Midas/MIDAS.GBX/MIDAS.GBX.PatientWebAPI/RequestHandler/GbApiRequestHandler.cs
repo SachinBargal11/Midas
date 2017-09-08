@@ -618,18 +618,18 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
-        public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
-        {
-            var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
-            try
-            {
-                return request.CreateResponse(HttpStatusCode.Created, objResult);
-            }
-            catch (Exception ex)
-            {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
-            }
-        }
+        //public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
+        //{
+        //    var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
+        //    try
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.Created, objResult);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
 
         public HttpResponseMessage GetByLocationId(HttpRequestMessage request, int LocationId)
         {
@@ -876,6 +876,68 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByPatientVisitIdWithProcedureCodes(HttpRequestMessage request, int PatientVisitId)
+        {
+            var objResult = dataAccessManager.GetByPatientVisitIdWithProcedureCodes(PatientVisitId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart)
+        {
+            var objResult = dataAccessManager.CancelSingleEventOccurrence(PatientVisitId, CancelEventStart);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        #region LoginWithUserName
+        public HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject)
+        {
+            User userBO = (User)(object)gbObject;
+            if (userBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.LoginWithUserName(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        #endregion
+
+        public HttpResponseMessage GetMasterAndByCaseId(HttpRequestMessage request, int CaseId)
+        {
+            var objResult = dataAccessManager.GetMasterAndByCaseId(CaseId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {

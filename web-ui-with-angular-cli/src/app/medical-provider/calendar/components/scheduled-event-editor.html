@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.name.touched && !scheduledEventEditorFormControls.name.valid">
-                <input formControlName="name" [ngModel]="selectedEvent.name" class="form-control" [class.error]="!scheduledEventEditorFormControls.name.valid"
+                <input formControlName="name" [(ngModel)]="name" class="form-control" [class.error]="!scheduledEventEditorFormControls.name.valid"
                 />
                 <div class='error-list' *ngIf="scheduledEventEditorFormControls.name.touched && !scheduledEventEditorFormControls.name.valid">
                     <ul>
@@ -33,8 +33,12 @@
         </div>
         <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventStartTime.touched && !scheduledEventEditorFormControls.eventStartTime.valid">
-                <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventStartTime.valid" formControlName="eventStartTime"
-                    [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                <!-- <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventStartTime.valid" formControlName="eventStartTime"
+                    [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>-->
+                <select [(ngModel)]="setTimeSlot" *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventStartTime.valid"
+                    formControlName="eventStartTime" hourFormat="12" icon="fa fa-clock-o" class="select2-arrow form-control">                          
+                              <option *ngFor="let time of timeSlots" [value]="time.time">{{time.time}}</option>                                       
+                        </select>
                 <div class='error-list' *ngIf="scheduledEventEditorFormControls.eventStartTime.touched && !scheduledEventEditorFormControls.eventStartTime.valid">
                     <ul>
                         <li *ngIf="scheduledEventEditorFormControls.eventStartTime.hasError('required')">Start Time is required.</li>
@@ -43,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-2"><label class="form-label">Duration<span class="color-red">*</span></label></div>
         <div class="col-md-2">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.duration.touched && !scheduledEventEditorFormControls.duration.valid">
@@ -56,10 +60,10 @@
             </div>
         </div>
         <div class="col-md-2"><label class="form-label">minutes</label></div>
-    </div>
-    <!--<div class="row">
-        <div class="col-md-2"><label class="form-label">End<span class="color-red">*</span></label></div>
-        <div class="col-md-4">
+    </div>-->
+    <div class="row">
+        <div class="col-md-2"><label class="form-label">End Time<span class="color-red">*</span></label></div>
+        <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndDate.touched && !scheduledEventEditorFormControls.eventEndDate.valid">
                 <p-calendar [class.error]="!scheduledEventEditorFormControls.eventEndDate.valid" formControlName="eventEndDate" [(ngModel)]="eventEndAsDate"
                     dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
@@ -71,10 +75,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndTime.touched && !scheduledEventEditorFormControls.eventEndTime.valid">
-                <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventEndTime.valid" formControlName="eventEndTime"
-                    [(ngModel)]="eventEndAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                <!-- <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventEndTime.valid" formControlName="eventEndTime"
+                    [(ngModel)]="eventEndAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar> -->
+                <select [(ngModel)]="setEndTimeSlot" *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventEndTime.valid"
+                    formControlName="eventEndTime" hourFormat="12" icon="fa fa-clock-o" class="select2-arrow form-control">                          
+                              <option *ngFor="let time of timeSlots" [value]="time.time">{{time.time}}</option>                                       
+                        </select>
                 <div class='error-list' *ngIf="scheduledEventEditorFormControls.eventEndTime.touched && !scheduledEventEditorFormControls.eventEndTime.valid">
                     <ul>
                         <li *ngIf="scheduledEventEditorFormControls.eventEndTime.hasError('required')">End Time is required.</li>
@@ -82,7 +90,7 @@
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
     <!--<div class="row">
         <div class="col-md-2"><label class="form-label">All Day</label></div>
         <div class="col-md-10">
@@ -135,7 +143,7 @@
         </div>
     </div>
     <div formGroupName="dailyInfo" *ngIf="repeatType == '3'">
-        {{daily_end}}
+        <!--{{daily_end}}-->
         <div class="row">
             <div class="col-md-2"><label class="form-label">Repeat every</label></div>
             <div class="col-md-4">

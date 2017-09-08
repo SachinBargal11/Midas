@@ -16,8 +16,8 @@ import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
 import { CaseDocumentsUploadComponent } from './components/case-documents';
-import { InsuranceMappingComponent } from './components/insurance-mapping';
-import { AssignInsuranceComponent } from './components/assign-insurance';
+// import { InsuranceMappingComponent } from './components/insurance-mapping';
+// import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
 import { ConsentListComponent } from './components/list-consent';
 import { AddConsentComponent } from './components/add-consent';
@@ -30,6 +30,16 @@ import { PatientVisitListTreatingRoomComponent } from './components/treatingroom
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 import { BillingInfoComponent } from './components/billing';
 import { PaymentListComponent } from './components/payment-list';
+import { InsuranceListComponent } from './components/insurance-list';
+import { CaseEmployerComponent } from './components/employer';
+import { AddInsuranceComponent } from './components/add-insurance';
+import { EditInsuranceComponent } from './components/edit-insurance';
+import { AddFamilyMemberComponent } from './components/add-family-member';
+import { FamilyMemberListComponent } from './components/family-member-list';
+import { EditFamilyMemberComponent } from './components/edit-family-member';
+
+import { AutoInformationInfoComponent } from './components/auto-Information';
+import { PriorAccidentComponent } from './components/prior-accident';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -307,6 +317,14 @@ export const CasesShellRoutes: Routes = [
                         ]
                     },
                     {
+                        path: 'prior-accident',
+                        component: PriorAccidentComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Prior Accident'
+                        }
+                    },
+                    {
                         path: 'accident',
                         component: AccidentInfoComponent,
                         canActivate: [ValidateActiveSession],
@@ -339,33 +357,39 @@ export const CasesShellRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'insurance-mapping',
-                        component: InsuranceMappingComponent,
+                        path: 'insurances',
+                        component: InsuranceListComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance'
+                            breadcrumb: 'Insurances'
                         }
                     },
                     {
-                        path: 'insurance-mapping',
+                        path: 'insurances',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance'
+                            breadcrumb: 'Insurances'
                         },
                         children: [
                             {
-                                path: 'assign',
-                                component: AssignInsuranceComponent,
+                                path: 'add',
+                                component: AddInsuranceComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'Assign Insurance'
+                                    breadcrumb: 'Add Insurance'
                                 }
                             },
+                            {
+                                path: 'edit/:id',
+                                component: EditInsuranceComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Insurance'
+                                }
+                            }
                         ]
                     },
-
-
                     {
                         path: 'consent',
                         component: ShellComponent,
@@ -409,7 +433,57 @@ export const CasesShellRoutes: Routes = [
                                 }
                             }
                         ]
-                    }
+                    },
+                    {
+                        path: 'employer',
+                        component: CaseEmployerComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Employer'
+                        }
+                    },
+                    {
+                        path: 'family-members',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Family Members'
+                        },
+                        children: [
+                            {
+                                path: '',
+                                component: FamilyMemberListComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'add',
+                                component: AddFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Family Member'
+                                }
+                            },
+                            {
+                                path: 'edit/:id',
+                                component: EditFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Family Member'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        path: 'autoInformation',
+                        component: AutoInformationInfoComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'AutoInformation'
+                        }
+                    },
                 ]
             }
         ]

@@ -30,20 +30,27 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
-        [HttpGet]
-        [Route("getByPatientId/{PatientId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage GetByPatientId(int PatientId)
-        {
-            return requestHandler.GetByPatientId(Request, PatientId);
-        }
+        //[HttpGet]
+        //[Route("getByPatientId/{PatientId}")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage GetByPatientId(int PatientId)
+        //{
+        //    return requestHandler.GetByPatientId(Request, PatientId);
+        //}
+
+        //[HttpGet]
+        //[Route("getCurrentEmpByPatientId/{PatientId}")]
+        ////[AllowAnonymous]
+        //public HttpResponseMessage GetCurrentEmpByPatientId(int PatientId)
+        //{
+        //    return requestHandler.GetCurrentEmpByPatientId(Request, PatientId);
+        //}
 
         [HttpGet]
-        [Route("getCurrentEmpByPatientId/{PatientId}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage GetCurrentEmpByPatientId(int PatientId)
+        [Route("getByCaseId/{caseId}")]
+        public HttpResponseMessage GetByCaseId(int caseId)
         {
-            return requestHandler.GetCurrentEmpByPatientId(Request, PatientId);
+            return requestHandler.GetByCaseId(Request, caseId);
         }
 
 

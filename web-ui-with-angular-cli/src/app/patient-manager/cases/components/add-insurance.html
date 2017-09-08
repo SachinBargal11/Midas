@@ -1,0 +1,571 @@
+<h3 class="with-border">Add Insurance</h3>
+<form [formGroup]="insuranceform" (ngSubmit)="save()">
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Policy Number
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyNumber.touched && !insuranceformControls.policyNumber.valid">
+                        <input type="text" formControlName="policyNumber" [class.error]="!insuranceformControls.policyNumber.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.policyNumber.touched && !insuranceformControls.policyNumber.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyNumber.hasError('required')">Policy Number is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Policy Holder Name
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyHoldersName.touched && !insuranceformControls.policyHoldersName.valid">
+                        <input type="text" formControlName="policyHoldersName" [class.error]="!insuranceformControls.policyHoldersName.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.policyHoldersName.touched && !insuranceformControls.policyHoldersName.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyHoldersName.hasError('required')">Policy Holder Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Policy Owner
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyOwner.touched && !insuranceformControls.policyOwner.valid">
+                        <select formControlName="policyOwner" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyOwner.touched && !insuranceformControls.policyOwner.valid">
+                            <option value="">-Select -</option>
+                            <option value="1">Self</option>
+                            <option value="2">Spouse</option>
+                            <option value="3">Child</option>
+                            <option value="4">Other</option>
+                        </select>
+                        <div class='error-list' *ngIf="insuranceformControls.policyOwner.touched && !insuranceformControls.policyOwner.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyOwner.hasError('required')">Policy Owner is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Policy Holder Contact
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyEmail.touched && !insuranceformControls.policyEmail.valid">
+                        <input type="email" formControlName="policyEmail" [class.error]="!insuranceformControls.policyEmail.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.policyEmail.touched && !insuranceformControls.policyEmail.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyEmail.hasError('required')">Policy Email is required.</li>
+                                <li *ngIf="insuranceformControls.policyEmail.hasError('emailValidator')">Policy Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Cellphone
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyCellPhone.touched && !insuranceformControls.policyCellPhone.valid">
+                        <p-inputMask mask="+1 999-999-9999" formControlName="policyCellPhone" [class.error]="insuranceformControls.policyCellPhone.touched && !insuranceformControls.policyCellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
+                        <div class='error-list' *ngIf="insuranceformControls.policyCellPhone.touched && !insuranceformControls.policyCellPhone.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyCellPhone.hasError('required')">Policy Cellphone number is required.</li>
+                                <li *ngIf="insuranceformControls.policyCellPhone.hasError('mobileNoValidator')">Policy Cellphone number is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Fax No</label>
+                        <p-inputMask mask="9-999-999 9999" formControlName="policyFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Home Phone No</label>
+                        <input formControlName="policyHomePhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Work Phone No</label>
+                        <input formControlName="policyWorkPhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="policyOfficeExtension" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail </label>
+                         <div class="form-group" [class.error]="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
+                        <input formControlName="policyAlternateEmail" [class.error]="!insuranceformControls.policyAlternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyAlternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="policyPreferredCommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="1">Cellphone</option>
+                                        <option value="2">Email</option>
+                                        <option value="3">Work Phone</option>
+                                        <option value="4">Post</option>
+                        </select>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Policy Holder Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Address1
+                         <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyAddress.touched && !insuranceformControls.policyAddress.valid">
+                        <input formControlName="policyAddress" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyAddress.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.policyAddress.touched && !insuranceformControls.policyAddress.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyAddress.hasError('required')">Address is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Address2
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyAddress2.touched && !insuranceformControls.policyAddress2.valid">
+                        <input formControlName="policyAddress2" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyAddress2.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.policyAddress2.touched && !insuranceformControls.policyAddress2.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyAddress2.hasError('required')">Address2 is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> State
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
+                        <select formControlName="policyState" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
+                            <option value="">-Select State-</option>
+                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyState.hasError('required')">State is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> City
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
+                        <input formControlName="policyCity" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyCity.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyCity.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zip code
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyZipCode.touched && !insuranceformControls.policyZipCode.valid">
+                        <input formControlName="policyZipCode" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyZipCode.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.policyZipCode.touched && !insuranceformControls.policyZipCode.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyZipCode.hasError('required')">Zipcode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
+                        <select formControlName="policyCountry" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
+                        <div class='error-list' *ngIf="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.policyCountry.hasError('required')">Country is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Insurance Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Insurance Company
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                        <select formControlName="insuranceMasterId" type="text" (change)="selectInsurance($event)" class="form-control" placeholder="" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                            <option value="">-Select Insurance Company-</option>
+                            <option *ngFor="let insurance of insuranceMasters" value="{{insurance.id}}">{{insurance.companyCode}} - {{insurance.companyName}}</option>
+                            <!--<option value="1">Insurance Master 1</option>-->
+                            </select>
+                        <div class='error-list' *ngIf="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.insuranceMasterId.hasError('required')">Insurance Master is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="form-label">Insurance Type
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.insuranceType.touched && !insuranceformControls.insuranceType.valid">
+                        <!--<input type="text" formControlName="insuranceType" [class.error]="!insuranceformControls.insuranceType.valid" class="form-control"
+                            type="text" placeholder="" />-->
+                        <select formControlName="insuranceType" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.insuranceType.touched && !insuranceformControls.insuranceType.valid">
+                            <option value="">-Select -</option>
+                            <option value="1">Primary</option>
+                            <option value="2">Secondary</option>
+                        </select>
+                        <div class='error-list' *ngIf="insuranceformControls.insuranceType.touched && !insuranceformControls.insuranceType.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.insuranceType.hasError('required')">Insurance Type is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Insurance Company Code
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.insuranceCompanyCode.touched && !insuranceformControls.insuranceCompanyCode.valid">
+                        <input type="text" formControlName="insuranceCompanyCode" [class.error]="!insuranceformControls.insuranceCompanyCode.valid"
+                            class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.insuranceCompanyCode.touched && !insuranceformControls.insuranceCompanyCode.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.insuranceCompanyCode.hasError('required')">Insurance Company Code is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="row">  
+                 <div class="col-lg-4">
+                    <label class="form-label">Insurance Photo
+                            </label>
+                <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" 
+                    multiple="multiple" accept="image/*" maxFileSize="1000000">
+                        <ng-template pTemplate type="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>        
+                </p-fileUpload>
+                 </div>  
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Insurance Contact
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Contact Person
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
+                        <input type="text" formControlName="contactPerson" [class.error]="!insuranceformControls.contactPerson.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.contactPerson.touched && !insuranceformControls.contactPerson.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.contactPerson.hasError('required')">Contact Person is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.email.touched && !insuranceformControls.email.valid">
+                        <input type="email" formControlName="email" [class.error]="!insuranceformControls.email.valid" class="form-control" type="text"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.email.touched && !insuranceformControls.email.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="insuranceformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Cellphone
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid">
+                        <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [class.error]="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
+                        <div class='error-list' *ngIf="insuranceformControls.cellPhone.touched && !insuranceformControls.cellPhone.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                <li *ngIf="insuranceformControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Home Phone No</label>
+                        <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Work Phone No</label>
+                        <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Fax No</label>
+                        <p-inputMask mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail </label>
+                         <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                        <input formControlName="alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+                         <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="preferredCommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="1">Cellphone</option>
+                                        <option value="2">Email</option>
+                                        <option value="3">Work Phone</option>
+                                        <option value="4">Post</option>
+                        </select>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </section>
+    <section class="card" *ngIf="insuranceMastersAdress">
+        <header class="card-header card-header-lg">
+            Insurance Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Address1
+                         <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group">
+                        <label class="form-label"> {{insuranceMastersAdress.address1}}
+                            </label>
+                    </div>
+                </div>
+                <!--<div class="form-group" [class.error]="insuranceformControls.address.touched && !insuranceformControls.address.valid">
+                        <input formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.address.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.address.touched && !insuranceformControls.address.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.address.hasError('required')">Address is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> Address2
+                            </label>
+                    <div class="form-group">
+                        <label class="form-label"> {{insuranceMastersAdress.address2}}
+                            </label>
+                    </div>
+                </div>
+                <!--<div class="form-group" [class.error]="insuranceformControls.address2.touched && !insuranceformControls.address2.valid">
+                        <input formControlName="address2" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.address2.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.address2.touched && !insuranceformControls.address2.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.address2.hasError('required')">Address is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> State
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group">
+                        <label class="form-label"> {{insuranceMastersAdress.state}}
+                            </label>
+                    </div>
+                </div>
+                <!--<div class="form-group" [class.error]="insuranceformControls.state.touched && !insuranceformControls.state.valid">
+                        <select formControlName="state" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.state.touched && !insuranceformControls.state.valid">
+                            <option value="">-Select State-</option>
+                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="insuranceformControls.state.touched && !insuranceformControls.state.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.state.hasError('required')">State is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> City
+                            </label>
+                    <div class="form-group">
+                        <label class="form-label"> {{insuranceMastersAdress.city}}
+                            </label>
+                    </div>
+                </div>
+                <!--<div class="form-group" [class.error]="insuranceformControls.city.touched && !insuranceformControls.city.valid">
+                        <input formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.city.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.city.touched && !insuranceformControls.city.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.city.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+                <!--<div class="col-lg-3">
+                    <label class="form-label"> City
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.city.touched && !insuranceformControls.city.valid">
+                        <select formControlName="city" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.city.touched && !insuranceformControls.city.valid">
+                            <option value="">-Select City-</option>
+                            <option *ngFor="let city of insuranceCities" value="{{city.citytext}}">{{city.citytext}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="insuranceformControls.city.touched && !insuranceformControls.city.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.city.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 m-t-lg"><loader [visible]="isInsuranceCitiesLoading"></loader></div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> Zip code
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group">
+                        <label class="form-label"> {{insuranceMastersAdress.zipCode}}
+                            </label>
+                    </div>
+                </div>
+                <!--<div class="form-group" [class.error]="insuranceformControls.zipcode.touched && !insuranceformControls.zipcode.valid">
+                        <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.zipcode.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.zipcode.touched && !insuranceformControls.zipcode.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.zipcode.hasError('required')">Zipcode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group">
+                        <label class="form-label"> {{insuranceMastersAdress.country}}
+                            </label>
+                    </div>
+                    <!--<div class="form-group" [class.error]="insuranceformControls.country.touched && !insuranceformControls.country.valid">-->
+                        <!--<input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.country.valid">
+                    <select formControlName="country" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.country.touched && !insuranceformControls.country.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
+                    <div class='error-list' *ngIf="insuranceformControls.country.touched && !insuranceformControls.country.valid">
+                        <ul>
+                            <li *ngIf="insuranceformControls.country.hasError('required')">Country is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+        </div>
+        </div>
+    </section>
+    <button [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+</form>

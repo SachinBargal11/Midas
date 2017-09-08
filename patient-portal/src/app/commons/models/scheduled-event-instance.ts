@@ -35,4 +35,7 @@ export class ScheduledEventInstance {
     get isInPast():boolean {
         return this.start.isBefore(moment());
     }
+    get color(): string {
+        return this.eventWrapper ? this.eventWrapper.eventColor : null;
+    }
 }

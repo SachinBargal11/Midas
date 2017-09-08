@@ -130,50 +130,54 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
 
             var procedureCodeInfoWithSprcialty = (from pccm in _context.ProcedureCodeCompanyMappings
-                                     join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
-                                     join sp in _context.Specialties on pc.SpecialityId equals sp.id
-                                     //join rt in _context.RoomTests on pc.RoomTestId equals rt.id
-                                     where pccm.CompanyID == CompanyId
-                                           && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
-                                           && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
-                                           && (sp.IsDeleted.HasValue == false || (sp.IsDeleted.HasValue == true && sp.IsDeleted.Value == false))
-                                     select new
-                                     {
-                                       pccm.ID,
-                                       pccm.ProcedureCodeID,
-                                       pccm.CompanyID,
-                                       pccm.Amount,
-                                       pccm.EffectiveFromDate,
-                                       pccm.EffectiveToDate,
-                                       pccm.IsDeleted,
-                                       SpecialtyId = sp.id,
-                                       SpecialtyName = sp.Name,
-                                       RoomTestId =0,
-                                       RoomTestName = ""                                        
-                                     }).ToList();
+                                                  join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                                  join sp in _context.Specialties on pc.SpecialityId equals sp.id
+                                                  //join rt in _context.RoomTests on pc.RoomTestId equals rt.id
+                                                  where pccm.CompanyID == CompanyId
+                                                        && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                                        && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                                        && (sp.IsDeleted.HasValue == false || (sp.IsDeleted.HasValue == true && sp.IsDeleted.Value == false))
+                                                  select new
+                                                  {
+                                                      pccm.ID,
+                                                      pccm.ProcedureCodeID,
+                                                      pccm.CompanyID,
+                                                      pc.ProcedureCodeText,
+                                                      pc.ProcedureCodeDesc,
+                                                      pccm.Amount,
+                                                      pccm.EffectiveFromDate,
+                                                      pccm.EffectiveToDate,
+                                                      pccm.IsDeleted,
+                                                      SpecialtyId = sp.id,
+                                                      SpecialtyName = sp.Name,
+                                                      RoomTestId =0,
+                                                      RoomTestName = ""                                        
+                                                  }).ToList();
 
             var procedureCodeInfoWithRoomTest = (from pccm in _context.ProcedureCodeCompanyMappings
                                                  join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
                                                  //join sp in _context.Specialties on pc.SpecialityId equals sp.id
                                                  join rt in _context.RoomTests on pc.RoomTestId equals rt.id
                                                  where pccm.CompanyID == CompanyId
-                                                       && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
-                                                       && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
-                                                       && (rt.IsDeleted.HasValue == false || (rt.IsDeleted.HasValue == true && rt.IsDeleted.Value == false))
+                                                        && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                                        && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                                        && (rt.IsDeleted.HasValue == false || (rt.IsDeleted.HasValue == true && rt.IsDeleted.Value == false))
                                                  select new
                                                  {
                                                      pccm.ID,
                                                      pccm.ProcedureCodeID,
                                                      pccm.CompanyID,
+                                                     pc.ProcedureCodeText,
+                                                     pc.ProcedureCodeDesc,
                                                      pccm.Amount,
                                                      pccm.EffectiveFromDate,
                                                      pccm.EffectiveToDate,
                                                      pccm.IsDeleted,
                                                      SpecialtyId = 0, // sp.id,
-                                                      SpecialtyName ="", // sp.Name,
-                                                      RoomTestId = rt.id,
-                                                      RoomTestName = rt.Name
-                                                  }).ToList();
+                                                     SpecialtyName ="", // sp.Name,
+                                                     RoomTestId = rt.id,
+                                                     RoomTestName = rt.Name
+                                                 }).ToList();
 
 
             var procedureCodeInfo = procedureCodeInfoWithSprcialty.Concat(procedureCodeInfoWithRoomTest).Distinct();

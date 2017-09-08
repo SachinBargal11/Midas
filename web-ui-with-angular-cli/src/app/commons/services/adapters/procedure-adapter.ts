@@ -12,7 +12,7 @@ export class ProcedureAdapter {
         if (data) {
             procedure = new Procedure({
                 id: data.id,
-                procedureCodeId: data.procedureCodeId,
+                procedureCodeId: data.procedureCodeId ? data.procedureCodeId : data.procedureCodeID,
                 specialityId: data.specialityId,
                 roomId: data.roomId,
                 roomTestId: data.roomTestId,

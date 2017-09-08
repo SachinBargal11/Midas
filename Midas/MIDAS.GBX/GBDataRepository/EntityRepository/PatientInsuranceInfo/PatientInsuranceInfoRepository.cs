@@ -31,21 +31,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.PatientInsuranceInfo insuranceBO = new BO.PatientInsuranceInfo();
             insuranceBO.ID = InsuranceInfos.Id;
-            insuranceBO.patientId = InsuranceInfos.PatientId;
-            insuranceBO.policyHoldersName = InsuranceInfos.PolicyHolderName;
-            insuranceBO.policyHolderAddressInfoId = InsuranceInfos.PolicyHolderAddressInfoId;
-            insuranceBO.policyHolderContactInfoId = InsuranceInfos.PolicyHolderContactInfoId;
-            insuranceBO.policyOwnerId = InsuranceInfos.PolicyOwnerId;
+            insuranceBO.CaseId = InsuranceInfos.CaseId;
+            insuranceBO.PolicyHoldersName = InsuranceInfos.PolicyHolderName;
+            insuranceBO.PolicyHolderAddressInfoId = InsuranceInfos.PolicyHolderAddressInfoId;
+            insuranceBO.PolicyHolderContactInfoId = InsuranceInfos.PolicyHolderContactInfoId;
+            insuranceBO.PolicyOwnerId = InsuranceInfos.PolicyOwnerId;
 
             insuranceBO.InsuranceMasterId = InsuranceInfos.InsuranceMasterId;
 
-            insuranceBO.insuranceCompanyCode = InsuranceInfos.InsuranceCompanyCode;
-            insuranceBO.insuranceCompanyAddressInfoId = InsuranceInfos.InsuranceCompanyAddressInfoId;
-            insuranceBO.insuranceCompanyContactInfoId = InsuranceInfos.InsuranceCompanyContactInfoId;
-            insuranceBO.policyNo = InsuranceInfos.PolicyNo;
-            insuranceBO.contactPerson = InsuranceInfos.ContactPerson;
-            insuranceBO.insuranceTypeId = InsuranceInfos.InsuranceTypeId;
-            insuranceBO.isInActive = InsuranceInfos.IsInActive;
+            insuranceBO.InsuranceCompanyCode = InsuranceInfos.InsuranceCompanyCode;
+            insuranceBO.InsuranceCompanyAddressInfoId = InsuranceInfos.InsuranceCompanyAddressInfoId;
+            insuranceBO.InsuranceCompanyContactInfoId = InsuranceInfos.InsuranceCompanyContactInfoId;
+            insuranceBO.PolicyNo = InsuranceInfos.PolicyNo;
+            insuranceBO.ContactPerson = InsuranceInfos.ContactPerson;
+            insuranceBO.InsuranceTypeId = InsuranceInfos.InsuranceTypeId;
+            insuranceBO.IsInActive = InsuranceInfos.IsInActive;
 
             if (InsuranceInfos.AddressInfo != null)
             {
@@ -64,7 +64,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //[STATECODE-CHANGE]
                     boAddress.CreateByUserID = InsuranceInfos.AddressInfo.CreateByUserID;
                     boAddress.ID = InsuranceInfos.AddressInfo.id;
-                    insuranceBO.addressInfo = boAddress;
+                    insuranceBO.AddressInfo = boAddress;
                 }
             }
 
@@ -84,7 +84,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boContactInfo.PreferredCommunication = InsuranceInfos.ContactInfo.PreferredCommunication;
                     boContactInfo.CreateByUserID = InsuranceInfos.ContactInfo.CreateByUserID;
                     boContactInfo.ID = InsuranceInfos.ContactInfo.id;
-                    insuranceBO.contactInfo = boContactInfo;
+                    insuranceBO.ContactInfo = boContactInfo;
                 }
             }
 
@@ -105,7 +105,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //[STATECODE-CHANGE]
                     boAddress1.CreateByUserID = InsuranceInfos.AddressInfo1.CreateByUserID;
                     boAddress1.ID = InsuranceInfos.AddressInfo1.id;
-                    insuranceBO.addressInfo1 = boAddress1;
+                    insuranceBO.AddressInfo1 = boAddress1;
                 }
             }
 
@@ -125,7 +125,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boContactInfo1.PreferredCommunication = InsuranceInfos.ContactInfo1.PreferredCommunication;
                     boContactInfo1.CreateByUserID = InsuranceInfos.ContactInfo1.CreateByUserID;
                     boContactInfo1.ID = InsuranceInfos.ContactInfo1.id;
-                    insuranceBO.contactInfo1 = boContactInfo1;
+                    insuranceBO.ContactInfo1 = boContactInfo1;
                 }
             }
 
@@ -192,14 +192,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By patient ID
-        public override object GetByPatientId(int PatientId)
+        //public override object GetByPatientId(int PatientId)
+        //{
+        //    var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
+        //                                             .Include("addressInfo1").Include("contactInfo1")
+        //                                             .Include("InsuranceMaster")
+        //                                             .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                             .ToList<PatientInsuranceInfo>();
+
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+
+        //    List<BO.PatientInsuranceInfo> lstpatientsInsuranceInfo = new List<BO.PatientInsuranceInfo>();
+        //    //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
+        //    foreach (PatientInsuranceInfo item in acc)
+        //    {
+        //        lstpatientsInsuranceInfo.Add(Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item));
+        //    }
+
+        //    return lstpatientsInsuranceInfo;
+        //}
+        #endregion
+
+        #region Get By Case ID
+        public override object GetByCaseId(int CaseId)
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                                                      .Include("addressInfo1").Include("contactInfo1")
                                                      .Include("InsuranceMaster")
-                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Where(p => p.CaseId == CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList<PatientInsuranceInfo>();
-            
+
             if (acc == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -217,20 +242,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Is InsuranceInfo Added
-        public override object IsInsuranceInfoAdded(int id)
-        {
-            var acc = _context.PatientInsuranceInfoes.Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                     .FirstOrDefault<PatientInsuranceInfo>();
-           
-            if (acc == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }            
-        }
+        //public override object IsInsuranceInfoAdded(int id)
+        //{
+        //    var acc = _context.PatientInsuranceInfoes.Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                             .FirstOrDefault<PatientInsuranceInfo>();
+
+        //    if (acc == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }            
+        //}
         #endregion
 
 
@@ -238,10 +263,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.PatientInsuranceInfo insuranceBO = (BO.PatientInsuranceInfo)(object)entity;
-            BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.addressInfo1;
-            BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.contactInfo1;
-            BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.addressInfo;
-            BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.contactInfo;
+            BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.AddressInfo1;
+            BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.ContactInfo1;
+            BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.AddressInfo;
+            BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.ContactInfo;
 
             PatientInsuranceInfo insuranceDB = new PatientInsuranceInfo();
 
@@ -455,18 +480,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Insurance dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-                    insuranceDB.PatientId = insuranceBO.patientId;
-                    insuranceDB.PolicyHolderName = IsEditMode == true && insuranceBO.policyHoldersName == null ? insuranceDB.PolicyHolderName : insuranceBO.policyHoldersName;
+                    insuranceDB.CaseId = insuranceBO.CaseId;
+                    insuranceDB.PolicyHolderName = IsEditMode == true && insuranceBO.PolicyHoldersName == null ? insuranceDB.PolicyHolderName : insuranceBO.PolicyHoldersName;
                     insuranceDB.PolicyHolderAddressInfoId = (addressinfoPolicyHolderDB != null && addressinfoPolicyHolderDB.id > 0) ? addressinfoPolicyHolderDB.id : insuranceDB.PolicyHolderAddressInfoId;
                     insuranceDB.PolicyHolderContactInfoId = (contactinfoPolicyHolderDB != null && contactinfoPolicyHolderDB.id > 0) ? contactinfoPolicyHolderDB.id : insuranceDB.PolicyHolderContactInfoId;
-                    insuranceDB.PolicyOwnerId = IsEditMode == true && insuranceBO.policyOwnerId == null ? insuranceDB.PolicyOwnerId : insuranceBO.policyOwnerId;
-                    insuranceDB.InsuranceCompanyCode = IsEditMode == true && insuranceBO.insuranceCompanyCode == null ? insuranceDB.InsuranceCompanyCode : insuranceBO.insuranceCompanyCode;
+                    insuranceDB.PolicyOwnerId = IsEditMode == true && insuranceBO.PolicyOwnerId == null ? insuranceDB.PolicyOwnerId : insuranceBO.PolicyOwnerId;
+                    insuranceDB.InsuranceCompanyCode = IsEditMode == true && insuranceBO.InsuranceCompanyCode == null ? insuranceDB.InsuranceCompanyCode : insuranceBO.InsuranceCompanyCode;
                     insuranceDB.InsuranceCompanyAddressInfoId = (addressinfoInsuranceCompanyDB != null && addressinfoInsuranceCompanyDB.id > 0) ? addressinfoInsuranceCompanyDB.id : insuranceDB.InsuranceCompanyAddressInfoId;
                     insuranceDB.InsuranceCompanyContactInfoId = (contactinfoInsuranceCompanyDB != null && contactinfoInsuranceCompanyDB.id > 0) ? contactinfoInsuranceCompanyDB.id : insuranceDB.InsuranceCompanyContactInfoId;
-                    insuranceDB.PolicyNo = IsEditMode == true && insuranceBO.policyNo == null ? insuranceDB.PolicyNo : insuranceBO.policyNo;
-                    insuranceDB.ContactPerson = IsEditMode == true && insuranceBO.contactPerson == null ? insuranceDB.ContactPerson : insuranceBO.contactPerson;
-                    insuranceDB.InsuranceTypeId = IsEditMode == true && insuranceBO.insuranceTypeId == null ? insuranceDB.InsuranceTypeId : insuranceBO.insuranceTypeId;
-                    insuranceDB.IsInActive = insuranceBO.isInActive;
+                    insuranceDB.PolicyNo = IsEditMode == true && insuranceBO.PolicyNo == null ? insuranceDB.PolicyNo : insuranceBO.PolicyNo;
+                    insuranceDB.ContactPerson = IsEditMode == true && insuranceBO.ContactPerson == null ? insuranceDB.ContactPerson : insuranceBO.ContactPerson;
+                    insuranceDB.InsuranceTypeId = IsEditMode == true && insuranceBO.InsuranceTypeId == null ? insuranceDB.InsuranceTypeId : insuranceBO.InsuranceTypeId;
+                    insuranceDB.IsInActive = insuranceBO.IsInActive;
 
                     //insuranceDB.InsuranceMasterId = IsEditMode == true && insuranceBO.InsuranceMasterId == null ? insuranceDB.InsuranceMasterId : insuranceBO.InsuranceMasterId;
                     InsuranceMaster InsuranceMasterDB = _context.InsuranceMasters.Where(p => insuranceBO.InsuranceMasterId.HasValue == true && p.Id == insuranceBO.InsuranceMasterId).FirstOrDefault();

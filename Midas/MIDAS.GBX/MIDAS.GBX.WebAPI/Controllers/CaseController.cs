@@ -24,7 +24,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -32,7 +31,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getConsentList/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetConsentList(int id)
         {
             return requestHandler.GetConsentList(Request, id);
@@ -40,7 +38,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByPatientId(int PatientId)
         {
             return requestHandler.GetByPatientId(Request, PatientId);
@@ -48,7 +45,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByPatientIdAndCompanyId/{PatientId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByPatientId(int PatientId,int CompanyId)
         {
             return requestHandler.GetGbObjects2(Request, PatientId, CompanyId);
@@ -56,15 +52,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getOpenCaseForPatient/{PatientId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetOpenCaseForPatient(int PatientId)
         {
             return requestHandler.GetOpenCaseForPatient(Request, PatientId);
-        }        
+        }
+
+        [HttpGet]
+        [Route("getOpenCaseForPatient/{PatientId}/{CompanyId}")]
+        public HttpResponseMessage GetOpenCaseForPatient(int PatientId, int CompanyId)
+        {
+            return requestHandler.GetOpenCaseForPatient(Request, PatientId, CompanyId);
+        }
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
@@ -72,7 +73,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyAndDoctorId/{companyId}/{doctorId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyAndDoctorId(int companyId,int doctorId)
         {
             return requestHandler.GetGbObjects(Request, companyId, doctorId);
@@ -80,7 +80,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Case data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -88,7 +87,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("addUploadedFileData/{id}/{FileUploadPath}")]
-        //[AllowAnonymous]
         public HttpResponseMessage AddUploadedFileData(int id, string FileUploadPath)
         {
             return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
@@ -96,7 +94,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getDocumentList/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetDocumentList(int id)
         {
             return requestHandler.GetDocumentList(Request, id);
@@ -104,19 +101,23 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getReadOnly/{CaseId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetReadOnly(int CaseId,int CompanyId)
         {
             return requestHandler.GetReadOnly(Request, CaseId, CompanyId);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
+        }
+
+        [HttpGet]
+        [Route("GetOpenCasesByCompanyWithPatient/{CompanyId}")]
+        public HttpResponseMessage GetOpenCasesByCompanyWithPatient(int CompanyId)
+        {
+            return requestHandler.GetOpenCasesByCompanyWithPatient(Request, CompanyId);
         }
 
         protected override void Dispose(bool disposing)

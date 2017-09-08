@@ -23,6 +23,7 @@ const CaseRecord = Record({
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
+    claimFileNumber:0,
     // transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
@@ -38,7 +39,10 @@ const CaseRecord = Record({
     caseCompanyMapping: null,
     orignatorCompanyName: '',
     attorneyProviderId:0,
-    medicalProviderId:0
+    medicalProviderId:0,
+    medicare:false,
+    medicaid:false,
+    ssdisabililtyIncome:false
 
 
 });
@@ -60,6 +64,7 @@ export class Case extends CaseRecord {
     // transportation: boolean;
     caseStatusId: CaseStatus;
     attorneyId: number;
+    claimFileNumber: number;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
@@ -73,6 +78,9 @@ export class Case extends CaseRecord {
     orignatorCompanyName: string;
     attorneyProviderId:number;
     medicalProviderId:number;
+    medicare:boolean;
+    medicaid:boolean;
+    ssdisabililtyIncome:boolean;
     constructor(props) {
         super(props);
     }

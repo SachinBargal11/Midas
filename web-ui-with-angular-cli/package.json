@@ -15,7 +15,7 @@
   "private": true,
   "dependencies": {
     "@amcharts/amcharts3-angular": "^1.2.1",
-    "@angular/animations": "^4.2.6",
+    "@angular/animations": "4.2.6",
     "@angular/common": "4.2.6",
     "@angular/compiler": "4.2.6",
     "@angular/core": "4.2.6",
@@ -55,7 +55,7 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "ngx-bootstrap": "^1.7.1",
-    "primeng": "^4.1.0-rc.3",
+    "primeng": "4.0.3",
     "primeui": "^4.1.15",
     "reflect-metadata": "^0.1.10",
     "rrule": "^2.2.0",

@@ -68,6 +68,7 @@ export class VisitDetailComponent implements OnInit {
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
     visitId: number;
+    @Input() routeFrom: number;
 
     private _url = `${environment.SERVICE_BASE_URL}`;
 
@@ -227,125 +228,6 @@ export class VisitDetailComponent implements OnInit {
             },
             (error) => {
                 let errString = 'Unable to update event!';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this.closePatientVisitDialog();
-    }
-
-    saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
-        let visitDetailFormValues = this.visitDetailForm.value;
-        let updatedVisit: PatientVisit;
-        let diagnosisCodes = [];
-        inputDiagnosisCodes.forEach(currentDiagnosisCode => {
-            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
-        });
-
-        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientVisitDiagnosisCodes: diagnosisCodes
-        }));
-        let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Diagnosis codes saved successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            },
-            (error) => {
-                let errString = 'Unable to save diagnosis codes!';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this.closePatientVisitDialog();
-    }
-
-    saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
-        let visitDetailFormValues = this.visitDetailForm.value;
-        let updatedVisit: PatientVisit;
-        let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
-
-        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientVisitProcedureCodes: procedureCodes
-        }));
-        let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Procedure codes saved successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            },
-            (error) => {
-                let errString = 'Unable to save procedure codes!';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-        this.closePatientVisitDialog();
-    }
-
-    saveReferral(inputProcedureCodes: Procedure[]) {
-        let result;
-        let visitDetailFormValues = this.visitDetailForm.value;
-        let procedureCodes = [];
-        inputProcedureCodes.forEach(currentProcedureCode => {
-            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
-        });
-
-        let visitReferralDetail = new VisitReferral({
-            patientVisitId: this.selectedVisit.id,
-            fromCompanyId: this.sessionStore.session.currentCompany.id,
-            fromLocationId: this.selectedVisit.locationId,
-            fromDoctorId: this.selectedVisit.doctorId ? this.selectedVisit.doctorId : null,
-            forSpecialtyId: this.selectedVisit.specialtyId ? this.selectedVisit.specialtyId : null,
-            forRoomId: this.selectedVisit.roomId ? this.selectedVisit.roomId : null,
-            forRoomTestId: this.selectedVisit.room ? this.selectedVisit.room.roomTest.id : null,
-            isReferralCreated: true,
-            pendingReferralProcedureCode: procedureCodes
-        });
-        // result = this._visitReferralStore.saveVisitReferral(visitReferralDetail);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Referral saved successfully.',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            },
-            (error) => {
-                let errString = 'Unable to save referral.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

@@ -1,3 +1,4 @@
+
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
@@ -9,7 +10,7 @@ import { InsuranceMaster } from './insurance-master';
 
 const InsuranceRecord = Record({
     id: 0,
-    patientId: 0,
+    caseId: 0,
     policyNo: '',
     policyOwnerId: 0,
     policyHoldersName: '',
@@ -29,7 +30,7 @@ const InsuranceRecord = Record({
 export class Insurance extends InsuranceRecord {
 
     id: number;
-    patientId: number;
+    caseId: number;
     policyNo: string;
     policyOwnerId: number;
     policyHoldersName: string;

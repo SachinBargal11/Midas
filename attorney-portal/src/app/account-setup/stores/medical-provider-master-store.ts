@@ -54,7 +54,19 @@ export class MedicalProviderMasterStore {
     }
 
 
-    getMedicalProviders(): Observable<MedicalProviderMaster[]> {
+    getAllPreferredMedicalProviders(): Observable<MedicalProviderMaster[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.getAllPreferredMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+                resolve(Provider);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
+    }
+
+     getMedicalProviders(): Observable<MedicalProviderMaster[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._medicalProviderMasterService.getMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
@@ -111,6 +123,43 @@ export class MedicalProviderMasterStore {
             });
         });
         return <Observable<MedicalProviderMaster>>Observable.from(promise);
+    }
+
+     generateToken(): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.generateToken(companyId).subscribe((data: any) => {
+                // this._medicalProviderMaster.next(List(Provider));
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+     validateToken(token:number): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.validateToken(token).subscribe((data: any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    
+     associateValidateTokenWithCompany(token:number): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.associateValidateTokenWithCompany(token,companyId).subscribe((data: any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {

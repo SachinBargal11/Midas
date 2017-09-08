@@ -84,6 +84,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Get By CompanyId And DiagnosisTypeId
+        public override object Get(int companyId,int DiagnosisTypeId)
+        {                                                         
+            var boDiagnosisCodeDB = from dc in _context.DiagnosisCodes
+                                    join dcc in _context.DiagnosisCodeCompanies on dc.Id equals dcc.DiagnosisCodeID
+                                    where
+                                    dc.DiagnosisTypeId == DiagnosisTypeId
+                                    && dcc.CompanyID == companyId
+                                    && (dc.IsDeleted.HasValue == false || (dc.IsDeleted.HasValue == true && dc.IsDeleted.Value == false))
+                                    && (dcc.IsDeleted.HasValue == false || (dcc.IsDeleted.HasValue == true && dcc.IsDeleted.Value == false))
+                                    select ( dc);                                     
+
+            List < BO.DiagnosisCode > boDiagnosisCode = new List<BO.DiagnosisCode>();
+
+            if (boDiagnosisCodeDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this CompanyId and DiagnosisTypeId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            else
+            {
+                foreach (var boDiagnosisCodeDBList in boDiagnosisCodeDB)
+                {
+                    boDiagnosisCode.Add(Convert<BO.DiagnosisCode, DiagnosisCode>(boDiagnosisCodeDBList));
+                }
+            }
+
+            return (object)boDiagnosisCode;
+        }
+        #endregion
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 

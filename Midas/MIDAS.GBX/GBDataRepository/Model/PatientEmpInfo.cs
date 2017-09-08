@@ -14,29 +14,26 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class PatientEmpInfo
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PatientEmpInfo()
-        {
-            this.Cases = new HashSet<Case>();
-        }
-    
         public int Id { get; set; }
-        public int PatientId { get; set; }
         public string JobTitle { get; set; }
         public string EmpName { get; set; }
         public int AddressInfoId { get; set; }
         public int ContactInfoId { get; set; }
-        public bool IsCurrentEmp { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int CaseId { get; set; }
+        public string Salary { get; set; }
+        public Nullable<bool> HourOrYearly { get; set; }
+        public Nullable<bool> LossOfEarnings { get; set; }
+        public string DatesOutOfWork { get; set; }
+        public Nullable<decimal> HoursPerWeek { get; set; }
+        public Nullable<bool> AccidentAtEmployment { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
+        public virtual Case Case { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
     }
 }

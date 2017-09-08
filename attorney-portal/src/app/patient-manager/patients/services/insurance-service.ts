@@ -17,12 +17,15 @@ export class InsuranceService {
     // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+       
     }
     getInsurance(insuranceId: Number): Observable<Insurance> {
         let promise: Promise<Insurance> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientInsuranceInfo/get/' + insuranceId).map(res => res.json())
+            return this._http.get(this._url + '/PatientInsuranceInfo/get/' + insuranceId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let insurance = null;
                     if (data.length) {
@@ -39,9 +42,11 @@ export class InsuranceService {
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
 
-    getInsurances(patientId: Number): Observable<Insurance[]> {
+    getInsurances(caseId: Number): Observable<Insurance[]> {
         let promise: Promise<Insurance[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientInsuranceInfo/getByPatientid/' + patientId)
+            return this._http.get(this._url + '/PatientInsuranceInfo/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let insurances = (<Object[]>data).map((data: any) => {
@@ -118,8 +123,11 @@ export class InsuranceService {
     }
 
      getInsuranceMasterById(insuranceMasterId: Number): Observable<InsuranceMaster> {
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/get/' + insuranceMasterId).map(res => res.json())
+            return this._http.get(this._url + '/InsuranceMaster/getInsuranceDetails/' + insuranceMasterId + '/' + companyId , {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let insuranceMaster = null;
                         insuranceMaster = InsuranceMasterAdapter.parseResponse(data);
@@ -132,9 +140,12 @@ export class InsuranceService {
         return <Observable<InsuranceMaster>>Observable.fromPromise(promise);
     }
 
-    getInsurancesMaster(): Observable<InsuranceMaster[]> {
+    getInsurancesMasterByCompanyId(): Observable<InsuranceMaster[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<InsuranceMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/InsuranceMaster/getAll')
+            return this._http.get(this._url + '/InsuranceMaster/getMasterAndByCompanyId/' + companyId , {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let insurancesMaster = (<Object[]>data).map((data: any) => {

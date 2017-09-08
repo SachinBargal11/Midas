@@ -47,7 +47,7 @@ export class ProcedureCodeComponent implements OnInit {
     selectedMode: number = 0;
     selectedDoctorId: number;
     selectedRoomId: number;
-    selectedOption: number;
+    selectedOption: number = 0;
     selectedSpecialityId: number;
     selectedTestId: number;
     msg: string;
@@ -83,6 +83,7 @@ export class ProcedureCodeComponent implements OnInit {
 
     ngOnInit() {
         this.selectedProcedures = [];
+        this.loadProceduresByCompanyId();
         this.loadAllSpecialitiesAndTests();
     }
 
@@ -112,7 +113,12 @@ export class ProcedureCodeComponent implements OnInit {
         this.selectedProcedures = [];
         this.selectedProceduresForCompany = [];
         this.selectedProceduresCodes = [];
-        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
+        if (event.target.value == '0') {
+            this.selectedOption = 0;
+            this.selectedSpecialityId = 0;
+            this.selectedTestId = 0;
+            this.loadProceduresByCompanyId();
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
             this.selectedSpecialityId = parseInt(event.target.value);
             this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
@@ -141,6 +147,28 @@ export class ProcedureCodeComponent implements OnInit {
         // this.selectedProceduresForCompany = _.map(procedures, (currentProcedure: Procedure) => {
         //     return currentProcedure;
         // })
+    }
+
+    loadProceduresByCompanyId() {
+        this._progressBarService.show();
+        this._procedureCodeMasterStore.getProceduresByCompanyId(this._sessionStore.session.currentCompany.id)
+            .subscribe(procedure => {
+                let procedures = procedure;
+                this.selectedProceduresForCompany = _.map(procedures, (currentProcedure: Procedure) => {
+                    return currentProcedure.toJS();
+                })
+                this.selectedProceduresForCompanyStored = procedure.reverse();
+                this.savedProcedures = procedure.reverse();
+                // this.datasource = attorneys.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.attorneys = this.datasource.slice(0, 10);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     loadProceduresByCompanyAndSpecialtyId(specialityId: number) {
@@ -219,7 +247,9 @@ export class ProcedureCodeComponent implements OnInit {
                         this.selProcedureCodes = [];
                         this.selectedProcedures = [];
                         this.selectedProceduresCodes = [];
-                        if (this.selectedOption == 1) {
+                        if (this.selectedOption == 0) {
+                            this.loadProceduresByCompanyId();
+                        } else if (this.selectedOption == 1) {
                             this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
                         } else {
                             this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);
@@ -274,7 +304,9 @@ export class ProcedureCodeComponent implements OnInit {
                                     'createdAt': moment()
 
                                 });
-                                if (this.selectedOption == 1) {
+                                if (this.selectedOption == 0) {
+                                    this.loadProceduresByCompanyId();
+                                } else if (this.selectedOption == 1) {
                                     this.loadProceduresByCompanyAndSpecialtyId(this.selectedSpecialityId);
                                 } else {
                                     this.loadProceduresByCompanyAndRoomTestId(this.selectedTestId);

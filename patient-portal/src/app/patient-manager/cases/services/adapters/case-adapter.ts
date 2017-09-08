@@ -42,7 +42,7 @@ export class CaseAdapter {
             patient_case = new Case({
                 id: data.id,
                 patientId: data.patientId,
-                patient: PatientAdapter.parseResponse(data.patient2),
+                patient: PatientAdapter.parseResponse(data.patient),
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
                 companies: companies,

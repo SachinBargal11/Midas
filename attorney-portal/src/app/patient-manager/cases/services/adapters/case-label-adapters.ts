@@ -20,6 +20,7 @@ export class CaseLabelAdapter {
                 attorneyProvider:data.attorneyProvider,
                 medicalProvider:data.medicalProvider,
                 caseSource: data.caseSource,
+                claimFileNumber: data.claimFileNumber,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,

@@ -8,6 +8,8 @@ import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 import * as _ from 'underscore';
+import { UnscheduledVisitReferral } from '../models/unscheduled-visit-referral';
+import { UnscheduledVisit } from '../models/unscheduled-visit';
 
 @Injectable()
 export class VisitReferralStore {
@@ -109,6 +111,30 @@ export class VisitReferralStore {
             });
         });
         return <Observable<VisitReferral[]>>Observable.from(promise);
+    }
+
+    //UnscheduledVisitReferral
+    saveUnscheduledVisitReferral(unscheduledVisitReferralDetail: UnscheduledVisitReferral): Observable<UnscheduledVisitReferral> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.saveUnscheduledVisitReferral(unscheduledVisitReferralDetail)
+            .subscribe((unscheduledVisitReferralDetail: UnscheduledVisitReferral) => {
+                resolve(unscheduledVisitReferralDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisitReferral>>Observable.from(promise);
+    }
+    getUnscheduledVisitReferralByCompanyId(): Observable<UnscheduledVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getUnscheduledVisitReferralByCompanyId()
+            .subscribe((unscheduledVisitReferralDetail: UnscheduledVisit[]) => {
+                resolve(unscheduledVisitReferralDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.from(promise);
     }
 
     // updatePatientVisit(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {

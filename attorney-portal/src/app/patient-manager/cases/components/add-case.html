@@ -1,5 +1,10 @@
 <h3 class="with-border">Add Case</h3>
 <form [formGroup]="caseform" (ngSubmit)="saveCase()">
+    <section class="card">
+                <header class="card-header card-header-lg">
+                    Case Information
+                </header>
+                <div class="card-block">
     <div class="row">
         <!--<div class="col-lg-4">
             <label class="form-label">Case Name
@@ -74,7 +79,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <!--<div class="col-lg-4">
             <label class="form-label"> Location
                                 <span class="color-red">*</span>
                             </label>
@@ -89,7 +94,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="col-lg-4">
             <label class="form-label"> Carrier Case Number
                             </label>
@@ -123,16 +128,9 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
             <div class="form-group" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                <!--<select formControlName="providerId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.providerId.touched && !caseformControls.providerId.valid">
-                            <option value="">-Select -</option>
-                            <option *ngFor="let currentAttorney of attorneys" value="{{currentAttorney.id}}">{{currentAttorney.name}}</option>
-                        </select>-->
-
                 <select type="text" formControlName="providerId" (change)="providerChange($event)" class="form-control" placeholder="">
                             <option value="">-Select Provider-</option>
-                             <!--<option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       -->
-                              <option *ngFor="let provider of allProviders" value="{{provider.id}}">{{provider.name}} </option>
-                        
+                              <option *ngFor="let provider of allProviders" value="{{provider.prefferedProvider.id}}">{{provider.prefferedProvider.name}}</option>       
                  </select>
                 <div class='error-list' *ngIf="caseformControls.providerId.touched && !caseformControls.providerId.valid">
                     <ul>
@@ -141,8 +139,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Case Source
                             </label>
@@ -156,6 +152,61 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Claim Number
+                            </label>
+            <div class="form-group" [class.error]="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
+                <input formControlName="claimNumber" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.claimNumber.valid">
+                <div class='error-list' *ngIf="caseformControls.claimNumber.touched && !caseformControls.claimNumber.valid">
+                    <ul>
+                        <li *ngIf="caseformControls.claimNumber.hasError('required')">Claim Number is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </section>
+    <section class="card">
+                <header class="card-header card-header-lg">
+                    Lien Information
+                </header>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Medicare       
+                                        </label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <p-radioButton formControlName="medicare" name="medicare" value="1" label="Yes" [(ngModel)]="medicare"></p-radioButton>
+                                    <p-radioButton formControlName="medicare" name="medicare" value="0" label="No" [(ngModel)]="medicare"></p-radioButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Medicaid     
+                                        </label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <p-radioButton formControlName="medicaid" name="medicaid"  value="1" label="Yes" [(ngModel)]="medicaid"></p-radioButton>
+                                    <p-radioButton formControlName="medicaid" name="medicaid" value="0" label="No" [(ngModel)]="medicaid"></p-radioButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">SS Disability Income       
+                                        </label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <p-radioButton formControlName="ssdisabililtyIncome" name="ssdisabililtyIncome"  value="1" label="Yes" [(ngModel)]="ssdisabililtyIncome"></p-radioButton>
+                                    <p-radioButton formControlName="ssdisabililtyIncome" name="ssdisabililtyIncome" value="0" label="No" [(ngModel)]="ssdisabililtyIncome"></p-radioButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
     <button [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>

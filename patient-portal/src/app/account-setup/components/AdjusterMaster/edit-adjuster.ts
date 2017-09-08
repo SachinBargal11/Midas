@@ -33,7 +33,7 @@ export class EditAdjusterComponent implements OnInit {
     insuranceMaster: any[];
     adjuster: Adjuster;
     adjusterCities: any[];
-    patientId: number;
+    caseId: number;
     selectedCity;
     isadjusterCitiesLoading = false;
     
@@ -63,8 +63,8 @@ export class EditAdjusterComponent implements OnInit {
             this._router.navigate(['/account-setup/adjuster']);
         });
 
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+       this._route.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
         });
         this._route.params.subscribe((routeParams: any) => {
             let adjusterId: number = parseInt(routeParams.id);
@@ -113,7 +113,7 @@ export class EditAdjusterComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
 
-        this._insuranceStore.getInsurancesMaster()
+        this._insuranceStore.getInsurancesMaster(this.caseId)
             .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
     }
 

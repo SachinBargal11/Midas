@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import * as _ from 'underscore';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../../environments/environment';
-import {Doctor} from '../models/doctor';
-import {DoctorSpeciality} from '../models/doctor-speciality';
+import { environment } from '../../../../environments/environment';
+import { Doctor } from '../models/doctor';
+import { DoctorSpeciality } from '../models/doctor-speciality';
 import { DoctorAdapter } from './adapters/doctor-adapter';
 import { SessionStore } from '../../../commons/stores/session-store';
 
@@ -91,6 +91,22 @@ export class DoctorsService {
         });
         return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
+
+    getDoctorsTaxType(): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Doctor/getDoctorTaxTypes', {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any[]) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
     getDoctorsBySpecialityInAllApp(specialityId: number): Observable<Doctor[]> {
         let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Doctor/getBySpecialityInAllApp/' + specialityId, {
@@ -115,10 +131,10 @@ export class DoctorsService {
 
             let doctorDetailRequestData = doctorDetail.toJS();
             let userCompanies = [{
-                    company: {
-                        id: this._sessionStore.session.currentCompany.id
-                    }
-                }];
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
+            }];
 
             doctorDetailRequestData.user.userCompanies = userCompanies;
             // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
@@ -160,10 +176,10 @@ export class DoctorsService {
 
             let doctorDetailRequestData = doctorDetail.toJS();
             let userCompanies = [{
-                    company: {
-                        id: this._sessionStore.session.currentCompany.id
-                    }
-                }];
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
+            }];
             doctorDetailRequestData.user.userCompanies = userCompanies;
             // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
             // doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');

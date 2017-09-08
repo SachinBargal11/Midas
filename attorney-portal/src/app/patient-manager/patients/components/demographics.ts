@@ -29,6 +29,8 @@ import { Observable } from 'rxjs/Rx';
 })
 
 export class DemographicsComponent implements OnInit {
+    emergencyContactCellPhone: string;
+    emergencyContactPerson: string;
     caseDetail: Case[];
     referredToMe: boolean = false;
     cellPhone: string;
@@ -86,6 +88,8 @@ export class DemographicsComponent implements OnInit {
                         this.referredToMe = false;
                     }
                     this.patientInfo = results[1];
+                    this.emergencyContactPerson = this.patientInfo.emergencyContactName;
+                    this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
                     this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
@@ -102,9 +106,9 @@ export class DemographicsComponent implements OnInit {
         });
         this.demographicsform = this.fb.group({
             userInfo: this.fb.group({
-                ssn: ['', Validators.required],
-                weight: [''],
-                height: [''],
+                ssn: [''],
+                // weight: [''],
+                // height: [''],
                 dateOfFirstTreatment: [''],
                 // races: ['', Validators.required],
                 // ethnicities: ['', Validators.required],
@@ -116,7 +120,9 @@ export class DemographicsComponent implements OnInit {
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredCommunication: ['']
+                preferredCommunication: [''],
+                emergencyContactPerson: [''],
+                emergencyContactCellPhone: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -143,11 +149,13 @@ export class DemographicsComponent implements OnInit {
         let existingPatientJS = this.patientInfo.toJS();
         let patient = new Patient(_.extend(existingPatientJS, {
             ssn: demographicsFormValues.userInfo.ssn,
-            weight: parseInt(demographicsFormValues.userInfo.weight, 10),
-            height: parseInt(demographicsFormValues.userInfo.height, 10),
+            // weight: parseInt(demographicsFormValues.userInfo.weight, 10),
+            // height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             //raceId: demographicsFormValues.userInfo.races,
             //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
+            emergencyContactName:demographicsFormValues.contact.emergencyContactPerson,
+            emergencyContactPhone:demographicsFormValues.contact.emergencyContactCellPhone,
             updateByUserId: this._sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this._sessionStore.session.account.user.id,

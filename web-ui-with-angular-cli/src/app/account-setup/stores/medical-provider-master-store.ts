@@ -113,9 +113,47 @@ export class MedicalProviderMasterStore {
         return <Observable<MedicalProviderMaster>>Observable.from(promise);
     }
 
+
+     generateToken(): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.generateToken(companyId).subscribe((data: any) => {
+                // this._medicalProviderMaster.next(List(Provider));
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+     validateToken(token:number): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.validateToken(token).subscribe((data: any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    
+     associateValidateTokenWithCompany(token:number): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.associateValidateTokenWithCompany(token,companyId).subscribe((data: any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster) {
         let providers = this._medicalProviderMaster.getValue();
-        let index = providers.findIndex((currentAttorney: MedicalProviderMaster) => currentAttorney.id === medicalProviderMaster.id);
+        let index = providers.findIndex((currentMedicalProvider: MedicalProviderMaster) => currentMedicalProvider.id === medicalProviderMaster.id);
         let promise = new Promise((resolve, reject) => {
             this._medicalProviderMasterService.deleteMedicalProvider(medicalProviderMaster)
                 .subscribe((provider: MedicalProviderMaster) => {

@@ -257,14 +257,29 @@ export class UsersService {
 
     getIsExistingUser(userName: string): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/User/checkIsExistingUser/' + userName , {
+            return this._http.get(this._url + '/User/checkIsExistingUser/' + userName, {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((userData:any) => {
+                .subscribe((userData: any) => {
                     // let parsedUser: User[] = null;
                     // parsedUser = UserAdapter.parseResponse(userData);
                     // resolve(parsedUser);
                     resolve(userData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    disassociateDoctorWithCompany(doctorId: number, companyId: number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/doctor/disassociateDoctorWithCompany/' + companyId + '/' +  doctorId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });

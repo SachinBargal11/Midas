@@ -42,6 +42,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userPersonalSettingBO.IsSearchable = userPersonalSetting.IsSearchable;
             userPersonalSettingBO.IsCalendarPublic = userPersonalSetting.IsCalendarPublic;
             userPersonalSettingBO.SlotDuration = userPersonalSetting.SlotDuration;
+            userPersonalSettingBO.PreferredModeOfCommunication = userPersonalSetting.PreferredModeOfCommunication;
+            userPersonalSettingBO.IsPushNotificationEnabled = userPersonalSetting.IsPushNotificationEnabled;
             userPersonalSettingBO.IsDeleted = userPersonalSetting.IsDeleted;
             userPersonalSettingBO.CreateByUserID = userPersonalSetting.CreateByUserID;
             userPersonalSettingBO.UpdateByUserID = userPersonalSetting.UpdateByUserID;
@@ -118,6 +120,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userPersonalSettingDB.IsSearchable = userPersonalSettingBO.IsSearchable;
                 userPersonalSettingDB.IsCalendarPublic = userPersonalSettingBO.IsCalendarPublic;
                 userPersonalSettingDB.SlotDuration = userPersonalSettingBO.SlotDuration;
+                userPersonalSettingDB.PreferredModeOfCommunication = userPersonalSettingBO.PreferredModeOfCommunication;
+                userPersonalSettingDB.IsPushNotificationEnabled = userPersonalSettingBO.IsPushNotificationEnabled;
 
                 if (Add_userPersonalsetting == true)
                 {
@@ -151,6 +155,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)acc_;
         }
         #endregion
+
+
+        #region getByuserNameandcompanyId  Used for NotificationHelpers
+        public Object GetByUserNameAndCompanyId(string userName, int companyId)
+        {
+            int UserId = _context.Users.Where(p => p.UserName == userName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p1 => p1.id).FirstOrDefault(); ;
+
+            var acc = _context.UserPersonalSettings.Include("User").Include("Company").Where(p => p.UserId == UserId && p.CompanyId == companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            BO.UserPersonalSetting acc_ = Convert<BO.UserPersonalSetting, UserPersonalSetting>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
+
 
         #region Delete By ID
         public override object Delete(int id)

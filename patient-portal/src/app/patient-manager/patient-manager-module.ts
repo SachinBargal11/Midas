@@ -13,27 +13,27 @@ import { PatientNavComponent } from './patients/components/patient-nav-bar';
 import { PatientsListComponent } from './patients/components/patients-list';
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
-import { AddFamilyMemberComponent } from './patients/components/add-family-member';
-import { FamilyMemberListComponent } from './patients/components/family-member-list';
-import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
+import { AddFamilyMemberComponent } from './cases/components/add-family-member';
+import { FamilyMemberListComponent } from './cases/components/family-member-list';
+import { EditFamilyMemberComponent } from './cases/components/edit-family-member';
 import { AccidentInfoComponent } from './cases/components/accident';
 // import { AttorneyComponent } from './patients/components/attorney';
-import { PatientEmployerComponent } from './patients/components/employer';
+import { CaseEmployerComponent } from './cases/components/employer';
 import { CaseShellComponent } from './cases/components/cases-shell';
 import { EditReferringOfficeComponent } from './cases/components/edit-referring-office';
-import { InsuranceListComponent } from './patients/components/insurance-list';
-import { AddInsuranceComponent } from './patients/components/add-insurance';
-import { EditInsuranceComponent } from './patients/components/edit-insurance';
+import { InsuranceListComponent } from './cases/components/insurance-list';
+import { AddInsuranceComponent } from './cases/components/add-insurance';
+import { EditInsuranceComponent } from './cases/components/edit-insurance';
 import { PatientsService } from './patients/services/patients-service';
 import { AccidentService } from './cases/services/accident-services';
 import { AttorneyService } from './patients/services/attorney-services';
-import { EmployerService } from './patients/services/employer-service';
-import { FamilyMemberService } from './patients/services/family-member-service';
+import { EmployerService } from './cases/services/employer-service';
+import { FamilyMemberService } from './cases/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
 import { ReferringOfficeService } from './cases/services/referring-office-service';
 import { PatientsStore } from './patients/stores/patients-store';
-import { EmployerStore } from './patients/stores/employer-store';
-import { FamilyMemberStore } from './patients/stores/family-member-store';
+import { EmployerStore } from './cases/stores/employer-store';
+import { FamilyMemberStore } from './cases/stores/family-member-store';
 import { AccidentStore } from './cases/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
@@ -103,6 +103,10 @@ import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
 import { VisitReferralStore } from './patient-visit/stores/visit-referral-store';
 import { VisitReferralService } from './patient-visit/services/visit-referral-service';
+import { PriorAccidentComponent } from './cases/components/prior-accident';
+import { AutoInformationInfoComponent } from './cases/components/auto-Information';
+import { AutoInformationService } from './cases/services/autoInformation-service';
+import { AutoInformationStore } from './cases/stores/autoInformation-store';
 
 @NgModule({
     imports: [
@@ -130,7 +134,7 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
         EditFamilyMemberComponent,
         AccidentInfoComponent,
         // AttorneyComponent,
-        PatientEmployerComponent,
+        CaseEmployerComponent,
         AddInsuranceComponent,
         CaseShellComponent,
         EditReferringOfficeComponent,
@@ -143,27 +147,29 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
         CaseBasicComponent,
         // InsuranceMapComponent,
         // CaseMappingComponent,
-        ViewAllComponent, 
-        AddCompanyConsentComponent, 
-        ListCompanyConsentComponent, 
-        EditCompanyConsentComponent, 
-        ConsentListComponent, 
-        AddConsentComponent, 
-        CompanyCasesComponent, 
-        AddCaseComponent, 
+        ViewAllComponent,
+        AddCompanyConsentComponent,
+        ListCompanyConsentComponent,
+        EditCompanyConsentComponent,
+        ConsentListComponent,
+        AddConsentComponent,
+        CompanyCasesComponent,
+        AddCaseComponent,
         PatientVisitListComponent,
         PatientVisitNotesComponent,
         CaseDocumentsUploadComponent,
         PatientVisitListShellComponent,
-        VisitDocumentsUploadComponent, 
-        InsuranceMappingComponent, 
-        AssignInsuranceComponent, 
-        EditConsentComponent, 
-        PatientVisitComponent, 
+        VisitDocumentsUploadComponent,
+        InsuranceMappingComponent,
+        AssignInsuranceComponent,
+        EditConsentComponent,
+        PatientVisitComponent,
         DocumentsUploadComponent,
         VisitShellComponent,
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,
+        PriorAccidentComponent,
+        AutoInformationInfoComponent
     ],
     providers: [
         PatientsService,
@@ -192,14 +198,16 @@ import { VisitReferralService } from './patient-visit/services/visit-referral-se
         // PatientVisitService, 
         LocationsStore,
         LocationsService,
-        AttorneyMasterStore, 
+        AttorneyMasterStore,
         AttorneyMasterService,
         PatientVisitsStore,
         PatientVisitService,
         ReferralService,
         ReferralStore,
         VisitReferralStore,
-        VisitReferralService
+        VisitReferralService,
+        AutoInformationService,
+        AutoInformationStore
     ]
 })
 export class PatientManagerModule { }

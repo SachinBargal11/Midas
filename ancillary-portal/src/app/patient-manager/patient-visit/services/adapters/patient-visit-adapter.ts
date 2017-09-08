@@ -33,7 +33,7 @@ export class PatientVisitAdapter {
                 case: CaseAdapter.parseResponse(data.case),
                 caseId: data.caseId,
                 patientId: data.patientId,
-                patient: PatientAdapter.parseResponse(data.patient2),
+                patient: PatientAdapter.parseResponse(data.patient),
                 locationId: data.locationId,
                 location: data.location ? LocationAdapter.parseResponse(data.location) : null,
                 roomId: data.roomId,

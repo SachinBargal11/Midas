@@ -11,11 +11,11 @@
                     <label class="form-label"> Company Code
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="editInsuranceMasterForm.controls.companyCode.touched && !editInsuranceMasterForm.controls.companyCode.valid">
-                        <input formControlName="companyCode" [ngModel]="insuranceMaster.companyCode" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterForm.controls.companyCode.valid">
-                        <div class='error-list' *ngIf="editInsuranceMasterForm.controls.companyCode.touched && !editInsuranceMasterForm.controls.companyCode.valid">
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.companyCode.touched && !editInsuranceMasterFormControls.companyCode.valid">
+                        <input formControlName="companyCode" [ngModel]="insuranceMaster.companyCode" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.companyCode.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.companyCode.touched && !editInsuranceMasterFormControls.companyCode.valid">
                             <ul>
-                                <li *ngIf="editInsuranceMasterForm.controls.companyCode.hasError('required')">Company Code is required.</li>
+                                <li *ngIf="editInsuranceMasterFormControls.companyCode.hasError('required')">Company Code is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -24,13 +24,68 @@
                     <label class="form-label"> Company Name
                                             <span class="color-red">*</span>
                                         </label>
-                    <div class="form-group" [class.error]="editInsuranceMasterForm.controls.companyName.touched && !editInsuranceMasterForm.controls.companyName.valid">
-                        <input formControlName="companyName" [ngModel]="insuranceMaster.companyName" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterForm.controls.companyName.valid">
-                        <div class='error-list' *ngIf="editInsuranceMasterForm.controls.companyName.touched && !editInsuranceMasterForm.controls.companyName.valid">
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.companyName.touched && !editInsuranceMasterFormControls.companyName.valid">
+                        <input formControlName="companyName" [ngModel]="insuranceMaster.companyName" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.companyName.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.companyName.touched && !editInsuranceMasterFormControls.companyName.valid">
                             <ul>
-                                <li *ngIf="editInsuranceMasterForm.controls.companyName.hasError('required')">Company Name is required.</li>
+                                <li *ngIf="editInsuranceMasterFormControls.companyName.hasError('required')">Company Name is required.</li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zeus Id
+                        <!--<span class="color-red">*</span>-->
+                    </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.zeusId.touched && !editInsuranceMasterFormControls.zeusId.valid">
+                        <input formControlName="zeusId" type="number" [ngModel]="insuranceMaster.zeusID" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.zeusId.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.zeusId.touched && !editInsuranceMasterFormControls.zeusId.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.zeusId.hasError('required')">Zeus Id is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> 1500Form 
+                            <!--<span class="color-red">*</span>-->
+                        </label>
+                    <div class="form-group">
+                        <label class="form-check-label">
+                        <input type="radio" value="1" name="Only1500Form" formControlName="Only1500Form" [(ngModel)]="Only1500Form"> Yes
+                    </label>
+                        <label class="form-check-label">
+                        <input type="radio" value="0" name="Only1500Form" formControlName="Only1500Form" [(ngModel)]="Only1500Form"> No
+                    </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Paper Authorization 
+                            <!--<span class="color-red">*</span>-->
+                        </label>
+                    <div class="form-group">
+                        <label class="form-check-label">
+                        <input type="radio" value="1" name="paperAuthorization" formControlName="paperAuthorization" [(ngModel)]="paperAuthorization"> Yes
+                    </label>
+                        <label class="form-check-label">
+                        <input type="radio" value="0" name="paperAuthorization" formControlName="paperAuthorization" [(ngModel)]="paperAuthorization"> No
+                    </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Priority Billing 
+                            <!--<span class="color-red">*</span>-->
+                        </label>
+                    <div class="form-group">
+                        <label class="form-check-label">
+                        <input type="radio" value="1" name="priorityBilling" formControlName="priorityBilling" [(ngModel)]="priorityBilling"> Yes
+                    </label>
+                        <label class="form-check-label">
+                        <input type="radio" value="0" name="priorityBilling" formControlName="priorityBilling" [(ngModel)]="priorityBilling"> No
+                    </label>
                     </div>
                 </div>
             </div>
@@ -62,8 +117,8 @@
                                 <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid">
-                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="insuranceMaster.Contact.cellPhone" [class.error]="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid"
-                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <p-inputMask mask="+1 999-999-9999" formControlName="cellPhone" [ngModel]="insuranceMaster.Contact.cellPhone" [class.error]="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid"
+                            placeholder="+1 999-999-9999" styleClass="form-control"></p-inputMask>
                         <div class='error-list' *ngIf="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid">
                             <ul>
                                 <li *ngIf="editInsuranceMasterFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>

@@ -62,7 +62,7 @@ export class VisitDetailComponent implements OnInit {
     readingDoctor: number;
     visitDetailForm: FormGroup;
     visitDetailFormControls;
-    visitInfo = 'Visit Info';
+    visitInfo: string;
     //   selectedVisit: PatientVisit;
     visitUploadDocumentUrl: string;
     documents: VisitDocument[] = [];
@@ -101,6 +101,25 @@ export class VisitDetailComponent implements OnInit {
             readingDoctor: ['']
         });
         this.visitDetailFormControls = this.visitDetailForm.controls;
+
+        this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                    this.visitInfo = `${this.visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId}`;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        })
     }
 
     ngOnInit() {
@@ -217,7 +236,7 @@ export class VisitDetailComponent implements OnInit {
         this.getDocuments();
     }
 
-   documentUploadError(error: Error) {
+    documentUploadError(error: Error) {
         if (error.message == 'Please select document Type') {
             this._notificationsService.error('Oh No!', 'Please select document Type');
         }
@@ -231,8 +250,8 @@ export class VisitDetailComponent implements OnInit {
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             notes: visitDetailFormValues.notes,
-            visitStatusId: parseInt(visitDetailFormValues.visitStatusId),
-            doctorId: parseInt(visitDetailFormValues.readingDoctor)
+            visitStatusId: this.routeFrom == 2 ? this.selectedVisit.visitStatusId : parseInt(visitDetailFormValues.visitStatusId),
+            doctorId: this.selectedVisit.specialtyId ? this.selectedVisit.doctorId : parseInt(visitDetailFormValues.readingDoctor)
         }));
         this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);

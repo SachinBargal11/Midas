@@ -1,3 +1,4 @@
+import { ImeVisit } from '../models/ime-visit';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -11,14 +12,17 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as _ from 'underscore';
 import { Consent } from '../../cases/models/consent';
-
+import { EoVisit } from '../models/eo-visit';
+import { AttorneyVisit } from '../models/attorney-visit';
 @Injectable()
 export class PatientVisitsStore {
 
     private _patientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _companyPatientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _consent: BehaviorSubject<List<Consent>> = new BehaviorSubject(List([]));
-    
+    private _imeVisits: BehaviorSubject<List<ImeVisit>> = new BehaviorSubject(List([]));
+    private _eoVisits: BehaviorSubject<List<EoVisit>> = new BehaviorSubject(List([]));
+
     constructor(
         private _patientVisitsService: PatientVisitService,
         private _sessionStore: SessionStore
@@ -59,6 +63,7 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByPatientId(patientId: number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getVisitsByPatientId(patientId).subscribe((patientVisits: PatientVisit[]) => {
@@ -69,6 +74,18 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getImeVisitsByPatientId(patientId: number): Observable<ImeVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getImeVisitsByPatientId(patientId).subscribe((imeVisits: ImeVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(imeVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
     }
 
     getPatientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
@@ -141,6 +158,7 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByDoctorAndDates(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getVisitsByDoctorAndDates(starDate, endDate, doctorId).subscribe((patientVisits: PatientVisit[]) => {
@@ -152,6 +170,7 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
     getVisitsByDoctorDatesAndName(starDate: any, endDate: any, doctorName: string): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getVisitsByDoctorDatesAndName(starDate, endDate, doctorName).subscribe((patientVisits: PatientVisit[]) => {
@@ -225,6 +244,23 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
+    updateImeVisitDetail(imeVisit: ImeVisit): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.updateImeVisitDetail(imeVisit).subscribe((updatedPatientVisit: ImeVisit) => {
+                let imeVisitDetail: List<ImeVisit> = this._imeVisits.getValue();
+                let index = imeVisitDetail.findIndex((currentPatientVisit: ImeVisit) => currentPatientVisit.id === updatedPatientVisit.id);
+                imeVisitDetail = imeVisitDetail.update(index, function () {
+                    return updatedPatientVisit;
+                });
+                this._imeVisits.next(imeVisitDetail);
+                resolve(updatedPatientVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit>>Observable.from(promise);
     }
 
     updatePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
@@ -348,6 +384,7 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit>>Observable.from(promise);
     }
+
     deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {
         let cases = this._patientVisits.getValue();
         let index = cases.findIndex((currentCase: PatientVisit) => currentCase.id === caseDocument.visitId);
@@ -362,7 +399,7 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
-      downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
+    downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.downloadDocumentForm(visitId, documentId).subscribe((consent: Consent[]) => {
                 this._consent.next(List(consent));
@@ -373,7 +410,28 @@ export class PatientVisitsStore {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
+    getAttorneyVisitsByPatientId(patientId: number): Observable<AttorneyVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getAttorneyVisitsByPatientId(patientId).subscribe((attoneyVisits: AttorneyVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(attoneyVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<AttorneyVisit[]>>Observable.fromPromise(promise);
+    }
 
-
+    getEOVisitsByPatientId(patientId: number): Observable<EoVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getEOVisitsByPatientId(patientId).subscribe((eoVisits: EoVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(eoVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<EoVisit[]>>Observable.fromPromise(promise);
+    }
 }
 

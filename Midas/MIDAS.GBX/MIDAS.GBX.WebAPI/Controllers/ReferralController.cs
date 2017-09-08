@@ -1,4 +1,4 @@
-﻿using MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.BusinessObjects;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,97 +14,145 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
     public class ReferralController : ApiController
     {
-        //private IRequestHandler<Referral> requestHandler;
+        private IRequestHandler<Referral> requestHandler;
 
         public ReferralController()
         {
-            //requestHandler = new GbApiRequestHandler<Referral>();
+            requestHandler = new GbApiRequestHandler<Referral>();
         }
 
-        //[HttpGet]
-        //[Route("get/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage Get(int id)
-        //{
-        //    return requestHandler.GetObject(Request, id);
-        //}
+        [HttpPost]
+        [Route("save")]
+        public HttpResponseMessage Post([FromBody]Referral data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
 
-        //[HttpGet]
-        //[Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByCaseId(int CaseId)
-        //{
-        //    return requestHandler.GetByCaseId(Request, CaseId);
-        //}
+        [HttpGet]
+        [Route("Get/{id}")]
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
 
-        //[HttpPost]
-        //[Route("save")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage Post([FromBody]Referral data)
-        //{
-        //    return requestHandler.CreateGbObject(Request, data);
-        //}
+        [HttpGet]
+        [Route("getByFromCompanyId/{companyId}")]
+        public HttpResponseMessage GetByFromCompanyId(int companyId)
+        {
+            return requestHandler.GetByFromCompanyId(Request, companyId);
+        }
 
-        //[HttpGet]
-        //[Route("getByReferringCompanyId/{id}")]
-        //public HttpResponseMessage GetByReferringCompanyId(int id)
-        //{
-        //    return requestHandler.GetByReferringCompanyId(Request, id);
-        //}
+        [HttpGet]
+        [Route("getByToCompanyId/{companyId}")]
+        public HttpResponseMessage GetByToCompanyId(int companyId)
+        {
+            return requestHandler.GetByToCompanyId(Request, companyId);
+        }
 
-        //[HttpGet]
-        //[Route("getByReferredToCompanyId/{id}")]
-        //public HttpResponseMessage GetByReferredToCompanyId(int id)
-        //{
-        //    return requestHandler.GetByReferredToCompanyId(Request, id);
-        //}
+        [HttpGet]
+        [Route("getByFromLocationId/{locationId}")]
+        public HttpResponseMessage GetByFromLocationId(int locationId)
+        {
+            return requestHandler.GetByFromLocationId(Request, locationId);
+        }
 
-        //[HttpGet]
-        //[Route("getByreferringLocationId/{id}")]
-        //public HttpResponseMessage GetByReferringLocationId(int id)
-        //{
-        //    return requestHandler.GetByReferringLocationId(Request, id);
-        //}
+        [HttpGet]
+        [Route("getByToLocationId/{locationId}")]
+        public HttpResponseMessage GetByToLocationId(int locationId)
+        {
+            return requestHandler.GetByToLocationId(Request, locationId);
+        }
 
-        //[HttpGet]
-        //[Route("getByreferringToLocationId/{id}")]
-        //public HttpResponseMessage GetByReferringToLocationId(int id)
-        //{
-        //    return requestHandler.GetByReferringToLocationId(Request, id);
-        //}
+        [HttpGet]
+        [Route("getByFromDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByFromDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            return requestHandler.GetByFromDoctorAndCompanyId(Request, doctorId, companyId);
+        }
 
-        //[HttpGet]
-        //[Route("getByReferringUserId/{userId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByReferringUserId(int userId)
-        //{
-        //    return requestHandler.GetByReferringUserId(Request, userId);
-        //}
+        [HttpGet]
+        [Route("getByToDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetByToDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            return requestHandler.GetByToDoctorAndCompanyId(Request, doctorId, companyId);
+        }
 
-        //[HttpGet]
-        //[Route("getByReferredToDoctorId/{doctorId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByReferredToDoctorId(int doctorId)
-        //{
-        //    return requestHandler.GetByReferredToDoctorId(Request, doctorId);
-        //}
+        [HttpGet]
+        [Route("getReferralByFromDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetReferralByFromDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            return requestHandler.GetReferralByFromDoctorAndCompanyId(Request, doctorId, companyId);
+        }
 
-        //[HttpGet]
-        //[Route("Delete/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage Delete(int id)
-        //{
-        //    return requestHandler.Delete(Request, id);
-        //}
+        [HttpGet]
+        [Route("getReferralByToDoctorAndCompanyId/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetReferralByToDoctorAndCompanyId(int doctorId, int companyId)
+        {
+            return requestHandler.GetReferralByToDoctorAndCompanyId(Request, doctorId, companyId);
+        }
 
-        //[HttpGet]
-        //[Route("generateReferralDocument/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GenerateReferralDocument(int id)
-        //{
-        //    return requestHandler.GenerateReferralDocument(Request, id);
-        //}
+        [HttpGet]
+        [Route("getByForRoom/{roomId}")]
+        public HttpResponseMessage GetByForRoomId(int roomId)
+        {
+            return requestHandler.GetByForRoomId(Request, roomId);
+        }
 
+        [HttpGet]
+        [Route("getByToRoom/{roomId}")]
+        public HttpResponseMessage GetByToRoomId(int roomId)
+        {
+            return requestHandler.GetByToRoomId(Request, roomId);
+        }
+
+        [HttpGet]
+        [Route("getByForSpecialty/{specialtyId}")]
+        public HttpResponseMessage GetByForSpecialtyId(int specialtyId)
+        {
+            return requestHandler.GetByForSpecialtyId(Request, specialtyId);
+        }
+
+        [HttpGet]
+        [Route("getByForRoomTestId/{roomTestId}")]
+        public HttpResponseMessage GetByForRoomTestId(int roomTestId)
+        {
+            return requestHandler.GetByForRoomTestId(Request, roomTestId);
+        }
+
+        [HttpGet]
+        [Route("getReferralByFromCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralByFromCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralByFromCompanyId(Request, companyId);
+        }
+
+        [HttpGet]
+        [Route("getReferralByToCompanyId/{companyId}")]
+        public HttpResponseMessage GetReferralByToCompanyId(int companyId)
+        {
+            return requestHandler.GetReferralByToCompanyId(Request, companyId);
+        }
+
+        [HttpGet]
+        [Route("associateVisitWithReferral/{referralId}/{patientVisitId}")]
+        public HttpResponseMessage AssociateVisitWithReferral(int referralId, int patientVisitId)
+        {
+            return requestHandler.AssociateVisitWithReferral(Request, referralId, patientVisitId);
+        }
+
+        [HttpGet]
+        [Route("getByCaseAndCompanyId/{caseId}/{companyId}")]
+        public HttpResponseMessage GetByCaseAndCompanyId(int caseId, int companyId)
+        {
+            return requestHandler.GetByCaseAndCompanyId(Request, caseId, companyId);
+        }
+
+        [HttpGet]
+        [Route("generateReferralDocument/{id}")]
+        public HttpResponseMessage GenerateReferralDocument(int id)
+        {
+            return requestHandler.GenerateReferralDocument(Request, id);
+        }
 
         protected override void Dispose(bool disposing)
         {
