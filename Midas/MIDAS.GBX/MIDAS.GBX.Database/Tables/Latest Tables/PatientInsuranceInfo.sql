@@ -9,7 +9,6 @@ BEGIN
     CREATE TABLE [dbo].[PatientInsuranceInfo]
     (
 	    [Id] [int] NOT NULL IDENTITY,
-	    --[PatientId] [int] NOT NULL,
         [CaseId] [int] NOT NULL,
 	    [PolicyHolderName] [NVARCHAR](50) NULL,
 	    [PolicyHolderAddressInfoId] [INT] NULL,
@@ -68,17 +67,56 @@ BEGIN
 END
 ELSE
 BEGIN
-    ALTER TABLE [dbo].[PatientInsuranceInfo] 
-        ADD [CaseId] [int] NULL
+    ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [CaseId] [int] NULL
     
-    UPDATE [dbo].[PatientInsuranceInfo] 
+    --UPDATE [dbo].[PatientInsuranceInfo] 
+    --    SET [CaseId] = (SELECT TOP 1 [Id] FROM [dbo].[Case] WHERE [dbo].[Case].[PatientId] = [dbo].[PatientInsuranceInfo].[PatientId])
+
+    --ALTER TABLE [dbo].[PatientInsuranceInfo] 
+    --    ALTER COLUMN [CaseId] [int] NOT NULL
+
+    --ALTER TABLE [dbo].[PatientInsuranceInfo] 
+    --    DROP COLUMN [PatientId]
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientInsuranceInfo'
+	AND		COLUMN_NAME = 'CaseId' AND IS_NULLABLE = 'YES'
+)
+BEGIN
+	UPDATE [dbo].[PatientInsuranceInfo] 
         SET [CaseId] = (SELECT TOP 1 [Id] FROM [dbo].[Case] WHERE [dbo].[Case].[PatientId] = [dbo].[PatientInsuranceInfo].[PatientId])
+END
+GO
 
-    ALTER TABLE [dbo].[PatientInsuranceInfo] 
-        ALTER COLUMN [CaseId] [int] NOT NULL
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientInsuranceInfo'
+	AND		COLUMN_NAME = 'CaseId' AND IS_NULLABLE = 'YES'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientInsuranceInfo] ALTER COLUMN [CaseId] [int] NOT NULL
+END
+GO
 
-    ALTER TABLE [dbo].[PatientInsuranceInfo] 
-        DROP COLUMN [PatientId]
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientInsuranceInfo'
+	AND		COLUMN_NAME = 'PatientId'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientInsuranceInfo] DROP COLUMN [PatientId]
 END
 GO
 
@@ -218,94 +256,3 @@ ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_Patient
 	REFERENCES [dbo].[InsuranceMaster] ([Id])
 GO
 
-
----------------------------------------------------------------------------
---CREATE TABLE [dbo].[PatientInsuranceInfo]
---(
---	[Id] [int] NOT NULL IDENTITY,
---	[PatientId] [int] NOT NULL,
---	[PolicyHolderName] [NVARCHAR](50) NULL,
---	[PolicyHolderAddressInfoId] [INT] NULL,
---	[PolicyHolderContactInfoId] [INT] NULL,
---	[PolicyOwnerId] [TINYINT] NULL,
---	[InsuranceMasterId] [INT] NULL, -- look up and also add, companay link
---	[InsuranceCompanyCode] [NVARCHAR](10) NULL,
---	[InsuranceCompanyAddressInfoId] [INT] NULL,
---	[InsuranceCompanyContactInfoId] [INT] NULL,
---	[PolicyNo] [NVARCHAR](50) NULL,
---	[ContactPerson] [NVARCHAR](50) NULL,
---	--[ClaimFileNo] [NVARCHAR](50) NULL, -- Remove
---	--[WCBNo] [NVARCHAR](50) NULL,--???? -- remove, link with treatment provider/doctor
---	[InsuranceTypeId] [TINYINT] NULL,
---	[StartDate] [datetime2](7) NULL,
---	[EndDate] [datetime2](7) NULL,
---	[InsuredAmount] [decimal] NULL, 
---	[IsInActive] [BIT] NUll DEFAULT (0),
-	
---	[IsDeleted] [bit] NULL DEFAULT (0),
---	[CreateByUserID] [int] NOT NULL,
---	[CreateDate] [datetime2](7) NOT NULL,
---	[UpdateByUserID] [int] NULL,
---	[UpdateDate] [datetime2](7) NULL, 
---    CONSTRAINT [PK_PatientInsuranceInfo] PRIMARY KEY ([Id])
---)
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_Patient_PatientId] FOREIGN KEY([PatientId])
---	REFERENCES [dbo].[Patient] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_Patient_PatientId]	
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId] FOREIGN KEY([PolicyHolderAddressInfoId])
---	REFERENCES [dbo].[AddressInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId]
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId] FOREIGN KEY([PolicyHolderContactInfoId])
---	REFERENCES [dbo].[ContactInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId]
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] ALTER COLUMN [PolicyOwnerId] [TINYINT] NULL 
---GO
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId] FOREIGN KEY([PolicyOwnerId])
---	REFERENCES [dbo].[PolicyOwner] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId]
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId] FOREIGN KEY([InsuranceCompanyAddressInfoId])
---	REFERENCES [dbo].[AddressInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId]
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId] FOREIGN KEY([InsuranceCompanyContactInfoId])
---	REFERENCES [dbo].[ContactInfo] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId]
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId] FOREIGN KEY([InsuranceTypeId])
---	REFERENCES [dbo].[InsuranceType] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId]
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [InsuranceMasterId] [INT] NULL
---ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId] FOREIGN KEY([InsuranceMasterId])
---	REFERENCES [dbo].[InsuranceMaster] ([Id])
---GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId]
---GO
