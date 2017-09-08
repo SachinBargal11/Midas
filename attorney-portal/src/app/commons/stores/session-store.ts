@@ -326,7 +326,8 @@ export class SessionStore {
             }
             else {
                 reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
-                window.location.assign(this._homeUrl);
+                let url = this._identityServerUrl + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(this._homeUrl) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+                window.location.assign(url);
             }
         });
         window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');

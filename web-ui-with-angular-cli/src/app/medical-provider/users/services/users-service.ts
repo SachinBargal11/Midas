@@ -257,7 +257,10 @@ export class UsersService {
 
     getIsExistingUser(userName: string): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/User/checkIsExistingUser/' + userName, {
+            let requestData = {
+                userName: userName
+            }
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/checkIsExistingUser', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((userData: any) => {

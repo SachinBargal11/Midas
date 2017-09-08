@@ -250,7 +250,7 @@ export class AddPatientComponent implements OnInit {
 
         xhr.open(this.method, this.url, true);
         xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
-        // xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
         xhr.withCredentials = false;
         xhr.send(formData);
     }
@@ -266,7 +266,7 @@ export class AddPatientComponent implements OnInit {
         }
         xhr.open(this.method, this.url, true);
         xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + patientId + '"}');
-        //xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
         xhr.withCredentials = false;
         xhr.send(formData);
     }
