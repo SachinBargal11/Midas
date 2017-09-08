@@ -24,11 +24,12 @@ export class PendingReferralService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     // savePendingReferral(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {
     //     let promise: Promise<PendingReferral> = new Promise((resolve, reject) => {
-    //         return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(pendingReferralDetail), {
+    //         return this._http.post(environment.SERVICE_BASE_URL + '/PatientVisit/Save', JSON.stringify(pendingReferralDetail), {
     //             headers: this._headers
     //         }).map(res => res.json())
     //             .subscribe((data: any) => {
@@ -44,7 +45,9 @@ export class PendingReferralService {
 
     getPreferredCompanyDoctorsAndRoomByCompanyId(companyId: Number): Observable<PrefferedMedicalProvider[]> {
         let promise: Promise<PrefferedMedicalProvider[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/GetPreferredCompanyDoctorsAndRoomByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let prefferedMedicalProvider: PrefferedMedicalProvider[] = [];
                     if (_.isArray(data)) {
@@ -63,7 +66,9 @@ export class PendingReferralService {
 
     getPendingReferralByCompanyId(companyId: Number): Observable<PendingReferralList[]> {
         let promise: Promise<PendingReferralList[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PendingReferral/getPendingReferralByCompanyId/' + companyId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PendingReferral/getPendingReferralByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let pendingReferralList: PendingReferralList[] = [];
                     if (_.isArray(data)) {

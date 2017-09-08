@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { SignalRModule } from 'ng2-signalr';
+import { SignalRConfiguration } from 'ng2-signalr';
 
 import { ConfigService, configServiceFactory } from './config-service';
 
@@ -17,7 +19,7 @@ import { DashboardModule } from './dashboard/dashboard-module';
 import { EventModule } from './event/event-module';
 
 import { AuthenticationService } from './account/services/authentication-service';
-import { SessionStore } from './commons/stores/session-store';
+import { SessionStore, tokenServiceFactory } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
 import { ProgressBarService } from './commons/services/progress-bar-service';
 import { ConfirmationService } from 'primeng/primeng';
@@ -61,14 +63,25 @@ import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
 import { DateFormatPipe } from './commons/pipes/date-format-pipe';
 
-import { UserSettingStore } from './commons/stores/user-setting-store';
-import { UserSettingService } from './commons/services/user-setting-service';
-
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
 // import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
+
+// v2.0.0
+export function createConfig(): SignalRConfiguration {
+  const c = new SignalRConfiguration();
+  let storedAccessToken: any = window.localStorage.getItem('token');
+  c.hubName = 'NotificationHub';
+  if (storedAccessToken) {
+    let accessToken = storedAccessToken.replace(/"/g, "");
+    c.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
+    c.url = 'http://caserver:7011';
+    c.logging = true;
+    return c;
+  }
+}
 
 @NgModule({
   declarations: [
@@ -85,7 +98,8 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     AppRoutingModule,
     DashboardModule,
     SimpleNotificationsModule,
-    EventModule
+    EventModule,
+    SignalRModule.forRoot(createConfig)
     // MomentModule,
     // NgIdleKeepaliveModule.forRoot()
   ],
@@ -94,6 +108,12 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
       provide: APP_INITIALIZER,
       useFactory: configServiceFactory,
       deps: [ConfigService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: tokenServiceFactory,
+      deps: [SessionStore],
       multi: true
     },
     ConfigService,
@@ -132,8 +152,6 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
     DiagnosisStore,
     ProcedureService,
     ProcedureStore,
-    UserSettingStore,
-    UserSettingService,
     MedicalProviderMasterService,
     MedicalProviderMasterStore
   ],

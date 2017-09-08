@@ -27,6 +27,9 @@ import { InsuranceStore } from './stores/insurance-store';
 import { AccountRoutingModule } from './account-routes';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
 import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
+import { UserSettingsComponent } from './components/user-settings';
+import { NotificationSubscriptionComponent } from './components/notification-subscription';
+import { UserSettingsShellComponent } from './components/user-settings-shell';
 
 
 
@@ -48,7 +51,10 @@ import { AdjusterMasterService } from '../account-setup/services/adjuster-servic
             // PatientEmployerComponent,
             PatientBasicComponent,
             PatientsShellComponent,
-            PatientNavComponent
+            PatientNavComponent,
+            UserSettingsComponent,
+            NotificationSubscriptionComponent,
+            UserSettingsShellComponent
       ],
       providers: [
             // EmployerService,

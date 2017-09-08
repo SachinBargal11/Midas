@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-8 col-lg-push-2 col-md-12">
             <div *ngIf="doctorRoleFlag">
-                <h3 class="with-border">User Settings</h3>
+                <!--<h3 class="with-border">User Settings</h3>-->
                 <form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
                     <section class="box-typical">
                         <div class="card-block">
@@ -55,6 +55,7 @@
                                     </div>
                                 </div>
                             <!--</p-footer>-->
+                            <br>
                         </div>
                     </section>
                 </form>

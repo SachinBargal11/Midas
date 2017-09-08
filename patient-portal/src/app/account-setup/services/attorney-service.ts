@@ -15,12 +15,15 @@ export class AttorneyMasterService {
     // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(private _http: Http, private _sessionStore: SessionStore) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
     getAttorneyMaster(attorneyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/get/' + attorneyId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyMaster/get/' + attorneyId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     let attorney = null;
                         attorney = AttorneyAdapter.parseResponse(data);
@@ -35,7 +38,9 @@ export class AttorneyMasterService {
 
     getAllAttorneyMasterByCompany(companyId: Number): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/getByCompanyId/' + companyId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyMaster/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let attorney = (<Object[]>data).map((data: any) => {
@@ -56,7 +61,7 @@ export class AttorneyMasterService {
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            return this._http.post(this._url + '/AttorneyMaster/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/AttorneyMaster/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -76,7 +81,7 @@ export class AttorneyMasterService {
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            return this._http.post(this._url + '/AttorneyMaster/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/AttorneyMaster/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -92,7 +97,7 @@ export class AttorneyMasterService {
     }
     deleteAttorney(attorney: Attorney): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/delete/' + attorney.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyMaster/delete/' + attorney.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

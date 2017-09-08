@@ -24,13 +24,13 @@ export class MedicalProviderMasterService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        // this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
 
     getAllProviders(companyId: Number): Observable<Account[]> {
         let promise: Promise<Account[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/GetAllMedicalProviderExcludeAssigned/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/GetAllMedicalProviderExcludeAssigned/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -48,7 +48,7 @@ export class MedicalProviderMasterService {
 
     assignProviders(currentProviderId: Number, companyId: Number): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -64,7 +64,7 @@ export class MedicalProviderMasterService {
 
     getAllPreferredMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
         let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -104,7 +104,7 @@ export class MedicalProviderMasterService {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/PreferredMedicalProvider/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {
@@ -120,7 +120,7 @@ export class MedicalProviderMasterService {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/PreferredMedicalProvider/updateMedicalProvider', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/updateMedicalProvider', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {
@@ -180,7 +180,7 @@ export class MedicalProviderMasterService {
     deleteMedicalProvider(medicalProviderMaster: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/Delete/' + medicalProviderMaster.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Delete/' + medicalProviderMaster.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
@@ -196,8 +196,8 @@ export class MedicalProviderMasterService {
 
     getMedicalProviderById(providerId: Number): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
-            // return this._http.get(this._url + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
-            return this._http.get(this._url + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
+            // return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

@@ -20,11 +20,14 @@ export class SpecialityDetailsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getSpecialityDetail(id: Number): Observable<SpecialityDetail> {
         let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/CompanySpecialtyDetails/get/' + id).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/get/' + id, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((specialityDetailData: any) => {
                     let parsedData: SpecialityDetail = null;
                     parsedData = SpecialityDetailAdapter.parseResponse(specialityDetailData);
@@ -39,7 +42,7 @@ export class SpecialityDetailsService {
 
     getSpecialityDetails(requestData): Observable<SpecialityDetail> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/CompanySpecialtyDetails/getall', requestData, {
+            return this._http.post(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/getall', requestData, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((specialityDetailData: any) => {
@@ -70,7 +73,7 @@ export class SpecialityDetailsService {
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // console.log(requestData);
-            return this._http.post(this._url + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -95,7 +98,7 @@ export class SpecialityDetailsService {
 
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // console.log(requestData);
-            return this._http.post(this._url + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -120,7 +123,7 @@ export class SpecialityDetailsService {
 
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // console.log(requestData);
-            return this._http.post(this._url + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

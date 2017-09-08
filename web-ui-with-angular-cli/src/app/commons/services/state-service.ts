@@ -24,7 +24,7 @@ export class StateService {
 
     getStates(): Observable<States[]> {
         let promise: Promise<States[]> = new Promise((resolve, reject) => {
-        return this._http.get(this._url + '/common/getstates', {
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getstates', {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -37,7 +37,7 @@ export class StateService {
     }
     getStatesByCities(cityName: string): Observable<States[]> {
         let promise: Promise<States[]> = new Promise((resolve, reject) => {
-        return this._http.get(this._url + '/common/getstatesbycity/' + cityName, {
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getstatesbycity/' + cityName, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -50,7 +50,7 @@ export class StateService {
     }
     getCitiesByStates(stateName: string): Observable<Cities[]> {
         let promise: Promise<Cities[]> = new Promise((resolve, reject) => {
-        return this._http.get(this._url + '/common/getcitiesbystates/' + stateName, {
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getcitiesbystates/' + stateName, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -63,7 +63,7 @@ export class StateService {
     }
     getCities(): Observable<Cities[]> {
         let promise: Promise<Cities[]> = new Promise((resolve, reject) => {
-        return this._http.get(this._url + '/common/getcities', {
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getcities', {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

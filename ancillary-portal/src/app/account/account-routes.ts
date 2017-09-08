@@ -9,12 +9,14 @@ import { LoginComponent } from './components/login';
 import { ValidateActiveSession } from '../commons/guards/validate-active-session';
 import { ValidateInActiveSession } from '../commons/guards/validate-inactive-session';
 import { ChangePasswordComponent } from './components/change-password';
-import { UserSettingsComponent } from './components/user-settings';
 import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { RegisterCompanyComponent } from './components/register-company';
 import { AccountActivationComponent } from './components/account-activation';
 import { SecurityCheckComponent } from './components/security-check';
+import { UserSettingsComponent } from './components/user-settings';
+import { NotificationSubscriptionComponent } from './components/notification-subscription';
+import { UserSettingsShellComponent } from './components/user-settings-shell';
 
 let accountRoutes: Routes = [
     {
@@ -81,12 +83,34 @@ let accountRoutes: Routes = [
                 }
             },
             {
-                path: 'user-settings',
-                component: UserSettingsComponent,
+                path: 'settings',
+                component: UserSettingsShellComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
-                    breadcrumb: 'User Settings'
-                }
+                    breadcrumb: 'Settings'
+                },
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'user-settings'
+                    },
+                    {
+                        path: 'user-settings',
+                        component: UserSettingsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'User Settings'
+                        }
+                    },
+                    {
+                        path: 'notification-subscription',
+                        component: NotificationSubscriptionComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Notification Subscription'
+                        }
+                    }
+                ]
             }
         ]
     }

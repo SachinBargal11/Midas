@@ -25,7 +25,7 @@ export class AccidentService {
     }
     getAccident(accidentId: Number): Observable<Accident> {
         let promise: Promise<Accident> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientAccidentInfo/get/' + accidentId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientAccidentInfo/get/' + accidentId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
@@ -45,7 +45,7 @@ export class AccidentService {
     getAccidents(caseId: Number): Observable<Accident[]> {
 
         let promise: Promise<Accident[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientAccidentInfo/getByCaseId/' + caseId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientAccidentInfo/getByCaseId/' + caseId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -72,7 +72,7 @@ export class AccidentService {
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
 
             requestData = _.omit(requestData, 'accidentAdress', 'hospitalAddress');
-            return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -96,7 +96,7 @@ export class AccidentService {
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
             requestData.medicalReportNumber = requestData.medicalReportNumber;
             requestData = _.omit(requestData, 'accidentAddress', 'hospitalAddress');
-            return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -112,7 +112,7 @@ export class AccidentService {
     }
     deleteAccident(accident: Accident): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientAccidentInfo/Delete/' + accident.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientAccidentInfo/Delete/' + accident.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

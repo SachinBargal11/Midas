@@ -27,7 +27,7 @@ export class ProcedureService {
 
     getProceduresBySpecialityId(specialityId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getBySpecialityId/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCode/getBySpecialityId/' + specialityId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -44,7 +44,7 @@ export class ProcedureService {
     }
     getPreferredProceduresBySpecialityId(specialityId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -61,7 +61,7 @@ export class ProcedureService {
     }
     getPreferredProceduresBySpecialityIdForVisit(specialityId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + specialityId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -78,7 +78,7 @@ export class ProcedureService {
     }
     getProceduresByRoomTestId(roomTestId: number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCode/getByRoomTestId/' + roomTestId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCode/getByRoomTestId/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -95,7 +95,7 @@ export class ProcedureService {
     }
     getPrefferedProceduresByRoomTestId(roomTestId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + roomTestId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -112,7 +112,7 @@ export class ProcedureService {
     }
     getPrefferedProceduresByRoomTestIdForVisit(roomTestId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ProcedureCodeCompanyMapping/getByCompanyAndRoomTestId/' + companyId + '/' + roomTestId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndRoomTestId/' + companyId + '/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())

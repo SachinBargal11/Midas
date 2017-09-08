@@ -23,11 +23,14 @@ export class AvailableSlotsService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getAvailableSlotsByLocationAndDoctorId(locationId: Number, doctorId: Number, startDate: string, endDate: string): Observable<AvailableSlot[]> {
         let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/calendarEvent/getFreeSlotsByLocationAndDoctorId/${locationId}/${doctorId}/${startDate}/${endDate}`).map(res => res.json())
+            return this._http.get(`${environment.SERVICE_BASE_URL}/calendarEvent/getFreeSlotsByLocationAndDoctorId/${locationId}/${doctorId}/${startDate}/${endDate}`, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     
                 }, (error) => {

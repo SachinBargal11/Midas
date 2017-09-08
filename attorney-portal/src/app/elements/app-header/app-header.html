@@ -17,8 +17,8 @@
 				</a>
 					</div>
 
-					<div class="dropdown user-menu" dropdown>
-						<button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
+					<div class="dropdown user-menu" >
+						<button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
 						 aria-expanded="false">
 							  <img src="assets/theme/img/avatar.png" alt="">
                             <!--Welcome ,<b> {{ sessionStore.session.user.displayName }} </b>-->
@@ -82,8 +82,8 @@
                                 Feed
 							</a>
 						</div>
-						<div *ngIf="sessionStore.session.currentCompany" class="dropdown" dropdown>
-							<button dropdownToggle class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
+						<div *ngIf="sessionStore.session.currentCompany" class="dropdown" >
+							<button class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
 							 aria-expanded="false">
 							{{sessionStore.session.currentCompany.name}}
 						</button>
@@ -100,7 +100,7 @@
 	</div>
 </header>
 
-<p-dialog header="User Settings" [width]="600" [height]="300" [responsive]="true" showEffect="fade" modal="modal" [style]="{'overflow':'visible'}"
+<!-- <p-dialog header="User Settings" [width]="600" [height]="300" [responsive]="true" showEffect="fade" modal="modal" [style]="{'overflow':'visible'}"
  [(visible)]="settingsDialogVisible">
 	<div *ngIf="doctorRoleFlag">
 		<form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
@@ -109,7 +109,6 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<p-checkbox formControlName="isPublic" binary="true" label="Public" (onChange)="checkUncheck($event)" [(ngModel)]="isPublic"></p-checkbox>
-						<!--<p-checkbox binary="true" label="Private"></p-checkbox>-->
 					</div>
 				</div>
 			</div>
@@ -145,4 +144,4 @@
 	<div *ngIf="!doctorRoleFlag">
 		<h3> Staff </h3>
 	</div>
-</p-dialog>
+</p-dialog> -->

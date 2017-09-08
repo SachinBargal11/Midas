@@ -29,7 +29,7 @@ export class AncillaryMasterService {
 
     getAllAncillaries(companyId: Number): Observable<Account[]> {
         let promise: Promise<Account[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredAncillaryProvider/getAllPrefAncillaryProviderExcludeAssigned/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/getAllPrefAncillaryProviderExcludeAssigned/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -47,7 +47,7 @@ export class AncillaryMasterService {
 
     assignProviders(currentProviderId: Number, companyId: Number): Observable<AncillaryMaster> {
         let promise: Promise<AncillaryMaster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/associateMedicalProviderWithCompany/' + currentProviderId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -63,7 +63,7 @@ export class AncillaryMasterService {
 
     getAncillaryMasters(companyId: Number): Observable<AncillaryMaster[]> {
         let promise: Promise<AncillaryMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredAncillaryProvider/getPrefAncillaryProviderByCompanyId/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/getPrefAncillaryProviderByCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -84,7 +84,7 @@ export class AncillaryMasterService {
         let promise: Promise<AncillaryMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/PreferredAncillaryProvider/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {
@@ -100,7 +100,7 @@ export class AncillaryMasterService {
         let promise: Promise<AncillaryMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/PreferredAncillaryProvider/updateMedicalProvider', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/updateMedicalProvider', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json()).subscribe((data) => {
@@ -115,7 +115,7 @@ export class AncillaryMasterService {
     deleteMedicalProvider(AncillaryMaster: AncillaryMaster): Observable<AncillaryMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PreferredMedicalProvider/Delete/' + AncillaryMaster.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Delete/' + AncillaryMaster.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
@@ -131,8 +131,8 @@ export class AncillaryMasterService {
 
     getMedicalProviderById(providerId: Number): Observable<AncillaryMaster> {
         let promise: Promise<AncillaryMaster> = new Promise((resolve, reject) => {
-            // return this._http.get(this._url + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
-            return this._http.get(this._url + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
+            // return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/Get/' + providerId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByPrefMedProviderId/' + providerId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

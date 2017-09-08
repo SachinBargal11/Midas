@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../../environments/environment';
 import { Speciality } from '../models/speciality';
 import { SpecialityAdapter } from './adapters/speciality-adapter';
+import { SessionStore } from '../../commons/stores/session-store';
 
 @Injectable()
 export class SpecialityService {
@@ -15,14 +16,18 @@ export class SpecialityService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getSpeciality(specialityId: Number): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Specialty/get/' + specialityId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/Specialty/get/' + specialityId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((specialityData: any) => {
                     let parsedSpeciality: Speciality = null;
                     parsedSpeciality = SpecialityAdapter.parseResponse(specialityData);
@@ -36,7 +41,7 @@ export class SpecialityService {
 
     getSpecialities(): Observable<Speciality[]> {
         let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Specialty/getall', JSON.stringify({}), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Specialty/getall', JSON.stringify({}), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -54,7 +59,7 @@ export class SpecialityService {
 
     getSpecialitiesByLocationId(locationId: number): Observable<Speciality[]> {
         let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/Specialty/getByLocationId/${locationId}`, {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/Specialty/getByLocationId/${locationId}`, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -79,7 +84,7 @@ export class SpecialityService {
             // remove unneeded keys 
             specialityRequestData = _.omit(specialityRequestData, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Specialty/add', JSON.stringify(specialityRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Specialty/add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -103,7 +108,7 @@ export class SpecialityService {
             // remove unneeded keys 
             specialityRequestData = _.omit(specialityRequestData, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Specialty/add', JSON.stringify(specialityRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Specialty/add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

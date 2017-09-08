@@ -29,7 +29,7 @@ export class AssociateUserService {
 
     associatePatientWithCompany(patientId: Number, companyId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Patient/AssociatePatientWithCompany/' + patientId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Patient/AssociatePatientWithCompany/' + patientId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -45,7 +45,7 @@ export class AssociateUserService {
 
     associateDoctorWithCompany(doctorId: Number, companyId: Number): Observable<Doctor> {
         let promise: Promise<Doctor> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/AssociateDoctorWithCompany/' + doctorId + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Doctor/AssociateDoctorWithCompany/' + doctorId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

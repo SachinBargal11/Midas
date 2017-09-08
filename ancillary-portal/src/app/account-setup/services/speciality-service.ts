@@ -25,7 +25,7 @@ export class SpecialityService {
 
     getSpeciality(specialityId: Number): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Specialty/get/' + specialityId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Specialty/get/' + specialityId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((specialityData: any) => {
@@ -41,7 +41,7 @@ export class SpecialityService {
 
     getSpecialities(): Observable<Speciality[]> {
         let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Specialty/getall', JSON.stringify({}), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Specialty/getall', JSON.stringify({}), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -59,7 +59,7 @@ export class SpecialityService {
 
     getSpecialitiesByLocationId(locationId: number): Observable<Speciality[]> {
         let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/Specialty/getByLocationId/${locationId}`, {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/Specialty/getByLocationId/${locationId}`, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -84,7 +84,7 @@ export class SpecialityService {
             // remove unneeded keys 
             specialityRequestData = _.omit(specialityRequestData, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Specialty/add', JSON.stringify(specialityRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Specialty/add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -108,7 +108,7 @@ export class SpecialityService {
             // remove unneeded keys 
             specialityRequestData = _.omit(specialityRequestData, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Specialty/add', JSON.stringify(specialityRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Specialty/add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

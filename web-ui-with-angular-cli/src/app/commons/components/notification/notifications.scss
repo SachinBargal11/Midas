@@ -3,13 +3,13 @@
 
     position: fixed;
   right: 0;
-  top: 0;
+  top: 58px;
   display: none;
   height: 100%;
   background: #F4F8FB;
-  overflow: hidden;
+  overflow: scroll;
   border-left: solid 1px #c5d6de;
-  padding-top: 50px;
+//   padding-top: 50px;
 
 
   .control-item-content {

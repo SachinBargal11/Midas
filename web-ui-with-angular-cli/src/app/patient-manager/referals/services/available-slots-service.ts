@@ -30,7 +30,7 @@ export class AvailableSlotsService {
         let formattedStartDate: string = startDate.format('YYYY-MM-DD');
         let formattedEndDate: string = endDate.format('YYYY-MM-DD');
         let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForDoctorByLocationId/${doctorId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/calendarEvent/GetFreeSlotsForDoctorByLocationId/${doctorId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -53,7 +53,7 @@ export class AvailableSlotsService {
         let formattedStartDate: string = startDate.format('YYYY-MM-DD');
         let formattedEndDate: string = endDate.format('YYYY-MM-DD');
         let promise: Promise<AvailableSlot[]> = new Promise((resolve, reject) => {
-            return this._http.get(`${this._url}/calendarEvent/GetFreeSlotsForRoomByLocationId/${roomId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
+            return this._http.get(`${environment.SERVICE_BASE_URL}/calendarEvent/GetFreeSlotsForRoomByLocationId/${roomId}/${locationId}/${formattedStartDate}/${formattedEndDate}`, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

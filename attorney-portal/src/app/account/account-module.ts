@@ -11,6 +11,9 @@ import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { ChangePasswordComponent } from './components/change-password';
 
+import { UserSettingsComponent } from './components/user-settings';
+import { NotificationSubscriptionComponent } from './components/notification-subscription';
+import { UserSettingsShellComponent } from './components/user-settings-shell';
 // import { SessionStore } from '../commons/stores/session-store';
 // import { AuthenticationService } from '../services/authentication-service';
 // import { RegistrationService } from '../services/registration-service';
@@ -32,7 +35,10 @@ import { AccountRoutingModule } from './account-routes';
             LoginComponent,
             ForgotPasswordComponent,
             ResetPasswordComponent,
-            ChangePasswordComponent
+            ChangePasswordComponent,
+            UserSettingsShellComponent,
+            NotificationSubscriptionComponent,
+            UserSettingsComponent
       ]
 })
 export class AccountModule { }

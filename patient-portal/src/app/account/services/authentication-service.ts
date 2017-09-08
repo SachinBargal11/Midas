@@ -19,7 +19,7 @@ export class AuthenticationService {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/PasswordToken/GeneratePasswordResetLink', JSON.stringify(userDetail), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PasswordToken/GeneratePasswordResetLink', JSON.stringify(userDetail), {
                 headers: headers
             })
                 .map(res => res.json())
@@ -38,7 +38,7 @@ export class AuthenticationService {
         headers.append('Content-Type', 'application/json');
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/PasswordToken/ValidatePassword', JSON.stringify(autheticateRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PasswordToken/ValidatePassword', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -66,7 +66,7 @@ export class AuthenticationService {
                 appKey: token
 
             };
-            return this._http.post(this._url + '/Company/ValidateInvitation', JSON.stringify(autheticateRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Company/ValidateInvitation', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -91,7 +91,7 @@ export class AuthenticationService {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/User/ResetPassword', JSON.stringify(userDetail), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/ResetPassword', JSON.stringify(userDetail), {
                 headers: headers
             })
                 .map(res => res.json())
@@ -105,9 +105,10 @@ export class AuthenticationService {
 
     }
 
-    authenticate(email: string, password: string, forceLogin: boolean): Observable<Account> {
+    authenticate(email: string, password: string, forceLogin: boolean, authAccessToken: string, tokenExpiresAt: any): Observable<Account> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', authAccessToken);
 
         let promise: Promise<Account> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
@@ -115,12 +116,13 @@ export class AuthenticationService {
                 'password': password,
                 'forceLogin': forceLogin
             };
-            return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/Signin', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        let user = AccountAdapter.parseResponse(data);
+                        // let user = AccountAdapter.parseResponse(data);
+                        let user = AccountAdapter.parseResponse(data, authAccessToken, tokenExpiresAt, null);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);
                     } else {
@@ -132,6 +134,35 @@ export class AuthenticationService {
         });
 
         return <Observable<Account>>Observable.fromPromise(promise);
+    }
+    signinWithUserName(baseUrl: string, email: string, authAccessToken: string, tokenExpiresAt: any, tokenResponse: any): Observable<any> {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', authAccessToken);
+
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let autheticateRequestData = {
+                'userName': email
+            };
+            return this._http.post(baseUrl + '/User/SigninWithUserName', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        // data.company = data.usercompanies[0].company;
+                        let user = AccountAdapter.parseResponse(data, authAccessToken, tokenExpiresAt, tokenResponse);
+                        // window.sessionStorage.setItem('pin', data.pin);
+                        resolve(user);
+                    }
+                    else {
+                        reject(new Error('INVALID_CREDENTIALS'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
     authenticatePassword(userName: string, oldpassword: string): Observable<User> {
@@ -145,7 +176,7 @@ export class AuthenticationService {
                     'password': oldpassword
                 }
             };
-            return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/User/Signin', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -174,7 +205,7 @@ export class AuthenticationService {
                     id: userId
                 }
             };
-            return this._http.post(this._url + '/OTP/GenerateOTP', JSON.stringify(postData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/OTP/GenerateOTP', JSON.stringify(postData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -203,7 +234,7 @@ export class AuthenticationService {
                 }
             };
 
-            return this._http.post(this._url + '/OTP/ValidateOTP', JSON.stringify(postData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/OTP/ValidateOTP', JSON.stringify(postData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

@@ -51,6 +51,8 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     updatePassword() {
+        let authAccessToken = this.sessionStore.session.accessToken;
+        let tokenExpiresAt = this.sessionStore.session.tokenExpiresAt;
         let userId: number = this.sessionStore.session.user.id;
         let userDetail = ({
             user: {
@@ -64,7 +66,7 @@ export class ChangePasswordComponent implements OnInit {
         let userName = this.sessionStore.session.user.userName;
         let oldpassword = this.changePassForm.value.oldpassword;
 
-        let result = this._authenticationService.authenticate(userName, oldpassword, true);
+        let result = this._authenticationService.authenticate(userName, oldpassword, true, authAccessToken, tokenExpiresAt);
         result.subscribe(
             (response) => {
                 this._authenticationService.updatePassword(userDetail)
@@ -76,7 +78,7 @@ export class ChangePasswordComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.notificationsStore.addNotification(notification);
-                        this._router.navigate(['/dashboard']);
+                        this._router.navigate(['/patient-manager/profile/viewall']);
                     },
                     error => {
                         this.isPassChangeInProgress = false;
@@ -114,7 +116,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     goBack(): void {
-        this._router.navigate(['/dashboard']);
+        this._router.navigate(['/patient-manager/profile/viewall']);
         // this.location.back();
     }
 }

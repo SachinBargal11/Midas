@@ -21,7 +21,7 @@ export class AdjusterMasterService {
     }
     getAdjusterMaster(adjusterId: Number): Observable<Adjuster> {
         let promise: Promise<Adjuster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/get/' + adjusterId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AdjusterMaster/get/' + adjusterId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -37,7 +37,7 @@ export class AdjusterMasterService {
     }
     getAdjusterMasterByInsurance(insuranceId: Number): Observable<Adjuster> {
         let promise: Promise<Adjuster> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/getByInsuranceMasterId/' + insuranceId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AdjusterMaster/getByInsuranceMasterId/' + insuranceId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -54,7 +54,7 @@ export class AdjusterMasterService {
 
     getAllAdjusterMaster(): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/getAll/', {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AdjusterMaster/getAll/', {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -74,7 +74,7 @@ export class AdjusterMasterService {
     //
     getAdjusterMastersByCompanyAndInsuranceMasterId(companyId: Number, insuranceMasterId: Number): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/GetByCompanyAndInsuranceMasterId/' + companyId + '/' + insuranceMasterId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AdjusterMaster/GetByCompanyAndInsuranceMasterId/' + companyId + '/' + insuranceMasterId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -92,7 +92,7 @@ export class AdjusterMasterService {
     }
     getAllAdjusterMasterByCompany(companyId: Number): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/getByCompanyId/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AdjusterMaster/getByCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -115,7 +115,7 @@ export class AdjusterMasterService {
             requestData.contactInfo = requestData.adjusterContact;
             requestData.addressInfo = requestData.adjusterAddress;
             requestData = _.omit(requestData, 'adjusterContact', 'adjusterAddress');
-            return this._http.post(this._url + '/AdjusterMaster/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/AdjusterMaster/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -135,7 +135,7 @@ export class AdjusterMasterService {
             requestData.contactInfo = requestData.adjusterContact;
             requestData.addressInfo = requestData.adjusterAddress;
             requestData = _.omit(requestData, 'adjusterContact', 'adjusterAddress');
-            return this._http.post(this._url + '/AdjusterMaster/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/AdjusterMaster/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -151,7 +151,7 @@ export class AdjusterMasterService {
     }
     deleteAdjuster(adjuster: Adjuster): Observable<Adjuster> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AdjusterMaster/delete/' + adjuster.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AdjusterMaster/delete/' + adjuster.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

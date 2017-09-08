@@ -21,7 +21,7 @@ export class FamilyMemberService {
     }
     getFamilyMember(familyMemberId: Number): Observable<FamilyMember> {
         let promise: Promise<FamilyMember> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientFamilyMember/get/' + familyMemberId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientFamilyMember/get/' + familyMemberId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
@@ -42,7 +42,7 @@ export class FamilyMemberService {
 
     getFamilyMembers(caseId: number): Observable<FamilyMember[]> {
         let promise: Promise<FamilyMember[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientFamilyMember/getByCaseId/' + caseId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientFamilyMember/getByCaseId/' + caseId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -64,7 +64,7 @@ export class FamilyMemberService {
             requestData.ethnicitesId = requestData.ethnicitiesId;
             requestData.isInactive = false;
             requestData = _.omit(requestData, 'ethnicitiesId');
-            return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -85,7 +85,7 @@ export class FamilyMemberService {
             requestData.isInactive = false;
             requestData.ethnicitesId = requestData.ethnicitiesId;
             requestData = _.omit(requestData, 'ethnicitiesId');
-            return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -101,7 +101,7 @@ export class FamilyMemberService {
     }
     deleteFamilyMember(familyMember: FamilyMember): Observable<FamilyMember> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientFamilyMember/Delete/' + familyMember.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientFamilyMember/Delete/' + familyMember.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

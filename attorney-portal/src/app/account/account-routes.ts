@@ -14,6 +14,9 @@ import { ResetPasswordComponent } from './components/reset-password';
 import { RegisterCompanyComponent } from './components/register-company';
 import { AccountActivationComponent } from './components/account-activation';
 import { SecurityCheckComponent } from './components/security-check';
+import { UserSettingsComponent } from './components/user-settings';
+import { NotificationSubscriptionComponent } from './components/notification-subscription';
+import { UserSettingsShellComponent } from './components/user-settings-shell';
 
 let accountRoutes: Routes = [
     {
@@ -78,6 +81,36 @@ let accountRoutes: Routes = [
                 data: {
                     breadcrumb: 'Change Password'
                 }
+            },
+            {
+                path: 'settings',
+                component: UserSettingsShellComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Settings'
+                },
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'user-settings'
+                    },
+                    {
+                        path: 'user-settings',
+                        component: UserSettingsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'User Settings'
+                        }
+                    },
+                    {
+                        path: 'notification-subscription',
+                        component: NotificationSubscriptionComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Notification Subscription'
+                        }
+                    }
+                ]
             }
         ]
     }

@@ -21,10 +21,13 @@ export class EmployerService {
         public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
+        this._headers.append('Authorization', this.sessionStore.session.accessToken);
     }
     getEmployer(employerId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/get/' + employerId).map(res => res.json())
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientEmpInfo/get/' + employerId, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let employer = null;
                     if (data.length) {
@@ -43,7 +46,9 @@ export class EmployerService {
 
     getEmployers(patientId: Number): Observable<Employer[]> {
         let promise: Promise<Employer[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/getByPatientId/' + patientId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientEmpInfo/getByPatientId/' + patientId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let employers = (<Object[]>data).map((data: any) => {
@@ -59,7 +64,9 @@ export class EmployerService {
     }
     getCurrentEmployer(caseId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/getByCaseId/' + caseId)
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientEmpInfo/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     let employer = null;
@@ -78,7 +85,7 @@ export class EmployerService {
             requestData.contactInfo = requestData.contact;
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact', 'address');
-            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PatientEmpInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -99,7 +106,7 @@ export class EmployerService {
             requestData.contactInfo = requestData.contact;
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact', 'address');
-            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/PatientEmpInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -115,7 +122,7 @@ export class EmployerService {
     }
     deleteEmployer(employer: Employer): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientEmpInfo/Delete/' + employer.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientEmpInfo/Delete/' + employer.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {

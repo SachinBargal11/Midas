@@ -30,7 +30,7 @@ export class DiagnosisService {
 
     // getAllDiagnosisTypes(): Observable<DiagnosisType[]> {
     //     let promise: Promise<DiagnosisType[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/DiagnosisType/getAll', {
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/DiagnosisType/getAll', {
     //             headers: this._headers
     //         })
     //             .map(res => res.json())
@@ -49,7 +49,7 @@ export class DiagnosisService {
     getICDTypeCodeByCompanyId(): Observable<any> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/ICDTypeCode/getICDTypeCodeByCompanyId/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ICDTypeCode/getICDTypeCodeByCompanyId/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -64,7 +64,7 @@ export class DiagnosisService {
     getDiagnosisTypeByCompanyIdAndICDTypeId(ICDTypeId: number): Observable<DiagnosisType[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<DiagnosisType[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisType/getDiagnosisTypeByCompanyIdAndICDTypeId/' + companyId + '/' + ICDTypeId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/DiagnosisType/getDiagnosisTypeByCompanyIdAndICDTypeId/' + companyId + '/' + ICDTypeId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -84,7 +84,7 @@ export class DiagnosisService {
     getDiagnosisCodesByCompanyIdAndDiagnosisTypeId(diagnosisTypeId: number): Observable<DiagnosisCode[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<DiagnosisCode[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DiagnosisCode/GetByCompanyIdAndDiagnosisTypeId/' + companyId + '/' + diagnosisTypeId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/DiagnosisCode/GetByCompanyIdAndDiagnosisTypeId/' + companyId + '/' + diagnosisTypeId, {
                 headers: this._headers
             })
                 .map(res => res.json())

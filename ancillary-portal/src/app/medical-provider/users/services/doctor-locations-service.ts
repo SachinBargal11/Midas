@@ -27,7 +27,7 @@ export class DoctorLocationsService {
 
     getLocation(id: Number): Observable<LocationDetails> {
         let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Location/get/' + id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Location/get/' + id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -49,7 +49,7 @@ export class DoctorLocationsService {
             }
         };
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Location/getall', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Location/getall', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -77,7 +77,7 @@ export class DoctorLocationsService {
             requestData = _.omit(requestData, 'address');
             requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             console.log(requestData);
-            return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
                 let parsedLocation: LocationDetails = null;
@@ -98,7 +98,7 @@ export class DoctorLocationsService {
             requestData = _.omit(requestData, 'contact');
             requestData = _.omit(requestData, 'address');
             console.log(requestData);
-            return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
                 let parsedLocation: LocationDetails = null;
@@ -123,7 +123,7 @@ export class DoctorLocationsService {
             requestData = _.omit(requestData, 'contact');
             requestData = _.omit(requestData, 'address');
             // requestData = _.omit(requestData, 'company', 'contact', 'address');
-            return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
                 let parsedLocation: LocationDetails = null;
@@ -144,7 +144,7 @@ export class DoctorLocationsService {
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact');
             requestData = _.omit(requestData, 'address');
-            return this._http.post(this._url + '/Location/Add', JSON.stringify(requestData), {
+            return this._http.post(environment.SERVICE_BASE_URL + '/Location/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((locationsData: any) => {

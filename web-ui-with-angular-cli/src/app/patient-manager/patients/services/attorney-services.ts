@@ -6,6 +6,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
+import { environment } from '../../../../environments/environment';
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AttorneyService {
     }
     getAttorney(attorneyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + attorneyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '?id=' + attorneyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<any>) => {
@@ -38,7 +39,7 @@ export class AttorneyService {
 
     getAttorneys(): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url, {
+            return this._http.get(environment.SERVICE_BASE_URL, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -53,7 +54,7 @@ export class AttorneyService {
     }
     addAttorney(attorney: Attorney): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.post(this._url, JSON.stringify(attorney), {
+            return this._http.post(environment.SERVICE_BASE_URL, JSON.stringify(attorney), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -67,7 +68,7 @@ export class AttorneyService {
     }
     updateAttorney(attorney: Attorney): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.put(`${this._url}/${attorney.id}`, JSON.stringify(attorney), {
+            return this._http.put(`${environment.SERVICE_BASE_URL}/${attorney.id}`, JSON.stringify(attorney), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -81,7 +82,7 @@ export class AttorneyService {
     }
     deleteAttorney(attorney: Attorney): Observable<Attorney> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${attorney.id}`, {
+            return this._http.delete(`${environment.SERVICE_BASE_URL}/${attorney.id}`, {
                 headers: this._headers
             })
                 .map(res => res.json())

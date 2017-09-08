@@ -6,6 +6,9 @@ import { ProgressBarService } from './commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 // import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 // import { Keepalive } from '@ng-idle/keepalive';
+import * as moment from 'moment';
+import * as _ from 'underscore';
+import { Notification } from './commons/models/notification';
 
 @Component({
   selector: 'app-root',
@@ -72,7 +75,6 @@ export class AppComponent implements OnInit {
 
     this.sessionStore.authenticate().subscribe(
       (response) => {
-
       },
       error => {
         // this._router.navigate(['/account/login']);
@@ -88,4 +90,5 @@ export class AppComponent implements OnInit {
     this.dateNow = new Date();
     this.cdRef.detectChanges();
   }
+  
 }
