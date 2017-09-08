@@ -1,3 +1,4 @@
+import { InsuranceMaster } from '../../patients/models/insurance-master';
 import { Case } from '../../cases/models/case';
 import { IEventWrapper } from '../../../commons/models/i-event-wrapper';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
@@ -20,7 +21,8 @@ const EoVisitRecord = Record({
     patient: null,
     doctorId: 0,
     patientId: null,
-    insuranceProviderId: null,
+    insuranceMaster: null,
+    insuranceProviderId: 0,
     VisitCreatedByCompanyId: null,
     eventStart: null,
     eventEnd: null,
@@ -45,7 +47,8 @@ export class EoVisit extends EoVisitRecord {
     doctor: Doctor;
     patient: Patient;
     doctorId: number;
-    patientId: number
+    patientId: number;
+    insuranceMaster: InsuranceMaster;
     insuranceProviderId: number;
     VisitCreatedByCompanyId: number;
     eventStart: moment.Moment;
@@ -80,6 +83,16 @@ export class EoVisit extends EoVisitRecord {
 
         if (this.doctorId && this.doctor) {
             visitInfo = `${visitInfo}Doctor Name: ${this.doctor.user.firstName} ${this.doctor.user.lastName}`;
+        }
+
+        return visitInfo;
+    }
+
+    get visitDisplayStringForDoctor(): string {
+        let visitInfo: string = ``;
+
+        if (this.insuranceProviderId && this.insuranceMaster) {
+            visitInfo = `${visitInfo}Insurance Name: ${this.insuranceMaster.companyName}`;
         }
 
         return visitInfo;

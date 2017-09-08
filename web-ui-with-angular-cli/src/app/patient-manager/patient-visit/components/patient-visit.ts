@@ -172,7 +172,7 @@ export class PatientVisitComponent implements OnInit {
         }
         if (this.sessionStore.isOnlyDoctorRole()) {
             if (event.eventWrapper && event.eventWrapper.isEoVisitType) {
-                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO</span>`;
+                content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">EUO-${event.eventWrapper.insuranceMaster.companyName}</span>`;
             }
         }
         else if (event.eventWrapper && event.eventWrapper.isImeVisitType) {
@@ -1110,7 +1110,13 @@ export class PatientVisitComponent implements OnInit {
             this.patientScheduleForm.controls[key].setValidators(null);
             this.patientScheduleForm.controls[key].updateValueAndValidity();
         });
-        this.visitInfo = this.selectedVisit.visitDisplayString;
+        if (this.selectedVisit.isEoVisitType && !this.sessionStore.isOnlyDoctorRole()) {
+            this.visitInfo = this.selectedVisit.visitDisplayString;
+        } else if (this.selectedVisit.isEoVisitType && this.sessionStore.isOnlyDoctorRole()) {
+            this.visitInfo = this.selectedVisit.visitDisplayStringForDoctor;
+        } else {
+            this.visitInfo = this.selectedVisit.visitDisplayString;            
+        }
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
             // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';

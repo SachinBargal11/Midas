@@ -6,6 +6,7 @@ import { ScheduledEventAdapter } from '../../../../medical-provider/locations/se
 import { PatientAdapter } from '../../../../patient-manager/patients/services/adapters/patient-adapter';
 import { LocationAdapter } from '../../../../medical-provider/users/services/adapters/location-adapter';
 import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
+import { InsuranceMasterAdapter } from '../../../../patient-manager/patients/services/adapters/insurance-master-adapter';
 
 export class EoVisitAdapter {
     static parseResponse(data: any): EoVisit {
@@ -23,6 +24,7 @@ export class EoVisitAdapter {
             doctorId: data.doctorId,
             patient: PatientAdapter.parseResponse(data.patient),
             patientId: data.patientId,
+            insuranceMaster: InsuranceMasterAdapter.parseResponse(data.insuranceMaster),
             insuranceProviderId: data.insuranceProviderId,
             VisitCreatedByCompanyId: data.VisitCreatedByCompanyId,
             eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
