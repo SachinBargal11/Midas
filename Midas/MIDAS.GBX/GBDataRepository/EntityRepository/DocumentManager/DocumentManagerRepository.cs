@@ -97,6 +97,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
                                                                         .FirstOrDefault().CompanyId;
                     break;
+                case EN.Constants.IMEVisitType:
+                    companyId = _context.CaseCompanyMappings.Where(map => map.CaseId == _context.IMEVisits.Where(visit => visit.ID == objectId && map.IsOriginator == true &&
+                                                                                                                              (visit.IsDeleted.HasValue == false || (visit.IsDeleted.HasValue == true && visit.IsDeleted.Value == false))).FirstOrDefault().CaseId &&
+                                                                        (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault().CompanyId;
+                    break;
+                case EN.Constants.EUOVisitType:
+                    companyId = _context.CaseCompanyMappings.Where(map => map.CaseId == _context.IMEVisits.Where(visit => visit.ID == objectId && map.IsOriginator == true &&
+                                                                                                                              (visit.IsDeleted.HasValue == false || (visit.IsDeleted.HasValue == true && visit.IsDeleted.Value == false))).FirstOrDefault().CaseId &&
+                                                                        (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault().CompanyId;
+                    break;
+                case EN.Constants.ATTORNEYVisitType:
+                    companyId = _context.CaseCompanyMappings.Where(map => map.CaseId == _context.AttorneyVisits.Where(visit => visit.Id == objectId && map.IsOriginator == true &&
+                                                                                                                              (visit.IsDeleted.HasValue == false || (visit.IsDeleted.HasValue == true && visit.IsDeleted.Value == false))).FirstOrDefault().CaseId &&
+                                                                        (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault().CompanyId;
+                    break;
+                case EN.Constants.UNSCHVisitType:
+                    companyId = _context.CaseCompanyMappings.Where(map => map.CaseId == _context.PatientVisitUnscheduleds.Where(visit => visit.Id == objectId && map.IsOriginator == true &&
+                                                                                                                              (visit.IsDeleted.HasValue == false || (visit.IsDeleted.HasValue == true && visit.IsDeleted.Value == false))).FirstOrDefault().CaseId &&
+                                                                        (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
+                                                                        .FirstOrDefault().CompanyId;
+                    break;
                 case EN.Constants.PatientType:
                     companyId = _context.UserCompanies.Where(map => map.UserID == objectId  &&
                                                                         (map.IsDeleted.HasValue == false || (map.IsDeleted.HasValue == true && map.IsDeleted.Value == false)))
@@ -136,28 +160,56 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (documentPath[0] != null)
                 {
-                    switch (uploadInfo.ObjectType.ToUpper())
-                    {
-                        case EN.Constants.CaseType:
-                            path = documentPath[0].Replace("cmp/", "")
-                                                .Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                                .Replace("cs", "cs-" + uploadInfo.ObjectId);
-                            break;
-                        /*case EN.Constants.ConsentType:
-                            path = documentPath[0].Replace("cmp/", "")                              
-                                                .Replace("cs", "cs-" + uploadInfo.ObjectId);
-                            break;*/
-                        case EN.Constants.VisitType:
-                            path = documentPath[0].Replace("cmp/", "")
-                                                .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
-                                                                                                           .FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                                .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
-                            break;
-                        case EN.Constants.PatientType:
-                            path = documentPath[0].Replace("cmp/", "")
-                                                .Replace("patient", "patient" + _context.Patients.Where(ptid => ptid.Id == uploadInfo.ObjectId).FirstOrDefault());
-                            break;
-                    }
+                    //try
+                    //{
+                        switch (uploadInfo.ObjectType.ToUpper())
+                        {
+                            case EN.Constants.CaseType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("cstype", _context.Cases.Where(csid => csid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                    .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                                break;
+                            /*case EN.Constants.ConsentType:
+                                path = documentPath[0].Replace("cmp/", "")                              
+                                                    .Replace("cs", "cs-" + uploadInfo.ObjectId);
+                                break;*/
+                            case EN.Constants.VisitType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                               .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                break;
+                            case EN.Constants.IMEVisitType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.IMEVisits.Where(pvid => pvid.ID == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                               .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                break;
+                            case EN.Constants.EUOVisitType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                               .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                break;
+                            case EN.Constants.ATTORNEYVisitType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.AttorneyVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                               .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                break;
+                            case EN.Constants.UNSCHVisitType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisitUnscheduleds.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
+                                                                                                               .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                break;
+                            case EN.Constants.PatientType:
+                                path = documentPath[0].Replace("cmp/", "")
+                                                    .Replace("patient", "patient" + _context.Patients.Where(ptid => ptid.Id == uploadInfo.ObjectId).FirstOrDefault());
+                                break;
+                        }
+                    //}
+                    //catch (Exception) { path = "/" + uploadInfo.DocumentType; }
                 }
                 else
                 {
@@ -175,6 +227,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             path = "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId +
                                    "/" + uploadInfo.DocumentType;// _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
                             break;
+                        case EN.Constants.IMEVisitType:
+                            path = "cs-" + _context.IMEVisits.Where(pvid => pvid.ID == uploadInfo.ObjectId).FirstOrDefault().CaseId +
+                                   "/" + uploadInfo.DocumentType;// _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
+                            break;
+                        case EN.Constants.EUOVisitType:
+                            path = "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId +
+                                   "/" + uploadInfo.DocumentType;// _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
+                            break;
+                        case EN.Constants.ATTORNEYVisitType:
+                            path = "cs-" + _context.AttorneyVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId +
+                                   "/" + uploadInfo.DocumentType;// _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
+                            break;
+                        case EN.Constants.UNSCHVisitType:
+                            path = "cs-" + _context.PatientVisitUnscheduleds.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId +
+                                   "/" + uploadInfo.DocumentType;// _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
+                            break;
                         case EN.Constants.PatientType:
                             path = "patient-" + uploadInfo.ObjectId + "/" + uploadInfo.DocumentType;// _context.Cases.Where(csid => csid.Id == _context.PatientVisit2.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId).FirstOrDefault().CaseType.CaseTypeText.ToLower();
                             break;
@@ -189,7 +257,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.MidasDocuments.Where(midasdoc => mergePDF.DocumentIds.Contains(midasdoc.Id)).ToList()
                                        .ForEach(x => pdffiles.Add(x.DocumentPath));
 
-                if(!pdffiles.TrueForAll(file=>Path.GetExtension(file)==".pdf"))
+                if (!pdffiles.TrueForAll(file => Path.GetExtension(file) == ".pdf"))
                     return new BO.ErrorObject { ErrorMessage = "Please select only PDF files to merge", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
                 return pdffiles;
@@ -209,6 +277,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
                     break;
                 case EN.Constants.VisitType:
+                case EN.Constants.IMEVisitType:
+                case EN.Constants.ATTORNEYVisitType:
+                case EN.Constants.UNSCHVisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
                     docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
                     break;
@@ -234,6 +305,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
                     break;
                 case EN.Constants.VisitType:
+                case EN.Constants.IMEVisitType:
+                case EN.Constants.ATTORNEYVisitType:
+                case EN.Constants.UNSCHVisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
                     docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
                     break;
