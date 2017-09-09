@@ -974,6 +974,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetPrefProviderByAncillaryCompanyId(int AncillaryCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

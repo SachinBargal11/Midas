@@ -2001,5 +2001,18 @@ namespace MIDAS.GBX.AncillaryWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetPrefProviderByAncillaryCompanyId(HttpRequestMessage request, int AncillaryCompanyId)
+        {
+            var objResult = dataAccessManager.GetPrefProviderByAncillaryCompanyId(AncillaryCompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

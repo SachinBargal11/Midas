@@ -133,6 +133,7 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetPrefProviderByAncillaryCompanyId(HttpRequestMessage request, int AncillaryCompanyId);
         HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId);
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);

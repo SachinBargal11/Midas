@@ -4161,5 +4161,24 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
+
+        public Object GetPrefProviderByAncillaryCompanyId(int AncillaryCompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetPrefProviderByAncillaryCompanyId(AncillaryCompanyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
     }
 }
