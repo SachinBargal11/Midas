@@ -217,13 +217,13 @@ export class UserSettingsComponent implements OnInit {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             // this.loadAllProviders();
-            this.loadMedicalProviders();
+            this.getPreferredProviders();
         });
 
     }
     ngOnInit() {
         // this.loadAllProviders();
-        this.loadMedicalProviders();
+        this.getPreferredProviders();
     }
 
     showDialog() {
@@ -286,7 +286,7 @@ export class UserSettingsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 // this.loadAllProviders();
-                this.loadMedicalProviders();
+                this.getPreferredProviders();
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog()
             },
@@ -319,9 +319,9 @@ export class UserSettingsComponent implements OnInit {
             });
     }
 
-    loadMedicalProviders() {
+    getPreferredProviders() {
         this._progressBarService.show();
-        this._medicalProviderMasterStore.getMedicalProviders()
+        this._medicalProviderMasterStore.getPreferredProviders()
             .subscribe((providers: MedicalProviderMaster[]) => {
                 this.providers = providers;
             },
@@ -358,7 +358,7 @@ export class UserSettingsComponent implements OnInit {
                     });
                     this._notificationsStore.addNotification(notification);
                     this.loadAllProviders();
-                    this.loadMedicalProviders();
+                    // this.loadMedicalProviders();
                     this.currentProviderId = 0;
                 },
                 (error) => {
@@ -405,7 +405,7 @@ export class UserSettingsComponent implements OnInit {
                                     'createdAt': moment()
                                 });
                                 this.loadAllProviders();
-                                this.loadMedicalProviders();
+                                // this.loadMedicalProviders();
                                 this._notificationsStore.addNotification(notification);
                                 this.selectedProviders = [];
                             },

@@ -42,4 +42,32 @@ export class GeneralSettingService {
         });
         return <Observable<GeneralSetting>>Observable.fromPromise(promise);
     }
+
+    getGeneralSettingByCompanyId(companyId:Number): Observable<GeneralSetting> {
+        let promise: Promise<GeneralSetting> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/GeneralSetting/getByCompanyId/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data) => {
+                        resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<GeneralSetting>>Observable.fromPromise(promise);
+    }
 }
+
+// midasapi/GeneralSetting/getByCompanyId/{CompanyId}
+// .subscribe((data: Array<any>) => {
+//                     let user = null;
+//                     if (data) {
+//                         user = UserSettingAdapter.parseResponse(data);
+//                         resolve(user);
+//                     } else {
+//                         reject(new Error('NOT_FOUND'));
+//                     }
+//                 }, (error) => {
+//                     reject(error);
+//                 });

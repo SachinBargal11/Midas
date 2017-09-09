@@ -26,6 +26,9 @@ export class AccountGeneralSettingComponent implements OnInit {
     settingFormControls;
     isSaveProgress = false;
     isTimeSlot = 30;
+    companyId: number = this._sessionStore.session.currentCompany.id;
+    generalSetting:GeneralSetting;
+
     constructor(
         private _notificationsService: NotificationsService,
         private fb: FormBuilder,
@@ -43,6 +46,15 @@ export class AccountGeneralSettingComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._generalSettingStore.getGeneralSettingByCompanyId(this.companyId)
+            .subscribe((generalSetting) => {
+                this.generalSetting = generalSetting;
+                this.isTimeSlot = this.generalSetting.slotDuration;
+            },
+            (error) => { },
+            () => {
+            });
+
 
     }
 

@@ -39,4 +39,15 @@ export class GeneralSettingStore {
         return <Observable<GeneralSetting>>Observable.from(promise);
     }
 
+    getGeneralSettingByCompanyId(companyId:number): Observable<GeneralSetting> {
+        let promise = new Promise((resolve, reject) => {
+            this._generalSettingService.getGeneralSettingByCompanyId(companyId).subscribe((GeneralSetting) => {
+                resolve(GeneralSetting);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<GeneralSetting>>Observable.fromPromise(promise);
+    }
+
 }

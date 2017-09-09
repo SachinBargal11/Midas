@@ -8,7 +8,8 @@ export class PhoneFormatPipe implements PipeTransform {
         if (!value) { return ''; }
 
         value = String(value);
-        let inputString = value.replace(/\-/g, '');
+        let inputValue = value.replace(/\-/g, '');
+        let inputString = inputValue.replace(/\ /g, '');
         if (inputString.length == 12) {
             return inputString.substring(0, 2) + ' ' + inputString.substring(2, 5) + '-' + inputString.substring(5, 8) + '-' + inputString.substring(8, 12);
         } else if (inputString.length == 13)

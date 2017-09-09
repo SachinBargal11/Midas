@@ -117,7 +117,7 @@ export class DemographicsComponent implements OnInit {
                 // ethnicities: ['', Validators.required],
             }),
             contact: this.fb.group({
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
@@ -158,7 +158,7 @@ export class DemographicsComponent implements OnInit {
             //raceId: demographicsFormValues.userInfo.races,
             //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
             emergencyContactName:demographicsFormValues.contact.emergencyContactPerson,
-            emergencyContactPhone:demographicsFormValues.contact.emergencyContactCellPhone,
+            emergencyContactPhone:demographicsFormValues.contact.emergencyContactCellPhone ? demographicsFormValues.contact.emergencyContactCellPhone.replace(/\-/g, '') : '',
             updateByUserId: this._sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this._sessionStore.session.account.user.id,

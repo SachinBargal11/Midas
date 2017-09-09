@@ -122,7 +122,7 @@ export class EditInsuranceComponent implements OnInit {
             policyZipcode: [''],
             policyCountry: [''],
             policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
-            policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            policyCellPhone: ['', [Validators.required]],
             policyHomePhone: [''],
             policyWorkPhone: [''],
             policyFaxNo: [''],
@@ -133,7 +133,7 @@ export class EditInsuranceComponent implements OnInit {
             zipcode: [],
             country: [],
             email: ['', [Validators.required, AppValidators.emailValidator]],
-            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            cellPhone: ['', [Validators.required]],
             homePhone: [''],
             workPhone: [''],
             faxNo: ['']

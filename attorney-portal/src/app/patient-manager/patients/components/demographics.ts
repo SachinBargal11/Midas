@@ -114,7 +114,7 @@ export class DemographicsComponent implements OnInit {
                 // ethnicities: ['', Validators.required],
             }),
             contact: this.fb.group({
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],

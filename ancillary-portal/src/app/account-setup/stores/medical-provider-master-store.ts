@@ -52,12 +52,23 @@ export class MedicalProviderMasterStore {
         });
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
-
-
-    getMedicalProviders(): Observable<MedicalProviderMaster[]> {
+       getMedicalProviders(): Observable<MedicalProviderMaster[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._medicalProviderMasterService.getMedicalProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+                // this._medicalProviderMaster.next(List(Provider));
+                resolve(Provider);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
+    }
+
+    getPreferredProviders(): Observable<MedicalProviderMaster[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.getPreferredProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
                 // this._medicalProviderMaster.next(List(Provider));
                 resolve(Provider);
             }, error => {

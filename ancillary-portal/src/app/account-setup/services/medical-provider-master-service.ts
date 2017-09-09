@@ -62,9 +62,28 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
-    getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
+       getMedicalProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
         let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/PreferredMedicalProvider/getByCompanyId/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let provider = (<Object[]>data).map((data: any) => {
+                        return MedicalProviderMasterAdapter.parseResponse(data);
+                    });
+                    resolve(provider);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
+    }
+
+    getPreferredProviders(companyId: Number): Observable<MedicalProviderMaster[]> {
+        let promise: Promise<MedicalProviderMaster[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PreferredAncillaryProvider/getPrefProviderByAncillaryCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())

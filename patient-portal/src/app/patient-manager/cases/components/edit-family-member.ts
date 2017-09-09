@@ -77,7 +77,7 @@ export class EditFamilyMemberComponent implements OnInit {
             races: ['', Validators.required],
             ethnicities: ['', Validators.required],
             gender: ['', Validators.required],
-            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            cellPhone: ['', [Validators.required]],
             workPhone: [''],
             primaryContact: ['']
         });

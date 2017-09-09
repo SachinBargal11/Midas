@@ -97,7 +97,7 @@ export class DemographicsComponent implements OnInit {
                 dateOfFirstTreatment: ['']
             }),
             contact: this.fb.group({
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
