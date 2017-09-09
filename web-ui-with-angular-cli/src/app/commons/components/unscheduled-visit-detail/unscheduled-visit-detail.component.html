@@ -116,7 +116,7 @@
         <div class="row">
           <div class="col-md-4">
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!unscheduledVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
-            <button [disabled]="!unscheduledVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+            <button *ngIf="isCreatedByCompany(sessionStore.session.currentCompany.id)" [disabled]="!unscheduledVisitDetailForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->
@@ -130,11 +130,11 @@
       <p-confirmDialog width="425"></p-confirmDialog>
       <div class="input-group">
         <h3 class="with-border">Uploaded Documents
-          <a *ngIf="!disableSaveDelete" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+          <a *ngIf="!disableSaveDelete && isCreatedByCompany(sessionStore.session.currentCompany.id)" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
           <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
           <loader [visible]="isDeleteProgress"></loader>
         </a>
-          <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
+          <a *ngIf="isCreatedByCompany(sessionStore.session.currentCompany.id)" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
          </a>
         </h3>
@@ -169,7 +169,7 @@
       </p-dataTable>
       <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
         [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
-        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
+        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="7" [objectId]="selectedVisit.id"
           (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
       </p-dialog>
     </p-tabPanel>

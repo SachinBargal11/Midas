@@ -71,5 +71,13 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
     constructor(props) {
         super(props);
     }
+
+      isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.orignatorCompanyId === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
+    }
    
 }

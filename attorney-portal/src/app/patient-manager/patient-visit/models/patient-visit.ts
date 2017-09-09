@@ -49,7 +49,7 @@ const PatientVisitRecord = Record({
     updateDate: null, //Moment
     subject: '',
     contactPerson: '',
-    agenda: '',
+    // agenda: '',
     companyid: 0,
     attorneyId: 0,
     isPatientVisitType: true,
@@ -93,7 +93,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     updateDate: moment.Moment;
     subject: string;
     contactPerson: string;
-    agenda: string;
+    // agenda: string;
     companyid: number;
     attorneyId: number;
     isPatientVisitType: boolean;

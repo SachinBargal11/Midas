@@ -65,7 +65,7 @@
           <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
           <div class="col-md-6">
             <div class="form-group" [class.error]="clientVisitDetailFormControls.notes && clientVisitDetailFormControls.notes.touched && !clientVisitDetailFormControls.notes.valid">
-              <textarea [ngModel]="selectedVisit.agenda" formControlName="notes" class="form-control" rows="3"></textarea>
+              <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
               <div class='error-list' *ngIf="clientVisitDetailFormControls.notes && clientVisitDetailFormControls.notes.touched && !clientVisitDetailFormControls.notes.valid">
                 <ul>
                   <li *ngIf="clientVisitDetailFormControls.notes.hasError('required')">Please enter Agenda.</li>

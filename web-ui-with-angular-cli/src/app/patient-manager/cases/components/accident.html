@@ -287,7 +287,7 @@
                                 <label class="form-label">Name of witness
                                    </label>
                                 <div class="form-group" [class.error]="accidentformControls.witnessName.touched && !accidentformControls.witnessName.valid">
-                                    <input formControlName="witnessName" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.witnessName.valid">
+                                    <input formControlName="witnessName" [(ngModel)]= "witnessName" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.witnessName.valid">
                                     <div class='error-list' *ngIf="accidentformControls.witnessName.touched && !accidentformControls.witnessName.valid">
                                         <ul>
                                             <li *ngIf="accidentformControls.witnessName.hasError('required')">Additional Patient is required.</li>
@@ -301,7 +301,7 @@
                                 <label class="form-label">Phone number of witness
                                    </label>
                                 <div class="form-group" [class.error]="accidentformControls.witnessPhoneNumber.touched && !accidentformControls.witnessPhoneNumber.valid">
-                                    <input formControlName="witnessPhoneNumber" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.witnessPhoneNumber.valid">
+                                    <input formControlName="witnessPhoneNumber" [(ngModel)]= "witnessPhoneNumber" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.witnessPhoneNumber.valid">
                                     <div class='error-list' *ngIf="accidentformControls.witnessPhoneNumber.touched && !accidentformControls.witnessPhoneNumber.valid">
                                         <ul>
                                             <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('required')">Additional Patient is required.</li>

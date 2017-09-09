@@ -229,8 +229,8 @@ export class ClientVisitDetailComponent implements OnInit {
         let clientVisitDetailFormValues = this.clientVisitDetailForm.value;
         let updatedVisit: PatientVisit;
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            agenda: clientVisitDetailFormValues.notes,
-            visitStatusId: parseInt(clientVisitDetailFormValues.visitStatusId),
+            notes: clientVisitDetailFormValues.notes,
+            visitStatusId: this.routeFrom == 2 ? this.selectedVisit.visitStatusId : parseInt(clientVisitDetailFormValues.visitStatusId),
         }));
         this._progressBarService.show();
         let result = this._patientVisitStore.updatePatientVisitDetail(updatedVisit);

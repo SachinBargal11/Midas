@@ -315,20 +315,20 @@ export class ImeVisitComponent implements OnInit {
     }
     handleVisitDialogHide() { }
 
-    // getDocuments() {
-    // this._progressBarService.show();
-    // // this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
-    //     .subscribe(document => {
-    //         this.documents = document;
-    //     },
+    getDocuments() {
+    this._progressBarService.show();
+    this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
+        .subscribe(document => {
+            this.documents = document;
+        },
 
-    //     (error) => {
-    //         this._progressBarService.hide();
-    //     },
-    //     () => {
-    //         this._progressBarService.hide();
-    //     });
-    // }
+        (error) => {
+            this._progressBarService.hide();
+        },
+        () => {
+            this._progressBarService.hide();
+        });
+    }
 
     // documentUploadComplete(documents: Document[]) {
     //     _.forEach(documents, (currentDocument: Document) => {

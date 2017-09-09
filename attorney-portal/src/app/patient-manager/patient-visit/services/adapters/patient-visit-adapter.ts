@@ -61,7 +61,7 @@ export class PatientVisitAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 companyid: data.companyid,
                 attorneyId: data.attorneyId,
-                agenda: data.agenda,
+                // agenda: data.agenda,
                 name: data.subject,
                 contactPerson:data.contactPerson,
             });

@@ -99,7 +99,7 @@ export class UnscheduledVisitDetailComponent implements OnInit {
             visitStatusId: [''],
             readingDoctor: ['']
         });
-        this.unscheduledVisitDetailFormControls = this.unscheduledVisitDetailForm.controls;        
+        this.unscheduledVisitDetailFormControls = this.unscheduledVisitDetailForm.controls;
     }
 
     ngOnInit() {
@@ -117,13 +117,13 @@ export class UnscheduledVisitDetailComponent implements OnInit {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
             let result;
-            if(this.patientId) {
+            if (this.patientId) {
                 result = this._patientStore.fetchPatientById(this.patientId);
             } else {
                 result = this._patientStore.fetchPatientById(this.selectedVisit.patientId);
                 this.patientId = this.selectedVisit.patientId;
             }
-                result.subscribe(
+            result.subscribe(
                 (patient: Patient) => {
                     this.patient = patient;
                     this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
@@ -270,6 +270,14 @@ export class UnscheduledVisitDetailComponent implements OnInit {
                 this._progressBarService.hide();
             });
         this.closePatientVisitDialog();
+    }
+
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.selectedVisit.orignatorCompanyId === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
     }
 
     deleteDocument() {

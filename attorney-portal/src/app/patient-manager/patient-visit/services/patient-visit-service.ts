@@ -38,7 +38,7 @@ export class PatientVisitService {
 
     getPatientVisit(patientVisitId: Number): Observable<PatientVisit> {
         let promise: Promise<PatientVisit> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyVisit/get/' + patientVisitId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientVisit/get/' + patientVisitId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

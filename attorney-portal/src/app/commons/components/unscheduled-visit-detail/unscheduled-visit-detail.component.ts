@@ -226,6 +226,14 @@ export class UnscheduledVisitDetailComponent implements OnInit {
         }
     }
 
+    isCreatedByCompany(companyId): boolean {
+        let isCreatedByCompany: boolean = false;
+        if (this.selectedVisit.orignatorCompanyId === companyId) {
+            isCreatedByCompany = true;
+        }
+        return isCreatedByCompany;
+    }
+
     saveVisit() {
         let unscheduledVisitDetailFormValues = this.unscheduledVisitDetailForm.value;
         let updatedVisit: UnscheduledVisit;

@@ -982,7 +982,7 @@ export class PatientVisitComponent implements OnInit {
         if (this.selectedVisit.isPatientVisitType) {
             let updatedVisit: PatientVisit;
             updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-                agenda: patientVisitFormValues.notes,
+                notes: patientVisitFormValues.notes,
                 visitStatusId: patientVisitFormValues.visitStatusId
             }));
             result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
@@ -1233,7 +1233,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
             caseId: patientScheduleFormValues.caseId,
-            agenda: patientScheduleFormValues.notes,
+            notes: patientScheduleFormValues.notes,
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
             isOutOfOffice: this.isGoingOutOffice,
             contactPerson: patientScheduleFormValues.contactPerson,
