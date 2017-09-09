@@ -212,6 +212,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("downloadfromnoproviderblob/{documentid}")]
+        [AllowAnonymous]
         public HttpResponseMessage DownlodFromNoProviderBlob(int documentid)
         {
             int companyId = 0;
