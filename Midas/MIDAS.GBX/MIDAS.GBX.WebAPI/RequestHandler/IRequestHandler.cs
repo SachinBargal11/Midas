@@ -171,5 +171,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByLocationDoctorAndSpecialityId(HttpRequestMessage request, int LocationId, int DoctorId, int SpecialtyId);
         HttpResponseMessage SaveReferralPatientVisitUnscheduled(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetReferralPatientVisitUnscheduledByCompanyId(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage GetPatientVisitForDateByLocationId(HttpRequestMessage request, DateTime ForDate, int LocationId);
     }
 }

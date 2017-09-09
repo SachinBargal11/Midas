@@ -19,10 +19,10 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByLocationId/{locationId}")]
-        public HttpResponseMessage GetByLocationId(int locationId, DateTime forDate)
+        [Route("GetPatientVisitForDateByLocationId/{forDate}/{locationId}")]
+        public HttpResponseMessage GetPatientVisitForDateByLocationId(DateTime forDate, int locationId)
         {
-            return requestHandler.GetByLocationId(Request, locationId);
+            return requestHandler.GetPatientVisitForDateByLocationId(Request, forDate, locationId);
         }
     }
 }
