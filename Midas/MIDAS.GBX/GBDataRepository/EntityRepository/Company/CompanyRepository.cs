@@ -395,18 +395,149 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Company acc_ = Convert<BO.Company, Company>(companyDB);
             try
             {
-                #region Send Email
-                
-                string VerificationLink = "<a href='"+ Utility.GetConfigValue("VerificationLink") + "/"+invitationDB.UniqueID+ "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
-                string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink+"</b><br><br>Thanks";
-                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "Company registered", Body = Message };
-                objEmail.SendMail();
+                //#region Send Email
+
+                //string VerificationLink = "<a href='"+ Utility.GetConfigValue("VerificationLink") + "/"+invitationDB.UniqueID+ "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                //string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink+"</b><br><br>Thanks";
+                //BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "Company registered", Body = Message };
+                //objEmail.SendMail();
+                //#endregion
+
+                #region Notification and messaging code for Medical provider
+                if (companyBO.CompanyType == BO.GBEnums.CompanyType.MedicalProvider)
+                {
+                    #region notification for Add Company
+                    try
+                    {
+                 
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                    
+                        string MailMessageForCompany = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Medical Provider. <br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForCompany = "You have been registered in midas portal as a Medical Provider. ";
+                        string SmsMessageForCompany = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Medical provider. <br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                                                              
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+                        #region Send notification                       
+                                #region  company mail object                 
+                                BO.EmailMessage emCompany = new BO.EmailMessage();
+                                 emCompany.ApplicationName = "Midas";
+                                 emCompany.ToEmail = userBO.UserName;
+                                 emCompany.EMailSubject = "MIDAS Notification";
+                                 emCompany.EMailBody = MailMessageForCompany;
+                                #endregion
+
+                                #region company sms object
+                                BO.SMS smsCompany = new BO.SMS();
+                                  smsCompany.ApplicationName = "Midas";
+                                  smsCompany.ToNumber = contactinfoBO.CellPhone;
+                                  smsCompany.Message = SmsMessageForCompany;
+                                #endregion
+
+                                nh.PushNotification(userBO.UserName, companyBO.ID, NotificationForCompany, "New Patient Registration");
+                                mh.SendEmailAndSms(userBO.UserName, companyBO.ID, emCompany, smsCompany);                         
+                       
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    #endregion
+                }
+                #endregion
+                #region Notification and messaging code for Attorney provider
+                if (companyBO.CompanyType == BO.GBEnums.CompanyType.Attorney)
+                {
+                    #region notification for Add Company
+                    try
+                    {
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AttorneyVerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForCompany = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Attorney Provider. <br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForCompany = "You have been registered in midas portal as a Attorney Provider. ";
+                        string SmsMessageForCompany = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Attorney provider. <br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+                        #region Send notification                       
+                        #region  company mail object                 
+                        BO.EmailMessage emStaff = new BO.EmailMessage();
+                        emStaff.ApplicationName = "Midas";
+                        emStaff.ToEmail = userBO.UserName;
+                        emStaff.EMailSubject = "MIDAS Notification";
+                        emStaff.EMailBody = MailMessageForCompany;
+                        #endregion
+
+                        #region company sms object
+                        BO.SMS smsStaff = new BO.SMS();
+                        smsStaff.ApplicationName = "Midas";
+                        smsStaff.ToNumber = contactinfoBO.CellPhone;
+                        smsStaff.Message = SmsMessageForCompany;
+                        #endregion
+
+                        nh.PushNotification(userBO.UserName, companyBO.ID, NotificationForCompany, "New Patient Registration");
+                        mh.SendEmailAndSms(userBO.UserName, companyBO.ID, emStaff, smsStaff);
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    #endregion
+                }
+                #endregion
+                #region Notification and messaging code for Ancillar provider
+                if (companyBO.CompanyType == BO.GBEnums.CompanyType.Ancillary)
+                {
+                    #region notification for Add Company
+                    try
+                    {
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("AncillaryVerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("AncillaryVerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForCompany = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Ancillary Provider. <br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForCompany = "You have been registered in midas portal as a Ancillary Provider. ";
+                        string SmsMessageForCompany = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Ancillary provider. <br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+                        #region Send notification                       
+                        #region  company mail object                 
+                        BO.EmailMessage emStaff = new BO.EmailMessage();
+                        emStaff.ApplicationName = "Midas";
+                        emStaff.ToEmail = userBO.UserName;
+                        emStaff.EMailSubject = "MIDAS Notification";
+                        emStaff.EMailBody = MailMessageForCompany;
+                        #endregion
+
+                        #region company sms object
+                        BO.SMS smsStaff = new BO.SMS();
+                        smsStaff.ApplicationName = "Midas";
+                        smsStaff.ToNumber = contactinfoBO.CellPhone;
+                        smsStaff.Message = SmsMessageForCompany;
+                        #endregion
+
+                        nh.PushNotification(userBO.UserName, companyBO.ID, NotificationForCompany, "New Patient Registration");
+                        mh.SendEmailAndSms(userBO.UserName, companyBO.ID, emStaff, smsStaff);
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    #endregion
+                }
                 #endregion
             }
             catch (Exception ex)
             {
                 //Message sending failed
             }
+
 
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
@@ -567,14 +698,140 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        #region Send mail to attorney
-                        string msg1 = updateCompany.EmailBody;
-                        string subject1 = updateCompany.EmailSubject;
+                        //#region Send mail to attorney
+                        //string msg1 = updateCompany.EmailBody;
+                        //string subject1 = updateCompany.EmailSubject;
 
-                        string message1 = string.Format(msg1, userDB.FirstName);
+                        //string message1 = string.Format(msg1, userDB.FirstName);
 
-                        BO.Email objEmail1 = new BO.Email { ToEmail = userDB.UserName, Subject = subject1, Body = message1 };
-                        objEmail1.SendMail();
+                        //BO.Email objEmail1 = new BO.Email { ToEmail = userDB.UserName, Subject = subject1, Body = message1 };
+                        //objEmail1.SendMail();
+                        //#endregion
+
+                        #region Notification and messaging code for Medical provider
+                        if (companyBO.CompanyType == BO.GBEnums.CompanyType.MedicalProvider)
+                        {
+                            #region notification for update Company
+                            try
+                            {
+
+                                //string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                                string MailMessageForCompany = "Dear " + userBO.FirstName + "<br><br>Company details have been modified successfully.</b><br><br>Thanks";
+                                string NotificationForCompany = "Company details have been modified successfully.";
+                                string SmsMessageForCompany = "Dear " + userBO.FirstName + "<br><br>Company details have been modified successfully.</b><br><br>Thanks";
+
+                                NotificationHelper nh = new NotificationHelper();
+                                MessagingHelper mh = new MessagingHelper();
+
+                                #region Send notification                       
+                                #region  company mail object                 
+                                BO.EmailMessage emCompany = new BO.EmailMessage();
+                                emCompany.ApplicationName = "Midas";
+                                emCompany.ToEmail = userBO.UserName;
+                                emCompany.EMailSubject = "MIDAS Notification";
+                                emCompany.EMailBody = MailMessageForCompany;
+                                #endregion
+
+                                #region company sms object
+                                BO.SMS smsCompany = new BO.SMS();
+                                smsCompany.ApplicationName = "Midas";
+                                smsCompany.ToNumber = contactinfoBO.CellPhone;
+                                smsCompany.Message = SmsMessageForCompany;
+                                #endregion
+
+                                nh.PushNotification(userBO.UserName, companyBO.ID, NotificationForCompany, "New Patient Registration");
+                                mh.SendEmailAndSms(userBO.UserName, companyBO.ID, emCompany, smsCompany);
+
+                                #endregion
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                            #endregion
+                        }
+                        #endregion
+                        #region Notification and messaging code for Attorney provider
+                        if (companyBO.CompanyType == BO.GBEnums.CompanyType.Attorney)
+                        {
+                            #region notification for Update Company
+                            try
+                            {
+
+                                string MailMessageForCompany = "Dear " + userBO.FirstName + "<br><br>Company details have been modified successfully.</b><br><br>Thanks";
+                                string NotificationForCompany = "Company details have been modified successfully.";
+                                string SmsMessageForCompany = "Dear " + userBO.FirstName + "<br><br>Company details have been modified successfully.</b><br><br>Thanks";
+
+                                NotificationHelper nh = new NotificationHelper();
+                                MessagingHelper mh = new MessagingHelper();
+
+                                #region Send notification                       
+                                #region  company mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = userBO.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForCompany;
+                                #endregion
+
+                                #region company sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = contactinfoBO.CellPhone;
+                                smsStaff.Message = SmsMessageForCompany;
+                                #endregion
+
+                                nh.PushNotification(userBO.UserName, companyBO.ID, NotificationForCompany, "New Patient Registration");
+                                mh.SendEmailAndSms(userBO.UserName, companyBO.ID, emStaff, smsStaff);
+
+                                #endregion
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                            #endregion
+                        }
+                        #endregion
+                        #region Notification and messaging code for Ancillar provider
+                        if (companyBO.CompanyType == BO.GBEnums.CompanyType.Ancillary)
+                        {
+                            #region notification for Update Company
+                            try
+                            {
+
+                                string MailMessageForCompany = "Dear " + userBO.FirstName + "<br><br>Company details have been modified successfully.</b><br><br>Thanks";
+                                string NotificationForCompany = "Company details have been modified successfully.";
+                                string SmsMessageForCompany = "Dear " + userBO.FirstName + "<br><br>Company details have been modified successfully.</b><br><br>Thanks";
+
+                                NotificationHelper nh = new NotificationHelper();
+                                MessagingHelper mh = new MessagingHelper();
+
+                                #region Send notification                       
+                                #region  company mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = userBO.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForCompany;
+                                #endregion
+
+                                #region company sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = contactinfoBO.CellPhone;
+                                smsStaff.Message = SmsMessageForCompany;
+                                #endregion
+
+                                nh.PushNotification(userBO.UserName, companyBO.ID, NotificationForCompany, "New Patient Registration");
+                                mh.SendEmailAndSms(userBO.UserName, companyBO.ID, emStaff, smsStaff);
+
+                                #endregion
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                            #endregion
+                        }
                         #endregion
                     }
                 }

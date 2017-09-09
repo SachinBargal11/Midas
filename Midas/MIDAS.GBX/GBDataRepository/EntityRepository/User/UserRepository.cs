@@ -228,6 +228,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             UserCompany userCompanyDB = new UserCompany();
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
             Invitation invitationDB = new Invitation();
+            bool isEditMode = false;
 
             #region Address
             if (addressBO != null)
@@ -345,6 +346,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (usr != null)
                 {
+                    isEditMode = true;
                     #region User                    
                     usr.UpdateDate = DateTime.UtcNow;
                     usr.IsDeleted = userBO.IsDeleted;
@@ -490,17 +492,497 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             BO.User acc_ = Convert<BO.User, User>(userDB);
-            try
-            {
-                #region Send Email
-                string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
-                string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
-                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
-                objEmail.SendMail();
-                #endregion
-            }
-            catch (Exception ex) { }
 
+            #region Notification and messaging code for staff
+            if (userBO.UserType == BO.GBEnums.UserType.Staff)
+            {
+                //try
+                //{
+                //    #region Send Email
+                //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                //    objEmail.SendMail();
+                //    #endregion
+                //}
+                //catch (Exception ex) { }
+
+                if (isEditMode==false)
+                {
+                    #region notification for Add User
+                    try
+                    {
+                       
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
+                        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New Staff " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + userBO.UserName + "";
+
+                      
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserType == 2 && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+                    
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+                     
+                        #region admin and staff 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, companyBO.ID, NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, companyBO.ID, emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    #region notification for Edit User
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
+                        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New Staff " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserType == 2 && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and staff 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+                }
+
+
+
+            }
+
+            #endregion
+            #region Notification and messaging code for Doctor
+            if (userBO.UserType == BO.GBEnums.UserType.Doctor)
+            {
+                //try
+                //{
+                //    #region Send Email
+                //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                //    objEmail.SendMail();
+                //    #endregion
+                //}
+                //catch (Exception ex) { }
+
+                if (isEditMode == false)
+                {
+                    #region notification for Add Doctor
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForDocotr = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForDoctor = "You have been registered in midas portal as a Doctor by : " + identityHelper.DisplayName;
+                        string SmsMessageForDoctor = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Doctor email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New  Docotr " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Docotr email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserType == 2 && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and doctor 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, companyBO.ID, NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, companyBO.ID, emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDocotr;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDocotr;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    #region notification for Edit User
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForDoctor = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForDoctor = "You have been registered in midas portal as a doctor by : " + identityHelper.DisplayName;
+                        string SmsMessageForDoctor = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Doctor email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New Doctor " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Doctor email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserType == 2 && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and staff 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDoctor;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDoctor;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+                }
+
+
+
+            }
+
+            #endregion
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
         }
