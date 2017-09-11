@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/dashboard")]
+    [RoutePrefix("midasattorneyapi/dashboard")]
     public class DashboardController : ApiController
     {
         private IRequestHandler<AttorneyVisit> requestHandler;
