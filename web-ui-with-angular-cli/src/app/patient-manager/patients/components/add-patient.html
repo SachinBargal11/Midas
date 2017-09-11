@@ -194,11 +194,11 @@
                 <div class="col-lg-4">
                     <label class="form-label">Patient Photo
                             </label>
-                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)"
+                    <p-fileUpload name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" [showUploadButton]="false" customUpload="true" (uploadHandler)="myUploader($event)"
                         chooseLabel="Browse image to upload"></p-fileUpload>
-                    <ul *ngIf="files.length">
+                    <!-- <ul *ngIf="files.length">
                         <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="col-lg-4">
                     <label class="form-label"> Language Preference 
@@ -224,11 +224,11 @@
                 <div class="col-lg-4">
                     <label class="form-label">Photo ID(Obtain copy of licence)
                             </label>
-                    <p-fileUpload mode="basic" name="licence[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="licenceUploader($event)"
+                    <p-fileUpload name="licence[]" accept="image/*" auto="true" [showUploadButton]="false" maxFileSize="1000000" customUpload="true" (uploadHandler)="licenceUploader($event)"
                         chooseLabel="Browse image to upload"></p-fileUpload>
-                    <ul *ngIf="fileLicence.length">
+                    <!-- <ul *ngIf="fileLicence.length">
                         <li *ngFor="let file of fileLicence">{{file.name}} - {{file.size}} bytes</li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </div>
@@ -346,7 +346,7 @@
                 </div>-->
                 <div class="col-lg-4">
                     <label class="form-label"> Emergency Contact Person Name
-                                            <!--<span class="color-red">*</span>-->
+                                            <!-- <span class="color-red">*</span> -->
                                         </label>
                     <div class="form-group">
                         <input formControlName="emergencyContactPerson" type="text" class="form-control" placeholder="">
@@ -361,7 +361,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Emergency Contact Person Cellphone
-                                            <!--<span class="color-red">*</span>-->
+                                            <!-- <span class="color-red">*</span> -->
                                         </label>
                     <!--<div class="form-group" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">-->
                     <div class="form-group">

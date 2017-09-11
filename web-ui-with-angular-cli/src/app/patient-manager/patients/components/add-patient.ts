@@ -162,12 +162,12 @@ export class AddPatientComponent implements OnInit {
         //this.isExist = this.checkForExist(this.patientform.value.contact.email, this.patientform.value.userInfo.ssn);
         let patientSocialMediaMappings: any[] = [];
         let patientLanguagePreferenceMappings: any[] = [];
-        if(this.languagePreference != ''){
-         patientLanguagePreferenceMappings.push({
-            languagePreferenceId: parseInt(this.languagePreference)
-        })
-        }else{
-         patientLanguagePreferenceMappings;
+        if (this.languagePreference != '') {
+            patientLanguagePreferenceMappings.push({
+                languagePreferenceId: parseInt(this.languagePreference)
+            })
+        } else {
+            patientLanguagePreferenceMappings;
         }
 
         this.usersStore.getIsExistingUser(this.patientform.value.contact.email)
@@ -253,8 +253,12 @@ export class AddPatientComponent implements OnInit {
                     result = this._patientsStore.addPatient(patient);
                     result.subscribe(
                         (response) => {
-                            this.uploadProfileImage(response.id);
-                            this.uploadLicenceImage(response.id);
+                            if (this.files.length > 0) {
+                                this.uploadProfileImage(response.id);
+                            }
+                            if (this.fileLicence.length > 0) {
+                                this.uploadLicenceImage(response.id);
+                            }
                             let notification = new Notification({
                                 'title': 'Patient added successfully!',
                                 'type': 'SUCCESS',

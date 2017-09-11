@@ -116,7 +116,7 @@ export class DocumentsComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-        if (error.message == 'Please select document Type') {
+        if (error.message == 'Please select document type') {
             this._notificationsService.error('Oh No!', 'Please select document type');
         }
         else {

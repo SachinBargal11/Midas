@@ -35,11 +35,11 @@
     <div class="card-block">
         <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onBeforeSend)="onBeforeSendEvent($event)" (onError)="onFilesUploadError($event)"
             (onUpload)="onFilesUploadComplete($event)" maxFileSize="1000000">
-            <ng-template pTemplate type="content">
-                <!--<ul *ngIf="uploadedFiles.length">
+            <!-- <ng-template pTemplate type="content">
+                <ul *ngIf="uploadedFiles.length">
                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                </ul>-->
-            </ng-template>
+                </ul>
+            </ng-template> -->
         </p-fileUpload>
     </div>
 </section>
