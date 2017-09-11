@@ -197,6 +197,63 @@ export class PatientVisitService {
         return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
     }
 
+    getDocumentsForImeVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + visitId + '/imeVisit', {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return VisitDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
+
+    getDocumentsForEuoVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + visitId + '/euoVisit', {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return VisitDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
+
+    getDocumentsForUnscheduledVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + visitId + '/unscheduleVisit', {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return VisitDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
+
     uploadDocumentForVisit(VisitDocument: VisitDocument, currentVisitId: number): Observable<VisitDocument> {
         let promise: Promise<VisitDocument> = new Promise((resolve, reject) => {
             let requestData = _.extend(VisitDocument.toJS());

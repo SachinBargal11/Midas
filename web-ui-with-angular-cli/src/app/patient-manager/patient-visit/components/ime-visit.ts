@@ -317,7 +317,7 @@ export class ImeVisitComponent implements OnInit {
 
     getDocuments() {
     this._progressBarService.show();
-    this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
+    this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
         .subscribe(document => {
             this.documents = document;
         },

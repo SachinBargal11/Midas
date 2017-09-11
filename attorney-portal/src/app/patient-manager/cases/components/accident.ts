@@ -73,6 +73,13 @@ export class AccidentInfoComponent implements OnInit {
     method: string = 'POST';
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     url;
+    witnessPhoneNumber: string;
+    witnessName: string;
+    treatmentMedicalFacilityName: string;
+    treatmentDoctorName: string;
+    treatmentContactNumber: string;
+    treatmentAddress: string;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -117,7 +124,7 @@ export class AccidentInfoComponent implements OnInit {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                         }
-                        
+
                         this.witnesses = this.currentAccident.accidentWitnesses;
                         this.treatmentMedicalFacilities = this.currentAccident.accidentTreatments;
                         this.policeAtScene = String(this.currentAccident.policeAtScene);
@@ -265,11 +272,14 @@ export class AccidentInfoComponent implements OnInit {
             })
             this.witnesses.push(witness);
             this.witnesses = _.union(this.witnesses);
+            this.witnessName = '';
+            this.witnessPhoneNumber = '';
         }
     }
+
     removeWitnessFromList(witnessName, witnessPhoneNumber) {
         this.witnesses = _.reject(this.witnesses, (currWitness: any) => {
-            return currWitness.witnessName == witnessName && currWitness.witnessPhoneNumber == witnessPhoneNumber;
+            return currWitness.witnessName == witnessName && currWitness.witnessContactNumber == witnessPhoneNumber;
         })
     }
 
@@ -284,11 +294,16 @@ export class AccidentInfoComponent implements OnInit {
             })
             this.treatmentMedicalFacilities.push(treatmentMedicalFacility);
             this.treatmentMedicalFacilities = _.union(this.treatmentMedicalFacilities);
+            this.treatmentMedicalFacilityName = '';
+            this.treatmentDoctorName = '';
+            this.treatmentContactNumber = '';
+            this.treatmentAddress = '';
         }
     }
+
     removeTreatmentMedicalFacilityFromList(treatmentMedicalFacilityName, treatmentContactNumber) {
         this.treatmentMedicalFacilities = _.reject(this.treatmentMedicalFacilities, (currTreatmentMedicalFacility: any) => {
-            return currTreatmentMedicalFacility.treatmentMedicalFacilityName == treatmentMedicalFacilityName && currTreatmentMedicalFacility.treatmentContactNumber == treatmentContactNumber;
+            return currTreatmentMedicalFacility.medicalFacilityName == treatmentMedicalFacilityName && currTreatmentMedicalFacility.contactNumber == treatmentContactNumber;
         })
     }
 

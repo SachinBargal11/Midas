@@ -75,6 +75,10 @@ export class AccidentInfoComponent implements OnInit {
     url;
     witnessPhoneNumber: string;
     witnessName: string;
+    treatmentMedicalFacilityName: string;
+    treatmentDoctorName: string;
+    treatmentContactNumber: string;
+    treatmentAddress: string;
 
     constructor(
         private fb: FormBuilder,
@@ -289,6 +293,10 @@ export class AccidentInfoComponent implements OnInit {
             })
             this.treatmentMedicalFacilities.push(treatmentMedicalFacility);
             this.treatmentMedicalFacilities = _.union(this.treatmentMedicalFacilities);
+            this.treatmentMedicalFacilityName = '';
+            this.treatmentDoctorName = '';
+            this.treatmentContactNumber = '';
+            this.treatmentAddress = '';
         }
     }
 

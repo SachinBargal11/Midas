@@ -75,6 +75,7 @@ export class AncillaryListComponent implements OnInit {
 
     showValidation() {
         this.displayValidation = true;
+        this.addAncillaryProviderByToken.reset();
     }
 
     closeDialog(){

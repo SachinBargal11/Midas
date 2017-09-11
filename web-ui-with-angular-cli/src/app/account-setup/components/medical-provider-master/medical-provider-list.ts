@@ -73,6 +73,7 @@ export class MedicalProviderListComponent implements OnInit {
 
     showValidation() {
         this.displayValidation = true;
+        this.addMedicalProviderByToken.reset();
     }
 
     closeDialog(){

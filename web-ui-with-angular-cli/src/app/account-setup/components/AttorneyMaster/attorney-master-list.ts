@@ -71,6 +71,7 @@ export class AttorneyMasterListComponent implements OnInit {
 
     showValidation() {
         this.displayValidation = true;
+        this.addAttorneyByToken.reset();
     }
 
     closeDialog(){

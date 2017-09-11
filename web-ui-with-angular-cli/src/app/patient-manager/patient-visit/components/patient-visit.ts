@@ -1115,7 +1115,7 @@ export class PatientVisitComponent implements OnInit {
         } else if (this.selectedVisit.isEoVisitType && this.sessionStore.isOnlyDoctorRole()) {
             this.visitInfo = this.selectedVisit.visitDisplayStringForDoctor;
         } else {
-            this.visitInfo = this.selectedVisit.visitDisplayString;            
+            this.visitInfo = this.selectedVisit.visitDisplayString;
         }
         // this.fetchSelectedSpeciality(this.selectedSpecialityId);
         if (clickedEventInstance.isInPast) {
@@ -1659,17 +1659,24 @@ export class PatientVisitComponent implements OnInit {
     }
 
     getDocuments() {
-        this._progressBarService.show();
-        this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
-            .subscribe(document => {
-                this.documents = document;
-            },
+        // this._progressBarService.show();
+        let result;
+        if (this.selectedVisit.isPatientVisitType) {
+            result = this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
+        } else if (this.selectedVisit.isImeVisitType) {
+            result = this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
+        } else if (this.selectedVisit.isImeVisitType) {
+            result = this._patientVisitsStore.getDocumentsForEuoVisitId(this.selectedVisit.id)
+        }
+        result.subscribe(document => {
+            this.documents = document;
+        },
 
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 

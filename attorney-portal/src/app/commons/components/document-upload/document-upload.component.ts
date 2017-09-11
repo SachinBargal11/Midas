@@ -163,6 +163,14 @@ export class DocumentUploadComponent implements OnInit {
         param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
       } else if (this.currentId == 1) {
         param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else if (this.currentId == 4) {
+        param = '{"ObjectType":"imeVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else if (this.currentId == 5) {
+        param = '{"ObjectType":"euoVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else if (this.currentId == 6) {
+        param = '{"ObjectType":"attorneyVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+      } else if (this.currentId == 7) {
+        param = '{"ObjectType":"unscheduleVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
       }
       event.xhr.setRequestHeader("inputjson", param);
       event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
