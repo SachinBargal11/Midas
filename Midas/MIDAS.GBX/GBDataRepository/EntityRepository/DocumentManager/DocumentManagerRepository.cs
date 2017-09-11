@@ -183,7 +183,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 path = documentPath[0].Replace("cmp/", "")
                                                     .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.IMEVisits.Where(pvid => pvid.ID == uploadInfo.ObjectId).FirstOrDefault().CaseId)
                                                                                                                .FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                                    .Replace("cs", "cs-" + _context.IMEVisits.Where(pvid => pvid.ID == uploadInfo.ObjectId).FirstOrDefault().CaseId);
                                 break;
                             case EN.Constants.EUOVisitType:
                                 path = documentPath[0].Replace("cmp/", "")
@@ -195,13 +195,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 path = documentPath[0].Replace("cmp/", "")
                                                     .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.AttorneyVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
                                                                                                                .FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                                    .Replace("cs", "cs-" + _context.AttorneyVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
                                 break;
                             case EN.Constants.UNSCHVisitType:
                                 path = documentPath[0].Replace("cmp/", "")
                                                     .Replace("cstype", _context.Cases.Where(csid => csid.Id == _context.PatientVisitUnscheduleds.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId)
                                                                                                                .FirstOrDefault().CaseType.CaseTypeText.ToLower())
-                                                    .Replace("cs", "cs-" + _context.PatientVisits.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
+                                                    .Replace("cs", "cs-" + _context.PatientVisitUnscheduleds.Where(pvid => pvid.Id == uploadInfo.ObjectId).FirstOrDefault().CaseId);
                                 break;
                             case EN.Constants.PatientType:
                                 path = documentPath[0].Replace("cmp/", "")
