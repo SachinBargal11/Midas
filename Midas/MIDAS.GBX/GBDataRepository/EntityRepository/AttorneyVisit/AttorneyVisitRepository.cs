@@ -589,6 +589,68 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Attorney Visit For Date By CompanyId
+        public override Object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId)
+        {
+            var attorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                                       .Include("Patient")
+                                                       .Include("Patient.User")
+                                                       .Where(p => p.CompanyId == CompanyId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            if (attorneyVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.AttorneyVisit> lstAttorneyVisit = new List<BO.AttorneyVisit>();
+            foreach (AttorneyVisit item in attorneyVisit)
+            {
+                lstAttorneyVisit.Add(Convert<BO.AttorneyVisit, AttorneyVisit>(item));
+            }
+
+            List<BO.AttorneyVisit> lstAttorneyVisitForDate = new List<BO.AttorneyVisit>();
+
+            List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
+
+            foreach (var eachAttorneyVisit in lstAttorneyVisit)
+            {
+                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachAttorneyVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                if (currentEventSlots != null)
+                {
+                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+
+                    if (ForDateEventSlots != null)
+                    {
+                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                        {
+                            BO.AttorneyVisit AttorneyVisitForDate = new BO.AttorneyVisit();
+                            AttorneyVisitForDate.ID = 0;
+                            AttorneyVisitForDate.CalendarEventId = eachAttorneyVisit.CalendarEventId;
+                            AttorneyVisitForDate.CaseId = eachAttorneyVisit.CaseId;
+                            AttorneyVisitForDate.PatientId = eachAttorneyVisit.PatientId;
+                            AttorneyVisitForDate.AttorneyId = eachAttorneyVisit.AttorneyId;
+                            AttorneyVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
+                            AttorneyVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                            AttorneyVisitForDate.Subject = eachAttorneyVisit.Subject;
+                            AttorneyVisitForDate.VisitStatusId = 1;
+                            AttorneyVisitForDate.ContactPerson = eachAttorneyVisit.ContactPerson;
+                            AttorneyVisitForDate.CompanyId = eachAttorneyVisit.CompanyId;
+                            AttorneyVisitForDate.Agenda = eachAttorneyVisit.Agenda;
+                            AttorneyVisitForDate.IsDeleted = eachAttorneyVisit.IsDeleted;
+
+                            lstAttorneyVisitForDate.Add(AttorneyVisitForDate);
+                        }
+                    }
+                }
+            }
+
+            return lstAttorneyVisitForDate;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

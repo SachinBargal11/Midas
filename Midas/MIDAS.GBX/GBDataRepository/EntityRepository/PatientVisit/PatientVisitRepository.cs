@@ -2617,14 +2617,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             PatientVisitForDate.ID = 0;
                             PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
                             PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
-                            PatientVisitForDate.PatientId = eachPatientVisit.CalendarEventId;
-                            PatientVisitForDate.LocationId = eachPatientVisit.PatientId;
+                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
                             PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
                             PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
                             PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
                             PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
                             PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
                             PatientVisitForDate.VisitStatusId = 1;
+                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
 
                             lstPatientVisitForDate.Add(PatientVisitForDate);
                         }
@@ -2682,14 +2684,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             PatientVisitForDate.ID = 0;
                             PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
                             PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
-                            PatientVisitForDate.PatientId = eachPatientVisit.CalendarEventId;
-                            PatientVisitForDate.LocationId = eachPatientVisit.PatientId;
+                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
                             PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
                             PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
                             PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
                             PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
                             PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
                             PatientVisitForDate.VisitStatusId = 1;
+                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
 
                             lstPatientVisitForDate.Add(PatientVisitForDate);
                         }
@@ -2700,7 +2704,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstPatientVisitForDate;
         }
         #endregion
-
 
         public void Dispose()
         {

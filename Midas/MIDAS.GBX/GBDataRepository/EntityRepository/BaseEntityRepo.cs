@@ -994,6 +994,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
