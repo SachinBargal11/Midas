@@ -202,20 +202,20 @@
                 <div class="col-lg-4">
                     <label class="form-label">Patient Photo
                             </label>
-                    <p-fileUpload mode="basic" name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="myUploader($event)"
-                        chooseLabel="Browse image to upload"></p-fileUpload>
-                    <ul *ngIf="files.length">
+                    <p-fileUpload name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" [showUploadButton]="false" customUpload="true"
+                        (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
+                    <!-- <ul *ngIf="files.length">
                         <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="col-lg-4">
                     <label class="form-label">Photo ID(Obtain copy of licence)
                             </label>
-                    <p-fileUpload mode="basic" name="licence[]" accept="image/*" maxFileSize="1000000" auto="true" customUpload="true" (uploadHandler)="licenceUploader($event)"
-                        chooseLabel="Browse image to upload"></p-fileUpload>
-                    <ul *ngIf="fileLicence.length">
+                            <p-fileUpload name="licence[]" accept="image/*" auto="true" [showUploadButton]="false" maxFileSize="1000000" customUpload="true" (uploadHandler)="licenceUploader($event)"
+                                chooseLabel="Browse image to upload"></p-fileUpload>
+                    <!-- <ul *ngIf="fileLicence.length">
                         <li *ngFor="let file of fileLicence">{{file.name}} - {{file.size}} bytes</li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
 
