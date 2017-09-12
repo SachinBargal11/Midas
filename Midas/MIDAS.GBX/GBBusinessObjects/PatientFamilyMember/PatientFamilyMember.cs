@@ -28,7 +28,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("lastName")]
         public string LastName { get; set; }
 
-        [JsonProperty("Age")]
+        [JsonProperty("age")]
         public byte Age { get; set; }
 
         [JsonProperty("raceId")]
