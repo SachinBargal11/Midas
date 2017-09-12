@@ -172,16 +172,44 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="form-label"> Work Phone No</label>
                     <input formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
-                </div>
+                </div>-->
+                <div class="form-group" [class.error]="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid" >
+                        <label class="form-label"> Work Phone No</label>
+                        <input [class.error]="!familyMemberFormControls.workPhone.valid" 
+                        formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.workPhone.hasError('required')">Work Phone number is required.</li>
+                                <li *ngIf="familyMemberFormControls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
+                                <li *ngIf="familyMemberFormControls.workPhone.hasError('maxlength')">Work Phone should be maximum {{familyMemberFormControls.workPhone.errors.maxlength.requiredLength}}
+                                                numbers.
+                                            </li>
+                            </ul>
+                        </div>
+                    </div>
             </div>
             <div class="col-lg-4">
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="form-label"> Office Extension</label>
                     <input formControlName="officeExtension" [ngModel]="familyMember.officeExtension" type="text" class="form-control" placeholder="" />
-                </div>
+                </div>-->
+                <div class="form-group" [class.error]="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid" >
+                        <label class="form-label">Office Extension</label>
+                        <input [class.error]="!familyMemberFormControls.officeExtension.valid" 
+                        formControlName="officeExtension" [ngModel]="familyMember.officeExtension" type="text" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.officeExtension.hasError('required')">Office extension number is required.</li>
+                                <li *ngIf="familyMemberFormControls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
+                                <li *ngIf="familyMemberFormControls.officeExtension.hasError('maxlength')">Office extension should be maximum {{familyMemberFormControls.officeExtension.errors.maxlength.requiredLength}}
+                                                numbers.
+                                            </li>
+                            </ul>
+                        </div>
+                    </div>
             </div>
         </div>
             <div class="row">

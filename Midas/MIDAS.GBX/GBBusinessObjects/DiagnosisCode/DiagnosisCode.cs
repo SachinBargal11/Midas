@@ -29,6 +29,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         //public Company Company { get; set; }
 
+        [JsonProperty("diagnosisType")]
         public DiagnosisType DiagnosisType { get; set; }
     }
 

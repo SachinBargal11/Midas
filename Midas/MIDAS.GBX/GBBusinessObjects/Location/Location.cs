@@ -5,18 +5,21 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Location : GbObject
     {
+        [JsonProperty("addressInfo")]
         public AddressInfo AddressInfo
         {
             get;
             set;
         }
 
+        [JsonProperty("company")]
         public Company Company
         {
             get;
             set;
         }
 
+        [JsonProperty("contactInfo")]
         public ContactInfo ContactInfo
         {
             get;
@@ -46,7 +49,10 @@ namespace MIDAS.GBX.BusinessObjects
             get;
             set;
         }
+
+        [JsonProperty("schedule")]
         public Schedule Schedule { get; set; }
+
         public Location()
         {
         }

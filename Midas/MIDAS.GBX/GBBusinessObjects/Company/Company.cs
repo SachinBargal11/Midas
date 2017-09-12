@@ -29,8 +29,13 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("taxId")]
         public string TaxID { get; set; }
 
+        [JsonProperty("addressInfo")]
         public AddressInfo AddressInfo { get; set; }
+
+        [JsonProperty("contactInfo")]
         public ContactInfo ContactInfo { get; set; }
+
+        [JsonProperty("companyType1")]
         public CompanyType CompanyType1 { get; set; }
 
         [JsonProperty("location")]
@@ -66,6 +71,5 @@ namespace MIDAS.GBX.BusinessObjects
     {
         [JsonProperty("Signup")]
         public Signup Signup { get; set; }
-
     }
 }

@@ -152,7 +152,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             try
             {
-                BO.OTPCompanyMapping OTPCompanyMapping = (BO.OTPCompanyMapping)ValidateOTPForCompany(otp);
+                var ValOTPForCompany = ValidateOTPForCompany(otp);
+                if (ValOTPForCompany is BO.ErrorObject)
+                {
+                    return ValOTPForCompany;
+                }
+
+                BO.OTPCompanyMapping OTPCompanyMapping = (BO.OTPCompanyMapping)ValOTPForCompany;
 
                 if (OTPCompanyMapping == null)
                 {
@@ -160,6 +166,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
+                    if (OTPCompanyMapping.CompanyId == currentCompanyId)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "Cannot add self (company) as preferred provider.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+
                     BO.GBEnums.CompanyType companyType = OTPCompanyMapping.Company.CompanyType;
 
                     BO.GBEnums.CompanyType currentCompanyType = _context.Companies.Where(p => p.id == currentCompanyId

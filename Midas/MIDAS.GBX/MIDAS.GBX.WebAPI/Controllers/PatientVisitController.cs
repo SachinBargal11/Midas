@@ -9,15 +9,16 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/patientVisit")]
+    [Authorize]
     public class PatientVisitController : ApiController
     {
         private IRequestHandler<PatientVisit> requestHandler;
-        private IRequestHandler<IMEVisit> requestHandler1;
+        //private IRequestHandler<IMEVisit> requestHandler1;
 
         public PatientVisitController()
         {
             requestHandler = new GbApiRequestHandler<PatientVisit>();
-            requestHandler1 = new GbApiRequestHandler<IMEVisit>();
+            //requestHandler1 = new GbApiRequestHandler<IMEVisit>();
         }
 
         [HttpGet]
@@ -106,7 +107,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("addUploadedFileData/{id}/{FileUploadPath}")]
-        //[AllowAnonymous]
         public HttpResponseMessage AddUploadedFileData(int id,string FileUploadPath)
         {
             return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
@@ -114,7 +114,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getDocumentList/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetDocumentList(int id)
         {
             return requestHandler.GetDocumentList(Request, id);
@@ -175,7 +174,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GetByCompanyAndDoctorId(Request, CompanyId, DoctorId);
         }
-
 
         protected override void Dispose(bool disposing)
         {

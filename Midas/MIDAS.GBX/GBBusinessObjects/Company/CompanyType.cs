@@ -12,7 +12,6 @@ namespace MIDAS.GBX.BusinessObjects
     public class CompanyType:GbObject
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
-       
+        public string Name { get; set; }       
     }
 }

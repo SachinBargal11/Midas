@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/CaseInsuranceMapping")]
-
+    [Authorize]
     public class CaseInsuranceMappingController : ApiController
     {
         private IRequestHandler<CaseInsuranceMapping> requestHandler;
@@ -23,16 +23,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
-
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -40,25 +37,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]CaseInsuranceMapping data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        /*[HttpGet]
-        //[HttpDelete]
-        [Route("Delete/{id}")]
-        //[AllowAnonymous]
-        public HttpResponseMessage Delete(int id)
-        {
-            return requestHandler.Delete(Request, id);
-        }*/
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

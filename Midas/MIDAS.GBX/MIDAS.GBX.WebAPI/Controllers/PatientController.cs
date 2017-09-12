@@ -19,6 +19,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Patient")]
+    [Authorize]
     public class PatientController : ApiController
     {
         private IRequestHandler<Patient> requestHandlerPatient;

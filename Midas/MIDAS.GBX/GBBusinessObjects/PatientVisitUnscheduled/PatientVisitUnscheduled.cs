@@ -38,6 +38,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("referralId")]
         public int? ReferralId { get; set; }
 
+        [JsonProperty("orignatorCompanyId")]
+        public int OrignatorCompanyId { get; set; }
+
         [JsonProperty("status")]
         public string Status { get; set; }
 

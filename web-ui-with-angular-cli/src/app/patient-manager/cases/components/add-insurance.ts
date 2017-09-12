@@ -82,10 +82,10 @@ export class AddInsuranceComponent implements OnInit {
             policyCountry: [''],
             policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
             policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            policyHomePhone: [''],
-            policyWorkPhone: [''],
+            policyHomePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            policyWorkPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
             policyFaxNo: [''],
-            policyOfficeExtension:[''],
+            policyOfficeExtension:['', [AppValidators.numberValidator,Validators.maxLength(5)]],
             policyAlternateEmail:['', [ AppValidators.emailValidator]],
             policyPreferredCommunication:[''],
             address: [''],
@@ -96,11 +96,11 @@ export class AddInsuranceComponent implements OnInit {
             country: [''],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            homePhone: [''],
-            workPhone: [''],
+            homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
             faxNo: [''],
             alternateEmail:  ['', [AppValidators.emailValidator]],
-            officeExtension: [''],
+            officeExtension: ['', [AppValidators.numberValidator,Validators.maxLength(5)]],
             preferredCommunication: ['']
         });
 

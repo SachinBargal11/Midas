@@ -133,11 +133,16 @@ namespace MIDAS.GBX.AncillaryWebAPI
         HttpResponseMessage GetPrefAttorneyProviderByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GetAllPrefAncillaryProviderExcludeAssigned(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetPrefAncillaryProviderByCompanyId(HttpRequestMessage request, int companyId);
+        HttpResponseMessage GetPrefProviderByAncillaryCompanyId(HttpRequestMessage request, int AncillaryCompanyId);
         HttpResponseMessage GetByCompanyAndDoctorId(HttpRequestMessage request, int companyId, int doctorId);
         HttpResponseMessage GetByDocumentId(HttpRequestMessage request, int documentId);
         HttpResponseMessage UpdateAttorneyProvider(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByAncillaryId(HttpRequestMessage request, int AncillaryId);
         HttpResponseMessage GetUpdatedCompanyById(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GenerateOTPForCompany(HttpRequestMessage request, int companyId);
+        HttpResponseMessage ValidateOTPForCompany(HttpRequestMessage request, string otp);
+        HttpResponseMessage AssociatePreferredCompany(HttpRequestMessage request, string otp, int currentCompanyId);
+        HttpResponseMessage DeletePreferredCompany(HttpRequestMessage request, int preferredCompanyId, int currentCompanyId);
     }
 }

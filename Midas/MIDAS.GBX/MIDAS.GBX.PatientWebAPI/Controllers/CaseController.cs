@@ -12,7 +12,6 @@ using MIDAS.GBX.PatientWebAPI.RequestHandler;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/Case")]
-
     public class CaseController : ApiController
     {
         private IRequestHandler<Case> requestHandler;
@@ -22,19 +21,15 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestHandler = new GbApiRequestHandler<Case>();
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
-
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByPatientId(int PatientId)
         {
             return requestHandler.GetByPatientId(Request, PatientId);
@@ -42,7 +37,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getOpenCaseForPatient/{PatientId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetOpenCaseForPatient(int PatientId)
         {
             return requestHandler.GetOpenCaseForPatient(Request, PatientId);
@@ -50,7 +44,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getConsentList/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetConsentList(int id)
         {
             return requestHandler.GetConsentList(Request, id);
@@ -58,7 +51,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getCaseCompanies/{caseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetCaseCompanies(int caseId)
         {
             return requestHandler.GetCaseCompanies(Request, caseId);
@@ -66,7 +58,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Case data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -74,7 +65,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("addUploadedFileData/{id}/{FileUploadPath}")]
-        //[AllowAnonymous]
         public HttpResponseMessage AddUploadedFileData(int id, string FileUploadPath)
         {
             return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
@@ -82,7 +72,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getDocumentList/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetDocumentList(int id)
         {
             return requestHandler.GetDocumentList(Request, id);
@@ -90,7 +79,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getReadOnly/{CaseId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetReadOnly(int CaseId, int CompanyId)
         {
             return requestHandler.GetReadOnly(Request, CaseId, CompanyId);
@@ -98,16 +86,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getOpenCaseCompaniesByPatientId/{patientId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetOpenCaseCompaniesByPatientId(int patientId)
         {
             return requestHandler.GetOpenCaseCompaniesByPatientId(Request, patientId);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
@@ -117,6 +102,5 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

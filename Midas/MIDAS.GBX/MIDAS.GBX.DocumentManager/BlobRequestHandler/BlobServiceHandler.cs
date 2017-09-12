@@ -12,7 +12,7 @@ namespace MIDAS.GBX.DocumentManager
     {        
         private BlobServiceProvider serviceProvider;
 
-        public BlobServiceHandler() { }        
+        public BlobServiceHandler() { }
 
         public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId, string servicepProvider)
         {
@@ -24,6 +24,8 @@ namespace MIDAS.GBX.DocumentManager
                     return request.CreateResponse(HttpStatusCode.NotFound, "No BLOB storage provider found.");
 
                 objResult = serviceProvider.Upload(blobPath, content, companyId) as string;
+                if (objResult.ToUpper() == "UNABLETOUPLOAD")
+                    return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
                 if (objResult != null)
                     return request.CreateResponse(HttpStatusCode.Created, objResult);
                 else
@@ -42,6 +44,8 @@ namespace MIDAS.GBX.DocumentManager
                     return request.CreateResponse(HttpStatusCode.NotFound, "No BLOB storage provider found.");
 
                 objResult = serviceProvider.Upload(blobPath, stream, companyId) as string;
+                if (objResult.ToUpper() == "UNABLETOUPLOAD")
+                    return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
                 if (objResult != null)
                     return request.CreateResponse(HttpStatusCode.Created, objResult);
                 else

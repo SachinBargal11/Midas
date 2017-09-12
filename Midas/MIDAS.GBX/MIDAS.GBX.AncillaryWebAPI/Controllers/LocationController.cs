@@ -18,13 +18,12 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 {
-    [RoutePrefix("midasancillaryapi/Location")]
-    
+    [RoutePrefix("midasancillaryapi/Location")]    
     public class LocationController : ApiController
     {
-
         private IRequestHandler<Location> requestHandler;
         private IRequestHandler<SaveLocation> savelocationrequestHandler;
+
         public LocationController()
         {
             requestHandler = new GbApiRequestHandler<Location>();
@@ -32,8 +31,7 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("GetAll")]
-        
+        [Route("GetAll")]        
         public HttpResponseMessage Get([FromBody]Location data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -41,56 +39,45 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 
         [HttpGet]
         [Route("getAllLocationAndCompany")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetAllLocationAndCompany()
         {
             return requestHandler.GetObjects(Request);
         }
 
         [HttpGet]
-        [Route("Get/{id}")]
-        
+        [Route("Get/{id}")]        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
-
-        // POST: api/Organizations
-        [HttpPost]
-        [Route("Add")]
         
+        [HttpPost]
+        [Route("Add")]        
         public HttpResponseMessage Post([FromBody]SaveLocation location)
         {
             return savelocationrequestHandler.CreateGbObject(Request, location);
         }
 
-        // PUT: api/Organizations/5
         [Route("Update")]
-        [HttpPut]
-        
+        [HttpPut]        
         public HttpResponseMessage Put([FromBody]Location User)
         {
             return requestHandler.UpdateGbObject(Request, User);
         }
 
-        // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete")]
-        
+        [Route("Delete")]        
         public HttpResponseMessage Delete([FromBody]Location User)
         {
             return requestHandler.DeleteGbObject(Request, User);
         }
 
-
-        // Unique Name Validation
         [HttpGet]
         [Route("IsUnique")]
         public HttpResponseMessage IsUnique([FromBody]Location User)
         {
             return requestHandler.ValidateUniqueName(Request, User);
         }
-
 
         [HttpGet]
         [Route("getByCompanyAndDoctorId/{CompanyId}/{DoctorId}")]
@@ -99,12 +86,9 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             return requestHandler.GetByCompanyAndDoctorId(Request, CompanyId, DoctorId);
         }
 
-
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

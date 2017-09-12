@@ -19,7 +19,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/GeneralSetting")]
-
+    [Authorize]
     public class GeneralSettingController : ApiController
     {
 
@@ -32,7 +32,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
        
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]GeneralSetting data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -40,17 +39,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
         }
 
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

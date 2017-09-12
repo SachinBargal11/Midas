@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/CompanyCaseConsentApproval")]
-
     public class CompanyCaseConsentApprovalController : ApiController
     {
         internal string sourcePath = string.Empty;
@@ -30,7 +29,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -38,7 +36,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{id}")]
-
         public HttpResponseMessage GetByCompanyId(int id)
         {
             return requestHandler.GetGbObjects(Request, id);
@@ -46,7 +43,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -54,7 +50,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]CompanyCaseConsentApproval data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -62,16 +57,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("saveDoctor")]
-        //[AllowAnonymous]
         public HttpResponseMessage SaveDoctor([FromBody]CompanyCaseConsentApproval data)
         {
             return requestHandler.SaveDoctor(Request, data);
-        }
-        
+        }        
 
         [HttpGet]
         [Route("Delete/{caseId}/{documentId}/{companyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int caseId, int documentId, int companyId)
         {
             return requestHandler.Delete(Request, caseId, documentId, companyId);
@@ -93,7 +85,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseid}/{companyid}/{download}")]
-        //[AllowAnonymous]
         public void DownloadConsent(int caseid, int companyid, bool download = true)
         {
             string filepath = requestHandler.Download(Request, caseid, companyid);
@@ -116,10 +107,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             if (File.Exists(filepath)) File.Delete(filepath);
         }
 
-
         [HttpPost]
         [Route("uploadsignedconsent")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetElectronicSignedConsent([FromBody]CompanyCaseConsentBase64 data)
         {
             #region comment

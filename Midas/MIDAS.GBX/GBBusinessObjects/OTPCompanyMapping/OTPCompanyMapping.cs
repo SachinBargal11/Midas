@@ -40,8 +40,10 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("otpForDate")]
         public DateTime? OTPForDate { get; set; }
 
-
+        [JsonProperty("company")]
         public Company Company { get; set; }
+
+        [JsonProperty("company1")]
         public Company Company1 { get; set; }
 
     }    

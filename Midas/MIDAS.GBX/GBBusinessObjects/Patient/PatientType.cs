@@ -11,7 +11,10 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientType : GbObject
     {
+        [JsonProperty("patientTypeText")]
         public string PatientTypeText { get; set; }
+
+        [JsonProperty("patientAccidentInfo")]
         public PatientAccidentInfo PatientAccidentInfo { get; set; }
     }
 

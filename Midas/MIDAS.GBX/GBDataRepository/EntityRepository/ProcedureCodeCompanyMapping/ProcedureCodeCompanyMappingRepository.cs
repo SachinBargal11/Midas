@@ -139,19 +139,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         && (sp.IsDeleted.HasValue == false || (sp.IsDeleted.HasValue == true && sp.IsDeleted.Value == false))
                                                   select new
                                                   {
-                                                      pccm.ID,
-                                                      pccm.ProcedureCodeID,
-                                                      pccm.CompanyID,
-                                                      pc.ProcedureCodeText,
-                                                      pc.ProcedureCodeDesc,
-                                                      pccm.Amount,
-                                                      pccm.EffectiveFromDate,
-                                                      pccm.EffectiveToDate,
-                                                      pccm.IsDeleted,
-                                                      SpecialtyId = sp.id,
-                                                      SpecialtyName = sp.Name,
-                                                      RoomTestId =0,
-                                                      RoomTestName = ""                                        
+                                                      id = pccm.ID,
+                                                      procedureCodeID = pccm.ProcedureCodeID,
+                                                      companyID = pccm.CompanyID,
+                                                      procedureCodeText = pc.ProcedureCodeText,
+                                                      procedureCodeDesc = pc.ProcedureCodeDesc,
+                                                      amount = pccm.Amount,
+                                                      effectiveFromDate = pccm.EffectiveFromDate,
+                                                      effectiveToDate = pccm.EffectiveToDate,
+                                                      isDeleted = pccm.IsDeleted,
+                                                      specialtyId = sp.id,
+                                                      specialtyName = sp.Name,
+                                                      roomTestId = 0,
+                                                      roomTestName = ""                                        
                                                   }).ToList();
 
             var procedureCodeInfoWithRoomTest = (from pccm in _context.ProcedureCodeCompanyMappings
@@ -164,19 +164,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         && (rt.IsDeleted.HasValue == false || (rt.IsDeleted.HasValue == true && rt.IsDeleted.Value == false))
                                                  select new
                                                  {
-                                                     pccm.ID,
-                                                     pccm.ProcedureCodeID,
-                                                     pccm.CompanyID,
-                                                     pc.ProcedureCodeText,
-                                                     pc.ProcedureCodeDesc,
-                                                     pccm.Amount,
-                                                     pccm.EffectiveFromDate,
-                                                     pccm.EffectiveToDate,
-                                                     pccm.IsDeleted,
-                                                     SpecialtyId = 0, // sp.id,
-                                                     SpecialtyName ="", // sp.Name,
-                                                     RoomTestId = rt.id,
-                                                     RoomTestName = rt.Name
+                                                     id = pccm.ID,
+                                                     procedureCodeID = pccm.ProcedureCodeID,
+                                                     companyID = pccm.CompanyID,
+                                                     procedureCodeText = pc.ProcedureCodeText,
+                                                     procedureCodeDesc = pc.ProcedureCodeDesc,
+                                                     amount = pccm.Amount,
+                                                     effectiveFromDate = pccm.EffectiveFromDate,
+                                                     effectiveToDate = pccm.EffectiveToDate,
+                                                     isDeleted = pccm.IsDeleted,
+                                                     specialtyId = 0, // sp.id,
+                                                     specialtyName ="", // sp.Name,
+                                                     roomTestId = rt.id,
+                                                     roomTestName = rt.Name
                                                  }).ToList();
 
 
@@ -204,11 +204,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                      select new
                                      {
-                                         pccm.ID,
-                                         ProcedureCodeId = pc.Id,
-                                         pc.ProcedureCodeText,
-                                         pc.ProcedureCodeDesc,
-                                         pccm.Amount
+                                         id = pccm.ID,
+                                         procedureCodeId = pc.Id,
+                                         procedureCodeText = pc.ProcedureCodeText,
+                                         procedureCodeDesc = pc.ProcedureCodeDesc,
+                                         amount = pccm.Amount
                                      }).ToList();
 
             if (procedureCodeInfo == null)
@@ -234,10 +234,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                      select new
                                      {
-                                         pc.Id,
-                                         pc.ProcedureCodeText,
-                                         pc.ProcedureCodeDesc,
-                                         pccm.Amount
+                                         id = pc.Id,
+                                         procedureCodeText = pc.ProcedureCodeText,
+                                         procedureCodeDesc = pc.ProcedureCodeDesc,
+                                         amount = pccm.Amount
                                      }).ToList();
 
             if (procedureCodeInfo == null)
@@ -263,11 +263,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                      select new
                                      {
-                                         pccm.ID,
-                                         ProcedureCodeId = pc.Id,
-                                         pc.ProcedureCodeText,
-                                         pc.ProcedureCodeDesc,
-                                         pccm.Amount
+                                         id = pccm.ID,
+                                         procedureCodeId = pc.Id,
+                                         procedureCodeText = pc.ProcedureCodeText,
+                                         procedureCodeDesc = pc.ProcedureCodeDesc,
+                                         amount = pccm.Amount
                                      }).ToList();
 
             if (procedureCodeInfo == null)
@@ -293,10 +293,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                            && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                      select new
                                      {
-                                         pc.Id,
-                                         pc.ProcedureCodeText,
-                                         pc.ProcedureCodeDesc,
-                                         pccm.Amount
+                                         id = pc.Id,
+                                         procedureCodeText = pc.ProcedureCodeText,
+                                         procedureCodeDesc = pc.ProcedureCodeDesc,
+                                         amount = pccm.Amount
                                      }).ToList();
 
             if (procedureCodeInfo == null)

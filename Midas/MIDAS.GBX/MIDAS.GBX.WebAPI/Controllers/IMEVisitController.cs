@@ -9,6 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/IMEVisit")]
+    [Authorize]
     public class IMEVisitController : ApiController
     {
         private IRequestHandler<IMEVisit> requestHandler;

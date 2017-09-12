@@ -12,6 +12,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class ScheduleDetail : GbObject
     {
         private string _name;
+        [JsonProperty("name")]
         public string Name
         {
             get
@@ -25,6 +26,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private int _dayofWeek = 0;
+        [JsonProperty("dayofWeek")]
         public int dayofWeek
         {
             get
@@ -36,7 +38,9 @@ namespace MIDAS.GBX.BusinessObjects
                 _dayofWeek = value;
             }
         }
+
         private TimeSpan _slotStart;
+        [JsonProperty("slotStart")]
         public TimeSpan slotStart
         {
             get
@@ -50,6 +54,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private TimeSpan _slotEnd;
+        [JsonProperty("slotEnd")]
         public TimeSpan slotEnd
         {
             get
@@ -63,6 +68,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private DateTime? _slotDate;
+        [JsonProperty("slotDate")]
         public DateTime? slotDate
         {
             get
@@ -76,6 +82,7 @@ namespace MIDAS.GBX.BusinessObjects
         }
 
         private GBEnums.ScheduleStatus _schedulestatus;
+        [JsonProperty("scheduleStatus")]
         public GBEnums.ScheduleStatus scheduleStatus
         {
             get
@@ -88,6 +95,7 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
+        [JsonProperty("schedule")]
         public Schedule Schedule { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)

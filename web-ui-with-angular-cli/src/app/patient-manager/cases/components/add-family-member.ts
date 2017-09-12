@@ -51,9 +51,9 @@ export class AddFamilyMemberComponent implements OnInit {
                 ethnicities: ['', Validators.required],
                 gender: ['', Validators.required],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                workPhone: [''],
+                workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
                 alternateEmail:  ['', [AppValidators.emailValidator]],
-                officeExtension: [''],
+                officeExtension: ['', [AppValidators.numberValidator,Validators.maxLength(5)]],
                 preferredCommunication: [''],
                 primaryContact: ['1']
             });

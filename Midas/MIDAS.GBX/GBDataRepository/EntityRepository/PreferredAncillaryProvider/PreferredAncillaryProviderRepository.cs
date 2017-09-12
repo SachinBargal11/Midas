@@ -934,6 +934,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                .FirstOrDefault();
 
+            if (preferredAncillaryProviderDB != null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "PrefAncillaryProviderId Company already associated with this company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
             bool IsAddPreferredAncillaryProvider = false;
             if (preferredAncillaryProviderDB == null)
             {
@@ -999,6 +1004,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var AncillaryProvider = _context.PreferredAncillaryProviders.Include("Company")
                                                                       .Include("Company1")
                                                                       .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                      .OrderBy(p => p.Company1.Name)
+                                                                      .ToList();
+
+            List<BO.PreferredAncillarProvider> lstprovider = new List<BO.PreferredAncillarProvider>();
+
+            if (AncillaryProvider == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this companyId.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                AncillaryProvider.ForEach(item => lstprovider.Add(Convert<BO.PreferredAncillarProvider, PreferredAncillaryProvider>(item)));
+            }
+
+            return lstprovider;
+        }
+        #endregion
+
+        #region Get Ancillary Provider By Company ID 
+        public override object GetPrefProviderByAncillaryCompanyId(int AncillaryCompanyId)
+        {
+            var AncillaryProvider = _context.PreferredAncillaryProviders.Include("Company")
+                                                                      .Include("Company1")
+                                                                      .Where(p => p.PrefAncillaryProviderId == AncillaryCompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                       .OrderBy(p => p.Company1.Name)
                                                                       .ToList();
 

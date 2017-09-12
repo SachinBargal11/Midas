@@ -209,7 +209,7 @@ export class AccidentInfoComponent implements OnInit {
             accidentDescription: [''],
             isAnyWitnesses: [''],
             witnessName: [''],
-            witnessPhoneNumber: [''],
+            witnessPhoneNumber: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
             ambulance: [''],
             treatedAndReleased: [''],
             admitted: [''],
@@ -217,7 +217,7 @@ export class AccidentInfoComponent implements OnInit {
             durationAtHospital: [''],
             treatmentMedicalFacilityName: [''],
             treatmentDoctorName: [''],
-            treatmentContactNumber: [''],
+            treatmentContactNumber: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
             treatmentAddress: [''],
         });
         this.accidentformControls = this.accidentform.controls;

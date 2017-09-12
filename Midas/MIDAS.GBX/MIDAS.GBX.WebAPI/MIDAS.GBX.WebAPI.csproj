@@ -46,6 +46,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\IdentityModel.1.9.2\lib\net45\IdentityModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3.AccessTokenValidation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\IdentityServer3.AccessTokenValidation.2.9.1\lib\net45\IdentityServer3.AccessTokenValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>C:\Users\codearray\Downloads\DemoProject\DemoProject\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -82,6 +90,22 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.1.1.4\lib\net45\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.2.33, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.2.206221351\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.5.1.4\lib\net45\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MIDAS.GBX.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\bin\Debug\MIDAS.GBX.Common.dll</HintPath>
@@ -98,6 +122,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -224,9 +254,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -256,7 +284,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdjusterMasterController.cs" />
     <Compile Include="Controllers\AttorneyInfoController.cs" />
     <Compile Include="Controllers\AttorneyMasterController.cs" />
@@ -268,6 +295,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DefendantVehicleController.cs" />
     <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\DiagnosisCodeController.cs" />
@@ -278,7 +306,6 @@
     <Compile Include="Controllers\DocumentManagerController.cs" />
     <Compile Include="Controllers\EOVisitController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ICDTypeCodeController.cs" />
     <Compile Include="Controllers\IMEVisitController.cs" />
     <Compile Include="Controllers\OTPCompanyMappingController.cs" />
@@ -319,7 +346,6 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\GeneralSettingController.cs" />
     <Compile Include="Controllers\UserPersonalSettingController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="ErrorHelper\ApiBusinessException.cs" />
     <Compile Include="ErrorHelper\ApiDataException.cs" />
     <Compile Include="ErrorHelper\ApiException.cs" />
@@ -412,17 +438,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\DoctorSpecility\" />
-    <Folder Include="Views\LocationRoom\" />
-    <Folder Include="Views\LocationSpeclity\" />
-    <Folder Include="Views\Notification\" />
-    <Folder Include="Views\OTP\" />
-    <Folder Include="Views\PasswordToken\" />
-    <Folder Include="Views\ProcedureCodeCompanyMapping\" />
-    <Folder Include="Views\RoomTest\" />
-    <Folder Include="Views\Room\" />
-    <Folder Include="Views\Schedule\" />
-    <Folder Include="Views\UserCompany\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

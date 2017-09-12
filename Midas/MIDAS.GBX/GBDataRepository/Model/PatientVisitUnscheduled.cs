@@ -29,8 +29,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int OrignatorCompanyId { get; set; }
     
         public virtual Case Case { get; set; }
+        public virtual Company Company { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual Referral Referral { get; set; }
         public virtual RoomTest RoomTest { get; set; }

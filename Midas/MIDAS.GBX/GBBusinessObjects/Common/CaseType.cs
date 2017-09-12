@@ -12,6 +12,7 @@ namespace MIDAS.GBX.BusinessObjects.Common
         [JsonProperty("caseTypeText")]
         public string CaseTypeText { get; set; }
 
+        [JsonProperty("cases")]
         public ICollection<Case> Cases { get; set; }
     }
 }

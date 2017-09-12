@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/CaseCompanyMapping")]
-
     public class CaseCompanyMappingController : ApiController
     {
         private IRequestHandler<CaseCompanyMapping> requestHandler;
@@ -23,7 +22,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -31,7 +29,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -39,7 +36,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]CaseCompanyMapping data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -47,7 +43,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("Delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
@@ -55,12 +50,9 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
         }
-
-
     }
 }
