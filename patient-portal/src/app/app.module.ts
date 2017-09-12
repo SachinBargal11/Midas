@@ -89,12 +89,12 @@ export function createConfig(): SignalRConfiguration {
     SignalRModule.forRoot(createConfig)
   ],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: configServiceFactory,
-      deps: [ConfigService],
-      multi: true
-    },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: configServiceFactory,
+    //   deps: [ConfigService],
+    //   multi: true
+    // },
     {
       provide: APP_INITIALIZER,
       useFactory: tokenServiceFactory,
