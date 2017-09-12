@@ -24,7 +24,9 @@ export class StateService {
 
     getStates(): Observable<States[]> {
         let promise: Promise<States[]> = new Promise((resolve, reject) => {
-        return this._http.get(environment.SERVICE_BASE_URL + '/common/getstates').map(res => res.json())
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getstates', {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
@@ -35,7 +37,9 @@ export class StateService {
     }
     getStatesByCities(cityName: string): Observable<States[]> {
         let promise: Promise<States[]> = new Promise((resolve, reject) => {
-        return this._http.get(environment.SERVICE_BASE_URL + '/common/getstatesbycity/' + cityName).map(res => res.json())
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getstatesbycity/' + cityName, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
@@ -46,7 +50,9 @@ export class StateService {
     }
     getCitiesByStates(stateName: string): Observable<Cities[]> {
         let promise: Promise<Cities[]> = new Promise((resolve, reject) => {
-        return this._http.get(environment.SERVICE_BASE_URL + '/common/getcitiesbystates/' + stateName).map(res => res.json())
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getcitiesbystates/' + stateName, {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
@@ -57,7 +63,9 @@ export class StateService {
     }
     getCities(): Observable<Cities[]> {
         let promise: Promise<Cities[]> = new Promise((resolve, reject) => {
-        return this._http.get(environment.SERVICE_BASE_URL + '/common/getcities').map(res => res.json())
+        return this._http.get(environment.SERVICE_BASE_URL + '/common/getcities', {
+                headers: this._headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
