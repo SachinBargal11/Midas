@@ -305,7 +305,11 @@
                                         [class.error]="!accidentformControls.witnessPhoneNumber.valid">
                                     <div class='error-list' *ngIf="accidentformControls.witnessPhoneNumber.touched && !accidentformControls.witnessPhoneNumber.valid">
                                         <ul>
-                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('required')">Additional Patient is required.</li>
+                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('required')">Additional Patient Phone No is required.</li>
+                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('numberValidator')">Please enter only numbers.</li>
+                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('maxlength')">Additional Patient Phone No should be maximum {{accidentformControls.witnessPhoneNumber.errors.maxlength.requiredLength}}
+                                                numbers.
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -474,6 +478,11 @@
                                 <div class='error-list' *ngIf="accidentformControls.treatmentContactNumber.touched && !accidentformControls.treatmentContactNumber.valid">
                                     <ul>
                                         <li *ngIf="accidentformControls.treatmentContactNumber.hasError('required')">Contact number is required.</li>
+                                        <li *ngIf="accidentformControls.treatmentContactNumber.hasError('numberValidator')">Please enter only numbers.</li>
+                                            <li *ngIf="accidentformControls.treatmentContactNumber.hasError('maxlength')">Contact number should be maximum {{accidentformControls.treatmentContactNumber.errors.maxlength.requiredLength}}
+                                                numbers.
+                                            </li>
+
                                     </ul>
                                 </div>
                             </div>

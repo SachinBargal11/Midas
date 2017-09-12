@@ -281,15 +281,39 @@
             </div>
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="form-group">
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.homePhone.touched && !patientformControls.contact.controls.homePhone.valid" >
                         <label class="form-label"> Home Phone No</label>
-                        <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!patientformControls.contact.controls.homePhone.valid" 
+                        formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.homePhone.touched && !patientformControls.contact.controls.homePhone.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.homePhone.hasError('required')">Home Phone number is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.homePhone.hasError('numberValidator')">Please enter only numbers.</li>
+                                <li *ngIf="patientformControls.contact.controls.homePhone.hasError('maxlength')">Home Phone should be maximum {{patientformControls.contact.controls.homePhone.errors.maxlength.requiredLength}}
+                                                numbers.
+                                            </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label class="form-label"> Work Phone No</label>
                         <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                    </div>-->
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.workPhone.touched && !patientformControls.contact.controls.workPhone.valid" >
+                        <label class="form-label"> Work Phone No</label>
+                        <input [class.error]="!patientformControls.contact.controls.workPhone.valid" 
+                        formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.workPhone.touched && !patientformControls.contact.controls.workPhone.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.workPhone.hasError('required')">Work Phone number is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
+                                <li *ngIf="patientformControls.contact.controls.workPhone.hasError('maxlength')">Work Phone should be maximum {{patientformControls.contact.controls.workPhone.errors.maxlength.requiredLength}}
+                                                numbers.
+                                            </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4">

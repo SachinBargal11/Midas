@@ -25,7 +25,7 @@ export class AccountGeneralSettingComponent implements OnInit {
     settingForm: FormGroup;
     settingFormControls;
     isSaveProgress = false;
-    isTimeSlot = 30;
+    isTimeSlot = '30';
     companyId: number = this._sessionStore.session.currentCompany.id;
     generalSetting:GeneralSetting;
 
@@ -49,7 +49,7 @@ export class AccountGeneralSettingComponent implements OnInit {
         this._generalSettingStore.getGeneralSettingByCompanyId(this.companyId)
             .subscribe((generalSetting) => {
                 this.generalSetting = generalSetting;
-                this.isTimeSlot = this.generalSetting.slotDuration;
+                this.isTimeSlot = String(this.generalSetting.slotDuration);
             },
             (error) => { },
             () => {

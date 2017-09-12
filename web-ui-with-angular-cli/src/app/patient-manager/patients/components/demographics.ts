@@ -118,8 +118,8 @@ export class DemographicsComponent implements OnInit {
             }),
             contact: this.fb.group({
                 cellPhone: ['', [Validators.required]],
-                homePhone: [''],
-                workPhone: [''],
+                homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+                workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],

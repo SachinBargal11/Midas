@@ -85,8 +85,8 @@ export class AddPatientComponent implements OnInit {
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: [''],
-                workPhone: [''],
+                homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+                workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
