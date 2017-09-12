@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,19 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class AddUser : GbObject
     {
+        [JsonProperty("user")]
         public User user { get; set; }
+
+        [JsonProperty("address")]
         public AddressInfo address { get; set; }
+
+        [JsonProperty("contactInfo")]
         public ContactInfo contactInfo { get; set; }
+
+        [JsonProperty("role")]
         public Role[] role { get; set; }
+
+        [JsonProperty("company")]
         public Company company { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)

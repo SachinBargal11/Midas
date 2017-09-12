@@ -12,6 +12,8 @@ namespace MIDAS.GBX.BusinessObjects
     public class DoctorLocationSchedule : GbObject
     {
         private Doctor _doctor;
+
+        [JsonProperty("doctor")]
         public Doctor doctor
         {
             get
@@ -23,7 +25,10 @@ namespace MIDAS.GBX.BusinessObjects
                 _doctor = value;
             }
         }
+
         private Location _location;
+
+        [JsonProperty("location")]
         public Location location
         {
             get
@@ -35,7 +40,9 @@ namespace MIDAS.GBX.BusinessObjects
                 _location = value;
             }
         }
+
         private Schedule _schedule;
+        [JsonProperty("schedule")]
         public Schedule schedule
         {
             get

@@ -9,7 +9,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/PreferredAttorneyProvider")]
-
     public class PreferredAttorneyProviderController : ApiController
     {
         private IRequestHandler<PreferredAttorneyProviderSignUp> requestHandler;
@@ -21,7 +20,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PreferredAttorneyProviderSignUp data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -43,7 +41,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getPrefAttorneyProviderByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetPrefAttorneyProviderByCompanyId(int CompanyId)
         {
             return requestHandler.GetPrefAttorneyProviderByCompanyId(Request, CompanyId);
@@ -51,7 +48,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);

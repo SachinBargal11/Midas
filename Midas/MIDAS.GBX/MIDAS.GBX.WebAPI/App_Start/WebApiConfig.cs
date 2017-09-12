@@ -20,14 +20,18 @@ namespace MIDAS.GBX.WebAPI
 {
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config)
+        //public static void Register(HttpConfiguration config)
+        public static HttpConfiguration Register()
         {
-            if(Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
-            config.Filters.Add(new MidasAuthorize());
-            // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            var config = new HttpConfiguration();
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            //if(Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
+            //config.Filters.Add(new MidasAuthorize());
+            //// Web API configuration and services
+            //// Configure Web API to use only bearer token authentication.
+            //config.SuppressDefaultHostAuthentication();
+            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -53,10 +57,10 @@ namespace MIDAS.GBX.WebAPI
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling =
                 Newtonsoft.Json.PreserveReferencesHandling.None;
-            //To Do
-            //GlobalConfiguration.Configuration.Filters.Add(new LoggingFilterAttribute());
-            //GlobalConfiguration.Configuration.Filters.Add(new GlobalExceptionAttribute());
-            //config.Filters.Add(new Elmah.Contrib.WebApi.ElmahHandleErrorApiAttribute());
+
+            config.Filters.Add(new AuthorizeAttribute());
+
+            return config;
         }
     }
 }
@@ -78,24 +82,9 @@ public class PreflightRequestsHandler : DelegatingHandler
         }
         return base.SendAsync(request, cancellationToken);
     }
-    //protected abstract Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message);
-    //protected abstract Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message);
 }
 
 public class MessageLoggingHandler : PreflightRequestsHandler
 {
-    //protected override async Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message)
-    //{
-    //    await Task.Run(() =>
-    //        Debug.WriteLine(string.Format("{0} - Request: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
-    //}
-
-
-    //protected override async Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message)
-    //{
-    //    await Task.Run(() =>
-    //        Debug.WriteLine(string.Format("{0} - Response: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
-    //}
-
-
+    
 }

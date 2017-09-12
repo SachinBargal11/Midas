@@ -9,6 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/EOVisit")]
+    [Authorize]
     public class EOVisitController : ApiController
     {
         private IRequestHandler<EOVisit> requestHandler;

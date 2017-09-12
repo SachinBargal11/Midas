@@ -353,6 +353,10 @@ namespace MIDAS.GBX
             {
                 repo = new PatientVisitUnscheduledRepository(context);
             }
+            else if (typeof(T) == typeof(BO.UserNameValidate))
+            {
+                repo = new UserRepository(context);
+            }
 
             return repo;
         }

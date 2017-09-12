@@ -166,6 +166,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetPrefAttorneyProviderByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetAllPrefAncillaryProviderExcludeAssigned(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetPrefAncillaryProviderByCompanyId(int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetPrefProviderByAncillaryCompanyId(int AncillaryCompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetLocationForPatientId(int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByPatientIdAndLocationId(int PatientId, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByCompanyAndDoctorId(int companyId, int doctorId);
@@ -193,5 +194,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetMasterAndByCaseId(int CaseId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object SaveReferralPatientVisitUnscheduled(T gbObject);
         object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetPatientVisitForDateByLocationId(DateTime ForDate, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

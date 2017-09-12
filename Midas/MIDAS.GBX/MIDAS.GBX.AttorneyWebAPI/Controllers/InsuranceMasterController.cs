@@ -16,15 +16,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         public InsuranceMasterController()
         {
             requestHandler = new GbApiRequestHandler<InsuranceMaster>();
-        }
-
-        //[HttpGet]
-        //[Route("getAll")]
-        ////[AllowAnonymous]
-        //public HttpResponseMessage Get()
-        //{
-        //    return requestHandler.GetObjects(Request);
-        //}
+        }        
 
         [HttpGet]
         [Route("getInsuranceDetails/{id}/{companyId}")]

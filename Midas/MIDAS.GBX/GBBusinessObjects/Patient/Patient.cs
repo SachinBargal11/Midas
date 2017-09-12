@@ -63,7 +63,7 @@ namespace MIDAS.GBX.BusinessObjects
         //[JsonProperty("patientInsuranceInfoes")]
         //public List<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
        
-        [JsonProperty("PatientDocuments")]
+        [JsonProperty("patientDocuments")]
         public List<PatientDocument> PatientDocuments { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)

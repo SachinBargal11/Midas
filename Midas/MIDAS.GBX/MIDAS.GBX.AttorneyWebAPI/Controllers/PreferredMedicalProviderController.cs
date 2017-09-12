@@ -9,7 +9,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/PreferredMedicalProvider")]
-
     public class PreferredMedicalProviderController : ApiController
     {
         private IRequestHandler<PreferredMedicalProviderSignUp> requestHandler;
@@ -42,7 +41,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
@@ -50,7 +48,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByPrefMedProviderId/{PrefMedProviderId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByPrefMedProviderId(int PrefMedProviderId)
         {
             return requestHandler.GetByPrefMedProviderId(Request, PrefMedProviderId);
@@ -62,7 +59,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             return requestHandler.CreateGbObject(Request, data);
         }
-
         
         [HttpPost]
         [Route("updateMedicalProvider")]
@@ -80,7 +76,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getPreferredCompanyDoctorsAndRoomByCompanyId/{CompanyId}/{SpecialityId}/{RoomTestId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetPreferredCompanyDoctorsAndRoomByCompanyId(int CompanyId, int SpecialityId, int RoomTestId)
         {
             return requestHandler.GetPreferredCompanyDoctorsAndRoomByCompanyId(Request, CompanyId, SpecialityId, RoomTestId);

@@ -202,10 +202,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                    && (pm.IsDeleted.HasValue == false || (pm.IsDeleted.HasValue == true && pm.IsDeleted.Value == false)) select pm.ProcedureCodeID).Contains(pc.Id)
                                    select new
                                    {
-                                       ProcedureCodeId = pc.Id,
-                                       pc.ProcedureCodeText,
-                                       pc.ProcedureCodeDesc,
-                                       pc.Amount
+                                       procedureCodeId = pc.Id,
+                                       procedureCodeText = pc.ProcedureCodeText,
+                                       procedureCodeDesc = pc.ProcedureCodeDesc,
+                                       amount = pc.Amount
                                    }
                                    ).ToList();
 
@@ -233,10 +233,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                               select pm.ProcedureCodeID).Contains(pc.Id)
                                    select new
                                    {
-                                       ProcedureCodeId = pc.Id,
-                                       pc.ProcedureCodeText,
-                                       pc.ProcedureCodeDesc,
-                                       pc.Amount
+                                       procedureCodeId = pc.Id,
+                                       procedureCodeText = pc.ProcedureCodeText,
+                                       procedureCodeDesc = pc.ProcedureCodeDesc,
+                                       amount = pc.Amount
                                    }
                                    ).ToList();
 

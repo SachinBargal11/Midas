@@ -2569,9 +2569,203 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             return lstPatientVisit;
         }
-
         #endregion
 
+        #region Get Patient Visit For Date By LocationId
+        public override Object GetPatientVisitForDateByLocationId(DateTime ForDate, int LocationId)
+        {
+            var patientVisit = _context.PatientVisits.Include("CalendarEvent")
+                                                     .Include("Location")
+                                                     .Include("Doctor")
+                                                     .Include("Doctor.User")
+                                                     .Include("Room")
+                                                     .Include("Room.RoomTest")
+                                                     .Include("Patient")
+                                                     .Include("Patient.User")
+                                                     .Where(p => p.LocationId == LocationId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            if (patientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+            foreach (PatientVisit item in patientVisit)
+            {
+                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+            }
+
+            List<BO.PatientVisit> lstPatientVisitForDate = new List<BO.PatientVisit>();
+
+            List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);            
+
+            foreach (var eachPatientVisit in lstPatientVisit)
+            {
+                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                if (currentEventSlots != null)
+                {
+                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+
+                    if (ForDateEventSlots != null)
+                    {
+                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                        {
+                            BO.PatientVisit PatientVisitForDate = new BO.PatientVisit();
+                            PatientVisitForDate.ID = 0;
+                            PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
+                            PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
+                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
+                            PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
+                            PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
+                            PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
+                            PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
+                            PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                            PatientVisitForDate.VisitStatusId = 1;
+                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+
+                            lstPatientVisitForDate.Add(PatientVisitForDate);
+                        }
+                    }
+                }
+            }
+
+            return lstPatientVisitForDate;
+        }
+        #endregion
+
+        #region Get Doctor Patient Visit For Date By LocationId
+        public override Object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId)
+        {
+            var patientVisit = _context.PatientVisits.Include("CalendarEvent")
+                                                     .Include("Location")
+                                                     .Include("Doctor")
+                                                     .Include("Doctor.User")
+                                                     .Include("Room")
+                                                     .Include("Room.RoomTest")
+                                                     .Include("Patient")
+                                                     .Include("Patient.User")
+                                                     .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            if (patientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+            foreach (PatientVisit item in patientVisit)
+            {
+                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+            }
+
+            List<BO.PatientVisit> lstPatientVisitForDate = new List<BO.PatientVisit>();
+
+            List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
+            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
+
+            foreach (var eachPatientVisit in lstPatientVisit)
+            {
+                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                if (currentEventSlots != null)
+                {
+                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+
+                    if (ForDateEventSlots != null)
+                    {
+                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                        {
+                            BO.PatientVisit PatientVisitForDate = new BO.PatientVisit();
+                            PatientVisitForDate.ID = 0;
+                            PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
+                            PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
+                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
+                            PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
+                            PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
+                            PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
+                            PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
+                            PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                            PatientVisitForDate.VisitStatusId = 1;
+                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+
+                            lstPatientVisitForDate.Add(PatientVisitForDate);
+                        }
+                    }
+                }
+            }
+
+            return lstPatientVisitForDate;
+        }
+        #endregion
+
+        #region Get Doctor Patient Visit For Date By LocationId
+        public override Object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            var CompanyLocations = _context.Locations.Where(p => p.CompanyID == CompanyId).Select(p => p.id);
+
+            var patientVisit = _context.PatientVisits.Include("CalendarEvent")
+                                                     .Include("Location")
+                                                     .Include("Doctor")
+                                                     .Include("Doctor.User")
+                                                     .Include("Room")
+                                                     .Include("Room.RoomTest")
+                                                     .Include("Patient")
+                                                     .Include("Patient.User")
+                                                     .Where(p => p.EventStart >= FromDate && p.EventStart < ToDate
+                                                            && CompanyLocations.Contains(p.LocationId) == true
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            
+            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+            foreach (PatientVisit item in patientVisit)
+            {
+                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+            }
+
+            int Appointments = 0, NoShows = 0, ReferralsInbound = 0, ReferralsOutbound = 0, NewCases = 0;
+            Appointments = lstPatientVisit.Where(p => p.VisitStatusId == 2).Count();
+            NoShows = lstPatientVisit.Where(p => p.VisitStatusId == 4).Count();
+
+            var Referrals = _context.Referrals.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
+                                                    && (p.FromCompanyId == CompanyId || p.ToCompanyId == CompanyId)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            List<BO.Referral> lstReferral = new List<BO.Referral>();
+            foreach (var item in Referrals)
+            {
+                lstReferral.Add(Convert<BO.Referral, Referral>(item));
+            }
+
+            ReferralsInbound = lstReferral.Where(p => p.ToCompanyId == CompanyId).Count();
+            ReferralsOutbound = lstReferral.Where(p => p.FromCompanyId == CompanyId).Count();
+
+            var Cases = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                      .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId && p.IsOriginator == true
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                                            c => c.Id, ccm => ccm.CaseId, (c, ccm) => c)
+                                      .ToList();
+
+            NewCases = Cases.Count();
+
+
+
+            return new {
+                appointments = Appointments,
+                noShows = NoShows,
+                referralsInbound = ReferralsInbound,
+                referralsOutbound = ReferralsOutbound,
+                newCases = NewCases
+            };
+        }
+        #endregion
 
         public void Dispose()
         {

@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Company")]
-    
+    [Authorize]
     public class CompanyController : ApiController
     {
         private IRequestHandler<Company> requestHandler;
@@ -24,10 +24,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             invitationrequestHandler = new GbApiRequestHandler<Invitation>(); 
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
-        [Route("Get/{id}")]
-        
+        [Route("Get/{id}")]        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -35,7 +33,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get()
         {
             return requestHandler.GetObjects(Request);
@@ -43,22 +40,18 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getAllCompanyAndLocation")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetAllCompanyAndLocation()
         {
             return requestHandler.GetAllCompanyAndLocation(Request);
         }
 
-        // POST: api/Organizations
         [HttpPost]
-        [Route("Add")]
-        
+        [Route("Add")]        
         public HttpResponseMessage Post([FromBody]Company data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        // PUT: api/Organizations/5
         [Route("Update")]
         [HttpPut]
         
@@ -67,19 +60,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.UpdateGbObject(Request, account);
         }
 
-        // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete")]
-        
+        [Route("Delete")]        
         public HttpResponseMessage Delete([FromBody]Company account)
         {
             return requestHandler.DeleteGbObject(Request, account);
         }
 
-        // Unique Name Validation
         [HttpPost]
-        [Route("IsUnique")]
-        
+        [Route("IsUnique")]        
         public HttpResponseMessage IsUnique([FromBody]Company account)
         {
             return requestHandler.ValidateUniqueName(Request, account);
@@ -132,6 +121,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

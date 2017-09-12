@@ -948,6 +948,130 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        public override object GetBusySlotsByCalendarEventByLocationId(BO.CalendarEvent CalEvent, DateTime ForDate)
+        {
+            List<BO.FreeSlots> freeSlots = new List<BO.FreeSlots>();
+
+            if (CalEvent.IsDeleted.HasValue == false || (CalEvent.IsDeleted.HasValue == true && CalEvent.IsDeleted.Value == false))
+            {
+                var newEvent = new Event()
+                {
+                    Name = CalEvent.Name,
+                    Start = new CalDateTime(CalEvent.EventStart.Value, "UTC"),
+                    End = new CalDateTime(CalEvent.EventEnd.Value, "UTC"),
+                    Description = CalEvent.Description,
+                    IsAllDay = CalEvent.IsAllDay.HasValue == true ? CalEvent.IsAllDay.Value : false,
+                    Created = new CalDateTime(CalEvent.CreateDate)
+                };
+
+                if (String.IsNullOrWhiteSpace(CalEvent.RecurrenceRule) == false)
+                {
+                    var keyValuePair = CalEvent.RecurrenceRule.ToUpper().Split(";".ToCharArray());
+                    if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                    {
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                            {
+                                keyValuePair[i] = "";
+                            }
+                        }
+                    }
+                    for (int i = 0; i < keyValuePair.Length; i++)
+                    {
+                        if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                        {
+                            keyValuePair[i] = "COUNT=500";
+                        }
+                    }
+
+                    string modifiedRecurrenceRule = "";
+
+                    foreach (var item in keyValuePair)
+                    {
+                        if (string.IsNullOrWhiteSpace(item) == false)
+                        {
+                            modifiedRecurrenceRule += item + ";";
+                        }
+                    }
+
+                    modifiedRecurrenceRule = modifiedRecurrenceRule.TrimEnd(";".ToCharArray());
+                    IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceRule);
+                    if (recPattern.Frequency != FrequencyType.None)
+                    {
+                        newEvent.RecurrenceRules.Add(new RecurrencePattern(modifiedRecurrenceRule));
+                    }
+                }
+
+                if (String.IsNullOrWhiteSpace(CalEvent.RecurrenceException) == false)
+                {
+                    var keyValuePair = CalEvent.RecurrenceException.ToUpper().Split(";".ToCharArray());
+                    if (keyValuePair.Any(p => p.IndexOf("UNTIL=") != -1))
+                    {
+                        for (int i = 0; i < keyValuePair.Length; i++)
+                        {
+                            if (keyValuePair[i].IndexOf("COUNT=") != -1)
+                            {
+                                keyValuePair[i] = "";
+                            }
+                        }
+                    }
+                    for (int i = 0; i < keyValuePair.Length; i++)
+                    {
+                        if (keyValuePair[i].IndexOf("COUNT=0") != -1)
+                        {
+                            keyValuePair[i] = "COUNT=500";
+                        }
+                    }
+
+                    string modifiedRecurrenceException = "";
+
+                    foreach (var item in keyValuePair)
+                    {
+                        if (string.IsNullOrWhiteSpace(item) == false)
+                        {
+                            modifiedRecurrenceException += item + ";";
+                        }
+                    }
+
+                    modifiedRecurrenceException = modifiedRecurrenceException.TrimEnd(";".ToCharArray());
+                    IRecurrencePattern recPattern = new RecurrencePattern(modifiedRecurrenceException);
+                    if (recPattern.Frequency != FrequencyType.None)
+                    {
+                        newEvent.ExceptionRules.Add(new RecurrencePattern(modifiedRecurrenceException));
+                    }
+                }
+
+                Calendar calendar = new Calendar();
+                calendar.Events.Add(newEvent);
+
+                var Occurrences = calendar.GetOccurrences(ForDate, ForDate.AddDays(1).AddSeconds(-1));
+
+                int intTimeZone = 0;
+                int.TryParse(CalEvent.TimeZone, out intTimeZone);
+
+                intTimeZone = intTimeZone * -1;
+
+                foreach (var eachOccurrences in Occurrences)
+                {
+                    BO.FreeSlots FreeSlotForDay = new BO.FreeSlots();
+                    FreeSlotForDay.ForDate = eachOccurrences.Period.StartTime.AddMinutes(intTimeZone).Date;
+
+                    FreeSlotForDay.StartAndEndTimes = new List<BO.StartAndEndTime>();
+
+                    FreeSlotForDay.StartAndEndTimes.Add(new BO.StartAndEndTime()
+                    {
+                        StartTime = eachOccurrences.Period.StartTime.AddMinutes(intTimeZone).Value,
+                        EndTime = eachOccurrences.Period.EndTime.AddMinutes(intTimeZone).Value
+                    });
+
+                    freeSlots.Add(FreeSlotForDay);
+                }
+            }
+
+            return (object)freeSlots;
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

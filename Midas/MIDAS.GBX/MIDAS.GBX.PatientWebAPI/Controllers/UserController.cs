@@ -9,7 +9,6 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-
     [RoutePrefix("midaspatientapi/User")]
     public class UserController : ApiController
     {
@@ -22,7 +21,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             adduserrequestHandler = new GbApiRequestHandler<AddUser>();
         }
 
-        //[AllowAnonymous]
         [HttpPost]
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
@@ -39,7 +37,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpPost]
         [Route("Add")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AddUser data)
         {
             return adduserrequestHandler.CreateGbObject(Request, data);
@@ -48,7 +45,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpPost]
         [Route("GetByUserName")]
         [Route("GetAll")]
-
         public HttpResponseMessage Get([FromBody]User data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -56,12 +52,10 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
-
 
         [HttpPost]
         [Route("ResetPassword")]
@@ -84,6 +78,5 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
             return requestHandler.LoginWithUserName(Request, user);
         }
-
     }
 }

@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/AttorneyMaster")]
-
     public class AttorneyMasterController : ApiController
     {
         private IRequestHandler<AttorneyMaster> requestHandler;
@@ -23,7 +22,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetAllAttornies()
         {
             return requestHandler.GetObjects(Request);
@@ -31,7 +29,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -39,16 +36,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         {
             return requestHandler.GetGbObjects(Request, CompanyId);
         }
-
         
         [HttpGet]
         [Route("getAllExcludeCompany/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetAllExcludeCompany(int CompanyId)
         {
             return requestHandler.GetAllExcludeCompany(Request, CompanyId);
@@ -56,7 +50,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("associateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage AssociateAttorneyWithCompany(int AttorneyId, int CompanyId)
         {
             return requestHandler.AssociateAttorneyWithCompany(Request,AttorneyId,CompanyId);
@@ -64,7 +57,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("disassociateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
         {
             return requestHandler.DisassociateAttorneyWithCompany(Request, AttorneyId, CompanyId);
@@ -72,31 +64,10 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpPost]
         [Route("save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]AttorneyMaster data)
-        { return requestHandler.CreateGbObject(Request, data); }
-
-        //[HttpGet]
-        //[Route("associateAttorneyProviderWithCompany/{AttorneyProviderId}/{CompanyId}")]
-        //public HttpResponseMessage AssociateAttorneyProviderWithCompany(int AttorneyProviderId, int CompanyId)
-        //{
-        //    return requestHandler.AssociateAttorneyProviderWithCompany(Request, AttorneyProviderId, CompanyId);
-        //}
-
-        //[HttpGet]
-        //[Route("getAllAttorneyProviderExcludeAssigned/{CompanyId}")]
-        //public HttpResponseMessage GetAllAttorneyProviderExcludeAssigned(int CompanyId)
-        //{
-        //    return requestHandler.GetAllAttorneyProviderExcludeAssigned(Request, CompanyId);
-        //}
-
-        //[HttpGet]
-        //[Route("getAttorneyProviderByCompanyId/{CompanyId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetAttorneyProviderByCompanyId(int CompanyId)
-        //{
-        //    return requestHandler.GetAttorneyProviderByCompanyId(Request, CompanyId);
-        //}
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }        
 
         [HttpGet]
         [Route("Delete/{id}")]
@@ -105,6 +76,9 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
-        protected override void Dispose(bool disposing) { base.Dispose(disposing); }
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }

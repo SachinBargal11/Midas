@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Referral")]
-
+    [Authorize]
     public class ReferralController : ApiController
     {
         private IRequestHandler<Referral> requestHandler;

@@ -13,8 +13,10 @@ namespace MIDAS.GBX.BusinessObjects
     {
         [JsonProperty("userName")]
         public string UserName { get; set; }
+
         [JsonProperty("appKey")]
         public Guid UniqueID { get; set; }
+
         [JsonProperty("tokenUsed")]
         public bool IsTokenUsed { get; set; }
     }

@@ -21,8 +21,7 @@ using MIDAS.GBX.BusinessObjects.Common;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/templatemanager")]
-    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
+    [Authorize]
     public class TemplateManagerController : ApiController
     {        
         private IRequestHandler<TemplateType> requestHandler;

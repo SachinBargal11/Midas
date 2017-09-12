@@ -21,16 +21,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get()
         {
             return requestHandler.GetObjects(Request);
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
