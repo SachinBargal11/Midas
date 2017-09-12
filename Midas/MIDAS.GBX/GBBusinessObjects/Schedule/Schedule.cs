@@ -12,7 +12,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class Schedule : GbObject
     {
         private string _name;
-        [JsonProperty("Name")]
+        [JsonProperty("name")]
         public string Name
         {
             get

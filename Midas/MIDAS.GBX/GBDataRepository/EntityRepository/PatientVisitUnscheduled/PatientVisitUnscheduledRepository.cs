@@ -321,6 +321,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         ReferralDB.ToRoomId = null;
                         ReferralDB.ScheduledPatientVisitId = null;
                         ReferralDB.DismissedBy = null;
+                        ReferralDB.CreateByUserID = 1;
+                        ReferralDB.CreateDate = DateTime.UtcNow;
 
                         if (PendingReferralDB.PatientVisit != null && PendingReferralDB.PatientVisit.CaseId.HasValue == true)
                         {

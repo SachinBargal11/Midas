@@ -197,5 +197,6 @@ namespace MIDAS.GBX.DataAccessManager
         object GetPatientVisitForDateByLocationId(DateTime ForDate, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

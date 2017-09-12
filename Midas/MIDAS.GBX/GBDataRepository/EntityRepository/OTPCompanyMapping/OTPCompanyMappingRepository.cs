@@ -152,7 +152,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             try
             {
-                BO.OTPCompanyMapping OTPCompanyMapping = (BO.OTPCompanyMapping)ValidateOTPForCompany(otp);
+                var ValOTPForCompany = ValidateOTPForCompany(otp);
+                if (ValOTPForCompany is BO.ErrorObject)
+                {
+                    return ValOTPForCompany;
+                }
+
+                BO.OTPCompanyMapping OTPCompanyMapping = (BO.OTPCompanyMapping)ValOTPForCompany;
 
                 if (OTPCompanyMapping == null)
                 {

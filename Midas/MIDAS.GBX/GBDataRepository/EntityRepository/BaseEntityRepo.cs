@@ -999,6 +999,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
