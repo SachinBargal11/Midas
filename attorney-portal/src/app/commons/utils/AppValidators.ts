@@ -19,6 +19,14 @@ export class AppValidators {
         }
     }
 
+    static numberValidator(control: FormControl) {
+            var re = /^([0-9]+)$/g;
+            // var re1 = /^([0-9]+[\.]?[0-9]?[0-9]?|[0-9]+)/g;
+            if (control.value && !re.test(control.value)) {
+                 return { numberValidator: true };
+            }
+    }
+
     static passwordValidator(control: FormControl) {
         let regEx = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])(?=\S+$).{8,}$/;
         if (control.value && !regEx.test(control.value)) {

@@ -194,8 +194,8 @@
                 <div class="col-lg-4">
                     <label class="form-label">Patient Photo
                             </label>
-                    <p-fileUpload name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" [showUploadButton]="false" customUpload="true" (uploadHandler)="myUploader($event)"
-                        chooseLabel="Browse image to upload"></p-fileUpload>
+                    <p-fileUpload name="demo[]" accept="image/*" maxFileSize="1000000" auto="true" [showUploadButton]="false" customUpload="true"
+                        (uploadHandler)="myUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
                     <!-- <ul *ngIf="files.length">
                         <li *ngFor="let file of files">{{file.name}} - {{file.size}} bytes</li>
                     </ul> -->
@@ -224,8 +224,8 @@
                 <div class="col-lg-4">
                     <label class="form-label">Photo ID(Obtain copy of licence)
                             </label>
-                    <p-fileUpload name="licence[]" accept="image/*" auto="true" [showUploadButton]="false" maxFileSize="1000000" customUpload="true" (uploadHandler)="licenceUploader($event)"
-                        chooseLabel="Browse image to upload"></p-fileUpload>
+                    <p-fileUpload name="licence[]" accept="image/*" auto="true" [showUploadButton]="false" maxFileSize="1000000" customUpload="true"
+                        (uploadHandler)="licenceUploader($event)" chooseLabel="Browse image to upload"></p-fileUpload>
                     <!-- <ul *ngIf="fileLicence.length">
                         <li *ngFor="let file of fileLicence">{{file.name}} - {{file.size}} bytes</li>
                     </ul> -->
@@ -281,17 +281,17 @@
             </div>
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="form-group" [class.error]="patientformControls.contact.controls.homePhone.touched && !patientformControls.contact.controls.homePhone.valid" >
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.homePhone.touched && !patientformControls.contact.controls.homePhone.valid">
                         <label class="form-label"> Home Phone No</label>
-                        <input [class.error]="!patientformControls.contact.controls.homePhone.valid" 
-                        formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!patientformControls.contact.controls.homePhone.valid" formControlName="homePhone" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="patientformControls.contact.controls.homePhone.touched && !patientformControls.contact.controls.homePhone.valid">
                             <ul>
                                 <li *ngIf="patientformControls.contact.controls.homePhone.hasError('required')">Home Phone number is required.</li>
                                 <li *ngIf="patientformControls.contact.controls.homePhone.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="patientformControls.contact.controls.homePhone.hasError('maxlength')">Home Phone should be maximum {{patientformControls.contact.controls.homePhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -301,25 +301,39 @@
                         <label class="form-label"> Work Phone No</label>
                         <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="patientformControls.contact.controls.workPhone.touched && !patientformControls.contact.controls.workPhone.valid" >
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.workPhone.touched && !patientformControls.contact.controls.workPhone.valid">
                         <label class="form-label"> Work Phone No</label>
-                        <input [class.error]="!patientformControls.contact.controls.workPhone.valid" 
-                        formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!patientformControls.contact.controls.workPhone.valid" formControlName="workPhone" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="patientformControls.contact.controls.workPhone.touched && !patientformControls.contact.controls.workPhone.valid">
                             <ul>
                                 <li *ngIf="patientformControls.contact.controls.workPhone.hasError('required')">Work Phone number is required.</li>
                                 <li *ngIf="patientformControls.contact.controls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="patientformControls.contact.controls.workPhone.hasError('maxlength')">Work Phone should be maximum {{patientformControls.contact.controls.workPhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label class="form-label"> Office Extension</label>
                         <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>-->
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.officeExtension.touched && !patientformControls.contact.controls.officeExtension.valid">
+                        <label class="form-label">Office Extension</label>
+                        <input [class.error]="!patientformControls.contact.controls.officeExtension.valid" formControlName="officeExtension" type="text"
+                            class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.officeExtension.touched && !patientformControls.contact.controls.officeExtension.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.officeExtension.hasError('required')">Office extension number is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
+                                <li *ngIf="patientformControls.contact.controls.officeExtension.hasError('maxlength')">Office extension should be maximum {{patientformControls.contact.controls.officeExtension.errors.maxlength.requiredLength}}
+                                    numbers.
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

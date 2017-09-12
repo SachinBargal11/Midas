@@ -52,6 +52,7 @@ export class AddPatientComponent implements OnInit {
     url;
     uploadedFilesLicence: any[] = [];
     fileLicence: any[] = [];
+    id: number;
 
     constructor(
         private _statesStore: StatesStore,
@@ -85,11 +86,11 @@ export class AddPatientComponent implements OnInit {
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
-                workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+                homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+                workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
-                officeExtension: [''],
+                officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
                 preferredCommunication: [''],
                 emergencyContactPerson: [''],
                 emergencyContactCellPhone: ['']
@@ -265,7 +266,8 @@ export class AddPatientComponent implements OnInit {
                                 'createdAt': moment()
                             });
                             this._notificationsStore.addNotification(notification);
-                            this._router.navigate(['/patient-manager/patients']);
+                            this.id = response.id;
+                            this._router.navigate(['patient-manager/patients/'+this.id+'/viewall']);
                         },
                         (error) => {
                             let errString = 'Unable to add patient.';

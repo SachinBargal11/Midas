@@ -153,7 +153,8 @@ export class PriorAccidentComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._notificationsService.success('Success!', 'Prior accident/injuries information updated successfully');
                 },
                 (error) => {
                     let errString = 'Unable to update prior accident/injuries information.';

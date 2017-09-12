@@ -216,7 +216,7 @@ export class PatientVisitService {
         return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
     }
 
-    getDocumentsForEuoVisitId(visitId: number): Observable<VisitDocument[]> {
+    getDocumentsForEoVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/documentmanager/get/' + visitId + '/euoVisit', {
                 headers: this._headers

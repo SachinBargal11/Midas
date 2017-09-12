@@ -111,7 +111,7 @@
             </div>
         </div>
     </div>
-     <div class="row">
+    <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Races
                                 <span class="color-red">*</span>
@@ -153,20 +153,20 @@
                 </div>
             </div>
         </div>
-         <div class="col-lg-4">
+        <div class="col-lg-4">
             <div class="form-group">
                 <label class="form-label"> Primary Contact</label>
-                    <label class="form-check-label">
+                <label class="form-check-label">
                         <input type="radio" value="1" name="primaryContact" formControlName="primaryContact"> Yes
                     </label>
-                    <label class="form-check-label">
+                <label class="form-check-label">
                         <input type="radio" value="0" name="primaryContact" formControlName="primaryContact"> No
                     </label>
                 <!--<p-radioButton formControlName="primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
                 <p-radioButton formControlName="primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>-->
             </div>
         </div>
-     </div>
+    </div>
     <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Cellphone
@@ -184,37 +184,58 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="form-group">
+            <div class="form-group" [class.error]="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid">
                 <label class="form-label"> Work Phone No</label>
-                <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                <input [class.error]="!familyMemberFormControls.workPhone.valid" formControlName="workPhone" type="text" class="form-control"
+                    placeholder="" />
+                <div class='error-list' *ngIf="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid">
+                    <ul>
+                        <li *ngIf="familyMemberFormControls.workPhone.hasError('required')">Work Phone number is required.</li>
+                        <li *ngIf="familyMemberFormControls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
+                        <li *ngIf="familyMemberFormControls.workPhone.hasError('maxlength')">Work Phone should be maximum {{familyMemberFormControls.workPhone.errors.maxlength.requiredLength}}
+                            numbers.
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Office Extension</label>
-                        <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+            <div class="form-group" [class.error]="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid">
+                <label class="form-label">Office Extension</label>
+                <input [class.error]="!familyMemberFormControls.officeExtension.valid" formControlName="officeExtension" type="text" class="form-control"
+                    placeholder="" />
+                <div class='error-list' *ngIf="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid">
+                    <ul>
+                        <li *ngIf="familyMemberFormControls.officeExtension.hasError('required')">Office extension number is required.</li>
+                        <li *ngIf="familyMemberFormControls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
+                        <li *ngIf="familyMemberFormControls.officeExtension.hasError('maxlength')">Office extension should be maximum {{familyMemberFormControls.officeExtension.errors.maxlength.requiredLength}}
+                            numbers.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-label"> Alternate E-Mail </label>
+                <div class="form-group" [class.error]="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
+                    <input formControlName="alternateEmail" [class.error]="!familyMemberFormControls.alternateEmail.valid" class="form-control"
+                        type="text" placeholder="" />
+                    <div class='error-list' *ngIf="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
+                        <ul>
+                            <li *ngIf="familyMemberFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                        </ul>
                     </div>
                 </div>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="form-group">
-                        <label class="form-label"> Alternate E-Mail </label>
-                         <div class="form-group" [class.error]="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [class.error]="!familyMemberFormControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
-                         <div class='error-list' *ngIf="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
-                            <ul>
-                                <li *ngIf="familyMemberFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
-                        </div>
-                </div>
-            </div>
-            </div>
-             <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Preferred Communication
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-label"> Preferred Communication
                                         </label>
-                        <select formControlName="preferredCommunication" type="text" class="form-control" placeholder="">
+                <select formControlName="preferredCommunication" type="text" class="form-control" placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Cellphone</option>
@@ -222,13 +243,11 @@
                                         <option value="3">Work Phone</option>
                                         <option value="4">Post</option>
                         </select>
-                    </div>
-                </div>
+            </div>
         </div>
+    </div>
     <button [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
         <loader [visible]="isSaveProgress"></loader>
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 </form>
-
- 

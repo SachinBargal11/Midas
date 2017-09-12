@@ -143,10 +143,10 @@ export class EditInsuranceComponent implements OnInit {
             policyCountry: [''],
             policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
             policyCellPhone: ['', [Validators.required]],
-            policyHomePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
-            policyWorkPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            policyHomePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            policyWorkPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             policyFaxNo: [''],
-             policyOfficeExtension:['', [AppValidators.numberValidator,Validators.maxLength(5)]],
+            policyOfficeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
             policyAlternateEmail: ['', [AppValidators.emailValidator]],
             policyPreferredCommunication: [''],
             address: [],
@@ -157,11 +157,11 @@ export class EditInsuranceComponent implements OnInit {
             country: [],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             cellPhone: ['', [Validators.required]],
-            homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
-            workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             faxNo: [''],
             alternateEmail: ['', [AppValidators.emailValidator]],
-            officeExtension: ['', [AppValidators.numberValidator,Validators.maxLength(5)]],
+            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
             preferredCommunication: ['']
         });
 

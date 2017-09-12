@@ -1,12 +1,12 @@
 import { FamilyMember } from '../models/family-member';
-import {Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import * as moment from 'moment';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { Notification } from '../../../commons/models/notification';
 import { AppValidators } from '../../../commons/utils/AppValidators';
@@ -42,21 +42,21 @@ export class AddFamilyMemberComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId);
         });
         this.familyMemberForm = this.fb.group({
-                relationId: ['', Validators.required],
-                firstName: ['', Validators.required],
-                middleName: [''],
-                lastName: ['', Validators.required],
-                age: ['', Validators.required],
-                races: ['', Validators.required],
-                ethnicities: ['', Validators.required],
-                gender: ['', Validators.required],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                workPhone: [''],
-                alternateEmail:  ['', [AppValidators.emailValidator]],
-                officeExtension: [''],
-                preferredCommunication: [''],
-                primaryContact: ['1']
-            });
+            relationId: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
+            age: ['', Validators.required],
+            races: ['', Validators.required],
+            ethnicities: ['', Validators.required],
+            gender: ['', Validators.required],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            alternateEmail: ['', [AppValidators.emailValidator]],
+            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
+            preferredCommunication: [''],
+            primaryContact: ['1']
+        });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
     }
@@ -74,7 +74,7 @@ export class AddFamilyMemberComponent implements OnInit {
             // fullName: familyMemberFormValues.fullName,
             firstName: familyMemberFormValues.firstName,
             // familyName: 'qwerty2',
-             // familyName: familyMemberFormValues.familyName,
+            // familyName: familyMemberFormValues.familyName,
             middleName: familyMemberFormValues.middleName,
             lastName: familyMemberFormValues.lastName,
             // sufix: 'qwerty3',
@@ -88,7 +88,7 @@ export class AddFamilyMemberComponent implements OnInit {
             workPhone: familyMemberFormValues.workPhone,
             //officeExtension: familyMemberFormValues.officeExtension,
             //alternateEmail: familyMemberFormValues.alternateEmail,
-           //preferredCommunication: familyMemberFormValues.preferredCommunication,
+            //preferredCommunication: familyMemberFormValues.preferredCommunication,
             // primaryContact: parseInt(familyMemberFormValues.primaryContact)
             primaryContact: familyMemberFormValues.primaryContact ? familyMemberFormValues.primaryContact == '1' : true ? familyMemberFormValues.primaryContact == '0' : false,
         });
@@ -120,5 +120,5 @@ export class AddFamilyMemberComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-        }
+    }
 }

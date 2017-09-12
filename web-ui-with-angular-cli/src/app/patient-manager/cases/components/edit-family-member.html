@@ -7,8 +7,8 @@
                                 <span class="color-red">*</span>
                             </label>
                 <div class="form-group" [class.error]="familyMemberFormControls.firstName.touched && !familyMemberFormControls.firstName.valid">
-                    <input type="text" formControlName="firstName" [ngModel]="familyMember.firstName" [class.error]="!familyMemberFormControls.firstName.valid" class="form-control"
-                        placeholder="" />
+                    <input type="text" formControlName="firstName" [ngModel]="familyMember.firstName" [class.error]="!familyMemberFormControls.firstName.valid"
+                        class="form-control" placeholder="" />
                     <div class='error-list' *ngIf="familyMemberFormControls.firstName.touched && !familyMemberFormControls.firstName.valid">
                         <ul>
                             <li *ngIf="familyMemberFormControls.firstName.hasError('required')">First Name is required.</li>
@@ -21,8 +21,8 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                 <div class="form-group" [class.error]="familyMemberFormControls.middleName.touched && !familyMemberFormControls.middleName.valid">
-                    <input type="text" formControlName="middleName" [ngModel]="familyMember.middleName" [class.error]="!familyMemberFormControls.middleName.valid" class="form-control"
-                        placeholder="" />
+                    <input type="text" formControlName="middleName" [ngModel]="familyMember.middleName" [class.error]="!familyMemberFormControls.middleName.valid"
+                        class="form-control" placeholder="" />
                     <div class='error-list' *ngIf="familyMemberFormControls.middleName.touched && !familyMemberFormControls.middleName.valid">
                         <ul>
                             <li *ngIf="familyMemberFormControls.middleName.hasError('required')">Middle Name is required.</li>
@@ -35,8 +35,8 @@
                                 <span class="color-red">*</span>
                             </label>
                 <div class="form-group" [class.error]="familyMemberFormControls.lastName.touched && !familyMemberFormControls.lastName.valid">
-                    <input type="text" formControlName="lastName" [ngModel]="familyMember.lastName" [class.error]="!familyMemberFormControls.lastName.valid" class="form-control"
-                        placeholder="" />
+                    <input type="text" formControlName="lastName" [ngModel]="familyMember.lastName" [class.error]="!familyMemberFormControls.lastName.valid"
+                        class="form-control" placeholder="" />
                     <div class='error-list' *ngIf="familyMemberFormControls.lastName.touched && !familyMemberFormControls.lastName.valid">
                         <ul>
                             <li *ngIf="familyMemberFormControls.lastName.hasError('required')">Last Name is required.</li>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="row">
-              <div class="col-lg-4">
+            <div class="col-lg-4">
                 <label class="form-label"> Gender
                                 <span class="color-red">*</span>
                             </label>
@@ -69,7 +69,8 @@
                                 <span class="color-red">*</span>
                             </label>
                 <div class="form-group" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
-                    <select formControlName="relationId" [ngModel]="familyMember.relationId" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                    <select formControlName="relationId" [ngModel]="familyMember.relationId" type="text" class="form-control" placeholder=""
+                        [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
                             <option value="">-Select -</option>
                             <option value="1">Spouse</option>
                             <option value="2">Child</option>
@@ -176,48 +177,49 @@
                     <label class="form-label"> Work Phone No</label>
                     <input formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
                 </div>-->
-                <div class="form-group" [class.error]="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid" >
-                        <label class="form-label"> Work Phone No</label>
-                        <input [class.error]="!familyMemberFormControls.workPhone.valid" 
-                        formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
-                        <div class='error-list' *ngIf="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid">
-                            <ul>
-                                <li *ngIf="familyMemberFormControls.workPhone.hasError('required')">Work Phone number is required.</li>
-                                <li *ngIf="familyMemberFormControls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
-                                <li *ngIf="familyMemberFormControls.workPhone.hasError('maxlength')">Work Phone should be maximum {{familyMemberFormControls.workPhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
-                            </ul>
-                        </div>
+                <div class="form-group" [class.error]="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid">
+                    <label class="form-label"> Work Phone No</label>
+                    <input [class.error]="!familyMemberFormControls.workPhone.valid" formControlName="workPhone" [ngModel]="familyMember.workPhone"
+                        type="text" class="form-control" placeholder="" />
+                    <div class='error-list' *ngIf="familyMemberFormControls.workPhone.touched && !familyMemberFormControls.workPhone.valid">
+                        <ul>
+                            <li *ngIf="familyMemberFormControls.workPhone.hasError('required')">Work Phone number is required.</li>
+                            <li *ngIf="familyMemberFormControls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
+                            <li *ngIf="familyMemberFormControls.workPhone.hasError('maxlength')">Work Phone should be maximum {{familyMemberFormControls.workPhone.errors.maxlength.requiredLength}}
+                                numbers.
+                            </li>
+                        </ul>
                     </div>
+                </div>
             </div>
             <div class="col-lg-4">
                 <!--<div class="form-group">
                     <label class="form-label"> Office Extension</label>
                     <input formControlName="officeExtension" [ngModel]="familyMember.officeExtension" type="text" class="form-control" placeholder="" />
                 </div>-->
-                <div class="form-group" [class.error]="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid" >
-                        <label class="form-label">Office Extension</label>
-                        <input [class.error]="!familyMemberFormControls.officeExtension.valid" 
-                        formControlName="officeExtension" [ngModel]="familyMember.officeExtension" type="text" class="form-control" placeholder="" />
-                        <div class='error-list' *ngIf="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid">
-                            <ul>
-                                <li *ngIf="familyMemberFormControls.officeExtension.hasError('required')">Office extension number is required.</li>
-                                <li *ngIf="familyMemberFormControls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
-                                <li *ngIf="familyMemberFormControls.officeExtension.hasError('maxlength')">Office extension should be maximum {{familyMemberFormControls.officeExtension.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
-                            </ul>
-                        </div>
+                <div class="form-group" [class.error]="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid">
+                    <label class="form-label">Office Extension</label>
+                    <input [class.error]="!familyMemberFormControls.officeExtension.valid" formControlName="officeExtension" [ngModel]="familyMember.officeExtension"
+                        type="text" class="form-control" placeholder="" />
+                    <div class='error-list' *ngIf="familyMemberFormControls.officeExtension.touched && !familyMemberFormControls.officeExtension.valid">
+                        <ul>
+                            <li *ngIf="familyMemberFormControls.officeExtension.hasError('required')">Office extension number is required.</li>
+                            <li *ngIf="familyMemberFormControls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
+                            <li *ngIf="familyMemberFormControls.officeExtension.hasError('maxlength')">Office extension should be maximum {{familyMemberFormControls.officeExtension.errors.maxlength.requiredLength}}
+                                numbers.
+                            </li>
+                        </ul>
                     </div>
+                </div>
             </div>
         </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Alternate E-Mail </label>
-                         <div class="form-group" [class.error]="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [ngModel]="familyMember.alternateEmail" [class.error]="!familyMemberFormControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="form-label"> Alternate E-Mail </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
+                        <input formControlName="alternateEmail" [ngModel]="familyMember.alternateEmail" [class.error]="!familyMemberFormControls.alternateEmail.valid"
+                            class="form-control" type="text" placeholder="" />
                         <div class='error-list' *ngIf="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
                             <ul>
                                 <li *ngIf="familyMemberFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
@@ -225,12 +227,13 @@
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
             <div class="col-lg-4">
-                 <div class="form-group">
-                     <label class="form-label"> Preferred Communication
+                <div class="form-group">
+                    <label class="form-label"> Preferred Communication
                                         </label>
-                        <select formControlName="preferredCommunication" [ngModel]="familyMember.preferredCommunication" type="text" class="form-control" placeholder="">
+                    <select formControlName="preferredCommunication" [ngModel]="familyMember.preferredCommunication" type="text" class="form-control"
+                        placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Cellphone</option>
@@ -238,10 +241,10 @@
                                         <option value="3">Work Phone</option>
                                         <option value="4">Post</option>
                         </select>
-                    </div>
                 </div>
             </div>
-            <!--<div class="col-lg-4">
+        </div>
+        <!--<div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Primary Contact</label>
                     <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>

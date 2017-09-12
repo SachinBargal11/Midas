@@ -150,7 +150,7 @@ export class UnscheduledVisitDetailComponent implements OnInit {
 
     getDocuments() {
         // this._progressBarService.show();
-        this._patientVisitStore.getDocumentsForVisitId(this.selectedVisit.id)
+        this._patientVisitStore.getDocumentsForUnscheduledVisitId(this.selectedVisit.id)
             .subscribe(document => {
                 this.documents = document;
             },

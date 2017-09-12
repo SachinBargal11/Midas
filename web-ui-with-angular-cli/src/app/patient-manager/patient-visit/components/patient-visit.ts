@@ -1665,8 +1665,8 @@ export class PatientVisitComponent implements OnInit {
             result = this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
         } else if (this.selectedVisit.isImeVisitType) {
             result = this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
-        } else if (this.selectedVisit.isImeVisitType) {
-            result = this._patientVisitsStore.getDocumentsForEuoVisitId(this.selectedVisit.id)
+        } else if (this.selectedVisit.isEoVisitType) {
+            result = this._patientVisitsStore.getDocumentsForEoVisitId(this.selectedVisit.id)
         }
         result.subscribe(document => {
             this.documents = document;

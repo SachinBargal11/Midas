@@ -127,6 +127,39 @@ export class PatientVisitsStore {
         return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
     }
 
+      getDocumentsForImeVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getDocumentsForImeVisitId(visitId).subscribe((documents: VisitDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
+
+    getDocumentsForEoVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getDocumentsForEoVisitId(visitId).subscribe((documents: VisitDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
+
+    getDocumentsForUnscheduledVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getDocumentsForUnscheduledVisitId(visitId).subscribe((documents: VisitDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
+
     getVisitsByDatesAndDoctorId(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getVisitsByDatesAndDoctorId(starDate, endDate, doctorId).subscribe((patientVisits: PatientVisit[]) => {

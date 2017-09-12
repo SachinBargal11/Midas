@@ -76,11 +76,11 @@ export class AddPatientComponent implements OnInit {
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: [''],
-                workPhone: [''],
+                homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+                workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
-                officeExtension: [''],
+                officeExtension:['', [AppValidators.numberValidator,Validators.maxLength(5)]],
                 preferredCommunication: [''],
                 emergencyContactPerson: [''],
                 emergencyContactCellPhone: ['']
@@ -124,23 +124,23 @@ export class AddPatientComponent implements OnInit {
 
     savePatient() {
         let patientSocialMediaMappings: any[] = [];
-        if(this.selectedSocialMedia.length > 0){
-        _.forEach(this.selectedSocialMedia, (currentSelectedSocialMedia: any) => {
-            patientSocialMediaMappings.push({
-                socialMediaId: parseInt(currentSelectedSocialMedia)
+        if (this.selectedSocialMedia.length > 0) {
+            _.forEach(this.selectedSocialMedia, (currentSelectedSocialMedia: any) => {
+                patientSocialMediaMappings.push({
+                    socialMediaId: parseInt(currentSelectedSocialMedia)
+                })
             })
-        })
-        }else{
-         patientSocialMediaMappings;
+        } else {
+            patientSocialMediaMappings;
         }
-        
+
         let patientLanguagePreferenceMappings: any[] = [];
-         if(this.languagePreference != ''){
-         patientLanguagePreferenceMappings.push({
-            languagePreferenceId: parseInt(this.languagePreference)
-        })
-        }else{
-         patientLanguagePreferenceMappings;
+        if (this.languagePreference != '') {
+            patientLanguagePreferenceMappings.push({
+                languagePreferenceId: parseInt(this.languagePreference)
+            })
+        } else {
+            patientLanguagePreferenceMappings;
         }
 
         this.isSavePatientProgress = true;

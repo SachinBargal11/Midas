@@ -142,9 +142,9 @@ export class PatientVisitsStore {
         return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
     }
 
-    getDocumentsForEuoVisitId(visitId: number): Observable<VisitDocument[]> {
+    getDocumentsForEoVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getDocumentsForEuoVisitId(visitId).subscribe((documents: VisitDocument[]) => {
+            this._patientVisitsService.getDocumentsForEoVisitId(visitId).subscribe((documents: VisitDocument[]) => {
                 resolve(documents);
             }, error => {
                 reject(error);

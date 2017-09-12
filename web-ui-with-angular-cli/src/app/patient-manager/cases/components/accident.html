@@ -305,9 +305,9 @@
                                         [class.error]="!accidentformControls.witnessPhoneNumber.valid">
                                     <div class='error-list' *ngIf="accidentformControls.witnessPhoneNumber.touched && !accidentformControls.witnessPhoneNumber.valid">
                                         <ul>
-                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('required')">Additional Patient Phone No is required.</li>
+                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('required')">Witness Phone No is required.</li>
                                             <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('numberValidator')">Please enter only numbers.</li>
-                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('maxlength')">Additional Patient Phone No should be maximum {{accidentformControls.witnessPhoneNumber.errors.maxlength.requiredLength}}
+                                            <li *ngIf="accidentformControls.witnessPhoneNumber.hasError('maxlength')">Witness Phone No should be maximum {{accidentformControls.witnessPhoneNumber.errors.maxlength.requiredLength}}
                                                 numbers.
                                             </li>
                                         </ul>

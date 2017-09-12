@@ -1403,18 +1403,25 @@ export class PatientVisitComponent implements OnInit {
         this.eventDialogVisible = false;
     }
 
-    getDocuments() {
-        this._progressBarService.show();
-        this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
-            .subscribe(document => {
-                this.documents = document;
-            },
+     getDocuments() {
+        // this._progressBarService.show();
+        let result;
+        if (this.selectedVisit.isPatientVisitType) {
+            result = this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
+        } else if (this.selectedVisit.isImeVisitType) {
+            result = this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
+        } else if (this.selectedVisit.isEoVisitType) {
+            result = this._patientVisitsStore.getDocumentsForEoVisitId(this.selectedVisit.id)
+        }
+        result.subscribe(document => {
+            this.documents = document;
+        },
 
             (error) => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                // this._progressBarService.hide();
             });
     }
 
