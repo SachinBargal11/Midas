@@ -15,8 +15,6 @@ using MIDAS.GBX.BusinessObjects.Common;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/templatemanager")]
-    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
     public class TemplateManagerController : ApiController
     {        
         private IRequestHandler<TemplateType> requestHandler;

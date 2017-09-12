@@ -20,19 +20,21 @@ namespace MIDAS.GBX.PatientWebAPI
 {
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config)
+        //public static void Register(HttpConfiguration config)
+        public static HttpConfiguration Register()
         {
-            if (Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
-                config.Filters.Add(new AuthorizeAttribute());
+            var config = new HttpConfiguration();
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
 
-            // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            //if (Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
+            //    config.Filters.Add(new AuthorizeAttribute());
+            //// Web API configuration and services
+            //// Configure Web API to use only bearer token authentication.
+            //config.SuppressDefaultHostAuthentication();
+            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
             //Reference: http://www.asp.net/web-api/overview/security/enabling-cross-origin-requests-in-web-api
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
@@ -56,10 +58,9 @@ namespace MIDAS.GBX.PatientWebAPI
             json.SerializerSettings.PreserveReferencesHandling =
                 Newtonsoft.Json.PreserveReferencesHandling.None;
 
-            //To Do
-            //GlobalConfiguration.Configuration.Filters.Add(new LoggingFilterAttribute());
-            //GlobalConfiguration.Configuration.Filters.Add(new GlobalExceptionAttribute());
-            //config.Filters.Add(new Elmah.Contrib.WebApi.ElmahHandleErrorApiAttribute());
+            config.Filters.Add(new AuthorizeAttribute());
+
+            return config;
         }
     }
 }

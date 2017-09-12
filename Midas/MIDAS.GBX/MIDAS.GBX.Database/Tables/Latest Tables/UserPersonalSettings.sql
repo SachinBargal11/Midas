@@ -1,44 +1,101 @@
-﻿CREATE TABLE [dbo].[UserPersonalSettings]
-(	
-    [Id] INT NOT NULL IDENTITY, 
-    [UserId] INT NOT NULL, 
-    [CompanyId] INT NOT NULL,
-    [IsPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPublic] DEFAULT 0, 
-    [IsSearchable] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsSearchable] DEFAULT 0, 
-    [IsCalendarPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsCalendarPublic] DEFAULT 0,
-    [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30, 
-    [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3,
-    [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1,
-
-    [IsDeleted] [bit] NULL DEFAULT 0,
-    [CreateByUserID] [int] NOT NULL,
-    [CreateDate] [datetime2](7) NOT NULL,
-    [UpdateByUserID] [int] NULL,
-    [UpdateDate] [datetime2](7) NULL, 
-    CONSTRAINT [PK_UserPersonalSettings] PRIMARY KEY ([Id])
+﻿IF NOT EXISTS
+(
+	SELECT	1 
+	FROM	INFORMATION_SCHEMA.TABLES
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
 )
+BEGIN
+    CREATE TABLE [dbo].[UserPersonalSettings]
+    (	
+        [Id] INT NOT NULL IDENTITY, 
+        [UserId] INT NOT NULL, 
+        [CompanyId] INT NOT NULL,
+        [IsPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPublic] DEFAULT 0, 
+        [IsSearchable] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsSearchable] DEFAULT 0, 
+        [IsCalendarPublic] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsCalendarPublic] DEFAULT 0,
+        [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30, 
+        [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3,
+        [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1,
+
+        [IsDeleted] [bit] NULL DEFAULT 0,
+        [CreateByUserID] [int] NOT NULL,
+        [CreateDate] [datetime2](7) NOT NULL,
+        [UpdateByUserID] [int] NULL,
+        [UpdateDate] [datetime2](7) NULL, 
+        CONSTRAINT [PK_UserPersonalSettings] PRIMARY KEY ([Id])
+    )
+END
+ELSE
+BEGIN
+	PRINT 'Table [dbo].[UserPersonalSettings] already exists in database: ' + DB_NAME()
+END
 GO
 
-ALTER TABLE [dbo].[UserPersonalSettings]  WITH CHECK ADD  CONSTRAINT [FK_UserPersonalSettings_User_UserId] FOREIGN KEY([UserId])
-	REFERENCES [dbo].[User] ([Id])
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
+	AND		CONSTRAINT_NAME = 'FK_UserPersonalSettings_Company_CompanyId'
+)
+BEGIN
+	ALTER TABLE [dbo].[UserPersonalSettings] DROP CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId]
+END
 GO
 
-ALTER TABLE [dbo].[UserPersonalSettings] CHECK CONSTRAINT [FK_UserPersonalSettings_User_UserId]
+ALTER TABLE [dbo].[UserPersonalSettings] ADD CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId] FOREIGN KEY([CompanyId])
+    REFERENCES [dbo].[Company] ([id])
 GO
 
-ALTER TABLE [dbo].[UserPersonalSettings]  WITH CHECK ADD  CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId] FOREIGN KEY([CompanyId])
-	REFERENCES [dbo].[Company] ([Id])
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
+	AND		CONSTRAINT_NAME = 'FK_UserPersonalSettings_User_UserId'
+)
+BEGIN
+	ALTER TABLE [dbo].[UserPersonalSettings] DROP CONSTRAINT [FK_UserPersonalSettings_User_UserId]
+END
 GO
 
-ALTER TABLE [dbo].[UserPersonalSettings] CHECK CONSTRAINT [FK_UserPersonalSettings_Company_CompanyId]
+ALTER TABLE [dbo].[UserPersonalSettings] ADD CONSTRAINT [FK_UserPersonalSettings_User_UserId] FOREIGN KEY([UserId])
+    REFERENCES [dbo].[User] ([id])
 GO
 
-/*
-ALTER TABLE [dbo].[UserPersonalSettings] ADD [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30
-*/
-/*
-ALTER TABLE [dbo].[UserPersonalSettings] ADD [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
+	AND     COLUMN_NAME = 'PreferredModeOfCommunication'
+)
+BEGIN
+    PRINT 'Table [dbo].[UserPersonalSettings] already have column [PreferredModeOfCommunication] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[UserPersonalSettings] ADD [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3
+END
 GO
-ALTER TABLE [dbo].[UserPersonalSettings] ADD [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
+	AND     COLUMN_NAME = 'IsPushNotificationEnabled'
+)
+BEGIN
+    PRINT 'Table [dbo].[UserPersonalSettings] already have column [IsPushNotificationEnabled] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[UserPersonalSettings] ADD [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1
+END
 GO
-*/

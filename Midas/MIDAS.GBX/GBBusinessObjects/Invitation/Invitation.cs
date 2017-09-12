@@ -13,10 +13,16 @@ namespace MIDAS.GBX.BusinessObjects
         //Invitation invitation = new Invitation();
         [JsonProperty("appKey")]
         public Guid UniqueID { get; set; }
+
+        [JsonProperty("company")]
         public Company Company { get; set; }
+
+        [JsonProperty("user")]
         public User User { get; set; }
+
         [JsonProperty("isExpired")]
         public bool IsExpired { get; set; }
+
         [JsonProperty("isActivated")]
         public bool IsActivated { get; set; }
 

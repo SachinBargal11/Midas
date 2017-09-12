@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/DiagnosisCode")]
-
     public class DiagnosisCodeController : ApiController
     {
         private IRequestHandler<DiagnosisCode> requestHandler;
@@ -23,13 +22,12 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByDiagnosisTypeId/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetDiagnosisType(int id)
         {
             return requestHandler.GetDiagnosisType(Request, id);
         }
 
-       protected override void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }

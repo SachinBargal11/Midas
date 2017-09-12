@@ -859,6 +859,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual object GetBusySlotsByCalendarEventByLocationId(BO.CalendarEvent CalEvent, DateTime ForDate)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetProcedureCodeBySpecialtyExcludingAssigned(int specialtyId, int companyId)
         {
             throw new NotImplementedException();
@@ -970,6 +975,31 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual object DeletePreferredCompany(int preferredCompanyId, int currentCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetPrefProviderByAncillaryCompanyId(int AncillaryCompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetPatientVisitForDateByLocationId(DateTime ForDate, int LocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId)
         {
             throw new NotImplementedException();
         }

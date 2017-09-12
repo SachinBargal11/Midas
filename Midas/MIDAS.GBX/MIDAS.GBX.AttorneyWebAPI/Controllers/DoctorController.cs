@@ -18,28 +18,25 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
-    [RoutePrefix("midasattorneyapi/Doctor")]
-    
+    [RoutePrefix("midasattorneyapi/Doctor")]    
     public class DoctorController : ApiController
     {
-
         private IRequestHandler<Doctor> requestHandler;
+
         public DoctorController()
         {
             requestHandler = new GbApiRequestHandler<Doctor>();
         }
 
         [HttpGet]
-        [Route("GetAll")]
-        
+        [Route("GetAll")]        
         public HttpResponseMessage Get()
         {
             return requestHandler.GetObjects(Request);
         }
 
         [HttpGet]
-        [Route("Get/{id}")]
-        
+        [Route("Get/{id}")]        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -47,7 +44,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyId/{id}")]
-
         public HttpResponseMessage GetByCompanyId(int id)
         {
             return requestHandler.GetGbObjects(Request, id);
@@ -55,7 +51,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("associateDoctorWithCompany/{doctorId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage AssociateDoctorWithCompany(int DoctorId, int CompanyId)
         {
             return requestHandler.AssociateDoctorWithCompany(Request, DoctorId, CompanyId);
@@ -63,7 +58,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("disassociateDoctorWithCompany/{doctorId}/{CompanyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
         {
             return requestHandler.DisassociateDoctorWithCompany(Request, DoctorId, CompanyId);
@@ -83,35 +77,27 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             return requestHandler.GetBySpecialityInAllApp(Request, specialtyId);
         }
 
-        // POST: api/Organizations
         [HttpPost]
-        [Route("Add")]
-        
+        [Route("Add")]        
         public HttpResponseMessage Post([FromBody]Doctor doctor)
         {
             return requestHandler.CreateGbObject(Request, doctor);
         }
 
-        // PUT: api/Organizations/5
         [Route("Update")]
-        [HttpPut]
-        
+        [HttpPut]        
         public HttpResponseMessage Put([FromBody]Doctor doctor)
         {
             return requestHandler.UpdateGbObject(Request, doctor);
         }
 
-        // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete/{id}")]
-        
+        [Route("Delete/{id}")]        
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
         }
 
-
-        // Unique Name Validation
         [HttpGet]
         [Route("IsUnique")]
         public HttpResponseMessage IsUnique([FromBody]Doctor doctor)
@@ -130,6 +116,5 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

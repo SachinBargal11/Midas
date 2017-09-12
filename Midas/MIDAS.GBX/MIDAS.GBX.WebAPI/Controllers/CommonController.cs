@@ -10,6 +10,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 {
 
     [RoutePrefix("midasapi/common")]
+    [Authorize]
     public class CommonController : ApiController
     {
         private IRequestHandler<State> requestStateHandler;

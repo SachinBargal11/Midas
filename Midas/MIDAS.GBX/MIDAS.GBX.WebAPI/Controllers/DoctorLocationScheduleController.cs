@@ -20,6 +20,7 @@ using MIDAS.GBX.WebAPI.Filters;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DoctorLocationSchedule")]
+    [Authorize]
     public class DoctorLocationScheduleController : ApiController
     {
 

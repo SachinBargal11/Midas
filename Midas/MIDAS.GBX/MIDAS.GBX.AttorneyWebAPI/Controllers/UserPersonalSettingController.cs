@@ -19,10 +19,8 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/UserPersonalSetting")]
-
     public class UserPersonalSettingController : ApiController
     {
-
         private IRequestHandler<UserPersonalSetting> requestHandler;
 
         public UserPersonalSettingController()
@@ -46,16 +44,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]UserPersonalSetting data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
-
         [HttpGet]
         [Route("Delete/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
@@ -65,6 +60,5 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

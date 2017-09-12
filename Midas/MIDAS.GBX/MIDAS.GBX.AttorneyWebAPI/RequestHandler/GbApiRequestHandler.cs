@@ -2058,7 +2058,7 @@ namespace MIDAS.GBX.AttorneyWebAPI
 
             try
             {
-                var res = (object)objResult;
+                var res = (GbObject)(object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
@@ -2094,11 +2094,24 @@ namespace MIDAS.GBX.AttorneyWebAPI
 
             try
             {
-                var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetAttorneyVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAttorneyVisitForDateByCompanyId(ForDate, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {

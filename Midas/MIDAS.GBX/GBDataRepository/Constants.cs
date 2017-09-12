@@ -53,6 +53,10 @@ namespace MIDAS.GBX.EN
         public const string CaseType = "CASE";
         public const string VisitType = "VISIT";
         public const string PatientType = "PATIENT";
+        public const string IMEVisitType = "IMEVISIT";
+        public const string EUOVisitType = "EUOVISIT";
+        public const string ATTORNEYVisitType = "ATTORNEYVISIT";
+        public const string UNSCHVisitType = "UNSCHEDULEVISIT";
         #endregion
 
         public const string SpecilityAlreadyExists = "Specialty already exists.";

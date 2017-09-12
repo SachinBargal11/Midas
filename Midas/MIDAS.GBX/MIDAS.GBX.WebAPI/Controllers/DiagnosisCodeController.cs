@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DiagnosisCode")]
-
+    [Authorize]
     public class DiagnosisCodeController : ApiController
     {
         private IRequestHandler<DiagnosisCode> requestHandler;
@@ -23,7 +23,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByDiagnosisTypeId/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetDiagnosisType(int id)
         {
             return requestHandler.GetDiagnosisType(Request, id);
@@ -31,7 +30,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCompanyIdAndDiagnosisTypeId/{companyId}/{diagnosisTypeId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCompanyIdAndDiagnosisTypeId(int companyId,int diagnosisTypeId)
         {
             return requestHandler.GetGbObjects(Request, companyId, diagnosisTypeId);
@@ -41,6 +39,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

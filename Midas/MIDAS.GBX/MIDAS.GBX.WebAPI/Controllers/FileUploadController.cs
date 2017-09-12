@@ -19,8 +19,7 @@ using System.Net.Http.Headers;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
-    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
+    [Authorize]
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;
@@ -90,7 +89,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}/{type}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id, string type)
         {
             return requestHandler.GetObject(Request, id, type);
@@ -184,7 +182,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
-        //[AllowAnonymous]
         public void Download(int caseId, int documentid)
         {
             string filepath = requestHandler.Download(Request, caseId, documentid);
@@ -203,7 +200,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Delete/{caseId}/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage DeleteFile(int caseId, int id)
         {
             return requestHandler.DeleteFile(Request,caseId, id);

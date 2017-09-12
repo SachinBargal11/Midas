@@ -39,12 +39,16 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("roomTestId")]
         public int? RoomTestId { get; set; }
 
+        [JsonProperty("company")]
         public Company Company { get; set; }
 
+        [JsonProperty("room")]
         public Room Room { get; set; }
 
+        [JsonProperty("roomTest")]
         public RoomTest RoomTest { get; set; }
 
+        [JsonProperty("specialty")]
         public Specialty Specialty { get; set; }
     }
 

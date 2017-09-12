@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/PreferredAncillaryProvider")]
-
+    [Authorize]
     public class PreferredAncillaryProviderController : ApiController
     {
         private IRequestHandler<PreferredAncillarProviderSignUp> requestHandler;
@@ -17,44 +17,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public PreferredAncillaryProviderController()
         {
             requestHandler = new GbApiRequestHandler<PreferredAncillarProviderSignUp>();
-        }
-
-        //[HttpGet]
-        //[Route("associateMedicalProviderWithCompany/{PrefMedProviderId}/{CompanyId}")]
-        //public HttpResponseMessage AssociateMedicalProviderWithCompany(int PrefMedProviderId, int CompanyId)
-        //{
-        //    return requestHandler.AssociateMedicalProviderWithCompany(Request, PrefMedProviderId, CompanyId);
-        //}
-
-        //[HttpGet]
-        //[Route("getAllMedicalProviderExcludeAssigned/{CompanyId}")]
-        //public HttpResponseMessage GetAllMedicalProviderExcludeAssigned(int CompanyId)
-        //{
-        //    return requestHandler.GetAllMedicalProviderExcludeAssigned(Request, CompanyId);
-        //}
-
-        //[HttpGet]
-        //[Route("get/{Id}")]
-        //public HttpResponseMessage Get(int Id)
-        //{
-        //    return requestHandler.GetObject(Request, Id);
-        //}
-
-        //[HttpGet]
-        //[Route("getByCompanyId/{CompanyId}")]
-        ////[AllowAnonymous]
-        //public HttpResponseMessage GetByCompanyId(int CompanyId)
-        //{
-        //    return requestHandler.GetGbObjects(Request, CompanyId);
-        //}
-
-        //[HttpGet]
-        //[Route("getByPrefMedProviderId/{PrefMedProviderId}")]
-        ////[AllowAnonymous]
-        //public HttpResponseMessage GetByPrefMedProviderId(int PrefMedProviderId)
-        //{
-        //    return requestHandler.GetByPrefMedProviderId(Request, PrefMedProviderId);
-        //}
+        }        
 
         [HttpPost]
         [Route("save")]
@@ -62,7 +25,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.CreateGbObject(Request, data);
         }
-
         
         [HttpPost]
         [Route("updateMedicalProvider")]

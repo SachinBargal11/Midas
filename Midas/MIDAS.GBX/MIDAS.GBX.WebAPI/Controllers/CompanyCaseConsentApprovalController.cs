@@ -14,7 +14,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/CompanyCaseConsentApproval")]
-
+    [Authorize]
     public class CompanyCaseConsentApprovalController : ApiController
     {
         internal string sourcePath = string.Empty;
@@ -30,7 +30,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -46,7 +45,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
@@ -54,7 +52,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        //[AllowAnonymous]
         public HttpResponseMessage Post([FromBody]CompanyCaseConsentApproval data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -62,7 +59,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Delete/{caseId}/{documentId}/{companyId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Delete(int caseId, int documentId, int companyId)
         {
             return requestHandler.Delete(Request, caseId, documentId, companyId);
@@ -84,7 +80,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseid}/{companyid}")]
-        //[AllowAnonymous]
         public void DownloadConsent(int caseid, int companyid, bool download = true)
         {
             string filepath = requestHandler.Download(Request, caseid, companyid);
@@ -109,7 +104,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("uploadsignedconsent")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetElectronicSignedConsent([FromBody]CompanyCaseConsentBase64 data)
         {
             #region comment

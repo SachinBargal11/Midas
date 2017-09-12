@@ -13,13 +13,13 @@ using System.Web.Http;
 
 namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 {
-    [RoutePrefix("midasancillaryapi/Company")]
-    
+    [RoutePrefix("midasancillaryapi/Company")]    
     public class CompanyController : ApiController
     {
         private IRequestHandler<Company> requestHandler;
         private IRequestHandler<Signup> signuprequestHandler;
         private IRequestHandler<Invitation> invitationrequestHandler;
+
         public CompanyController()
         {
             requestHandler = new GbApiRequestHandler<Company>();
@@ -27,7 +27,6 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             invitationrequestHandler = new GbApiRequestHandler<Invitation>(); 
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
         
@@ -38,52 +37,41 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get()
         {
             return requestHandler.GetObjects(Request);
         }
 
-
         [HttpGet]
         [Route("getAllCompanyAndLocation")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetAllCompanyAndLocation()
         {
             return requestHandler.GetAllCompanyAndLocation(Request);
         }
 
-        // POST: api/Organizations
         [HttpPost]
-        [Route("Add")]
-        
+        [Route("Add")]        
         public HttpResponseMessage Post([FromBody]Company data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        // PUT: api/Organizations/5
         [Route("Update")]
-        [HttpPut]
-        
+        [HttpPut]        
         public HttpResponseMessage Put([FromBody]Company account)
         {
             return requestHandler.UpdateGbObject(Request, account);
         }
 
-        // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete")]
-        
+        [Route("Delete")]        
         public HttpResponseMessage Delete([FromBody]Company account)
         {
             return requestHandler.DeleteGbObject(Request, account);
         }
 
-        // Unique Name Validation
         [HttpPost]
-        [Route("IsUnique")]
-        
+        [Route("IsUnique")]        
         public HttpResponseMessage IsUnique([FromBody]Company account)
         {
             return requestHandler.ValidateUniqueName(Request, account);
@@ -112,7 +100,6 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
         }
 
-
         [AllowAnonymous]
         [HttpPost]
         [Route("UpdateCompany")]
@@ -132,11 +119,9 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
             return requestHandler.GetUpdatedCompanyById(Request, CompanyId);
         }
 
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

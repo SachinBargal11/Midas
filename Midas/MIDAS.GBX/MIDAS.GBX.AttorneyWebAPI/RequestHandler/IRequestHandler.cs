@@ -149,5 +149,6 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage ValidateOTPForCompany(HttpRequestMessage request, string otp);
         HttpResponseMessage AssociatePreferredCompany(HttpRequestMessage request, string otp, int currentCompanyId);
         HttpResponseMessage DeletePreferredCompany(HttpRequestMessage request, int preferredCompanyId, int currentCompanyId);
+        HttpResponseMessage GetAttorneyVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int CompanyId);
     }
 }

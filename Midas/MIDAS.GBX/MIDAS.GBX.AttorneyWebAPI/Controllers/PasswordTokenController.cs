@@ -24,14 +24,14 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         private IRequestHandler<PasswordToken> requestHandler;
 
         public PasswordTokenController()
-       {
+        {
             requestHandler = new GbApiRequestHandler<PasswordToken>();
         }
 
         [HttpPost]
         [Route("GeneratePasswordResetLink")]
         [AllowAnonymous]
-       public HttpResponseMessage GeneratePasswordLink([FromBody]PasswordToken passwordToken)
+        public HttpResponseMessage GeneratePasswordLink([FromBody]PasswordToken passwordToken)
         {
             return requestHandler.GeneratePasswordLink(Request, passwordToken);
         }

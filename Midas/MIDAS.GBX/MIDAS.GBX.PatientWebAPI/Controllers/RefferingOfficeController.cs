@@ -12,7 +12,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
     [RoutePrefix("midaspatientapi/RefferingOffice")]
-
     public class RefferingOfficeController : ApiController
     {
         private IRequestHandler<RefferingOffice> requestHandler;
@@ -22,10 +21,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestHandler = new GbApiRequestHandler<RefferingOffice>();
         }
 
-
         [HttpGet]
         [Route("Get/{id}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -33,7 +30,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByPatientId(int PatientId)
         {
             return requestHandler.GetByPatientId(Request, PatientId);
@@ -41,23 +37,19 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
-        //[AllowAnonymous]
         public HttpResponseMessage GetByCaseId(int CaseId)
         {
             return requestHandler.GetByCaseId(Request, CaseId);
         }
 
-
         [HttpPost]
         [Route("Save")]
-
         public HttpResponseMessage Post([FromBody]RefferingOffice data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {
@@ -68,6 +60,5 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             base.Dispose(disposing);
         }
-
     }
 }

@@ -7,10 +7,9 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.AncillaryWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/OTPCompanyMapping")]
-    [Authorize]
+    [RoutePrefix("midasancillaryapi/OTPCompanyMapping")]
     public class OTPCompanyMappingController : ApiController
     {
         private IRequestHandler<OTPCompanyMapping> requestHandler;
@@ -18,7 +17,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             requestHandler = new GbApiRequestHandler<OTPCompanyMapping>();
         }
-     
+
         [HttpGet]
         [Route("generateOTPForCompany/{companyId}")]
         public HttpResponseMessage GenerateOTPForCompany(int companyId)
@@ -35,7 +34,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("associatePreferredCompany/{otp}/{currentCompanyId}")]
-        public HttpResponseMessage AssociatePreferredCompany(string otp,int currentCompanyId)
+        public HttpResponseMessage AssociatePreferredCompany(string otp, int currentCompanyId)
         {
             return requestHandler.AssociatePreferredCompany(Request, otp, currentCompanyId);
         }
@@ -46,7 +45,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.DeletePreferredCompany(Request, preferredCompanyId, currentCompanyId);
         }
-       
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

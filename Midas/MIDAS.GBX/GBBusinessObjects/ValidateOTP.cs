@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,10 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class ValidateOTP :GbObject
     {
+        [JsonProperty("otp")]
         public OTP otp { get; set; }
+
+        [JsonProperty("user")]
         public User user { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)

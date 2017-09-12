@@ -698,7 +698,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (Add_caseDB == true)
                     {
+                        caseDB.CreateByUserID = 1;
+                        caseDB.CreateDate = DateTime.UtcNow;
                         caseDB = _context.Cases.Add(caseDB);
+                    }
+                    else
+                    {
+                        caseDB.UpdateByUserID = 1;
+                        caseDB.UpdateDate = DateTime.UtcNow;
                     }
                     _context.SaveChanges();
                 }

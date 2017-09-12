@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 {
     [RoutePrefix("midasattorneyapi/PatientInsuranceInfo")]
-
     public class PatientInsuranceInfoController : ApiController
     {
         private IRequestHandler<PatientInsuranceInfo> requestHandler;
@@ -21,7 +20,6 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             requestHandler = new GbApiRequestHandler<PatientInsuranceInfo>();
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("get/{id}")]
         public HttpResponseMessage Get(int id)
@@ -31,20 +29,11 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
 
         [HttpGet]
         [Route("getByCaseId/{caseId}")]
-
         public HttpResponseMessage GetByCaseId(int caseId)
         {
             return requestHandler.GetByCaseId(Request, caseId);
         }
-
-        //[HttpGet]
-        //[Route("isInsuranceInfoAdded/{PatientId}")]
-        ////[AllowAnonymous]
-        //public HttpResponseMessage IsInsuranceInfoAdded(int PatientId)
-        //{
-        //    return requestHandler.IsInsuranceInfoAdded(Request, PatientId);
-        //}
-
+        
         [HttpPost]
         [Route("save")]
         public HttpResponseMessage Post([FromBody]PatientInsuranceInfo data)
@@ -60,11 +49,9 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         }
 
 
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
-
     }
 }

@@ -44,7 +44,7 @@ namespace MIDAS.GBX.DocumentManager
             }
             catch (Exception er)
             {
-                return "Unable to upload";
+                return "UnableToUpload";
             }
 
             return HttpUtility.UrlDecode(Cloudblob.Uri.AbsoluteUri);
@@ -65,7 +65,7 @@ namespace MIDAS.GBX.DocumentManager
             }
             catch (Exception er)
             {
-                return "Unable to upload";
+                return "UnableToUpload";
             }
 
             return HttpUtility.UrlDecode(Cloudblob.Uri.AbsoluteUri);
@@ -143,7 +143,7 @@ namespace MIDAS.GBX.DocumentManager
             }
             catch (Exception er)
             {
-                return "Unable to upload";
+                return "UnableToUpload";
             }
 
             return Cloudblob.Uri.AbsoluteUri;

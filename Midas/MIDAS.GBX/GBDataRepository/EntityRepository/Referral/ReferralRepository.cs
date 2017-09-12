@@ -691,7 +691,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     if (add_referral == true)
                     {
+                        referralDB.CreateByUserID = 1;
+                        referralDB.CreateDate = DateTime.UtcNow;
                         referralDB = _context.Referrals.Add(referralDB);
+                    }
+                    else
+                    {
+                        referralDB.UpdateByUserID = 1;
+                        referralDB.UpdateDate = DateTime.UtcNow;
                     }
                     _context.SaveChanges();
 

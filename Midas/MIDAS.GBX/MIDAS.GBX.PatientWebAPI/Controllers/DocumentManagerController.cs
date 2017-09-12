@@ -14,9 +14,7 @@ using System;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midaspatientapi/documentmanager")]
-    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
+    [RoutePrefix("midaspatientapi/documentmanager")] 
     public class DocumentManagerController : ApiController
     {
         internal UploadInfo uploadObject = null;
@@ -210,6 +208,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("downloadfromnoproviderblob/{documentid}")]
+        [AllowAnonymous]
         public HttpResponseMessage DownlodFromNoProviderBlob(int documentid)
         {
             int companyId = 0;
@@ -268,7 +267,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         [HttpGet]
         [Route("get/{id}/{type}")]
-        //[AllowAnonymous]
         public HttpResponseMessage Get(int id, string type)
         {
             return requestHandler.GetObject(Request, id, type);

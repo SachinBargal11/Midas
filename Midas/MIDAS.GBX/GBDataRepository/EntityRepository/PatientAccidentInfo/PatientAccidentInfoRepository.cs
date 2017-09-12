@@ -97,14 +97,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 foreach (var eachAccidentWitness in PatientAccidentInfoDB.AccidentWitnesses)
                 {
-                    BO.AccidentWitness AccidentWitnessBO = new BO.AccidentWitness();
-                    AccidentWitnessBO.ID = eachAccidentWitness.Id;
-                    AccidentWitnessBO.PatientAccidentInfoId = eachAccidentWitness.PatientAccidentInfoId;
-                    AccidentWitnessBO.WitnessName = eachAccidentWitness.WitnessName;
-                    AccidentWitnessBO.WitnessContactNumber = eachAccidentWitness.WitnessContactNumber;
-                    AccidentWitnessBO.IsDeleted = eachAccidentWitness.IsDeleted;
+                    if (eachAccidentWitness.IsDeleted.HasValue == false || (eachAccidentWitness.IsDeleted.HasValue == true && eachAccidentWitness.IsDeleted.Value == false))
+                    {
+                        BO.AccidentWitness AccidentWitnessBO = new BO.AccidentWitness();
+                        AccidentWitnessBO.ID = eachAccidentWitness.Id;
+                        AccidentWitnessBO.PatientAccidentInfoId = eachAccidentWitness.PatientAccidentInfoId;
+                        AccidentWitnessBO.WitnessName = eachAccidentWitness.WitnessName;
+                        AccidentWitnessBO.WitnessContactNumber = eachAccidentWitness.WitnessContactNumber;
+                        AccidentWitnessBO.IsDeleted = eachAccidentWitness.IsDeleted;
 
-                    PatientAccidentInfoBO.AccidentWitnesses.Add(AccidentWitnessBO);
+                        PatientAccidentInfoBO.AccidentWitnesses.Add(AccidentWitnessBO);
+                    }                    
                 }
             }
 
@@ -113,16 +116,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 foreach (var eachAccidentTreatment in PatientAccidentInfoDB.AccidentTreatments)
                 {
-                    BO.AccidentTreatment AccidentTreatmentBO = new BO.AccidentTreatment();
-                    AccidentTreatmentBO.ID = eachAccidentTreatment.Id;
-                    AccidentTreatmentBO.PatientAccidentInfoId = eachAccidentTreatment.PatientAccidentInfoId;
-                    AccidentTreatmentBO.MedicalFacilityName = eachAccidentTreatment.MedicalFacilityName;
-                    AccidentTreatmentBO.DoctorName = eachAccidentTreatment.DoctorName;
-                    AccidentTreatmentBO.ContactNumber = eachAccidentTreatment.ContactNumber;
-                    AccidentTreatmentBO.Address = eachAccidentTreatment.Address;
-                    AccidentTreatmentBO.IsDeleted = eachAccidentTreatment.IsDeleted;
+                    if (eachAccidentTreatment.IsDeleted.HasValue == false || (eachAccidentTreatment.IsDeleted.HasValue == true && eachAccidentTreatment.IsDeleted.Value == false))
+                    {
+                        BO.AccidentTreatment AccidentTreatmentBO = new BO.AccidentTreatment();
+                        AccidentTreatmentBO.ID = eachAccidentTreatment.Id;
+                        AccidentTreatmentBO.PatientAccidentInfoId = eachAccidentTreatment.PatientAccidentInfoId;
+                        AccidentTreatmentBO.MedicalFacilityName = eachAccidentTreatment.MedicalFacilityName;
+                        AccidentTreatmentBO.DoctorName = eachAccidentTreatment.DoctorName;
+                        AccidentTreatmentBO.ContactNumber = eachAccidentTreatment.ContactNumber;
+                        AccidentTreatmentBO.Address = eachAccidentTreatment.Address;
+                        AccidentTreatmentBO.IsDeleted = eachAccidentTreatment.IsDeleted;
 
-                    PatientAccidentInfoBO.AccidentTreatments.Add(AccidentTreatmentBO);
+                        PatientAccidentInfoBO.AccidentTreatments.Add(AccidentTreatmentBO);
+                    }
                 }
             }
 
