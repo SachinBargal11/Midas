@@ -2421,5 +2421,18 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetDoctorPatientVisitForDateByLocationId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int LocationId)
+        {
+            var objResult = dataAccessManager.GetDoctorPatientVisitForDateByLocationId(ForDate, DoctorId, LocationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

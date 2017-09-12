@@ -2105,5 +2105,18 @@ namespace MIDAS.GBX.AttorneyWebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetAttorneyVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetAttorneyVisitForDateByCompanyId(ForDate, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }
