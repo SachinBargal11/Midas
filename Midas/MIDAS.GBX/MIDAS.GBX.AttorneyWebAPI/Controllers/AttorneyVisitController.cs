@@ -53,5 +53,12 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         //{
         //    return requestHandler.GetByLocationAndAttorneyId(Request, locationId, attorneyId);
         //}
+
+        [HttpGet]
+        [Route("delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
+        }
     }
 }

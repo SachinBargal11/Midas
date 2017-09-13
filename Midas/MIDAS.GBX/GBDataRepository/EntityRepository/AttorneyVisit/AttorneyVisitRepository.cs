@@ -651,6 +651,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete By Id
+        public override object Delete(int id)
+        {
+            var attorneyVisit = _context.AttorneyVisits.Include("CalendarEvent")
+                                                       .Where(p => p.Id == id
+                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .FirstOrDefault<AttorneyVisit>();
+
+            if (attorneyVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                attorneyVisit.CalendarEvent.IsDeleted = true;
+                attorneyVisit.IsDeleted = true;
+                _context.SaveChanges();
+
+                var res = Convert<BO.AttorneyVisit, AttorneyVisit>(attorneyVisit);
+
+                return (object)res;
+            }
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
