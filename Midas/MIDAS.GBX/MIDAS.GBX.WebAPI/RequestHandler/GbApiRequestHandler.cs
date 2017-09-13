@@ -2447,5 +2447,18 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetOpenAppointmentSlotsForDoctorByCompanyId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetOpenAppointmentSlotsForDoctorByCompanyId(ForDate, DoctorId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

@@ -657,6 +657,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete By Id
+        public override object Delete(int id)
+        {
+            var EOVisit = _context.EOVisits.Include("CalendarEvent")
+                                           .Where(p => p.ID == id
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .FirstOrDefault();
+
+            BO.EOVisit EOVisitBO = new BO.EOVisit();
+            if (EOVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                EOVisit.CalendarEvent.IsDeleted = false;
+                EOVisit.IsDeleted = false;
+                _context.SaveChanges();
+
+                EOVisitBO = ConvertEOvisit<BO.EOVisit, EOVisit>(EOVisit);
+            }
+
+            return (object)EOVisitBO;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

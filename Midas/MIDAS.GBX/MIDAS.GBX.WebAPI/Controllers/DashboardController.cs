@@ -38,5 +38,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GetStatisticalDataOnPatientVisit(Request, fromDate, toDate, companyId);
         }
+
+        [HttpGet]
+        [Route("getOpenAppointmentSlotsForDoctorByCompanyId/{forDate}/{doctorId}/{companyId}")]
+        public HttpResponseMessage GetOpenAppointmentSlotsForDoctorByCompanyId(DateTime forDate, int doctorId, int companyId)
+        {
+            return requestHandler.GetOpenAppointmentSlotsForDoctorByCompanyId(Request, forDate, doctorId, companyId);
+        }
     }
 }

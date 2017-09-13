@@ -175,9 +175,12 @@ export class PatientBasicComponent implements OnInit {
             })
         })
         let patientLanguagePreferenceMappings: any[] = [];
+        if(this.languagePreference){
         patientLanguagePreferenceMappings.push({
             languagePreferenceId: (this.languagePreference)
         })
+        }
+        
         this.isSavePatientProgress = true;
         let basicFormValues = this.basicform.value;
         let result;
