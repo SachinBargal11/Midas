@@ -90,7 +90,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     SchoolInformationDB.LossOfTime = IsEditMode == true && SchoolInformationBO.LossOfTime == null ? SchoolInformationDB.LossOfTime : SchoolInformationBO.LossOfTime;
                     SchoolInformationDB.DatesOutOfSchool = IsEditMode == true && SchoolInformationBO.DatesOutOfSchool == null ? SchoolInformationDB.DatesOutOfSchool : SchoolInformationBO.DatesOutOfSchool;
                     SchoolInformationDB.Grade = IsEditMode == true && SchoolInformationBO.Grade == null ? SchoolInformationDB.Grade : SchoolInformationBO.Grade;
-                    SchoolInformationDB.Grade = IsEditMode == true && SchoolInformationBO.Grade == null ? SchoolInformationDB.Grade : SchoolInformationBO.Grade;
 
                     if (Add_SchoolInformationDB == true)
                     {

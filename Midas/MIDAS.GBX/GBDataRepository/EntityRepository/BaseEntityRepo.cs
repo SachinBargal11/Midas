@@ -1004,6 +1004,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetOpenAppointmentSlotsForDoctorByCompanyId(DateTime ForDate, int DoctorId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -2767,6 +2767,60 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Doctor Patient Visit For Date By LocationId
+        public override Object GetOpenAppointmentSlotsForDoctorByCompanyId(DateTime ForDate, int DoctorId, int CompanyId)
+        {
+            var CompanyLocations = _context.Locations.Where(p => p.CompanyID == CompanyId
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .Join(_context.DoctorLocationSchedules.Where(p => p.DoctorID == DoctorId
+                                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                                                            l => l.id, dls => dls.LocationID, (l, dls) => l)
+                                                     .Select(p => p.id)
+                                                     .ToList();
+
+            List<BO.PatientVisit> lstPatientVisitForDate = new List<BO.PatientVisit>();
+            using (CalendarEventRepository CalEvntRepo = new CalendarEventRepository(_context))
+            {
+                foreach (var eachLocation in CompanyLocations)
+                {
+                    var ResultFreeSlots = CalEvntRepo.GetFreeSlotsForDoctorByLocationId(DoctorId, eachLocation, ForDate, ForDate.AddDays(1).AddSeconds(-1));
+                    if (ResultFreeSlots is BO.ErrorObject)
+                    {
+                    }
+                    else
+                    {
+                        List<BO.FreeSlots> freeSlots = ResultFreeSlots as List<BO.FreeSlots>;
+
+                        foreach (var eachfreeSlot in freeSlots)
+                        {
+                            foreach (var eachStartAndEndTime in eachfreeSlot.StartAndEndTimes)
+                            {
+                                BO.PatientVisit PatientVisitForDate = new BO.PatientVisit();
+                                PatientVisitForDate.ID = 0;
+                                PatientVisitForDate.CalendarEventId = null;
+                                PatientVisitForDate.CaseId = null;
+                                PatientVisitForDate.PatientId = null;
+                                PatientVisitForDate.LocationId = eachLocation;
+                                PatientVisitForDate.RoomId = null;
+                                PatientVisitForDate.DoctorId = DoctorId;
+                                PatientVisitForDate.SpecialtyId = null;
+                                PatientVisitForDate.EventStart = eachStartAndEndTime.StartTime;
+                                PatientVisitForDate.EventEnd = eachStartAndEndTime.EndTime;
+                                PatientVisitForDate.VisitStatusId = null;
+                                PatientVisitForDate.IsCancelled = null;
+                                PatientVisitForDate.IsDeleted = null;
+
+                                lstPatientVisitForDate.Add(PatientVisitForDate);
+                            }
+                        }
+                    }
+                }
+            }            
+
+            return lstPatientVisitForDate;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
