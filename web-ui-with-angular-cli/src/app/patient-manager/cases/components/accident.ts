@@ -392,7 +392,8 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._notificationsService.success('Success!', 'Accident information updated successfully!');
                 },
                 (error) => {
                     let errString = 'Unable to update accident information.';
@@ -424,7 +425,8 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patients']);
+                    // this._router.navigate(['/patient-manager/patients']);
+                    this._notificationsService.success('Success!', 'Accident information added successfully!');
                 },
                 (error) => {
                     let errString = 'Unable to add accident information.';

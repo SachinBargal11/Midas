@@ -196,7 +196,8 @@ export class PriorAccidentComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patients']);
+                    // this._router.navigate(['/patient-manager/patients']);
+                    this._notificationsService.success('Success!', 'Prior accident/injuries information added successfully');
                 },
                 (error) => {
                     let errString = 'Unable to add prior accident/injuries information.';

@@ -234,7 +234,8 @@ export class CaseBasicComponent implements OnInit {
                                 'createdAt': moment()
                             });
                             this._notificationsStore.addNotification(notification);
-                            this._router.navigate(['../'], { relativeTo: this._route });
+                            // this._router.navigate(['../'], { relativeTo: this._route });
+                            this._notificationsService.success('Success!', 'Case updated successfully!');
                         },
                         (error) => {
                             let errString = 'Unable to update case.';
@@ -254,30 +255,29 @@ export class CaseBasicComponent implements OnInit {
                         });
                 }
 
-                let notification = new Notification({
-                    'title': 'Case updated successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../../'], { relativeTo: this._route });
-                // this._router.navigate(['/patient-manager/cases']);
+                // let notification = new Notification({
+                //     'title': 'Case updated successfully!',
+                //     'type': 'SUCCESS',
+                //     'createdAt': moment()
+                // });
+                // this._notificationsStore.addNotification(notification);
+                // this._notificationsService.success('Success!', 'Case updated successfully!');
             },
-            (error) => {
-                let errString = 'Unable to update case.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
+            // (error) => {
+            //     let errString = 'Unable to update case.';
+            //     let notification = new Notification({
+            //         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            //         'type': 'ERROR',
+            //         'createdAt': moment()
+            //     });
+            //     this.isSaveProgress = false;
+            //     this._notificationsStore.addNotification(notification);
+            //     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            //     this._progressBarService.hide();
+            // },
             () => {
-                this.isSaveProgress = false;
-                this._progressBarService.hide();
+                // this.isSaveProgress = false;
+                // this._progressBarService.hide();
             });
     }
 }

@@ -193,7 +193,8 @@ export class AutoInformationInfoComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/cases']);
+                // this._router.navigate(['/patient-manager/cases']);
+                this._notificationsService.success('Success!', 'Auto Information Added successfully!');
             },
             (error) => {
                 let errString = 'Unable to add Auto Information.';

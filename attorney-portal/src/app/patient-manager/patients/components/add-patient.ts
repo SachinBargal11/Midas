@@ -46,6 +46,8 @@ export class AddPatientComponent implements OnInit {
     url;
     uploadedFilesLicence: any[] = [];
     fileLicence: any[] = [];
+    id: number;
+    
     constructor(
         private _statesStore: StatesStore,
         private fb: FormBuilder,
@@ -80,7 +82,7 @@ export class AddPatientComponent implements OnInit {
                 workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
                 faxNo: [''],
                 alternateEmail: ['', AppValidators.emailValidator],
-                officeExtension:['', [AppValidators.numberValidator,Validators.maxLength(5)]],
+                officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
                 preferredCommunication: [''],
                 emergencyContactPerson: [''],
                 emergencyContactCellPhone: ['']
@@ -205,7 +207,8 @@ export class AddPatientComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patients']);
+                this.id = response.id;
+                this._router.navigate(['patient-manager/patients/' + this.id + '/viewall']);
             },
             (error) => {
                 let errString = 'Unable to add patient.';
