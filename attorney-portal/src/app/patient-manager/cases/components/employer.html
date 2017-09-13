@@ -371,12 +371,22 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <label class="form-label"> Name of School
-                                          
-                                        </label>
+                                    <span class="color-red">*</span>
+                            </label>
+                            <div class="form-group" [class.error]="employerformControls.txtSchoolName.touched && !employerformControls.txtSchoolName.valid">
+                                <input type="text" formControlName="txtSchoolName" [ngModel]="nameOfSchool" [class.error]="!employerformControls.txtSchoolName.valid"
+                                    class="form-control" type="text" placeholder="" />
+                                <div class='error-list' *ngIf="employerformControls.txtSchoolName.touched && !employerformControls.txtSchoolName.valid">
+                                    <ul>
+                                        <li *ngIf="employerformControls.txtSchoolName.hasError('required')">Name of School is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--</label>
                             <div class="form-group">
                                 <input type="text" formControlName="txtSchoolName" [ngModel]="nameOfSchool" class="form-control" type="text" placeholder=""
                                 />
-                            </div>
+                            </div>-->
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label"> Grade

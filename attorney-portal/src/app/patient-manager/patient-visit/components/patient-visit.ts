@@ -128,6 +128,7 @@ export class PatientVisitComponent implements OnInit {
     isProcedureCode: boolean = false;
     cases: Case[];
     selectedVisitType = '1';
+    visitId: number;
     // procedures: Procedure[];
     // selectedProcedures: Procedure[];
     // selectedSpeciality: Speciality;
@@ -976,6 +977,31 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
+    downloadPdf(documentId) {
+        this._progressBarService.show();
+        this._patientVisitsStore.downloadDocumentForm(this.visitId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
     saveVisit() {
         let result;
         let patientVisitFormValues = this.patientVisitForm.value;
@@ -1403,7 +1429,7 @@ export class PatientVisitComponent implements OnInit {
         this.eventDialogVisible = false;
     }
 
-     getDocuments() {
+    getDocuments() {
         // this._progressBarService.show();
         let result;
         if (this.selectedVisit.isPatientVisitType) {

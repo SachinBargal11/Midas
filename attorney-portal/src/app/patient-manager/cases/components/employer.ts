@@ -199,7 +199,7 @@ export class CaseEmployerComponent implements OnInit {
             isAccidentAtEmployment: [''],
             txtDatesOutWork: [''],
             txtHoursPerWeek: [''],
-            txtSchoolName: [''],
+            txtSchoolName: ['', Validators.required],
             txtGrade: [''],
             islossTimeofSchool: [''],
             txtDateOutofSchool: [''],

@@ -562,6 +562,21 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
+    deleteImeVisit(imeVisitDetail: ImeVisit): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/IMEVisit/delete/' + imeVisitDetail.id, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
     deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/delete/' + caseDocument.visitId + '/' + caseDocument.document.documentId, {

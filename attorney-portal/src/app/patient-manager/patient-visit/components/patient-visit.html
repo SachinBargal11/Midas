@@ -314,17 +314,29 @@
                         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
                     </div>
                 </div>
-                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+                <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
                     [globalFilter]="gb" [responsive]="true">
                     <header> List</header>
                     <p-column selectionMode="multiple"></p-column>
-                    <p-column field="document.documentName" header="Document Name" [sortable]="true"></p-column>
-                    <p-column field="createDate" header="Created Date" [sortable]="true">
+                    <p-column field="document.originalResponse.documentName" header="Document Name">
+                        <ng-template let-document="rowData" pTemplate="body">
+                            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+                                <u>{{document.document.originalResponse.documentName}}</u>
+                            </a>
+                        </ng-template>
+                    </p-column>
+                    <p-column field="document.documentType" header="Document Type" [sortable]="true">
+                        <ng-template let-document="rowData.document" pTemplate="body">
+                            {{ document.documentType }}
+                        </ng-template>
+                    </p-column>
+                    <p-column field="document.createDate" header="Created Date" [sortable]="true">
                         <ng-template let-document="rowData.document" pTemplate="body">
                             {{ document.createDate | dateTimeFormat }}
                         </ng-template>
                     </p-column>
                 </p-dataTable>
+                
                 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
                     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
                     <div *ngIf="selectedVisit.isPatientVisitType">

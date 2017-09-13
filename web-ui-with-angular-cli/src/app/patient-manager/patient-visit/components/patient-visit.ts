@@ -150,6 +150,7 @@ export class PatientVisitComponent implements OnInit {
     selectedVisitType = '1';
     selectedEventDate;
     dayRenderer;
+    isVisitTypeDisabled = false;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -465,6 +466,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedTestId = 0;
             this.events = [];
         } else {
+            this.events = [];
             this.loadLocationVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
@@ -1003,6 +1005,7 @@ export class PatientVisitComponent implements OnInit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
         if (eventInstance.isInPast) {
+            this.isVisitTypeDisabled = false;
             if (scheduledEventForInstance.isChangedInstanceOfSeries) {
                 // Edit Existing Single Occurance of Visit
                 patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
@@ -1050,6 +1053,7 @@ export class PatientVisitComponent implements OnInit {
                 }
             }
         } else {
+            this.isVisitTypeDisabled = true;
             patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
                 calendarEvent: scheduledEventForInstance,
                 case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
@@ -1069,6 +1073,7 @@ export class PatientVisitComponent implements OnInit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let eoVisit: EoVisit = <EoVisit>(eventInstance.eventWrapper);
         if (eventInstance.isInPast) {
+            this.isVisitTypeDisabled = false;
             eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
                 calendarEvent: scheduledEventForInstance,
                 doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
@@ -1086,12 +1091,20 @@ export class PatientVisitComponent implements OnInit {
             imeVisit = new ImeVisit(_.extend(imeVisit.toJS(), {
                 calendarEvent: scheduledEventForInstance,
                 case: imeVisit.case ? new Case(_.extend(imeVisit.case.toJS())) : null,
-                // patient: imeVisit.patient ? new Patient(_.extend(imeVisit.patient.toJS(), {
-                //     user: new User(_.extend(imeVisit.patient.user.toJS()))
-                // })) : null
+                patient: imeVisit.patient ? new Patient(_.extend(imeVisit.patient.toJS(), {
+                    user: new User(_.extend(imeVisit.patient.user.toJS()))
+                })) : null
+            }))
+        }
+        else {
+            this.isVisitTypeDisabled = true;
+            imeVisit = new ImeVisit(_.extend(imeVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                case: imeVisit.case ? new Case(_.extend(imeVisit.case.toJS())) : null,
             }))
         }
         return imeVisit;
+
     }
 
     handleEventClick(event) {
@@ -1100,11 +1113,14 @@ export class PatientVisitComponent implements OnInit {
         this.selectedCalEvent = clickedEventInstance;
         let patientVisit: any = (clickedEventInstance.eventWrapper);
         if (patientVisit.isPatientVisitType) {
+            this.selectedVisitType = '1';
             this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
-        } else if (patientVisit.isEoVisitType) {
-            this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
         } else if (patientVisit.isImeVisitType) {
+            this.selectedVisitType = '2';
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
+        } else if (patientVisit.isEoVisitType) {
+            this.selectedVisitType = '3';
+            this.selectedVisit = this._getEoVisitToBeEditedForEventInstance(clickedEventInstance);
         }
         Object.keys(this.patientScheduleForm.controls).forEach(key => {
             this.patientScheduleForm.controls[key].setValidators(null);
@@ -1340,8 +1356,17 @@ export class PatientVisitComponent implements OnInit {
     }
 
     cancelAppointment() {
+        let result;
         this._progressBarService.show();
-        let result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
+        if (this.selectedVisit.isPatientVisitType) {
+            result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
+        }
+        if (this.selectedVisit.isImeVisitType) {
+            result = this._patientVisitsStore.deleteImeVisit(this.selectedVisit);
+        }
+        // if (this.selectedVisit.isEoVisitType) {
+        // let result = this._patientVisitsStore.deleteEoVisit(this.selectedVisit);
+        // }
         result.subscribe(
             (response) => {
                 let notification = new Notification({

@@ -71,7 +71,7 @@
     <div class="row">
         <div class="col-md-2"><label class="form-label">Visit Type<span class="color-red">*</span></label></div>
         <div class="col-md-3">
-            <select [(ngModel)]="selectedVisitType" type="text" class="form-control" placeholder="">
+            <select [disabled]="isVisitTypeDisabled" [(ngModel)]="selectedVisitType" type="text" class="form-control" placeholder="">
             <!--<option value="">-Select -</option>-->
             <option value="1">Patient Visit</option>
             <option value="2">IME Visit</option>
