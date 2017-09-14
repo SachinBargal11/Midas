@@ -1,1 +1,120 @@
-<img src="assets/theme/img/MedicalProvider.jpg" alt="Dashboard" width="1200" height="500">
+<!-- <img src="assets/theme/img/MedicalProvider.jpg" alt="Dashboard" width="1200" height="500"> -->
+<!-- <div class="row">
+    <div class="col-xl-4 dahsboard-column">
+        <section *ngIf="todaysVisits" class="box-typical box-typical-dashboard panel panel-default">
+            <header class="card-header card-header-lg">
+                Appointments      {{todaysVisits.length}}
+            </header>
+            <div class="box-typical-body panel-body" *ngIf="todaysVisits > 0">
+                    <table class="tbl-typical">
+                            <tr>
+                                <th><div>Case Id</div></th>
+                                <th align="center"><div>Visit Date</div></th>
+                            </tr>
+                            <tr *ngFor="let currVisit of todaysVisits">
+                                <td>{{currVisit.caseId}}</td>
+                                <td class="color-blue-grey" nowrap align="center">{{currVisit.eventStart.format('MMMM Do YYYY,h:mm:ss a')}}</td>
+                            </tr>
+                    </table>
+            </div>
+        </section>
+    </div>
+    <div class="col-xl-8 dahsboard-column">
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="card-header card-header-lg">
+                Statistics
+            </header>
+        </section>
+                    <div id="chartdivDetail" [style.width.%]="100" [style.height.px]="350"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 dahsboard-column">
+        <section *ngIf="todaysVisits" class="box-typical box-typical-dashboard panel panel-default">
+            <header class="card-header card-header-lg">
+                Open Appointments Slots
+            </header>
+            <div class="box-typical-body panel-body">
+                    <table class="tbl-typical">
+                            <tr>
+                                <th><div>Case Id</div></th>
+                                <th align="center"><div>Visit Date</div></th>
+                            </tr>
+                            <tr *ngFor="let currVisit of todaysVisits">
+                                <td>{{currVisit.caseId}}</td>
+                                <td class="color-blue-grey" nowrap align="center">{{currVisit.eventStart.format('MMMM Do YYYY,h:mm:ss a')}}</td>
+                            </tr>
+                    </table>
+            </div>
+        </section>
+    </div>
+</div> -->
+<div class="row">
+    <div class="col-lg-7 col-lg-push-5 col-md-12">
+        <div class="row">
+            <div class="col-xl-12 dahsboard-column">
+                <section class="box-typical box-typical-dashboard panel panel-default">
+                    <header class="card-header card-header-lg">
+                        Statistics
+                    </header>
+                </section>
+                <div id="chartdivDetail" [style.width.%]="100" [style.height.px]="350"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 col-lg-pull-7">
+        <div class="row">
+            <section *ngIf="todaysVisits" class="box-typical box-typical-dashboard panel panel-default">
+                <header class="card-header card-header-lg">
+                    Appointments {{todaysVisits.length}}
+                </header>
+                <div class="box-typical-body panel-body" *ngIf="todaysVisits.length > 0">
+                    <table class="tbl-typical">
+                        <tr>
+                            <th>
+                                <div>Case Id</div>
+                            </th>
+                            <th align="center">
+                                <div>Visit Date</div>
+                            </th>
+                        </tr>
+                        <tr *ngFor="let currVisit of todaysVisits">
+                            <td>{{currVisit.caseId}}</td>
+                            <td class="color-blue-grey" nowrap align="center">{{currVisit.eventStart.format('MMMM Do YYYY,h:mm:ss a')}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-typical-body panel-body" *ngIf="todaysVisits.length <= 0">
+                   <td> No appointments</td>
+                </div>
+            </section>
+        </div>
+        <div class="row">
+            <section *ngIf="openAppointmentsOfDoctor" class="box-typical box-typical-dashboard panel panel-default">
+                <header class="card-header card-header-lg">
+                    Open Appointments Slots
+                </header>
+                <div class="box-typical-body panel-body" *ngIf="openAppointmentsOfDoctor.length > 0">
+                    <table class="tbl-typical">
+                        <!-- <tr>
+                            <th>
+                                <div>Case Id</div>
+                            </th>
+                            <th align="center">
+                                <div>Visit Date</div>
+                            </th>
+                        </tr> -->
+                        <tr *ngFor="let currVisit of openAppointmentsOfDoctor">
+                            <!-- <td>{{currVisit.caseId}}</td> -->
+                            <td class="color-blue-grey">{{currVisit.eventStart.format('MMMM Do YYYY,h:mm:ss a')}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-typical-body panel-body" *ngIf="openAppointmentsOfDoctor.length <= 0">
+                    <td>No open appointments slots</td>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

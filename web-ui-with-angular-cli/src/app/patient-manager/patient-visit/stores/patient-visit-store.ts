@@ -583,4 +583,51 @@ export class PatientVisitsStore {
         });
         return <Observable<EoVisit[]>>Observable.fromPromise(promise);
     }
+    
+    //Dashboard APIs
+    getPatientVisitForDateByLocationId(date: any, locationId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitForDateByLocationId(date, locationId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getDoctorPatientVisitForDateByLocationId(date: any, doctorId: number, locationId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getDoctorPatientVisitForDateByLocationId(date, doctorId, locationId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getOpenAppointmentSlotsForDoctorByCompanyId(date: any, doctorId: number): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getOpenAppointmentSlotsForDoctorByCompanyId(date, doctorId, companyId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getStatisticalDataOnPatientVisit(fromDate: any, toDate: any): Observable<any> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getStatisticalDataOnPatientVisit(fromDate, toDate, companyId).subscribe((patientVisits: any) => {
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }

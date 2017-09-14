@@ -785,5 +785,84 @@ export class PatientVisitService {
         });
         return <Observable<EoVisit[]>>Observable.fromPromise(promise);
     }
+
+        
+    //Dashboard APIs
+    getPatientVisitForDateByLocationId(date: any, locationId: number): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let inputDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getPatientVisitForDateByLocationId/' + inputDate + '/' + locationId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getDoctorPatientVisitForDateByLocationId(date: any, doctorId: number, locationId: number): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let inputDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getDoctorPatientVisitForDateByLocationId/' + inputDate + '/' + doctorId + '/' + locationId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getOpenAppointmentSlotsForDoctorByCompanyId(date: any, doctorId: number, companyId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let inputDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getOpenAppointmentSlotsForDoctorByCompanyId/' + inputDate + '/' + doctorId + '/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getStatisticalDataOnPatientVisit(fromDate: any, toDate: any, companyId: number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let inputFromDate = fromDate.format('YYYY-MM-DD');
+            let inputToDate = toDate.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnPatientVisit/' + inputFromDate + '/' + inputToDate + '/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }
 

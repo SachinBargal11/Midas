@@ -57,7 +57,8 @@ export class AppHeaderComponent implements OnInit {
         let accessToken;
         accessToken = this.sessionStore.session.accessToken.replace('bearer ', '');
         $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
-        $.connection.hub.url = this._notificationServerUrl + '/signalr';
+        // $.connection.hub.url = this._notificationServerUrl + '/signalr';
+        $.connection.hub.url = `${environment.NOTIFICATION_SERVER_URL}` + '/signalr';
         $.connection.hub.logging = true;
         var notificationHub = $.connection.hub.proxies['notificationhub'];
 
@@ -66,14 +67,14 @@ export class AppHeaderComponent implements OnInit {
                 return PushNotificationAdapter.parseResponse(currData);
             });
             _.forEach(AppHeaderComponent.prototype.messages.reverse(), (currMessage: PushNotification) => {
-                // if (currMessage.isRead == false) {
+                if (currMessage.isRead == false) {
                     let notification = new Notification({
                         'title': currMessage.message,
                         'type': 'SUCCESS',
                         'createdAt': moment(currMessage.notificationTime)
                     });
                     _notificationsStore.addNotification(notification);
-                // }
+                }
             })
         }
 

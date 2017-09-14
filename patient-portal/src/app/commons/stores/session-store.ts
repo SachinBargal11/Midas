@@ -262,9 +262,6 @@ export class SessionStore {
                     });
             });
         } else {
-            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
-            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
-            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
             new Promise((resolve, reject) => {
                 this._http.get('../../../assets/config.json').map(res => res.json())
                     .subscribe((config: any) => {
@@ -275,6 +272,9 @@ export class SessionStore {
                         environment.IDENTITY_SCOPE = config.identity_scope;
                         environment.CLIENT_ID = config.client_id;
                         resolve(environment);
+                        let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+                        let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+                        let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
                         if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
                             let storedAccountData: any = JSON.parse(storedAccount);
                             let account: Account = AccountAdapter.parseStoredData(storedAccountData);
