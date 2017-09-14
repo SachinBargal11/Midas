@@ -1080,7 +1080,14 @@ export class PatientVisitComponent implements OnInit {
                     // user: new User(_.extend(eoVisit.doctor.user.toJS()))
                 })) : null,
             }));
-        }
+        }else {
+            this.isVisitTypeDisabled = true;
+            eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
+                calendarEvent: scheduledEventForInstance,
+                 doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
+                    // user: new User(_.extend(eoVisit.doctor.user.toJS()))
+                })) : null,
+            }))	
         return eoVisit;
     }
 
@@ -1361,12 +1368,6 @@ export class PatientVisitComponent implements OnInit {
         if (this.selectedVisit.isPatientVisitType) {
             result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
         }
-        if (this.selectedVisit.isImeVisitType) {
-            result = this._patientVisitsStore.deleteImeVisit(this.selectedVisit);
-        }
-        // if (this.selectedVisit.isEoVisitType) {
-        // let result = this._patientVisitsStore.deleteEoVisit(this.selectedVisit);
-        // }
         result.subscribe(
             (response) => {
                 let notification = new Notification({

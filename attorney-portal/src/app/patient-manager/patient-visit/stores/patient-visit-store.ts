@@ -288,6 +288,35 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
+        deleteImeVisit(imeVisitDetail: ImeVisit): Observable<ImeVisit> {
+        let imeVisit = this._imeVisits.getValue();
+        let index = imeVisit.findIndex((currentImeVisit: ImeVisit) => currentImeVisit.id === imeVisitDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deleteImeVisit(imeVisitDetail).subscribe((imeVisitDetail: ImeVisit) => {
+                this._imeVisits.next(imeVisit.delete(index));
+                resolve(imeVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit>>Observable.from(promise);
+    }
+
+    deleteEuoVisit(euoVisitDetail: EoVisit): Observable<EoVisit> {
+        let euoVisit = this._eoVisits.getValue();
+        let index = euoVisit.findIndex((currentEuoVisit: EoVisit) => currentEuoVisit.id === euoVisitDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deleteEuoVisit(euoVisitDetail).subscribe((euoVisitDetail: EoVisit) => {
+                // this._eoVisits.next(euoVisitDetail.delete(index));
+                resolve(euoVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<EoVisit>>Observable.from(promise);
+    }
+
+
     findPatientVisitByCalendarEventId(calendarEventId: number): PatientVisit {
         let patientVisits = this._patientVisits.getValue();
         let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.calendarEventId === calendarEventId);

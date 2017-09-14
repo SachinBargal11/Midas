@@ -39,7 +39,7 @@
                     </label></div>
         <div class="col-md-4">
             <div class="form-group" [class.error]="imeScheduleFormControls.doctorName.touched && !imeScheduleFormControls.doctorName.valid">
-                <input formControlName="doctorName" type="text" class="form-control" [class.error]="!imeScheduleFormControls.doctorName.valid"
+                <input formControlName="doctorName" [ngModel]="doctorName" type="text" class="form-control" [class.error]="!imeScheduleFormControls.doctorName.valid"
                 />
                 <div class='error-list' *ngIf="imeScheduleFormControls.doctorName && imeScheduleFormControls.doctorName.touched && !imeScheduleFormControls.doctorName.valid">
                     <ul>
@@ -186,7 +186,7 @@
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
             <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
-            <!--<button *ngIf="selectedVisit.id" type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>-->
+            <button type="button" class="btn btn-danger" (click)="cancelAppointment()">Cancel Appointment</button>
         </div>
     </div>
 </form>

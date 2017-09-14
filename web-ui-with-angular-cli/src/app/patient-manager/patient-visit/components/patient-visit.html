@@ -376,11 +376,11 @@
     </div>
     <div *ngIf="selectedVisit && selectedVisitType =='2'">
         <br>
-        <ime-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
+        <ime-visit [selectedEvent]="selectedVisit" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
     </div>
     <div *ngIf="selectedVisit && selectedVisitType =='3'">
         <br>
-        <eo-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
+        <eo-visit [selectedEvent]="selectedVisit" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
     </div>
 </p-dialog>
 

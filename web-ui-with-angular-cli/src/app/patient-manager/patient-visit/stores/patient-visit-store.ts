@@ -342,6 +342,20 @@ export class PatientVisitsStore {
         return <Observable<ImeVisit>>Observable.from(promise);
     }
 
+    deleteEuoVisit(euoVisitDetail: EoVisit): Observable<EoVisit> {
+        let euoVisit = this._eoVisits.getValue();
+        let index = euoVisit.findIndex((currentEuoVisit: EoVisit) => currentEuoVisit.id === euoVisitDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deleteEuoVisit(euoVisitDetail).subscribe((euoVisitDetail: EoVisit) => {
+                // this._eoVisits.next(euoVisitDetail.delete(index));
+                resolve(euoVisitDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<EoVisit>>Observable.from(promise);
+    }
+
     findPatientVisitByCalendarEventId(calendarEventId: number): PatientVisit {
         let patientVisits = this._patientVisits.getValue();
         let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.calendarEventId === calendarEventId);

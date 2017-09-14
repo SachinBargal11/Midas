@@ -145,7 +145,7 @@ export class EoVisitComponent implements OnInit {
     insuranceMasters: InsuranceMaster[];
     insuranceProviderId;
     notes = '';
-    selectedVisit;
+    selectedVisit:EoVisit;;
     patientId: number;
 
     // eventRenderer: Function = (event, element) => {
@@ -175,7 +175,7 @@ export class EoVisitComponent implements OnInit {
     // ancillaryProviderId: number = null;
     // allPrefferesAncillaries: AncillaryMaster[];
     // referredBy: string = '';
-    private _selectedEvent: ScheduledEvent;
+    private _selectedEvent: EoVisit;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
@@ -237,22 +237,29 @@ export class EoVisitComponent implements OnInit {
     @Output() isValid = new EventEmitter();
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
     @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
-    @Input() set selectedEvent(value: ScheduledEvent) {
+    @Input() set selectedEvent(value: EoVisit) {
         if (value) {
+            this.selectedVisit = value;
             this._selectedEvent = value;
-            this.name = this._selectedEvent.name;
-            this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
-            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
-            this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-            this.isAllDay = this._selectedEvent.isAllDay;
-            
-            var startTimeString = this._selectedEvent.eventStartAsDate.toLocaleTimeString();
+            this.name = this._selectedEvent.calendarEvent.name;
+            this.eventStartAsDate = this._selectedEvent.calendarEvent.eventStartAsDate;
+            // this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
+            this.eventEndAsDate = this._selectedEvent.calendarEvent.eventEndAsDate;
+            this.isAllDay = this._selectedEvent.calendarEvent.isAllDay;
+
+            var startTimeString = this._selectedEvent.calendarEvent.eventStartAsDate.toLocaleTimeString();
             let startTimeArray = startTimeString.split(':');
             this.setTimeSlot = startTimeArray[0]+':'+startTimeArray[1]+' '+startTimeArray[2].slice(3);
 
-            var endTimeString = this._selectedEvent.eventEndAsDate.toLocaleTimeString();
+            var endTimeString = this._selectedEvent.calendarEvent.eventEndAsDate.toLocaleTimeString();
             let endTimeArray = endTimeString.split(':');
             this.setEndTimeSlot = endTimeArray[0]+':'+endTimeArray[1]+' '+endTimeArray[2].slice(3);
+
+            // this.userName = this._selectedEvent.visitDisplayString();
+            this.patientId = this._selectedEvent.patientId;
+            this.insuranceProviderId = this._selectedEvent.insuranceProviderId;
+            this.notes = this._selectedEvent.notes;
+
         } else {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
@@ -261,7 +268,7 @@ export class EoVisitComponent implements OnInit {
         }
     }
 
-    get selectedEvent(): ScheduledEvent {
+    get selectedEvent(): EoVisit {
         return this._selectedEvent;
     }
 
@@ -413,7 +420,7 @@ export class EoVisitComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this.closeDialog();
-                this.refreshImeEvents();
+                this.refreshEuoEvents();
             },
             (error) => {
                 let errString = 'Unable to add event!';
@@ -488,7 +495,7 @@ export class EoVisitComponent implements OnInit {
         this.selectedCaseId = currentCaseId;
     }
 
-    refreshImeEvents() {
+    refreshEuoEvents() {
         this.refreshEvents.emit();
     }
 
@@ -562,5 +569,38 @@ export class EoVisitComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'Select record to delete');
         }
+    }
+
+    cancelAppointment() {
+        let result;
+        result = this._patientVisitsStore.deleteEuoVisit(this.selectedVisit);
+
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Appointment cancelled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.eventDialogVisible = false;
+                this.closeDialog()
+                this.refreshEuoEvents();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
+            },
+            (error) => {
+                let errString = 'Unable to cancel appointment!';
+                let notification = new Notification({
+                    // 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 }

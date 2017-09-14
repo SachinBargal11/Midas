@@ -66,14 +66,17 @@ export class ImeVisitComponent implements OnInit {
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
     @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
     cases: Case[];
-    private _selectedEvent: ScheduledEvent;
+    // private _selectedEvent: ScheduledEvent;
+    private _selectedEvent: ImeVisit;
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     duration: number;
-    transportProviderId = null;
-    caseId;
+    // transportProviderId = null;
+    caseId:string;
     notes;
-    selectedVisit;
+    selectedVisit:ImeVisit;
+    doctorName:string;
+    transportProviderId:number;
     // @Input() selectedEventDate;
     setTimeSlot: string = '12:00 AM';
     setEndTimeSlot: string = '12:00 AM';
@@ -124,25 +127,50 @@ export class ImeVisitComponent implements OnInit {
         { time: '11:30 PM', id: '22' },
     ];
 
-    @Input() set selectedEvent(value: ScheduledEvent) {
-        if (value) {
-            this._selectedEvent = value;
-            this.name = this._selectedEvent.name;
-            this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
-            this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
-            this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
-            this.isAllDay = this._selectedEvent.isAllDay;
+    // @Input() set selectedEvent(value: ScheduledEvent) {
+    //     if (value) {
+    //         this._selectedEvent = value;
+    //         this.name = this._selectedEvent.name;
+    //         this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
+    //         this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
+    //         this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
+    //         this.isAllDay = this._selectedEvent.isAllDay;
 
-            var startTimeString = this._selectedEvent.eventStartAsDate.toLocaleTimeString();
+    //         var startTimeString = this._selectedEvent.eventStartAsDate.toLocaleTimeString();
+    //         let startTimeArray = startTimeString.split(':');
+    //         this.setTimeSlot = startTimeArray[0] + ':' + startTimeArray[1] + ' ' + startTimeArray[2].slice(3);
+
+    //         var endTimeString = this._selectedEvent.eventEndAsDate.toLocaleTimeString();
+    //         let endTimeArray = endTimeString.split(':');
+    //         this.setEndTimeSlot = endTimeArray[0] + ':' + endTimeArray[1] + ' ' + endTimeArray[2].slice(3);
+    //     }
+    // }
+    @Input() set selectedEvent(value: ImeVisit) {
+        if (value) {
+            this.selectedVisit = value;
+            this._selectedEvent = value;
+            this.name = this._selectedEvent.calendarEvent.name;
+            this.eventStartAsDate = this._selectedEvent.calendarEvent.eventStartAsDate;
+            // this.duration = moment.duration(this._selectedEvent.eventEnd.diff(this._selectedEvent.eventStart)).asMinutes();
+            this.eventEndAsDate = this._selectedEvent.calendarEvent.eventEndAsDate;
+            this.isAllDay = this._selectedEvent.calendarEvent.isAllDay;
+
+            var startTimeString = this._selectedEvent.calendarEvent.eventStartAsDate.toLocaleTimeString();
             let startTimeArray = startTimeString.split(':');
             this.setTimeSlot = startTimeArray[0] + ':' + startTimeArray[1] + ' ' + startTimeArray[2].slice(3);
 
-            var endTimeString = this._selectedEvent.eventEndAsDate.toLocaleTimeString();
+            var endTimeString = this._selectedEvent.calendarEvent.eventEndAsDate.toLocaleTimeString();
             let endTimeArray = endTimeString.split(':');
             this.setEndTimeSlot = endTimeArray[0] + ':' + endTimeArray[1] + ' ' + endTimeArray[2].slice(3);
+
+            this.patientId = this._selectedEvent.patientId;
+            this.caseId = this._selectedEvent.caseId.toString();
+            this.doctorName = this._selectedEvent.doctorName;
+            this.transportProviderId = this._selectedEvent.transportProviderId;
+            this.notes = this._selectedEvent.notes;
+            
         }
     }
-
     constructor(
         public _route: ActivatedRoute,
         private _fb: FormBuilder,
@@ -252,9 +280,9 @@ export class ImeVisitComponent implements OnInit {
         let imeScheduleFormValues = this.imeScheduleForm.value;
         let result;
         let startDate = moment(this.eventStartAsDate).format('YYYY-MM-DD');
-        let startDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventStartTime) ;
+        let startDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventStartTime);
         let endDate = moment(this.eventEndAsDate).format('YYYY-MM-DD');
-        let endDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventEndTime) ;
+        let endDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventEndTime);
         let ime = new ImeVisit({
             patientId: this.imeScheduleForm.value.patientId,
             caseId: this.imeScheduleForm.value.caseId,
@@ -316,18 +344,52 @@ export class ImeVisitComponent implements OnInit {
     handleVisitDialogHide() { }
 
     getDocuments() {
-    this._progressBarService.show();
-    this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
-        .subscribe(document => {
-            this.documents = document;
-        },
+        this._progressBarService.show();
+        this._patientVisitsStore.getDocumentsForImeVisitId(this.selectedVisit.id)
+            .subscribe(document => {
+                this.documents = document;
+            },
 
-        (error) => {
-            this._progressBarService.hide();
-        },
-        () => {
-            this._progressBarService.hide();
-        });
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    cancelAppointment() {
+        let result;
+        // if (this.selectedVisit.isImeVisitType) 
+            result = this._patientVisitsStore.deleteImeVisit(this.selectedVisit);
+
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Appointment cancelled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.eventDialogVisible = false;
+                this.closeDialog()
+                this.refreshImeEvents();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
+            },
+            (error) => {
+                let errString = 'Unable to cancel appointment!';
+                let notification = new Notification({
+                    // 'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     // documentUploadComplete(documents: Document[]) {

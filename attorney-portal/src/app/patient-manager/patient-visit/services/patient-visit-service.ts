@@ -492,7 +492,7 @@ export class PatientVisitService {
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
 
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyVisit/DeleteVisit/' + patientVisitDetail.id, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/attorneyVisit/delete/' + patientVisitDetail.id, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -503,6 +503,36 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
+
+   deleteImeVisit(imeVisitDetail: ImeVisit): Observable<ImeVisit> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/IMEVisit/delete/' + imeVisitDetail.id, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ImeVisit>>Observable.fromPromise(promise);
+    }
+
+    deleteEuoVisit(euoVisitDetail: EoVisit): Observable<EoVisit> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/EOVisit/delete/' + euoVisitDetail.id, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<EoVisit>>Observable.fromPromise(promise);
     }
 
     deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {

@@ -45,7 +45,7 @@
     <div class="row">
         <div class="col-md-2"><label class="form-label">Visit Type<span class="color-red">*</span></label></div>
         <div class="col-md-4">
-            <select [(ngModel)]="selectedVisitType" type="text" class="form-control" placeholder="">
+            <select [disabled]="isVisitTypeDisabled" [(ngModel)]="selectedVisitType" type="text" class="form-control" placeholder="">
             <!--<option value="">-Select -</option>-->
             <option value="1">Client Visit</option>
             <option value="2">IME Visit</option>
@@ -234,11 +234,11 @@
     </div>
     <div *ngIf="selectedVisit && selectedVisitType =='2'">
         <br>
-        <ime-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
+        <ime-visit [selectedEvent]="selectedVisit" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></ime-visit>
     </div>
     <div *ngIf="selectedVisit && selectedVisitType =='3'">
         <br>
-        <eo-visit [selectedEvent]="selectedVisit.calendarEvent" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
+        <eo-visit [selectedEvent]="selectedVisit" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeEventDialog($event)"></eo-visit>
     </div>
 </p-dialog>
 
