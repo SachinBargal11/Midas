@@ -175,6 +175,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             locationDB.LocationType = System.Convert.ToByte(locationBO.LocationType);
             locationDB.IsDefault = locationBO.IsDefault;
             locationDB.IsDeleted = locationBO.IsDeleted.HasValue ? locationBO.IsDeleted : false;
+
+            locationDB.HandicapRamp = locationBO.HandicapRamp;
+            locationDB.StairsToOffice = locationBO.StairsToOffice;
+            locationDB.PublicTransportNearOffice = locationBO.PublicTransportNearOffice;
             #endregion
 
             #region Company
@@ -272,6 +276,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.LocationType = locationBO.LocationType == null ? location.LocationType : System.Convert.ToByte(locationBO.LocationType);
                     location.IsDefault = locationBO.IsDefault;
                     location.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
+
+                    locationDB.HandicapRamp = locationBO.HandicapRamp;
+                    locationDB.StairsToOffice = locationBO.StairsToOffice;
+                    locationDB.PublicTransportNearOffice = locationBO.PublicTransportNearOffice;
+
                     location.UpdateDate = locationBO.UpdateDate;
                     location.UpdateByUserID = locationBO.UpdateByUserID;
                     #endregion

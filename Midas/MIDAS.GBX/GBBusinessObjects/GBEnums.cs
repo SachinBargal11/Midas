@@ -30,11 +30,11 @@ namespace MIDAS.GBX.BusinessObjects
         #endregion
 
         #region Gender
-            public enum Gender
-            {
-                Male = 1,
-                Female = 2
-            }
+        public enum Gender
+        {
+            Male = 1,
+            Female = 2
+        }
         #endregion
 
         #region Tax Type

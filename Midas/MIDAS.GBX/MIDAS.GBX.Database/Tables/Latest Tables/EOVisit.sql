@@ -7,22 +7,25 @@
 )
 BEGIN
 	CREATE TABLE [dbo].[EOVisit]
-	(
-		ID INT IDENTITY(1, 1) PRIMARY KEY,
-		DoctorId INT NULL,
-		MedicalProviderId INT NULL,
-		InsuranceProviderId INT NULL,
-		CalendarEventId INT NOT NULL,
-		VisitStatusId INT NULL,
-		EventStart DATETIME2(7) NULL,
-		EventEnd DATETIME2(7) NULL,
-		Notes NVARCHAR(250) NULL,
-		IsDeleted BIT DEFAULT (0),
-		CreateByUserID INT NOT NULL,
-		CreateDate datetime2(7) NOT NULL,
-		UpdateByUserID INT NULL,
-		UpdateDate datetime2(7) NULL
-	)
+    (
+	    [ID] [int] IDENTITY(1,1) NOT NULL,
+	    [DoctorId] [int] NULL,
+	    [InsuranceProviderId] [int] NULL,
+	    [CalendarEventId] [int] NOT NULL,
+	    [VisitStatusId] [int] NULL,
+	    [EventStart] [datetime2](7) NULL,
+	    [EventEnd] [datetime2](7) NULL,
+	    [Notes] [nvarchar](250) NULL,
+	    [IsDeleted] [bit] NULL DEFAULT ((0)),
+	    [CreateByUserID] [int] NOT NULL,
+	    [CreateDate] [datetime2](7) NOT NULL,
+	    [UpdateByUserID] [int] NULL,
+	    [UpdateDate] [datetime2](7) NULL,
+	    [VisitCreatedByCompanyId] [int] NOT NULL,
+	    [PatientId] [int] NULL,
+        [CaseId] [int] NULL,
+        CONSTRAINT [PK_EOVisit] PRIMARY KEY ([Id])
+    )
 END
 ELSE
 BEGIN
@@ -39,48 +42,11 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_Doctor_DoctorId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	DROP CONSTRAINT FK_EOVisit_Doctor_DoctorId
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT FK_EOVisit_Doctor_DoctorId
 END
 
-ALTER TABLE [dbo].[EOVisit]
-ADD CONSTRAINT FK_EOVisit_Doctor_DoctorId FOREIGN KEY (DoctorId)
-REFERENCES [dbo].[Doctor](id)
-
-
-IF EXISTS
-(
-	SELECT	1
-	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-	WHERE	TABLE_SCHEMA = 'dbo'
-	AND		TABLE_NAME = 'EOVisit'
-	AND		CONSTRAINT_NAME = 'FK_EOVisit_MedicalProvider_MedicalProviderId'
-)
-BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	DROP CONSTRAINT FK_EOVisit_MedicalProvider_MedicalProviderId
-END
-
-ALTER TABLE [dbo].[EOVisit]
-ADD CONSTRAINT FK_EOVisit_MedicalProvider_MedicalProviderId FOREIGN KEY (MedicalProviderId)
-REFERENCES [dbo].[Company](id)
-
---IF EXISTS
---(
---	SELECT	1
---	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
---	WHERE	TABLE_SCHEMA = 'dbo'
---	AND		TABLE_NAME = 'EOVisit'
---	AND		CONSTRAINT_NAME = 'FK_IMEVisit_Insurance_InsuranceProviderId'
---)
---BEGIN
---	ALTER TABLE [dbo].[EOVisit]
---	DROP CONSTRAINT FK_EOVisit_Insurance_InsuranceProviderId
---END
-
---ALTER TABLE [dbo].[EOVisit]
---ADD CONSTRAINT FK_EOVisit_Insurance_InsuranceProviderId FOREIGN KEY (InsuranceProviderId)
---REFERENCES [dbo].[Company] (Id)
+ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT FK_EOVisit_Doctor_DoctorId FOREIGN KEY (DoctorId)
+    REFERENCES [dbo].[Doctor](id)
 
 IF EXISTS
 (
@@ -91,8 +57,7 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_Insurance_InsuranceProviderId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	    DROP CONSTRAINT FK_EOVisit_Insurance_InsuranceProviderId
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT FK_EOVisit_Insurance_InsuranceProviderId
 END
 GO
 
@@ -105,14 +70,11 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_InsuranceMaster_InsuranceProviderId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	    DROP CONSTRAINT FK_EOVisit_InsuranceMaster_InsuranceProviderId
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT FK_EOVisit_InsuranceMaster_InsuranceProviderId
 END
 
 ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT FK_EOVisit_InsuranceMaster_InsuranceProviderId FOREIGN KEY (InsuranceProviderId)
     REFERENCES [dbo].[InsuranceMaster] (Id)
-
-
 
 IF EXISTS
 (
@@ -123,13 +85,11 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_Calender_CalendarEventId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	DROP CONSTRAINT FK_EOVisit_Calender_CalendarEventId
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT FK_EOVisit_Calender_CalendarEventId
 END
 
-ALTER TABLE [dbo].[EOVisit]
-ADD CONSTRAINT FK_EOVisit_Calender_CalendarEventId FOREIGN KEY (CalendarEventId)
-REFERENCES [dbo].[CalendarEvent] (Id)
+ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT FK_EOVisit_Calender_CalendarEventId FOREIGN KEY (CalendarEventId)
+    REFERENCES [dbo].[CalendarEvent] (Id)
 
 
 IF EXISTS
@@ -141,13 +101,11 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_VisitStatus_VisitStatusId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	DROP CONSTRAINT FK_EOVisit_VisitStatus_VisitStatusId
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT FK_EOVisit_VisitStatus_VisitStatusId
 END
 
-ALTER TABLE [dbo].[EOVisit]
-ADD CONSTRAINT FK_EOVisit_VisitStatus_VisitStatusId FOREIGN KEY (VisitStatusId)
-REFERENCES [dbo].[VisitStatus](id)
+ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT FK_EOVisit_VisitStatus_VisitStatusId FOREIGN KEY (VisitStatusId)
+    REFERENCES [dbo].[VisitStatus](id)
 
 IF EXISTS
 (
@@ -158,10 +116,8 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_MedicalProvider_MedicalProviderId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	    DROP CONSTRAINT [FK_EOVisit_MedicalProvider_MedicalProviderId]
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT [FK_EOVisit_MedicalProvider_MedicalProviderId]
 END
-
 
 IF EXISTS
 (
@@ -169,21 +125,62 @@ IF EXISTS
 	FROM	INFORMATION_SCHEMA.COLUMNS
 	WHERE	TABLE_SCHEMA = 'dbo'
 	AND		TABLE_NAME = 'EOVisit'
-	AND		COLUMN_NAME <> 'VisitCreatedByCompanyId'
+	AND		COLUMN_NAME = 'VisitCreatedByCompanyId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit] 
-        ADD [VisitCreatedByCompanyId] INT NULL
+	PRINT 'Table [dbo].[EOVisit] already have a Column [VisitCreatedByCompanyId] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+	ALTER TABLE [dbo].[EOVisit] ADD [VisitCreatedByCompanyId] INT NULL
 
-    UPDATE [dbo].[EOVisit] SET [VisitCreatedByCompanyId] = [MedicalProviderId]
+    --UPDATE [dbo].[EOVisit] SET [VisitCreatedByCompanyId] = [MedicalProviderId]
 
-    ALTER TABLE [dbo].[EOVisit] 
-        ALTER COLUMN [VisitCreatedByCompanyId] INT NOT NULL
+    --ALTER TABLE [dbo].[EOVisit] 
+    --    ALTER COLUMN [VisitCreatedByCompanyId] INT NOT NULL
 
-    ALTER TABLE [dbo].[EOVisit] 
-        DROP COLUMN [MedicalProviderId]
+    --ALTER TABLE [dbo].[EOVisit] 
+    --    DROP COLUMN [MedicalProviderId]
 END
 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'EOVisit'
+	AND		COLUMN_NAME = 'MedicalProviderId'
+)
+BEGIN
+	UPDATE [dbo].[EOVisit] SET [VisitCreatedByCompanyId] = [MedicalProviderId]
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'EOVisit'
+	AND		COLUMN_NAME = 'VisitCreatedByCompanyId'
+)
+BEGIN
+	ALTER TABLE [dbo].[EOVisit] ALTER COLUMN [VisitCreatedByCompanyId] INT NOT NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'EOVisit'
+	AND		COLUMN_NAME = 'MedicalProviderId'
+)
+BEGIN
+	ALTER TABLE [dbo].[EOVisit] DROP COLUMN [MedicalProviderId]
+END
+GO
 
 IF EXISTS
 (
@@ -194,8 +191,7 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_Company_VisitCreatedByCompanyId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	    DROP CONSTRAINT [FK_EOVisit_Company_VisitCreatedByCompanyId]
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT [FK_EOVisit_Company_VisitCreatedByCompanyId]
 END
 
 ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT [FK_EOVisit_Company_VisitCreatedByCompanyId] FOREIGN KEY ([VisitCreatedByCompanyId])
@@ -207,11 +203,14 @@ IF EXISTS
 	FROM	INFORMATION_SCHEMA.COLUMNS
 	WHERE	TABLE_SCHEMA = 'dbo'
 	AND		TABLE_NAME = 'EOVisit'
-	AND		COLUMN_NAME <> 'PatientId'
+	AND		COLUMN_NAME = 'PatientId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit] 
-        ADD [PatientId] INT NULL
+	PRINT 'Table [dbo].[EOVisit] already have a Column [PatientId] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+	ALTER TABLE [dbo].[EOVisit] ADD [PatientId] INT NULL
 END
 
 IF EXISTS
@@ -223,9 +222,58 @@ IF EXISTS
 	AND		CONSTRAINT_NAME = 'FK_EOVisit_Patient_PatientId'
 )
 BEGIN
-	ALTER TABLE [dbo].[EOVisit]
-	    DROP CONSTRAINT [FK_EOVisit_Patient_PatientId]
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT [FK_EOVisit_Patient_PatientId]
 END
+GO
 
 ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT [FK_EOVisit_Patient_PatientId] FOREIGN KEY ([PatientId])
     REFERENCES [dbo].[Patient]([id])
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'EOVisit'
+	AND		COLUMN_NAME = 'CaseId'
+)
+BEGIN
+	PRINT 'Table [dbo].[EOVisit] already have a Column [CaseId] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+	ALTER TABLE [dbo].[EOVisit] ADD [CaseId] INT NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'EOVisit'
+	AND		CONSTRAINT_NAME = 'FK_EOVisit_Case_CaseId'
+)
+BEGIN
+	ALTER TABLE [dbo].[EOVisit] DROP CONSTRAINT [FK_EOVisit_Case_CaseId]
+END
+GO
+
+ALTER TABLE [dbo].[EOVisit] ADD CONSTRAINT [FK_EOVisit_Case_CaseId] FOREIGN KEY ([CaseId])
+    REFERENCES [dbo].[Case]([id])
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'EOVisit'
+	AND		COLUMN_NAME = 'CaseId'
+)
+BEGIN
+	UPDATE [dbo].[EOVisit] SET [CaseId] = (SELECT TOP 1 [Id] FROM [dbo].[Case] WHERE [PatientId] = [dbo].[EOVisit].[PatientId]
+        AND [dbo].[EOVisit].[CaseId] IS NULL AND [dbo].[EOVisit].[PatientId] IS NOT NULL)
+END
+GO

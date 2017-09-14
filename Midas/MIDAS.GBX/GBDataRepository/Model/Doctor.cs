@@ -41,8 +41,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public bool IsCalendarPublic { get; set; }
         public Nullable<byte> TaxTypeId { get; set; }
+        public byte GenderId { get; set; }
     
         public virtual DoctorTaxType DoctorTaxType { get; set; }
+        public virtual Gender Gender { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }

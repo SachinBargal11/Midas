@@ -54,6 +54,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
 
             doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
+            doctorBO.GenderId = doctor.GenderId;
 
             if (doctor.User != null)
             {
@@ -366,18 +367,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         doctorDB = new Doctor();
                     }
-                        #region Doctor
-                        doctorDB.Id = doctorBO.ID;
-                        doctorDB.LicenseNumber = string.IsNullOrEmpty(doctorBO.LicenseNumber) ? doctor.LicenseNumber : doctorBO.LicenseNumber;
-                        doctorDB.WCBAuthorization = string.IsNullOrEmpty(doctorBO.WCBAuthorization) ? doctor.WCBAuthorization : doctorBO.WCBAuthorization;
-                        doctorDB.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
-                        doctorDB.NPI = string.IsNullOrEmpty(doctorBO.NPI) ? doctor.NPI : doctorBO.NPI;
-                        doctorDB.Title = string.IsNullOrEmpty(doctorBO.Title) ? doctor.Title : doctorBO.Title;
-                        doctorDB.TaxTypeId = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxTypeId) : System.Convert.ToByte(doctorBO.TaxType);
-                        doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
-                        doctorDB.UpdateDate = doctorBO.UpdateDate;
-                        doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
-                        doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
+                    #region Doctor
+                    doctorDB.Id = doctorBO.ID;
+                    doctorDB.LicenseNumber = string.IsNullOrEmpty(doctorBO.LicenseNumber) ? doctor.LicenseNumber : doctorBO.LicenseNumber;
+                    doctorDB.WCBAuthorization = string.IsNullOrEmpty(doctorBO.WCBAuthorization) ? doctor.WCBAuthorization : doctorBO.WCBAuthorization;
+                    doctorDB.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
+                    doctorDB.NPI = string.IsNullOrEmpty(doctorBO.NPI) ? doctor.NPI : doctorBO.NPI;
+                    doctorDB.Title = string.IsNullOrEmpty(doctorBO.Title) ? doctor.Title : doctorBO.Title;
+                    doctorDB.TaxTypeId = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxTypeId) : System.Convert.ToByte(doctorBO.TaxType);
+                    doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
+                    doctorDB.UpdateDate = doctorBO.UpdateDate;
+                    doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
+                    doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
+                    doctorDB.GenderId = doctorBO.GenderId;
                     #endregion
                     // doctorDB = doctor;                                
                     // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
@@ -403,6 +405,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB.CreateDate = doctorBO.CreateDate;
                     doctorDB.CreateByUserID = doctorBO.CreateByUserID;
                     doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
+                    doctorDB.GenderId = doctorBO.GenderId;
 
                     _dbSet.Add(doctorDB);
                 }

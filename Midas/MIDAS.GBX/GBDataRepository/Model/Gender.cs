@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Gender()
         {
+            this.Doctors = new HashSet<Doctor>();
             this.PatientFamilyMembers = new HashSet<PatientFamilyMember>();
         }
     
@@ -24,6 +25,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public string GenderText { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Doctor> Doctors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientFamilyMember> PatientFamilyMembers { get; set; }
     }

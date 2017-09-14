@@ -1802,36 +1802,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .Select(p => /*p.Company1*/new
                                                        {
-                                                           p.Company1.id,
-                                                           p.Company1.Status,
-                                                           p.Company1.Name,
-                                                           p.Company1.CompanyType,
+                                                           id = p.Company1.id,
+                                                           status = p.Company1.Status,
+                                                           name = p.Company1.Name,
+                                                           companyType = p.Company1.CompanyType,
                                                            //p.Company1.SubscriptionPlanType,
                                                            //p.Company1.CompanyStatusTypeID,
                                                            //p.Company1.TaxID,
-                                                           p.Company1.IsDeleted,
+                                                           isDeleted = p.Company1.IsDeleted,
                                                            //p.Company1.CreateByUserID,
                                                            //p.Company1.CreateDate,
                                                            //p.Company1.UpdateByUserID,
                                                            //p.Company1.UpdateDate,
 
-                                                           companyType1 = new { p.Company1.CompanyType1.id, p.Company1.CompanyType1.Name, p.Company1.CompanyType1.IsDeleted },
-                                                           CompanyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
+                                                           companyType1 = new
+                                                           {
+                                                               id = p.Company1.CompanyType1.id,
+                                                               name = p.Company1.CompanyType1.Name,
+                                                               isDeleted = p.Company1.CompanyType1.IsDeleted
+                                                           },
+                                                           companyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
                                                                                                             && ccca.CompanyId == p.Company1.id
                                                                                                             && (ccca.IsDeleted.HasValue == false || (ccca.IsDeleted.HasValue == true && ccca.IsDeleted.Value == false)))
-                                                                                                         .Select(ccca => new {
-                                                                                                             ccca.Id, ccca.CaseId, ccca. CompanyId, ccca.ConsentGivenTypeId, ccca.IsDeleted
+                                                                                                         .Select(ccca => new
+                                                                                                         {
+                                                                                                             id = ccca.Id,
+                                                                                                             caseId = ccca.CaseId,
+                                                                                                             companyId = ccca. CompanyId,
+                                                                                                             consentGivenTypeId = ccca.ConsentGivenTypeId,
+                                                                                                             isDeleted = ccca.IsDeleted
                                                                                                          })
                                                                                                          .FirstOrDefault(),
-                                                           CaseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
+                                                           caseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
                                                                                                             && cccd.CompanyId == p.Company1.id
                                                                                                             && (cccd.IsDeleted.HasValue == false || (cccd.IsDeleted.HasValue == true && cccd.IsDeleted.Value == false)))
-                                                                                                          .Select(cccd => new {
-                                                                                                              cccd.Id, cccd.CaseId, cccd.CompanyId, cccd.DocumentName, cccd.DocumentType, cccd.MidasDocumentId, cccd.IsDeleted
+                                                                                                          .Select(cccd => new
+                                                                                                          {
+                                                                                                              id = cccd.Id,
+                                                                                                              caseId = cccd.CaseId,
+                                                                                                              companyId = cccd.CompanyId,
+                                                                                                              documentName = cccd.DocumentName,
+                                                                                                              documentType = cccd.DocumentType,
+                                                                                                              midasDocumentId = cccd.MidasDocumentId,
+                                                                                                              isDeleted = cccd.IsDeleted
                                                                                                           })
                                                                                                           .FirstOrDefault(),
 
-                                                           p.CaseId
+                                                           caseId = p.CaseId
                                                        });
             //.Include("CompanyType1");
 
@@ -1839,46 +1856,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .Select(p => /*p.Company1*/new
                                              {
-                                                 p.Company1.id,
-                                                 p.Company1.Status,
-                                                 p.Company1.Name,
-                                                 p.Company1.CompanyType,
+                                                 id = p.Company1.id,
+                                                 status = p.Company1.Status,
+                                                 name = p.Company1.Name,
+                                                 companyType = p.Company1.CompanyType,
                                                  //p.Company1.SubscriptionPlanType,
                                                  //p.Company1.CompanyStatusTypeID,
                                                  //p.Company1.TaxID,
-                                                 p.Company1.IsDeleted,
+                                                 isDeleted = p.Company1.IsDeleted,
                                                  //p.Company1.CreateByUserID,
                                                  //p.Company1.CreateDate,
                                                  //p.Company1.UpdateByUserID,
                                                  //p.Company1.UpdateDate,
 
-                                                 companyType1 = new { p.Company1.CompanyType1.id, p.Company1.CompanyType1.Name, p.Company1.CompanyType1.IsDeleted },
-                                                 CompanyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
+                                                 companyType1 = new
+                                                 {
+                                                     id = p.Company1.CompanyType1.id,
+                                                     name = p.Company1.CompanyType1.Name,
+                                                     isDeleted = p.Company1.CompanyType1.IsDeleted
+                                                 },
+                                                 companyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
                                                                                                             && ccca.CompanyId == p.Company1.id
                                                                                                             && (ccca.IsDeleted.HasValue == false || (ccca.IsDeleted.HasValue == true && ccca.IsDeleted.Value == false)))
-                                                                                                         .Select(ccca => new {
-                                                                                                             ccca.Id,
-                                                                                                             ccca.CaseId,
-                                                                                                             ccca.CompanyId,
-                                                                                                             ccca.ConsentGivenTypeId,
-                                                                                                             ccca.IsDeleted
+                                                                                                         .Select(ccca => new
+                                                                                                         {
+                                                                                                             id = ccca.Id,
+                                                                                                             caseId = ccca.CaseId,
+                                                                                                             companyId = ccca.CompanyId,
+                                                                                                             consentGivenTypeId = ccca.ConsentGivenTypeId,
+                                                                                                             isDeleted = ccca.IsDeleted
                                                                                                          })
                                                                                                          .FirstOrDefault(),
-                                                 CaseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
+                                                 caseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
                                                                                                   && cccd.CompanyId == p.Company1.id
                                                                                                   && (cccd.IsDeleted.HasValue == false || (cccd.IsDeleted.HasValue == true && cccd.IsDeleted.Value == false)))
-                                                                                                          .Select(cccd => new {
-                                                                                                              cccd.Id,
-                                                                                                              cccd.CaseId,
-                                                                                                              cccd.CompanyId,
-                                                                                                              cccd.DocumentName,
-                                                                                                              cccd.DocumentType,
-                                                                                                              cccd.MidasDocumentId,
-                                                                                                              cccd.IsDeleted
+                                                                                                          .Select(cccd => new
+                                                                                                          {
+                                                                                                              id = cccd.Id,
+                                                                                                              caseId = cccd.CaseId,
+                                                                                                              companyId = cccd.CompanyId,
+                                                                                                              documentName = cccd.DocumentName,
+                                                                                                              documentType = cccd.DocumentType,
+                                                                                                              midasDocumentId = cccd.MidasDocumentId,
+                                                                                                              isDeleted = cccd.IsDeleted
                                                                                                           })
                                                                                                           .FirstOrDefault(),
 
-                                                 p.CaseId
+                                                 caseId = p.CaseId
                                              });
                                              //.Include("CompanyType1");
 
@@ -1920,9 +1944,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                      .Join(_context.Users.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
                                                            caseandpatient => caseandpatient.PatientId, u => u.id, (caseandpatient, u) => new
                                                            {
-                                                               CaseId = caseandpatient.CaseId,
-                                                               PatientId = caseandpatient.PatientId,
-                                                               CaseAndPatientName = caseandpatient.CaseId + " - " + u.FirstName + " " + u.LastName
+                                                               caseId = caseandpatient.CaseId,
+                                                               patientId = caseandpatient.PatientId,
+                                                               caseAndPatientName = caseandpatient.CaseId + " - " + u.FirstName + " " + u.LastName
                                                            })
                                                      .ToList();
 

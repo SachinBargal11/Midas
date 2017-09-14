@@ -39,6 +39,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public bool HandicapRamp { get; set; }
+        public bool StairsToOffice { get; set; }
+        public bool PublicTransportNearOffice { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual Company Company { get; set; }
