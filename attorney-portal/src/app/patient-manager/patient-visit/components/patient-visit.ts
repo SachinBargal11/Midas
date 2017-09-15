@@ -956,11 +956,12 @@ export class PatientVisitComponent implements OnInit {
             this.getDocuments();
             this.visitDialogVisible = true;
         } else {
-            if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
-                this.confirmEditingEventOccurance();
-            } else {
-                this.eventDialogVisible = true;
-            }
+            // if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
+            //     this.confirmEditingEventOccurance();
+            // } else {
+            //     this.eventDialogVisible = true;
+            // }
+            this.eventDialogVisible = true;
         }
     }
 
@@ -1621,5 +1622,40 @@ export class PatientVisitComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
+    }
+
+    cancelAppointment() {
+        let result;
+        this._progressBarService.show();
+        if (this.selectedVisit.isPatientVisitType) {
+            result = this._patientVisitsStore.deletePatientVisit(this.selectedVisit);
+        }
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Appointment cancelled successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.eventDialogVisible = false;
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
+            },
+            (error) => {
+                let errString = 'Unable to cancel appointment!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._confirmationDialog.hide();
     }
 }
