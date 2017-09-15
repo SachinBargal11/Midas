@@ -1009,6 +1009,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetDoctors<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

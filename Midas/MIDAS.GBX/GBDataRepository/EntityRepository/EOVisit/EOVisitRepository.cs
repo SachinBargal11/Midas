@@ -672,8 +672,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                EOVisit.CalendarEvent.IsDeleted = false;
-                EOVisit.IsDeleted = false;
+                EOVisit.CalendarEvent.IsDeleted = true;
+                EOVisit.IsDeleted = true;
                 _context.SaveChanges();
 
                 EOVisitBO = ConvertEOvisit<BO.EOVisit, EOVisit>(EOVisit);
