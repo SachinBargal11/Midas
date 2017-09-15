@@ -1868,7 +1868,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                                           .FirstOrDefault(),
 
                                                            caseId = p.CaseId
-                                                       });
+                                                       })
+                                                       .ToList();
             //.Include("CompanyType1");
 
             var company2 = _context.Referrals.Where(p => openCases.Contains(p.CaseId)
@@ -1922,7 +1923,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                                           .FirstOrDefault(),
 
                                                  caseId = p.CaseId
-                                             });
+                                             })
+                                             .ToList();
                                              //.Include("CompanyType1");
 
             if (company1 == null && company2 == null)

@@ -2556,7 +2556,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("Patient")
                                             .Include("Patient.User")
                                             .Where(p => p.DoctorId == doctorId && p.Location.CompanyID == CompanyId
-                                             &&  (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                                                    &&  (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .ToList();
 
             if (patientVisit == null)
             {
@@ -2583,7 +2584,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                      .Include("Patient")
                                                      .Include("Patient.User")
                                                      .Where(p => p.LocationId == LocationId
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .ToList();
 
             if (patientVisit == null)
             {
@@ -2650,7 +2652,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                      .Include("Patient")
                                                      .Include("Patient.User")
                                                      .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .ToList();
 
             if (patientVisit == null)
             {
@@ -2720,7 +2723,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                      .Include("Patient.User")
                                                      .Where(p => p.EventStart >= FromDate && p.EventStart < ToDate
                                                             && CompanyLocations.Contains(p.LocationId) == true
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .ToList();
 
             
             List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
@@ -2735,12 +2739,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var Referrals = _context.Referrals.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
                                                     && (p.FromCompanyId == CompanyId || p.ToCompanyId == CompanyId)
-                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .ToList();
 
             List<BO.Referral> lstReferral = new List<BO.Referral>();
             foreach (var item in Referrals)
             {
-                lstReferral.Add(Convert<BO.Referral, Referral>(item));
+                ReferralRepository ReferralRepo = new ReferralRepository(_context);
+                lstReferral.Add(ReferralRepo.Convert<BO.Referral, Referral>(item));
             }
 
             ReferralsInbound = lstReferral.Where(p => p.ToCompanyId == CompanyId).Count();
