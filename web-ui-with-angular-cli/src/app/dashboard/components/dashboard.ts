@@ -21,6 +21,7 @@ import { AmChartsService } from "@amcharts/amcharts3-angular";
 @Component({
     selector: 'dashboard',
     templateUrl: './dashboard.html',
+    styleUrls: ['./dashboard.component.scss']
 })
 
 export class DashboardComponent {
@@ -33,7 +34,8 @@ export class DashboardComponent {
     statisticData: any;
 
     chartDetail: any;
-    doctorId = this._sessionStore.session.user.id;
+    doctorId = this.sessionStore.session.user.id;
+    selectedOption = '1';
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -41,16 +43,16 @@ export class DashboardComponent {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private AmCharts: AmChartsService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _patientVisitStore: PatientVisitsStore
     ) {
-        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             let currDate = moment();
-            let startDate = moment().subtract(1, 'years');
+            // this.getStatisticalDataOnPatientVisit(currDate, currDate);
+            this.filterStatistics(this.selectedOption);
             this.loadLocationByCompany();
-            this.getStatisticalDataOnPatientVisit(startDate, currDate);
-            if (this._sessionStore.isOnlyDoctorRole()) {
+            if (this.sessionStore.isOnlyDoctorRole()) {
                 this.loadOpenAppointmentSlotsForDoctor(currDate, this.doctorId)
             } else {
             }
@@ -58,11 +60,10 @@ export class DashboardComponent {
     }
     ngOnInit() {
         let currDate = moment();
-        // let startDate = moment().subtract(1, 'months');
-        let startDate = moment().subtract(1, 'years');
         this.loadLocationByCompany();
-        this.getStatisticalDataOnPatientVisit(startDate, currDate);
-        if (this._sessionStore.isOnlyDoctorRole()) {
+        // this.getStatisticalDataOnPatientVisit(currDate, currDate);
+        this.filterStatistics(this.selectedOption);
+        if (this.sessionStore.isOnlyDoctorRole()) {
             this.loadOpenAppointmentSlotsForDoctor(currDate, this.doctorId)
         } else {
         }
@@ -72,7 +73,7 @@ export class DashboardComponent {
             .subscribe((locationDetails: LocationDetails[]) => {
                 this.locations = locationDetails;
                 let currDate = moment();
-                if (this._sessionStore.isOnlyDoctorRole()) {
+                if (this.sessionStore.isOnlyDoctorRole()) {
                     this.getDoctorPatientVisitForDateByLocationId(currDate, this.doctorId, this.locations[0].location.id);
                 } else {
                     this.loadVisitsByDateAndLocation(currDate, this.locations[0].location.id);
@@ -87,7 +88,7 @@ export class DashboardComponent {
     loadVisitsByDateAndLocation(currDate, locationId) {
         this._patientVisitStore.getPatientVisitForDateByLocationId(currDate, locationId)
             .subscribe((todaysVisits: PatientVisit[]) => {
-                this.todaysVisits = todaysVisits;
+                this.todaysVisits = _.first(todaysVisits, 5);
             },
             (error) => {
             },
@@ -98,7 +99,7 @@ export class DashboardComponent {
     getDoctorPatientVisitForDateByLocationId(currDate, doctorId, locationId) {
         this._patientVisitStore.getDoctorPatientVisitForDateByLocationId(currDate, doctorId, locationId)
             .subscribe((todaysVisits: PatientVisit[]) => {
-                this.todaysVisits = todaysVisits;
+                this.todaysVisits = _.first(todaysVisits, 5);
             },
             (error) => {
             },
@@ -110,7 +111,7 @@ export class DashboardComponent {
     loadOpenAppointmentSlotsForDoctor(currDate, doctorId) {
         this._patientVisitStore.getOpenAppointmentSlotsForDoctorByCompanyId(currDate, doctorId)
             .subscribe((openAppointmentsOfDoctor: PatientVisit[]) => {
-                this.openAppointmentsOfDoctor = openAppointmentsOfDoctor;
+                this.openAppointmentsOfDoctor = _.first(openAppointmentsOfDoctor, 5);
             },
             (error) => {
             },
@@ -128,6 +129,43 @@ export class DashboardComponent {
             },
             () => {
             });
+    }
+
+    filterStatistics(event) {
+        // this.selectedOption = event.target.value;
+        if (this.selectedOption == '1') {
+            let startDate = moment();
+            let endDate = moment();
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
+        } else if (this.selectedOption == '2') {
+            let startDate = moment().startOf('week');
+            let endDate = moment().endOf('week');
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
+        } else if (this.selectedOption == '3') {
+            let startDate = moment().startOf('month');
+            let endDate = moment().endOf('month');
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
+        } else if (this.selectedOption == '4') {
+            let startDate = moment().startOf('quarter');
+            let endDate = moment().endOf('quarter');
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
+        } else if (this.selectedOption == '5') {
+            let currQuarter = moment().quarter();
+            let startOfYear = moment().startOf('year');
+            if (currQuarter <= 2) {
+                let secondQuarter = moment(startOfYear).quarter(2);
+                let endDate = moment(secondQuarter).endOf('quarter');
+                this.getStatisticalDataOnPatientVisit(startOfYear, endDate);
+            } else if (currQuarter > 2) {
+                let startDate = moment(startOfYear).quarter(3);
+                let endDate = moment().endOf('year');
+                this.getStatisticalDataOnPatientVisit(startDate, endDate);
+            }
+        } else if (this.selectedOption == '6') {
+            let startDate = moment().startOf('year');
+            let endDate = moment().endOf('year');
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
+        }
     }
 
     showStatisticDataChart(fromDate: any, toDate: any) {

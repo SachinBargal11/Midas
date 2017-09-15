@@ -1088,6 +1088,7 @@ export class PatientVisitComponent implements OnInit {
                     // user: new User(_.extend(eoVisit.doctor.user.toJS()))
                 })) : null,
             }))	
+        }
         return eoVisit;
     }
 
@@ -1111,7 +1112,6 @@ export class PatientVisitComponent implements OnInit {
             }))
         }
         return imeVisit;
-
     }
 
     handleEventClick(event) {
