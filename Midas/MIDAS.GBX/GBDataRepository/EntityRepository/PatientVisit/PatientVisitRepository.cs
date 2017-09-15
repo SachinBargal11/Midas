@@ -2020,9 +2020,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                             && p.IsOutOfOffice == false
                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                               .Join(_context.Users, p1 => p1.PatientId, p2 => p2.id, (p1, p2) => new {
-                                                                  CaseId = p1.CaseId.Value,
-                                                                  PatientName = p2.FirstName + " " + p2.LastName,
-                                                                  VisitDate = p1.EventStart.Value
+                                                                  caseId = p1.CaseId.Value,
+                                                                  patientName = p2.FirstName + " " + p2.LastName,
+                                                                  visitDate = p1.EventStart.Value
                                                               })
                                                               .ToList();
 
@@ -2033,15 +2033,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                    && p.IsOutOfOffice == false
                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                               .Join(_context.Users, p1 => p1.PatientId, p2 => p2.id, (p1, p2) => new {
-                                                                  CaseId = p1.CaseId.Value,
-                                                                  PatientName = p2.FirstName + " " + p2.LastName,
-                                                                  CalendarEvent = p1.CalendarEvent
+                                                                  caseId = p1.CaseId.Value,
+                                                                  patientName = p2.FirstName + " " + p2.LastName,
+                                                                  calendarEvent = p1.CalendarEvent
                                                               })
                                                               .ToList();
 
             foreach (var eachItem in PatientCalendarEvents)
             {
-                CalendarEvent eachEvent = eachItem.CalendarEvent;
+                CalendarEvent eachEvent = eachItem.calendarEvent;
 
                 if (eachEvent.IsDeleted.HasValue == false || (eachEvent.IsDeleted.HasValue == true && eachEvent.IsDeleted.Value == false))
                 {
@@ -2147,13 +2147,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     var Occurrence = newEventOccurrences.Select(p => new
                     {
-                        eachItem.CaseId,
-                        eachItem.PatientName,
+                        eachItem.caseId,
+                        eachItem.patientName,
                         //VisitDate = p.Period.StartTime.AddMinutes(intTimeZone).Value
-                        VisitDate = p.Period.StartTime.Value
-                    }).ToList().Distinct().OrderBy(p => p.VisitDate).ToList();
+                        visitDate = p.Period.StartTime.Value
+                    }).ToList().Distinct().OrderBy(p => p.visitDate).ToList();
 
-                    PatientVisitCompleted.AddRange(Occurrence.Where(p => (p.VisitDate >= FromDate && p.VisitDate < ToDate) && p.VisitDate >= currentDate));
+                    PatientVisitCompleted.AddRange(Occurrence.Where(p => (p.visitDate >= FromDate && p.visitDate < ToDate) && p.visitDate >= currentDate));
                 }
             }
 
@@ -2162,7 +2162,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No visits found for these Date range.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            return PatientVisitCompleted.Distinct().OrderBy(p => p.VisitDate);
+            return PatientVisitCompleted.Distinct().OrderBy(p => p.visitDate);
         }
         #endregion
 
@@ -2431,9 +2431,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                (vt.IsDeleted.HasValue == false || (vt.IsDeleted.HasValue == true && vt.IsDeleted.Value == false))
                                select new
                                {
-                                    vt.Id,
-                                    vt.Name,
-                                    vt.Description
+                                   id = vt.Id,
+                                   name = vt.Name,
+                                   description = vt.Description
                                };
 
            var lstalltype =  allVisitType.ToList();

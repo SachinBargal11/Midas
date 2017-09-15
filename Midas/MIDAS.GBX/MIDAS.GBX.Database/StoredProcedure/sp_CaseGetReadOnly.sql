@@ -68,24 +68,24 @@ BEGIN
         WHERE tblCaseCompanyMapping.[CompanyId] = @CompanyId;
 
     SELECT 
-            [CaseId] = tblCase.Id,
-            [PatientId] = tblCase.PatientId,
-            [OriginatorCompanyId] = @OriginatorCompanyId,
-            [OriginatorCompanyName] = @OriginatorCompanyName,
-            [PatientName] = tblUser.[FirstName] + ' ' + tblUser.[MiddleName] + ' ' + tblUser.[LastName],
-            [CaseTypeText] = tblCaseType.[CaseTypeText],
-            [CaseStatusText] = tblCaseStatus.[CaseStatusText],
+            [caseId] = tblCase.Id,
+            [patientId] = tblCase.PatientId,
+            [originatorCompanyId] = @OriginatorCompanyId,
+            [originatorCompanyName] = @OriginatorCompanyName,
+            [patientName] = tblUser.[FirstName] + ' ' + tblUser.[MiddleName] + ' ' + tblUser.[LastName],
+            [caseTypeText] = tblCaseType.[CaseTypeText],
+            [caseStatusText] = tblCaseStatus.[CaseStatusText],
             --[LocationName] = tblLocation.[Name],
-            [CarrierCaseNo] = tblCase.[CarrierCaseNo],
-            [CompanyName] = @CompanyName,
-            [CaseSource] = (CASE WHEN @OriginatorCompanyId = @CompanyId THEN tblCase.[CaseSource] ELSE @CaseSource END),
-            [MedicalProvider] = @MedicalProvider,
-            [AttorneyProvider] = @AttorneyProvider,
-            [ClaimFileNumber] = tblCase.ClaimFileNumber,
-            [CreateByUserID] = tblCase.CreateByUserID,
-            [CreateDate] = tblCase.CreateDate,
-            [UpdateByUserID] = tblCase.UpdateByUserID,
-            [UpdateDate] = tblCase.UpdateDate
+            [carrierCaseNo] = tblCase.[CarrierCaseNo],
+            [companyName] = @CompanyName,
+            [caseSource] = (CASE WHEN @OriginatorCompanyId = @CompanyId THEN tblCase.[CaseSource] ELSE @CaseSource END),
+            [medicalProvider] = @MedicalProvider,
+            [attorneyProvider] = @AttorneyProvider,
+            [claimFileNumber] = tblCase.ClaimFileNumber,
+            [createByUserID] = tblCase.CreateByUserID,
+            [createDate] = tblCase.CreateDate,
+            [updateByUserID] = tblCase.UpdateByUserID,
+            [updateDate] = tblCase.UpdateDate
         FROM [dbo].[Case] tblCase
         INNER JOIN [dbo].[User] tblUser
             ON tblCase.[PatientId] = tblUser.[Id]

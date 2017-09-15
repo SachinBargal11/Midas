@@ -105,28 +105,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 MultipleDoctors = AllDoctors;
             }
 
-            //var SearchDoctorsList = _context.Doctors.Where(p => (DoYouNeedTransportionDoctors == null || ((DoYouNeedTransportionDoctors != null && DoYouNeedTransportionDoctors.Contains(p.Id) == true)))
-            //                                            && (GenderIdDoctors == null || ((GenderIdDoctors != null && GenderIdDoctors.Contains(p.Id) == true)))
-            //                                            && (PatientNeedsDoctors == null || ((PatientNeedsDoctors != null && PatientNeedsDoctors.Contains(p.Id) == true)))
-            //                                            && (MultipleDoctors == null || ((MultipleDoctors != null && MultipleDoctors.Contains(p.Id) == true)))
-            //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                                        .Select(p => new {
-            //                                            id = p.Id,
-            //                                            title = p.Title,
-            //                                            genderId = p.GenderId                                                                                                                                                                        
-            //                                        }).ToList();
-
             var SearchDoctorsList = _context.Doctors.Where(p => DoYouNeedTransportionDoctors.Contains(p.Id) == true
                                                         && GenderIdDoctors.Contains(p.Id) == true
                                                         && PatientNeedsDoctors.Contains(p.Id) == true
                                                         && MultipleDoctors.Contains(p.Id) == true
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                    .Select(p => new
-                                                    {
-                                                        id = p.Id,
-                                                        title = p.Title,
-                                                        genderId = p.GenderId
-                                                    }).ToList();
+                                                    .Join(_context.Users.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)), 
+                                                        dt => dt.Id, usr => usr.id, (dt, usr) => new {
+                                                            id = dt.Id,
+                                                            title = dt.Title,
+                                                            genderId = dt.GenderId,
+                                                            firstName = usr.FirstName,
+                                                            middleName = usr.MiddleName,
+                                                            lastName = usr.LastName
+                                                        })
+                                                    .ToList();
 
             return (object)SearchDoctorsList;
         }
