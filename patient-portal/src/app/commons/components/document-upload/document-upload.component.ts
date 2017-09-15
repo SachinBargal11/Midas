@@ -167,6 +167,7 @@ export class DocumentUploadComponent implements OnInit {
         param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "0","ObjectId":"' + this.objectId + '"}';
       }
       event.xhr.setRequestHeader("inputjson", param);
+      event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
     }
     else {
       this.uploadError.emit(new Error('Please select document Type'));
