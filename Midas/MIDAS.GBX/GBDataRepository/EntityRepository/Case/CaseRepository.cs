@@ -1563,7 +1563,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (CaseReadOnly != null && CaseReadOnly.Count() > 0)
             {
-                return CaseReadOnly.FirstOrDefault();
+                return CaseReadOnly.Select(p => new
+                {
+                    caseId = p.CaseId,
+                    patientId = p.PatientId,
+                    originatorCompanyId = p.OriginatorCompanyId,
+                    originatorCompanyName = p.OriginatorCompanyName,
+                    patientName = p.PatientName,
+                    caseTypeText = p.CaseTypeText,
+                    caseStatusText = p.CaseStatusText,
+                    carrierCaseNo = p.CarrierCaseNo,
+                    companyName = p.CompanyName,
+                    caseSource = p.CaseSource,
+                    medicalProvider = p.MedicalProvider,
+                    attorneyProvider = p.AttorneyProvider,
+                    claimFileNumber = p.ClaimFileNumber,
+                    createByUserID = p.CreateByUserID,
+                    createDate = p.CreateDate,
+                    updateByUserID = p.UpdateByUserID,
+                    updateDate = p.UpdateDate
+                }).FirstOrDefault();
             }
             else
             {
