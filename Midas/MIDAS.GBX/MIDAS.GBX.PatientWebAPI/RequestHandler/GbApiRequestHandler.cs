@@ -477,7 +477,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
 
         public HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId)
         {
-            var objResult = dataAccessManager.GetByCaseId(CaseId);
+            var objResult = (GbObject)dataAccessManager.GetByCaseId(CaseId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

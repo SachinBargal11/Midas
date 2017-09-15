@@ -36,10 +36,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.SearchDoctors searchDoctors = (BO.SearchDoctors)(object)entity;
 
-            var AllDoctors = _context.Doctors.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false));
+            IQueryable<int> AllDoctors = _context.Doctors.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                         .Select(p => p.Id);
 
-            List<int> DoctorIds = new List<int>();
-
+            IQueryable<int> DoYouNeedTransportionDoctors = null;
             if (searchDoctors.DoYouNeedTransportion == true)
             {
                 var MedicalProviderWithAncillary = _context.PreferredAncillaryProviders.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
@@ -49,29 +49,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                   .Select(p => p.UserID);
 
-                DoctorIds = _context.Doctors.Where(p => Users.Contains(p.Id) == true 
-                                                && (DoctorIds.Count > 0 ? DoctorIds.Contains(p.Id) == true : true)
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                            .Select(p => p.Id)
-                                            .ToList();
+                DoYouNeedTransportionDoctors = _context.Doctors.Where(p => Users.Contains(p.Id) == true
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                               .Select(p => p.Id);
+            }
+            else
+            {
+                DoYouNeedTransportionDoctors = AllDoctors;
             }
 
+            IQueryable<int> GenderIdDoctors = null;
             if (searchDoctors.GenderId.HasValue == true)
             {
-                DoctorIds = _context.Doctors.Where(p => p.GenderId == searchDoctors.GenderId.Value 
-                                                && (DoctorIds.Count > 0 ? DoctorIds.Contains(p.Id) == true : true)
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                            .Select(p => p.Id)
-                                            .ToList();
+                GenderIdDoctors = _context.Doctors.Where(p => p.GenderId == searchDoctors.GenderId.Value
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.Id);
+            }
+            else
+            {
+                GenderIdDoctors = AllDoctors;
             }
 
-            DoctorIds = _context.DoctorLocationSchedules.Include("Location").Where(p => p.Location.HandicapRamp == searchDoctors.HandicapRamp
-                                                            && p.Location.StairsToOffice == searchDoctors.StairsToOffice
-                                                            && p.Location.PublicTransportNearOffice == searchDoctors.PublicTransportNearOffice
-                                                            && (DoctorIds.Count > 0 ? DoctorIds.Contains(p.DoctorID) == true : true))
-                                                        .Select(p => p.DoctorID)
-                                                        .ToList();
+            IQueryable<int> PatientNeedsDoctors = null;
+            PatientNeedsDoctors = _context.DoctorLocationSchedules.Include("Location").Where(p => p.Location.HandicapRamp == searchDoctors.HandicapRamp
+                                                                        && p.Location.StairsToOffice == searchDoctors.StairsToOffice
+                                                                        && p.Location.PublicTransportNearOffice == searchDoctors.PublicTransportNearOffice)
+                                                                  .Select(p => p.DoctorID);
 
+            IQueryable<int> MultipleDoctors = null;
             if (searchDoctors.MultipleDoctors == true)
             {
                 var MedicalProvider = _context.Companies.Where(p => p.CompanyType == 1
@@ -90,21 +95,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                    .Where(p => p.Count >= 2)
                                                    .Select(p => p.Key);
 
-                DoctorIds = _context.UserCompanies.Where(p => MultipleDoctorCompanies.Contains(p.CompanyID) == true
+                MultipleDoctors = _context.UserCompanies.Where(p => MultipleDoctorCompanies.Contains(p.CompanyID) == true
                                                         && Doctors.Contains(p.UserID) == true
-                                                        && (DoctorIds.Count > 0 ? DoctorIds.Contains(p.UserID) == true : true)
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                  .Select(p => p.UserID)
-                                                  .ToList();
+                                                  .Select(p => p.UserID);
+            }
+            else
+            {
+                MultipleDoctors = AllDoctors;
             }
 
-            var SearchDoctorsList = _context.Doctors.Where(p => DoctorIds.Contains(p.Id) == true
+            //var SearchDoctorsList = _context.Doctors.Where(p => (DoYouNeedTransportionDoctors == null || ((DoYouNeedTransportionDoctors != null && DoYouNeedTransportionDoctors.Contains(p.Id) == true)))
+            //                                            && (GenderIdDoctors == null || ((GenderIdDoctors != null && GenderIdDoctors.Contains(p.Id) == true)))
+            //                                            && (PatientNeedsDoctors == null || ((PatientNeedsDoctors != null && PatientNeedsDoctors.Contains(p.Id) == true)))
+            //                                            && (MultipleDoctors == null || ((MultipleDoctors != null && MultipleDoctors.Contains(p.Id) == true)))
+            //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                        .Select(p => new {
+            //                                            id = p.Id,
+            //                                            title = p.Title,
+            //                                            genderId = p.GenderId                                                                                                                                                                        
+            //                                        }).ToList();
+
+            var SearchDoctorsList = _context.Doctors.Where(p => DoYouNeedTransportionDoctors.Contains(p.Id) == true
+                                                        && GenderIdDoctors.Contains(p.Id) == true
+                                                        && PatientNeedsDoctors.Contains(p.Id) == true
+                                                        && MultipleDoctors.Contains(p.Id) == true
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                    .Select(p => new {
+                                                    .Select(p => new
+                                                    {
                                                         id = p.Id,
                                                         title = p.Title,
-                                                        genderId = p.GenderId                                                                                                                                                                        
-                                                    });
+                                                        genderId = p.GenderId
+                                                    }).ToList();
 
             return (object)SearchDoctorsList;
         }
