@@ -21,7 +21,7 @@ export class AutoInformationService {
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
-        //  this._headers.append('Authorization', this._sessionStore.session.accessToken);
+        this._headers.append('Authorization', this._sessionStore.session.accessToken);
     }
 
     getByCaseId(caseId: Number): Observable<AutoInformation> {

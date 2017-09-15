@@ -56,8 +56,8 @@ export class Case extends CaseRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-     attorneyProviderId:number;
-    medicalProviderId:number;
+    attorneyProviderId: number;
+    medicalProviderId: number;
 
     constructor(props) {
         super(props);

@@ -20,16 +20,16 @@ const PatientRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null, 
+    updateDate: null,
     patientDocuments: [],
     parentOrGuardianName: '',
     emergencyContactName: '',
     emergencyContactPhone: '',
     legallyMarried: '',
     spouseName: '',
-    patientLanguagePreferenceMappings:[],
+    patientLanguagePreferenceMappings: [],
     languagePreferenceOther: '',
-    patientSocialMediaMappings:[],
+    patientSocialMediaMappings: [],
 });
 
 export class Patient extends PatientRecord {
@@ -48,14 +48,14 @@ export class Patient extends PatientRecord {
     updateByUserID: number;
     updateDate: moment.Moment;
     patientDocuments: PatientDocument[];
-     parentOrGuardianName: string;
+    parentOrGuardianName: string;
     emergencyContactName: string;
     emergencyContactPhone: string;
     legallyMarried: string;
     spouseName: string;
-    patientLanguagePreferenceMappings:any[];
+    patientLanguagePreferenceMappings: any[];
     languagePreferenceOther: '';
-    patientSocialMediaMappings:any[];
+    patientSocialMediaMappings: any[];
 
     constructor(props) {
         super(props);
@@ -73,9 +73,16 @@ export class Patient extends PatientRecord {
         }
     }
 
+    // get prefferedLanguage(): string {
+    //     return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+    // }
+
     get prefferedLanguage(): string {
-        return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+        if (this.patientLanguagePreferenceMappings.length > 0) {
+            return Patient.getLanguageLabel(this.patientLanguagePreferenceMappings[0].languagePreferenceId);
+        }
     }
+
     // tslint:disable-next-line:member-ordering
     static getLanguageLabel(prefferedLanguage: PreferredLanguage): string {
         switch (prefferedLanguage) {
@@ -89,12 +96,15 @@ export class Patient extends PatientRecord {
     }
 
     get socialMedia(): string[] {
-        let patientSocialMediaMappings: any[] = [];
-        patientSocialMediaMappings = _.map(this.patientSocialMediaMappings, (currentSocialMedia: any) => {
-            return Patient.getSocialMediaLabel(currentSocialMedia.socialMediaId);
-        })
-        return patientSocialMediaMappings;
+        if (this.patientSocialMediaMappings.length > 0) {
+            let patientSocialMediaMappings: any[] = [];
+            patientSocialMediaMappings = _.map(this.patientSocialMediaMappings, (currentSocialMedia: any) => {
+                return Patient.getSocialMediaLabel(currentSocialMedia.socialMediaId);
+            })
+            return patientSocialMediaMappings;
+        }
     }
+
     static getSocialMediaLabel(socialMedia: SocialMedia): string {
         switch (socialMedia) {
             case SocialMedia.Facebook:
