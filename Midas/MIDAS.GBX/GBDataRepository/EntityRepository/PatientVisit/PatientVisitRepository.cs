@@ -2011,7 +2011,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                            .Select(p => p.CaseId).ToList<int>();
 
             DateTime currentDate = DateTime.Now.Date;
-            var PatientVisitCompleted = _context.PatientVisits.Where(p => p.DoctorId == DoctorId
+            List<BO.PatientVisitCompleted> PatientVisitCompleted = _context.PatientVisits.Where(p => p.DoctorId == DoctorId
                                                                             && (p.EventStart >= FromDate && p.EventStart < ToDate)
                                                                             && p.EventStart < currentDate
                                                                             && p.CaseId.HasValue == true
@@ -2019,12 +2019,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                             //&& p.VisitStatusId == 1
                                                                             && p.IsOutOfOffice == false
                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                              .Join(_context.Users, p1 => p1.PatientId, p2 => p2.id, (p1, p2) => new {
+                                                              .Join(_context.Users, p1 => p1.PatientId, p2 => p2.id, (p1, p2) => new BO.PatientVisitCompleted
+                                                              {
                                                                   caseId = p1.CaseId.Value,
                                                                   patientName = p2.FirstName + " " + p2.LastName,
                                                                   visitDate = p1.EventStart.Value
                                                               })
-                                                              .ToList();
+                                                              .ToList<BO.PatientVisitCompleted>();
+
+            foreach (var item in PatientVisitCompleted)
+            {
+                DateTime visitDate = DateTime.SpecifyKind(item.visitDate, DateTimeKind.Utc);
+                item.visitDate = visitDate;
+            }
+
+            PatientVisitCompleted.ForEach(p => p.visitDate = DateTime.SpecifyKind(p.visitDate, DateTimeKind.Utc));
 
             var PatientCalendarEvents = _context.PatientVisits.Where(p => p.DoctorId == DoctorId
                                                                    && p.CaseId.HasValue == true
@@ -2145,12 +2154,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     intTimeZone = intTimeZone * -1;
 
-                    var Occurrence = newEventOccurrences.Select(p => new
+                    var Occurrence = newEventOccurrences.Select(p => new BO.PatientVisitCompleted
                     {
-                        eachItem.caseId,
-                        eachItem.patientName,
+                        caseId = eachItem.caseId,
+                        patientName = eachItem.patientName,
                         //VisitDate = p.Period.StartTime.AddMinutes(intTimeZone).Value
-                        visitDate = p.Period.StartTime.Value
+                        visitDate = p.Period.StartTime.AsUtc
                     }).ToList().Distinct().OrderBy(p => p.visitDate).ToList();
 
                     PatientVisitCompleted.AddRange(Occurrence.Where(p => (p.visitDate >= FromDate && p.visitDate < ToDate) && p.visitDate >= currentDate));

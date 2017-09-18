@@ -154,4 +154,16 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("visitTypeId")]
         public int? VisitTypeId { get; set; }
     }
+
+    public class PatientVisitCompleted
+    {
+        [JsonProperty("caseId")]
+        public int caseId { get; set; }
+
+        [JsonProperty("patientName")]
+        public string patientName { get; set; }
+
+        [JsonProperty("visitDate")]
+        public DateTime visitDate { get; set; }
+    }
 }
