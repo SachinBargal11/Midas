@@ -1955,7 +1955,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Statistical Data On Case By Case Type
         public override Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
         {
-            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate <= ToDate.AddDays(1).AddSeconds(-1)
+            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                    .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId 
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
