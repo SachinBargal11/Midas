@@ -40,7 +40,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             locationBO.Name = location.Name;
             locationBO.IsDefault = location.IsDefault;
             locationBO.LocationType = (BO.GBEnums.LocationType)location.LocationType;
-
             locationBO.HandicapRamp = location.HandicapRamp;
             locationBO.StairsToOffice = location.StairsToOffice;
             locationBO.PublicTransportNearOffice = location.PublicTransportNearOffice;
