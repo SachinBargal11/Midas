@@ -4200,12 +4200,50 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetPatientVisitForDateByCompanyId(DateTime ForDate, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetPatientVisitForDateByCompanyId(ForDate, CompanyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         public Object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetDoctorPatientVisitForDateByLocationId(ForDate, DoctorId, LocationId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public Object GetDoctorPatientVisitForDateByCompanyId(DateTime ForDate, int DoctorId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetDoctorPatientVisitForDateByCompanyId(ForDate, DoctorId, CompanyId);
 
                 return gbdata;
             }

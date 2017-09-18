@@ -195,7 +195,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object SaveReferralPatientVisitUnscheduled(T gbObject);
         object GetReferralPatientVisitUnscheduledByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetPatientVisitForDateByLocationId(DateTime ForDate, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetPatientVisitForDateByCompanyId(DateTime ForDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        object GetDoctorPatientVisitForDateByCompanyId(DateTime ForDate, int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetAttorneyVisitForDateByCompanyId(DateTime ForDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetOpenAppointmentSlotsForDoctorByCompanyId(DateTime ForDate, int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

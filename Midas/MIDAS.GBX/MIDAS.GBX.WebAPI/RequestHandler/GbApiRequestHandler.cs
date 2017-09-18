@@ -2422,9 +2422,35 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetPatientVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetPatientVisitForDateByCompanyId(ForDate, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetDoctorPatientVisitForDateByLocationId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int LocationId)
         {
             var objResult = dataAccessManager.GetDoctorPatientVisitForDateByLocationId(ForDate, DoctorId, LocationId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetDoctorPatientVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetDoctorPatientVisitForDateByCompanyId(ForDate, DoctorId, CompanyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
