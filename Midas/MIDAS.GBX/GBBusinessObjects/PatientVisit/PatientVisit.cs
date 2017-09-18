@@ -166,4 +166,58 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("visitDate")]
         public DateTime visitDate { get; set; }
     }
+
+    public class PatientVisitDashboard : GbObject
+    {
+        [JsonProperty("calendarEventId")]
+        public int? CalendarEventId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int? CaseId { get; set; }
+
+        [JsonProperty("patientId")]
+        public int? PatientId { get; set; }
+
+        [JsonProperty("locationId")]
+        public int? LocationId { get; set; }
+
+        [JsonProperty("roomId")]
+        public int? RoomId { get; set; }
+
+        [JsonProperty("doctorId")]
+        public int? DoctorId { get; set; }
+
+        [JsonProperty("specialtyId")]
+        public int? SpecialtyId { get; set; }
+
+        [JsonProperty("eventStart")]
+        public DateTime? EventStart { get; set; }
+
+        [JsonProperty("eventEnd")]
+        public DateTime? EventEnd { get; set; }
+
+        [JsonProperty("notes")]
+        public string Notes { get; set; }
+
+        [JsonProperty("visitStatusId")]
+        public byte? VisitStatusId { get; set; }
+
+        [JsonProperty("calendarEvent")]
+        public CalendarEvent CalendarEvent { get; set; }
+
+        [JsonProperty("isCancelled")]
+        public bool? IsCancelled { get; set; }
+
+        [JsonProperty("patientName")]
+        public string PatientName { get; set; }
+
+        [JsonProperty("doctorName")]
+        public string DoctorName { get; set; }
+
+        [JsonProperty("specialityName")]
+        public string SpecialityName { get; set; }
+
+        [JsonProperty("roomName")]
+        public string RoomName { get; set; }
+    }
 }
