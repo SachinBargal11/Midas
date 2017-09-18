@@ -2708,7 +2708,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get Doctor Patient Visit For Date By LocationId
+        #region Get Statistical Data On Patient Visit
         public override Object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId)
         {
             var CompanyLocations = _context.Locations.Where(p => p.CompanyID == CompanyId).Select(p => p.id);

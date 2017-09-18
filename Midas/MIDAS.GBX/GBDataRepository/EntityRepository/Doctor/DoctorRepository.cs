@@ -380,6 +380,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                     doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
                     doctorDB.GenderId = doctorBO.GenderId;
+
+                    doctorDB.CreateByUserID = 1;
+                    doctorDB.CreateDate = DateTime.UtcNow;
                     #endregion
                     // doctorDB = doctor;                                
                     // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
@@ -406,6 +409,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB.CreateByUserID = doctorBO.CreateByUserID;
                     doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
                     doctorDB.GenderId = doctorBO.GenderId;
+
+                    doctorDB.UpdateByUserID = 1;
+                    doctorDB.UpdateDate = DateTime.UtcNow;
 
                     _dbSet.Add(doctorDB);
                 }
@@ -801,9 +807,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var doctorTaxTypes = _context.DoctorTaxTypes.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                          .Select(p => new {
-                                             p.Id,
-                                             p.Name,
-                                             p.Description
+                                             id = p.Id,
+                                             name = p.Name,
+                                             description = p.Description
                                          }).ToList();
 
             if (doctorTaxTypes == null)

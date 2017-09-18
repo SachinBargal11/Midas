@@ -1952,6 +1952,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Statistical Data On Case By Case Type
+        public override Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate <= ToDate.AddDays(1).AddSeconds(-1)
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                   .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId 
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                                        c => c.Id, ccm => ccm.CaseId, (c, ccm) => c)
+                                   .Select(c => c)
+                                   .ToList();
+
+            int NofaultType = 0, WCType = 0, PrivateType = 0, LienType = 0, NotSpecified = 0;
+            NofaultType = CaseList.Where(p => p.CaseTypeId == 1).Count();
+            WCType = CaseList.Where(p => p.CaseTypeId == 2).Count();
+            PrivateType = CaseList.Where(p => p.CaseTypeId == 3).Count();
+            LienType = CaseList.Where(p => p.CaseTypeId == 4).Count();
+            NotSpecified = CaseList.Where(p => p.CaseTypeId.HasValue == false).Count();            
+
+            return new
+            {
+                nofaultType = NofaultType,
+                wcType = WCType,
+                privateType = PrivateType,
+                lienType = LienType,
+                notSpecified = NotSpecified
+            };
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

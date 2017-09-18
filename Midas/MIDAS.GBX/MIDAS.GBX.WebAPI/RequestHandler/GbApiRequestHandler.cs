@@ -2478,5 +2478,18 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetStatisticalDataOnCaseByCaseType(FromDate, ToDate, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }
