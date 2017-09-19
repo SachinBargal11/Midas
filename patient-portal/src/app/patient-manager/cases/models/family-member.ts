@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { Relation } from './enums/relation';
 import { Races } from './enums/race';
 import { Ethnicities } from './enums/ethnicities';
+import { Gender } from '../../../commons/models/enums/Gender';
 
 const FamilyMemberRecord = Record({
     id: 0,
@@ -103,6 +104,22 @@ export class FamilyMember extends FamilyMemberRecord {
 
      get displayName(): string {
         return this.firstName + ' ' + this.lastName;
+    }
+
+       get genderLabel(): string {
+        return FamilyMember.getGender(this.genderId);
+    }
+
+    static getGender(genderStatus: Gender): string {
+        switch (genderStatus) {
+            case Gender.MALE:
+                return 'Male';
+            case Gender.FEMALE:
+                return 'Female';
+            case Gender.OTHERS:
+                return 'Others';
+
+        }
     }
 
 }

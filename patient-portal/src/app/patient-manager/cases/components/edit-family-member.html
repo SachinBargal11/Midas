@@ -17,13 +17,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> First Name
+                <label class="form-label"> First Name
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{familyMember.firstName}}
+                <div class="form-group">
+                    <label> {{familyMember.firstName}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <!--<div class="col-lg-4">
                 <label class="form-label">Middle Name
                             </label>
@@ -38,13 +38,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Middle Name
+                <label class="form-label"> Middle Name
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{familyMember.middleName}}
+                <div class="form-group">
+                    <label> {{familyMember.middleName}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <!--<div class="col-lg-4">
                 <label class="form-label"> Last Name
                                 <span class="color-red">*</span>
@@ -60,13 +60,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Last Name
+                <label class="form-label"> Last Name
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{familyMember.lastName}}
+                <div class="form-group">
+                    <label> {{familyMember.lastName}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!--<div class="col-lg-4">
@@ -87,17 +87,17 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Relation to patient
+                <label class="form-label"> Relation to patient
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{relation}}
+                <div class="form-group">
+                    <label> {{relation}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Primary Contact</label>
-                    <label class="form-label"> {{primaryContact}}</label>
+                    <label> {{primaryContact}}</label>
                     <!-- <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
                     <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="0" label="No"></p-radioButton> -->
                 </div>
@@ -117,20 +117,24 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Age
+                <label class="form-label"> Age
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{familyMember.age}}
+                <div class="form-group">
+                    <label> {{familyMember.age}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-4">
                 <label class="form-label"> Gender
-                                <span class="color-red">*</span>
+                                <!--<span class="color-red">*</span>-->
                             </label>
-                <div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                <div class="form-group">
+                    <label> {{gender}}
+                            </label>
+                </div>
+                <!--<div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
                     <select formControlName="gender" [ngModel]="familyMember.genderId" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
                             <option value="">-Select -</option>
                             <option value="1">Male</option>
@@ -142,7 +146,7 @@
                             <li *ngIf="familyMemberFormControls.gender.hasError('required')">Gender is required.</li>
                         </ul>
                     </div>
-                </div>
+                </div>-->
             </div>
             <!--<div class="col-lg-4">
                 <label class="form-label"> Races
@@ -167,13 +171,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Races
+                <label class="form-label"> Races
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{race}}
+                <div class="form-group">
+                    <label> {{race}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <!--<div class="col-lg-4">
                 <label class="form-label"> Ethnicities
                                 <span class="color-red">*</span>
@@ -195,13 +199,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Ethnicities
+                <label class="form-label"> Ethnicities
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{ethnicities}}
+                <div class="form-group">
+                    <label> {{ethnicities}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <!--<div class="col-lg-4">
@@ -220,13 +224,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Cellphone
+                <label class="form-label"> Cellphone
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{cellPhone}}
+                <div class="form-group">
+                    <label> {{cellPhone}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <!--<div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Work Phone No</label>
@@ -234,13 +238,13 @@
                 </div>
             </div>-->
             <div class="col-lg-4">
-                        <label class="form-label"> Work Phone No
+                <label class="form-label"> Work Phone No
                             </label>
-                        <div class="form-group">
-                            <label class="form-label"> {{familyMember.workPhone}}
+                <div class="form-group">
+                    <label> {{familyMember.workPhone}}
                             </label>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <!--<div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Primary Contact</label>

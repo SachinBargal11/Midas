@@ -24,6 +24,7 @@ export class EditFamilyMemberComponent implements OnInit {
     race: string;
     ethnicities: string;
     relation: string;
+    gender: string;
     patientId: number;
     familyMemberForm: FormGroup;
     familyMemberFormControls;
@@ -55,6 +56,7 @@ export class EditFamilyMemberComponent implements OnInit {
                 (familyMember: any) => {
                     this.familyMember = familyMember.toJS();
                     this.race = familyMember.raceLabel;
+                    this.gender = familyMember.genderLabel;
                     this.ethnicities = familyMember.ethnicitiesLabel;
                     this.relation = familyMember.relationLabel
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
