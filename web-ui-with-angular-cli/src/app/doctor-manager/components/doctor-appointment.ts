@@ -144,4 +144,9 @@ export class DoctorAppointmentComponent {
             this._notificationsService.error('Oh No!', 'Select visit to delete');
         }
     }
+
+    getFormateDate(visitDate){
+        // return moment(visitDate).format('MMMM Do YYYY,h:mm:ss a');
+        return moment(visitDate).local().format('MMMM Do YYYY,h:mm:ss a')
+        }
 }

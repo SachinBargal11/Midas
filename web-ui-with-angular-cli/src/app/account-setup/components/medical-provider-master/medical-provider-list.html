@@ -86,12 +86,12 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column field="prefferedProvider.name" header="Medical Provider Name" [sortable]="true">
     </p-column>
-    <p-column styleClass="actions-cell" header="Actions">
+    <!--<p-column styleClass="actions-cell" header="Actions">
         <ng-template let-provider="rowData" pTemplate="body">
             <a *ngIf="provider.isCreated && !provider.prefferedProvider.registrationComplete" routerLink="edit/{{provider.id}}"><i class="glyphicon glyphicon-edit"></i></a>
             <a *ngIf="!provider.isCreated"><i class=" glyphicon glyphicon-edit "></i></a>
         </ng-template>
-    </p-column>
+    </p-column>-->
 </p-dataTable>
 </div><br>
 </section>
