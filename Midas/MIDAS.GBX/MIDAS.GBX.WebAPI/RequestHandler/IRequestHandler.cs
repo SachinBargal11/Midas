@@ -172,9 +172,12 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage SaveReferralPatientVisitUnscheduled(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetReferralPatientVisitUnscheduledByCompanyId(HttpRequestMessage request, int CompanyId);
         HttpResponseMessage GetPatientVisitForDateByLocationId(HttpRequestMessage request, DateTime ForDate, int LocationId);
+        HttpResponseMessage GetPatientVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int CompanyId);
         HttpResponseMessage GetDoctorPatientVisitForDateByLocationId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int LocationId);
+        HttpResponseMessage GetDoctorPatientVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int CompanyId);
         HttpResponseMessage GetStatisticalDataOnPatientVisit(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId);
         HttpResponseMessage GetOpenAppointmentSlotsForDoctorByCompanyId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int CompanyId);
         HttpResponseMessage GetDoctors(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId);
     }
 }

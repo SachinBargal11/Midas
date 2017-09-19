@@ -989,7 +989,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetPatientVisitForDateByCompanyId(DateTime ForDate, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetDoctorPatientVisitForDateByLocationId(DateTime ForDate, int DoctorId, int LocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetDoctorPatientVisitForDateByCompanyId(DateTime ForDate, int DoctorId, int CompanyId)
         {
             throw new NotImplementedException();
         }
@@ -1010,6 +1020,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object GetDoctors<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
         {
             throw new NotImplementedException();
         }

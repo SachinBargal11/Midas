@@ -1563,7 +1563,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (CaseReadOnly != null && CaseReadOnly.Count() > 0)
             {
-                return CaseReadOnly.FirstOrDefault();
+                return CaseReadOnly.Select(p => new
+                {
+                    caseId = p.CaseId,
+                    patientId = p.PatientId,
+                    originatorCompanyId = p.OriginatorCompanyId,
+                    originatorCompanyName = p.OriginatorCompanyName,
+                    patientName = p.PatientName,
+                    caseTypeText = p.CaseTypeText,
+                    caseStatusText = p.CaseStatusText,
+                    carrierCaseNo = p.CarrierCaseNo,
+                    companyName = p.CompanyName,
+                    caseSource = p.CaseSource,
+                    medicalProvider = p.MedicalProvider,
+                    attorneyProvider = p.AttorneyProvider,
+                    claimFileNumber = p.ClaimFileNumber,
+                    createByUserID = p.CreateByUserID,
+                    createDate = p.CreateDate,
+                    updateByUserID = p.UpdateByUserID,
+                    updateDate = p.UpdateDate
+                }).FirstOrDefault();
             }
             else
             {
@@ -1800,20 +1819,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var company1 = _context.CaseCompanyMappings.Where(p => openCases.Contains(p.CaseId)
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                       .Select(p => /*p.Company1*/new
+                                                       .Select(p => new
                                                        {
                                                            id = p.Company1.id,
                                                            status = p.Company1.Status,
                                                            name = p.Company1.Name,
                                                            companyType = p.Company1.CompanyType,
-                                                           //p.Company1.SubscriptionPlanType,
-                                                           //p.Company1.CompanyStatusTypeID,
-                                                           //p.Company1.TaxID,
                                                            isDeleted = p.Company1.IsDeleted,
-                                                           //p.Company1.CreateByUserID,
-                                                           //p.Company1.CreateDate,
-                                                           //p.Company1.UpdateByUserID,
-                                                           //p.Company1.UpdateDate,
 
                                                            companyType1 = new
                                                            {
@@ -1849,25 +1861,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                                           .FirstOrDefault(),
 
                                                            caseId = p.CaseId
-                                                       });
-            //.Include("CompanyType1");
+                                                       })
+                                                       .ToList();
 
             var company2 = _context.Referrals.Where(p => openCases.Contains(p.CaseId)
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .Select(p => /*p.Company1*/new
+                                             .Select(p => new
                                              {
                                                  id = p.Company1.id,
                                                  status = p.Company1.Status,
                                                  name = p.Company1.Name,
                                                  companyType = p.Company1.CompanyType,
-                                                 //p.Company1.SubscriptionPlanType,
-                                                 //p.Company1.CompanyStatusTypeID,
-                                                 //p.Company1.TaxID,
                                                  isDeleted = p.Company1.IsDeleted,
-                                                 //p.Company1.CreateByUserID,
-                                                 //p.Company1.CreateDate,
-                                                 //p.Company1.UpdateByUserID,
-                                                 //p.Company1.UpdateDate,
 
                                                  companyType1 = new
                                                  {
@@ -1903,26 +1908,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                                           .FirstOrDefault(),
 
                                                  caseId = p.CaseId
-                                             });
-                                             //.Include("CompanyType1");
+                                             })
+                                             .ToList();
 
             if (company1 == null && company2 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-
-            //List<BO.Company> lstcompany = new List<BO.Company>();
-
-            //foreach (var item in company1.Union(company2).Distinct())
-            //{
-            //    BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
-            //    if (boCompany != null)
-            //    {
-            //        lstcompany.Add(boCompany);
-            //    }
-            //}
-
-            //return (object)lstcompany;
+                        
             return company1.Union(company2).Distinct().ToList();
         }
         #endregion
@@ -1956,6 +1949,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             return result;
+        }
+        #endregion
+
+        #region Get Statistical Data On Case By Case Type
+        public override Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                   .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId 
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                                        c => c.Id, ccm => ccm.CaseId, (c, ccm) => c)
+                                   .Select(c => c)
+                                   .ToList();
+
+            int NofaultType = 0, WCType = 0, PrivateType = 0, LienType = 0, NotSpecified = 0;
+            NofaultType = CaseList.Where(p => p.CaseTypeId == 1).Count();
+            WCType = CaseList.Where(p => p.CaseTypeId == 2).Count();
+            PrivateType = CaseList.Where(p => p.CaseTypeId == 3).Count();
+            LienType = CaseList.Where(p => p.CaseTypeId == 4).Count();
+            NotSpecified = CaseList.Where(p => p.CaseTypeId.HasValue == false).Count();            
+
+            return new
+            {
+                nofaultType = NofaultType,
+                wcType = WCType,
+                privateType = PrivateType,
+                lienType = LienType,
+                notSpecified = NotSpecified
+            };
         }
         #endregion
 
