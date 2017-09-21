@@ -51,6 +51,7 @@ export class AddCaseComponent implements OnInit {
     currentProviderId: number = 0;
     providerId: number = 0;
     searchDialogVisible: boolean = false;
+    selectedMP;
 
     constructor(
         private fb: FormBuilder,
@@ -155,6 +156,8 @@ export class AddCaseComponent implements OnInit {
     
     closeDialog(event) {
         this.searchDialogVisible = false;
+        let mp = event;
+        this.selectedMP = mp.id;
     }
 
 
@@ -271,15 +274,6 @@ export class AddCaseComponent implements OnInit {
                             this._progressBarService.hide();
                         });
                 }
-
-
-                let notification = new Notification({
-                    'title': 'Case added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to add case.';

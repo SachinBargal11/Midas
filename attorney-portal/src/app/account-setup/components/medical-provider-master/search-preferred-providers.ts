@@ -29,9 +29,10 @@ export class SearchPreferedProvidersComponent {
     stairsToOffice = 0;
     publicTransportNearOffice = 0;
     multipleDoctors = 0;
-    searchDoctors = [];
+    searchedMedicalProvider = [];
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
-    
+    @Output() closeDialogBoxWithSelectedMP: EventEmitter<any> = new EventEmitter();
+    selectedMedicalProvider:any
 
     options = {
         timeOut: 3000,
@@ -70,6 +71,10 @@ export class SearchPreferedProvidersComponent {
         this.closeDialogBox.emit();
     }
 
+    closeDialogWithSelectedMP() {
+        this.closeDialogBoxWithSelectedMP.emit(this.selectedMedicalProvider);
+    }
+
     search() {
         let searchFormControls = this.searchForm.value;
         let searchDetail = {
@@ -77,18 +82,19 @@ export class SearchPreferedProvidersComponent {
             genderId: searchFormControls.gender == 'null' ? null : parseInt(searchFormControls.gender),
             handicapRamp: parseInt(searchFormControls.handicapRamp),
             stairsToOffice: parseInt(searchFormControls.stairsToOffice),
-            publicTransportNearOffice: parseInt(searchFormControls.publicTransportNearOffice) ? true : false,
-            multipleDoctors: parseInt(searchFormControls.multipleDoctors) ? true : false,
+            publicTransportNearOffice: parseInt(searchFormControls.publicTransportNearOffice),
+            // multipleDoctors: parseInt(searchFormControls.multipleDoctors) ? true : false,
+            multipleDoctors: parseInt(searchFormControls.multipleDoctors),
             availableFromDateTime:null,
             availableToDateTime:null,
             currentCompanyId:this._sessionStore.session.currentCompany.id
         
         };
         this._progressBarService.show();
-        let result = this._medicalProviderMasterStore.searchDoctors(searchDetail);
+        let result = this._medicalProviderMasterStore.searchMedicalProvider(searchDetail);
         result.subscribe(
             (response) => {
-                this.searchDoctors = response;
+                this.searchedMedicalProvider = response;
                 let notification = new Notification({
                     'title': 'Search for doctors completed successfully!',
                     'type': 'SUCCESS',

@@ -1080,14 +1080,14 @@ export class PatientVisitComponent implements OnInit {
                     // user: new User(_.extend(eoVisit.doctor.user.toJS()))
                 })) : null,
             }));
-        }else {
+        } else {
             this.isVisitTypeDisabled = true;
             eoVisit = new EoVisit(_.extend(eoVisit.toJS(), {
                 calendarEvent: scheduledEventForInstance,
-                 doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
+                doctor: eoVisit.doctor ? new Doctor(_.extend(eoVisit.doctor.toJS(), {
                     // user: new User(_.extend(eoVisit.doctor.user.toJS()))
                 })) : null,
-            }))	
+            }))
         }
         return eoVisit;
     }
@@ -1376,7 +1376,9 @@ export class PatientVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.eventDialogVisible = false;
-                this.loadVisits();
+                // this.loadVisits();
+                this.events = [];
+                this.loadAllVisitsByCompanyId();
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'Appointment cancelled successfully!');
             },

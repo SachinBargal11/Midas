@@ -91,9 +91,9 @@ export class MedicalProviderMasterStore {
         return <Observable<any>>Observable.from(promise);
     }
 
-    searchDoctors(searchDetails: any): Observable<any> {
+    searchMedicalProvider(searchDetails: any): Observable<any> {
         let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.searchDoctors(searchDetails).subscribe((any) => {
+            this._medicalProviderMasterService.searchMedicalProvider(searchDetails).subscribe((any) => {
                 // this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(any));
                 resolve(any);
             }, error => {
