@@ -321,6 +321,7 @@
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SchoolInformationController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
     <Compile Include="Controllers\TemplateManagerController.cs" />

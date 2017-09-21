@@ -2932,6 +2932,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Statistical Data On Patient Visit
         public override Object GetStatisticalDataOnPatientVisit(DateTime FromDate, DateTime ToDate, int CompanyId)
         {
+            ToDate = ToDate.Date.AddDays(1);
+
             var CompanyLocations = _context.Locations.Where(p => p.CompanyID == CompanyId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .Select(p => p.id);

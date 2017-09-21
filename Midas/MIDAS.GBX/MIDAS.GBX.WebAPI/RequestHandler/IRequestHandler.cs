@@ -179,5 +179,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetOpenAppointmentSlotsForDoctorByCompanyId(HttpRequestMessage request, DateTime ForDate, int DoctorId, int CompanyId);
         HttpResponseMessage GetDoctors(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId);
+        HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId);
+        HttpResponseMessage GetMedicalProviders(HttpRequestMessage request, T gbObject);
     }
 }

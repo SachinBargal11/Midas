@@ -39,6 +39,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             IQueryable<int> AllDoctors = _context.Doctors.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                          .Select(p => p.Id);
 
+            int CurrentCompanyId = searchDoctors.CurrentCompanyId;
+            IQueryable<int> CurrentCompanyMedicalProvider = _context.PreferredMedicalProviders.Where(p => p.CompanyId == CurrentCompanyId
+                                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                              .Select(p => p.CompanyId);
+
+            var CurrentCompanyUsers = _context.UserCompanies.Where(p => CurrentCompanyMedicalProvider.Contains(p.CompanyID) == true
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .Select(p => p.UserID);
+
+            IQueryable<int> CurrentCompanyDoctors = _context.Doctors.Where(p => CurrentCompanyUsers.Contains(p.Id) == true
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .Select(p => p.Id);
+
             IQueryable<int> DoYouNeedTransportionDoctors = null;
             if (searchDoctors.DoYouNeedTransportion == true)
             {
@@ -105,12 +118,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 MultipleDoctors = AllDoctors;
             }
 
-            var SearchDoctorsList = _context.Doctors.Where(p => DoYouNeedTransportionDoctors.Contains(p.Id) == true
+            var SearchDoctorsList = _context.Doctors.Where(p => CurrentCompanyDoctors.Contains(p.Id) == true
+                                                        && DoYouNeedTransportionDoctors.Contains(p.Id) == true
                                                         && GenderIdDoctors.Contains(p.Id) == true
                                                         && PatientNeedsDoctors.Contains(p.Id) == true
                                                         && MultipleDoctors.Contains(p.Id) == true
                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                    .Join(_context.Users.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)), 
+                                                    .Join(_context.Users.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
                                                         dt => dt.Id, usr => usr.id, (dt, usr) => new {
                                                             id = dt.Id,
                                                             title = dt.Title,
@@ -118,8 +132,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             firstName = usr.FirstName,
                                                             middleName = usr.MiddleName,
                                                             lastName = usr.LastName
-                                                        })
-                                                    .ToList();
+                                                        });
+                                                    //.ToList();
 
             return (object)SearchDoctorsList;
         }

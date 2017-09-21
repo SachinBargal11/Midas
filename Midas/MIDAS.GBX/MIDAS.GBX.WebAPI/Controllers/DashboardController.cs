@@ -68,5 +68,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandlerCase.GetStatisticalDataOnCaseByCaseType(Request, fromDate, toDate, companyId);
         }
+
+        [HttpGet]
+        [Route("getStatisticalDataOnCaseByInsuranceProvider/{fromDate}/{toDate}/{companyId}")]
+        public HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(DateTime fromDate, DateTime toDate, int companyId)
+        {
+            return requestHandlerCase.GetStatisticalDataOnCaseByInsuranceProvider(Request, fromDate, toDate, companyId);
+        }
     }
 }

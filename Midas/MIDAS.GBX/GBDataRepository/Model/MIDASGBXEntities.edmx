@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccidentTreatment">
           <Key>
             <PropertyRef Name="Id" />
@@ -556,7 +556,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParentNode" Type="nvarchar" MaxLength="10" />
-          <Property Name="ChildNode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ChildNode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="NodeAbbr" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="EOVisit">
@@ -578,6 +578,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="VisitCreatedByCompanyId" Type="int" Nullable="false" />
           <Property Name="PatientId" Type="int" />
+          <Property Name="CaseId" Type="int" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -2409,6 +2410,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EOVisit_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
+          <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EOVisit">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EOVisit_Company_VisitCreatedByCompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
@@ -4027,7 +4040,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Parameter Name="CaseId" Type="int" Mode="In" />
           <Parameter Name="CompanyId" Type="int" Mode="In" />
         </Function>
-        <EntityContainer Name="MIDASModelStoreContainer">
+        <EntityContainer Name="MIDASGBXModelStoreContainer">
           <EntitySet Name="AccidentTreatment" EntityType="Self.AccidentTreatment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccidentWitness" EntityType="Self.AccidentWitness" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
@@ -4382,6 +4395,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_EOVisit_Calender_CalendarEventId" Association="Self.FK_EOVisit_Calender_CalendarEventId">
             <End Role="CalendarEvent" EntitySet="CalendarEvent" />
+            <End Role="EOVisit" EntitySet="EOVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EOVisit_Case_CaseId" Association="Self.FK_EOVisit_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
             <End Role="EOVisit" EntitySet="EOVisit" />
           </AssociationSet>
           <AssociationSet Name="FK_EOVisit_Company_VisitCreatedByCompanyId" Association="Self.FK_EOVisit_Company_VisitCreatedByCompanyId">
@@ -4925,7 +4942,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MIDASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AccidentTreatment">
           <Key>
             <PropertyRef Name="Id" />
@@ -5125,6 +5142,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="CompanyCaseConsentApproval" />
           <NavigationProperty Name="DefendantVehicles" Relationship="Self.FK_DefendantVehicle_Case_CaseId" FromRole="Case" ToRole="DefendantVehicle" />
           <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="DoctorCaseConsentApproval" />
+          <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Case_CaseId" FromRole="Case" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Case_CaseId" FromRole="Case" ToRole="IMEVisit" />
           <NavigationProperty Name="PatientAccidentInfoes" Relationship="Self.FK_PatientAccidentInfo_Case_CaseId" FromRole="Case" ToRole="PatientAccidentInfo" />
           <NavigationProperty Name="PatientEmpInfoes" Relationship="Self.FK_PatientEmpInfo_Case_CaseId" FromRole="Case" ToRole="PatientEmpInfo" />
@@ -5647,7 +5665,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="VisitCreatedByCompanyId" Type="Int32" Nullable="false" />
           <Property Name="PatientId" Type="Int32" />
+          <Property Name="CaseId" Type="Int32" />
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="EOVisit" ToRole="CalendarEvent" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_EOVisit_Case_CaseId" FromRole="EOVisit" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_EOVisit_Company_VisitCreatedByCompanyId" FromRole="EOVisit" ToRole="Company" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_EOVisit_Doctor_DoctorId" FromRole="EOVisit" ToRole="Doctor" />
           <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_EOVisit_InsuranceMaster_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
@@ -6987,7 +7007,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParentNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ChildNode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NodeAbbr" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_AccidentTreatment_PatientAccidentInfo_PatientAccidentInfoId">
@@ -7442,6 +7462,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="DoctorCaseConsentApproval">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EOVisit_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
+          <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EOVisit">
               <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
@@ -9580,6 +9612,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Case" EntitySet="Cases" />
             <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
           </AssociationSet>
+          <AssociationSet Name="FK_EOVisit_Case_CaseId" Association="Self.FK_EOVisit_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="EOVisit" EntitySet="EOVisits" />
+          </AssociationSet>
           <AssociationSet Name="FK_IMEVisit_Case_CaseId" Association="Self.FK_IMEVisit_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="IMEVisit" EntitySet="IMEVisits" />
@@ -10207,7 +10243,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
             <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASModel.sp_CaseGetReadOnly_Result)">
+          <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASGBXModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -10236,9 +10272,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="MIDASModelStoreContainer" CdmEntityContainer="MIDASGBXEntities">
+        <EntityContainerMapping StorageEntityContainer="MIDASGBXModelStoreContainer" CdmEntityContainer="MIDASGBXEntities">
           <EntitySetMapping Name="AccidentTreatments">
-            <EntityTypeMapping TypeName="MIDASModel.AccidentTreatment">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AccidentTreatment">
               <MappingFragment StoreEntitySet="AccidentTreatment">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientAccidentInfoId" ColumnName="PatientAccidentInfoId" />
@@ -10255,7 +10291,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AccidentWitnesses">
-            <EntityTypeMapping TypeName="MIDASModel.AccidentWitness">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AccidentWitness">
               <MappingFragment StoreEntitySet="AccidentWitness">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientAccidentInfoId" ColumnName="PatientAccidentInfoId" />
@@ -10270,7 +10306,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AddressInfoes">
-            <EntityTypeMapping TypeName="MIDASModel.AddressInfo">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AddressInfo">
               <MappingFragment StoreEntitySet="AddressInfo">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10290,7 +10326,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AdjusterMasters">
-            <EntityTypeMapping TypeName="MIDASModel.AdjusterMaster">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AdjusterMaster">
               <MappingFragment StoreEntitySet="AdjusterMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -10309,7 +10345,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Attorneys">
-            <EntityTypeMapping TypeName="MIDASModel.Attorney">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Attorney">
               <MappingFragment StoreEntitySet="Attorney">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -10321,7 +10357,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AttorneyVisits">
-            <EntityTypeMapping TypeName="MIDASModel.AttorneyVisit">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AttorneyVisit">
               <MappingFragment StoreEntitySet="AttorneyVisit">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
@@ -10344,7 +10380,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BlobStorages">
-            <EntityTypeMapping TypeName="MIDASModel.BlobStorage">
+            <EntityTypeMapping TypeName="MIDASGBXModel.BlobStorage">
               <MappingFragment StoreEntitySet="BlobStorage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BlobStorageTypeId" ColumnName="BlobStorageTypeId" />
@@ -10354,7 +10390,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BlobStorageTypes">
-            <EntityTypeMapping TypeName="MIDASModel.BlobStorageType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.BlobStorageType">
               <MappingFragment StoreEntitySet="BlobStorageType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BlobStorageType1" ColumnName="BlobStorageType" />
@@ -10362,7 +10398,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CalendarEvents">
-            <EntityTypeMapping TypeName="MIDASModel.CalendarEvent">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CalendarEvent">
               <MappingFragment StoreEntitySet="CalendarEvent">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10384,7 +10420,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cases">
-            <EntityTypeMapping TypeName="MIDASModel.Case">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Case">
               <MappingFragment StoreEntitySet="Case">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
@@ -10406,7 +10442,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CaseCompanyConsentDocuments">
-            <EntityTypeMapping TypeName="MIDASModel.CaseCompanyConsentDocument">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyConsentDocument">
               <MappingFragment StoreEntitySet="CaseCompanyConsentDocuments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -10423,7 +10459,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CaseCompanyMappings">
-            <EntityTypeMapping TypeName="MIDASModel.CaseCompanyMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyMapping">
               <MappingFragment StoreEntitySet="CaseCompanyMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -10439,7 +10475,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CaseDocuments">
-            <EntityTypeMapping TypeName="MIDASModel.CaseDocument">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseDocument">
               <MappingFragment StoreEntitySet="CaseDocuments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -10455,7 +10491,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CaseInsuranceMappings">
-            <EntityTypeMapping TypeName="MIDASModel.CaseInsuranceMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseInsuranceMapping">
               <MappingFragment StoreEntitySet="CaseInsuranceMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -10470,7 +10506,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CaseStatus">
-            <EntityTypeMapping TypeName="MIDASModel.CaseStatu">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseStatu">
               <MappingFragment StoreEntitySet="CaseStatus">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseStatusText" ColumnName="CaseStatusText" />
@@ -10479,7 +10515,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CaseTypes">
-            <EntityTypeMapping TypeName="MIDASModel.CaseType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseType">
               <MappingFragment StoreEntitySet="CaseType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseTypeText" ColumnName="CaseTypeText" />
@@ -10490,7 +10526,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="MIDASModel.City">
+            <EntityTypeMapping TypeName="MIDASGBXModel.City">
               <MappingFragment StoreEntitySet="City">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StateCode" ColumnName="StateCode" />
@@ -10500,7 +10536,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Companies">
-            <EntityTypeMapping TypeName="MIDASModel.Company">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Company">
               <MappingFragment StoreEntitySet="Company">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10521,7 +10557,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CompanyCaseConsentApprovals">
-            <EntityTypeMapping TypeName="MIDASModel.CompanyCaseConsentApproval">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CompanyCaseConsentApproval">
               <MappingFragment StoreEntitySet="CompanyCaseConsentApproval">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -10536,7 +10572,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CompanyICDTypeCodes">
-            <EntityTypeMapping TypeName="MIDASModel.CompanyICDTypeCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CompanyICDTypeCode">
               <MappingFragment StoreEntitySet="CompanyICDTypeCode">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
@@ -10550,7 +10586,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CompanySpecialtyDetails">
-            <EntityTypeMapping TypeName="MIDASModel.CompanySpecialtyDetail">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CompanySpecialtyDetail">
               <MappingFragment StoreEntitySet="CompanySpecialtyDetails">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
@@ -10576,7 +10612,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CompanyStatusTypes">
-            <EntityTypeMapping TypeName="MIDASModel.CompanyStatusType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CompanyStatusType">
               <MappingFragment StoreEntitySet="CompanyStatusType">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10585,7 +10621,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CompanyTypes">
-            <EntityTypeMapping TypeName="MIDASModel.CompanyType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CompanyType">
               <MappingFragment StoreEntitySet="CompanyType">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10598,7 +10634,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ConsentGivenTypes">
-            <EntityTypeMapping TypeName="MIDASModel.ConsentGivenType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ConsentGivenType">
               <MappingFragment StoreEntitySet="ConsentGivenType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TypeText" ColumnName="TypeText" />
@@ -10607,7 +10643,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ContactInfoes">
-            <EntityTypeMapping TypeName="MIDASModel.ContactInfo">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ContactInfo">
               <MappingFragment StoreEntitySet="ContactInfo">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10628,7 +10664,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DefendantVehicles">
-            <EntityTypeMapping TypeName="MIDASModel.DefendantVehicle">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DefendantVehicle">
               <MappingFragment StoreEntitySet="DefendantVehicle">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -10650,7 +10686,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DiagnosisCodes">
-            <EntityTypeMapping TypeName="MIDASModel.DiagnosisCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisCode">
               <MappingFragment StoreEntitySet="DiagnosisCode">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DiagnosisTypeId" ColumnName="DiagnosisTypeId" />
@@ -10665,7 +10701,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DiagnosisCodeCompanies">
-            <EntityTypeMapping TypeName="MIDASModel.DiagnosisCodeCompany">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisCodeCompany">
               <MappingFragment StoreEntitySet="DiagnosisCodeCompany">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DiagnosisCodeID" ColumnName="DiagnosisCodeID" />
@@ -10679,7 +10715,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DiagnosisTypes">
-            <EntityTypeMapping TypeName="MIDASModel.DiagnosisType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisType">
               <MappingFragment StoreEntitySet="DiagnosisType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DiagnosisTypeText" ColumnName="DiagnosisTypeText" />
@@ -10693,7 +10729,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DiagnosisTypeCompanies">
-            <EntityTypeMapping TypeName="MIDASModel.DiagnosisTypeCompany">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisTypeCompany">
               <MappingFragment StoreEntitySet="DiagnosisTypeCompany">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DiagnosisTypeID" ColumnName="DiagnosisTypeID" />
@@ -10707,7 +10743,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Doctors">
-            <EntityTypeMapping TypeName="MIDASModel.Doctor">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Doctor">
               <MappingFragment StoreEntitySet="Doctor">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
@@ -10727,7 +10763,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DoctorCaseConsentApprovals">
-            <EntityTypeMapping TypeName="MIDASModel.DoctorCaseConsentApproval">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorCaseConsentApproval">
               <MappingFragment StoreEntitySet="DoctorCaseConsentApproval">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
@@ -10744,7 +10780,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DoctorLocationSchedules">
-            <EntityTypeMapping TypeName="MIDASModel.DoctorLocationSchedule">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorLocationSchedule">
               <MappingFragment StoreEntitySet="DoctorLocationSchedule">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
@@ -10759,7 +10795,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DoctorRoomTestMappings">
-            <EntityTypeMapping TypeName="MIDASModel.DoctorRoomTestMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorRoomTestMapping">
               <MappingFragment StoreEntitySet="DoctorRoomTestMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
@@ -10773,7 +10809,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DoctorSpecialities">
-            <EntityTypeMapping TypeName="MIDASModel.DoctorSpeciality">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorSpeciality">
               <MappingFragment StoreEntitySet="DoctorSpecialities">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
@@ -10787,7 +10823,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DoctorTaxTypes">
-            <EntityTypeMapping TypeName="MIDASModel.DoctorTaxType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorTaxType">
               <MappingFragment StoreEntitySet="DoctorTaxType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10801,7 +10837,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DocumentNodeObjectMappings">
-            <EntityTypeMapping TypeName="MIDASModel.DocumentNodeObjectMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNodeObjectMapping">
               <MappingFragment StoreEntitySet="DocumentNodeObjectMapping">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
@@ -10817,7 +10853,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EOVisits">
-            <EntityTypeMapping TypeName="MIDASModel.EOVisit">
+            <EntityTypeMapping TypeName="MIDASGBXModel.EOVisit">
               <MappingFragment StoreEntitySet="EOVisit">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
@@ -10834,11 +10870,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="VisitCreatedByCompanyId" ColumnName="VisitCreatedByCompanyId" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Genders">
-            <EntityTypeMapping TypeName="MIDASModel.Gender">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Gender">
               <MappingFragment StoreEntitySet="Gender">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="GenderText" ColumnName="GenderText" />
@@ -10847,7 +10884,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GeneralSettings">
-            <EntityTypeMapping TypeName="MIDASModel.GeneralSetting">
+            <EntityTypeMapping TypeName="MIDASGBXModel.GeneralSetting">
               <MappingFragment StoreEntitySet="GeneralSettings">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -10861,7 +10898,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ICDTypeCodes">
-            <EntityTypeMapping TypeName="MIDASModel.ICDTypeCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ICDTypeCode">
               <MappingFragment StoreEntitySet="ICDTypeCode">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -10874,7 +10911,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="IMEVisits">
-            <EntityTypeMapping TypeName="MIDASModel.IMEVisit">
+            <EntityTypeMapping TypeName="MIDASGBXModel.IMEVisit">
               <MappingFragment StoreEntitySet="IMEVisit">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -10896,7 +10933,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InsuranceMasters">
-            <EntityTypeMapping TypeName="MIDASModel.InsuranceMaster">
+            <EntityTypeMapping TypeName="MIDASGBXModel.InsuranceMaster">
               <MappingFragment StoreEntitySet="InsuranceMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
@@ -10917,7 +10954,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InsuranceTypes">
-            <EntityTypeMapping TypeName="MIDASModel.InsuranceType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.InsuranceType">
               <MappingFragment StoreEntitySet="InsuranceType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="InsuranceTypeText" ColumnName="InsuranceTypeText" />
@@ -10926,7 +10963,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Invitations">
-            <EntityTypeMapping TypeName="MIDASModel.Invitation">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Invitation">
               <MappingFragment StoreEntitySet="Invitation">
                 <ScalarProperty Name="InvitationID" ColumnName="InvitationID" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
@@ -10943,7 +10980,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InvitationTypes">
-            <EntityTypeMapping TypeName="MIDASModel.InvitationType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.InvitationType">
               <MappingFragment StoreEntitySet="InvitationType">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10956,7 +10993,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LanguagePreferences">
-            <EntityTypeMapping TypeName="MIDASModel.LanguagePreference">
+            <EntityTypeMapping TypeName="MIDASGBXModel.LanguagePreference">
               <MappingFragment StoreEntitySet="LanguagePreference">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10969,7 +11006,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Locations">
-            <EntityTypeMapping TypeName="MIDASModel.Location">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Location">
               <MappingFragment StoreEntitySet="Location">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10991,7 +11028,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Logs">
-            <EntityTypeMapping TypeName="MIDASModel.Log">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Log">
               <MappingFragment StoreEntitySet="Log">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
@@ -11010,7 +11047,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MailTemplates">
-            <EntityTypeMapping TypeName="MIDASModel.MailTemplate">
+            <EntityTypeMapping TypeName="MIDASGBXModel.MailTemplate">
               <MappingFragment StoreEntitySet="MailTemplates">
                 <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
                 <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
@@ -11020,7 +11057,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MaritalStatus">
-            <EntityTypeMapping TypeName="MIDASModel.MaritalStatu">
+            <EntityTypeMapping TypeName="MIDASGBXModel.MaritalStatu">
               <MappingFragment StoreEntitySet="MaritalStatus">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatusText" ColumnName="StatusText" />
@@ -11029,7 +11066,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MidasDocuments">
-            <EntityTypeMapping TypeName="MIDASModel.MidasDocument">
+            <EntityTypeMapping TypeName="MIDASGBXModel.MidasDocument">
               <MappingFragment StoreEntitySet="MidasDocuments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
@@ -11046,7 +11083,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Notifications">
-            <EntityTypeMapping TypeName="MIDASModel.Notification">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -11064,7 +11101,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OTPs">
-            <EntityTypeMapping TypeName="MIDASModel.OTP">
+            <EntityTypeMapping TypeName="MIDASGBXModel.OTP">
               <MappingFragment StoreEntitySet="OTP">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -11079,7 +11116,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OTPCompanyMappings">
-            <EntityTypeMapping TypeName="MIDASModel.OTPCompanyMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.OTPCompanyMapping">
               <MappingFragment StoreEntitySet="OTPCompanyMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="OTP" ColumnName="OTP" />
@@ -11098,7 +11135,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PasswordTokens">
-            <EntityTypeMapping TypeName="MIDASModel.PasswordToken">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PasswordToken">
               <MappingFragment StoreEntitySet="PasswordToken">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -11113,7 +11150,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Patients">
-            <EntityTypeMapping TypeName="MIDASModel.Patient">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Patient">
               <MappingFragment StoreEntitySet="Patient">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SSN" ColumnName="SSN" />
@@ -11136,7 +11173,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientAccidentInfoes">
-            <EntityTypeMapping TypeName="MIDASModel.PatientAccidentInfo">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientAccidentInfo">
               <MappingFragment StoreEntitySet="PatientAccidentInfo">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -11173,7 +11210,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientDocuments">
-            <EntityTypeMapping TypeName="MIDASModel.PatientDocument">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientDocument">
               <MappingFragment StoreEntitySet="PatientDocuments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
@@ -11189,7 +11226,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientEmpInfoes">
-            <EntityTypeMapping TypeName="MIDASModel.PatientEmpInfo">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientEmpInfo">
               <MappingFragment StoreEntitySet="PatientEmpInfo">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
@@ -11212,7 +11249,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientFamilyMembers">
-            <EntityTypeMapping TypeName="MIDASModel.PatientFamilyMember">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientFamilyMember">
               <MappingFragment StoreEntitySet="PatientFamilyMembers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RelationId" ColumnName="RelationId" />
@@ -11241,7 +11278,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientInsuranceInfoes">
-            <EntityTypeMapping TypeName="MIDASModel.PatientInsuranceInfo">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientInsuranceInfo">
               <MappingFragment StoreEntitySet="PatientInsuranceInfo">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PolicyHolderName" ColumnName="PolicyHolderName" />
@@ -11266,7 +11303,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientLanguagePreferenceMappings">
-            <EntityTypeMapping TypeName="MIDASModel.PatientLanguagePreferenceMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientLanguagePreferenceMapping">
               <MappingFragment StoreEntitySet="PatientLanguagePreferenceMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
@@ -11280,7 +11317,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientPriorAccidentInjuries">
-            <EntityTypeMapping TypeName="MIDASModel.PatientPriorAccidentInjury">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientPriorAccidentInjury">
               <MappingFragment StoreEntitySet="PatientPriorAccidentInjury">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -11300,7 +11337,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientSocialMediaMappings">
-            <EntityTypeMapping TypeName="MIDASModel.PatientSocialMediaMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientSocialMediaMapping">
               <MappingFragment StoreEntitySet="PatientSocialMediaMapping">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
@@ -11314,7 +11351,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientTypes">
-            <EntityTypeMapping TypeName="MIDASModel.PatientType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientType">
               <MappingFragment StoreEntitySet="PatientType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientTypeText" ColumnName="PatientTypeText" />
@@ -11323,7 +11360,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientVisits">
-            <EntityTypeMapping TypeName="MIDASModel.PatientVisit">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientVisit">
               <MappingFragment StoreEntitySet="PatientVisit">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
@@ -11355,7 +11392,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientVisitDiagnosisCodes">
-            <EntityTypeMapping TypeName="MIDASModel.PatientVisitDiagnosisCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientVisitDiagnosisCode">
               <MappingFragment StoreEntitySet="PatientVisitDiagnosisCodes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
@@ -11369,7 +11406,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientVisitProcedureCodes">
-            <EntityTypeMapping TypeName="MIDASModel.PatientVisitProcedureCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientVisitProcedureCode">
               <MappingFragment StoreEntitySet="PatientVisitProcedureCodes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
@@ -11383,7 +11420,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PatientVisitUnscheduleds">
-            <EntityTypeMapping TypeName="MIDASModel.PatientVisitUnscheduled">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientVisitUnscheduled">
               <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -11405,7 +11442,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PendingReferrals">
-            <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PendingReferral">
               <MappingFragment StoreEntitySet="PendingReferral">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
@@ -11426,7 +11463,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PendingReferralProcedureCodes">
-            <EntityTypeMapping TypeName="MIDASModel.PendingReferralProcedureCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PendingReferralProcedureCode">
               <MappingFragment StoreEntitySet="PendingReferralProcedureCodes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PendingReferralId" ColumnName="PendingReferralId" />
@@ -11440,7 +11477,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PlaintiffVehicles">
-            <EntityTypeMapping TypeName="MIDASModel.PlaintiffVehicle">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PlaintiffVehicle">
               <MappingFragment StoreEntitySet="PlaintiffVehicle">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -11476,7 +11513,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PolicyOwners">
-            <EntityTypeMapping TypeName="MIDASModel.PolicyOwner">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PolicyOwner">
               <MappingFragment StoreEntitySet="PolicyOwner">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
@@ -11485,7 +11522,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PreferredAncillaryProviders">
-            <EntityTypeMapping TypeName="MIDASModel.PreferredAncillaryProvider">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PreferredAncillaryProvider">
               <MappingFragment StoreEntitySet="PreferredAncillaryProvider">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PrefAncillaryProviderId" ColumnName="PrefAncillaryProviderId" />
@@ -11500,7 +11537,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PreferredAttorneyProviders">
-            <EntityTypeMapping TypeName="MIDASModel.PreferredAttorneyProvider">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PreferredAttorneyProvider">
               <MappingFragment StoreEntitySet="PreferredAttorneyProvider">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PrefAttorneyProviderId" ColumnName="PrefAttorneyProviderId" />
@@ -11515,7 +11552,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PreferredMedicalProviders">
-            <EntityTypeMapping TypeName="MIDASModel.PreferredMedicalProvider">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PreferredMedicalProvider">
               <MappingFragment StoreEntitySet="PreferredMedicalProvider">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PrefMedProviderId" ColumnName="PrefMedProviderId" />
@@ -11530,7 +11567,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProcedureCodes">
-            <EntityTypeMapping TypeName="MIDASModel.ProcedureCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ProcedureCode">
               <MappingFragment StoreEntitySet="ProcedureCode">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ProcedureCodeText" ColumnName="ProcedureCodeText" />
@@ -11549,7 +11586,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProcedureCodeCompanyMappings">
-            <EntityTypeMapping TypeName="MIDASModel.ProcedureCodeCompanyMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ProcedureCodeCompanyMapping">
               <MappingFragment StoreEntitySet="ProcedureCodeCompanyMapping">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ProcedureCodeID" ColumnName="ProcedureCodeID" />
@@ -11566,7 +11603,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Referrals">
-            <EntityTypeMapping TypeName="MIDASModel.Referral">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Referral">
               <MappingFragment StoreEntitySet="Referral">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PendingReferralId" ColumnName="PendingReferralId" />
@@ -11593,7 +11630,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ReferralDocuments">
-            <EntityTypeMapping TypeName="MIDASModel.ReferralDocument">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ReferralDocument">
               <MappingFragment StoreEntitySet="ReferralDocuments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ReferralId" ColumnName="ReferralId" />
@@ -11609,7 +11646,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ReferralProcedureCodes">
-            <EntityTypeMapping TypeName="MIDASModel.ReferralProcedureCode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ReferralProcedureCode">
               <MappingFragment StoreEntitySet="ReferralProcedureCodes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ReferralId" ColumnName="ReferralId" />
@@ -11623,7 +11660,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RefferingOffices">
-            <EntityTypeMapping TypeName="MIDASModel.RefferingOffice">
+            <EntityTypeMapping TypeName="MIDASGBXModel.RefferingOffice">
               <MappingFragment StoreEntitySet="RefferingOffice">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -11640,7 +11677,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Relations">
-            <EntityTypeMapping TypeName="MIDASModel.Relation">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Relation">
               <MappingFragment StoreEntitySet="Relations">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RelationText" ColumnName="RelationText" />
@@ -11649,7 +11686,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Rooms">
-            <EntityTypeMapping TypeName="MIDASModel.Room">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Room">
               <MappingFragment StoreEntitySet="Room">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11667,7 +11704,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoomTests">
-            <EntityTypeMapping TypeName="MIDASModel.RoomTest">
+            <EntityTypeMapping TypeName="MIDASGBXModel.RoomTest">
               <MappingFragment StoreEntitySet="RoomTest">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11681,7 +11718,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Schedules">
-            <EntityTypeMapping TypeName="MIDASModel.Schedule">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Schedule">
               <MappingFragment StoreEntitySet="Schedule">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11696,7 +11733,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ScheduleDetails">
-            <EntityTypeMapping TypeName="MIDASModel.ScheduleDetail">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ScheduleDetail">
               <MappingFragment StoreEntitySet="ScheduleDetail">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11715,7 +11752,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SchoolInformations">
-            <EntityTypeMapping TypeName="MIDASModel.SchoolInformation">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SchoolInformation">
               <MappingFragment StoreEntitySet="SchoolInformation">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
@@ -11732,7 +11769,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SocialMedias">
-            <EntityTypeMapping TypeName="MIDASModel.SocialMedia">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SocialMedia">
               <MappingFragment StoreEntitySet="SocialMedia">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11745,7 +11782,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SpecialityDetails">
-            <EntityTypeMapping TypeName="MIDASModel.SpecialityDetail">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SpecialityDetail">
               <MappingFragment StoreEntitySet="SpecialityDetails">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
@@ -11767,7 +11804,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Specialties">
-            <EntityTypeMapping TypeName="MIDASModel.Specialty">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Specialty">
               <MappingFragment StoreEntitySet="Specialty">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11785,7 +11822,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SpecialtyDetails">
-            <EntityTypeMapping TypeName="MIDASModel.SpecialtyDetail">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SpecialtyDetail">
               <MappingFragment StoreEntitySet="SpecialtyDetails">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
@@ -11807,7 +11844,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="States">
-            <EntityTypeMapping TypeName="MIDASModel.State">
+            <EntityTypeMapping TypeName="MIDASGBXModel.State">
               <MappingFragment StoreEntitySet="State">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StateCode" ColumnName="StateCode" />
@@ -11817,7 +11854,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SubscriptionPlans">
-            <EntityTypeMapping TypeName="MIDASModel.SubscriptionPlan">
+            <EntityTypeMapping TypeName="MIDASGBXModel.SubscriptionPlan">
               <MappingFragment StoreEntitySet="SubscriptionPlan">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11830,7 +11867,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="MIDASModel.sysdiagram">
+            <EntityTypeMapping TypeName="MIDASGBXModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -11841,7 +11878,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Templates">
-            <EntityTypeMapping TypeName="MIDASModel.Template">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Template">
               <MappingFragment StoreEntitySet="Templates">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TemplateType" ColumnName="TemplateType" />
@@ -11856,7 +11893,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="MIDASModel.User">
+            <EntityTypeMapping TypeName="MIDASGBXModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -11882,7 +11919,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserApiRoleMappings">
-            <EntityTypeMapping TypeName="MIDASModel.UserApiRoleMapping">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserApiRoleMapping">
               <MappingFragment StoreEntitySet="UserApiRoleMapping">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="API" ColumnName="API" />
@@ -11892,7 +11929,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserCompanies">
-            <EntityTypeMapping TypeName="MIDASModel.UserCompany">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserCompany">
               <MappingFragment StoreEntitySet="UserCompany">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -11908,7 +11945,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserCompanyRoles">
-            <EntityTypeMapping TypeName="MIDASModel.UserCompanyRole">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserCompanyRole">
               <MappingFragment StoreEntitySet="UserCompanyRole">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -11922,7 +11959,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserPersonalSettings">
-            <EntityTypeMapping TypeName="MIDASModel.UserPersonalSetting">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserPersonalSetting">
               <MappingFragment StoreEntitySet="UserPersonalSettings">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -11942,7 +11979,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserStatus">
-            <EntityTypeMapping TypeName="MIDASModel.UserStatu">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserStatu">
               <MappingFragment StoreEntitySet="UserStatus">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
@@ -11951,7 +11988,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserTypes">
-            <EntityTypeMapping TypeName="MIDASModel.UserType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserType">
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -11964,7 +12001,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VisitCategories">
-            <EntityTypeMapping TypeName="MIDASModel.VisitCategory">
+            <EntityTypeMapping TypeName="MIDASGBXModel.VisitCategory">
               <MappingFragment StoreEntitySet="VisitCategory">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
@@ -11973,7 +12010,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VisitDocuments">
-            <EntityTypeMapping TypeName="MIDASModel.VisitDocument">
+            <EntityTypeMapping TypeName="MIDASGBXModel.VisitDocument">
               <MappingFragment StoreEntitySet="VisitDocuments">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
@@ -11989,7 +12026,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VisitStatus">
-            <EntityTypeMapping TypeName="MIDASModel.VisitStatu">
+            <EntityTypeMapping TypeName="MIDASGBXModel.VisitStatu">
               <MappingFragment StoreEntitySet="VisitStatus">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
@@ -11998,7 +12035,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VisitTypes">
-            <EntityTypeMapping TypeName="MIDASModel.VisitType">
+            <EntityTypeMapping TypeName="MIDASGBXModel.VisitType">
               <MappingFragment StoreEntitySet="VisitType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -12012,7 +12049,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DocumentNodes">
-            <EntityTypeMapping TypeName="MIDASModel.DocumentNode">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNode">
               <MappingFragment StoreEntitySet="DocumentNodes">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ParentNode" ColumnName="ParentNode" />
@@ -12021,10 +12058,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="midas_sp_get_document_path" FunctionName="MIDASModel.Store.midas_sp_get_document_path" />
-          <FunctionImportMapping FunctionImportName="sp_CaseGetReadOnly" FunctionName="MIDASModel.Store.sp_CaseGetReadOnly">
+          <FunctionImportMapping FunctionImportName="midas_sp_get_document_path" FunctionName="MIDASGBXModel.Store.midas_sp_get_document_path" />
+          <FunctionImportMapping FunctionImportName="sp_CaseGetReadOnly" FunctionName="MIDASGBXModel.Store.sp_CaseGetReadOnly">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="MIDASModel.sp_CaseGetReadOnly_Result">
+              <ComplexTypeMapping TypeName="MIDASGBXModel.sp_CaseGetReadOnly_Result">
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="OriginatorCompanyId" ColumnName="OriginatorCompanyId" />

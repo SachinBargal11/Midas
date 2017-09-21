@@ -361,6 +361,10 @@ namespace MIDAS.GBX
             {
                 repo = new SearchDoctorsRepository(context);
             }
+            else if (typeof(T) == typeof(BO.SearchMedicalProviders))
+            {
+                repo = new SearchMedicalProvidersRepository(context);
+            }
 
             return repo;
         }

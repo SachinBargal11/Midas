@@ -1955,6 +1955,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get Statistical Data On Case By Case Type
         public override Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
         {
+            ToDate = ToDate.Date.AddDays(1);
+
             var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                    .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId 
@@ -1978,6 +1980,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 lienType = LienType,
                 notSpecified = NotSpecified
             };
+        }
+        #endregion
+
+        #region Get Statistical Data On Case By Case Type
+        public override Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            ToDate = ToDate.Date.AddDays(1);
+
+            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                   .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                                        c => c.Id, ccm => ccm.CaseId, (c, ccm) => c)
+                                   .Select(c => c.Id);
+
+            var CaseInsuranceList = _context.PatientInsuranceInfoes.Where(p => CaseList.Contains(p.CaseId) == true
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+            //var CaseInsuranceList = CaseList.Join(_context.PatientInsuranceInfoes
+            //                                              .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
+            //                                                    c => c.Id, pii => pii.CaseId, (c, pii) => new { c, pii })
+            //                                .Select(p => new
+            //                                {
+            //                                    caseId = p.pii.CaseId,
+            //                                    insuranceMasterId = p.pii.InsuranceMasterId,
+            //                                    insuranceCompanyName = p.pii.InsuranceMaster.CompanyName
+            //                                });
+
+            var TopCaseInsuranceCountList = CaseInsuranceList.GroupBy(p => p.InsuranceMasterId)
+                                                             .Select(p => new { InsuranceMasterId = p.Key, Count = p.Count() })
+                                                             .Join(_context.InsuranceMasters, 
+                                                                cil => cil.InsuranceMasterId, im => im.Id, (cli, im) => new { cli, im })
+                                                             .Select(p => new {
+                                                                 insuranceMasterId = p.cli.InsuranceMasterId,
+                                                                 insuranceCompanyName = p.im.CompanyName,
+                                                                 count = p.cli.Count
+                                                             });
+
+            return (object)TopCaseInsuranceCountList.ToList();
         }
         #endregion
 

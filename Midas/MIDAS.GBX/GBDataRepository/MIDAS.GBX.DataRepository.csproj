@@ -250,6 +250,7 @@
     <Compile Include="EntityRepository\Schedule\ScheduleRepository.cs" />
     <Compile Include="EntityRepository\SchoolInformation\SchoolInformationRepository.cs" />
     <Compile Include="EntityRepository\Search\SearchDoctorsRepository.cs" />
+    <Compile Include="EntityRepository\Search\SearchMedicalProvidersRepository.cs" />
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityRepository.cs" />

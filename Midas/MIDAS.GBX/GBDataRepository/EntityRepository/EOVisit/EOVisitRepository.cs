@@ -54,6 +54,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 EOVisitBO.CalendarEventId = EOVisit.CalendarEventId;
                 EOVisitBO.DoctorId = EOVisit.DoctorId;
                 EOVisitBO.PatientId = EOVisit.PatientId;
+                EOVisitBO.CaseId = EOVisit.CaseId;
                 EOVisitBO.VisitCreatedByCompanyId = EOVisit.PatientId;
                 EOVisitBO.InsuranceProviderId = EOVisit.InsuranceProviderId;
                 EOVisitBO.VisitStatusId = EOVisit.VisitStatusId;
@@ -82,6 +83,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         PatientBO = patientRepo.Convert<BO.Patient, Patient>(EOVisit.Patient);
                         EOVisitBO.Patient = PatientBO;
+                    }
+                }
+
+                if (EOVisit.Case != null)
+                {
+                    BO.Case CaseBO = new BO.Case();
+                    using (CaseRepository CaseRepo = new CaseRepository(_context))
+                    {
+                        CaseBO = CaseRepo.Convert<BO.Case, Case>(EOVisit.Case);
+                        EOVisitBO.Case = CaseBO;
                     }
                 }
 
@@ -313,7 +324,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     EOVisitDB.DoctorId = IsEditMode == true && EOVisitBO.DoctorId.HasValue == false ? EOVisitDB.DoctorId : (EOVisitBO.DoctorId.HasValue == false ? EOVisitDB.DoctorId : EOVisitBO.DoctorId.Value);
                     EOVisitDB.PatientId = IsEditMode == true && EOVisitBO.PatientId.HasValue == false ? EOVisitDB.PatientId : (EOVisitBO.PatientId.HasValue == false ? EOVisitDB.PatientId : EOVisitBO.PatientId.Value);
-                    
+                    EOVisitDB.CaseId = IsEditMode == true && EOVisitBO.CaseId.HasValue == false ? EOVisitDB.CaseId : (EOVisitBO.CaseId.HasValue == false ? EOVisitDB.CaseId : EOVisitBO.CaseId.Value);
+
                     EOVisitDB.InsuranceProviderId = IsEditMode == true && EOVisitBO.InsuranceProviderId.HasValue == false ? EOVisitDB.InsuranceProviderId : (EOVisitBO.InsuranceProviderId.HasValue == false ? EOVisitDB.InsuranceProviderId : EOVisitBO.InsuranceProviderId.Value);
                     EOVisitDB.EventStart = EOVisitBO.EventStart;
                     EOVisitDB.EventEnd = EOVisitBO.EventEnd;
