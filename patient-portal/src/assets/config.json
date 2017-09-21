@@ -1,7 +1,7 @@
 {
     "baseUrl": "http://caserver:7010/midaspatientapi",
     "identityServerUrl": "https://identityserverdev.codearray.tk",
-    "notificationServerUrl": "http://caserver:7011",
+    "notificationServerUrl": "http://notification.codearray.tk",
     "home_url": "http://caserver:7013",
     "app_url": "http://localhost:4201",
     "identity_scope": "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",

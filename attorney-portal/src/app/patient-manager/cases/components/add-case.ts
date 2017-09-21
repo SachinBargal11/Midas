@@ -193,6 +193,7 @@ export class AddCaseComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    handleSearchDialogHide() {}
 
     saveCase() {
         this.isSaveProgress = true;

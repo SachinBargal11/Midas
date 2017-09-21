@@ -32,6 +32,8 @@ export class SessionStore {
     private __ACCESS_TOKEN__ = 'access_token';
     private __TOKEN_EXPIRES_AT__ = 'token_expires_at';
     private __TOKEN_RESPONSE__ = 'token_response';
+    private __state__ = 'state';
+    private __nonce__ = 'nonce';
 
     public get session(): Session {
         return this._session;
@@ -127,13 +129,19 @@ export class SessionStore {
 
     logout() {
         let tokenResponse = this.session.tokenResponse;
-        this.session.account = null;
         // this._resetSession();
+        this.session.account = null;
+        this.session.currentCompany = null;
+        this.session.accessToken = null;
+        this.session.tokenExpiresAt = null;
+        this.session.tokenResponse = null;
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
         window.localStorage.removeItem(this.__CURRENT_COMPANY__);
         window.localStorage.removeItem(this.__ACCESS_TOKEN__);
         window.localStorage.removeItem(this.__TOKEN_EXPIRES_AT__);
         window.localStorage.removeItem(this.__TOKEN_RESPONSE__);
+        window.localStorage.removeItem(this.__state__);
+        window.localStorage.removeItem(this.__nonce__);
         window.onbeforeunload = function (e) {
             $.connection.hub.stop();
         };
@@ -282,9 +290,8 @@ export class SessionStore {
                                                             window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
                                                             resolve(account);
                                                         }, error => {
-                                                            let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
-                                                            window.location.assign(url);
                                                             reject(error);
+                                                            this._logoutIdentity(result);
                                                         });
                                                 });
                                                 // window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
@@ -294,20 +301,19 @@ export class SessionStore {
                                             }
                                             resolve(userInfo);
                                         }, error => {
-                                            let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
-                                            window.location.assign(url);
                                             reject(error);
+                                            this._logoutIdentity(result);
                                         });
                                     });
                                     resolve(metadata);
                                 }, error => {
-                                    let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
-                                    window.location.assign(url);
                                     reject(error);
+                                    this._logoutIdentity(result);
                                 });
                         });
                     }, (error: any) => {
                         reject(new Error('UNABLE_TO_LOAD_CONFIG'));
+                        this._logoutIdentity(result);
                     });
             });
         } else {
@@ -327,17 +333,24 @@ export class SessionStore {
                         if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
                             let storedAccountData: any = JSON.parse(storedAccount);
                             let account: Account = AccountAdapter.parseStoredData(storedAccountData);
-                            this._populateSession(account)
-                            if (window.location.hash != '' && window.location.hash != '#/404') {
-                                window.location.assign(window.location.href);
+                            let now = moment();
+                            if (account.type == 'ancillary' && account.tokenExpiresAt > now) {
+                                this._populateSession(account)
+                                if (window.location.hash != '' && window.location.hash != '#/404' && window.location.hash != '#/') {
+                                    window.location.assign(window.location.href);
+                                } else {
+                                    window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                                }
                             } else {
-                                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                                window.localStorage.clear();
+                                this.getToken();
                             }
                         } else {
                             this.getToken();
                         }
                     }, (error: any) => {
                         reject(new Error('UNABLE_TO_LOAD_CONFIG'));
+                        this._logoutIdentity(result);
                     });
             });
         }
@@ -358,12 +371,28 @@ export class SessionStore {
             }
             else {
                 reject(new Error('SAVED_AUTHENTICATION_NOT_FOUND'));
-                let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
-                window.location.assign(url);
+                this._logoutIdentity(result);
             }
         });
         window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
         return Observable.from(promise);
+    }
+    
+    private _logoutIdentity(result) {
+        this.session.account = null;
+        this.session.currentCompany = null;
+        this.session.accessToken = null;
+        this.session.tokenExpiresAt = null;
+        this.session.tokenResponse = null;
+        window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
+        window.localStorage.removeItem(this.__CURRENT_COMPANY__);
+        window.localStorage.removeItem(this.__ACCESS_TOKEN__);
+        window.localStorage.removeItem(this.__TOKEN_EXPIRES_AT__);
+        window.localStorage.removeItem(this.__TOKEN_RESPONSE__);
+        window.localStorage.removeItem(this.__state__);
+        window.localStorage.removeItem(this.__nonce__);
+        let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
+        window.location.assign(url);
     }
     rand() {
         return (Date.now() + "" + Math.random()).replace(".", "");

@@ -15,6 +15,7 @@ import { UserType } from '../../commons/models/enums/user-type';
 import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
 import { NotificationsService } from 'angular2-notifications';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'register-company',
@@ -90,7 +91,8 @@ export class RegisterCompanyComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Welcome!', 'Your company has been registered successfully! Check your email for activation.');
                 setTimeout(() => {
-                    this._router.navigate(['/account/login']);
+                    // this._router.navigate(['/account/login']);
+                    window.location.assign(environment.HOME_URL);
                 }, 3000);
             },
             (error) => {
@@ -105,6 +107,7 @@ export class RegisterCompanyComponent implements OnInit {
     }
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/account/login']);
+        // this._router.navigate(['/account/login']);
+        window.location.assign(environment.HOME_URL);
     }
 }

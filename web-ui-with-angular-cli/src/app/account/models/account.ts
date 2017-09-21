@@ -15,6 +15,7 @@ const AccountRecord = Record({
     accessToken: '',
     tokenExpiresAt: null,
     tokenResponse: null,
+    type: 'medicalProvider',
     originalResponse: null
 });
 
@@ -27,6 +28,7 @@ export class Account extends AccountRecord {
     accessToken: string;
     tokenExpiresAt: any;
     tokenResponse: any;
+    type: string;
     originalResponse: any;
 
     constructor(props) {

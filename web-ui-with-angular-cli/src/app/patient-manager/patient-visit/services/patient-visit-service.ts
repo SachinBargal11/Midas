@@ -806,8 +806,8 @@ export class PatientVisitService {
     getPatientVisitForDateByLocationId(date: any, locationId: number): Observable<PatientVisit[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            let inputDate = date.format('YYYY-MM-DD');
-            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getPatientVisitForDateByLocationId/' + inputDate + '/' + locationId, {
+            let forDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getPatientVisitForDateByLocationId/' + forDate + '/' + locationId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -826,8 +826,46 @@ export class PatientVisitService {
     getDoctorPatientVisitForDateByLocationId(date: any, doctorId: number, locationId: number): Observable<PatientVisit[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            let inputDate = date.format('YYYY-MM-DD');
-            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getDoctorPatientVisitForDateByLocationId/' + inputDate + '/' + doctorId + '/' + locationId, {
+            let forDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getDoctorPatientVisitForDateByLocationId/' + forDate + '/' + doctorId + '/' + locationId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getPatientVisitForDateByCompanyId(date: any, companyId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let forDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getPatientVisitForDateByCompanyId/' + forDate + '/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getDoctorPatientVisitForDateByCompanyId(date: any, doctorId: number, companyId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let forDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getDoctorPatientVisitForDateByCompanyId/' + forDate + '/' + doctorId + '/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -867,6 +905,24 @@ export class PatientVisitService {
             let inputFromDate = fromDate.format('YYYY-MM-DD');
             let inputToDate = toDate.format('YYYY-MM-DD');
             return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnPatientVisit/' + inputFromDate + '/' + inputToDate + '/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any, companyId: number): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let inputFromDate = fromDate.format('YYYY-MM-DD');
+            let inputToDate = toDate.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnCaseByCaseType/' + inputFromDate + '/' + inputToDate + '/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())

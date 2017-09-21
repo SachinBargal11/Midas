@@ -56,14 +56,14 @@ export class AppHeaderComponent implements OnInit {
                 return PushNotificationAdapter.parseResponse(currData);
             });
             _.forEach(AppHeaderComponent.prototype.messages.reverse(), (currMessage: PushNotification) => {
-                // if (currMessage.isRead == false) {
+                if (currMessage.isRead == false) {
                     let notification = new Notification({
                         'title': currMessage.message,
                         'type': 'SUCCESS',
                         'createdAt': moment(currMessage.notificationTime)
                     });
                     notificationsStore.addNotification(notification);
-                // }
+                }
             })
         }
 

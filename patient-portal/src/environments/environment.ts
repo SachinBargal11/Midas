@@ -9,7 +9,8 @@ export const environment = {
   SERVICE_BASE_URL: 'http://patientdevapi.codearray.tk/midaspatientapi', 
   // SERVICE_BASE_URL: 'http://caserver:7010/midaspatientapi', 
   IDENTITY_SERVER_URL: 'https://identityserverdev.codearray.tk',
-  NOTIFICATION_SERVER_URL: 'http://caserver:7011',
+  // NOTIFICATION_SERVER_URL: 'http://caserver:7011',
+  NOTIFICATION_SERVER_URL: 'http://notification.codearray.tk',
   HOME_URL: 'http://caserver:7013',
   APP_URL: 'http://localhost:4201',
   

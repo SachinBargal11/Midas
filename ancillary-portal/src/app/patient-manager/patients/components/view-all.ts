@@ -81,24 +81,24 @@ export class ViewAllComponent implements OnInit {
                 });
 
             //
-            let empResult = this._employerStore.getCurrentEmployer(this.patientId);
-            empResult.subscribe(
-                (employer: Employer) => {
-                    if (employer.id) {
-                        this.employer = employer;
-                    } else {
-                        this.noEmployer = 'No Employer available';
+            // let empResult = this._employerStore.getCurrentEmployer(this.patientId);
+            // empResult.subscribe(
+            //     (employer: Employer) => {
+            //         if (employer.id) {
+            //             this.employer = employer;
+            //         } else {
+            //             this.noEmployer = 'No Employer available';
 
-                    }
+            //         }
 
-                },
-                (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            //     },
+            //     (error) => {
+            //         this._router.navigate(['/patient-manager/patients']);
+            //         this._progressBarService.hide();
+            //     },
+            //     () => {
+            //         this._progressBarService.hide();
+            //     });
 
             //
 
