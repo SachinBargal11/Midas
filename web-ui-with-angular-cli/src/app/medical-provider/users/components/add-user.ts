@@ -95,7 +95,8 @@ export class AddUserComponent implements OnInit {
             userInfo: this._fb.group({
                 firstname: ['', Validators.required],
                 lastname: ['', Validators.required],
-                role: ['', [Validators.required]]
+                role: ['', [Validators.required]],
+                gender: ['', [Validators.required]]
             }),
             doctor: this._fb.group(this.initDoctorModel()),
             contact: this._fb.group({
@@ -179,6 +180,7 @@ export class AddUserComponent implements OnInit {
                 userType: UserType.STAFF,
                 roles: roles,
                 userName: userFormValues.contact.email,
+                gender: userFormValues.userInfo.gender,
                 contact: new Contact({
                     cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     emailAddress: userFormValues.contact.email,
@@ -275,12 +277,14 @@ export class AddUserComponent implements OnInit {
                             title: userFormValues.doctor.title,
                             doctorSpecialities: doctorSpecialities,
                             isCalendarPublic: userFormValues.doctor.isCalendarPublic,
+                            genderId: userFormValues.userInfo.gender,
                             user: new User({
                                 firstName: userFormValues.userInfo.firstname,
                                 lastName: userFormValues.userInfo.lastname,
                                 userType: UserType.STAFF,
                                 roles: roles,
                                 userName: userFormValues.contact.email,
+                                gender: userFormValues.userInfo.gender,
                                 contact: new Contact({
                                     cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                                     emailAddress: userFormValues.contact.email,

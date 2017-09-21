@@ -32,6 +32,25 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Gender
+                                    <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="userformControls.userInfo.controls.gender.touched && !userformControls.userInfo.controls.gender.valid">
+                        <select formControlName="gender" class="select2-arrow form-control" [class.error]="userformControls.userInfo.controls.gender.touched && !userformControls.userInfo.controls.gender.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Male</option>
+                                             <option value="2">Female</option>
+                                             <option value="3">Declined to specify</option>
+                                         </select>
+                        <div class='error-list' *ngIf="userformControls.userInfo.controls.gender.touched && !userformControls.userInfo.controls.gender.valid">
+                            <ul>
+                                <li *ngIf="userformControls.userInfo.controls.gender.hasError('required')">Gender is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">

@@ -91,6 +91,18 @@ export class MedicalProviderMasterStore {
         return <Observable<any>>Observable.from(promise);
     }
 
+    searchDoctors(searchDetails: any): Observable<any> {
+        let promise = new Promise((resolve, reject) => {
+            this._medicalProviderMasterService.searchDoctors(searchDetails).subscribe((any) => {
+                // this._medicalProviderMaster.next(this._medicalProviderMaster.getValue().push(any));
+                resolve(any);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.from(promise);
+    }
+
     findMedicalProvideryById(id: number): MedicalProviderMaster {
         let provider = this._medicalProviderMaster.getValue();
         let index = provider.findIndex((currentProvider: MedicalProviderMaster) => currentProvider.id === id);

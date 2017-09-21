@@ -11,7 +11,10 @@ const LocationRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    handicapRamp: 0,
+    stairsToOffice: 0,
+    publicTransportNearOffice: 0
 });
 
 export class Location extends LocationRecord {
@@ -24,6 +27,9 @@ export class Location extends LocationRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+    handicapRamp: boolean;
+    stairsToOffice: boolean;
+    publicTransportNearOffice: boolean;
 
     constructor(props) {
         super(props);

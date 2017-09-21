@@ -28,6 +28,9 @@ export class AddLocationComponent implements OnInit {
     states: any[];
     cities: any[];
     selectedCity = 0;
+    handicapRamp = 0;
+    stairsToOffice = 0;
+    publicTransportNearOffice = 0;
     location = new Location({});
     locationJS;
     options = {
@@ -63,7 +66,10 @@ export class AddLocationComponent implements OnInit {
             zipCode: ['', Validators.required],
             officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
             fax: [''],
-            locationType: ['', Validators.required]
+            locationType: ['', Validators.required],
+            handicapRamp: [''],
+            stairsToOffice: [''],
+            publicTransportNearOffice: ['']
         });
 
         this.addlocationformControls = this.addlocationform.controls;
@@ -98,7 +104,10 @@ export class AddLocationComponent implements OnInit {
         let basicInfo = new LocationDetails({
             location: new Location({
                 name: addlocationformValues.name,
-                locationType: parseInt(addlocationformValues.locationType)
+                locationType: parseInt(addlocationformValues.locationType),
+                handicapRamp:parseInt(addlocationformValues.handicapRamp),
+                stairsToOffice:parseInt(addlocationformValues.stairsToOffice) ,
+                publicTransportNearOffice:parseInt(addlocationformValues.publicTransportNearOffice)
             }),
             company: new Company({
                 id: this._sessionStore.session.currentCompany.id

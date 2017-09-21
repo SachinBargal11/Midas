@@ -162,7 +162,8 @@ export class UserBasicComponent implements OnInit {
             userInfo: this.fb.group({
                 firstName: ['', Validators.required],
                 lastName: ['', Validators.required],
-                role: ['', Validators.required]
+                role: ['', Validators.required],
+                gender: ['', [Validators.required]]
             }),
             doctor: this.fb.group(this.initDoctorModel()),
             contact: this.fb.group({
@@ -171,7 +172,7 @@ export class UserBasicComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', [AppValidators.emailValidator]],
+                alternateEmail: ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
@@ -250,6 +251,7 @@ export class UserBasicComponent implements OnInit {
                 userType: UserType.STAFF,
                 roles: roles,
                 userName: this.user.userName,
+                gender: userFormValues.userInfo.gender,
                 contact: new Contact({
                     id: this.user.contact.id,
                     cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
@@ -260,7 +262,7 @@ export class UserBasicComponent implements OnInit {
                     officeExtension: userFormValues.contact.officeExtension,
                     alternateEmail: userFormValues.contact.alternateEmail,
                     preferredCommunication: userFormValues.contact.preferredCommunication,
-                   
+
 
                 }),
                 address: new Address({
@@ -291,6 +293,7 @@ export class UserBasicComponent implements OnInit {
                 title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
                 isCalendarPublic: userFormValues.doctor.isCalendarPublic,
+                genderId: userFormValues.userInfo.gender,
                 user: new User({
                     id: this.user.id,
                     firstName: userFormValues.userInfo.firstName,
@@ -298,6 +301,7 @@ export class UserBasicComponent implements OnInit {
                     userType: UserType.STAFF,
                     roles: roles,
                     userName: this.user.userName,
+                    gender: userFormValues.userInfo.gender,
                     contact: new Contact({
                         id: this.user.contact.id,
                         cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,

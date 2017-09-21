@@ -58,6 +58,7 @@ import { PatientVisitNotesComponent } from './cases/components/patient-visit-not
 import { PatientVisitListShellComponent } from './cases/components/patient-visit-list-shell';
 import { VisitDocumentsUploadComponent } from './cases/components/visit-document';
 import { CaseDocumentsUploadComponent } from './cases/components/case-documents';
+import { SearchPreferedProvidersComponent } from '../account-setup/components/medical-provider-master/search-preferred-providers';
 
 
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
@@ -193,7 +194,8 @@ import { ClientVisitListComponent } from './cases/components/client-visit';
         PriorAccidentComponent,
         AutoInformationInfoComponent,
         UnscheduledVisitComponent,
-        ClientVisitListComponent
+        ClientVisitListComponent,
+        SearchPreferedProvidersComponent
     ],
     providers: [
         PatientsService,

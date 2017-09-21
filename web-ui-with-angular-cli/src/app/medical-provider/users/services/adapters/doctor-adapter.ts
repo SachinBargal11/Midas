@@ -50,6 +50,7 @@ export class DoctorAdapter {
                 taxType: doctorData.taxType,
                 title: doctorData.title,
                 user: UserAdapter.parseResponse(doctorData.user),
+                genderId:doctorData.genderId,
                 doctorSpecialities: doctorSpecialities,
                 doctorLocationSchedules: doctorLocationSchedule,
                 isCalendarPublic: doctorData.isCalendarPublic,

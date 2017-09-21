@@ -14,6 +14,7 @@ const DoctorRecord = Record({
     title: '',
     userId: 0,
     user: null,
+    genderId:1,
     doctorSpecialities: null,
     doctorLocationSchedules: null,
     isCalendarPublic: false,
@@ -35,6 +36,7 @@ export class Doctor extends DoctorRecord {
     title: string;
     userId: number;
     user: User;
+    genderId:number;
     doctorSpecialities: DoctorSpeciality[];
     doctorLocationSchedules: DoctorLocationSchedule[]; 
     isCalendarPublic: boolean;
@@ -43,6 +45,7 @@ export class Doctor extends DoctorRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+
 
     constructor(props) {
         super(props);

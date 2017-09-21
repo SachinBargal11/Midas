@@ -39,6 +39,9 @@ export class BasicComponent implements OnInit {
     isSaveProgress = false;
     isCitiesLoading = false;
     selectedCity;
+    handicapRamp;
+    stairsToOffice;
+    publicTransportNearOffice;
     locationDetails: LocationDetails = new LocationDetails({
         location: new Location({}),
         company: new Company({}),
@@ -66,6 +69,9 @@ export class BasicComponent implements OnInit {
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
                     this.locationType = LocationType[locationDetails.location.locationType];
+                    this.handicapRamp = locationDetails.location.handicapRamp.toString();
+                    this.stairsToOffice = locationDetails.location.stairsToOffice.toString();
+                    this.publicTransportNearOffice = locationDetails.location.publicTransportNearOffice.toString();
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/locations']);
@@ -85,7 +91,10 @@ export class BasicComponent implements OnInit {
             zipcode: ['', Validators.required],
             officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
             fax: [''],
-            officeType: ['', Validators.required]
+            officeType: ['', Validators.required],
+            handicapRamp: [''],
+            stairsToOffice: [''],
+            publicTransportNearOffice: ['']
         });
 
         this.basicformControls = this.basicform.controls;
@@ -104,6 +113,9 @@ export class BasicComponent implements OnInit {
                 id: this.locationDetails.location.id,
                 name: basicformValues.officeName,
                 locationType: parseInt(basicformValues.officeType),
+                handicapRamp: parseInt(basicformValues.handicapRamp),
+                stairsToOffice: parseInt(basicformValues.stairsToOffice),
+                publicTransportNearOffice: parseInt(basicformValues.publicTransportNearOffice),
                 updateByUserID: userId
             }),
             company: new Company({

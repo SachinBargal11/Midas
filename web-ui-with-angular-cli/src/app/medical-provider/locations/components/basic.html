@@ -149,6 +149,37 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <label class="form-label"> Handicap Ramp Available? 
+                         <span class="color-red">*</span>
+                    </label>
+            <div class="form-group">
+                <p-radioButton formControlName="handicapRamp" name="handicapRamp" value="1" label="Yes" [(ngModel)]="handicapRamp"></p-radioButton>
+                <p-radioButton formControlName="handicapRamp" name="handicapRamp" value="0" label="No" [(ngModel)]="handicapRamp"></p-radioButton>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <label class="form-label">Stairs To Office Available? 
+                         <span class="color-red">*</span>
+                    </label>
+            <div class="form-group">
+                <p-radioButton formControlName="stairsToOffice" name="stairsToOffice" value="1" label="Yes" [(ngModel)]="stairsToOffice"></p-radioButton>
+                <p-radioButton formControlName="stairsToOffice" name="stairsToOffice" value="0" label="No" [(ngModel)]="stairsToOffice"></p-radioButton>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <label class="form-label"> Public Transport Near Office Available? 
+                         <span class="color-red">*</span>
+                    </label>
+            <div class="form-group">
+                <p-radioButton formControlName="publicTransportNearOffice" name="publicTransportNearOffice" value="1" label="Yes" [(ngModel)]="publicTransportNearOffice"></p-radioButton>
+                <p-radioButton formControlName="publicTransportNearOffice" name="publicTransportNearOffice" value="0" label="No" [(ngModel)]="publicTransportNearOffice"></p-radioButton>
+            </div>
+        </div>
+    </div>
     <button [disabled]="!basicform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
         <loader [visible]="isSaveProgress"></loader>
     </button>

@@ -116,6 +116,22 @@ export class MedicalProviderMasterService {
         return <Observable<MedicalProviderMaster>>Observable.fromPromise(promise);
     }
 
+    searchDoctors(requestData: any): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(environment.SERVICE_BASE_URL + '/search/getDoctors', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
     updateMedicalProvider(requestData: MedicalProviderMaster): Observable<MedicalProviderMaster> {
         let promise: Promise<MedicalProviderMaster> = new Promise((resolve, reject) => {
             let headers = new Headers();

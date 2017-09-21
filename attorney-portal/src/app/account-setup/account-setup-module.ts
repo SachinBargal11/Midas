@@ -42,6 +42,7 @@ import { MedicalProviderListComponent } from './components/medical-provider-mast
 // import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
 // import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
 import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
+// import { SearchPreferedProvidersComponent } from './components/medical-provider-master/search-preferred-providers';
 
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
 import { ProcedureCodeComponent } from './components/account-setting/procedure-code-master';
@@ -80,6 +81,7 @@ import { DocumentTypeService } from './services/document-type-service';
         InsuranceMasterListComponent,
         MedicalProviderListComponent,
         // AddMedicalProviderComponent,
+        // SearchPreferedProvidersComponent,
         EditMedicalProviderComponent,
         AccountSettingShellComponent,
         ProcedureCodeComponent,

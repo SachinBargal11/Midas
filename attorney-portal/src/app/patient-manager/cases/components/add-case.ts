@@ -50,6 +50,7 @@ export class AddCaseComponent implements OnInit {
     allProviders: MedicalProviderMaster[];
     currentProviderId: number = 0;
     providerId: number = 0;
+    searchDialogVisible: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -146,6 +147,14 @@ export class AddCaseComponent implements OnInit {
         // else {
         //     this.caseform.get("providerId").enable();
         // }
+    }
+
+    showDialog() {
+        this.searchDialogVisible = true;
+    }
+    
+    closeDialog(event) {
+        this.searchDialogVisible = false;
     }
 
 
