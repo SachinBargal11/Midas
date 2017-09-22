@@ -12,10 +12,12 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
     public class SearchController : ApiController
     {
         private IRequestHandler<SearchDoctors> requestHandlerSearchDoctors;
+        private IRequestHandler<SearchMedicalProviders> requestHandlerSearchMedicalProviders;
 
         public SearchController()
         {
             requestHandlerSearchDoctors = new GbApiRequestHandler<SearchDoctors>();
+            requestHandlerSearchMedicalProviders = new GbApiRequestHandler<SearchMedicalProviders>();
         }
 
         [HttpPost]
@@ -23,6 +25,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         public HttpResponseMessage GetDoctors([FromBody]SearchDoctors searchDoctors)
         {
             return requestHandlerSearchDoctors.GetDoctors(Request, searchDoctors);
+        }
+
+        [HttpPost]
+        [Route("getMedicalProviders")]
+        public HttpResponseMessage GetMedicalProviders([FromBody]SearchMedicalProviders searchMedicalProviders)
+        {
+            return requestHandlerSearchMedicalProviders.GetMedicalProviders(Request, searchMedicalProviders);
         }
     }
 }
