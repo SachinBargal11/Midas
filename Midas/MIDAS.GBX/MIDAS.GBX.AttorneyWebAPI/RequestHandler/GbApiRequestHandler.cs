@@ -2137,6 +2137,32 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
+        public HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetStatisticalDataOnCaseByCaseType(FromDate, ToDate, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetStatisticalDataOnCaseByInsuranceProvider(FromDate, ToDate, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetMedicalProviders(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.GetMedicalProviders(gbObject);
