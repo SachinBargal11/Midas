@@ -60,4 +60,23 @@ namespace MIDAS.GBX.BusinessObjects
         public List<Room> Rooms { get; set; }
     }
 
+    public class PreferredProvider : GbObject
+    {
+
+        [JsonProperty("prefProviderId")]
+        public int PrefProviderId { get; set; }
+
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("IsCreated")]
+        public bool IsCreated { get; set; }
+
+        [JsonProperty("company")]
+        public Company Company { get; set; }
+
+        [JsonProperty("prefProvider")]
+        public Company PrefProvider { get; set; }
+    }
+
 }

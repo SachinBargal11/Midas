@@ -281,9 +281,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.IsDefault = locationBO.IsDefault;
                     location.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
 
-                    locationDB.HandicapRamp = locationBO.HandicapRamp;
-                    locationDB.StairsToOffice = locationBO.StairsToOffice;
-                    locationDB.PublicTransportNearOffice = locationBO.PublicTransportNearOffice;
+                    location.HandicapRamp = locationBO.HandicapRamp;
+                    location.StairsToOffice = locationBO.StairsToOffice;
+                    location.PublicTransportNearOffice = locationBO.PublicTransportNearOffice;
 
                     location.UpdateDate = locationBO.UpdateDate;
                     location.UpdateByUserID = locationBO.UpdateByUserID;
