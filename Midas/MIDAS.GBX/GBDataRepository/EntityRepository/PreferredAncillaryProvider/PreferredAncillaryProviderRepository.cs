@@ -641,7 +641,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 lstPreferredAttorneyProvider.ForEach(item => lstPreferredProvider.Add(ConvertToPreferredProvider<BO.PreferredProvider, BO.PreferredAttorneyProvider>(item)));
             }            
 
-            return lstPreferredAttorneyProvider;
+            return lstPreferredProvider;
         }
         #endregion
         
