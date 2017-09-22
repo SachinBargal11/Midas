@@ -41,6 +41,55 @@ export class SearchPreferedProvidersComponent {
         clickToClose: false
     };
 
+    setTimeSlot: string = '12:00 AM';
+    setEndTimeSlot: string = '12:00 AM';
+    timeSlots: any[] = [
+        { time: '12:00 AM', id: '1' },
+        { time: '12:30 AM', id: '2' },
+        { time: '1:00 AM', id: '3' },
+        { time: '1:30 AM', id: '4' },
+        { time: '2:00 AM', id: '5' },
+        { time: '2:30 AM', id: '6' },
+        { time: '3:00 AM', id: '7' },
+        { time: '3:30 AM', id: '8' },
+        { time: '4:00 AM', id: '9' },
+        { time: '4:30 AM', id: '10' },
+        { time: '5:00 AM', id: '11' },
+        { time: '6:30 AM', id: '12' },
+        { time: '7:00 AM', id: '13' },
+        { time: '7:30 AM', id: '14' },
+        { time: '8:00 AM', id: '15' },
+        { time: '8:30 AM', id: '16' },
+        { time: '9:00 AM', id: '17' },
+        { time: '9:30 AM', id: '18' },
+        { time: '10:00 AM', id: '19' },
+        { time: '10:30 AM', id: '20' },
+        { time: '11:00 AM', id: '21' },
+        { time: '11:30 AM', id: '22' },
+        { time: '12:00 PM', id: '1' },
+        { time: '12:30 PM', id: '2' },
+        { time: '1:00 PM', id: '3' },
+        { time: '1:30 PM', id: '4' },
+        { time: '2:00 PM', id: '5' },
+        { time: '2:30 PM', id: '6' },
+        { time: '3:00 PM', id: '7' },
+        { time: '3:30 PM', id: '8' },
+        { time: '4:00 PM', id: '9' },
+        { time: '4:30 PM', id: '10' },
+        { time: '5:00 PM', id: '11' },
+        { time: '6:30 PM', id: '12' },
+        { time: '7:00 PM', id: '13' },
+        { time: '7:30 PM', id: '14' },
+        { time: '8:00 PM', id: '15' },
+        { time: '8:30 PM', id: '16' },
+        { time: '9:00 PM', id: '17' },
+        { time: '9:30 PM', id: '18' },
+        { time: '10:00 PM', id: '19' },
+        { time: '10:30 PM', id: '20' },
+        { time: '11:00 PM', id: '21' },
+        { time: '11:30 PM', id: '22' },
+    ];
+
     constructor(
         public _route: ActivatedRoute,
         public _router: Router,
@@ -59,6 +108,8 @@ export class SearchPreferedProvidersComponent {
             stairsToOffice: [''],
             publicTransportNearOffice: [''],
             multipleDoctors: [''],
+            eventStartTime:[''],
+            eventEndTime:['']
            
         });
 

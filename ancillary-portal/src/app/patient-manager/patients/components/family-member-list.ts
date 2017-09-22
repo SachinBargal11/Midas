@@ -76,7 +76,7 @@ export class FamilyMemberListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadFamilyMembers();
+        // this.loadFamilyMembers();
     }
 
     loadFamilyMembers() {
@@ -84,9 +84,6 @@ export class FamilyMemberListComponent implements OnInit {
         this._familyMemberStore.getFamilyMembers(this.patientId)
             .subscribe(familyMembers => {
                 this.familyMembers = familyMembers.reverse();
-                // this.datasource = familyMembers.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.familyMembers = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();

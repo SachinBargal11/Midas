@@ -65,10 +65,10 @@ export class MedicalProviderMasterStore {
         return <Observable<MedicalProviderMaster[]>>Observable.fromPromise(promise);
     }
 
-    getPreferredProviders(): Observable<MedicalProviderMaster[]> {
+    getPreferredProviders(): Observable<any[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._medicalProviderMasterService.getPreferredProviders(companyId).subscribe((Provider: MedicalProviderMaster[]) => {
+            this._medicalProviderMasterService.getPreferredProviders(companyId).subscribe((Provider: any[]) => {
                 // this._medicalProviderMaster.next(List(Provider));
                 resolve(Provider);
             }, error => {

@@ -322,7 +322,7 @@ export class UserSettingsComponent implements OnInit {
     getPreferredProviders() {
         this._progressBarService.show();
         this._medicalProviderMasterStore.getPreferredProviders()
-            .subscribe((providers: MedicalProviderMaster[]) => {
+            .subscribe((providers: any[]) => {
                 this.providers = providers;
             },
             (error) => {

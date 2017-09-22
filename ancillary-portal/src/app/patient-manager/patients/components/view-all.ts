@@ -7,8 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { PatientsStore } from '../stores/patients-store';
-import { EmployerStore } from '../stores/employer-store';
-import { FamilyMemberStore } from '../stores/family-member-store';
+//import { EmployerStore } from '../stores/employer-store';
+//import { FamilyMemberStore } from '../stores/family-member-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -32,7 +32,8 @@ import { DateFormatPipe } from '../../../commons/pipes/date-format-pipe';
 export class ViewAllComponent implements OnInit {
     patientId: number;
     patientInfo: Patient;
-    familyMember: FamilyMember[];
+    socialMedia:any[];
+    // familyMember: FamilyMember[];
     insurances: Insurance[];
     employer: Employer;
     dateOfFirstTreatment: string;
@@ -53,8 +54,8 @@ export class ViewAllComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
-        private _familyMemberStore: FamilyMemberStore,
-        private _employerStore: EmployerStore,
+        //   private _familyMemberStore: FamilyMemberStore,
+        // private _employerStore: EmployerStore,
         private _insuranceStore: InsuranceStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
@@ -64,7 +65,7 @@ export class ViewAllComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
-
+                    this.socialMedia = patient.socialMedia;
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ?
                         this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
                         : null;
@@ -87,7 +88,7 @@ export class ViewAllComponent implements OnInit {
             //         if (employer.id) {
             //             this.employer = employer;
             //         } else {
-            //             this.noEmployer = 'No Employer available';
+            //             this.noEmployer = 'No employer available';
 
             //         }
 
@@ -102,38 +103,38 @@ export class ViewAllComponent implements OnInit {
 
             //
 
-            let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
-            familyResult.subscribe(
-                (familyMember: FamilyMember[]) => {
-                    if (familyMember.length) {
-                        this.familyMember = familyMember;
-                    } else {
-                        this.noFamilyMember = 'No Family Member Available';
-                    }
-                },
-                (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            // let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
+            // familyResult.subscribe(
+            //     (familyMember: FamilyMember[]) => {
+            //         if (familyMember.length) {
+            //             this.familyMember = familyMember;
+            //         } else {
+            //             this.noFamilyMember = 'No family member available';
+            //         }
+            //     },
+            //     (error) => {
+            //         this._router.navigate(['/patient-manager/patients']);
+            //         this._progressBarService.hide();
+            //     },
+            //     () => {
+            //         this._progressBarService.hide();
+            //     });
 
-            this._progressBarService.show();
-            this._insuranceStore.getInsurances(this.patientId)
-                .subscribe(insurances => {
-                    if (insurances.length) {
-                        this.insurances = insurances;
-                    } else {
-                        this.noInsurances = 'No Insurance Information Available';
-                    }
-                },
-                (error) => {
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            //     this._progressBarService.show();
+            //     this._insuranceStore.getInsurances(this.patientId)
+            //         .subscribe(insurances => {
+            //             if (insurances.length) {
+            //                 this.insurances = insurances;
+            //             } else {
+            //                 this.noInsurances = 'No insurance information available';
+            //             }
+            //         },
+            //         (error) => {
+            //             this._progressBarService.hide();
+            //         },
+            //         () => {
+            //             this._progressBarService.hide();
+            //         });
 
         });
 
