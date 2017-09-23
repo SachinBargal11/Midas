@@ -6,6 +6,7 @@ import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 import { SignalRModule } from 'ng2-signalr';
 import { SignalRConfiguration } from 'ng2-signalr';
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
 
 import { ConfigService, configServiceFactory } from './config-service';
 import { environment } from '../environments/environment';
@@ -101,11 +102,12 @@ export function createConfig(): SignalRConfiguration {
     ReactiveFormsModule,
     CommonsModule,
     AppRoutingModule,
+    AmChartsModule,
     DashboardModule,
     SimpleNotificationsModule,
     EventModule,
-    SignalRModule.forRoot(createConfig)
-    // SignalRModule
+    // SignalRModule.forRoot(createConfig)
+    SignalRModule
     // MomentModule,
     // NgIdleKeepaliveModule.forRoot()
   ],

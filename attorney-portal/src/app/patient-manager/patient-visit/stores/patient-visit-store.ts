@@ -579,5 +579,41 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
+
+    
+    //Dashboard APIs
+    getAttorneyVisitForDateByCompanyId(date: any, companyId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getAttorneyVisitForDateByCompanyId(date, companyId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any): Observable<any> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getStatisticalDataOnCaseByCaseType(fromDate, toDate, companyId).subscribe((patientVisits: any) => {
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any): Observable<any> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getStatisticalDataOnCaseByInsuranceProvider(fromDate, toDate, companyId).subscribe((data: any) => {
+                resolve(data);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 }
 

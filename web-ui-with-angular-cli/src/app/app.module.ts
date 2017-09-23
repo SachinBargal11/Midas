@@ -69,7 +69,7 @@ import { MedicalProviderMasterStore } from './account-setup/stores/medical-provi
 
 import { AssociateUserService } from './commons/services/associate-user-service';
 import { AssociateUserStore } from './commons/stores/associate-user-store';
-// import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
 // v2.0.0
@@ -103,8 +103,8 @@ export function createConfig(): SignalRConfiguration {
     DashboardModule,
     SimpleNotificationsModule,
     EventModule,
-    SignalRModule.forRoot(createConfig)
-    // SignalRModule
+    // SignalRModule.forRoot(createConfig)
+    SignalRModule,
     // MomentModule,
     // NgIdleKeepaliveModule.forRoot()
   ],

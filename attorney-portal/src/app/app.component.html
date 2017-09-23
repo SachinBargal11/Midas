@@ -1,12 +1,12 @@
 <div class="control-panel" [class.open]="notificationsStore.isOpen">
 
-    <app-header *ngIf="sessionStore.session.user"></app-header>
+    <app-header *ngIf="sessionStore.session.user && sessionStore.session.isAuthenticated"></app-header>
     <!--<main-nav *ngIf="_sessionStore.session.user"></main-nav>-->
     <progress-bar *ngIf="progressBarService.counter > 0"></progress-bar>
     <notification *ngIf="sessionStore.session.user"></notification>
     <div class="page-content">
         <div class="container-fluid">
-            <breadcrumb *ngIf="sessionStore.session.user"></breadcrumb>
+            <breadcrumb *ngIf="sessionStore.session.user && sessionStore.session.isAuthenticated"></breadcrumb>
             <router-outlet></router-outlet>
         </div>
     </div>

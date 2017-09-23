@@ -132,10 +132,10 @@ export class SessionStore {
         let tokenResponse = this.session.tokenResponse;
         // this._resetSession();
         this.session.account = null;
-        // this.session.currentCompany = null;
-        // this.session.accessToken = null;
-        // this.session.tokenExpiresAt = null;
-        // this.session.tokenResponse = null;
+        this.session.currentCompany = null;
+        this.session.accessToken = null;
+        this.session.tokenExpiresAt = null;
+        this.session.tokenResponse = null;
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
         window.localStorage.removeItem(this.__CURRENT_COMPANY__);
         window.localStorage.removeItem(this.__ACCESS_TOKEN__);
@@ -292,8 +292,8 @@ export class SessionStore {
                                                 if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
                                                     let promise = new Promise((resolve, reject) => {
                                                         let accessToken: any = 'bearer ' + result.access_token;
-                                                        // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 600, 'seconds').toString();
-                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1080, 'seconds').toString();
+                                                        // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
                                                         this._authenticationService.signinWithUserName(environment.SERVICE_BASE_URL, userInfo.email, accessToken, tokenExpiresAt, result)
                                                             .subscribe((accountData) => {
                                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
@@ -428,6 +428,33 @@ export class SessionStore {
         return this._http.get(url, {
             headers: headers
         }).map(res => res.json());
+    }
+    refreshToken() {
+        var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
+        var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
+        var response_type = "id_token token";
+        var scope: string = `${environment.IDENTITY_SCOPE}`;
+        var client_id: string = `${environment.CLIENT_ID}`;
+
+        let storedState: any = window.localStorage.getItem("state");
+        let storedNonce: any = window.localStorage.getItem("nonce");
+        var state = storedState;
+        var nonce = storedNonce;
+        localStorage["state"] = state;
+        localStorage["nonce"] = nonce;
+        // window.localStorage.setItem(this.__state__, state);
+        // window.localStorage.setItem(this.__nonce__, nonce);
+
+        var url =
+            authorizationUrl + "?" +
+            "client_id=" + encodeURI(client_id) + "&" +
+            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
+            "response_type=" + encodeURI(response_type) + "&" +
+            "scope=" + encodeURI(scope) + "&" +
+            "state=" + encodeURI(state) + "&" +
+            "nonce=" + encodeURI(nonce);
+        url;
+        window.location.assign(url);
     }
 }
 export function tokenServiceFactory(config: SessionStore) {

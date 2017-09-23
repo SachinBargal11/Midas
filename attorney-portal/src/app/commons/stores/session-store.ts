@@ -47,8 +47,10 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
 
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
-            
-            if (storedAccount) {
+            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+
+            if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
@@ -139,8 +141,8 @@ export class SessionStore {
         window.localStorage.removeItem(this.__ACCESS_TOKEN__);
         window.localStorage.removeItem(this.__TOKEN_EXPIRES_AT__);
         window.localStorage.removeItem(this.__TOKEN_RESPONSE__);
-        window.localStorage.removeItem(this.__state__);
-        window.localStorage.removeItem(this.__nonce__);
+        // window.localStorage.removeItem(this.__state__);
+        // window.localStorage.removeItem(this.__nonce__);
         window.onbeforeunload = function (e) {
             $.connection.hub.stop();
         };
@@ -188,6 +190,7 @@ export class SessionStore {
 
     private _resetSession() {
         this.session.account = null;
+        this.session.accessToken = null;
         this.userLogoutEvent.emit(null);
     }
 
@@ -279,7 +282,7 @@ export class SessionStore {
                                             if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
                                                 let promise = new Promise((resolve, reject) => {
                                                     let accessToken: any = 'bearer ' + result.access_token;
-                                                    // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) + 600, 'seconds').toString();
+                                                    // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
                                                     let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
                                                     this._authenticationService.signinWithUserName(environment.SERVICE_BASE_URL, userInfo.email, accessToken, tokenExpiresAt, result)
                                                         .subscribe((accountData) => {
@@ -376,7 +379,7 @@ export class SessionStore {
         window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
         return Observable.from(promise);
     }
-    
+
     private _logoutIdentity(result) {
         this.session.account = null;
         this.session.currentCompany = null;

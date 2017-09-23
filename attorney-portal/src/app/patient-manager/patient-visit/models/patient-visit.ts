@@ -53,6 +53,7 @@ const PatientVisitRecord = Record({
     companyid: 0,
     attorneyId: 0,
     isPatientVisitType: true,
+    originalResponse: null
 
 });
 
@@ -97,6 +98,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     companyid: number;
     attorneyId: number;
     isPatientVisitType: boolean;
+    originalResponse: any;
 
     constructor(props) {
         super(props);

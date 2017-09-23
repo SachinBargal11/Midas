@@ -64,6 +64,7 @@ export class PatientVisitAdapter {
                 // agenda: data.agenda,
                 name: data.subject,
                 contactPerson:data.contactPerson,
+                originalResponse: data
             });
         }
 

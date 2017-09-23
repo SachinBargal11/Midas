@@ -17,7 +17,6 @@
                                 <option value="4">This Quarter</option>
                                 <option value="5">This Half Year</option>
                                 <option value="6">This Year</option>
-                                
                             </select>
                         </div>
                     </header>
@@ -35,7 +34,7 @@
                         <i class="fa fa-pie-chart" aria-hidden="true"></i> Cases
                         <div class="dropdown pull-right">
                             <select type="text" class="form-control" [(ngModel)]="selectedCaseFilterOption" (change)="filterCaseTypeStatistics($event)">
-                                 <option value="1">Today</option>
+                                <option value="1">Today</option>
                                 <option value="2">This Week</option>
                                 <option value="7">Last 30 Days</option>
                                 <option value="3">This Month</option>
@@ -47,6 +46,30 @@
                     </header>
                     <div class="box-typical-body panel-body">
                             <div id="caseChartDiv" [style.width.%]="100" [style.height.px]="264"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xl-12 dahsboard-column">
+                <section class="box-typical box-typical-dashboard panel panel-default">
+                    <header class="card-header card-header-sm">
+                        <i class="fa fa-pie-chart" aria-hidden="true"></i> Cases By Insurance Provider
+                        <div class="dropdown pull-right">
+                            <select type="text" class="form-control" [(ngModel)]="selectedCaseByInsuranceFilterOption" (change)="filterCasesByInsuranceStatistics($event)">
+                                <option value="1">Today</option>
+                                <option value="2">This Week</option>
+                                <option value="7">Last 30 Days</option>
+                                <option value="3">This Month</option>
+                                <option value="4">This Quarter</option>
+                                <option value="5">This Half Year</option>
+                                <option value="6">This Year</option>
+                            </select>
+                        </div>
+                    </header>
+                    <div class="box-typical-body panel-body">
+                            <div id="casesByInsuranceChartDiv" [style.width.%]="100" [style.height.px]="264"></div>
                     </div>
                 </section>
             </div>

@@ -33,12 +33,19 @@ export class DashboardComponent {
     locations: LocationDetails[];
     statisticData: any;
     casesTypes: any;
+    casesByInsurance: {
+        insuranceMasterId: number,
+        label: string,
+        data: number
+    }[] = [];
 
     chartDetail: any;
     caseChartDetail: any;
+    casesByInsuranceChart: any;
     doctorId = this.sessionStore.session.user.id;
     selectedOption = '6';
     selectedCaseFilterOption = '6';
+    selectedCaseByInsuranceFilterOption = '6';
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -54,6 +61,7 @@ export class DashboardComponent {
             let currDate = moment();
             this.filterStatistics(this.selectedOption);
             this.filterCaseTypeStatistics(this.selectedCaseFilterOption);
+            this.filterCasesByInsuranceStatistics(this.selectedCaseByInsuranceFilterOption);
             // this.loadLocationByCompany();
             if (this.sessionStore.isOnlyDoctorRole()) {
                 this.loadDoctorAppointmentsForDoctor(currDate, this.doctorId, this.sessionStore.session.currentCompany.id);
@@ -68,6 +76,7 @@ export class DashboardComponent {
         let currDate = moment();
         this.filterStatistics(this.selectedOption);
         this.filterCaseTypeStatistics(this.selectedCaseFilterOption);
+        this.filterCasesByInsuranceStatistics(this.selectedCaseByInsuranceFilterOption);
         if (this.sessionStore.isOnlyDoctorRole()) {
             this.loadDoctorAppointmentsForDoctor(currDate, this.doctorId, this.sessionStore.session.currentCompany.id);
             this.loadOpenAppointmentSlotsForDoctor(currDate, this.doctorId);
@@ -131,19 +140,18 @@ export class DashboardComponent {
             () => {
             });
     }
-
-    //Load open Appointment slots for company
-    loadOpenAppointmentSlotsForCompanyId(currDate) {
-        this._patientVisitStore.getOpenAppointmentSlotsForCompanyId(currDate)
-            .subscribe((openAppointmentsOfDoctor: PatientVisit[]) => {
-                this.openAppointmentsOfDoctor = _.first(openAppointmentsOfDoctor, 5);
-            },
-            (error) => {
-            },
-            () => {
-            });
-    }
-
+    
+        //Load open Appointment slots for company
+        loadOpenAppointmentSlotsForCompanyId(currDate) {
+            this._patientVisitStore.getOpenAppointmentSlotsForCompanyId(currDate)
+                .subscribe((openAppointmentsOfDoctor: PatientVisit[]) => {
+                    this.openAppointmentsOfDoctor = _.first(openAppointmentsOfDoctor, 5);
+                },
+                (error) => {
+                },
+                () => {
+                });
+            }
     //load statistic data
     getStatisticalDataOnPatientVisit(fromDate: any, toDate: any) {
         this._patientVisitStore.getStatisticalDataOnPatientVisit(fromDate, toDate)
@@ -162,6 +170,31 @@ export class DashboardComponent {
             .subscribe((casesTypes: any) => {
                 this.casesTypes = casesTypes;
                 this.showStatisticDataForCaseTypeChart(fromDate, toDate);
+            },
+            (error) => {
+            },
+            () => {
+            });
+    }
+    
+    //load statistic data on case by Insurance provider
+    getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any) {
+        this._patientVisitStore.getStatisticalDataOnCaseByInsuranceProvider(fromDate, toDate)
+            .subscribe((casesByInsurance: any) => {
+                let mappedCasesByInsurance: {
+                    insuranceMasterId: number,
+                    label: string,
+                    data: number
+                }[] = [];
+                _.forEach(casesByInsurance, (currElement: any) => {
+                    mappedCasesByInsurance.push({
+                        insuranceMasterId: currElement.insuranceMasterId,
+                        label: currElement.insuranceCompanyName,
+                        data: currElement.count
+                    });
+                })
+                this.casesByInsurance = _.first(mappedCasesByInsurance, 5);
+                this.showStatisticDataForCasesByInsuranceChart(fromDate, toDate);
             },
             (error) => {
             },
@@ -251,6 +284,47 @@ export class DashboardComponent {
         }
     }
 
+    filterCasesByInsuranceStatistics(event) {
+        // this.selectedOption = event.target.value;
+        if (this.selectedCaseByInsuranceFilterOption == '1') {
+            let startDate = moment();
+            let endDate = moment();
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        } else if (this.selectedCaseByInsuranceFilterOption == '2') {
+            let startDate = moment().startOf('week');
+            let endDate = moment().endOf('week');
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        } else if (this.selectedCaseByInsuranceFilterOption == '3') {
+            let startDate = moment().startOf('month');
+            let endDate = moment().endOf('month');
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        } else if (this.selectedCaseByInsuranceFilterOption == '4') {
+            let startDate = moment().startOf('quarter');
+            let endDate = moment().endOf('quarter');
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        } else if (this.selectedCaseByInsuranceFilterOption == '5') {
+            let currQuarter = moment().quarter();
+            let startOfYear = moment().startOf('year');
+            if (currQuarter <= 2) {
+                let secondQuarter = moment(startOfYear).quarter(2);
+                let endDate = moment(secondQuarter).endOf('quarter');
+                this.getStatisticalDataOnCaseByInsuranceProvider(startOfYear, endDate);
+            } else if (currQuarter > 2) {
+                let startDate = moment(startOfYear).quarter(3);
+                let endDate = moment().endOf('year');
+                this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            }
+        } else if (this.selectedCaseByInsuranceFilterOption == '6') {
+            let startDate = moment().startOf('year');
+            let endDate = moment().endOf('year');
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        } else if (this.selectedOption == '7') {
+            let startDate = moment().subtract(30, 'days');
+            let endDate = moment();
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        }
+    }
+
     showStatisticDataChart(fromDate: any, toDate: any) {
         this.chartDetail = this.AmCharts.makeChart("chartdivDetail", {
             "type": "pie",
@@ -321,6 +395,31 @@ export class DashboardComponent {
                 "borderAlpha": 0.3,
                 "horizontalGap": 8,
                 "position": "right",
+                'fontSize': 10,
+                'valueWidth': 10,
+                'markerSize': 8,
+                // "valueAlign": "left",
+                // "labelWidth": 100
+            }
+        });
+    }
+    
+    showStatisticDataForCasesByInsuranceChart(fromDate: any, toDate: any) {
+        this.casesByInsuranceChart = this.AmCharts.makeChart("casesByInsuranceChartDiv", {
+            "type": "pie",
+            "theme": "light",
+            // "titles": [{ "text": appointments + ": " + value + "$ Amount" }, { "text": "Year: " + year, "bold": false }],
+            // "dataProvider": this.getStatisticalDataOnPatientVisit(fromDate, toDate),    //chartData;
+            "dataProvider": this.casesByInsurance,
+            "titleField": "label",
+            "valueField": "data",
+            "outlineColor": "#FFFFFF",
+            "outlineAlpha": 0.8,
+            "outlineThickness": 2,
+            "legend": {
+                "borderAlpha": 0.3,
+                "horizontalGap": 8,
+                "position": "bottom",
                 'fontSize': 10,
                 'valueWidth': 10,
                 'markerSize': 8,
