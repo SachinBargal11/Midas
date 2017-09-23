@@ -640,7 +640,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            return lstAttorneyVisitDashboardForDate.OrderBy(p => p.EventStart).ThenBy(p => p.ContactPerson);
+            return lstAttorneyVisitDashboardForDate.OrderBy(p => p.EventStart).ThenBy(p => p.ContactPerson).ToList();
         }
         #endregion
 

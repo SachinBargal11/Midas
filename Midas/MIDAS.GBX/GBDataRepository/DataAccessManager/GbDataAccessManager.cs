@@ -4314,6 +4314,25 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetOpenAppointmentSlotsForAllDoctorByCompanyId(DateTime ForDate, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetOpenAppointmentSlotsForAllDoctorByCompanyId(ForDate, CompanyId);
+
+                return gbdata;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         public object GetDoctors(T data)
         {
             try

@@ -2668,7 +2668,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            return lstPatientVisitForDate.OrderBy(p => p.EventStart);
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
         }
         #endregion
 
@@ -2763,7 +2763,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            return (Object)lstPatientVisitForDate.OrderBy(p => p.EventStart);
+            return (Object)lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
         }
         #endregion
 
@@ -2854,7 +2854,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            return lstPatientVisitForDate.OrderBy(p => p.EventStart);
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
         }
         #endregion
 
@@ -2949,7 +2949,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            return lstPatientVisitForDate.OrderBy(p => p.EventStart);
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart).ToList();
         }
         #endregion
 
@@ -3022,7 +3022,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get Doctor Patient Visit For Date By LocationId
+        #region Get Doctor Patient Visit For Date By CompanyId
         public override Object GetOpenAppointmentSlotsForDoctorByCompanyId(DateTime ForDate, int DoctorId, int CompanyId)
         {
             var CompanyLocations = _context.Locations.Where(p => p.CompanyID == CompanyId
@@ -3081,7 +3081,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }            
 
-            return lstPatientVisitForDate.OrderBy(p => p.EventStart).ThenBy(p => p.DoctorName);
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart).ThenBy(p => p.DoctorName).ToList();
+        }
+        #endregion
+
+        #region Get All Doctor Patient Visit For Date By CompanyId
+        public override Object GetOpenAppointmentSlotsForAllDoctorByCompanyId(DateTime ForDate, int CompanyId)
+        {
+            var AllUsersInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .Select(p => p.UserID);
+            var AllValidUsers = _context.Users.Where(p => AllUsersInCompany.Contains(p.id) == true
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .Select(p => p.id);
+
+            var AllDoctorsInCompany = _context.Doctors.Where(p => AllValidUsers.Contains(p.Id)
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .Select(p => p.Id)
+                                              .ToList();
+
+            List<BO.PatientVisitDashboard> lstDoctorPatientVisitForDate = new List<BO.PatientVisitDashboard>();
+
+            foreach (var eachDoctor in AllDoctorsInCompany)
+            {
+                List<BO.PatientVisitDashboard> eachDoctorPatientVisitForDate = new List<BO.PatientVisitDashboard>();
+                var result = GetOpenAppointmentSlotsForDoctorByCompanyId(ForDate, eachDoctor, CompanyId);
+                if (result is List<BO.PatientVisitDashboard>)
+                {
+                    eachDoctorPatientVisitForDate = result as List<BO.PatientVisitDashboard>;
+                }
+
+                if (eachDoctorPatientVisitForDate.Count > 0)
+                {
+                    lstDoctorPatientVisitForDate.AddRange(eachDoctorPatientVisitForDate);
+                }
+            }            
+
+            return lstDoctorPatientVisitForDate.OrderBy(p => p.EventStart).ThenBy(p => p.DoctorName).ToList();
         }
         #endregion
 
