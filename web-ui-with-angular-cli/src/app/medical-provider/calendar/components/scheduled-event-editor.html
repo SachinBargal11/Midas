@@ -103,17 +103,20 @@
         <div class="col-md-2"><label class="form-label">Transportation Required</label></div>
         <div class="col-md-4">
             <div class="form-group">
-                <!--<select formControlName="transportProviderId" [(ngModel)]="transportProviderId" class="select2-arrow form-control">
-                  <option value="0">No Transport</option>
-                    <option value="1">Ambulance</option>
-                    <option value="2">Private Vehicle</option>
-                </select>-->
                 <select type="text" formControlName="ancillaryProviderId" [(ngModel)]="ancillaryProviderId" class="form-control" placeholder="">
                              <option value="null">No Transport</option>
                               <option *ngFor="let provider of allPrefferesAncillaries" value="{{provider.prefferedProvider.id}}">{{provider.prefferedProvider.name}} </option>
                         
                  </select>
             </div>
+        </div>
+        <div class="col-md-4">
+            <p-dialog header="How to get Transportation in drop down" [(visible)]="display" [width]="350">
+                1.If drop down is empty/you want to add new Transportation in drop down click on Account-Setup tab.<br>
+                2.Get valid token from ancillary provider to whom you want to add as your preferred ancillary provider.<br>
+                3.Validate the token received and add it to your company.<br>
+            </p-dialog>
+            <button type="text" (click)="showDialog()" pButton icon="fa fa-info-circle" label="Help"></button>
         </div>
     </div>
     <div class="row">

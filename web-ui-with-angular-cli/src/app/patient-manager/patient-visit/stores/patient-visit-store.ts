@@ -655,6 +655,19 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
+    getOpenAppointmentSlotsForCompanyId(date: any): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getOpenAppointmentSlotsForCompanyId(date, companyId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
     getStatisticalDataOnPatientVisit(fromDate: any, toDate: any): Observable<any> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {

@@ -12,6 +12,8 @@ export class HomeComponent implements OnInit {
   attorneyPortalURI = environment.ATTORNEY_PORTAL_URI;
   ancillaryPortalURI = environment.ANCILLARY_PORTAL_URI;
   url = environment.AUTHORIZATION_SERVER_URL;
+
+  registerMPUrl = environment.REGISTER_MP_URL;
   title = '';
   // client_id = 'js.manual';
   client_id = environment.CLIENT_ID;

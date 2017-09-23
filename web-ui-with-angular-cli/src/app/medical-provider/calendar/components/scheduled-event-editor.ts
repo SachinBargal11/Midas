@@ -27,6 +27,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     isAllDay: boolean;
     repeatType: string = '7';
     name: string;
+    display: boolean = false;
 
     setTimeSlot: string = '12:00 AM';
     setEndTimeSlot: string = '12:00 AM';
@@ -227,6 +228,11 @@ export class ScheduledEventEditorComponent implements OnChanges {
     get selectedEvent(): ScheduledEvent {
         return this._selectedEvent;
     }
+
+    showDialog() {
+        this.display = true;
+    }
+
 
     constructor(
         private _fb: FormBuilder,

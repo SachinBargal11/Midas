@@ -60,6 +60,7 @@ export class DashboardComponent {
                 this.loadOpenAppointmentSlotsForDoctor(currDate, this.doctorId);
             } else {
                 this.loadAppointments(currDate, this.sessionStore.session.currentCompany.id);
+                this.loadOpenAppointmentSlotsForCompanyId(currDate);
             }
         });
     }
@@ -72,6 +73,7 @@ export class DashboardComponent {
             this.loadOpenAppointmentSlotsForDoctor(currDate, this.doctorId);
         } else {
             this.loadAppointments(currDate, this.sessionStore.session.currentCompany.id);
+            this.loadOpenAppointmentSlotsForCompanyId(currDate);
         }
     }
     loadLocationByCompany() {
@@ -129,6 +131,19 @@ export class DashboardComponent {
             () => {
             });
     }
+
+    //Load open Appointment slots for company
+    loadOpenAppointmentSlotsForCompanyId(currDate) {
+        this._patientVisitStore.getOpenAppointmentSlotsForCompanyId(currDate)
+            .subscribe((openAppointmentsOfDoctor: PatientVisit[]) => {
+                this.openAppointmentsOfDoctor = _.first(openAppointmentsOfDoctor, 5);
+            },
+            (error) => {
+            },
+            () => {
+            });
+    }
+
     //load statistic data
     getStatisticalDataOnPatientVisit(fromDate: any, toDate: any) {
         this._patientVisitStore.getStatisticalDataOnPatientVisit(fromDate, toDate)
@@ -188,6 +203,10 @@ export class DashboardComponent {
             let startDate = moment().startOf('year');
             let endDate = moment().endOf('year');
             this.getStatisticalDataOnPatientVisit(startDate, endDate);
+        } else if (this.selectedOption == '7') {
+            let startDate = moment().subtract(30, 'days');
+            let endDate = moment();
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
         }
     }
 
@@ -225,6 +244,10 @@ export class DashboardComponent {
             let startDate = moment().startOf('year');
             let endDate = moment().endOf('year');
             this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+        } else if (this.selectedOption == '7') {
+            let startDate = moment().subtract(30, 'days');
+            let endDate = moment();
+            this.getStatisticalDataOnPatientVisit(startDate, endDate);
         }
     }
 

@@ -900,6 +900,27 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
+    getOpenAppointmentSlotsForCompanyId(date: any, companyId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let inputDate = date.format('YYYY-MM-DD');
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getOpenAppointmentSlotsForAllDoctorByCompanyId/' + inputDate + '/' + companyId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    
     getStatisticalDataOnPatientVisit(fromDate: any, toDate: any, companyId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let inputFromDate = fromDate.format('YYYY-MM-DD');
