@@ -1996,17 +1996,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                    .Select(c => c.Id);
 
             var CaseInsuranceList = _context.PatientInsuranceInfoes.Where(p => CaseList.Contains(p.CaseId) == true
-                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
-
-            //var CaseInsuranceList = CaseList.Join(_context.PatientInsuranceInfoes
-            //                                              .Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)),
-            //                                                    c => c.Id, pii => pii.CaseId, (c, pii) => new { c, pii })
-            //                                .Select(p => new
-            //                                {
-            //                                    caseId = p.pii.CaseId,
-            //                                    insuranceMasterId = p.pii.InsuranceMasterId,
-            //                                    insuranceCompanyName = p.pii.InsuranceMaster.CompanyName
-            //                                });
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));            
 
             var TopCaseInsuranceCountList = CaseInsuranceList.GroupBy(p => p.InsuranceMasterId)
                                                              .Select(p => new { InsuranceMasterId = p.Key, Count = p.Count() })
@@ -2018,7 +2008,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                  count = p.cli.Count
                                                              });
 
-            return (object)TopCaseInsuranceCountList.ToList();
+            return (object)TopCaseInsuranceCountList.OrderByDescending(p => p.count).ToList();
         }
         #endregion
 

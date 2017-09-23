@@ -596,45 +596,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
             CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
 
+            List<int> CalendarEventIds = new List<int>();
             foreach (var eachAttorneyVisit in lstAttorneyVisit)
             {
-                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachAttorneyVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
-
-                if (currentEventSlots != null)
+                if (CalendarEventIds.Any(p => p == eachAttorneyVisit.CalendarEventId) == false)
                 {
-                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
-                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+                    CalendarEventIds.Add(eachAttorneyVisit.CalendarEventId.Value);
 
-                    if (ForDateEventSlots != null)
+                    currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachAttorneyVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                    if (currentEventSlots != null)
                     {
-                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
-                        {
-                            BO.AttorneyVisitDashboard AttorneyVisitDashboardForDate = new BO.AttorneyVisitDashboard();
-                            AttorneyVisitDashboardForDate.ID = 0;
-                            AttorneyVisitDashboardForDate.CalendarEventId = eachAttorneyVisit.CalendarEventId;
-                            AttorneyVisitDashboardForDate.CaseId = eachAttorneyVisit.CaseId;
-                            AttorneyVisitDashboardForDate.PatientId = eachAttorneyVisit.PatientId;
-                            if (eachAttorneyVisit.Patient != null && eachAttorneyVisit.Patient.User != null)
-                            {
-                                AttorneyVisitDashboardForDate.PatientName = eachAttorneyVisit.Patient.User.FirstName + " " + eachAttorneyVisit.Patient.User.LastName;
-                            }
-                            AttorneyVisitDashboardForDate.AttorneyId = eachAttorneyVisit.AttorneyId;
-                            AttorneyVisitDashboardForDate.EventStart = eachStartAndEndTimes.StartTime;
-                            AttorneyVisitDashboardForDate.EventEnd = eachStartAndEndTimes.EndTime;
-                            AttorneyVisitDashboardForDate.Subject = eachAttorneyVisit.Subject;
-                            AttorneyVisitDashboardForDate.VisitStatusId = 1;
-                            AttorneyVisitDashboardForDate.ContactPerson = eachAttorneyVisit.ContactPerson;
-                            AttorneyVisitDashboardForDate.CompanyId = eachAttorneyVisit.CompanyId;
-                            AttorneyVisitDashboardForDate.Agenda = eachAttorneyVisit.Agenda;
-                            AttorneyVisitDashboardForDate.IsDeleted = eachAttorneyVisit.IsDeleted;
+                        BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                        ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
 
-                            lstAttorneyVisitDashboardForDate.Add(AttorneyVisitDashboardForDate);
+                        if (ForDateEventSlots != null)
+                        {
+                            foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                            {
+                                BO.AttorneyVisitDashboard AttorneyVisitDashboardForDate = new BO.AttorneyVisitDashboard();
+                                AttorneyVisitDashboardForDate.ID = 0;
+                                AttorneyVisitDashboardForDate.CalendarEventId = eachAttorneyVisit.CalendarEventId;
+                                AttorneyVisitDashboardForDate.CaseId = eachAttorneyVisit.CaseId;
+                                AttorneyVisitDashboardForDate.PatientId = eachAttorneyVisit.PatientId;
+                                if (eachAttorneyVisit.Patient != null && eachAttorneyVisit.Patient.User != null)
+                                {
+                                    AttorneyVisitDashboardForDate.PatientName = eachAttorneyVisit.Patient.User.FirstName + " " + eachAttorneyVisit.Patient.User.LastName;
+                                }
+                                AttorneyVisitDashboardForDate.AttorneyId = eachAttorneyVisit.AttorneyId;
+                                AttorneyVisitDashboardForDate.EventStart = eachStartAndEndTimes.StartTime;
+                                AttorneyVisitDashboardForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                                AttorneyVisitDashboardForDate.Subject = eachAttorneyVisit.Subject;
+                                AttorneyVisitDashboardForDate.VisitStatusId = 1;
+                                AttorneyVisitDashboardForDate.ContactPerson = eachAttorneyVisit.ContactPerson;
+                                AttorneyVisitDashboardForDate.CompanyId = eachAttorneyVisit.CompanyId;
+                                AttorneyVisitDashboardForDate.Agenda = eachAttorneyVisit.Agenda;
+                                AttorneyVisitDashboardForDate.IsDeleted = eachAttorneyVisit.IsDeleted;
+
+                                lstAttorneyVisitDashboardForDate.Add(AttorneyVisitDashboardForDate);
+                            }
                         }
                     }
-                }
+                }                
             }
 
-            return lstAttorneyVisitDashboardForDate;
+            return lstAttorneyVisitDashboardForDate.OrderBy(p => p.EventStart).ThenBy(p => p.ContactPerson);
         }
         #endregion
 

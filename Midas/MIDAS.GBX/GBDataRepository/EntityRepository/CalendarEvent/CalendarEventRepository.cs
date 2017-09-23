@@ -1045,7 +1045,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 Calendar calendar = new Calendar();
                 calendar.Events.Add(newEvent);
 
-                var Occurrences = calendar.GetOccurrences(ForDate, ForDate.AddDays(1).AddSeconds(-1));
+                var Occurrences = calendar.GetOccurrences(ForDate, ForDate.Date.AddDays(1).AddSeconds(-1));
 
                 int intTimeZone = 0;
                 int.TryParse(CalEvent.TimeZone, out intTimeZone);

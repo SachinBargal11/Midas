@@ -2610,59 +2610,65 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.PatientVisitDashboard> lstPatientVisitForDate = new List<BO.PatientVisitDashboard>();
 
             List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
-            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);            
+            CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
 
-            foreach (var eachPatientVisit in lstPatientVisit)
+            List<int> CalendarEventIds = new List<int>();
+            foreach (var eachPatientVisit in lstPatientVisit.Where(p => p.CalendarEventId.HasValue == true).ToList())
             {
-                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
-
-                if (currentEventSlots != null)
+                if (CalendarEventIds.Any(p => p == eachPatientVisit.CalendarEventId) == false)
                 {
-                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
-                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+                    CalendarEventIds.Add(eachPatientVisit.CalendarEventId.Value);
 
-                    if (ForDateEventSlots != null)
+                    currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                    if (currentEventSlots != null)
                     {
-                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
-                        {
-                            BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
-                            PatientVisitForDate.ID = 0;
-                            PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
-                            PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
-                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
-                            if (eachPatientVisit.Patient != null && eachPatientVisit.Patient.User != null)
-                            {
-                                PatientVisitForDate.PatientName = eachPatientVisit.Patient.User.FirstName + " " + eachPatientVisit.Patient.User.LastName;
-                            }                            
-                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
-                            PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
-                            if (eachPatientVisit.Room != null)
-                            {
-                                PatientVisitForDate.RoomName = eachPatientVisit.Room.name;
-                            }
-                            PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
-                            if (eachPatientVisit.Doctor != null && eachPatientVisit.Doctor.user != null)
-                            {
-                                PatientVisitForDate.DoctorName = eachPatientVisit.Doctor.user.FirstName + " " + eachPatientVisit.Doctor.user.LastName;
-                            }
-                            PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
-                            if (eachPatientVisit.Specialty != null)
-                            {
-                                PatientVisitForDate.SpecialityName = eachPatientVisit.Specialty.Name;
-                            }
-                            PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
-                            PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
-                            PatientVisitForDate.VisitStatusId = 1;
-                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
-                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+                        BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                        ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
 
-                            lstPatientVisitForDate.Add(PatientVisitForDate);
+                        if (ForDateEventSlots != null)
+                        {
+                            foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                            {
+                                BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
+                                PatientVisitForDate.ID = 0;
+                                PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
+                                PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
+                                PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                                if (eachPatientVisit.Patient != null && eachPatientVisit.Patient.User != null)
+                                {
+                                    PatientVisitForDate.PatientName = eachPatientVisit.Patient.User.FirstName + " " + eachPatientVisit.Patient.User.LastName;
+                                }
+                                PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
+                                PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
+                                if (eachPatientVisit.Room != null)
+                                {
+                                    PatientVisitForDate.RoomName = eachPatientVisit.Room.name;
+                                }
+                                PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
+                                if (eachPatientVisit.Doctor != null && eachPatientVisit.Doctor.user != null)
+                                {
+                                    PatientVisitForDate.DoctorName = eachPatientVisit.Doctor.user.FirstName + " " + eachPatientVisit.Doctor.user.LastName;
+                                }
+                                PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
+                                if (eachPatientVisit.Specialty != null)
+                                {
+                                    PatientVisitForDate.SpecialityName = eachPatientVisit.Specialty.Name;
+                                }
+                                PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
+                                PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                                PatientVisitForDate.VisitStatusId = 1;
+                                PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                                PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+
+                                lstPatientVisitForDate.Add(PatientVisitForDate);
+                            }
                         }
                     }
-                }
+                }                
             }
 
-            return lstPatientVisitForDate;
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart);
         }
         #endregion
 
@@ -2757,7 +2763,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }                
             }
 
-            return lstPatientVisitForDate;
+            return (Object)lstPatientVisitForDate.OrderBy(p => p.EventStart);
         }
         #endregion
 
@@ -2792,61 +2798,67 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
             CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
 
-            foreach (var eachPatientVisit in lstPatientVisit)
+            List<int> CalendarEventIds = new List<int>();
+            foreach (var eachPatientVisit in lstPatientVisit.Where(p => p.CalendarEventId.HasValue == true).ToList())
             {
-                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
-
-                if (currentEventSlots != null)
+                if (CalendarEventIds.Any(p => p == eachPatientVisit.CalendarEventId) == false)
                 {
-                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
-                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+                    CalendarEventIds.Add(eachPatientVisit.CalendarEventId.Value);
 
-                    if (ForDateEventSlots != null)
+                    currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                    if (currentEventSlots != null)
                     {
-                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
-                        {
-                            BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
-                            PatientVisitForDate.ID = 0;
-                            PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
-                            PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
-                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
-                            if (eachPatientVisit.Patient != null && eachPatientVisit.Patient.User != null)
-                            {
-                                PatientVisitForDate.PatientName = eachPatientVisit.Patient.User.FirstName + " " + eachPatientVisit.Patient.User.LastName;
-                            }
-                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
-                            PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
-                            if (eachPatientVisit.Room != null)
-                            {
-                                PatientVisitForDate.RoomName = eachPatientVisit.Room.name;
-                            }
-                            PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
-                            if (eachPatientVisit.Doctor != null && eachPatientVisit.Doctor.user != null)
-                            {
-                                PatientVisitForDate.DoctorName = eachPatientVisit.Doctor.user.FirstName + " " + eachPatientVisit.Doctor.user.LastName;
-                            }
-                            PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
-                            if (eachPatientVisit.Specialty != null)
-                            {
-                                PatientVisitForDate.SpecialityName = eachPatientVisit.Specialty.Name;
-                            }
-                            PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
-                            PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
-                            PatientVisitForDate.VisitStatusId = 1;
-                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
-                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+                        BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                        ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
 
-                            lstPatientVisitForDate.Add(PatientVisitForDate);
+                        if (ForDateEventSlots != null)
+                        {
+                            foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                            {
+                                BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
+                                PatientVisitForDate.ID = 0;
+                                PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
+                                PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
+                                PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                                if (eachPatientVisit.Patient != null && eachPatientVisit.Patient.User != null)
+                                {
+                                    PatientVisitForDate.PatientName = eachPatientVisit.Patient.User.FirstName + " " + eachPatientVisit.Patient.User.LastName;
+                                }
+                                PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
+                                PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
+                                if (eachPatientVisit.Room != null)
+                                {
+                                    PatientVisitForDate.RoomName = eachPatientVisit.Room.name;
+                                }
+                                PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
+                                if (eachPatientVisit.Doctor != null && eachPatientVisit.Doctor.user != null)
+                                {
+                                    PatientVisitForDate.DoctorName = eachPatientVisit.Doctor.user.FirstName + " " + eachPatientVisit.Doctor.user.LastName;
+                                }
+                                PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
+                                if (eachPatientVisit.Specialty != null)
+                                {
+                                    PatientVisitForDate.SpecialityName = eachPatientVisit.Specialty.Name;
+                                }
+                                PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
+                                PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                                PatientVisitForDate.VisitStatusId = 1;
+                                PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                                PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+
+                                lstPatientVisitForDate.Add(PatientVisitForDate);
+                            }
                         }
                     }
-                }
+                }                
             }
 
-            return lstPatientVisitForDate;
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart);
         }
         #endregion
 
-        #region Get Doctor Patient Visit For Date By LocationId
+        #region Get Doctor Patient Visit For Date By CompanyId
         public override Object GetDoctorPatientVisitForDateByCompanyId(DateTime ForDate, int DoctorId, int CompanyId)
         {
             var CompanyLocations = _context.Locations.Where(p => p.CompanyID == CompanyId
@@ -2881,57 +2893,63 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.FreeSlots> currentEventSlots = new List<BO.FreeSlots>();
             CalendarEventRepository calEventRepo = new CalendarEventRepository(_context);
 
+            List<int> CalendarEventIds = new List<int>();
             foreach (var eachPatientVisit in lstPatientVisit)
             {
-                currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
-
-                if (currentEventSlots != null)
+                if (CalendarEventIds.Any(p => p == eachPatientVisit.CalendarEventId) == false)
                 {
-                    BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
-                    ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
+                    CalendarEventIds.Add(eachPatientVisit.CalendarEventId.Value);
 
-                    if (ForDateEventSlots != null)
+                    currentEventSlots = calEventRepo.GetBusySlotsByCalendarEventByLocationId(eachPatientVisit.CalendarEvent, ForDate) as List<BO.FreeSlots>;
+
+                    if (currentEventSlots != null)
                     {
-                        foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
-                        {
-                            BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
-                            PatientVisitForDate.ID = 0;
-                            PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
-                            PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
-                            PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
-                            if (eachPatientVisit.Patient != null && eachPatientVisit.Patient.User != null)
-                            {
-                                PatientVisitForDate.PatientName = eachPatientVisit.Patient.User.FirstName + " " + eachPatientVisit.Patient.User.LastName;
-                            }
-                            PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
-                            PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
-                            if (eachPatientVisit.Room != null)
-                            {
-                                PatientVisitForDate.RoomName = eachPatientVisit.Room.name;
-                            }
-                            PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
-                            if (eachPatientVisit.Doctor != null && eachPatientVisit.Doctor.user != null)
-                            {
-                                PatientVisitForDate.DoctorName = eachPatientVisit.Doctor.user.FirstName + " " + eachPatientVisit.Doctor.user.LastName;
-                            }
-                            PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
-                            if (eachPatientVisit.Specialty != null)
-                            {
-                                PatientVisitForDate.SpecialityName = eachPatientVisit.Specialty.Name;
-                            }
-                            PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
-                            PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
-                            PatientVisitForDate.VisitStatusId = 1;
-                            PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
-                            PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+                        BO.FreeSlots ForDateEventSlots = new BO.FreeSlots();
+                        ForDateEventSlots = currentEventSlots.Where(p => p.ForDate == ForDate).SingleOrDefault();
 
-                            lstPatientVisitForDate.Add(PatientVisitForDate);
+                        if (ForDateEventSlots != null)
+                        {
+                            foreach (var eachStartAndEndTimes in ForDateEventSlots.StartAndEndTimes)
+                            {
+                                BO.PatientVisitDashboard PatientVisitForDate = new BO.PatientVisitDashboard();
+                                PatientVisitForDate.ID = 0;
+                                PatientVisitForDate.CalendarEventId = eachPatientVisit.CalendarEventId;
+                                PatientVisitForDate.CaseId = eachPatientVisit.CaseId;
+                                PatientVisitForDate.PatientId = eachPatientVisit.PatientId;
+                                if (eachPatientVisit.Patient != null && eachPatientVisit.Patient.User != null)
+                                {
+                                    PatientVisitForDate.PatientName = eachPatientVisit.Patient.User.FirstName + " " + eachPatientVisit.Patient.User.LastName;
+                                }
+                                PatientVisitForDate.LocationId = eachPatientVisit.LocationId;
+                                PatientVisitForDate.RoomId = eachPatientVisit.RoomId;
+                                if (eachPatientVisit.Room != null)
+                                {
+                                    PatientVisitForDate.RoomName = eachPatientVisit.Room.name;
+                                }
+                                PatientVisitForDate.DoctorId = eachPatientVisit.DoctorId;
+                                if (eachPatientVisit.Doctor != null && eachPatientVisit.Doctor.user != null)
+                                {
+                                    PatientVisitForDate.DoctorName = eachPatientVisit.Doctor.user.FirstName + " " + eachPatientVisit.Doctor.user.LastName;
+                                }
+                                PatientVisitForDate.SpecialtyId = eachPatientVisit.SpecialtyId;
+                                if (eachPatientVisit.Specialty != null)
+                                {
+                                    PatientVisitForDate.SpecialityName = eachPatientVisit.Specialty.Name;
+                                }
+                                PatientVisitForDate.EventStart = eachStartAndEndTimes.StartTime;
+                                PatientVisitForDate.EventEnd = eachStartAndEndTimes.EndTime;
+                                PatientVisitForDate.VisitStatusId = 1;
+                                PatientVisitForDate.IsCancelled = eachPatientVisit.IsCancelled;
+                                PatientVisitForDate.IsDeleted = eachPatientVisit.IsDeleted;
+
+                                lstPatientVisitForDate.Add(PatientVisitForDate);
+                            }
                         }
                     }
-                }
+                }                
             }
 
-            return lstPatientVisitForDate;
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart);
         }
         #endregion
 
@@ -3027,7 +3045,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 foreach (var eachLocation in CompanyLocations)
                 {
-                    var ResultFreeSlots = CalEvntRepo.GetFreeSlotsForDoctorByLocationId(DoctorId, eachLocation, ForDate, ForDate.AddDays(1).AddSeconds(-1));
+                    var ResultFreeSlots = CalEvntRepo.GetFreeSlotsForDoctorByLocationId(DoctorId, eachLocation, ForDate, ForDate.Date.AddDays(1).AddSeconds(-1));
                     if (ResultFreeSlots is BO.ErrorObject)
                     {
                     }
@@ -3063,7 +3081,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }            
 
-            return lstPatientVisitForDate;
+            return lstPatientVisitForDate.OrderBy(p => p.EventStart).ThenBy(p => p.DoctorName);
         }
         #endregion
 
