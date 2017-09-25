@@ -292,8 +292,8 @@ export class SessionStore {
                                                 if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
                                                     let promise = new Promise((resolve, reject) => {
                                                         let accessToken: any = 'bearer ' + result.access_token;
-                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1080, 'seconds').toString();
-                                                        // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+                                                        // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1080, 'seconds').toString();
+                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
                                                         this._authenticationService.signinWithUserName(environment.SERVICE_BASE_URL, userInfo.email, accessToken, tokenExpiresAt, result)
                                                             .subscribe((accountData) => {
                                                                 let account: Account = AccountAdapter.parseStoredData(accountData);

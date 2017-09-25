@@ -37,6 +37,7 @@ export class UserSettingsComponent implements OnInit {
     isCalendarPublic: boolean = false;
     isPublic: boolean = false;
     isTimeSlot = 30;
+    defaultCalendarView = 1;
 
     constructor(
         private _authenticationService: AuthenticationService,
@@ -55,7 +56,9 @@ export class UserSettingsComponent implements OnInit {
             isPublic: [''],
             isCalendarPublic: [''],
             isSearchable: [''],
-            timeSlot: ['']
+            timeSlot: [''],
+            calendarView: [''],
+
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 

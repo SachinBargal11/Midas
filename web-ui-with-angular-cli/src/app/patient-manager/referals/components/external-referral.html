@@ -24,8 +24,8 @@
 
     <p-column field="eventStart" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a (click)="showDialog(visit)">
-                <u>{{visit.eventStart | dateTimeFormat}}</u>
+            <a *ngIf="visit.eventStart"(click)="showDialog(visit)">
+                <u>{{visit.eventStart.format('MMMM Do YYYY')}}</u>
             </a>
         </ng-template>
     </p-column>

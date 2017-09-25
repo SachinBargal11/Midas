@@ -21,9 +21,9 @@ BEGIN
 	    [PolicyNo] [NVARCHAR](50) NULL,
 	    [ContactPerson] [NVARCHAR](50) NULL,
 	    [InsuranceTypeId] [TINYINT] NULL,
-	    [StartDate] [datetime2](7) NULL,
-	    [EndDate] [datetime2](7) NULL,
-	    [InsuredAmount] [decimal] NULL, 
+	    [InsuranceStartDate] [datetime] NULL,
+	    [InsuranceEndDate] [datetime] NULL,
+	    [BalanceInsuredAmount] [decimal](12, 2) NULL,
 	    [IsInActive] [BIT] NUll DEFAULT (0),
 	
 	    [IsDeleted] [bit] NULL DEFAULT (0),
@@ -68,15 +68,6 @@ END
 ELSE
 BEGIN
     ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [CaseId] [int] NULL
-    
-    --UPDATE [dbo].[PatientInsuranceInfo] 
-    --    SET [CaseId] = (SELECT TOP 1 [Id] FROM [dbo].[Case] WHERE [dbo].[Case].[PatientId] = [dbo].[PatientInsuranceInfo].[PatientId])
-
-    --ALTER TABLE [dbo].[PatientInsuranceInfo] 
-    --    ALTER COLUMN [CaseId] [int] NOT NULL
-
-    --ALTER TABLE [dbo].[PatientInsuranceInfo] 
-    --    DROP COLUMN [PatientId]
 END
 GO
 
@@ -256,3 +247,41 @@ ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_Patient
 	REFERENCES [dbo].[InsuranceMaster] ([Id])
 GO
 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientInsuranceInfo'
+	AND		COLUMN_NAME = 'InsuranceStartDate'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [InsuranceStartDate] [datetime] NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientInsuranceInfo'
+	AND		COLUMN_NAME = 'InsuranceEndDate'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [InsuranceEndDate] [datetime] NULL
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientInsuranceInfo'
+	AND		COLUMN_NAME = 'BalanceInsuredAmount'
+)
+BEGIN
+	ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [BalanceInsuredAmount] [decimal](12, 2) NULL
+END
+GO

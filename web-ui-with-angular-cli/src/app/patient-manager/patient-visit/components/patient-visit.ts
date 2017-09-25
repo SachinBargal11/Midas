@@ -1,3 +1,4 @@
+import { SelectItem } from 'primeng/primeng';
 import { ImeVisit } from '../models/ime-visit';
 import { EoVisit } from '../models/eo-visit';
 import { Procedure } from '../../../commons/models/procedure';
@@ -151,6 +152,7 @@ export class PatientVisitComponent implements OnInit {
     selectedEventDate;
     dayRenderer;
     isVisitTypeDisabled = false;
+    patientsWithOpenCase: SelectItem[] = [];
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -254,7 +256,8 @@ export class PatientVisitComponent implements OnInit {
     }
 
     selectPatient(event) {
-        let currentPatient: number = parseInt(event.target.value);
+        let currentPatient: number = parseInt(event.value);
+        let idPatient = parseInt(event.value);
         if (event.value != '') {
             let result = this._casesStore.getOpenCaseForPatientByPatientIdAndCompanyId(currentPatient);
             result.subscribe((cases) => { this.cases = cases; }, null);
@@ -309,9 +312,22 @@ export class PatientVisitComponent implements OnInit {
                 });
         }
         this._patientsStore.getPatientsWithOpenCases()
-            .subscribe(
-            (patient: Patient[]) => {
-                this.patients = patient;
+            .subscribe(patients => {
+                // this.patientsWithoutCase = patients;
+                // this.idPatient = patients[0].id;
+                let defaultLabel: any[] = [{
+                    label: '-Select Patient-',
+                    value: ''
+                }]
+                let patientsWithoutCase = _.map(patients, (currPatient: Patient) => {
+                    return {
+                        label: `${currPatient.user.firstName}  ${currPatient.user.lastName}`,
+                        value: currPatient.id
+                    };
+                })
+                this.patientsWithOpenCase = _.union(defaultLabel, patientsWithoutCase);
+                // (patient: Patient[]) => {
+                //     this.patients = patient;
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
@@ -1155,8 +1171,9 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    private _createVisitInstanceForASeries(seriesEvent: ScheduledEvent, instanceStart: moment.Moment, instanceEnd: moment.Moment): PatientVisit {
+    private _createVisitInstanceForASeries(id: number, seriesEvent: ScheduledEvent, instanceStart: moment.Moment, instanceEnd: moment.Moment): PatientVisit {
         return new PatientVisit({
+            id: id,
             locationId: this.selectedLocationId,
             doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
             roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
@@ -1176,7 +1193,7 @@ export class PatientVisitComponent implements OnInit {
             message: 'Do you want to edit/cancel only this event occurrence or the whole series?',
             accept: () => {
                 if (this.selectedVisit.calendarEvent.isSeries) {
-                    this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
+                    this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.id, this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
                 }
                 this.eventDialogVisible = true;
             },
@@ -1401,10 +1418,10 @@ export class PatientVisitComponent implements OnInit {
 
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
-            this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
+            this.selectedVisit = this._createVisitInstanceForASeries(this.selectedVisit.id, this.selectedVisit.calendarEvent, this.selectedCalEvent.start, this.selectedCalEvent.end);
         }
         this._progressBarService.show();
-        let result = this._patientVisitsStore.cancelPatientVisit(this.selectedVisit);
+        let result = this._patientVisitsStore.cancelCurrentOccurrenceVisit(this.selectedVisit);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -1412,7 +1429,9 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.loadVisits();
+                // this.loadVisits();
+                this.events = [];
+                this.loadAllVisitsByCompanyId();
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {

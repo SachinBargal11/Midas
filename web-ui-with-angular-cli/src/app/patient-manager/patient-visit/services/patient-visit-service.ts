@@ -474,6 +474,26 @@ export class PatientVisitService {
     //     return <Observable<PatientVisit>>Observable.fromPromise(promise);
     // }
 
+    cancelCurrentOccurrenceVisit(patientVisit: PatientVisit): Observable<PatientVisit> {
+        let startDate = patientVisit.calendarEvent.eventStart.utc();
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/patientVisit/cancelSingleEventOccurrence/' + patientVisit.id + '/' + startDate.format('YYYY-MM-DD'), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCalendarEvent: ScheduledEvent = null;
+                    parsedCalendarEvent = ScheduledEventAdapter.parseResponse(data);
+                    let updatedPatientVisitDetail: PatientVisit = <PatientVisit>patientVisit.set('calendarEvent', parsedCalendarEvent);
+                    resolve(updatedPatientVisitDetail);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
+
+
     updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             let requestData = patientVisitDetail.toJS();
