@@ -212,7 +212,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                         id: currRoomVisit.id,
                         eventStart: currRoomVisit.eventStart,
                         locationName: currRoomVisit.location.name,
-                        doctorName: currRoomVisit.doctor.user.displayName,
+                        doctorName: currRoomVisit.doctor ? currRoomVisit.doctor.user.displayName : null,
                         roomTestName: currRoomVisit.room.name,
                         visitStatusLabel: currRoomVisit.visitStatusLabel,
                         isPatientVisitType: true,
