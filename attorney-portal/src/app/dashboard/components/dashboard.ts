@@ -152,6 +152,10 @@ export class DashboardComponent {
             let startDate = moment().startOf('year');
             let endDate = moment().endOf('year');
             this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+        } else if (this.selectedCaseFilterOption == '7') {
+            let startDate = moment().subtract(30, 'days');
+            let endDate = moment();
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
         }
     }
     
@@ -188,6 +192,10 @@ export class DashboardComponent {
         } else if (this.selectedCaseByInsuranceFilterOption == '6') {
             let startDate = moment().startOf('year');
             let endDate = moment().endOf('year');
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+        }else if (this.selectedCaseFilterOption == '7') {
+            let startDate = moment().subtract(30, 'days');
+            let endDate = moment();
             this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
         }
     }

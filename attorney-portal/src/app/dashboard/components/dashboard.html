@@ -11,11 +11,12 @@
                         <div class="dropdown pull-right">
                             <select type="text" class="form-control" [(ngModel)]="selectedCaseFilterOption" (change)="filterCaseTypeStatistics($event)">
                                 <option value="1">Today</option>
-                                <option value="2">Weekly</option>
-                                <option value="3">Monthly</option>
-                                <option value="4">Quarterly</option>
-                                <option value="5">Half Yearly</option>
-                                <option value="6">Yearly</option>
+                                <option value="2">This Week</option>
+                                <option value="7">Last 30 Days</option>
+                                <option value="3">This Month</option>
+                                <option value="4">This Quarter</option>
+                                <option value="5">This Half Year</option>
+                                <option value="6">This Year</option>
                             </select>
                         </div>
                     </header>
@@ -32,13 +33,14 @@
                     <header class="card-header card-header-sm">
                         <i class="fa fa-pie-chart" aria-hidden="true"></i> Cases By Insurance Provider
                         <div class="dropdown pull-right">
-                            <select type="text" class="form-control" [(ngModel)]="selectedCaseByInsuranceFilterOption" (change)="filterCasesByInsuranceStatistics($event)">
+                            <select type="text" class="form-control" [(ngModel)]="selectedCaseFilterOption" (change)="filterCaseTypeStatistics($event)">
                                 <option value="1">Today</option>
-                                <option value="2">Weekly</option>
-                                <option value="3">Monthly</option>
-                                <option value="4">Quarterly</option>
-                                <option value="5">Half Yearly</option>
-                                <option value="6">Yearly</option>
+                                <option value="2">This Week</option>
+                                <option value="7">Last 30 Days</option>
+                                <option value="3">This Month</option>
+                                <option value="4">This Quarter</option>
+                                <option value="5">This Half Year</option>
+                                <option value="6">This Year</option>
                             </select>
                         </div>
                     </header>
@@ -55,7 +57,7 @@
         <div class="row">
             <section *ngIf="todaysVisits" class="box-typical box-typical-dashboard panel panel-default">
                 <header class="card-header card-header-sm">
-                    <i class="fa fa-calendar" aria-hidden="true"></i> Appointments
+                    <i class="fa fa-calendar" aria-hidden="true"></i> Today's Appointments
                     <div class="pull-right">
                         Total: {{todaysVisits.length}}
                     </div>

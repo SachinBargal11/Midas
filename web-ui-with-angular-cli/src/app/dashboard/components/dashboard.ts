@@ -280,7 +280,7 @@ export class DashboardComponent {
         } else if (this.selectedOption == '7') {
             let startDate = moment().subtract(30, 'days');
             let endDate = moment();
-            this.getStatisticalDataOnPatientVisit(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
         }
     }
 
