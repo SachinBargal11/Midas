@@ -13,6 +13,9 @@ const InsuranceRecord = Record({
     policyNo: '',
     policyOwnerId: 0,
     policyHoldersName: '',
+    insuranceStartDate: moment(),
+    insuranceEndDate: moment(),
+    balanceInsuredAmount: '',
     contactPerson: '',
     insuranceMasterId: 0,
     insuranceMaster: null,
@@ -33,6 +36,9 @@ export class Insurance extends InsuranceRecord {
     policyNo: string;
     policyOwnerId: number;
     policyHoldersName: string;
+    insuranceStartDate: moment.Moment;
+    insuranceEndDate: moment.Moment;
+    balanceInsuredAmount: string;
     contactPerson: string;
     insuranceMasterId: number;
     insuranceMaster: InsuranceMaster;

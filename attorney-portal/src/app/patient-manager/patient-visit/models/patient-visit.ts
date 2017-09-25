@@ -18,7 +18,7 @@ import { Procedure } from '../../../commons/models/procedure';
 const PatientVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
-    // location: null,
+    location: null,
     // locationId: 0,
     // case: null,
     caseId: 0,
@@ -63,7 +63,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     id: number;
     calendarEventId: number;
-    // location: Location;
+    location: Location;
     // locationId: number;
     // case: Case;
     caseId: number;
