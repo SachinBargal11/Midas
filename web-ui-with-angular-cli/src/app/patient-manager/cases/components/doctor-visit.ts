@@ -246,7 +246,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                         mappedAllVisits.push({
                             id: currDoctorVisit.id,
                             eventStart: currDoctorVisit.eventStart,
-                            locationName: "andheri",
+                            locationName: currDoctorVisit.locationName,
                             doctorName: currDoctorVisit.doctorName,
                             specialityName: currDoctorVisit.specialty ? currDoctorVisit.specialty.name : '',
                             visitStatusLabel: currDoctorVisit.status,

@@ -134,7 +134,7 @@ export class UnscheduledVisitComponent implements OnInit {
             caseId: ['', Validators.required],
             notes: [''],
             medicalProviderName: ['', Validators.required],
-            locationName: [''],
+            locationName: ['', Validators.required],
             doctorName: ['', Validators.required],
             speciality: [''],
             eventStartDate: [''],

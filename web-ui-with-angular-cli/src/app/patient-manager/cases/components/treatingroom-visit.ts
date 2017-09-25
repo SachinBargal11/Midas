@@ -60,6 +60,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
     allVisits: {
         id: number,
         eventStart: any,
+        locationName: string,
         doctorName: string,
         roomTestName: string,
         visitStatusLabel: string,
@@ -198,6 +199,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 let mappedAllVisits: {
                     id: number,
                     eventStart: any,
+                    locationName: string,
                     doctorName: string,
                     roomTestName: string,
                     visitStatusLabel: string,
@@ -209,6 +211,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                     mappedAllVisits.push({
                         id: currRoomVisit.id,
                         eventStart: currRoomVisit.eventStart,
+                        locationName: currRoomVisit.location.name,
                         doctorName: currRoomVisit.doctor.user.displayName,
                         roomTestName: currRoomVisit.room.name,
                         visitStatusLabel: currRoomVisit.visitStatusLabel,
@@ -222,6 +225,7 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                         mappedAllVisits.push({
                             id: currRoomVisit.id,
                             eventStart: currRoomVisit.eventStart,
+                            locationName: currRoomVisit.locationName,
                             doctorName: currRoomVisit.doctorName,
                             roomTestName: currRoomVisit.roomTest ? currRoomVisit.roomTest.name : '',
                             visitStatusLabel: currRoomVisit.status,

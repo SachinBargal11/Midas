@@ -68,6 +68,8 @@ export class InsuranceService {
             requestData.policyHolderAddressInfo = requestData.policyAddress;
             requestData.insuranceCompanyContactInfo = requestData.insuranceContact;
             requestData.insuranceCompanyAddressInfo = requestData.insuranceAddress;
+            requestData.insuranceStartDate = requestData.insuranceStartDate ? requestData.insuranceStartDate.format('YYYY-MM-DD') : null;
+            requestData.insuranceEndDate = requestData.insuranceEndDate ? requestData.insuranceEndDate.format('YYYY-MM-DD') : null;
             requestData = _.omit(requestData, 'insuranceType', 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
             return this._http.post(environment.SERVICE_BASE_URL + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
@@ -91,6 +93,8 @@ export class InsuranceService {
             requestData.policyHolderAddressInfo = requestData.policyAddress;
             requestData.insuranceCompanyContactInfo = requestData.insuranceContact;
             requestData.insuranceCompanyAddressInfo = requestData.insuranceAddress;
+            requestData.insuranceStartDate = requestData.insuranceStartDate ? requestData.insuranceStartDate.format('YYYY-MM-DD') : null;
+            requestData.insuranceEndDate = requestData.insuranceEndDate ? requestData.insuranceEndDate.format('YYYY-MM-DD') : null;
             requestData = _.omit(requestData, 'insuranceType', 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
             return this._http.post(environment.SERVICE_BASE_URL + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
@@ -122,16 +126,16 @@ export class InsuranceService {
         return <Observable<Insurance>>Observable.from(promise);
     }
 
-     getInsuranceMasterById(insuranceMasterId: Number): Observable<InsuranceMaster> {
+    getInsuranceMasterById(insuranceMasterId: Number): Observable<InsuranceMaster> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/getInsuranceDetails/' + insuranceMasterId + '/' + companyId , {
+            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/getInsuranceDetails/' + insuranceMasterId + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
                     let insuranceMaster = null;
-                        insuranceMaster = InsuranceMasterAdapter.parseResponse(data);
-                        resolve(insuranceMaster);
+                    insuranceMaster = InsuranceMasterAdapter.parseResponse(data);
+                    resolve(insuranceMaster);
                 }, (error) => {
                     reject(error);
                 });
@@ -143,7 +147,7 @@ export class InsuranceService {
     getInsurancesMasterByCompanyId(): Observable<InsuranceMaster[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<InsuranceMaster[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/getMasterAndByCompanyId/' + companyId , {
+            return this._http.get(environment.SERVICE_BASE_URL + '/InsuranceMaster/getMasterAndByCompanyId/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())

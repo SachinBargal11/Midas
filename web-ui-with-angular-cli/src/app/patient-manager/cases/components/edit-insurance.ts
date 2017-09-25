@@ -57,6 +57,10 @@ export class EditInsuranceComponent implements OnInit {
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
+    insuranceStartDate: Date;
+    insuranceEndDate: Date;
+    balanceInsuredAmount: string;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -116,7 +120,13 @@ export class EditInsuranceComponent implements OnInit {
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
                     this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
-
+                    this.insuranceStartDate = this.insurance.insuranceStartDate
+                        ? this.insurance.insuranceStartDate.toDate()
+                        : null;
+                    this.insuranceEndDate = this.insurance.insuranceEndDate
+                        ? this.insurance.insuranceEndDate.toDate()
+                        : null;
+                    this.balanceInsuredAmount = this.insurance.balanceInsuredAmount;
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -131,9 +141,9 @@ export class EditInsuranceComponent implements OnInit {
             policyNo: ['', Validators.required],
             policyOwner: ['', Validators.required],
             policyHoldersName: ['', Validators.required],
-            insuranceStartDate: [''],
-            insuranceEndDate: [''],
-            balanceInsuredAmount: [''],
+            insuranceStartDate: ['', Validators.required],
+            insuranceEndDate: ['', Validators.required],
+            balanceInsuredAmount: ['', Validators.required],
             insuranceCompanyCode: [''],
             insuranceType: ['', Validators.required],
             insuranceMasterId: ['', Validators.required],
