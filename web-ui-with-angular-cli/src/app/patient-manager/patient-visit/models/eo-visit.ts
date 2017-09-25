@@ -21,6 +21,7 @@ const EoVisitRecord = Record({
     patient: null,
     doctorId: 0,
     patientId: null,
+    caseId: null,
     insuranceMaster: null,
     insuranceProviderId: 0,
     VisitCreatedByCompanyId: null,
@@ -48,6 +49,7 @@ export class EoVisit extends EoVisitRecord {
     patient: Patient;
     doctorId: number;
     patientId: number;
+    caseId: number;
     insuranceMaster: InsuranceMaster;
     insuranceProviderId: number;
     VisitCreatedByCompanyId: number;

@@ -47,12 +47,16 @@
     <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>-->
     <p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a (click)="showDialog(visit)">
+            <a *ngIf="visit.visitStatusLabel != 'Completed'"(click)="showDialog(visit)">
             {{visit.eventStart | dateTimeFormat}}
+        </a>
+           <a *ngIf="visit.visitStatusLabel == 'Completed'"(click)="showDialog(visit)">
+            {{visit.eventStart.format('MMMM Do YYYY')}}
         </a>
         </ng-template>
     </p-column>
 
+    <p-column field="locationName" header="Location" [sortable]="true"></p-column>
     <p-column field="doctorName" header="Treating Doctor" [sortable]="true"></p-column>
 
     <p-column field="specialityName" header="Specialty" [sortable]="true"></p-column>

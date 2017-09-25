@@ -22,6 +22,7 @@ const UnscheduledVisitRecord = Record({
     patientId: 0,
     eventStart: null,
     medicalProviderName: '',
+    locationName: '',
     doctorName: '',
     specialty: null,
     specialtyId: 0,
@@ -51,6 +52,7 @@ export class UnscheduledVisit extends UnscheduledVisitRecord {
     patientId: number;
     eventStart: moment.Moment;
     medicalProviderName: string;
+    locationName: string;
     doctorName: string;
     specialty: Speciality;
     specialtyId: number;

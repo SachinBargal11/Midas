@@ -20,6 +20,7 @@ export class UnscheduledVisitAdapter {
             patientId: data.patientId,
             eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
             medicalProviderName: data.medicalProviderName,
+            locationName: data.locationName,
             doctorName: data.doctorName,
             specialty: data.specialty,
             roomTest: data.roomTest,

@@ -258,7 +258,7 @@
                         <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
                         <div class="col-md-4">
                             <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                                <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control" (change)="selectPatient($event)">
+                                <!--<select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control" (change)="selectPatient($event)">
                         <option value=""> -- Select Patient -- </option>
                         <option *ngFor="let patient of patients" [value]="patient.id">{{patient.user.displayName}}</option>                                       
                     </select>
@@ -266,6 +266,11 @@
                                     <ul>
                                         <li *ngIf="patientScheduleFormControls.patientId.hasError('required')">Please select any Patient.</li>
                                     </ul>
+                                </div>-->
+                                <p-dropdown [options]="patientsWithOpenCase" formControlName="patientId" [(ngModel)]="idPatient" (onChange)="selectPatient($event)"
+                                    [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                                <div class='error-list' *ngIf="patientScheduleFormControls.patientId.dirty && idPatient==''">
+                                    <span class="color-red">Patient is required.</span>
                                 </div>
                             </div>
                         </div>
@@ -501,16 +506,16 @@
                 <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
                     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
                     <div *ngIf="selectedVisit.isPatientVisitType">
-                    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
-                        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="3" [objectId]="selectedVisit.id"
+                            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                     </div>
                     <div *ngIf="selectedVisit.isImeVisitType">
-                    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="4" [objectId]="selectedVisit.id"
-                        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="4" [objectId]="selectedVisit.id"
+                            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                     </div>
                     <div *ngIf="selectedVisit.isEoVisitType">
-                    <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="5" [objectId]="selectedVisit.id"
-                        (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+                        <app-document-upload *ngIf="!disableSaveDelete" [url]="visitUploadDocumentUrl" [currentId]="5" [objectId]="selectedVisit.id"
+                            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                     </div>
                 </p-dialog>
             </p-tabPanel>

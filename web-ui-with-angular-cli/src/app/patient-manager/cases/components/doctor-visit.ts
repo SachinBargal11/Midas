@@ -33,6 +33,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     allVisits: {
         id: number,
         eventStart: any,
+        locationName: string,
         doctorName: string,
         specialityName: string,
         visitStatusLabel: string,
@@ -219,6 +220,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                 let mappedAllVisits: {
                     id: number,
                     eventStart: any,
+                    locationName: string,
                     doctorName: string,
                     specialityName: string,
                     visitStatusLabel: string,
@@ -230,6 +232,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     mappedAllVisits.push({
                         id: currDoctorVisit.id,
                         eventStart: currDoctorVisit.eventStart,
+                        locationName: currDoctorVisit.location.name,
                         doctorName: currDoctorVisit.doctor.user.displayName,
                         specialityName: currDoctorVisit.specialty.displayName,
                         visitStatusLabel: currDoctorVisit.visitStatusLabel,
@@ -243,6 +246,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                         mappedAllVisits.push({
                             id: currDoctorVisit.id,
                             eventStart: currDoctorVisit.eventStart,
+                            locationName: "andheri",
                             doctorName: currDoctorVisit.doctorName,
                             specialityName: currDoctorVisit.specialty ? currDoctorVisit.specialty.name : '',
                             visitStatusLabel: currDoctorVisit.status,

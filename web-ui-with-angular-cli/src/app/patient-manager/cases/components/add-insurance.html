@@ -54,6 +54,64 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label">Insurance Start Date
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                        <div class="form-group" [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid">
+                            <div class='input-group date'>
+                                <p-calendar formControlName="insuranceStartDate" [readonlyInput]="true" dateFormat="M d, yy"
+                                    [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                                    [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid"
+                                    showAnim="slideDown" [showIcon]="true" hourFormat="12" placeholder="Insurance Start Date"
+                                    icon="font-icon font-icon-calend">
+                                </p-calendar>
+                            </div>
+                            <div class='error-list' *ngIf="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid">
+                                <ul>
+                                    <li *ngIf="insuranceformControls.insuranceStartDate.hasError('required')">Insurance Start Date is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div>
+                        <label class="form-label">Insurance End Date
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                        <div class="form-group" [class.error]="insuranceformControls.insuranceEndDate.touched && !insuranceformControls.insuranceEndDate.valid">
+                            <div class='input-group date'>
+                                <p-calendar formControlName="insuranceEndDate" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
+                                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" [class.error]="insuranceformControls.insuranceEndDate.touched && !insuranceformControls.insuranceEndDate.valid"
+                                    showAnim="slideDown" [showIcon]="true" hourFormat="12" placeholder="Insurance End Date"
+                                    icon="font-icon font-icon-calend">
+                                </p-calendar>
+                            </div>
+                            <div class='error-list' *ngIf="insuranceformControls.insuranceEndDate.touched && !insuranceformControls.insuranceEndDate.valid">
+                                <ul>
+                                    <li *ngIf="insuranceformControls.insuranceEndDate.hasError('required')">Insurance End Date is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Balance Insured Amount
+                         <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.balanceInsuredAmount.touched && !insuranceformControls.balanceInsuredAmount.valid">
+                        <input formControlName="balanceInsuredAmount" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.balanceInsuredAmount.valid">
+                        <div class='error-list' *ngIf="insuranceformControls.balanceInsuredAmount.touched && !insuranceformControls.balanceInsuredAmount.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.balanceInsuredAmount.hasError('required')">Balance Insured Amount is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <section class="card">
@@ -92,7 +150,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Fax No</label>
                         <p-inputMask mask="9-999-999 9999" formControlName="policyFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
@@ -105,17 +163,17 @@
                         <label class="form-label"> Home Phone No</label>
                         <input formControlName="policyHomePhone" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="insuranceformControls.policyHomePhone.touched && !insuranceformControls.policyHomePhone.valid" >
+                    <div class="form-group" [class.error]="insuranceformControls.policyHomePhone.touched && !insuranceformControls.policyHomePhone.valid">
                         <label class="form-label"> Home Phone No</label>
-                        <input [class.error]="!insuranceformControls.policyHomePhone.valid" 
-                        formControlName="policyHomePhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!insuranceformControls.policyHomePhone.valid" formControlName="policyHomePhone" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.policyHomePhone.touched && !insuranceformControls.policyHomePhone.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.policyHomePhone.hasError('required')">Policy Home Phone number is required.</li>
                                 <li *ngIf="insuranceformControls.policyHomePhone.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="insuranceformControls.policyHomePhone.hasError('maxlength')">Policy Home Phone should be maximum {{insuranceformControls.policyHomePhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -125,37 +183,37 @@
                         <label class="form-label"> Work Phone No</label>
                         <input formControlName="policyWorkPhone" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="insuranceformControls.policyWorkPhone.touched && !insuranceformControls.policyWorkPhone.valid" >
+                    <div class="form-group" [class.error]="insuranceformControls.policyWorkPhone.touched && !insuranceformControls.policyWorkPhone.valid">
                         <label class="form-label">Work Phone No</label>
-                        <input [class.error]="!insuranceformControls.policyWorkPhone.valid" 
-                        formControlName="policyWorkPhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!insuranceformControls.policyWorkPhone.valid" formControlName="policyWorkPhone" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.policyWorkPhone.touched && !insuranceformControls.policyWorkPhone.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.policyWorkPhone.hasError('required')">Policy Work Phone number is required.</li>
                                 <li *ngIf="insuranceformControls.policyWorkPhone.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="insuranceformControls.policyWorkPhone.hasError('maxlength')">Policy Work Phone should be maximum {{insuranceformControls.policyWorkPhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <!--<div class="form-group">
                         <label class="form-label"> Office Extension</label>
                         <input formControlName="policyOfficeExtension" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="insuranceformControls.policyOfficeExtension.touched && !insuranceformControls.policyOfficeExtension.valid" >
+                    <div class="form-group" [class.error]="insuranceformControls.policyOfficeExtension.touched && !insuranceformControls.policyOfficeExtension.valid">
                         <label class="form-label">Office Extension</label>
-                        <input [class.error]="!insuranceformControls.policyOfficeExtension.valid" 
-                        formControlName="policyOfficeExtension" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!insuranceformControls.policyOfficeExtension.valid" formControlName="policyOfficeExtension" type="text"
+                            class="form-control" placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.policyOfficeExtension.touched && !insuranceformControls.policyOfficeExtension.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.policyOfficeExtension.hasError('required')">Policy office extension number is required.</li>
                                 <li *ngIf="insuranceformControls.policyOfficeExtension.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="insuranceformControls.policyOfficeExtension.hasError('maxlength')">Policy office extension should be maximum {{insuranceformControls.policyOfficeExtension.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -165,17 +223,18 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail </label>
-                         <div class="form-group" [class.error]="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
-                        <input formControlName="policyAlternateEmail" [class.error]="!insuranceformControls.policyAlternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.policyAlternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
+                        <div class="form-group" [class.error]="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
+                            <input formControlName="policyAlternateEmail" [class.error]="!insuranceformControls.policyAlternateEmail.valid" class="form-control"
+                                type="text" placeholder="" />
+                            <div class='error-list' *ngIf="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
+                                <ul>
+                                    <li *ngIf="insuranceformControls.policyAlternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>
@@ -189,7 +248,7 @@
                         </select>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
     </section>
     <section class="card">
@@ -294,7 +353,8 @@
                                 <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                        <select formControlName="insuranceMasterId" type="text" (change)="selectInsurance($event)" class="form-control" placeholder="" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                        <select formControlName="insuranceMasterId" type="text" (change)="selectInsurance($event)" class="form-control" placeholder=""
+                            [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
                             <option value="">-Select Insurance Company-</option>
                             <option *ngFor="let insurance of insuranceMasters" value="{{insurance.id}}">{{insurance.companyCode}} - {{insurance.companyName}}</option>
                             <!--<option value="1">Insurance Master 1</option>-->
@@ -340,20 +400,20 @@
                         </div>
                     </div>
                 </div>
-            </div>            
-            <div class="row">  
-                 <div class="col-lg-4">
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
                     <label class="form-label">Insurance Photo
                             </label>
-                <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" 
-                    multiple="multiple" accept="image/*" maxFileSize="1000000">
+                    <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"
+                        maxFileSize="1000000">
                         <ng-template pTemplate type="content">
                             <ul *ngIf="uploadedFiles.length">
                                 <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
                             </ul>
-                        </ng-template>        
-                </p-fileUpload>
-                 </div>  
+                        </ng-template>
+                    </p-fileUpload>
+                </div>
             </div>
         </div>
     </section>
@@ -414,17 +474,17 @@
                         <label class="form-label"> Home Phone No</label>
                         <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="insuranceformControls.homePhone.touched && !insuranceformControls.homePhone.valid" >
+                    <div class="form-group" [class.error]="insuranceformControls.homePhone.touched && !insuranceformControls.homePhone.valid">
                         <label class="form-label"> Home Phone No</label>
-                        <input [class.error]="!insuranceformControls.homePhone.valid" 
-                        formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!insuranceformControls.homePhone.valid" formControlName="homePhone" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.homePhone.touched && !insuranceformControls.homePhone.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.homePhone.hasError('required')">Home Phone number is required.</li>
                                 <li *ngIf="insuranceformControls.homePhone.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="insuranceformControls.homePhone.hasError('maxlength')">Home Phone should be maximum {{insuranceformControls.homePhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -434,17 +494,17 @@
                         <label class="form-label"> Work Phone No</label>
                         <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="insuranceformControls.workPhone.touched && !insuranceformControls.workPhone.valid" >
+                    <div class="form-group" [class.error]="insuranceformControls.workPhone.touched && !insuranceformControls.workPhone.valid">
                         <label class="form-label">Work Phone No</label>
-                        <input [class.error]="!insuranceformControls.workPhone.valid" 
-                        formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!insuranceformControls.workPhone.valid" formControlName="workPhone" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.workPhone.touched && !insuranceformControls.workPhone.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.workPhone.hasError('required')">Work Phone number is required.</li>
                                 <li *ngIf="insuranceformControls.workPhone.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="insuranceformControls.workPhone.hasError('maxlength')">Work Phone should be maximum {{insuranceformControls.workPhone.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -457,22 +517,22 @@
                 </div>
             </div>
             <div class="row">
-               <div class="col-lg-4">
+                <div class="col-lg-4">
                     <!--<div class="form-group">
                         <label class="form-label"> Office Extension</label>
                         <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
                     </div>-->
-                    <div class="form-group" [class.error]="insuranceformControls.officeExtension.touched && !insuranceformControls.officeExtension.valid" >
+                    <div class="form-group" [class.error]="insuranceformControls.officeExtension.touched && !insuranceformControls.officeExtension.valid">
                         <label class="form-label">Office Extension</label>
-                        <input [class.error]="!insuranceformControls.officeExtension.valid" 
-                        formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!insuranceformControls.officeExtension.valid" formControlName="officeExtension" type="text" class="form-control"
+                            placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.officeExtension.touched && !insuranceformControls.officeExtension.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.officeExtension.hasError('required')">Office extension number is required.</li>
                                 <li *ngIf="insuranceformControls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="insuranceformControls.officeExtension.hasError('maxlength')">Office extension should be maximum {{insuranceformControls.officeExtension.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -480,17 +540,18 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail </label>
-                         <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
-                         <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
+                        <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                            <input formControlName="alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control"
+                                type="text" placeholder="" />
+                            <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                                <ul>
+                                    <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>
@@ -504,7 +565,7 @@
                         </select>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
     </section>
     <section class="card" *ngIf="insuranceMastersAdress">
@@ -631,7 +692,7 @@
                             </label>
                     </div>
                     <!--<div class="form-group" [class.error]="insuranceformControls.country.touched && !insuranceformControls.country.valid">-->
-                        <!--<input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.country.valid">
+                    <!--<input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.country.valid">
                     <select formControlName="country" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.country.touched && !insuranceformControls.country.valid">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
@@ -644,8 +705,8 @@
                     </div>
                 </div>
             </div>-->
-        </div>
-        </div>
+                </div>
+            </div>
         </div>
     </section>
     <button [disabled]="!insuranceform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add

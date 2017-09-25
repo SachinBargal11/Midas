@@ -410,6 +410,24 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
+    cancelCurrentOccurrenceVisit(patientVisit: PatientVisit): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.cancelCurrentOccurrenceVisit(patientVisit)
+                .subscribe((updatedPatientVisit: PatientVisit) => {
+                    let patientVisits: List<PatientVisit> = this._patientVisits.getValue();
+                    let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.id === patientVisit.id);
+                    patientVisits = patientVisits.update(index, () => {
+                        return updatedPatientVisit;
+                    });
+                    this._patientVisits.next(patientVisits);
+                    resolve(updatedPatientVisit);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
     updateCalendarEvent(patientVisit: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.updateCalendarEvent(patientVisit.calendarEvent)

@@ -385,6 +385,7 @@ export class EoVisitComponent implements OnInit {
         let endDateTime = new Date(startDate + ' ' + eoScheduleFormValues.eventEndTime) ;
         let eo = new EoVisit({
             doctorId: this.eoScheduleForm.value.doctorId,
+            caseId: null,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,
             notes: this.eoScheduleForm.value.notes,
