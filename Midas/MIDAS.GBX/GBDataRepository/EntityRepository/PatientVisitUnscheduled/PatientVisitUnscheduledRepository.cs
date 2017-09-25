@@ -40,6 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.EventStart = PatientVisitUnscheduledDB.EventStart;
                 PatientVisitUnscheduledBO.MedicalProviderName = PatientVisitUnscheduledDB.MedicalProviderName;
                 PatientVisitUnscheduledBO.DoctorName = PatientVisitUnscheduledDB.DoctorName;
+                PatientVisitUnscheduledBO.LocationName = PatientVisitUnscheduledDB.LocationName;
                 PatientVisitUnscheduledBO.Notes = PatientVisitUnscheduledDB.Notes;
                 PatientVisitUnscheduledBO.SpecialtyId = PatientVisitUnscheduledDB.SpecialtyId;
                 PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
@@ -173,6 +174,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisitUnscheduledDB.EventStart = PatientVisitUnscheduledBO.EventStart;
                     PatientVisitUnscheduledDB.MedicalProviderName = PatientVisitUnscheduledBO.MedicalProviderName;
                     PatientVisitUnscheduledDB.DoctorName = PatientVisitUnscheduledBO.DoctorName;
+                    PatientVisitUnscheduledDB.LocationName = PatientVisitUnscheduledBO.LocationName;
 
                     PatientVisitUnscheduledDB.Notes = PatientVisitUnscheduledBO.Notes;
                     PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
@@ -367,6 +369,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             PatientVisitUnscheduledDB.EventStart = PatientVisitUnscheduledBO.EventStart;
                             PatientVisitUnscheduledDB.MedicalProviderName = PatientVisitUnscheduledBO.MedicalProviderName;
                             PatientVisitUnscheduledDB.DoctorName = PatientVisitUnscheduledBO.DoctorName;
+                            PatientVisitUnscheduledDB.LocationName = PatientVisitUnscheduledBO.LocationName;
 
                             PatientVisitUnscheduledDB.Notes = PatientVisitUnscheduledBO.Notes;
                             PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;

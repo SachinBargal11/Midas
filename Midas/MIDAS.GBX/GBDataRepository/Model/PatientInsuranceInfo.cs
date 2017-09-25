@@ -39,6 +39,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<int> InsuranceMasterId { get; set; }
         public int CaseId { get; set; }
+        public Nullable<System.DateTime> InsuranceStartDate { get; set; }
+        public Nullable<System.DateTime> InsuranceEndDate { get; set; }
+        public Nullable<decimal> BalanceInsuredAmount { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual AddressInfo AddressInfo1 { get; set; }

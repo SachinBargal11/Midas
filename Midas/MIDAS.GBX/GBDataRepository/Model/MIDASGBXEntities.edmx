@@ -983,6 +983,9 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="InsuranceMasterId" Type="int" />
           <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="InsuranceStartDate" Type="datetime" />
+          <Property Name="InsuranceEndDate" Type="datetime" />
+          <Property Name="BalanceInsuredAmount" Type="decimal" Precision="12" Scale="2" />
         </EntityType>
         <EntityType Name="PatientLanguagePreferenceMapping">
           <Key>
@@ -1114,6 +1117,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="OrignatorCompanyId" Type="int" Nullable="false" />
+          <Property Name="LocationName" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="PendingReferral">
           <Key>
@@ -6144,6 +6148,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="InsuranceMasterId" Type="Int32" />
           <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="InsuranceStartDate" Type="DateTime" Precision="3" />
+          <Property Name="InsuranceEndDate" Type="DateTime" Precision="3" />
+          <Property Name="BalanceInsuredAmount" Type="Decimal" Precision="12" Scale="2" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId" FromRole="PatientInsuranceInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="AddressInfo1" Relationship="Self.FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId" FromRole="PatientInsuranceInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientInsuranceInfo_Case_CaseId" FromRole="PatientInsuranceInfo" ToRole="Case" />
@@ -6307,6 +6314,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="OrignatorCompanyId" Type="Int32" Nullable="false" />
+          <Property Name="LocationName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="PatientVisitUnscheduled" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_PatientVisitUnscheduled_Company_OrignatorCompanyId" FromRole="PatientVisitUnscheduled" ToRole="Company" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="PatientVisitUnscheduled" ToRole="Patient" />
@@ -11299,6 +11307,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="InsuranceMasterId" ColumnName="InsuranceMasterId" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="InsuranceStartDate" ColumnName="InsuranceStartDate" />
+                <ScalarProperty Name="InsuranceEndDate" ColumnName="InsuranceEndDate" />
+                <ScalarProperty Name="BalanceInsuredAmount" ColumnName="BalanceInsuredAmount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -11438,6 +11449,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="OrignatorCompanyId" ColumnName="OrignatorCompanyId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

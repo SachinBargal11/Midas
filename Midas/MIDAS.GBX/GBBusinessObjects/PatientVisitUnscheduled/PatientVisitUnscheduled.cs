@@ -26,6 +26,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("doctorName")]
         public string DoctorName { get; set; }
 
+        [JsonProperty("locationName")]
+        public string LocationName { get; set; }
+
         [JsonProperty("notes")]
         public string Notes { get; set; }
 

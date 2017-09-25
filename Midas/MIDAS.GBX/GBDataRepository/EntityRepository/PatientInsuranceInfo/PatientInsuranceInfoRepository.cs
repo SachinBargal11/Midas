@@ -45,6 +45,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             insuranceBO.PolicyNo = InsuranceInfos.PolicyNo;
             insuranceBO.ContactPerson = InsuranceInfos.ContactPerson;
             insuranceBO.InsuranceTypeId = InsuranceInfos.InsuranceTypeId;
+
+            insuranceBO.InsuranceStartDate = InsuranceInfos.InsuranceStartDate;
+            insuranceBO.InsuranceEndDate = InsuranceInfos.InsuranceEndDate;
+            insuranceBO.BalanceInsuredAmount = InsuranceInfos.BalanceInsuredAmount;
+
             insuranceBO.IsInActive = InsuranceInfos.IsInActive;
 
             if (InsuranceInfos.AddressInfo != null)
@@ -258,7 +263,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         //}
         #endregion
 
-
         #region save
         public override object Save<T>(T entity)
         {
@@ -272,7 +276,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-
                 bool IsEditMode = false;
                 IsEditMode = (insuranceBO != null && insuranceBO.ID > 0) ? true : false;
 
@@ -491,6 +494,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     insuranceDB.PolicyNo = IsEditMode == true && insuranceBO.PolicyNo == null ? insuranceDB.PolicyNo : insuranceBO.PolicyNo;
                     insuranceDB.ContactPerson = IsEditMode == true && insuranceBO.ContactPerson == null ? insuranceDB.ContactPerson : insuranceBO.ContactPerson;
                     insuranceDB.InsuranceTypeId = IsEditMode == true && insuranceBO.InsuranceTypeId == null ? insuranceDB.InsuranceTypeId : insuranceBO.InsuranceTypeId;
+
+                    insuranceDB.InsuranceStartDate = IsEditMode == true && insuranceBO.InsuranceStartDate == null ? insuranceDB.InsuranceStartDate : insuranceBO.InsuranceStartDate;
+                    insuranceDB.InsuranceEndDate = IsEditMode == true && insuranceBO.InsuranceEndDate == null ? insuranceDB.InsuranceEndDate : insuranceBO.InsuranceEndDate;
+                    insuranceDB.BalanceInsuredAmount = IsEditMode == true && insuranceBO.BalanceInsuredAmount == null ? insuranceDB.BalanceInsuredAmount : insuranceBO.BalanceInsuredAmount;
+
                     insuranceDB.IsInActive = insuranceBO.IsInActive;
 
                     //insuranceDB.InsuranceMasterId = IsEditMode == true && insuranceBO.InsuranceMasterId == null ? insuranceDB.InsuranceMasterId : insuranceBO.InsuranceMasterId;

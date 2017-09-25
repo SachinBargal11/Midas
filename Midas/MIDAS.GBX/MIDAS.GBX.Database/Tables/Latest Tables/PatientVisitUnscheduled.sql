@@ -14,6 +14,7 @@ BEGIN
 	    [EventStart] [DATETIME2] NULL,
         [MedicalProviderName] [NVARCHAR](256) NULL,
         [DoctorName] [NVARCHAR](256) NULL,
+        [LocationName] NVARCHAR(128) NULL,
         [SpecialtyId] INT NULL,
         [RoomTestId] INT NULL,
         [Notes] [NVARCHAR](512) NULL,
@@ -185,3 +186,19 @@ ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD CONSTRAINT [FK_PatientVisitUnsch
     REFERENCES [dbo].[Company]([id])
 GO
 
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'PatientVisitUnscheduled'
+	AND		COLUMN_NAME = 'LocationName'
+)
+BEGIN
+	PRINT 'Table [dbo].[PatientVisitUnscheduled] already have a Column [LocationName] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+	ALTER TABLE [dbo].[PatientVisitUnscheduled] ADD [LocationName] NVARCHAR(128) NULL
+END
+GO

@@ -80,8 +80,18 @@ IF EXISTS
 	AND		COLUMN_NAME = 'CaseId' AND IS_NULLABLE = 'YES'
 )
 BEGIN
-	UPDATE [dbo].[PatientInsuranceInfo] 
-        SET [CaseId] = (SELECT TOP 1 [Id] FROM [dbo].[Case] WHERE [dbo].[Case].[PatientId] = [dbo].[PatientInsuranceInfo].[PatientId])
+    IF EXISTS
+    (
+	    SELECT	1
+	    FROM	INFORMATION_SCHEMA.COLUMNS
+	    WHERE	TABLE_SCHEMA = 'dbo'
+	    AND		TABLE_NAME = 'PatientInsuranceInfo'
+	    AND		COLUMN_NAME = 'PatientId'
+    )
+    BEGIN
+        UPDATE [dbo].[PatientInsuranceInfo] 
+            SET [CaseId] = (SELECT TOP 1 [Id] FROM [dbo].[Case] WHERE [dbo].[Case].[PatientId] = [dbo].[PatientInsuranceInfo].[PatientId])
+    END	
 END
 GO
 
@@ -256,6 +266,10 @@ IF EXISTS
 	AND		COLUMN_NAME = 'InsuranceStartDate'
 )
 BEGIN
+	PRINT 'Table [dbo].[PatientInsuranceInfo] already have a Column [InsuranceStartDate] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
 	ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [InsuranceStartDate] [datetime] NULL
 END
 GO
@@ -269,6 +283,10 @@ IF EXISTS
 	AND		COLUMN_NAME = 'InsuranceEndDate'
 )
 BEGIN
+	PRINT 'Table [dbo].[PatientInsuranceInfo] already have a Column [InsuranceEndDate] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
 	ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [InsuranceEndDate] [datetime] NULL
 END
 GO
@@ -281,6 +299,10 @@ IF EXISTS
 	AND		TABLE_NAME = 'PatientInsuranceInfo'
 	AND		COLUMN_NAME = 'BalanceInsuredAmount'
 )
+BEGIN
+	PRINT 'Table [dbo].[PatientInsuranceInfo] already have a Column [BalanceInsuredAmount] in database: ' + DB_NAME()
+END
+ELSE
 BEGIN
 	ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [BalanceInsuredAmount] [decimal](12, 2) NULL
 END
