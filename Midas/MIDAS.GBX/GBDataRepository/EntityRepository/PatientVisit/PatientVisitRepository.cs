@@ -2477,7 +2477,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     RecurrenceException = "";
                 }
                 
-                CalendarEvent.RecurrenceException = RecurrenceException + CancelEventStart.ToString();
+                CalendarEvent.RecurrenceException = RecurrenceException + CancelEventStart.ToString("yyyy-MM-dd");
             }
 
             _context.SaveChanges();
