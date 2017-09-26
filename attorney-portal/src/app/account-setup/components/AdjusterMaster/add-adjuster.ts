@@ -1,10 +1,10 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -16,6 +16,7 @@ import { Address } from '../../../commons/models/address';
 import { Adjuster } from '../../models/adjuster';
 import { AdjusterMasterStore } from '../../stores/adjuster-store';
 // import { PatientsStore } from '../stores/PatientsStore';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'add-adjuster',
@@ -37,7 +38,7 @@ export class AddAdjusterComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private _router: Router,
-        public  _route: ActivatedRoute,
+        public _route: ActivatedRoute,
         private _statesStore: StatesStore,
         private _insuranceStore: InsuranceStore,
         private _notificationsStore: NotificationsStore,
@@ -49,7 +50,7 @@ export class AddAdjusterComponent implements OnInit {
         private _elRef: ElementRef
     ) {
 
-         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/adjuster']);
         });
 
@@ -57,31 +58,51 @@ export class AddAdjusterComponent implements OnInit {
             this.patientId = parseInt(routeParams.patientId);
         });
         this.adjusterform = this.fb.group({
-                firstname: ['', Validators.required],
-                middlename: [''],
-                lastname: ['', Validators.required],
-                adjusterInsuranceMaster: ['', Validators.required],
-                adjusterAddress: ['', Validators.required],
-                adjusterAddress2: [''],
-                adjusterState: [''],
-                adjusterCity: [''],
-                adjusterZipcode: [''],
-                adjusterCountry: [''],
-                adjusterEmail: ['', [Validators.required, AppValidators.emailValidator]],
-                adjusterCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                adjusterHomePhone: [''],
-                adjusterWorkPhone: [''],
-                adjusterFaxNo: [''],
-                adjusteralternateEmail:  ['', [AppValidators.emailValidator]],
-                adjusterofficeExtension: [''],
-                adjusterpreferredCommunication: ['']
-            });
+            firstname: ['', Validators.required],
+            middlename: [''],
+            lastname: ['', Validators.required],
+            adjusterInsuranceMaster: ['', Validators.required],
+            adjusterAddress: ['', Validators.required],
+            adjusterAddress2: [''],
+            adjusterState: [''],
+            adjusterCity: [''],
+            adjusterZipcode: [''],
+            adjusterCountry: [''],
+            adjusterEmail: ['', [Validators.required, AppValidators.emailValidator]],
+            adjusterCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            adjusterHomePhone: [''],
+            adjusterWorkPhone: [''],
+            adjusterFaxNo: [''],
+            adjusteralternateEmail: ['', [AppValidators.emailValidator]],
+            adjusterofficeExtension: [''],
+            adjusterpreferredCommunication: ['']
+        });
 
         this.adjusterformControls = this.adjusterform.controls;
     }
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
@@ -165,5 +186,5 @@ export class AddAdjusterComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-        }
+    }
 }

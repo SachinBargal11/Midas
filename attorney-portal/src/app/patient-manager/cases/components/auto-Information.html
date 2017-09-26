@@ -25,7 +25,7 @@
                         <label class="form-label"> State
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                        <div class="form-group" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
+                        <!--<div class="form-group" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
                             <select formControlName="state" type="text" [ngModel]="autoInformation.state" class="form-control" placeholder="" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -34,6 +34,12 @@
                                 <ul>
                                     <li *ngIf="autoInfoformControls.state.hasError('required')">State is required.</li>
                                 </ul>
+                            </div>
+                        </div>-->
+                        <div class="form-group" [class.error]="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
+                            <p-dropdown [options]="states" formControlName="state" [ngModel]="autoInformation.state" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <div class='error-list' *ngIf="autoInfoformControls.state.touched && !autoInfoformControls.state.valid">
+                                <span class="color-red">State is required.</span>
                             </div>
                         </div>
                     </div>
@@ -241,22 +247,43 @@
                 </header>
                 <div class="card-block">
                     <div class="row ">
-                        <div class="col-lg-4 ">
+                        <!--<div class="col-lg-4 ">
                             <label class="form-label ">Plate
                                         </label>
                             <div class="form-group ">
                                 <input type="text" formControlName="txtDefendantPlate" [ngModel]="defendantAutoInformation.vehicleNumberPlate" class="form-control"
                                     placeholder=" " />
                             </div>
+                        </div>-->
+                        <div class="col-lg-4">
+                            <label class="form-label">Plate
+                                            <span class="color-red">*</span>
+                                        </label>
+                            <div class="form-group" [class.error]="autoInfoformControls.txtDefendantPlate.touched && !autoInfoformControls.txtDefendantPlate.valid">
+                                <input type="text" formControlName="txtDefendantPlate" [ngModel]="defendantAutoInformation.vehicleNumberPlate" [class.error]="!autoInfoformControls.txtDefendantPlate.valid"
+                                    class="form-control" type="text" placeholder="" />
+                                <div class='error-list' *ngIf="autoInfoformControls.txtDefendantPlate.touched && !autoInfoformControls.txtDefendantPlate.valid">
+                                    <ul>
+                                        <li *ngIf="autoInfoformControls.txtDefendantPlate.hasError('required')">Plate is required.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4 ">
                             <label class="form-label "> State                                            
                                         </label>
-                            <div class="form-group ">
+                            <!--<div class="form-group ">
                                 <select formControlName="defendantState" [ngModel]="defendantAutoInformation.state" type="text" class="form-control " placeholder=" ">
                                 <option value=" ">-Select State-</option>
                                 <option *ngFor="let state of states " value="{{state.statetext}} ">{{state.statetext}}</option>
                                 </select>
+                            </div>-->
+                            <div class="form-group">
+                                <p-dropdown [options]="states" formControlName="defendantState" [ngModel]="defendantAutoInformation.state" [style]="{'width':'100%'}"
+                                    filter="filter"></p-dropdown>
+                                <!--<div class='error-list' *ngIf="defendantAutoInformation.state.touched && !defendantAutoInformation.state.valid">
+                                    <span class="color-red">State is required.</span>
+                                </div>-->
                             </div>
                         </div>
                         <div class="col-lg-4 ">

@@ -1,4 +1,5 @@
-<div *ngIf="currentAccident && caseViewedByOriginator && (caseStatusId === 1)">
+<!--<div *ngIf="currentAccident && caseViewedByOriginator && (caseStatusId === 1)">-->
+<div *ngIf="currentAccident && caseStatusId === 1">
     <form [formGroup]="accidentform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">
@@ -571,7 +572,7 @@
                         <div>
                             <label class="form-label">Accident State
                             </label>
-                            <div class="form-group" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
+                            <!--<div class="form-group" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
                                 <select formControlName="accidentState" [ngModel]="currentAccident.accidentAddress.state" type="text" class="form-control"
                                     placeholder="" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
                                 <option value="">-Select State-</option>
@@ -581,6 +582,13 @@
                                     <ul>
                                         <li *ngIf="accidentformControls.accidentState.hasError('required')">Accident State is required.</li>
                                     </ul>
+                                </div>
+                            </div>-->
+                            <div class="form-group" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
+                                <p-dropdown [options]="states" formControlName="accidentState" [ngModel]="currentAccident.accidentAddress.state" [style]="{'width':'100%'}"
+                                    filter="filter"></p-dropdown>
+                                <div class='error-list' *ngIf="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
+                                    <span class="color-red">Accident State is required.</span>
                                 </div>
                             </div>
                         </div>
@@ -677,7 +685,7 @@
                         <div>
                             <label class="form-label"> State    
                             </label>
-                            <div class="form-group" [class.error]="accidentformControls.state.touched && !accidentformControls.state.valid">
+                            <!--<div class="form-group" [class.error]="accidentformControls.state.touched && !accidentformControls.state.valid">
                                 <select formControlName="state" [ngModel]="currentAccident.hospitalAddress.state" type="text" class="form-control" placeholder=""
                                     [class.error]="accidentformControls.state.touched && !accidentformControls.state.valid">
                                 <option value="">-Select State-</option>
@@ -687,6 +695,13 @@
                                     <ul>
                                         <li *ngIf="accidentformControls.state.hasError('required')">State is required.</li>
                                     </ul>
+                                </div>
+                            </div>-->
+                            <div class="form-group" [class.error]="accidentformControls.state.touched && !accidentformControls.state.valid">
+                                <p-dropdown [options]="states" formControlName="state" [ngModel]="currentAccident.hospitalAddress.state" [style]="{'width':'100%'}"
+                                    filter="filter"></p-dropdown>
+                                <div class='error-list' *ngIf="accidentformControls.state.touched && !accidentformControls.state.valid">
+                                    <span class="color-red">State is required.</span>
                                 </div>
                             </div>
                         </div>
@@ -748,14 +763,16 @@
                 </div>
             </div>
         </section>
-        <button *ngIf="(caseStatusId === 1) && (caseViewedByOriginator == true)" [disabled]="!accidentform.valid || isSaveProgress"
-            type="submit" class="btn btn-success sign-up">Save
+        <!--<button *ngIf="(caseStatusId === 1) && (caseViewedByOriginator == true)" [disabled]="!accidentform.valid || isSaveProgress"
+            type="submit" class="btn btn-success sign-up">Save-->
+        <button *ngIf="(caseStatusId === 1)" [disabled]="!accidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
         <a *ngIf="caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-<div *ngIf="currentAccident && (!caseViewedByOriginator || caseStatusId === 2)">
+<!--<div *ngIf="currentAccident && (!caseViewedByOriginator || caseStatusId === 2)">-->
+<div *ngIf="currentAccident && caseStatusId === 2">
     <section class="card">
         <header class="card-header card-header-lg">
             Patient Accident Information

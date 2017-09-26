@@ -17,6 +17,7 @@ import { StatesStore } from '../../../commons/stores/states-store';
 import { LocationType } from '../models/enums/location-type';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'basic',
@@ -93,7 +94,27 @@ export class BasicComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
 
     save() {

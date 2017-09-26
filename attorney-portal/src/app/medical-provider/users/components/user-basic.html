@@ -39,10 +39,11 @@
                         <span class="color-red">*</span>
                             </label>
                         <div class="form-group" [class.error]="!userformControls.userInfo.controls.role.valid">
-                            <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)"
-                                value="1"></p-checkbox> &nbsp;&nbsp;
+                            <!--<p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)"
+                                value="1"></p-checkbox> &nbsp;&nbsp;-->
+                            <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" value="1"></p-checkbox> &nbsp;&nbsp;
                             <!--<p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="2"></p-checkbox>-->
-                            <p-checkbox id="attorneyRole" name="role" label="Attorney" formControlName="role" [(ngModel)]="selectedRole" value="4"></p-checkbox>
+                            <!--<p-checkbox id="attorneyRole" name="role" label="Attorney" formControlName="role" [(ngModel)]="selectedRole" value="4"></p-checkbox>-->
                             <!--<p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="4"></p-checkbox>
                         <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="5"></p-checkbox>-->
                             <div class='error-list' *ngIf="!userformControls.userInfo.controls.role.valid">
@@ -190,7 +191,7 @@
                     <div class="col-lg-4">
                         <label class="form-label"> State
                             </label>
-                        <div class="form-group" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
+                        <!--<div class="form-group" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
                             <select formControlName="state" [ngModel]="user.address.state" type="text" class="form-control" placeholder="" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -199,6 +200,12 @@
                                 <ul>
                                     <li *ngIf="userformControls.address.controls.state.hasError('required')">State is required.</li>
                                 </ul>
+                            </div>
+                        </div>-->
+                        <div class="form-group" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
+                            <p-dropdown [options]="states" formControlName="state" [ngModel]="user.address.state" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <div class='error-list' *ngIf="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
+                                <span class="color-red">State is required.</span>
                             </div>
                         </div>
                     </div>

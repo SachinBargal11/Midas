@@ -96,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Fax No</label>
                         <p-inputMask mask="9-999-999 9999" formControlName="adjusterFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
@@ -116,29 +116,30 @@
                         <input formControlName="adjusterWorkPhone" type="text" class="form-control" placeholder="" />
                     </div>
                 </div>
-            <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Office Extension</label>
                         <input formControlName="adjusterofficeExtension" type="text" class="form-control" placeholder="" />
                     </div>
+                </div>
             </div>
-            </div>
-         <div class="row">
+            <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail                                                                                                                                     
                                 </label>
                         <div class="form-group" [class.error]="adjusterformControls.adjusteralternateEmail.touched && !adjusterformControls.adjusteralternateEmail.valid">
-                        <input formControlName="adjusteralternateEmail" [class.error]="!adjusterformControls.adjusteralternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="adjusterformControls.adjusteralternateEmail.touched && !adjusterformControls.adjusteralternateEmail.valid">
-                            <ul>
-                                <li *ngIf="adjusterformControls.adjusteralternateEmail.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
+                            <input formControlName="adjusteralternateEmail" [class.error]="!adjusterformControls.adjusteralternateEmail.valid" class="form-control"
+                                type="text" placeholder="" />
+                            <div class='error-list' *ngIf="adjusterformControls.adjusteralternateEmail.touched && !adjusterformControls.adjusteralternateEmail.valid">
+                                <ul>
+                                    <li *ngIf="adjusterformControls.adjusteralternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                  <div class="col-lg-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>
@@ -153,7 +154,7 @@
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
     </section>
     <section class="card">
         <header class="card-header card-header-lg">
@@ -190,7 +191,7 @@
                     <label class="form-label"> State
                                 <!--<span class="color-red">*</span>-->
                             </label>
-                    <div class="form-group" [class.error]="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
+                    <!--<div class="form-group" [class.error]="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
                         <select formControlName="adjusterState" type="text" (change)="selectAdjusterState($event)" class="form-control" placeholder=""
                             [class.error]="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
                             <option value="">-Select State-</option>
@@ -200,6 +201,12 @@
                             <ul>
                                 <li *ngIf="adjusterformControls.adjusterState.hasError('required')">State is required.</li>
                             </ul>
+                        </div>
+                    </div>-->
+                    <div class="form-group" [class.error]="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
+                        <p-dropdown [options]="states" formControlName="adjusterState" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                        <div class='error-list' *ngIf="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
+                            <span class="color-red">State is required.</span>
                         </div>
                     </div>
                 </div>

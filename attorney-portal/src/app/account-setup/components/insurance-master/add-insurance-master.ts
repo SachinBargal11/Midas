@@ -149,6 +149,7 @@ import { InsuranceMasterStore } from '../../stores/insurance-master-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { InsuranceMaster } from '../../../patient-manager/patients/models/insurance-master';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'add-insurance-master',
@@ -209,11 +210,31 @@ export class AddInsuranceMasterComponent implements OnInit {
 
         this.addInsuranceMasterFormControls = this.addInsuranceMasterForm.controls;
     }
+
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
-    }
+            // .subscribe(states => this.states = states);
+             .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
 
+            });
+    }
 
     save() {
         this.isSaveProgress = true;

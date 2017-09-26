@@ -1,4 +1,5 @@
-<div *ngIf="priorAccident && caseViewedByOriginator && (caseStatusId === 1)">
+<!--<div *ngIf="priorAccident && caseViewedByOriginator && (caseStatusId === 1)">-->
+<div *ngIf="priorAccident && caseStatusId === 1">
     <form [formGroup]="prioraccidentform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">
@@ -25,7 +26,8 @@
                             <label class="form-label"> If yes, explain:
                                    </label>
                             <div class="form-group" [class.error]="prioraccidentformControls.previusAccidentDescription.touched && !prioraccidentformControls.previusAccidentDescription.valid">
-                                <textarea rows="3" formControlName="previusAccidentDescription" [ngModel]="priorAccident.accidentBeforeExplain" class="form-control" placeholder="" [class.error]="!prioraccidentformControls.previusAccidentDescription.valid"></textarea>
+                                <textarea rows="3" formControlName="previusAccidentDescription" [ngModel]="priorAccident.accidentBeforeExplain" class="form-control"
+                                    placeholder="" [class.error]="!prioraccidentformControls.previusAccidentDescription.valid"></textarea>
                                 <div class='error-list' *ngIf="prioraccidentformControls.previusAccidentDescription.touched && !prioraccidentformControls.previusAccidentDescription.valid">
                                     <ul>
                                         <li *ngIf="prioraccidentformControls.previusAccidentDescription.hasError('required')">Additional Patient is required.</li>
@@ -55,7 +57,8 @@
                             <label class="form-label"> If yes, explain:
                                    </label>
                             <div class="form-group" [class.error]="prioraccidentformControls.lawsuitOrWorkersCompDescription.touched && !prioraccidentformControls.lawsuitOrWorkersCompDescription.valid">
-                                <textarea rows="3" formControlName="lawsuitOrWorkersCompDescription" [ngModel]="priorAccident.lawsuitWorkerCompBeforeExplain" class="form-control" placeholder="" [class.error]="!prioraccidentformControls.lawsuitOrWorkersCompDescription.valid"></textarea>
+                                <textarea rows="3" formControlName="lawsuitOrWorkersCompDescription" [ngModel]="priorAccident.lawsuitWorkerCompBeforeExplain"
+                                    class="form-control" placeholder="" [class.error]="!prioraccidentformControls.lawsuitOrWorkersCompDescription.valid"></textarea>
                                 <div class='error-list' *ngIf="prioraccidentformControls.lawsuitOrWorkersCompDescription.touched && !prioraccidentformControls.lawsuitOrWorkersCompDescription.valid">
                                     <ul>
                                         <li *ngIf="prioraccidentformControls.lawsuitOrWorkersCompDescription.hasError('required')">Additional Patient is required.</li>
@@ -85,7 +88,8 @@
                             <label class="form-label"> If yes, explain:
                                    </label>
                             <div class="form-group" [class.error]="prioraccidentformControls.physicalComplaintDescription.touched && !prioraccidentformControls.physicalComplaintDescription.valid">
-                                <textarea rows="3" formControlName="physicalComplaintDescription" [ngModel]="priorAccident.physicalComplaintsBeforeExplain" class="form-control" placeholder="" [class.error]="!prioraccidentformControls.physicalComplaintDescription.valid"></textarea>
+                                <textarea rows="3" formControlName="physicalComplaintDescription" [ngModel]="priorAccident.physicalComplaintsBeforeExplain"
+                                    class="form-control" placeholder="" [class.error]="!prioraccidentformControls.physicalComplaintDescription.valid"></textarea>
                                 <div class='error-list' *ngIf="prioraccidentformControls.physicalComplaintDescription.touched && !prioraccidentformControls.physicalComplaintDescription.valid">
                                     <ul>
                                         <li *ngIf="prioraccidentformControls.physicalComplaintDescription.hasError('required')">Additional Patient is required.</li>
@@ -101,7 +105,8 @@
                             <label class="form-label"> Please state any other information you feel that we should be aware of:
                                    </label>
                             <div class="form-group" [class.error]="prioraccidentformControls.otherInfo.touched && !prioraccidentformControls.otherInfo.valid">
-                                <textarea rows="5" formControlName="otherInfo" [ngModel]="priorAccident.otherInformation" class="form-control" placeholder="" [class.error]="!prioraccidentformControls.otherInfo.valid"></textarea>
+                                <textarea rows="5" formControlName="otherInfo" [ngModel]="priorAccident.otherInformation" class="form-control" placeholder=""
+                                    [class.error]="!prioraccidentformControls.otherInfo.valid"></textarea>
                                 <div class='error-list' *ngIf="prioraccidentformControls.otherInfo.touched && !prioraccidentformControls.otherInfo.valid">
                                     <ul>
                                         <li *ngIf="prioraccidentformControls.otherInfo.hasError('required')">Additional Patient is required.</li>
@@ -113,14 +118,16 @@
                 </div>
             </div>
         </section>
-        <button *ngIf="(caseStatusId === 1) && (caseViewedByOriginator == true)" [disabled]="!prioraccidentform.valid || isSaveProgress"
-            type="submit" class="btn btn-success sign-up">Save
+        <!--<button *ngIf="(caseStatusId === 1) && (caseViewedByOriginator == true)" [disabled]="!prioraccidentform.valid || isSaveProgress"
+            type="submit" class="btn btn-success sign-up">Save-->
+        <button *ngIf="(caseStatusId === 1)" [disabled]="!prioraccidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
         </button>
         <a *ngIf="caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-<div *ngIf="priorAccident && (!caseViewedByOriginator || caseStatusId === 2)">
+<!--<div *ngIf="priorAccident && (!caseViewedByOriginator || caseStatusId === 2)">-->
+<div *ngIf="priorAccident && caseStatusId === 2">
     <section class="card">
         <header class="card-header card-header-lg">
             Patient Accident Information

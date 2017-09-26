@@ -231,8 +231,29 @@ export class AccidentInfoComponent implements OnInit {
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
+
     deletePhoto(file) {
         this.files = _.reject(this.files, (currFile) => {
             return currFile == file;

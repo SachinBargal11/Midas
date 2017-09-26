@@ -210,7 +210,27 @@ export class CaseEmployerComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
 
     save() {
@@ -275,7 +295,7 @@ export class CaseEmployerComponent implements OnInit {
                     });
                     this._notificationsStore.addNotification(notification);
                     // this._router.navigate(['/patient-manager/cases']);
-                      this._notificationsService.success('Success!', 'Employer updated successfully');
+                    this._notificationsService.success('Success!', 'Employer updated successfully');
                 },
                 (error) => {
                     let errString = 'Unable to update employer.';

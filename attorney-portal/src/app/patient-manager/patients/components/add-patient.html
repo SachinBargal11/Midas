@@ -350,17 +350,17 @@
                         <label class="form-label"> Office Extension</label>
                         <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
                     </div>-->
-                     <div class="form-group" [class.error]="patientformControls.contact.controls.officeExtension.touched && !patientformControls.contact.controls.officeExtension.valid" >
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.officeExtension.touched && !patientformControls.contact.controls.officeExtension.valid">
                         <label class="form-label">Office Extension</label>
-                        <input [class.error]="!patientformControls.contact.controls.officeExtension.valid" 
-                        formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                        <input [class.error]="!patientformControls.contact.controls.officeExtension.valid" formControlName="officeExtension" type="text"
+                            class="form-control" placeholder="" />
                         <div class='error-list' *ngIf="patientformControls.contact.controls.officeExtension.touched && !patientformControls.contact.controls.officeExtension.valid">
                             <ul>
                                 <li *ngIf="patientformControls.contact.controls.officeExtension.hasError('required')">Policy office extension number is required.</li>
                                 <li *ngIf="patientformControls.contact.controls.officeExtension.hasError('numberValidator')">Please enter only numbers.</li>
                                 <li *ngIf="patientformControls.contact.controls.officeExtension.hasError('maxlength')">Policy office extension should be maximum {{patientformControls.contact.controls.officeExtension.errors.maxlength.requiredLength}}
-                                                numbers.
-                                            </li>
+                                    numbers.
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -454,7 +454,7 @@
                 <div class="col-lg-4">
                     <label class="form-label"> State
                                         </label>
-                    <div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                    <!--<div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
                         <select formControlName="state" type="text" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
                                         <option value="">-Select State-</option>
                                         <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -463,6 +463,12 @@
                             <ul>
                                 <li *ngIf="patientformControls.address.controls.state.hasError('required')">State is required.</li>
                             </ul>
+                        </div>
+                    </div>-->
+                    <div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                        <p-dropdown [options]="states" formControlName="state" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                        <div class='error-list' *ngIf="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                            <span class="color-red">State is required.</span>
                         </div>
                     </div>
                 </div>
