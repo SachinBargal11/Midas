@@ -9,6 +9,7 @@ import { UserType } from '../../commons/models/enums/user-type';
 
 import { AuthenticationService } from '../services/authentication-service';
 import { Signup } from '../../account-setup/models/signup';
+import { environment } from '../../../environments/environment';
 @Component({
     selector: 'account-activation',
     templateUrl: './account-activation.html'
@@ -66,7 +67,8 @@ export class AccountActivationComponent implements OnInit {
                                         this.isUser = true;
                                     }
                                     else {
-                                        this._router.navigate(['/account/login']);
+                                        // this._router.navigate(['/account/login']);
+                                        window.location.assign(environment.HOME_URL);
                                     }
                                 }
                                 else if (this.companyMaster.signup.company.companyStatusTypeId == 2) {
@@ -164,7 +166,8 @@ export class AccountActivationComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Your password has been set successfully!');
                 setTimeout(() => {
-                    this._router.navigate(['/account/login']);
+                    // this._router.navigate(['/account/login']);
+                    window.location.assign(environment.HOME_URL);
                 }, 3000);
             },
             error => {
@@ -207,7 +210,8 @@ export class AccountActivationComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Your password has been set successfully!');
                 setTimeout(() => {
-                    this._router.navigate(['/account/login']);
+                    // this._router.navigate(['/account/login']);
+                    window.location.assign(environment.HOME_URL);
                 }, 3000);
             },
             error => {
@@ -222,6 +226,7 @@ export class AccountActivationComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/account/login']);
+        // this._router.navigate(['/account/login']);
+        window.location.assign(environment.HOME_URL);
     }
 }

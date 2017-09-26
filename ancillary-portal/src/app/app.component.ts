@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionStore } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
@@ -14,6 +14,7 @@ import { NotificationsService } from 'angular2-notifications';
 })
 
 export class AppComponent implements OnInit {
+  dateNow;
   options = {
     timeOut: 5000,
     showProgressBar: false,
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
     public notificationsStore: NotificationsStore,
     private _notificationsService: NotificationsService,
     public progressBarService: ProgressBarService,
+    public cdRef: ChangeDetectorRef
     // private idle: Idle,
     // private keepalive: Keepalive
 
@@ -78,5 +80,12 @@ export class AppComponent implements OnInit {
     );
     // this._specialityStore.getSpecialities();
     // this._statesStore.getStates();
+  }
+
+  // To remove Expression changed error
+  ngAfterViewChecked() {
+    // console.log( "! Expression has been changed !" );
+    this.dateNow = new Date();
+    this.cdRef.detectChanges();
   }
 }

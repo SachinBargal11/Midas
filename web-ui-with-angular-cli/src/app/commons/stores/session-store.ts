@@ -228,6 +228,7 @@ export class SessionStore {
     }
 
     getToken() {
+        window.localStorage.clear();
         var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
         var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
         var response_type = "id_token token";
@@ -285,15 +286,14 @@ export class SessionStore {
                                         metadata = metadata;
                                         let promise = new Promise((resolve, reject) => {
                                             this.getJson(metadata.userinfo_endpoint, result.access_token).subscribe((userInfo) => {
-
                                                 let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
                                                 let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
                                                 let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
                                                 if (this.session.account == null && storedAccount == null && storedAccessToken == null && storedTokenExpiresAt == null) {
                                                     let promise = new Promise((resolve, reject) => {
                                                         let accessToken: any = 'bearer ' + result.access_token;
-                                                        // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1080, 'seconds').toString();
-                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+                                                        // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
+                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 60, 'seconds').toString();
                                                         this._authenticationService.signinWithUserName(environment.SERVICE_BASE_URL, userInfo.email, accessToken, tokenExpiresAt, result)
                                                             .subscribe((accountData) => {
                                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
@@ -367,6 +367,24 @@ export class SessionStore {
                 });
             }
         } else {
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+            let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+            let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+            if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
+                let storedAccountData: any = JSON.parse(storedAccount);
+                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
+                let now = moment();
+                if (account.type == 'medicalProvider' && account.tokenExpiresAt > now) {
+                    this._populateSession(account)
+                        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                } else {
+                    window.localStorage.clear();
+                    this.session.account = null;
+                }
+            } else {
+                window.localStorage.clear();
+                this.session.account = null;
+            }
             console.log('Register page');
         }
     }
@@ -374,8 +392,8 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
             let storedAccessToken: any = 'bearer ' + result.access_token;
-            let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
-
+            // let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
+            let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 60, 'seconds').toString();
             if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let accountData: Account = AccountAdapter.parseResponse(storedAccountData.originalResponse, storedAccessToken, storedTokenExpiresAt, result);
@@ -428,6 +446,45 @@ export class SessionStore {
         return this._http.get(url, {
             headers: headers
         }).map(res => res.json());
+    }
+    refreshSession() {
+        new Promise((resolve, reject) => {
+            this._http.get('../../../assets/config.json').map(res => res.json())
+                .subscribe((config: any) => {
+                    environment.SERVICE_BASE_URL = config.baseUrl;
+                    environment.IDENTITY_SERVER_URL = config.identityServerUrl;
+                    environment.NOTIFICATION_SERVER_URL = config.notificationServerUrl;
+                    environment.HOME_URL = config.home_url;
+                    environment.MP_URL = config.mp_url;
+                    environment.IDENTITY_SCOPE = config.identity_scope;
+                    environment.CLIENT_ID = config.client_id;
+                    resolve(environment);
+                    let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
+                    let storedAccessToken: any = window.localStorage.getItem(this.__ACCESS_TOKEN__);
+                    let storedTokenExpiresAt: any = window.localStorage.getItem(this.__TOKEN_EXPIRES_AT__);
+                    if (storedAccount != null && storedAccessToken != null && storedTokenExpiresAt != null) {
+                        let storedAccountData: any = JSON.parse(storedAccount);
+                        let account: Account = AccountAdapter.parseStoredData(storedAccountData);
+                        let now = moment();
+                        if (account.type == 'medicalProvider' && account.tokenExpiresAt > now) {
+                            this._populateSession(account)
+                            if (window.location.hash != '' && window.location.hash != '#/404' && window.location.hash != '#/') {
+                                window.location.assign(window.location.href);
+                            } else {
+                                window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
+                            }
+                        } else {
+                            // window.localStorage.clear();
+                            this.refreshToken();
+                            // this._logoutIdentity(account.tokenResponse);
+                        }
+                    } else {
+                        this.getToken();
+                    }
+                }, (error: any) => {
+                    reject(new Error('UNABLE_TO_LOAD_CONFIG'));
+                });
+        });
     }
     refreshToken() {
         var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';

@@ -34,14 +34,14 @@ let accountRoutes: Routes = [
                     breadcrumb: 'Account Activation'
                 }
             },
-            {
-                path: 'login',
-                component: LoginComponent,
-                canActivate: [ValidateInActiveSession],
-                data: {
-                    breadcrumb: 'Login'
-                }
-            },
+            // {
+            //     path: 'login',
+            //     component: LoginComponent,
+            //     canActivate: [ValidateInActiveSession],
+            //     data: {
+            //         breadcrumb: 'Login'
+            //     }
+            // },
             {
                 path: 'security-check',
                 component: SecurityCheckComponent,

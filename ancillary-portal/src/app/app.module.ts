@@ -99,7 +99,8 @@ export function createConfig(): SignalRConfiguration {
     DashboardModule,
     SimpleNotificationsModule,
     EventModule,
-    SignalRModule.forRoot(createConfig)
+    SignalRModule,
+    // SignalRModule.forRoot(createConfig)
     // MomentModule,
     // NgIdleKeepaliveModule.forRoot()
   ],

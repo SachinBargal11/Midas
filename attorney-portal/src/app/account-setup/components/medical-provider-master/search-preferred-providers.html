@@ -64,7 +64,7 @@
         <div class="col-md-2"><label class="form-label">Start Time<span class="color-red">*</span></label></div>
         <div class="col-md-3">
             <div class="form-group" [class.error]="searchFormControls.eventStartTime.touched && !searchFormControls.eventStartTime.valid">
-                <select [(ngModel)]="setTimeSlot" *ngIf="!isAllDay" [class.error]="!searchFormControls.eventStartTime.valid"
+                <select [(ngModel)]="setTimeSlot" [class.error]="!searchFormControls.eventStartTime.valid"
                     formControlName="eventStartTime" hourFormat="12" icon="fa fa-clock-o" class="select2-arrow form-control">                          
                               <option *ngFor="let time of timeSlots" [value]="time.time">{{time.time}}</option>                                       
                         </select>
@@ -78,7 +78,7 @@
          <div class="col-md-2"><label class="form-label">End Time<span class="color-red">*</span></label></div>
          <div class="col-md-3">
             <div class="form-group" [class.error]="searchFormControls.eventEndTime.touched && !searchFormControls.eventEndTime.valid">
-                <select [(ngModel)]="setEndTimeSlot" *ngIf="!isAllDay" [class.error]="!searchFormControls.eventEndTime.valid"
+                <select [(ngModel)]="setEndTimeSlot" [class.error]="!searchFormControls.eventEndTime.valid"
                     formControlName="eventEndTime" hourFormat="12" icon="fa fa-clock-o" class="select2-arrow form-control">                          
                               <option *ngFor="let time of timeSlots" [value]="time.time">{{time.time}}</option>                                       
                         </select>

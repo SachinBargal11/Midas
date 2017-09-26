@@ -8,6 +8,7 @@ import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter
 import { AppValidators } from '../../commons/utils/AppValidators';
 import { AuthenticationService } from '../services/authentication-service';
 
+import { environment } from '../../../environments/environment';
 @Component({
     selector: 'reset-password',
     templateUrl: './reset-password.html'
@@ -81,7 +82,8 @@ export class ResetPasswordComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Your password has been set successfully!');
                 setTimeout(() => {
-                    this._router.navigate(['/account/login']);
+                    // this._router.navigate(['/account/login']);
+                    window.location.assign(environment.HOME_URL);
                 }, 3000);
             },
             error => {
@@ -96,7 +98,8 @@ export class ResetPasswordComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/account/login']);
+        // this._router.navigate(['/account/login']);
+        window.location.assign(environment.HOME_URL);
     }
 
 }

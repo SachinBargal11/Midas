@@ -7,6 +7,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { AppValidators } from '../../commons/utils/AppValidators';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../services/authentication-service';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'forgot-password',
@@ -56,7 +57,8 @@ export class ForgotPasswordComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Check your email to change your password.');
                 setTimeout(() => {
-                    this._router.navigate(['/account/login']);
+                    // this._router.navigate(['/account/login']);
+                    window.location.assign(environment.HOME_URL);
                 }, 3000);
             },
             error => {
@@ -71,7 +73,8 @@ export class ForgotPasswordComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/account/login']);
+        // this._router.navigate(['/account/login']);
+        window.location.assign(environment.HOME_URL);
     }
 
 }

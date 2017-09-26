@@ -106,7 +106,7 @@ export function createConfig(): SignalRConfiguration {
     // SignalRModule.forRoot(createConfig)
     SignalRModule,
     // MomentModule,
-    // NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {

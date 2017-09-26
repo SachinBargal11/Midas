@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NoContentComponent } from './no-content-component';
+import { ValidateActiveSession } from './commons/guards/validate-active-session';
 
 export const routes: Routes = [
     // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     // { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' } },
     
     { path: '', redirectTo: '/patient-manager/profile/viewall', pathMatch: 'full' },
-    { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' } },
+    { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
-    { path: 'event', loadChildren: 'app/event/event-module#EventModule', data: { breadcrumb: 'root' } },
+    { path: 'event', loadChildren: 'app/event/event-module#EventModule', data: { breadcrumb: 'root' }, canActivate: [ValidateActiveSession] },
     { path: '404', component: NoContentComponent },
     { path: '**', redirectTo: '/404' }
 ];

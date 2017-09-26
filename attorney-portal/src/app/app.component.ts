@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     public notificationsStore: NotificationsStore,
     private _notificationsService: NotificationsService,
     public progressBarService: ProgressBarService,
-    public cdRef: ChangeDetectorRef,
+    public cdRef: ChangeDetectorRef
   ) {
   }
 
@@ -50,5 +50,4 @@ export class AppComponent implements OnInit {
     this.dateNow = new Date();
     this.cdRef.detectChanges();
   }
-  ChangeDetectorRef
 }
