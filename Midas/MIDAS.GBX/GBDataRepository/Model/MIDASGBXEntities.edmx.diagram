@@ -309,6 +309,8 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CalendarView" Width="1.5" PointX="3.375" PointY="10" />
+        <AssociationConnector Association="MIDASGBXModel.FK_UserPersonalSettings_CalendarView_CalendarViewId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

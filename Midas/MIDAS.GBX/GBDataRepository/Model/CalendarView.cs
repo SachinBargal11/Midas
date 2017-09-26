@@ -12,26 +12,23 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserPersonalSetting
+    public partial class CalendarView
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public int CompanyId { get; set; }
-        public bool IsPublic { get; set; }
-        public bool IsSearchable { get; set; }
-        public bool IsCalendarPublic { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CalendarView()
+        {
+            this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
+        }
+    
+        public byte Id { get; set; }
+        public string CalendarViewText { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int SlotDuration { get; set; }
-        public int PreferredModeOfCommunication { get; set; }
-        public bool IsPushNotificationEnabled { get; set; }
-        public byte CalendarViewId { get; set; }
     
-        public virtual Company Company { get; set; }
-        public virtual User User { get; set; }
-        public virtual CalendarView CalendarView { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserPersonalSetting> UserPersonalSettings { get; set; }
     }
 }

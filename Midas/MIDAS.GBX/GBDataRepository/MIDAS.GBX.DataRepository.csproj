@@ -289,6 +289,9 @@
     <Compile Include="Model\CalendarEvent.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CalendarView.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Case.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

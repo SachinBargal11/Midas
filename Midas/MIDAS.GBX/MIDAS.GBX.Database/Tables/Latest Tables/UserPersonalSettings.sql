@@ -17,6 +17,7 @@ BEGIN
         [SlotDuration] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_SlotDuration] DEFAULT 30, 
         [PreferredModeOfCommunication] INT NOT NULL CONSTRAINT [DF_UserPersonalSettings_PreferredModeOfCommunication] DEFAULT 3,
         [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1,
+        [CalendarViewId] [TINYINT] NOT NULL CONSTRAINT [DF_UserPersonalSettings_CalendarViewId] DEFAULT 1,
 
         [IsDeleted] [bit] NULL DEFAULT 0,
         [CreateByUserID] [int] NOT NULL,
@@ -98,4 +99,38 @@ ELSE
 BEGIN
     ALTER TABLE [dbo].[UserPersonalSettings] ADD [IsPushNotificationEnabled] BIT NOT NULL CONSTRAINT [DF_UserPersonalSettings_IsPushNotificationEnabled] DEFAULT 1
 END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.COLUMNS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
+	AND     COLUMN_NAME = 'CalendarViewId'
+)
+BEGIN
+    PRINT 'Table [dbo].[UserPersonalSettings] already have column [CalendarViewId] in database: ' + DB_NAME()
+END
+ELSE
+BEGIN
+    ALTER TABLE [dbo].[UserPersonalSettings] ADD [CalendarViewId] [TINYINT] NOT NULL CONSTRAINT [DF_UserPersonalSettings_CalendarViewId] DEFAULT 1
+END
+GO
+
+IF EXISTS
+(
+	SELECT	1
+	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+	WHERE	TABLE_SCHEMA = 'dbo'
+	AND		TABLE_NAME = 'UserPersonalSettings'
+	AND		CONSTRAINT_NAME = 'FK_UserPersonalSettings_CalendarView_CalendarViewId'
+)
+BEGIN
+	ALTER TABLE [dbo].[UserPersonalSettings] DROP CONSTRAINT [FK_UserPersonalSettings_CalendarView_CalendarViewId]
+END
+GO
+
+ALTER TABLE [dbo].[UserPersonalSettings] ADD CONSTRAINT [FK_UserPersonalSettings_CalendarView_CalendarViewId] FOREIGN KEY([CalendarViewId])
+    REFERENCES [dbo].[CalendarView] ([id])
 GO

@@ -35,6 +35,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isPushNotificationEnabled")]
         public bool IsPushNotificationEnabled { get; set; }
 
+        [JsonProperty("calendarViewId")]
+        public byte CalendarViewId { get; set; }
+
         [JsonProperty("user")]
         public User User { get; set; }
     }

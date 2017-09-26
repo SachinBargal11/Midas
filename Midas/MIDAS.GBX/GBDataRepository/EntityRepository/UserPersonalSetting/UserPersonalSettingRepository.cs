@@ -44,6 +44,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userPersonalSettingBO.SlotDuration = userPersonalSetting.SlotDuration;
             userPersonalSettingBO.PreferredModeOfCommunication = userPersonalSetting.PreferredModeOfCommunication;
             userPersonalSettingBO.IsPushNotificationEnabled = userPersonalSetting.IsPushNotificationEnabled;
+            userPersonalSettingBO.CalendarViewId = userPersonalSetting.CalendarViewId;
+
             userPersonalSettingBO.IsDeleted = userPersonalSetting.IsDeleted;
             userPersonalSettingBO.CreateByUserID = userPersonalSetting.CreateByUserID;
             userPersonalSettingBO.UpdateByUserID = userPersonalSetting.UpdateByUserID;
@@ -122,6 +124,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userPersonalSettingDB.SlotDuration = userPersonalSettingBO.SlotDuration;
                 userPersonalSettingDB.PreferredModeOfCommunication = userPersonalSettingBO.PreferredModeOfCommunication;
                 userPersonalSettingDB.IsPushNotificationEnabled = userPersonalSettingBO.IsPushNotificationEnabled;
+                userPersonalSettingDB.CalendarViewId = userPersonalSettingBO.CalendarViewId;
 
                 if (Add_userPersonalsetting == true)
                 {
@@ -155,8 +158,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)acc_;
         }
         #endregion
-
-
+        
         #region getByuserNameandcompanyId  Used for NotificationHelpers
         public Object GetByUserNameAndCompanyId(string userName, int companyId)
         {
@@ -174,8 +176,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)acc_;
         }
         #endregion
-
-
+        
         #region Delete By ID
         public override object Delete(int id)
         {
@@ -194,8 +195,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
-
-
+        
         public void Dispose()
         {
             GC.SuppressFinalize(this);
