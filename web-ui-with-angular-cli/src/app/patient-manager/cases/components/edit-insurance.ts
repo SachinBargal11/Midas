@@ -182,7 +182,26 @@ export class EditInsuranceComponent implements OnInit {
     }
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            .subscribe(states => 
+            // this.states = states);
+               {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+                
+            });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);

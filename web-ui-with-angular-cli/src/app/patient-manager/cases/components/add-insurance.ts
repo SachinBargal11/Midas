@@ -16,6 +16,7 @@ import { Insurance } from '../../patients/models/insurance';
 import { InsuranceMaster } from '../../patients/models/insurance-master';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'add-insurance',
@@ -111,7 +112,27 @@ export class AddInsuranceComponent implements OnInit {
     }
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            .subscribe(states => 
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+                
+            });
+            
         this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }

@@ -593,10 +593,10 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
-    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any): Observable<any> {
+    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any,caseType:number): Observable<any> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getStatisticalDataOnCaseByCaseType(fromDate, toDate, companyId).subscribe((patientVisits: any) => {
+            this._patientVisitsService.getStatisticalDataOnCaseByCaseType(fromDate, toDate, companyId,caseType).subscribe((patientVisits: any) => {
                 resolve(patientVisits);
             }, error => {
                 reject(error);
@@ -604,10 +604,10 @@ export class PatientVisitsStore {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any): Observable<any> {
+   getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any,caseType:number): Observable<any> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getStatisticalDataOnCaseByInsuranceProvider(fromDate, toDate, companyId).subscribe((data: any) => {
+            this._patientVisitsService.getStatisticalDataOnCaseByInsuranceProvider(fromDate, toDate, companyId,caseType).subscribe((data: any) => {
                 resolve(data);
             }, error => {
                 reject(error);

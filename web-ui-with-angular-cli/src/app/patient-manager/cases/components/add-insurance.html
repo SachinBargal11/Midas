@@ -285,7 +285,7 @@
                 <div class="col-lg-4">
                     <label class="form-label"> State
                             </label>
-                    <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
+                    <!--<div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                         <select formControlName="policyState" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                             <option value="">-Select State-</option>
                             <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -295,7 +295,14 @@
                                 <li *ngIf="insuranceformControls.policyState.hasError('required')">State is required.</li>
                             </ul>
                         </div>
+                    </div>-->
+                     <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
+                    <p-dropdown [options]="states" formControlName="policyState"
+                        [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                    <div class='error-list' *ngIf="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
+                        <span class="color-red">State is required.</span>
                     </div>
+                </div>
                 </div>
             </div>
             <div class="row">
@@ -401,7 +408,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-lg-4">
                     <label class="form-label">Insurance Photo
                             </label>
@@ -414,7 +421,7 @@
                         </ng-template>
                     </p-fileUpload>
                 </div>
-            </div>
+            </div>-->
         </div>
     </section>
     <section class="card">

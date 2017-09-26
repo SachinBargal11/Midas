@@ -38,6 +38,8 @@ export class DashboardComponent {
     casesByInsuranceChart: any;
     selectedCaseFilterOption = '6';
     selectedCaseByInsuranceFilterOption = '6';
+    selectedCaseByType = '0';
+    selectedCaseTypeInsurance = '0';
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -82,8 +84,8 @@ export class DashboardComponent {
     }
 
     //load statistic data on case by case type
-    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any) {
-        this._patientVisitStore.getStatisticalDataOnCaseByCaseType(fromDate, toDate)
+    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any,caseType:number) {
+        this._patientVisitStore.getStatisticalDataOnCaseByCaseType(fromDate, toDate,caseType)
             .subscribe((casesTypes: any) => {
                 this.casesTypes = casesTypes;
                 this.showStatisticDataForCaseTypeChart(fromDate, toDate);
@@ -94,8 +96,8 @@ export class DashboardComponent {
             });
     }
     //load statistic data on case by Insurance provider
-    getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any) {
-        this._patientVisitStore.getStatisticalDataOnCaseByInsuranceProvider(fromDate, toDate)
+   getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any,caseType:number) {
+        this._patientVisitStore.getStatisticalDataOnCaseByInsuranceProvider(fromDate, toDate,caseType)
             .subscribe((casesByInsurance: any) => {
                 let mappedCasesByInsurance: {
                     insuranceMasterId: number,
@@ -123,39 +125,39 @@ export class DashboardComponent {
         if (this.selectedCaseFilterOption == '1') {
             let startDate = moment();
             let endDate = moment();
-            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
         } else if (this.selectedCaseFilterOption == '2') {
             let startDate = moment().startOf('week');
             let endDate = moment().endOf('week');
-            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
         } else if (this.selectedCaseFilterOption == '3') {
             let startDate = moment().startOf('month');
             let endDate = moment().endOf('month');
-            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
         } else if (this.selectedCaseFilterOption == '4') {
             let startDate = moment().startOf('quarter');
             let endDate = moment().endOf('quarter');
-            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
         } else if (this.selectedCaseFilterOption == '5') {
             let currQuarter = moment().quarter();
             let startOfYear = moment().startOf('year');
             if (currQuarter <= 2) {
                 let secondQuarter = moment(startOfYear).quarter(2);
                 let endDate = moment(secondQuarter).endOf('quarter');
-                this.getStatisticalDataOnCaseByCaseType(startOfYear, endDate);
+                this.getStatisticalDataOnCaseByCaseType(startOfYear, endDate,parseInt(this.selectedCaseByType));
             } else if (currQuarter > 2) {
                 let startDate = moment(startOfYear).quarter(3);
                 let endDate = moment().endOf('year');
-                this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+                this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
             }
         } else if (this.selectedCaseFilterOption == '6') {
             let startDate = moment().startOf('year');
             let endDate = moment().endOf('year');
-            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
         } else if (this.selectedCaseFilterOption == '7') {
             let startDate = moment().subtract(30, 'days');
             let endDate = moment();
-            this.getStatisticalDataOnCaseByCaseType(startDate, endDate);
+            this.getStatisticalDataOnCaseByCaseType(startDate, endDate,parseInt(this.selectedCaseByType));
         }
     }
     
@@ -164,39 +166,39 @@ export class DashboardComponent {
         if (this.selectedCaseByInsuranceFilterOption == '1') {
             let startDate = moment();
             let endDate = moment();
-            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
         } else if (this.selectedCaseByInsuranceFilterOption == '2') {
             let startDate = moment().startOf('week');
             let endDate = moment().endOf('week');
-            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
         } else if (this.selectedCaseByInsuranceFilterOption == '3') {
             let startDate = moment().startOf('month');
             let endDate = moment().endOf('month');
-            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
         } else if (this.selectedCaseByInsuranceFilterOption == '4') {
             let startDate = moment().startOf('quarter');
             let endDate = moment().endOf('quarter');
-            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
         } else if (this.selectedCaseByInsuranceFilterOption == '5') {
             let currQuarter = moment().quarter();
             let startOfYear = moment().startOf('year');
             if (currQuarter <= 2) {
                 let secondQuarter = moment(startOfYear).quarter(2);
                 let endDate = moment(secondQuarter).endOf('quarter');
-                this.getStatisticalDataOnCaseByInsuranceProvider(startOfYear, endDate);
+                this.getStatisticalDataOnCaseByInsuranceProvider(startOfYear, endDate,parseInt(this.selectedCaseTypeInsurance));
             } else if (currQuarter > 2) {
                 let startDate = moment(startOfYear).quarter(3);
                 let endDate = moment().endOf('year');
-                this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+                this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
             }
         } else if (this.selectedCaseByInsuranceFilterOption == '6') {
             let startDate = moment().startOf('year');
             let endDate = moment().endOf('year');
-            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
         }else if (this.selectedCaseFilterOption == '7') {
             let startDate = moment().subtract(30, 'days');
             let endDate = moment();
-            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate);
+            this.getStatisticalDataOnCaseByInsuranceProvider(startDate, endDate,parseInt(this.selectedCaseTypeInsurance));
         }
     }
 

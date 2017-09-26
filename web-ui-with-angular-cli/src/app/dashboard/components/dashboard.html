@@ -43,6 +43,15 @@
                                 <option value="6">This Year</option>
                             </select>
                         </div>
+                        <label class="pull-right">Range:</label> 
+                        <div class="dropdown pull-right">
+                            <select type="text" class="form-control" [(ngModel)]="selectedCaseByType" (change)="filterCasesByInsuranceStatistics($event)">
+                                <option value="0">All Cases</option>
+                                <option value="1">Open</option>
+                                <option value="2">Close</option>
+                            </select>
+                        </div>
+                        <label class="pull-right">Case Status:</label>
                     </header>
                     <div class="box-typical-body panel-body">
                             <div id="caseChartDiv" [style.width.%]="100" [style.height.px]="264"></div>
@@ -67,6 +76,15 @@
                                 <option value="6">This Year</option>
                             </select>
                         </div>
+                          <label class="pull-right">Range:</label> 
+                         <div class="dropdown pull-right">
+                            <select type="text" class="form-control" [(ngModel)]="selectedCaseTypeInsurance" (change)="filterCasesByInsuranceStatistics($event)">
+                                <option value="0">All Cases</option>
+                                <option value="1">Open</option>
+                                <option value="2">Close</option>
+                            </select>
+                        </div>
+                        <label class="pull-right">Case Status:</label>
                     </header>
                     <div class="box-typical-body panel-body">
                             <div id="casesByInsuranceChartDiv" [style.width.%]="100" [style.height.px]="264"></div>

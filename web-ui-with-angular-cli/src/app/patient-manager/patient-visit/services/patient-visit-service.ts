@@ -961,11 +961,11 @@ export class PatientVisitService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
-    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any, companyId: number): Observable<any> {
+    getStatisticalDataOnCaseByCaseType(fromDate: any, toDate: any, companyId: number,caseType:number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let inputFromDate = fromDate.format('YYYY-MM-DD');
             let inputToDate = toDate.format('YYYY-MM-DD');
-            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnCaseByCaseType/' + inputFromDate + '/' + inputToDate + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnCaseByCaseType/' + inputFromDate + '/' + inputToDate + '/' + companyId + '/' + caseType,  {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -978,11 +978,11 @@ export class PatientVisitService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any, companyId: number): Observable<any> {
+    getStatisticalDataOnCaseByInsuranceProvider(fromDate: any, toDate: any, companyId: number,caseType:number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let inputFromDate = fromDate.format('YYYY-MM-DD');
             let inputToDate = toDate.format('YYYY-MM-DD');
-            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnCaseByInsuranceProvider/' + inputFromDate + '/' + inputToDate + '/' + companyId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/dashboard/getStatisticalDataOnCaseByInsuranceProvider/' + inputFromDate + '/' + inputToDate + '/' + companyId+ '/' + caseType, {
                 headers: this._headers
             })
                 .map(res => res.json())

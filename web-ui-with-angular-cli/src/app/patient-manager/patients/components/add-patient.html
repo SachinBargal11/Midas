@@ -452,8 +452,8 @@
                 <div class="col-lg-4">
                     <label class="form-label"> State
                                         </label>
-                    <div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
-                        <select formControlName="state" type="text" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                    <!--<div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                        <select [options]="patientsWithoutCase" formControlName="state" type="text" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
                                         <option value="">-Select State-</option>
                                         <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
                                     </select>
@@ -462,7 +462,14 @@
                                 <li *ngIf="patientformControls.address.controls.state.hasError('required')">State is required.</li>
                             </ul>
                         </div>
+                    </div>-->
+                    <div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                    <p-dropdown [options]="states" formControlName="state"
+                        [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                    <div class='error-list' *ngIf="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                        <span class="color-red">State is required.</span>
                     </div>
+                </div>
                 </div>
             </div>
             <div class="row">

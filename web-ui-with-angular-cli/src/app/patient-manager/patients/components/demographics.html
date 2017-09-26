@@ -171,8 +171,8 @@
                     </div>-->
                         <div class="form-group" [class.error]="demographicsformControls.contact.controls.officeExtension.touched && !demographicsformControls.contact.controls.officeExtension.valid">
                             <label class="form-label">Office Extension</label>
-                            <input [ngModel]="patientInfo.user.contact.officeExtension" [class.error]="!demographicsformControls.contact.controls.officeExtension.valid" formControlName="officeExtension" type="text"
-                                class="form-control" placeholder="" />
+                            <input [ngModel]="patientInfo.user.contact.officeExtension" [class.error]="!demographicsformControls.contact.controls.officeExtension.valid"
+                                formControlName="officeExtension" type="text" class="form-control" placeholder="" />
                             <div class='error-list' *ngIf="demographicsformControls.contact.controls.officeExtension.touched && !demographicsformControls.contact.controls.officeExtension.valid">
                                 <ul>
                                     <li *ngIf="demographicsformControls.contact.controls.officeExtension.hasError('required')">Office extension number is required.</li>
@@ -283,7 +283,7 @@
                     <div class="col-lg-4">
                         <label class="form-label"> State
                                         </label>
-                        <div class="form-group" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
+                        <!--<div class="form-group" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
                             <select [ngModel]="patientInfo.user.address.state" formControlName="state" type="text" class="form-control" placeholder=""
                                 [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
                                 <option value="">-Select State-</option>
@@ -293,6 +293,12 @@
                                 <ul>
                                     <li *ngIf="demographicsformControls.address.controls.state.hasError('required')">State is required.</li>
                                 </ul>
+                            </div>
+                        </div>-->
+                        <div class="form-group" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
+                            <p-dropdown [options]="states" [ngModel]="patientInfo.user.address.state" formControlName="state" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <div class='error-list' *ngIf="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.state.valid">
+                                <span class="color-red">State is required.</span>
                             </div>
                         </div>
                     </div>
