@@ -111,7 +111,7 @@ export class AutoInformationInfoComponent implements OnInit {
             vehicleDrivable: [''],
             txtEstimatedDamage: [''],
             titletoVehicle: [''],
-            txtDefendantPlate: [''],
+            txtDefendantPlate: ['', Validators.required],
             defendantState: [''],
             txtDefendantModelYear: [''],
             txtDefendantOwnerName: [''],
@@ -131,7 +131,27 @@ export class AutoInformationInfoComponent implements OnInit {
     }
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
 
     save() {

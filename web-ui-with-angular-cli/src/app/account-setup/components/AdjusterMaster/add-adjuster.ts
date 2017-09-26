@@ -16,6 +16,7 @@ import { Address } from '../../../commons/models/address';
 import { Adjuster } from '../../models/adjuster';
 import { AdjusterMasterStore } from '../../stores/adjuster-store';
 // import { PatientsStore } from '../stores/PatientsStore';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'add-adjuster',
@@ -79,9 +80,30 @@ export class AddAdjusterComponent implements OnInit {
 
         this.adjusterformControls = this.adjusterform.controls;
     }
+
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+             .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
             .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);

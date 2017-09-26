@@ -191,8 +191,29 @@ export class UserBasicComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
+
     onSelectedRoleChange(roleValues: any) {
         const doctorCtrl = this.userformControls.doctor;
         if (_.contains(roleValues, '3')) {

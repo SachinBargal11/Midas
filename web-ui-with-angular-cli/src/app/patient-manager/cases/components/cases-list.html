@@ -53,12 +53,12 @@
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
             <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
-                <!--<a title="Edit" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
-                <a *ngIf="case.caseStatusId == 2" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
-                <div *ngIf="case.caseStatusId == 1">
+                <a *ngIf="case.caseStatusId == 1" title="Edit" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+                <a *ngIf="case.caseStatusId == 2" title="Edit" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
+                <!--<div *ngIf="case.caseStatusId == 1">
                     <a *ngIf="case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
                     <a *ngIf="!case.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
-                </div>
+                </div>-->
             </div>
         </ng-template>
     </p-column>

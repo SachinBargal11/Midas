@@ -209,7 +209,7 @@ export class AccidentInfoComponent implements OnInit {
             accidentDescription: [''],
             isAnyWitnesses: [''],
             witnessName: [''],
-            witnessPhoneNumber: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            witnessPhoneNumber: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             ambulance: [''],
             treatedAndReleased: [''],
             admitted: [''],
@@ -217,7 +217,7 @@ export class AccidentInfoComponent implements OnInit {
             durationAtHospital: [''],
             treatmentMedicalFacilityName: [''],
             treatmentDoctorName: [''],
-            treatmentContactNumber: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            treatmentContactNumber: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             treatmentAddress: [''],
         });
         this.accidentformControls = this.accidentform.controls;
@@ -230,8 +230,29 @@ export class AccidentInfoComponent implements OnInit {
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
+
     deletePhoto(file) {
         this.files = _.reject(this.files, (currFile) => {
             return currFile == file;
@@ -275,7 +296,7 @@ export class AccidentInfoComponent implements OnInit {
             this.witnessPhoneNumber = '';
         }
     }
-    
+
     removeWitnessFromList(witnessName, witnessPhoneNumber) {
         this.witnesses = _.reject(this.witnesses, (currWitness: any) => {
             return currWitness.witnessName == witnessName && currWitness.witnessContactNumber == witnessPhoneNumber;

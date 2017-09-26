@@ -273,7 +273,7 @@
                         <label class="form-label"> State
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                        <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
+                        <!--<div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
                             <select formControlName="state" [ngModel]="currentEmployer.address.state" type="text" class="form-control" placeholder=""
                                 [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
                                 <option value="">-Select State-</option>
@@ -283,6 +283,13 @@
                                 <ul>
                                     <li *ngIf="employerformControls.state.hasError('required')">State is required.</li>
                                 </ul>
+                            </div>
+                        </div>-->
+                        <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
+                            <p-dropdown [options]="states" formControlName="state" [ngModel]="currentEmployer.address.state" [style]="{'width':'100%'}"
+                                filter="filter"></p-dropdown>
+                            <div class='error-list' *ngIf="employerformControls.state.touched && !employerformControls.state.valid">
+                                <span class="color-red">State is required.</span>
                             </div>
                         </div>
                     </div>
