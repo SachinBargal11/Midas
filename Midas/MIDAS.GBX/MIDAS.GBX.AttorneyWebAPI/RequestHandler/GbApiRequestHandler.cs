@@ -2137,9 +2137,9 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
-        public HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId)
+        public HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId)
         {
-            var objResult = dataAccessManager.GetStatisticalDataOnCaseByCaseType(FromDate, ToDate, CompanyId);
+            var objResult = dataAccessManager.GetStatisticalDataOnCaseByCaseType(FromDate, ToDate, CompanyId, CaseStatusId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -2150,9 +2150,9 @@ namespace MIDAS.GBX.AttorneyWebAPI
             }
         }
 
-        public HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId)
+        public HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId)
         {
-            var objResult = dataAccessManager.GetStatisticalDataOnCaseByInsuranceProvider(FromDate, ToDate, CompanyId);
+            var objResult = dataAccessManager.GetStatisticalDataOnCaseByInsuranceProvider(FromDate, ToDate, CompanyId, CaseStatusId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

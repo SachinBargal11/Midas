@@ -4373,12 +4373,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetStatisticalDataOnCaseByCaseType(FromDate, ToDate, CompanyId);
+                var gbdata = baseRepo.GetStatisticalDataOnCaseByCaseType(FromDate, ToDate, CompanyId, CaseStatusId);
 
                 return gbdata;
             }
@@ -4392,12 +4392,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetStatisticalDataOnCaseByInsuranceProvider(FromDate, ToDate, CompanyId);
+                var gbdata = baseRepo.GetStatisticalDataOnCaseByInsuranceProvider(FromDate, ToDate, CompanyId, CaseStatusId);
 
                 return gbdata;
             }

@@ -151,8 +151,8 @@ namespace MIDAS.GBX.AttorneyWebAPI
         HttpResponseMessage DeletePreferredCompany(HttpRequestMessage request, int preferredCompanyId, int currentCompanyId);
         HttpResponseMessage GetAttorneyVisitForDateByCompanyId(HttpRequestMessage request, DateTime ForDate, int CompanyId);
         HttpResponseMessage GetDoctors(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId);
-        HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId);
+        HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId);
+        HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId);
         HttpResponseMessage GetMedicalProviders(HttpRequestMessage request, T gbObject);        
     }
 }

@@ -1029,12 +1029,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
+        public virtual Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId)
+        public virtual Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId)
         {
             throw new NotImplementedException();
         }

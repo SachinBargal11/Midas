@@ -1953,11 +1953,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get Statistical Data On Case By Case Type
-        public override Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId)
+        public override Object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId)
         {
             ToDate = ToDate.Date.AddDays(1);
 
-            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
+            var CaseList = _context.Cases.Where(p => (p.CreateDate >= FromDate && p.CreateDate < ToDate) 
+                                                && (p.CaseStatusId == CaseStatusId || CaseStatusId <= 0)
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                    .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId 
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
@@ -1984,11 +1985,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get Statistical Data On Case By Case Type
-        public override Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId)
+        public override Object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId)
         {
             ToDate = ToDate.Date.AddDays(1);
 
-            var CaseList = _context.Cases.Where(p => p.CreateDate >= FromDate && p.CreateDate < ToDate
+            var CaseList = _context.Cases.Where(p => (p.CreateDate >= FromDate && p.CreateDate < ToDate)
+                                                && (p.CaseStatusId == CaseStatusId || CaseStatusId <= 0)
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                    .Join(_context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),

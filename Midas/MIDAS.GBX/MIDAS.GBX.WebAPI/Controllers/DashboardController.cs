@@ -70,17 +70,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getStatisticalDataOnCaseByCaseType/{fromDate}/{toDate}/{companyId}")]
-        public HttpResponseMessage GetStatisticalDataOnCaseByCaseType(DateTime fromDate, DateTime toDate, int companyId)
+        [Route("getStatisticalDataOnCaseByCaseType/{fromDate}/{toDate}/{companyId}/{caseStatusId}")]
+        public HttpResponseMessage GetStatisticalDataOnCaseByCaseType(DateTime fromDate, DateTime toDate, int companyId, int caseStatusId)
         {
-            return requestHandlerCase.GetStatisticalDataOnCaseByCaseType(Request, fromDate, toDate, companyId);
+            return requestHandlerCase.GetStatisticalDataOnCaseByCaseType(Request, fromDate, toDate, companyId, caseStatusId);
         }
 
         [HttpGet]
-        [Route("getStatisticalDataOnCaseByInsuranceProvider/{fromDate}/{toDate}/{companyId}")]
-        public HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(DateTime fromDate, DateTime toDate, int companyId)
+        [Route("getStatisticalDataOnCaseByInsuranceProvider/{fromDate}/{toDate}/{companyId}/{caseStatusId}")]
+        public HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(DateTime fromDate, DateTime toDate, int companyId, int caseStatusId)
         {
-            return requestHandlerCase.GetStatisticalDataOnCaseByInsuranceProvider(Request, fromDate, toDate, companyId);
+            return requestHandlerCase.GetStatisticalDataOnCaseByInsuranceProvider(Request, fromDate, toDate, companyId, caseStatusId);
         }
     }
 }
