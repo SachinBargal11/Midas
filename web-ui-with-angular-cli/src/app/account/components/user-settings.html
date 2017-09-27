@@ -44,6 +44,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                        <div class="col-md-4">Calender view prefference
+                            <!--<label class="form-label"> Calender view prefference
+                                        </label>-->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select formControlName="calendarViewId" [(ngModel)]="calendarViewId" type="text" class="form-control">
+                            <option value="">-Select -</option>
+                            <option value="1">Month View</option>
+                            <option value="2">Week View</option>
+                            <option value="3">Day View</option>
+                            <!--<option value="4">Day List View</option>-->
+                            <!--<option value="5">Week List View</option>-->
+                        </select>
+                            </div>
+                        </div>
+                    </div>
                             <!--<p-footer>-->
                             <div class="row">
                                 <div class="col-md-4">
@@ -72,13 +90,13 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <select formControlName="calendarView" [(ngModel)]="defaultCalendarView" type="text" class="form-control">
+                                <select formControlName="calendarViewId" [(ngModel)]="calendarViewId" type="text" class="form-control">
                             <option value="">-Select -</option>
                             <option value="1">Month View</option>
                             <option value="2">Week View</option>
                             <option value="3">Day View</option>
-                            <option value="4">Day List View</option>
-                            <option value="5">Week List View</option>
+                            <!--<option value="4">Day List View</option>-->
+                            <!--<option value="5">Week List View</option>-->
                         </select>
                             </div>
                         </div>

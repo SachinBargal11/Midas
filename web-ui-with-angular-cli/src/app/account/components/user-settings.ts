@@ -37,7 +37,7 @@ export class UserSettingsComponent implements OnInit {
     isCalendarPublic: boolean = false;
     isPublic: boolean = false;
     isTimeSlot = 30;
-    defaultCalendarView = 1;
+    calendarViewId = 1;
 
     constructor(
         private _authenticationService: AuthenticationService,
@@ -57,8 +57,7 @@ export class UserSettingsComponent implements OnInit {
             isCalendarPublic: [''],
             isSearchable: [''],
             timeSlot: [''],
-            calendarView: [''],
-
+            calendarViewId: [''],
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
@@ -94,6 +93,7 @@ export class UserSettingsComponent implements OnInit {
                 this.isCalendarPublic = userSetting.isCalendarPublic;
                 this.isSearchable = userSetting.isSearchable;
                 this.isTimeSlot = userSetting.SlotDuration;
+                this.calendarViewId = userSetting.calendarViewId;
                 
             },
             (error) => { },
@@ -125,6 +125,7 @@ export class UserSettingsComponent implements OnInit {
     saveUserSettings() {
         let userSettingsValues = this.addUserSettings.value;
         let result;
+        // if(this.sessionStore.isOnlyDoctorRole()){
         let userSetting = new UserSetting(
             {
                 userId: this.userId,
@@ -132,9 +133,25 @@ export class UserSettingsComponent implements OnInit {
                 isPublic: this.isPublic,
                 isCalendarPublic: this.isCalendarPublic,
                 isSearchable: this.isSearchable,
-                SlotDuration:this.isTimeSlot
+                SlotDuration:this.isTimeSlot,
+                calendarViewId:this.calendarViewId
             }
         )
+        // }
+        // else{
+        //    let userSetting = new UserSetting(
+        //     {
+        //         userId: this.userId,
+        //         companyId: this.companyId,
+        //         isPublic: null,
+        //         isCalendarPublic: null,
+        //         isSearchable: null,
+        //         SlotDuration:null,
+        //         calendarViewId:this.calendarViewId
+        //     }
+        // ) 
+        // }
+        
         this._progressBarService.show();
         result = this._userSettingStore.saveUserSetting(userSetting);
         result.subscribe(
