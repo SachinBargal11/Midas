@@ -25,8 +25,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.SearchMedicalProviders searchSearchMedicalProviders = (BO.SearchMedicalProviders)(object)entity;
-            var result = searchSearchMedicalProviders.Validate(searchSearchMedicalProviders);
+            BO.SearchMedicalProviders searchMedicalProviders = (BO.SearchMedicalProviders)(object)entity;
+            var result = searchMedicalProviders.Validate(searchMedicalProviders);
             return result;
         }
         #endregion
@@ -52,6 +52,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 DoYouNeedTransportionMedicalProviders = CurrentCompanyMedicalProviders;
             }
+
+            //TimeSpan SlotStart = searchMedicalProviders.AvailableFromDateTime.Value.TimeOfDay;
+            //TimeSpan SlotEnd = searchMedicalProviders.AvailableToDateTime.Value.TimeOfDay;
+
+            //IQueryable<int> AvailableFromAndToDateTime = null;
+            //AvailableFromAndToDateTime = _context.Locations.Where(p => CurrentCompanyMedicalProviders.Contains(p.CompanyID) == true
+            //                                                    && p.ScheduleID.HasValue == true
+            //                                                    && (p.Schedule.IsDeleted.HasValue == false || (p.Schedule.IsDeleted.HasValue == true && p.Schedule.IsDeleted.Value == false))
+            //                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                     .Join(_context.ScheduleDetails.Where(p => p.SlotStart >= SlotStart && p.SlotEnd <= SlotEnd
+            //                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+            //                                            l => l.ScheduleID, sd => sd.ScheduleID, (l, sd) => l)
+            //                                     .Select(p => p.CompanyID);
 
             IQueryable<int> GenderIdDoctorMedicalProviders = null;
             if (searchMedicalProviders.GenderId.HasValue == true)
@@ -108,6 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                    name = p.Name
                                                                })
                                                                .ToList();
+
             return (object)SearchMedicalProvidersList;
         }
         #endregion

@@ -81,9 +81,24 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Signup([FromBody]Signup data)
         {
             if (data != null)
+            {
+                if (data.company.CompanyType == GBEnums.CompanyType.MedicalProvider)
+                {
+                    data.user.UserType = GBEnums.UserType.Staff;
+                }
+                else if(data.company.CompanyType == GBEnums.CompanyType.Attorney)
+                {
+                    data.user.UserType = GBEnums.UserType.Attorney;
+                }
+                else if (data.company.CompanyType == GBEnums.CompanyType.Ancillary)
+                {
+                    data.user.UserType = GBEnums.UserType.Ancillary;
+                }
+
                 return signuprequestHandler.SignUp(Request, data);
+            }
             else
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "",ErrorLevel=ErrorLevel.Critical });
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invalid data", errorObject = "", ErrorLevel = ErrorLevel.Critical });
         }
 
         [AllowAnonymous]
