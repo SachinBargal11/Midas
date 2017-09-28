@@ -1,5 +1,5 @@
 <div class="control-panel" [class.open]="notificationsStore.isOpen">
-    
+    <p *ngIf="sessionStore.session.account && idleState" class="text-center"><strong>{{idleState}}</strong></p>    
     <app-header *ngIf="sessionStore.session.user"></app-header>
     <!--<main-nav *ngIf="sessionStore.session.user"></main-nav>-->
     <progress-bar *ngIf="progressBarService.counter > 0"></progress-bar>

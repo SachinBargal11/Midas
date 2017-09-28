@@ -384,7 +384,7 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
             let storedAccessToken: any = 'bearer ' + result.access_token;
-            // let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+            // let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
             let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 60, 'seconds').toString();
             if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
                 let storedAccountData: any = JSON.parse(storedAccount);
@@ -419,6 +419,35 @@ export class SessionStore {
         let url = `${environment.IDENTITY_SERVER_URL}` + "/core/connect/endsession?post_logout_redirect_uri=" + encodeURIComponent(`${environment.HOME_URL}`) + "&id_token_hint=" + encodeURIComponent(result.id_token);
         window.location.assign(url);
     }
+
+    refreshToken() {
+        var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
+        var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
+        var response_type = "id_token token";
+        var scope: string = `${environment.IDENTITY_SCOPE}`;
+        var client_id: string = `${environment.CLIENT_ID}`;
+
+        let storedState: any = window.localStorage.getItem("state");
+        let storedNonce: any = window.localStorage.getItem("nonce");
+        var state = storedState;
+        var nonce = storedNonce;
+        localStorage["state"] = state;
+        localStorage["nonce"] = nonce;
+        // window.localStorage.setItem(this.__state__, state);
+        // window.localStorage.setItem(this.__nonce__, nonce);
+
+        var url =
+            authorizationUrl + "?" +
+            "client_id=" + encodeURI(client_id) + "&" +
+            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
+            "response_type=" + encodeURI(response_type) + "&" +
+            "scope=" + encodeURI(scope) + "&" +
+            "state=" + encodeURI(state) + "&" +
+            "nonce=" + encodeURI(nonce);
+        url;
+        window.location.assign(url);
+    }
+
     rand() {
         return (Date.now() + "" + Math.random()).replace(".", "");
     }

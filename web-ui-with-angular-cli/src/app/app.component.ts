@@ -41,9 +41,9 @@ export class AppComponent implements OnInit {
   ) {
     // sets an idle timeout of 5 seconds, for testing purposes.
     // idle.setIdle(5);
-    idle.setIdle(900);
+    idle.setIdle(600);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(15);
+    idle.setTimeout(20);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
     });
 
     idle.onTimeoutWarning.subscribe((countdown) => {
-      this.idleState = 'You will time out in ' + countdown + ' seconds!'
+      this.idleState = 'You will logged out in ' + countdown + ' seconds!'
     });
 
     // sets the ping interval to 15 seconds

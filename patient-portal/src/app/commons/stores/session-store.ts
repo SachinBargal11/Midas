@@ -235,7 +235,7 @@ export class SessionStore {
                                                     let promise = new Promise((resolve, reject) => {
                                                         let accessToken: any = 'bearer ' + result.access_token;
                                                         // let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
-                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 90, 'seconds').toString();
+                                                        let tokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 60, 'seconds').toString();
                                                         this._authenticationService.signinWithUserName(environment.SERVICE_BASE_URL, userInfo.email, accessToken, tokenExpiresAt, result)
                                                             .subscribe((accountData) => {
                                                                 let account: Account = AccountAdapter.parseStoredData(accountData);
@@ -315,7 +315,8 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
             let storedAccessToken: any = 'bearer ' + result.access_token;
-            let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+            // let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
+            let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 60, 'seconds').toString();
             if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let accountData: Account = AccountAdapter.parseResponse(storedAccountData.originalResponse, storedAccessToken, storedTokenExpiresAt, result);

@@ -4,8 +4,9 @@ import { SessionStore } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
 import { ProgressBarService } from './commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-// import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
-// import { Keepalive } from '@ng-idle/keepalive';
+import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
+import { Keepalive } from '@ng-idle/keepalive';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,9 @@ export class AppComponent implements OnInit {
     pauseOnHover: false,
     clickToClose: false
   };
-  // idleState = 'Not started.';
-  // timedOut = false;
-  // lastPing?: Date = null;
+  idleState = 'Not started.';
+  timedOut = false;
+  lastPing?: Date = null;
 
   constructor(
     private _router: Router,
@@ -31,41 +32,57 @@ export class AppComponent implements OnInit {
     public notificationsStore: NotificationsStore,
     private _notificationsService: NotificationsService,
     public progressBarService: ProgressBarService,
-    public cdRef: ChangeDetectorRef
-    // private idle: Idle,
-    // private keepalive: Keepalive
+    public cdRef: ChangeDetectorRef,
+    private idle: Idle,
+    private keepalive: Keepalive
 
   ) {
+    // sets an idle timeout of 5 seconds, for testing purposes.
+    // idle.setIdle(5);
+    idle.setIdle(600);
+    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    // idle.setTimeout(10);
+    idle.setTimeout(20);
+    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
-    
-  //   idle.setIdle(5);
-    
-  //   idle.setTimeout(5);
-    
-  //   idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    idle.onIdleEnd.subscribe(() => {
+      // this.idleState = 'No longer idle.'
+      this.idleState = ''
+      this.checkValidToken();
+    });
 
-  //   idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
-  //   idle.onTimeout.subscribe(() => {
-  //     this.idleState = 'Timed out!';
-  //     this.timedOut = true;
-  //     this.sessionStore.logout();
-  //     this._router.navigate(['/account/login']);
-  //   });
-  //   idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
-  //   idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');
+    idle.onTimeout.subscribe(() => {
+      // this.idleState = 'Timed out!';
+      this.idleState = ''
+      this.timedOut = true;
+      this.sessionStore.logout();
+      // this.checkValidToken();
+      // this._router.navigate(['/account/login']);
+    });
 
-  //   // sets the ping interval to 15 seconds
-  //   keepalive.interval(15);
+    idle.onIdleStart.subscribe(() => {
+      // this.idleState = 'You\'ve gone idle!'
+      this.idleState = ''
+    });
 
-  //   keepalive.onPing.subscribe(() => this.lastPing = new Date());
+    idle.onTimeoutWarning.subscribe((countdown) => {
+      this.idleState = 'You will logged out in ' + countdown + ' seconds!'
+    });
 
-  //   this.reset();
-  // }
+    // sets the ping interval to 15 seconds
+    keepalive.interval(15);
+    keepalive.onPing.subscribe(() => {
+      this.lastPing = new Date()
+    });
+    this.reset();
+  }
 
-  // reset() {
-  //   this.idle.watch();
-  //   this.idleState = 'Started.';
-  //   this.timedOut = false;
+  reset() {
+    this.idle.watch();
+    // this.idleState = 'Started.';
+      this.idleState = ''
+    this.timedOut = false;
   }
 
   ngOnInit() {
@@ -81,6 +98,13 @@ export class AppComponent implements OnInit {
     // this._specialityStore.getSpecialities();
     // this._statesStore.getStates();
   }
+  
+    checkValidToken() {
+      let now = moment().add(120, 'seconds');
+      if(this.sessionStore.session.tokenExpiresAt < now) {
+        this.sessionStore.getToken();
+      }
+    }
 
   // To remove Expression changed error
   ngAfterViewChecked() {

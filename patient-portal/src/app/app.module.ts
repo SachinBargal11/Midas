@@ -7,6 +7,7 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NotificationsService } from 'angular2-notifications';
 import { SignalRModule } from 'ng2-signalr';
 import { SignalRConfiguration } from 'ng2-signalr';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 import { ConfigService, configServiceFactory } from './config-service';
 import { AppComponent } from './app.component';
@@ -87,7 +88,8 @@ export function createConfig(): SignalRConfiguration {
     SimpleNotificationsModule,
     EventModule,
     // SignalRModule.forRoot(createConfig)
-    SignalRModule
+    SignalRModule,
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {

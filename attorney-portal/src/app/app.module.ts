@@ -72,7 +72,7 @@ import { PushNotificationService } from './commons/services/push-notification-se
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
-// import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
 // v2.0.0
@@ -107,9 +107,9 @@ export function createConfig(): SignalRConfiguration {
     SimpleNotificationsModule,
     EventModule,
     // SignalRModule.forRoot(createConfig)
-    SignalRModule
+    SignalRModule,
+    NgIdleKeepaliveModule.forRoot()
     // MomentModule,
-    // NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {

@@ -382,7 +382,7 @@ export class SessionStore {
         let promise = new Promise((resolve, reject) => {
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
             let storedAccessToken: any = 'bearer ' + result.access_token;
-            // let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in), 'seconds').toString();
+            // let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 1140, 'seconds').toString();
             let storedTokenExpiresAt: any = moment().add(parseInt(result.expires_in) - 60, 'seconds').toString();
             if (storedAccount && storedAccessToken && storedTokenExpiresAt) {
                 let storedAccountData: any = JSON.parse(storedAccount);

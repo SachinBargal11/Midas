@@ -66,7 +66,7 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
-// import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // import { MomentModule } from 'angular2-moment'; 
 
 // v2.0.0
@@ -102,7 +102,7 @@ export function createConfig(): SignalRConfiguration {
     SignalRModule,
     // SignalRModule.forRoot(createConfig)
     // MomentModule,
-    // NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {
