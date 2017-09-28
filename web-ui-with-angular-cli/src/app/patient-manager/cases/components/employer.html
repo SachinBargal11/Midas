@@ -1,12 +1,11 @@
 <h3 class="with-border">{{title}}</h3>
-<div *ngIf="currentEmployer">
+<div *ngIf="currentEmployer && caseStatusId === 1">
     <form [formGroup]="employerform" (ngSubmit)="save()">
         <section class="card">
             <header class="card-header card-header-lg">
                 Employment Information
             </header>
             <div class="card-block">
-
                 <div class="row">
                     <div class="col-lg-4">
                         <label class="form-label">Occupation/Job Title
@@ -95,8 +94,6 @@
 
             </div>
         </section>
-
-
         <!-- <section class="card">
             <header class="card-header card-header-lg">
                 Contact Information
@@ -294,7 +291,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
 
                     <div class="col-lg-4">
@@ -363,9 +359,7 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </section>
 
@@ -430,5 +424,214 @@
         <a [routerLink]="['/patient-manager/cases']" class="btn btn-secondary">Cancel</a>
         <!--button-->
 
+    </form>
+</div>
+
+
+<div *ngIf="currentEmployer  && caseStatusId === 2">
+    <form [formGroup]="employerform" (ngSubmit)="save()">
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Employment Information
+            </header>
+            <div class="card-block">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Occupation/Job Title
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.jobTitle}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Employer Name
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.empName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Salary Type                                          
+                                        </label>
+                        <label> {{hourOrYearly}}
+                                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Salary
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.salary}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Any Loss of earnings,due to accident related injuries?                                          
+                                        </label>
+                        <label> {{lossOfEarnings}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Date(s) out of work 
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.datesOutOfWork}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> How many hours do you normally work per week?
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.hoursPerWeek}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Did accident occur in course of employment?                                       
+                                        </label>
+                        <label> {{accidentAtEmployment}}</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Contact And Address Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">E-Mail
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.contact.emailAddress}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Cellphone
+                            </label>
+                        <div class="form-group">
+                            <label> {{cellPhone}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Fax No
+                            </label>
+                        <div class="form-group">
+                            <label> {{faxNo}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Address1
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.address1}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Address2
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.address2}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">State
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.state}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">City
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.city}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Zip code
+                            </label>
+                        <div class="form-group">
+                            <label> {{currentEmployer.address.zipCode}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Country
+                                        </label>
+                          <div class="form-group">
+                            <label> {{currentEmployer.address.country}}
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <div *ngIf="school">
+            <section class="card">
+                <header class="card-header card-header-lg">
+                    School Information
+                </header>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Name of School
+                            </label>
+                            <div class="form-group">
+                                <label> {{nameOfSchool}}
+                            </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Grade
+                            </label>
+                            <div class="form-group">
+                                <label> {{grade}}
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Any Loss of time from school?
+                                        </label>
+                            <label> {{lossOfTime}}
+                                        </label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Date(s) out of school
+                            </label>
+                            <div class="form-group">
+                                <label> {{datesOutOfSchool}}
+                            </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+        <a *ngIf="caseStatusId === 2" [routerLink]="['/patient-manager/cases']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

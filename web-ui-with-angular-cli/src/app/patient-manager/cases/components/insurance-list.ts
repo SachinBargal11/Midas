@@ -31,6 +31,7 @@ export class InsuranceListComponent implements OnInit {
     datasource: Insurance[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
+    caseStatusId: number;
 
     constructor(
         private _router: Router,
@@ -43,37 +44,52 @@ export class InsuranceListComponent implements OnInit {
         private _casesStore: CasesStore,
         private _sessionStore: SessionStore
     ) {
-         
-        // this._route.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId, 10);
-        //     this._progressBarService.show();
-        //     let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
-        //     caseResult.subscribe(
-        //         (cases: Case[]) => {
-        //             this.caseDetail = cases;
-        //             if (this.caseDetail.length > 0) {
-        //                 let matchedCompany = null;
-        //                 matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
-        //                     return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
-        //                 })
-        //                 if (matchedCompany) {
-        //                     this.referredToMe = true;
-        //                 } else {
-        //                     this.referredToMe = false;
-        //                 }
-        //             } else {
-        //                 this.referredToMe = false;
-        //             }
-        //         },
-        //         (error) => {
-        //             this._router.navigate(['../'], { relativeTo: this._route });
-        //             this._progressBarService.hide();
-        //         },
-        //         () => {
-        //             this._progressBarService.hide();
-        //         });
-        // });
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId);
+            this._progressBarService.show();
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
     }
+    // this._route.parent.parent.params.subscribe((routeParams: any) => {
+    //     this.patientId = parseInt(routeParams.patientId, 10);
+    //     this._progressBarService.show();
+    //     let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+    //     caseResult.subscribe(
+    //         (cases: Case[]) => {
+    //             this.caseDetail = cases;
+    //             if (this.caseDetail.length > 0) {
+    //                 let matchedCompany = null;
+    //                 matchedCompany = _.find(this.caseDetail[0].referral, (currentReferral: PendingReferral) => {
+    //                     return currentReferral.toCompanyId == _sessionStore.session.currentCompany.id
+    //                 })
+    //                 if (matchedCompany) {
+    //                     this.referredToMe = true;
+    //                 } else {
+    //                     this.referredToMe = false;
+    //                 }
+    //             } else {
+    //                 this.referredToMe = false;
+    //             }
+    //         },
+    //         (error) => {
+    //             this._router.navigate(['../'], { relativeTo: this._route });
+    //             this._progressBarService.hide();
+    //         },
+    //         () => {
+    //             this._progressBarService.hide();
+    //         });
+    // });
 
     ngOnInit() {
         this.loadInsurances();
@@ -83,20 +99,20 @@ export class InsuranceListComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
-        this._insuranceStore.getInsurances(this.caseId)
-            .subscribe(insurances => {
-                this.insurances = insurances.reverse();
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
+            this._insuranceStore.getInsurances(this.caseId)
+                .subscribe(insurances => {
+                    this.insurances = insurances.reverse();
+                },
+                (error) => {
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
     }
 
-    
+
 
     loadSpecialitiesLazy(event: LazyLoadEvent) {
         setTimeout(() => {

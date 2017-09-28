@@ -74,7 +74,7 @@ export class CaseEmployerComponent implements OnInit {
     nameOfSchool = '';
     grade = '';
     datesOutOfSchool = '';
-
+    caseStatusId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -120,7 +120,6 @@ export class CaseEmployerComponent implements OnInit {
                             contact: new Contact({})
                         });
                     }
-
                 },
                 (error) => {
                     this._router.navigate(['../../']);
@@ -148,9 +147,20 @@ export class CaseEmployerComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
+
+            let caseResult = this._casesStore.fetchCaseById(this.caseId);
+            caseResult.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
-
-
 
         let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
         caseResult.subscribe(
@@ -169,7 +179,6 @@ export class CaseEmployerComponent implements OnInit {
                 } else {
                     this.referredToMe = false;
                 }
-
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
@@ -178,6 +187,7 @@ export class CaseEmployerComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
             employerName: ['', Validators.required],
@@ -214,7 +224,7 @@ export class CaseEmployerComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             // .subscribe(states => this.states = states);
-             .subscribe(states =>
+            .subscribe(states =>
             // this.states = states);
             {
                 let defaultLabel: any[] = [{

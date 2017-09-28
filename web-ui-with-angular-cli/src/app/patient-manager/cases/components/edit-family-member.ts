@@ -33,6 +33,7 @@ export class EditFamilyMemberComponent implements OnInit {
     isSaveProgress = false;
     familyMember: FamilyMember;
     patientId: number;
+    caseStatusId: number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -52,7 +53,7 @@ export class EditFamilyMemberComponent implements OnInit {
         });
 
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId);          
+            this.caseId = parseInt(routeParams.caseId);
             this._progressBarService.show();
             let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             caseResult.subscribe(
@@ -71,6 +72,12 @@ export class EditFamilyMemberComponent implements OnInit {
                     } else {
                         this.referredToMe = false;
                     }
+
+                    let result = this._casesStore.fetchCaseById(this.caseId);
+                    result.subscribe(
+                        (caseDetail: Case) => {
+                            this.caseStatusId = caseDetail.caseStatusId;
+                        });
 
                     this._route.params.subscribe((routeParams: any) => {
                         let familyMemberId: number = parseInt(routeParams.id);
@@ -106,10 +113,10 @@ export class EditFamilyMemberComponent implements OnInit {
             ethnicities: ['', Validators.required],
             gender: ['', Validators.required],
             cellPhone: ['', [Validators.required]],
-            workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             primaryContact: [''],
             alternateEmail: ['', [AppValidators.emailValidator]],
-            officeExtension: ['', [AppValidators.numberValidator,Validators.maxLength(5)]],
+            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
             preferredCommunication: ['']
         });
 

@@ -60,6 +60,7 @@ export class EditInsuranceComponent implements OnInit {
     insuranceStartDate: Date;
     insuranceEndDate: Date;
     balanceInsuredAmount: string;
+    caseStatusId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -80,6 +81,20 @@ export class EditInsuranceComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
             this._progressBarService.show();
+             let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+
+        });
             // let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             // caseResult.subscribe(
             //     (cases: Case[]) => {
@@ -106,7 +121,6 @@ export class EditInsuranceComponent implements OnInit {
             //     () => {
             //         this._progressBarService.hide();
             //     });
-        });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
             this._progressBarService.show();
