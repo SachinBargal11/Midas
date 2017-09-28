@@ -30,7 +30,7 @@ import { LocationsStore } from '../../../medical-provider/locations/stores/locat
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
 import { PendingReferral } from '../models/pending-referral';
 import { Procedure } from '../../../commons/models/procedure';
-
+import { UnscheduledVisit } from '../../patient-visit/models/unscheduled-visit';
 
 @Component({
     selector: 'pending-referrals',
@@ -74,7 +74,10 @@ export class PendingReferralsComponent implements OnInit {
 
     externalReferralDialogVisible: boolean = false;
     routeFrom = 'pendingReferral';
-
+    visitInfo:string;
+    unscheduledDialogVisible = false;
+    unscheduledVisitId: number;
+    unscheduledVisit: UnscheduledVisit;
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
@@ -229,7 +232,7 @@ export class PendingReferralsComponent implements OnInit {
     showUnscheduleVisitDialog() {
         if (this.selectedReferrals) {
             this.externalReferralDialogVisible = true;
-        } else {            
+        } else {
             this._notificationsService.error('Please select pending referral');
         }
     }
@@ -507,6 +510,20 @@ export class PendingReferralsComponent implements OnInit {
         });
 
         return pendingReferralDetails;
+    }
+
+    showUnscheduledVisitDialog(unscheduledVisitId: number) {
+        this.externalReferralDialogVisible = false;
+        this._patientVisitsStore.getUnscheduledVisitDetailById(unscheduledVisitId)
+            .subscribe((visit: UnscheduledVisit) => {
+                this.visitInfo = `Visit Info - Patient Name: ${visit.patient.user.displayName} - Case Id: ${visit.caseId}`;
+                this.unscheduledVisit = visit;
+                this.unscheduledDialogVisible = true;
+            });
+    }
+    closeUnscheduledVisitDialog() {
+        this.unscheduledDialogVisible = false;
+        // this.visitInfo = '';
     }
 
     saveReferralForMedicalProviderRoom() {

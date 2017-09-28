@@ -3,7 +3,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Referral">
-    </div>
+</div>
 </div>
 <p-dataTable [value]="pendingReferralList" [(selection)]="selectedReferrals" (onRowSelect)="getMedicalProviderDoctorRoom($event)"
     [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true">
@@ -90,7 +90,8 @@
 <p-dialog *ngIf="selectedReferrals && externalReferralDialogVisible" [minWidth]="600" [width]="1200" (onAfterHide)="handleExternalReferralDialogHide()"
     [(visible)]="externalReferralDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
     [contentStyle]="{'overflow':'auto', 'max-height':'700px'}">
-        <unscheduled-visit [routeFrom]="routeFrom" [pendingReferral]="selectedReferrals" [caseId]="selectedReferrals.caseId" [idPatient]="selectedReferrals.patientId" (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeExternalReferralDialog()"></unscheduled-visit>
+    <unscheduled-visit [routeFrom]="routeFrom" [pendingReferral]="selectedReferrals" [caseId]="selectedReferrals.caseId" [idPatient]="selectedReferrals.patientId"
+        (refreshEvents)="refreshEvents($event)" (closeDialogBox)="closeExternalReferralDialog()" (emitExternalReferral)="showUnscheduledVisitDialog($event)"></unscheduled-visit>
 </p-dialog>
 
 <p-dialog [minWidth]="500" [width]="800" (onShow)="handleAvailableSlotsDialogShow()" (onHide)="handleAvailableSlotsDialogHide()"
@@ -127,4 +128,11 @@
             </div>
         </ng-template>
     </p-carousel>
+</p-dialog>
+
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="unscheduledDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledVisit && unscheduledDialogVisible">
+        <unscheduled-visit-detail [selectedVisit]="unscheduledVisit" [routeFrom]="2" (closeDialog)="closeVisitDialog($event)"></unscheduled-visit-detail>
+    </div>
 </p-dialog>

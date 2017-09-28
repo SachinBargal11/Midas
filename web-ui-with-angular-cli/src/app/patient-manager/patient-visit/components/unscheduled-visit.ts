@@ -73,6 +73,7 @@ export class UnscheduledVisitComponent implements OnInit {
     repeatType: string = '7';
     @Output() closeDialogBox: EventEmitter<any> = new EventEmitter();
     @Output() refreshEvents: EventEmitter<any> = new EventEmitter();
+    @Output() emitExternalReferral: EventEmitter<any> = new EventEmitter();
     cases: Case[];
     private _selectedEvent: ScheduledEvent;
     eventStartAsDate: Date;
@@ -331,7 +332,7 @@ export class UnscheduledVisitComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this.closeDialog();
+                    this.emitExternalReferral.emit(response.id);
                     this.refreshEvents.emit();
                 },
                 (error) => {
