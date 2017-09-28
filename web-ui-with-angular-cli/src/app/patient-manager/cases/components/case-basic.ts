@@ -13,6 +13,7 @@ import { PatientsStore } from '../../patients/stores/patients-store';
 import { EmployerStore } from '../../cases/stores/employer-store';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
+import { CaseLabel } from '../models/case-label';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -31,6 +32,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 export class CaseBasicComponent implements OnInit {
     caseDetail: Case;
+    readOnlyCaseDetail: CaseLabel;
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
@@ -45,6 +47,7 @@ export class CaseBasicComponent implements OnInit {
     // transportation: any;
     attorneyId: number = 0;
     currentAttorneyId: number;
+    companyId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -62,7 +65,8 @@ export class CaseBasicComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef,
         private confirmationService: ConfirmationService,
-    ) {
+    ) {      
+        this.companyId = sessionStore.session.currentCompany.id;
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
@@ -74,8 +78,9 @@ export class CaseBasicComponent implements OnInit {
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
             let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
             let fetchCaseDetail = this._casesStore.caseGetById(this.caseId);
+            let fetchReadOnlyCaseDetail = this._casesStore.getCaseReadOnly(this.caseId, this.companyId);
 
-            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
+            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail,fetchReadOnlyCaseDetail])
                 .subscribe(
                 (results) => {
                     // let matchingAttorneys: Attorney[] = _.filter(results[3], (currentAttorney: Attorney) => {
@@ -87,7 +92,9 @@ export class CaseBasicComponent implements OnInit {
                     this.employer = results[2];
                     this.attorneys = results[3];
                     this.caseDetail = results[4];
+                    this.readOnlyCaseDetail = results[5];
                     this.currentAttorneyId = this.caseDetail.attorneyProviderId;
+                    this.caseStatusId = this.caseDetail.caseStatusId;
                     // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
 
                     // if (this.caseDetail.attorneyId != null) {

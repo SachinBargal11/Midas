@@ -73,7 +73,7 @@ export class CaseEmployerComponent implements OnInit {
     nameOfSchool = '';
     grade = '';
     datesOutOfSchool = '';
-
+    caseStatusId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -147,9 +147,20 @@ export class CaseEmployerComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
+
+                let caseResult = this._casesStore.fetchCaseById(this.caseId);
+            caseResult.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
-
-
 
         let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
         caseResult.subscribe(

@@ -120,14 +120,14 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Basic'
                         }
                     },
-                    {
-                        path: 'basicLabel',
-                        component: CaseBasicLabelComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Basic'
-                        }
-                    },
+                    // {
+                    //     path: 'basicLabel',
+                    //     component: CaseBasicLabelComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Basic'
+                    //     }
+                    // },
                     {
                         path: 'referring-offices',
                         component: ShellComponent,

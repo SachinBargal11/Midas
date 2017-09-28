@@ -421,7 +421,7 @@
                 </button>
         <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
                 </button>-->
-        <a [routerLink]="['/patient-manager/cases']" class="btn btn-secondary">Cancel</a>
+        <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
         <!--button-->
 
     </form>
@@ -632,6 +632,6 @@
                 </div>
             </section>
         </div>
-        <a *ngIf="caseStatusId === 2" [routerLink]="['/patient-manager/cases']" class="btn btn-secondary">Cancel</a>
+        <a *ngIf="caseStatusId === 2" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

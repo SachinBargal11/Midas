@@ -1,6 +1,6 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <h3 class="with-border">Edit Case</h3>
-<div *ngIf="caseDetail">
+<div *ngIf="caseDetail && caseStatusId === 1">
     <form [formGroup]="caseform" (ngSubmit)="saveCase()">
         <div class="row">
             <!--<div class="col-lg-4">
@@ -165,11 +165,77 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <button *ngIf="caseDetail.caseStatusId === 1" [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
         </button>
         <a *ngIf="caseDetail.caseStatusId === 1" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
+</div>
+
+
+<div *ngIf="readOnlyCaseDetail && caseStatusId === 2">
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Patient Name
+                            </label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.patient}}
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Case Type</label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.caseTypeText}}
+                        </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Case Status
+                            </label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.caseStatusText}}
+                        </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Carrier Case Number
+                            </label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.carrierCaseNo}}
+                        </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label">Attorney                              
+                            </label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.attorneyProvider}}
+                        </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Case Source
+                            </label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.caseSource}}
+                 </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label"> Claim Number
+                            </label>
+            <div class="form-group">
+                <label>{{readOnlyCaseDetail.claimFileNumber}}
+                 </label>
+            </div>
+        </div>
+    </div>
+    <a *ngIf="caseDetail.caseStatusId === 2" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
 </div>

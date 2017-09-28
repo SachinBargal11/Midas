@@ -43,6 +43,8 @@ export class AutoInformationInfoComponent implements OnInit {
     vehicleDriveable: false;
     vehicleClientHaveTitle: false;
     defendantAutoInformation: DefendantAutoInformation;
+    caseStatusId: number;
+    
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -90,9 +92,21 @@ export class AutoInformationInfoComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-
-
         });
+
+        let caseResult = this._casesStore.fetchCaseById(this.caseId);
+            caseResult.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+
         this.autoInfoform = this.fb.group({
             txtPlate: ['', Validators.required],
             txtModelYear: ['', Validators.required],

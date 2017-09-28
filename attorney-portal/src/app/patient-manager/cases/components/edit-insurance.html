@@ -1,4 +1,4 @@
-<div *ngIf="insurance">
+<div *ngIf="insurance && caseStatusId === 1">
     <h3 class="with-border">Edit Insurance</h3>
     <form [formGroup]="insuranceform" (ngSubmit)="save()">
         <section class="card">
@@ -748,4 +748,383 @@
     </button>
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
     </form>
+</div>
+
+
+<div *ngIf="insurance && caseStatusId === 2">
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Policy Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Policy Number
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyNo}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Policy Holder Name
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyHoldersName}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Policy Owner
+                            </label>
+                    <div class="form-group">
+                        <label> {{policyOwner}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Insurance Start Date
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceStartDateLabel}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Insurance End Date
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceEndDateLabel}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Balance Insured Amount
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.balanceInsuredAmount}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Policy Contact
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyContact.emailAddress}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Cellphone
+                            </label>
+                    <div class="form-group">
+                        <label> {{policyCellPhone}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Fax No
+                            </label>
+                    <div class="form-group">
+                        <label> {{policyFaxNo}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Home Phone No
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyContact.homePhone}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Work Phone No
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyContact.workPhone}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Office Extension
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyContact.officeExtension}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Alternate E-mail
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyContact.alternateEmail}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Preferred Communication
+                            </label>
+                    <div class="form-group">
+                        <label> {{preferredCommunication}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Policy Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Address1
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyAddress.address1}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Address2
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyAddress.address2}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">State
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyAddress.state}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">City
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyAddress.city}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zip code
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyAddress.zipCode}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.policyAddress.country}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Insurance Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Insurance Company
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceMaster.companyName}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Insurance Type
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceType}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Insurance Company Code
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceCompanyCode}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Insurance Contact
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Contact Person
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.contactPerson}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">E-Mail
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceContact.emailAddress}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Cellphone
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceCellPhone}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Home Phone No
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceContact.homePhone}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Work Phone No
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceContact.workPhone}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Fax No
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceFaxNo}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label">Office Extension
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceContact.officeExtension}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Alternate E-mail
+                            </label>
+                    <div class="form-group">
+                        <label> {{insurance.insuranceContact.alternateEmail}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Preferred Communication
+                            </label>
+                    <div class="form-group">
+                        <label> {{preferredCommunication}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card" *ngIf="insuranceMastersAdress">
+        <header class="card-header card-header-lg">
+            Insurance Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Address1
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceMastersAdress.address1}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Address2
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceMastersAdress.address2}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> State
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceMastersAdress.state}}
+                            </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> City
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceMastersAdress.city}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zip code
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceMastersAdress.zipCode}}
+                            </label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                            </label>
+                    <div class="form-group">
+                        <label> {{insuranceMastersAdress.country}}
+                            </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <a *ngIf="caseStatusId === 2" [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
 </div>

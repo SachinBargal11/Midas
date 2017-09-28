@@ -30,6 +30,7 @@ export class EditFamilyMemberComponent implements OnInit {
     isSaveProgress = false;
     familyMember: FamilyMember;
     caseId: number;
+    caseStatusId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -66,6 +67,12 @@ export class EditFamilyMemberComponent implements OnInit {
                     } else {
                         this.referredToMe = false;
                     }
+
+                    let result = this._casesStore.fetchCaseById(this.caseId);
+                    result.subscribe(
+                        (caseDetail: Case) => {
+                            this.caseStatusId = caseDetail.caseStatusId;
+                        });
 
                     this._route.params.subscribe((routeParams: any) => {
                         let familyMemberId: number = parseInt(routeParams.id);

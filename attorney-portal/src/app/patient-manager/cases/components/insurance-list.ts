@@ -31,6 +31,7 @@ export class InsuranceListComponent implements OnInit {
     datasource: Insurance[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
+    caseStatusId: number;
 
     constructor(
         private _router: Router,
@@ -43,7 +44,23 @@ export class InsuranceListComponent implements OnInit {
         private _casesStore: CasesStore,
         private _sessionStore: SessionStore
     ) {
-         
+          this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId);
+            this._progressBarService.show();
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
+    }
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
         //     this._progressBarService.show();
@@ -73,7 +90,6 @@ export class InsuranceListComponent implements OnInit {
         //             this._progressBarService.hide();
         //         });
         // });
-    }
 
     ngOnInit() {
         this.loadInsurances();

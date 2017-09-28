@@ -28,6 +28,7 @@ export class FamilyMemberListComponent implements OnInit {
     datasource: FamilyMember[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
+    caseStatusId: number;
 
     constructor(
         private _router: Router,
@@ -43,6 +44,19 @@ export class FamilyMemberListComponent implements OnInit {
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
+            this._progressBarService.show();
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
             //this._progressBarService.show();
             // let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             // caseResult.subscribe(
