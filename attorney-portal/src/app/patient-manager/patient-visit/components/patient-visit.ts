@@ -53,6 +53,9 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { ImeVisit } from '../models/ime-visit';
 import { EoVisit } from '../models/eo-visit';
 import { SelectItem } from 'primeng/primeng';
+import { UserSettingStore } from '../../../commons/stores/user-setting-store';
+import { UserSetting } from '../../../commons/models/user-setting';
+
 
 @Component({
     selector: 'patient-visit',
@@ -113,7 +116,8 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
-    defaultView: string = 'agendaDay';
+    // defaultView: string = 'agendaDay';
+    defaultView: string;
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
@@ -137,6 +141,8 @@ export class PatientVisitComponent implements OnInit {
     dayRenderer;
     isVisitTypeDisabled = false;
     patientsWithOpenCase: SelectItem[] = [];
+    userId: number = this.sessionStore.session.user.id;
+    userSetting: UserSetting;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -192,8 +198,21 @@ export class PatientVisitComponent implements OnInit {
         // private _procedureStore: ProcedureStore,
         // private _visitReferralStore: VisitReferralStore,
         private confirmationService: ConfirmationService,
-        private _casesStore: CasesStore
+        private _casesStore: CasesStore,
+        private _userSettingStore: UserSettingStore,
     ) {
+
+        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
+                .subscribe((userSetting) => {
+                    this.userSetting = userSetting;
+                    this.defaultView = userSetting.calendarViewLabel;
+                    // this.calendarViewId = userSetting.calendarViewId;
+
+                },
+                (error) => { },
+                () => {
+                });
+                
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required],
             caseId: ['', Validators.required],

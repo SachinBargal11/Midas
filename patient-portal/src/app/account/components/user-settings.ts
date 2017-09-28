@@ -37,6 +37,7 @@ export class UserSettingsComponent implements OnInit {
     isCalendarPublic: boolean = false;
     isPublic: boolean = false;
     isTimeSlot = 30;
+    calendarViewId = 1;
 
     constructor(
         private _authenticationService: AuthenticationService,
@@ -49,7 +50,15 @@ export class UserSettingsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
 
-    ) {
+    ) {       
+        this.addUserSettings = this._fb.group({
+            isPublic: [''],
+            isCalendarPublic: [''],
+            isSearchable: [''],
+            timeSlot: [''],
+            calendarViewId: [''],
+        })
+        this.addUserSettingsControls = this.addUserSettings.controls;
 
     }
 
@@ -57,10 +66,7 @@ export class UserSettingsComponent implements OnInit {
         // this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
         //     .subscribe((userSetting) => {
         //         this.userSetting = userSetting;
-        //         this.isPublic = userSetting.isPublic;
-        //         this.isCalendarPublic = userSetting.isCalendarPublic;
-        //         this.isSearchable = userSetting.isSearchable;
-        //         this.isTimeSlot = userSetting.SlotDuration;
+        //         this.calendarViewId = userSetting.calendarViewId;
                 
         //     },
         //     (error) => { },
@@ -87,11 +93,12 @@ export class UserSettingsComponent implements OnInit {
         let userSetting = new UserSetting(
             {
                 userId: this.userId,
-                companyId: this.companyId,
-                isPublic: this.isPublic,
-                isCalendarPublic: this.isCalendarPublic,
-                isSearchable: this.isSearchable,
-                SlotDuration:this.isTimeSlot
+                companyId:null,
+                isPublic: null,
+                isCalendarPublic: null,
+                isSearchable: null,
+                SlotDuration:null,
+                calendarViewId:this.calendarViewId
             }
         )
         this._progressBarService.show();

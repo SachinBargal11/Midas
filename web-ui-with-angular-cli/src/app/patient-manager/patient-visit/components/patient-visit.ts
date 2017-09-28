@@ -53,6 +53,8 @@ import { ProcedureStore } from '../../../commons/stores/procedure-store';
 import { VisitReferralStore } from '../stores/visit-referral-store';
 import { VisitReferral } from '../models/visit-referral';
 import { CasesStore } from '../../cases/stores/case-store';
+import { UserSettingStore } from '../../../commons/stores/user-setting-store';
+import { UserSetting } from '../../../commons/models/user-setting';
 
 
 @Component({
@@ -116,7 +118,8 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
-    defaultView: string = 'agendaDay';
+    // defaultView: string = 'agendaDay';
+    defaultView: string;
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
@@ -148,11 +151,13 @@ export class PatientVisitComponent implements OnInit {
     // @Input() patientId:number;
     @Input() idPatient: number;
     companyId: number = this.sessionStore.session.currentCompany.id;
+    userId: number = this.sessionStore.session.user.id;
     selectedVisitType = '1';
     selectedEventDate;
     dayRenderer;
     isVisitTypeDisabled = false;
     patientsWithOpenCase: SelectItem[] = [];
+    userSetting: UserSetting;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -217,8 +222,23 @@ export class PatientVisitComponent implements OnInit {
         private _procedureStore: ProcedureStore,
         private _visitReferralStore: VisitReferralStore,
         private confirmationService: ConfirmationService,
+        private _userSettingStore: UserSettingStore,
 
     ) {
+
+        // getUserSettingsForCompany() {
+            this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
+                .subscribe((userSetting) => {
+                    this.userSetting = userSetting;
+                    this.defaultView = userSetting.calendarViewLabel;
+                    // this.calendarViewId = userSetting.calendarViewId;
+
+                },
+                (error) => { },
+                () => {
+                });
+
+        // }
         this.loadAllVisitsByCompanyId();
 
         this.loadEoVisits();
@@ -266,6 +286,7 @@ export class PatientVisitComponent implements OnInit {
 
     ngOnInit() {
         this.routeFromCase;
+        // this.getUserSettingsForCompany();
         this.getReadingDoctorsByCompanyId();
         this.header = {
             left: 'prev,next today',

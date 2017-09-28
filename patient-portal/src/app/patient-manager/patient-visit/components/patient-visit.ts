@@ -54,6 +54,9 @@ import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { ImeVisit } from '../models/ime-visit';
 import { EoVisit } from '../models/eo-visit';
 import { AttorneyVisit } from '../models/attorney-visit';
+import { UserSettingStore } from '../../../commons/stores/user-setting-store';
+import { UserSetting } from '../../../commons/models/user-setting';
+
 @Component({
     selector: 'patient-visit',
     templateUrl: './patient-visit.html',
@@ -115,7 +118,8 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
-    defaultView: string = 'month';
+    // defaultView: string = 'agendaDay';
+    defaultView: string;
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
@@ -142,6 +146,7 @@ export class PatientVisitComponent implements OnInit {
     selectedCaseId: number;
     procedures: Procedure[];
     selectedProcedures: Procedure[];
+    userSetting: UserSetting;
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -194,8 +199,20 @@ export class PatientVisitComponent implements OnInit {
         private _specialityService: SpecialityService,
         // private _procedureStore: ProcedureStore,
         private _visitReferralStore: VisitReferralStore,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private _userSettingStore: UserSettingStore,
     ) {
+
+            // this._userSettingStore.getUserSettingByUserId(this.patientId, this.companyId)
+            //     .subscribe((userSetting) => {
+            //         this.userSetting = userSetting;
+            //         this.defaultView = userSetting.calendarViewLabel;
+            //     },
+            //     (error) => { },
+            //     () => {
+            //     });
+
+        
         this.patientId = this.sessionStore.session.user.id;
         this._progressBarService.show();
         this._patientsStore.fetchPatientById(this.patientId)

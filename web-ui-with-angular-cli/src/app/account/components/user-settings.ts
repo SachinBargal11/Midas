@@ -125,7 +125,6 @@ export class UserSettingsComponent implements OnInit {
     saveUserSettings() {
         let userSettingsValues = this.addUserSettings.value;
         let result;
-        // if(this.sessionStore.isOnlyDoctorRole()){
         let userSetting = new UserSetting(
             {
                 userId: this.userId,
@@ -136,22 +135,7 @@ export class UserSettingsComponent implements OnInit {
                 SlotDuration:this.isTimeSlot,
                 calendarViewId:this.calendarViewId
             }
-        )
-        // }
-        // else{
-        //    let userSetting = new UserSetting(
-        //     {
-        //         userId: this.userId,
-        //         companyId: this.companyId,
-        //         isPublic: null,
-        //         isCalendarPublic: null,
-        //         isSearchable: null,
-        //         SlotDuration:null,
-        //         calendarViewId:this.calendarViewId
-        //     }
-        // ) 
-        // }
-        
+        )  
         this._progressBarService.show();
         result = this._userSettingStore.saveUserSetting(userSetting);
         result.subscribe(

@@ -1,5 +1,5 @@
 <h3 class="with-border">Patient Visits</h3>
-<p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
+<p-schedule *ngIf="events && defaultView" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
 

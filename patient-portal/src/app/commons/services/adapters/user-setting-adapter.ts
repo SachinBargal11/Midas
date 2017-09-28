@@ -16,6 +16,7 @@ export class UserSettingAdapter {
                isCalendarPublic:data.isCalendarPublic ? true : false,
                SlotDuration:data.slotDuration,
                user:UserAdapter.parseResponse(data.user),
+               calendarViewId:data.calendarViewId,
                isDeleted: data.isDeleted ? true : false,
                createByUserID: data.createbyuserID,
                createDate: data.createDate ? moment.utc(data.createDate) : null,

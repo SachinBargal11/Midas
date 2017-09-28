@@ -1,34 +1,5 @@
 <h3 class="with-border">Patient Visits</h3>
-<!--<section class="card">
-    <div class="card-block">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="form-group">
-
-                    <select [(ngModel)]="selectedLocationId" ng-model="filter.location" class="select2-arrow form-control" (change)="selectLocation()">
-            <option value="0"> <b>-- Select Location --</b> </option>
-            <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}} - {{location.location.name}} </option>                                       
-            </select>
-
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
-                        <option value="0"></option>
-             <optgroup label="Select Doctor">                                     
-                    <option data-type="1" data-specialityId="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>                                       
-             </optgroup>
-             <optgroup label="Select Room">
-                    <option data-type="2" data-testId="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>                                       
-             </optgroup>
-        </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>-->
-<p-schedule *ngIf="events" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
+<p-schedule *ngIf="events && defaultView" [defaultView]="defaultView" [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
 <p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
