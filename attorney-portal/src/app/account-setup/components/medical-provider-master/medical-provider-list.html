@@ -18,7 +18,7 @@
       <span class="hidden-md-down">Search Preferred Providers</span>
     </a>-->
     <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showValidation()"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Validate Generated Token</span>
+      <span class="hidden-md-down">Add Medical Provider</span>
     </a>
     <a type="text" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()"><i class="fa-external-link-square" aria-hidden="true"></i>
     <span class="hidden-md-down">Generate Token</span></a>
@@ -28,7 +28,7 @@
 <p-dialog header="Validation" [(visible)]="displayValidation" [width]="700" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
     <div class="row">
         <div class="col-lg-4">
-            <label class="form-label">Enter Generated Token Number</label>
+            <label class="form-label">Enter Medical Provider Token Number</label>
         </div>
         <div class="col-lg-8">
             <form [formGroup]="addMedicalProviderByToken" (ngSubmit)="validateGeneratedToken()">
@@ -37,14 +37,14 @@
                         <input formControlName="token" type="text" class="form-control" placeholder="" [class.error]="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
                         <div class='error-list' *ngIf="addMedicalProviderByTokenControls.token.touched && !addMedicalProviderByTokenControls.token.valid">
                             <ul>
-                                <li *ngIf="addMedicalProviderByTokenControls.token.hasError('required')">Please enter generated OTP.</li>
+                                <li *ngIf="addMedicalProviderByTokenControls.token.hasError('required')">Please enter medical provider OTP.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <button class="btn btn-success sign-up" [disabled]="!addMedicalProviderByToken.valid" type="submit"><i aria-hidden="true"></i>
-                  Validate Generated Token
+                  Validate Token
                 </button>
                 </div>
             </form>
@@ -57,6 +57,16 @@
         </div>
         <div class="col-lg-6">
             <label class="form-label">{{medicalProviderName}}
+                                </label>
+        </div>
+    </div>
+    <div *ngIf="validateOtpResponse" class="row" style="text-align: left;">
+        <div class="col-lg-6">
+            <label class="form-label">Validated Medical Provider Address:                              
+                                    </label>
+        </div>
+        <div class="col-lg-6">
+            <label class="form-label">address
                                 </label>
         </div>
     </div>

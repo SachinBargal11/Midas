@@ -55,7 +55,8 @@ import {
   CarouselModule,
   BlockUIModule,
   DropdownModule,
-  OverlayPanelModule
+  OverlayPanelModule,
+  SliderModule
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
@@ -90,6 +91,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BlockUIModule,
     DropdownModule,
     OverlayPanelModule,
+    SliderModule,
     SignaturePadModule
   ],
   declarations: [
@@ -163,6 +165,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BlockUIModule,
     DropdownModule,
     OverlayPanelModule,
+    SliderModule,
     ShellComponent,
     ScheduledEventEditorComponent,
     LeaveEventEditorComponent,

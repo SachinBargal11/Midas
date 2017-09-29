@@ -35,4 +35,11 @@ export class Document extends DocumentRecord {
         super(props);
     }
 
+    get formattedCreateDate(): string {
+        return Document.getFormattedCreateDate(this.createDate);
+    }
+    static getFormattedCreateDate(date: moment.Moment): string {
+        return date.format('MMMM Do YYYY,h:mm:ss a')
+    }
+
 }

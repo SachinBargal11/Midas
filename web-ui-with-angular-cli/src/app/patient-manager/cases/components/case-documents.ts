@@ -42,6 +42,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
 
+    yearFilter: any;
+    maxDate;
+    minDate;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -125,6 +128,11 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._casesStore.getDocumentsForCaseId(this.currentCaseId)
             .subscribe(document => {
                 this.documents = document;
+                let dateArray = _.map(this.documents, (currDocument: CaseDocument) => {
+                    return currDocument.document.createDate.toDate();
+                })
+                this.maxDate = new Date(Math.max.apply(null,dateArray));
+                this.minDate = new Date(Math.min.apply(null,dateArray));
             },
 
             (error) => {

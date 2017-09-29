@@ -53,7 +53,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByCompanyId(HttpRequestMessage request, int companyId);
         HttpResponseMessage GenerateOTPForCompany(HttpRequestMessage request, int companyId);
         HttpResponseMessage ValidateOTPForCompany(HttpRequestMessage request, string otp);       
-      HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId);
+        HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId);
 
         HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
@@ -182,5 +182,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetStatisticalDataOnCaseByCaseType(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId);
         HttpResponseMessage GetStatisticalDataOnCaseByInsuranceProvider(HttpRequestMessage request, DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId);
         HttpResponseMessage GetMedicalProviders(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetCaseForCompanyId(HttpRequestMessage request, int CaseId, int CompanyId);
     }
 }

@@ -45,20 +45,20 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseCompanyConsentDocument")]
         public List<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
 
-        [JsonProperty("caseSource")]
-        public string caseSource { get; set; }
+        //[JsonProperty("caseSource")]
+        //public string CaseSource { get; set; }
 
-        [JsonProperty("orignatorCompanyId")]
-        public int OrignatorCompanyId { get; set; }
+        //[JsonProperty("orignatorCompanyId")]
+        //public int OrignatorCompanyId { get; set; }
 
-        [JsonProperty("orignatorCompanyName")]
-        public string OrignatorCompanyName { get; set; }
+        //[JsonProperty("orignatorCompanyName")]
+        //public string OrignatorCompanyName { get; set; }
 
-        [JsonProperty("medicalProviderId")]
-        public int? MedicalProviderId { get; set; }
+        //[JsonProperty("medicalProviderId")]
+        //public int? MedicalProviderId { get; set; }
 
-        [JsonProperty("attorneyProviderId")]
-        public int? AttorneyProviderId { get; set; }
+        //[JsonProperty("attorneyProviderId")]
+        //public int? AttorneyProviderId { get; set; }
 
         [JsonProperty("claimFileNumber")]
         public int? ClaimFileNumber { get; set; }
@@ -71,6 +71,36 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("ssdisabililtyIncome")]
         public bool? SSDisabililtyIncome { get; set; }
+
+        [JsonProperty("medicalProviderId")]
+        public int? MedicalProviderId { get; set; }
+
+        [JsonProperty("medicalProviderName")]
+        public string MedicalProviderName { get; set; }
+
+        [JsonProperty("attorneyProviderId")]
+        public int? AttorneyProviderId { get; set; }
+
+        [JsonProperty("attorneyProviderName")]
+        public string AttorneyProviderName { get; set; }
+
+        [JsonProperty("orignatorCompanyId")]
+        public int OrignatorCompanyId { get; set; }
+
+        [JsonProperty("orignatorCompanyName")]
+        public string OrignatorCompanyName { get; set; }
+
+        [JsonProperty("caseSource")]
+        public string CaseSource { get; set; }
+
+        [JsonProperty("orignatorCaseSource")]
+        public string OrignatorCaseSource { get; set; }
+
+        [JsonProperty("currentCompanyId")]
+        public int CurrentCompanyId { get; set; }
+
+        [JsonProperty("patientName")]
+        public string PatientName { get; set; }
 
     }
 

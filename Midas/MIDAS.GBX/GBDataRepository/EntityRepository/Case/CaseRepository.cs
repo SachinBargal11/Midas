@@ -226,7 +226,256 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.Referrals = BOListReferral;
             }
 
-            caseBO.caseSource = cases.CaseSource;
+            caseBO.CaseSource = cases.CaseSource;
+
+            return (T)(object)caseBO;
+        }
+        #endregion
+
+        #region Entity Conversion Convert For Company
+        public T ConvertForCompany<T, U>(U entity, int CompanyId)
+        {
+            Case cases = entity as Case;
+
+            if (cases == null)
+                return default(T);
+
+            BO.Case caseBO = new BO.Case();
+
+            caseBO.ID = cases.Id;
+            caseBO.PatientId = cases.PatientId;
+            caseBO.CaseName = cases.CaseName;
+            caseBO.CaseTypeId = cases.CaseTypeId;
+            caseBO.CarrierCaseNo = cases.CarrierCaseNo;
+            caseBO.CaseStatusId = cases.CaseStatusId;
+            caseBO.ClaimFileNumber = cases.ClaimFileNumber;
+            caseBO.Medicare = cases.Medicare;
+            caseBO.Medicaid = cases.Medicaid;
+            caseBO.SSDisabililtyIncome = cases.SSDisabililtyIncome;
+
+            caseBO.IsDeleted = cases.IsDeleted;
+            caseBO.CreateByUserID = cases.CreateByUserID;
+            caseBO.UpdateByUserID = cases.UpdateByUserID;
+
+            caseBO.CurrentCompanyId = CompanyId;
+
+            if (cases.PatientEmpInfoes != null)
+            {
+                var PatientEmpInfo = cases.PatientEmpInfoes.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).FirstOrDefault();
+                if (PatientEmpInfo != null)
+                {
+                    BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+                    using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
+                    {
+                        boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(PatientEmpInfo);
+                        caseBO.PatientEmpInfo = boPatientEmpInfo;
+                    }
+                }
+            }
+
+            if (cases.Patient != null)
+            {
+                BO.Patient boPatient = new BO.Patient();
+                using (PatientRepository cmp = new PatientRepository(_context))
+                {
+                    boPatient = cmp.Convert<BO.Patient, Patient>(cases.Patient);
+                    caseBO.Patient = boPatient;
+                }
+            }
+
+            if (cases.CaseCompanyMappings != null)
+            {
+                List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+
+                int OrignatorCompanyId = 0;
+                bool? OrignatorCompanyTypeMedical = null;
+                var casemapIsOriginator = cases.CaseCompanyMappings.Where(p => p.IsOriginator == true
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                   .FirstOrDefault();
+                if (casemapIsOriginator != null)
+                {
+                    using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                    {
+                        boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemapIsOriginator));
+                    }
+
+                    OrignatorCompanyId = casemapIsOriginator.CompanyId;
+                    caseBO.OrignatorCompanyId = casemapIsOriginator.CompanyId;
+                    caseBO.OrignatorCompanyName = (casemapIsOriginator.Company != null) ? casemapIsOriginator.Company.Name : "";
+
+                    if (casemapIsOriginator.Company1 != null && casemapIsOriginator.Company1.CompanyType == 1)
+                    {
+                        OrignatorCompanyTypeMedical = true;
+                        caseBO.MedicalProviderId = casemapIsOriginator.CompanyId;
+                        caseBO.MedicalProviderName = casemapIsOriginator.Company1.Name;
+                    }
+                    else if (casemapIsOriginator.Company1 != null && casemapIsOriginator.Company1.CompanyType == 2)
+                    {
+                        OrignatorCompanyTypeMedical = false;
+                        caseBO.AttorneyProviderId = casemapIsOriginator.CompanyId;
+                        caseBO.AttorneyProviderName = casemapIsOriginator.Company1.Name;                        
+                    }
+
+                    if (casemapIsOriginator.CompanyId == CompanyId)
+                    {
+                        caseBO.OrignatorCaseSource = (casemapIsOriginator.Company != null) ? casemapIsOriginator.Company.Name : "";
+                    }
+                }
+
+                foreach (var casemap in cases.CaseCompanyMappings.Where(p => p.IsOriginator == false
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
+                {
+                    if (casemap != null)
+                    {
+                        using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                        {
+                            boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                        }
+
+                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 2 && OrignatorCompanyTypeMedical != false)
+                        {
+                            caseBO.AttorneyProviderId = casemap.CompanyId;
+                            caseBO.AttorneyProviderName = casemap.Company1.Name;
+                        }
+
+                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 1 && casemap.CompanyId == CompanyId)
+                        {
+                            caseBO.MedicalProviderId = casemap.CompanyId;
+                            caseBO.MedicalProviderName = casemap.Company1.Name;
+                        }
+
+                        if (casemap.CompanyId == CompanyId)
+                        {
+                            caseBO.OrignatorCaseSource = (casemapIsOriginator.Company != null) ? casemapIsOriginator.Company.Name : "";
+                        }
+                    }
+                }
+
+                caseBO.CaseCompanyMappings = boCaseCompanyMapping;
+            }
+
+            if (cases.CompanyCaseConsentApprovals != null)
+            {
+                List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
+                foreach (var casemap in cases.CompanyCaseConsentApprovals)
+                {
+                    if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
+                    {
+                        if (casemap != null)
+                        {
+                            using (CompanyCaseConsentApprovalRepository cmp = new CompanyCaseConsentApprovalRepository(_context))
+                            {
+                                boCompanyCaseConsentApproval.Add(cmp.Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(casemap));
+                            }
+                        }
+                    }
+                }
+                caseBO.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
+            }
+
+            if (cases.CaseCompanyConsentDocuments != null)
+            {
+                List<BO.CaseCompanyConsentDocument> boCaseCompanyConsentDocument = new List<BO.CaseCompanyConsentDocument>();
+
+                foreach (var eachcaseCompanyConsentDocument in cases.CaseCompanyConsentDocuments)
+                {
+                    if (eachcaseCompanyConsentDocument.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.IsDeleted.Value == false))
+                    {
+                        BO.CaseCompanyConsentDocument caseCompanyConsentDocument = new BO.CaseCompanyConsentDocument();
+
+                        caseCompanyConsentDocument.ID = eachcaseCompanyConsentDocument.Id;
+                        caseCompanyConsentDocument.CaseId = eachcaseCompanyConsentDocument.CaseId;
+                        caseCompanyConsentDocument.CompanyId = eachcaseCompanyConsentDocument.CompanyId;
+                        caseCompanyConsentDocument.DocumentName = eachcaseCompanyConsentDocument.DocumentName;
+                        caseCompanyConsentDocument.MidasDocumentId = eachcaseCompanyConsentDocument.MidasDocumentId;
+                        caseCompanyConsentDocument.IsDeleted = eachcaseCompanyConsentDocument.IsDeleted;
+                        caseCompanyConsentDocument.UpdateByUserID = eachcaseCompanyConsentDocument.UpdateUserId;
+                        caseCompanyConsentDocument.CreateByUserID = (int)(eachcaseCompanyConsentDocument.CreateUserId.HasValue == true ? eachcaseCompanyConsentDocument.CreateUserId.Value : 0);
+
+                        if (eachcaseCompanyConsentDocument.MidasDocument != null)
+                        {
+                            if (eachcaseCompanyConsentDocument.MidasDocument.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.MidasDocument.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.MidasDocument.IsDeleted.Value == false))
+                            {
+                                BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+                                boMidasDocument.ID = eachcaseCompanyConsentDocument.Id;
+                                boMidasDocument.ObjectType = eachcaseCompanyConsentDocument.MidasDocument.ObjectType;
+                                boMidasDocument.ObjectId = eachcaseCompanyConsentDocument.MidasDocument.ObjectId;
+                                boMidasDocument.DocumentPath = eachcaseCompanyConsentDocument.MidasDocument.DocumentPath;
+                                boMidasDocument.DocumentName = eachcaseCompanyConsentDocument.MidasDocument.DocumentName;
+                                boMidasDocument.IsDeleted = eachcaseCompanyConsentDocument.MidasDocument.IsDeleted;
+                                boMidasDocument.UpdateByUserID = eachcaseCompanyConsentDocument.MidasDocument.UpdateUserId;
+                                boMidasDocument.CreateByUserID = (int)(eachcaseCompanyConsentDocument.MidasDocument.CreateUserId.HasValue == true ? eachcaseCompanyConsentDocument.MidasDocument.CreateUserId.Value : 0);
+
+                                caseCompanyConsentDocument.MidasDocument = boMidasDocument;
+                            }
+                        }
+                        if (eachcaseCompanyConsentDocument.Company != null)
+                        {
+                            if (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == false || (eachcaseCompanyConsentDocument.Company.IsDeleted.HasValue == true && eachcaseCompanyConsentDocument.Company.IsDeleted.Value == false))
+                            {
+                                BO.Company boCompany = new BO.Company();
+                                boCompany.ID = eachcaseCompanyConsentDocument.Company.id;
+                                boCompany.Name = eachcaseCompanyConsentDocument.Company.Name;
+                                boCompany.TaxID = eachcaseCompanyConsentDocument.Company.TaxID;
+                                boCompany.Status = (BO.GBEnums.AccountStatus)eachcaseCompanyConsentDocument.Company.Status;
+                                boCompany.CompanyType = (BO.GBEnums.CompanyType)eachcaseCompanyConsentDocument.Company.CompanyType;
+
+                                caseCompanyConsentDocument.Company = boCompany;
+                            }
+                        }
+                        boCaseCompanyConsentDocument.Add(caseCompanyConsentDocument);
+                    }
+                }
+
+                caseBO.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
+            }
+
+            if (cases.Referrals != null)
+            {
+                List<BO.Referral> BOListReferral = new List<BO.Referral>();
+                foreach (var eachRefrral in cases.Referrals)
+                {
+                    if (eachRefrral != null)
+                    {
+                        if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
+                        {
+                            BO.Referral referralBO = new BO.Referral();
+
+                            referralBO.ID = eachRefrral.Id;
+                            referralBO.PendingReferralId = eachRefrral.PendingReferralId;
+                            referralBO.FromCompanyId = eachRefrral.FromCompanyId;
+                            referralBO.FromLocationId = eachRefrral.FromLocationId;
+                            referralBO.FromDoctorId = eachRefrral.FromDoctorId;
+                            referralBO.FromUserId = eachRefrral.FromUserId;
+                            referralBO.ForSpecialtyId = eachRefrral.ForSpecialtyId;
+                            referralBO.ForRoomId = eachRefrral.ForRoomId;
+                            referralBO.ForRoomTestId = eachRefrral.ForRoomTestId;
+                            referralBO.ToCompanyId = eachRefrral.ToCompanyId;
+                            referralBO.ToLocationId = eachRefrral.ToLocationId;
+                            referralBO.ToDoctorId = eachRefrral.ToDoctorId;
+                            referralBO.ToRoomId = eachRefrral.ToRoomId;
+                            referralBO.ScheduledPatientVisitId = eachRefrral.ScheduledPatientVisitId;
+                            referralBO.DismissedBy = eachRefrral.DismissedBy;
+                            referralBO.CaseId = eachRefrral.CaseId;
+                            referralBO.IsDeleted = eachRefrral.IsDeleted;
+                            referralBO.CreateByUserID = eachRefrral.CreateByUserID;
+                            referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
+
+                            BOListReferral.Add(referralBO);
+                        }
+                    }
+                }
+
+                caseBO.Referrals = BOListReferral;
+            }
+
+            caseBO.CaseSource = cases.CaseSource;
+
+            if (caseBO.Patient != null && caseBO.Patient.User != null)
+            {
+                caseBO.PatientName = caseBO.Patient.User.FirstName + " " + caseBO.Patient.User.LastName;
+            }
 
             return (T)(object)caseBO;
         }
@@ -275,7 +524,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
                                                 
-                        caseWithUserAndPatient.caseSource = eachCase.caseSource;
+                        caseWithUserAndPatient.caseSource = eachCase.CaseSource;
 
                         caseWithUserAndPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
                         //caseWithUserAndPatient.OrignatorCompanyName = eachCase.CaseCompanyMappings.Where(c => c.IsOriginator = true).Select(c2 => c2.Company.Name).FirstOrDefault();
@@ -388,7 +637,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithPatient.CreateByUserID = eachCase.CreateByUserID;
                         caseWithPatient.UpdateByUserID = eachCase.UpdateByUserID;
                                                                    
-                        caseWithPatient.caseSource = eachCase.caseSource;
+                        caseWithPatient.caseSource = eachCase.CaseSource;
                         caseWithPatient.ClaimFileNumber = eachCase.ClaimFileNumber;
 
                         caseWithPatient.OrignatorCompanyId = eachCase.OrignatorCompanyId;
@@ -481,6 +730,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .FirstOrDefault<Case>();
 
             BO.Case acc_ = Convert<BO.Case, Case>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
+
+        #region Get Case For CompanyId
+        public override object GetCaseForCompanyId(int CaseId, int CompanyId)
+        {
+            var acc = _context.Cases.Include("PatientEmpInfoes")
+                                    .Include("PatientEmpInfoes.AddressInfo")
+                                    .Include("PatientEmpInfoes.ContactInfo")
+                                    .Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
+                                    .Include("CaseCompanyMappings.Company1")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
+                                    .Include("Referrals")
+                                    .Include("Patient")
+                                    .Include("Patient.User")
+                                    .Where(p => p.Id == CaseId
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<Case>();
+
+            BO.Case acc_ = ConvertForCompany<BO.Case, Case>(acc, CompanyId);
 
             if (acc_ == null)
             {
@@ -691,7 +970,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.ClaimFileNumber = IsEditMode == true && caseBO.ClaimFileNumber.HasValue == false ? caseDB.ClaimFileNumber : caseBO.ClaimFileNumber;
                     caseDB.CreateByUserID = IsEditMode == true && caseBO.CreateByUserID == 0 ? caseDB.CreateByUserID : caseBO.CreateByUserID;
                     caseDB.UpdateByUserID = IsEditMode == true && caseBO.UpdateByUserID == 0 ? caseDB.UpdateByUserID : caseBO.UpdateByUserID;
-                    caseDB.CaseSource = IsEditMode == true && caseBO.caseSource == null ? caseDB.CaseSource : caseBO.caseSource;
+                    caseDB.CaseSource = IsEditMode == true && caseBO.CaseSource == null ? caseDB.CaseSource : caseBO.CaseSource;
                     caseDB.Medicare = IsEditMode == true && caseBO.Medicare == null ? caseDB.Medicare : caseBO.Medicare;
                     caseDB.Medicaid = IsEditMode == true && caseBO.Medicaid == null ? caseDB.Medicaid : caseBO.Medicaid;
                     caseDB.SSDisabililtyIncome = IsEditMode == true && caseBO.SSDisabililtyIncome == null ? caseDB.SSDisabililtyIncome : caseBO.SSDisabililtyIncome;
@@ -1821,31 +2100,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .Select(p => new
                                                        {
-                                                           id = p.Company1.id,
-                                                           status = p.Company1.Status,
-                                                           name = p.Company1.Name,
-                                                           companyType = p.Company1.CompanyType,
-                                                           isDeleted = p.Company1.IsDeleted,
+                                                           id = (p.Company1 == null) ? null : (int?)p.Company1.id,
+                                                           status = (p.Company1 == null) ? null : (byte?)p.Company1.Status,
+                                                           name = (p.Company1 == null) ? null : p.Company1.Name,
+                                                           companyType = (p.Company1 == null) ? null : (int?)p.Company1.CompanyType,
+                                                           isDeleted = (p.Company1 == null) ? null : p.Company1.IsDeleted,
 
-                                                           companyType1 = new
+                                                           companyType1 = (p.Company1 != null && p.Company1.CompanyType1 != null) ? new
                                                            {
                                                                id = p.Company1.CompanyType1.id,
                                                                name = p.Company1.CompanyType1.Name,
                                                                isDeleted = p.Company1.CompanyType1.IsDeleted
-                                                           },
-                                                           companyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
+                                                           } : null,
+                                                           companyCaseConsentApproval = (p.CaseId <= 0 || p.Company1 == null) ? null : _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
                                                                                                             && ccca.CompanyId == p.Company1.id
                                                                                                             && (ccca.IsDeleted.HasValue == false || (ccca.IsDeleted.HasValue == true && ccca.IsDeleted.Value == false)))
                                                                                                          .Select(ccca => new
                                                                                                          {
                                                                                                              id = ccca.Id,
                                                                                                              caseId = ccca.CaseId,
-                                                                                                             companyId = ccca. CompanyId,
+                                                                                                             companyId = ccca.CompanyId,
                                                                                                              consentGivenTypeId = ccca.ConsentGivenTypeId,
                                                                                                              isDeleted = ccca.IsDeleted
                                                                                                          })
                                                                                                          .FirstOrDefault(),
-                                                           caseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
+                                                           caseCompanyConsentDocument = (p.CaseId <= 0 || p.Company1 == null) ? null : _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
                                                                                                             && cccd.CompanyId == p.Company1.id
                                                                                                             && (cccd.IsDeleted.HasValue == false || (cccd.IsDeleted.HasValue == true && cccd.IsDeleted.Value == false)))
                                                                                                           .Select(cccd => new
@@ -1868,19 +2147,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .Select(p => new
                                              {
-                                                 id = p.Company1.id,
-                                                 status = p.Company1.Status,
-                                                 name = p.Company1.Name,
-                                                 companyType = p.Company1.CompanyType,
-                                                 isDeleted = p.Company1.IsDeleted,
+                                                 id = (p.Company1 == null) ? null : (int?)p.Company1.id,
+                                                 status = (p.Company1 == null) ? null : (byte?)p.Company1.Status,
+                                                 name = (p.Company1 == null) ? null : p.Company1.Name,
+                                                 companyType = (p.Company1 == null) ? null : (int?)p.Company1.CompanyType,
+                                                 isDeleted = (p.Company1 == null) ? null : p.Company1.IsDeleted,
 
-                                                 companyType1 = new
+                                                 companyType1 = (p.Company1 != null && p.Company1.CompanyType1 != null) ? new
                                                  {
                                                      id = p.Company1.CompanyType1.id,
                                                      name = p.Company1.CompanyType1.Name,
                                                      isDeleted = p.Company1.CompanyType1.IsDeleted
-                                                 },
-                                                 companyCaseConsentApproval = _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
+                                                 } : null,
+                                                 companyCaseConsentApproval = (p.CaseId <= 0 || p.Company1 == null) ? null : _context.CompanyCaseConsentApprovals.Where(ccca => ccca.CaseId == p.CaseId
                                                                                                             && ccca.CompanyId == p.Company1.id
                                                                                                             && (ccca.IsDeleted.HasValue == false || (ccca.IsDeleted.HasValue == true && ccca.IsDeleted.Value == false)))
                                                                                                          .Select(ccca => new
@@ -1892,7 +2171,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                                              isDeleted = ccca.IsDeleted
                                                                                                          })
                                                                                                          .FirstOrDefault(),
-                                                 caseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
+                                                 caseCompanyConsentDocument = (p.CaseId <= 0 || p.Company1 == null) ? null : _context.CaseCompanyConsentDocuments.Where(cccd => cccd.CaseId == p.CaseId
                                                                                                   && cccd.CompanyId == p.Company1.id
                                                                                                   && (cccd.IsDeleted.HasValue == false || (cccd.IsDeleted.HasValue == true && cccd.IsDeleted.Value == false)))
                                                                                                           .Select(cccd => new

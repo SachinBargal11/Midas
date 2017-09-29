@@ -71,5 +71,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage CancelSingleEventOccurrence(HttpRequestMessage request, int PatientVisitId, DateTime CancelEventStart);
         HttpResponseMessage LoginWithUserName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetMasterAndByCaseId(HttpRequestMessage request, int CaseId);
+        HttpResponseMessage GetCaseForCompanyId(HttpRequestMessage request, int CaseId, int CompanyId);
     }
 }

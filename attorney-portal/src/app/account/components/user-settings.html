@@ -61,8 +61,7 @@
                 </form>
             </div>
             <div *ngIf="!doctorRoleFlag">
-                <!--<h3> Staff </h3>-->
-                <h3> General Settings for Attorney </h3>
+                <!-- <h3> General Settings for Attorney </h3> -->
                 <form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
                     <div class="row">
                         <div class="col-md-4">
@@ -73,13 +72,12 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <select formControlName="calendarViewId" [(ngModel)]="calendarViewId" type="text" class="form-control">
-                            <option value="">-Select -</option>
-                            <option value="1">Month View</option>
-                            <option value="2">Week View</option>
-                            <option value="3">Day View</option>
-                            <!--<option value="4">Day List View</option>-->
-                            <!--<option value="5">Week List View</option>-->
-                        </select>
+                                    <option value="1">Month View</option>
+                                    <option value="2">Week View</option>
+                                    <option value="3">Day View</option>
+                                    <!--<option value="4">Day List View</option>-->
+                                    <!--<option value="5">Week List View</option>-->
+                                </select>
                             </div>
                         </div>
                     </div>

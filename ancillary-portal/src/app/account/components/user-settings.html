@@ -2,28 +2,27 @@
     <div class="row">
         <div class="col-lg-8 col-lg-push-2 col-md-12">
             <section class="card">
-                <header class="card-header card-header-lg">
+                <!-- <header class="card-header card-header-lg">
                     User Settings for Ancillary
-                </header>
+                </header> -->
                 <div class="card-block">
                 <!--<h3> General Settings for Staff </h3>-->
                 <form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
                     <div class="row">
                         <div class="col-md-4">
                             <label class="form-label"> Calender view prefference
-                                            <span class="color-red">*</span>
+                                            <!-- <span class="color-red">*</span> -->
                                         </label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <select formControlName="calendarViewId" [(ngModel)]="calendarViewId" type="text" class="form-control">
-                            <option value="">-Select -</option>
-                            <option value="1">Month View</option>
-                            <option value="2">Week View</option>
-                            <option value="3">Day View</option>
-                            <!--<option value="4">Day List View</option>-->
-                            <!--<option value="5">Week List View</option>-->
-                        </select>
+                                    <option value="1">Month View</option>
+                                    <option value="2">Week View</option>
+                                    <option value="3">Day View</option>
+                                    <!--<option value="4">Day List View</option>-->
+                                    <!--<option value="5">Week List View</option>-->
+                                </select>
                             </div>
                         </div>
                     </div>

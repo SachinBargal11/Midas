@@ -31,6 +31,7 @@ export class AddInsuranceComponent implements OnInit {
     insuranceMastersAdress: Address;
     policyCities: any[];
     insuranceCities: any[];
+    eventStartAsDate: Date;
     caseId: number;
     selectedCity = 0;
     isPolicyCitiesLoading = false;
@@ -54,6 +55,8 @@ export class AddInsuranceComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
+
+        this.eventStartAsDate = moment().toDate();
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
         });
@@ -71,9 +74,9 @@ export class AddInsuranceComponent implements OnInit {
             policyNumber: ['', Validators.required],
             policyOwner: ['', Validators.required],
             policyHoldersName: ['', Validators.required],
-            insuranceStartDate: ['', Validators.required],
-            insuranceEndDate: ['', Validators.required],
-            balanceInsuredAmount: ['', Validators.required],
+            insuranceStartDate: [''],
+            insuranceEndDate: [''],
+            balanceInsuredAmount: [''],
             insuranceCompanyCode: [''],
             insuranceMasterId: ['', Validators.required],
             insuranceType: ['', Validators.required],
