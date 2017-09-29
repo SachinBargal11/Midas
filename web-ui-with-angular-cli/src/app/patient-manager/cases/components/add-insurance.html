@@ -60,7 +60,7 @@
                         <label class="form-label">Insurance Start Date
                                 <!--<span class="color-red">*</span>-->
                             </label>
-                        <div disabled class="form-group" [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid">
+                        <div class="form-group" [class.error]="insuranceformControls.insuranceStartDate.touched && !insuranceformControls.insuranceStartDate.valid">
                             <div class='input-group date'>
                                 <p-calendar formControlName="insuranceStartDate" [ngModel]="eventStartAsDate" [readonlyInput]="true" dateFormat="M d, yy"
                                     [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
