@@ -28,6 +28,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getCaseForCompanyId/{caseId}/{companyId}")]
+        public HttpResponseMessage GetCaseForCompanyId(int caseId, int companyId)
+        {
+            return requestHandler.GetCaseForCompanyId(Request, caseId, companyId);
+        }
+
+        [HttpGet]
         [Route("getConsentList/{id}")]
         public HttpResponseMessage GetConsentList(int id)
         {

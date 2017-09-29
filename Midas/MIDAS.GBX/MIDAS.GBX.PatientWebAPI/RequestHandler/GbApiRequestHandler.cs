@@ -944,5 +944,18 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetCaseForCompanyId(HttpRequestMessage request, int CaseId, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetCaseForCompanyId(CaseId, CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

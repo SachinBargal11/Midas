@@ -207,5 +207,6 @@ namespace MIDAS.GBX.DataAccessManager
         object GetStatisticalDataOnCaseByCaseType(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         object GetStatisticalDataOnCaseByInsuranceProvider(DateTime FromDate, DateTime ToDate, int CompanyId, int CaseStatusId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetMedicalProviders(T gbObject);
+        object GetCaseForCompanyId(int CaseId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
     }
 }

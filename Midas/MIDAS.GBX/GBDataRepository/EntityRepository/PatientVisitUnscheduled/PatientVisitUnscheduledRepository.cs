@@ -46,7 +46,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.RoomTestId = PatientVisitUnscheduledDB.RoomTestId;
                 PatientVisitUnscheduledBO.ReferralId = PatientVisitUnscheduledDB.ReferralId;
                 PatientVisitUnscheduledBO.OrignatorCompanyId = PatientVisitUnscheduledDB.OrignatorCompanyId;
-                PatientVisitUnscheduledBO.Status = "Completed";
+                PatientVisitUnscheduledBO.Status = "Complete";
 
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;

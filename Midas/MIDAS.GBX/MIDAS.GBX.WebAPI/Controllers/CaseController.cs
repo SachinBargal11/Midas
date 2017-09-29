@@ -20,13 +20,19 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             requestHandler = new GbApiRequestHandler<Case>();
         }
-
-        // GET: api/Organizations/5
+        
         [HttpGet]
         [Route("Get/{id}")]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getCaseForCompanyId/{caseId}/{companyId}")]
+        public HttpResponseMessage GetCaseForCompanyId(int caseId, int companyId)
+        {
+            return requestHandler.GetCaseForCompanyId(Request, caseId, companyId);
         }
 
         [HttpGet]
