@@ -75,6 +75,10 @@ export class CaseEmployerComponent implements OnInit {
     grade = '';
     datesOutOfSchool = '';
     caseStatusId: number;
+    hourOrYearlyLabel: string;
+    lossOfEarningsLabel: string;
+    accidentAtEmploymentLabel: string;
+
 
     constructor(
         private fb: FormBuilder,
@@ -104,9 +108,8 @@ export class CaseEmployerComponent implements OnInit {
             result.subscribe(
                 (employer: Employer) => {
                     this.employer = employer;
-                    this.hourOrYearly = this.employer.hourOrYearly;
-                    this.lossOfEarnings = this.employer.lossOfEarnings;
-                    this.accidentAtEmployment = this.employer.accidentAtEmployment;
+                    this.getCaseResult();
+                    
                     this.currentEmployer = this.employer;
                     //this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
                     this.title = this.currentEmployer.id ? 'Edit Employment/School' : 'Add Employment/School';
@@ -148,18 +151,6 @@ export class CaseEmployerComponent implements OnInit {
                     this._progressBarService.hide();
                 });
 
-            let caseResult = this._casesStore.fetchCaseById(this.caseId);
-            caseResult.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
         });
 
         let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
@@ -219,6 +210,29 @@ export class CaseEmployerComponent implements OnInit {
         });
 
         this.employerformControls = this.employerform.controls;
+    }
+    getCaseResult(){        
+            let caseResult = this._casesStore.fetchCaseById(this.caseId);
+            caseResult.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                    if (this.caseStatusId == 1) {
+                        this.hourOrYearly = this.employer.hourOrYearly;
+                        this.lossOfEarnings = this.employer.lossOfEarnings;
+                        this.accidentAtEmployment = this.employer.accidentAtEmployment;
+                    } else {
+                        this.hourOrYearlyLabel = String(this.employer.hourOrYearly) == '1' ? 'Hourly' : 'Yearly';
+                        this.lossOfEarningsLabel = String(this.employer.lossOfEarnings) == '1' ? 'Yes' : 'No';
+                        this.accidentAtEmploymentLabel = String(this.employer.accidentAtEmployment) == '1' ? 'Yes' : 'No';
+                    }
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
     }
 
     ngOnInit() {

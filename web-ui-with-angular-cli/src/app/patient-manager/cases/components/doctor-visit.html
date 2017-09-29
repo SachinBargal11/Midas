@@ -20,8 +20,8 @@
     </div>
 </div>
 
-<p-dataTable [value]="allVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true">
+<p-dataTable [value]="allVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gbb" [responsive]="true">
     <header>Patient Doctors Visits List</header>
     <p-column selectionMode="multiple"></p-column>
     <!--<p-column field="eventStart" header="Visit Date" [sortable]="true">
@@ -47,16 +47,27 @@
     <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>-->
     <p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a *ngIf="visit.eventStart && visit.visitStatusLabel != 'Completed'"(click)="showDialog(visit)">
+            <a *ngIf="visit.isPatientVisitType" (click)="showDialog(visit)">
             {{visit.eventStart | dateTimeFormat}}
         </a>
-           <a *ngIf="visit.eventStart && visit.visitStatusLabel == 'Completed'"(click)="showDialog(visit)">
+            <a *ngIf="visit.isUnscheduledVisitType" (click)="showDialog(visit)">
             {{visit.eventStart.format('MMMM Do YYYY')}}
         </a>
         </ng-template>
     </p-column>
 
     <p-column field="locationName" header="Location" [sortable]="true"></p-column>
+
+    <p-column field="visitType" header="Visit Type" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a *ngIf="visit.isPatientVisitType">
+            Patient Visit
+        </a>
+            <a *ngIf="visit.isUnscheduledVisitType">
+            Unscheduled Visit
+        </a>
+        </ng-template>
+    </p-column>
 
     <p-column field="doctorName" header="Treating Doctor" [sortable]="true"></p-column>
 
@@ -99,7 +110,7 @@
     [(visible)]="unscheduledVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
     [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="unscheduledVisitDialogVisible && caseId && patientId">
-        <unscheduled-visit  (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
+        <unscheduled-visit (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
     </div>
 </p-dialog>
 
