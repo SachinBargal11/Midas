@@ -14,6 +14,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { environment } from '../../../../environments/environment';
 import { GeneralSetting } from '../../models/general-settings';
 import { GeneralSettingStore } from '../../stores/general-settings-store';
+import { MedicalProviderMasterStore } from '../../stores/medical-provider-master-store';
 
 @Component({
     selector: 'general-settings',
@@ -22,12 +23,15 @@ import { GeneralSettingStore } from '../../stores/general-settings-store';
 
 export class AccountGeneralSettingComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
+    displayToken: boolean = false;
+    display: boolean = false;
     settingForm: FormGroup;
     settingFormControls;
     isSaveProgress = false;
     isTimeSlot = '30';
     companyId: number = this._sessionStore.session.currentCompany.id;
     generalSetting:GeneralSetting;
+    otp: string;
 
     constructor(
         private _notificationsService: NotificationsService,
@@ -37,7 +41,8 @@ export class AccountGeneralSettingComponent implements OnInit {
         private _generalSettingStore: GeneralSettingStore,
         public _route: ActivatedRoute,
         private _router: Router,
-        private _notificationsStore: NotificationsStore
+        private _notificationsStore: NotificationsStore,
+        private _medicalProviderMasterStore: MedicalProviderMasterStore,
     ) {
         this.settingForm = this.fb.group({
             roomTimeSlot: ['', Validators.required]
@@ -57,6 +62,30 @@ export class AccountGeneralSettingComponent implements OnInit {
 
 
     }
+
+    showDialog() {
+        this.generateToken();
+        this.displayToken = true;
+    }
+
+    showHelpDialog() {
+        this.display = true;
+    }
+
+    generateToken() {
+        this._progressBarService.show();
+        this._medicalProviderMasterStore.generateToken()
+            .subscribe((data: any) => {
+                this.otp = data.otp;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
 
     save() {
         this.isSaveProgress = true;

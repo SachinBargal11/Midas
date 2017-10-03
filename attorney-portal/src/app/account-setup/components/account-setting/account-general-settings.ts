@@ -54,7 +54,7 @@ export class AccountGeneralSettingComponent implements OnInit {
         this.displayToken = true;
     }
 
-    showHelpDialog() {
+     showHelpDialog() {
         this.display = true;
     }
 

@@ -45,7 +45,7 @@ import { EditMedicalProviderComponent } from './components/medical-provider-mast
 // import { SearchPreferedProvidersComponent } from './components/medical-provider-master/search-preferred-providers';
 
 import { AccountSettingShellComponent } from './components/account-setting/account-setting-shell';
-import { ProcedureCodeComponent } from './components/account-setting/procedure-code-master';
+import { AccountGeneralSettingComponent } from './components/account-setting/account-general-settings'
 import { DocumentTypeComponent } from './components/account-setting/document-type';
 import { RoomsStore } from '../medical-provider/rooms/stores/rooms-store';
 import { RoomsService } from '../medical-provider/rooms/services/rooms-service';
@@ -84,7 +84,7 @@ import { DocumentTypeService } from './services/document-type-service';
         // SearchPreferedProvidersComponent,
         EditMedicalProviderComponent,
         AccountSettingShellComponent,
-        ProcedureCodeComponent,
+        AccountGeneralSettingComponent,
         DocumentTypeComponent
 
     ],
