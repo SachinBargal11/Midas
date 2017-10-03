@@ -121,7 +121,7 @@
             <div class="col-lg-4">
                 <label class="form-label">Attorney                              
                             </label>
-                <div class="form-group">
+                <!--<div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
                     <select [(ngModel)]="currentAttorneyId" formControlName="attorneyId" type="text" (change)="attorneyChange($event)" class="form-control"
                         placeholder="" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
                             <option value="0">-Select -</option>
@@ -132,12 +132,25 @@
                             <li *ngIf="caseformControls.attorneyId.hasError('required')">Attorney is required.</li>
                         </ul>
                     </div>
+                </div>-->
+                <div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group" [class.error]="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                    <p-dropdown [options]="attorneys" [(ngModel)]="currentAttorneyId" formControlName="attorneyId" (onChange)="attorneyChange($event)" [style]="{'width':'100%'}"
+                        filter="filter"></p-dropdown>
+                    <div class='error-list' *ngIf="caseformControls.attorneyId.touched && !caseformControls.attorneyId.valid">
+                        <span class="color-red">Attorney is required.</span>
+                    </div>
                 </div>
+                <!--<div>-->
+                <div *ngIf="!caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
+                    <label>{{caseDetail.attorneyProviderName}}
+                 </label>
+                </div>
+                <!--</div>-->
             </div>
             <div class="col-lg-4">
                 <label class="form-label"> Case Source
                             </label>
-                <div class="form-group">
+                <div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
                     <input formControlName="caseSource" (change)="casesourceChange($event)" [ngModel]="caseDetail.caseSource" type="text" class="form-control"
                         placeholder="" [class.error]="!caseformControls.caseSource.valid">
                     <!--<input *ngIf="caseDetail.attorneyId" formControlName="caseSource" (change)="casesourceChange($event)" type="text" class="form-control"
@@ -148,6 +161,10 @@
                             <li *ngIf="caseformControls.caseSource.hasError('required')">Case Source is required.</li>
                         </ul>
                     </div>
+                </div>
+                <div *ngIf="!caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
+                    <label>{{caseDetail.orignatorCaseSource}}
+                 </label>
                 </div>
             </div>
         </div>
@@ -175,20 +192,20 @@
 </div>
 
 
-<div *ngIf="readOnlyCaseDetail && caseStatusId === 2">
+<div *ngIf="caseDetail && caseStatusId === 2">
     <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Patient Name
                             </label>
             <div class="form-group">
-                <label>{{readOnlyCaseDetail.patient}}
+                <label>{{caseDetail.patientName}}
                 </label>
             </div>
         </div>
         <div class="col-lg-4">
             <label class="form-label"> Case Type</label>
             <div class="form-group">
-                <label>{{readOnlyCaseDetail.caseTypeText}}
+                <label>{{caseDetail.caseTypeLabel}}
                         </label>
             </div>
         </div>
@@ -196,7 +213,7 @@
             <label class="form-label"> Case Status
                             </label>
             <div class="form-group">
-                <label>{{readOnlyCaseDetail.caseStatusText}}
+                <label>{{caseDetail.caseStatusLabel}}
                         </label>
             </div>
         </div>
@@ -206,7 +223,7 @@
             <label class="form-label"> Carrier Case Number
                             </label>
             <div class="form-group">
-                <label>{{readOnlyCaseDetail.carrierCaseNo}}
+                <label>{{caseDetail.carrierCaseNo}}
                         </label>
             </div>
         </div>
@@ -214,15 +231,19 @@
             <label class="form-label">Attorney                              
                             </label>
             <div class="form-group">
-                <label>{{readOnlyCaseDetail.attorneyProvider}}
+                <label>{{caseDetail.attorneyProviderName}}
                         </label>
             </div>
         </div>
         <div class="col-lg-4">
             <label class="form-label"> Case Source
                             </label>
-            <div class="form-group">
-                <label>{{readOnlyCaseDetail.caseSource}}
+            <div *ngIf="caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
+                <label>{{caseDetail.caseSource}}
+                 </label>
+            </div>
+            <div *ngIf="!caseDetail.isSessionCompany(sessionStore.session.currentCompany.id)" class="form-group">
+                <label>{{caseDetail.orignatorCaseSource}}
                  </label>
             </div>
         </div>
@@ -232,7 +253,7 @@
             <label class="form-label"> Claim Number
                             </label>
             <div class="form-group">
-                <label>{{readOnlyCaseDetail.claimFileNumber}}
+                <label>{{caseDetail.claimFileNumber}}
                  </label>
             </div>
         </div>

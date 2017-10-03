@@ -38,10 +38,11 @@ export class AddInsuranceComponent implements OnInit {
     isInsuranceCitiesLoading = false;
     // msgs: Message[];
     uploadedFiles: any[] = [];
-
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
+    insuranceMasterId: number = 0;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -89,12 +90,12 @@ export class AddInsuranceComponent implements OnInit {
             policyCountry: [''],
             policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
             policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            policyHomePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
-            policyWorkPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            policyHomePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            policyWorkPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             policyFaxNo: [''],
-            policyOfficeExtension:['', [AppValidators.numberValidator,Validators.maxLength(5)]],
-            policyAlternateEmail:['', [ AppValidators.emailValidator]],
-            policyPreferredCommunication:[''],
+            policyOfficeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
+            policyAlternateEmail: ['', [AppValidators.emailValidator]],
+            policyPreferredCommunication: [''],
             address: [''],
             address2: [''],
             state: [''],
@@ -103,11 +104,11 @@ export class AddInsuranceComponent implements OnInit {
             country: [''],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
-            workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+            homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+            workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
             faxNo: [''],
-            alternateEmail:  ['', [AppValidators.emailValidator]],
-            officeExtension: ['', [AppValidators.numberValidator,Validators.maxLength(5)]],
+            alternateEmail: ['', [AppValidators.emailValidator]],
+            officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
             preferredCommunication: ['']
         });
 
@@ -115,7 +116,7 @@ export class AddInsuranceComponent implements OnInit {
     }
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => 
+            .subscribe(states =>
             // this.states = states);
             {
                 let defaultLabel: any[] = [{
@@ -133,36 +134,55 @@ export class AddInsuranceComponent implements OnInit {
             (error) => {
             },
             () => {
-                
+
             });
-            
+
         this._insuranceStore.getInsurancesMasterByCompanyId()
-            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
+            .subscribe((insuranceMasters: InsuranceMaster[]) => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Insurance Company-',
+                    value: ''
+                }]
+                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
+                    return {
+                        label: `${currentInsuranceMaster.companyName}`,
+                        value: currentInsuranceMaster.id
+                    };
+                })
+                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
     }
 
     selectInsurance(event) {
         // this.selectedInsurance = 0;
-        let currentInsurance: number = parseInt(event.target.value);
+        let currentInsurance: number = parseInt(event.value);
         this.loadInsuranceMasterAddress(currentInsurance);
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
         if (currentInsurance) {
-        this._insuranceStore.getInsuranceMasterById(currentInsurance)
-            .subscribe(
-            (insuranceMaster) => {
-                this.insuranceMaster = insuranceMaster;
-                this.insuranceMastersAdress = insuranceMaster.Address
-            });
+            this._insuranceStore.getInsuranceMasterById(currentInsurance)
+                .subscribe(
+                (insuranceMaster) => {
+                    this.insuranceMaster = insuranceMaster;
+                    this.insuranceMastersAdress = insuranceMaster.Address
+                });
         } else {
             this.insuranceMaster = null;
             this.insuranceMastersAdress = null;
         }
     }
 
-      onUpload(event) {
+    onUpload(event) {
 
-        for(let file of event.files) {
+        for (let file of event.files) {
             this.uploadedFiles.push(file);
         }
 

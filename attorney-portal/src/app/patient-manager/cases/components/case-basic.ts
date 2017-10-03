@@ -31,9 +31,9 @@ import { MedicalProviderMaster } from '../../../account-setup/models/medical-pro
 })
 
 export class CaseBasicComponent implements OnInit {
-    medicare:  string;
-    medicaid:  string;
-    ssdisabililtyIncome:string;
+    medicare: string;
+    medicaid: string;
+    ssdisabililtyIncome: string;
     caseDetail: Case;
     caseform: FormGroup;
     caseformControls;
@@ -49,6 +49,10 @@ export class CaseBasicComponent implements OnInit {
     // transportation: any;
     allProviders: MedicalProviderMaster[];
     attorneyId: number = 0;
+    providerId: number = 0;
+    medicalProviderId: number;
+    companyId: number;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -65,6 +69,7 @@ export class CaseBasicComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+        this.companyId = sessionStore.session.currentCompany.id;
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
@@ -76,7 +81,8 @@ export class CaseBasicComponent implements OnInit {
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
             let fetchMedicalProviders = this._medicalProviderMasterStore.getAllPreferredMedicalProviders();
 
-            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+            // let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+            let fetchCaseDetail = this._casesStore.getCaseForCaseIdAndCompanyId(this.caseId, this.companyId);
             Observable.forkJoin([fetchPatient, fetchEmployer, fetchMedicalProviders, fetchCaseDetail])
                 .subscribe(
                 (results) => {
@@ -88,7 +94,20 @@ export class CaseBasicComponent implements OnInit {
                     this.caseDetail = results[3];
                     this.medicaid = this.caseDetail.medicaid ? '1' : '0';
                     this.medicare = this.caseDetail.medicare ? '1' : '0';
+                    this.medicalProviderId = this.caseDetail.medicalProviderId;
                     this.ssdisabililtyIncome = this.caseDetail.ssdisabililtyIncome ? '1' : '0';
+                    let defaultLabel: any[] = [{
+                        label: '-Select Provider-',
+                        value: '0'
+                    }]
+                    let allProvider = _.map(this.allProviders, (currentProvider: MedicalProviderMaster) => {
+                        return {
+                            label: `${currentProvider.prefferedProvider.name}`,
+                            value: currentProvider.prefferedProvider.id
+                        };
+                    })
+                    this.allProviders = _.union(defaultLabel, allProvider);
+                },
 
                     // if (this.caseDetail.createByUserID != sessionStore.session.account.user.id) {
                     //     this.caseform.get("caseSource").disable();
@@ -115,142 +134,141 @@ export class CaseBasicComponent implements OnInit {
                     //         this.caseform.get("attorneyId").enable();
                     //     }
                     // }
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
-        this.caseform = this.fb.group({
-            // caseName: [''],
-            patientId: [{ value: '', disabled: true }],
-            caseTypeId: ['', Validators.required],
-            carrierCaseNo: [''],
-            // locationId: ['', Validators.required],
-            // patientEmpInfoId: ['', Validators.required],
-            caseStatusId: ['', Validators.required],
-            providerId: [''],
-            caseSource: [''],
-            claimNumber: [''],
-            medicare: [''],
-            medicaid: [''],
-            ssdisabililtyIncome: ['']
-        });
-
-        this.caseformControls = this.caseform.controls;
-    }
-
-    ngOnInit() {
-    }
-    attorneyChange(event) {
-        this.attorneyId = parseInt(event.target.value);
-        // if (this.attorneyId > 0) {
-        //     this.caseform.get("caseSource").disable();
-        // }
-        // else {
-        //     this.caseform.get("caseSource").enable();
-        // }
-    }
-
-    casesourceChange(event) {
-        let CaseSource: string = event.target.value;
-        // if (CaseSource != "") {
-        //     this.caseform.get("attorneyId").disable();
-        // }
-        // else {
-        //     this.caseform.get("attorneyId").enable();
-        // }
-    }
-
-    saveCase() {
-        this.isSaveProgress = true;
-        let caseFormValues = this.caseform.value;
-        let result;
-        let caseDetailJS = this.caseDetail.toJS();
-        let caseDetail: Case = new Case(_.extend(caseDetailJS, {
-            // caseName: caseFormValues.caseName,
-            id: this.caseId,
-            patientId: this.patientId,
-            caseTypeId: caseFormValues.caseTypeId,
-            carrierCaseNo: caseFormValues.carrierCaseNo,
-            // locationId: parseInt(caseFormValues.locationId, 10),
-            patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
-            caseStatusId: caseFormValues.caseStatusId,
-            attorneyId: caseFormValues.providerId,
-            caseStatus: caseFormValues.caseStatusId,
-            caseSource: caseFormValues.caseSource,
-            claimFileNumber: caseFormValues.claimNumber,
-            updateByUserID: this.sessionStore.session.account.user.id,
-            updateDate: moment(),
-            createdByCompanyId: this.sessionStore.session.currentCompany.id,
-            medicare: caseFormValues.medicare  == '1'? true : false,
-            medicaid: caseFormValues.medicaid  == '1'? true : false,
-            ssdisabililtyIncome: caseFormValues.ssdisabililtyIncome == '1'? true : false,
-        }));
-
-        this._progressBarService.show();
-        result = this._casesStore.updateCase(caseDetail);
-        result.subscribe(
-            (response) => {
-                if (this.attorneyId > 0) {
-                    let result1 = this._patientStore.assignPatientToMedicalProvider(this.patientId, this.caseId, this.attorneyId);
-                    result1.subscribe(
-                        (response) => {
-                            let notification = new Notification({
-                                'title': 'Case updated successfully!',
-                                'type': 'SUCCESS',
-                                'createdAt': moment()
-                            });
-                            this._notificationsStore.addNotification(notification);
-                            this._router.navigate(['../'], { relativeTo: this._route });
-                        },
-                        (error) => {
-                            let errString = 'Unable to update case.';
-                            let notification = new Notification({
-                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                'type': 'ERROR',
-                                'createdAt': moment()
-                            });
-                            this.isSaveProgress = false;
-                            this._notificationsStore.addNotification(notification);
-                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            this._progressBarService.hide();
-                        },
-                        () => {
-                            this.isSaveProgress = false;
-                            this._progressBarService.hide();
-                        });
-                }
-
-                let notification = new Notification({
-                    'title': 'Case updated successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['../../'], { relativeTo: this._route });
-                this._notificationsService.success('Success!', 'Case updated successfully');
-            },
             (error) => {
-                let errString = 'Unable to update case.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._router.navigate(['../'], { relativeTo: this._route });
                 this._progressBarService.hide();
             },
             () => {
-                this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
+    });
+        this.caseform = this.fb.group({
+    // caseName: [''],
+    patientId: [{ value: '', disabled: true }],
+    caseTypeId: ['', Validators.required],
+    carrierCaseNo: [''],
+    // locationId: ['', Validators.required],
+    // patientEmpInfoId: ['', Validators.required],
+    caseStatusId: ['', Validators.required],
+    providerId: [''],
+    caseSource: [''],
+    claimNumber: [''],
+    medicare: [''],
+    medicaid: [''],
+    ssdisabililtyIncome: ['']
+});
 
+this.caseformControls = this.caseform.controls;
     }
+
+ngOnInit() {
+}
+providerChange(event) {
+    this.providerId = parseInt(event.value);
+    // if (this.attorneyId > 0) {
+    //     this.caseform.get("caseSource").disable();
+    // }
+    // else {
+    //     this.caseform.get("caseSource").enable();
+    // }
+}
+
+casesourceChange(event) {
+    let CaseSource: string = event.target.value;
+    // if (CaseSource != "") {
+    //     this.caseform.get("attorneyId").disable();
+    // }
+    // else {
+    //     this.caseform.get("attorneyId").enable();
+    // }
+}
+
+saveCase() {
+    this.isSaveProgress = true;
+    let caseFormValues = this.caseform.value;
+    let result;
+    let caseDetailJS = this.caseDetail.toJS();
+    let caseDetail: Case = new Case(_.extend(caseDetailJS, {
+        // caseName: caseFormValues.caseName,
+        id: this.caseId,
+        patientId: this.patientId,
+        caseTypeId: caseFormValues.caseTypeId,
+        carrierCaseNo: caseFormValues.carrierCaseNo,
+        // locationId: parseInt(caseFormValues.locationId, 10),
+        patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
+        caseStatusId: caseFormValues.caseStatusId,
+        attorneyId: caseFormValues.providerId,
+        caseStatus: caseFormValues.caseStatusId,
+        caseSource: caseFormValues.caseSource,
+        claimFileNumber: caseFormValues.claimNumber,
+        updateByUserID: this.sessionStore.session.account.user.id,
+        updateDate: moment(),
+        createdByCompanyId: this.sessionStore.session.currentCompany.id,
+        medicare: caseFormValues.medicare == '1' ? true : false,
+        medicaid: caseFormValues.medicaid == '1' ? true : false,
+        ssdisabililtyIncome: caseFormValues.ssdisabililtyIncome == '1' ? true : false,
+    }));
+
+    this._progressBarService.show();
+    result = this._casesStore.updateCase(caseDetail);
+    result.subscribe(
+        (response) => {
+            if (this.attorneyId > 0) {
+                let result1 = this._patientStore.assignPatientToMedicalProvider(this.patientId, this.caseId, this.attorneyId);
+                result1.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Case updated successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this._router.navigate(['../'], { relativeTo: this._route });
+                    },
+                    (error) => {
+                        let errString = 'Unable to update case.';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.isSaveProgress = false;
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                        this._progressBarService.hide();
+                    },
+                    () => {
+                        this.isSaveProgress = false;
+                        this._progressBarService.hide();
+                    });
+            }
+
+            let notification = new Notification({
+                'title': 'Case updated successfully!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            // this._router.navigate(['../../'], { relativeTo: this._route });
+            this._notificationsService.success('Success!', 'Case updated successfully');
+        },
+        (error) => {
+            let errString = 'Unable to update case.';
+            let notification = new Notification({
+                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this.isSaveProgress = false;
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            this._progressBarService.hide();
+        },
+        () => {
+            this.isSaveProgress = false;
+            this._progressBarService.hide();
+        });
+
+}
 
 }

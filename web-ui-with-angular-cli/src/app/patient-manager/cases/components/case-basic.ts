@@ -65,7 +65,7 @@ export class CaseBasicComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef,
         private confirmationService: ConfirmationService,
-    ) {      
+    ) {
         this.companyId = sessionStore.session.currentCompany.id;
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -77,10 +77,11 @@ export class CaseBasicComponent implements OnInit {
             let fetchlocations = this._locationsStore.getLocations();
             let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
             let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
-            let fetchCaseDetail = this._casesStore.caseGetById(this.caseId);
-            let fetchReadOnlyCaseDetail = this._casesStore.getCaseReadOnly(this.caseId, this.companyId);
+            // let fetchCaseDetail = this._casesStore.caseGetById(this.caseId);
+            let fetchCaseDetail = this._casesStore.getCaseForCaseIdAndCompanyId(this.caseId, this.companyId);
+            // let fetchReadOnlyCaseDetail = this._casesStore.getCaseReadOnly(this.caseId, this.companyId);
 
-            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail,fetchReadOnlyCaseDetail])
+            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
                 (results) => {
                     // let matchingAttorneys: Attorney[] = _.filter(results[3], (currentAttorney: Attorney) => {
@@ -92,47 +93,65 @@ export class CaseBasicComponent implements OnInit {
                     this.employer = results[2];
                     this.attorneys = results[3];
                     this.caseDetail = results[4];
-                    this.readOnlyCaseDetail = results[5];
+                    // this.readOnlyCaseDetail = results[5];
                     this.currentAttorneyId = this.caseDetail.attorneyProviderId;
                     this.caseStatusId = this.caseDetail.caseStatusId;
-                    // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
-
-                    // if (this.caseDetail.attorneyId != null) {
-                    //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
-                    //         // this.caseDetail.caseSource = "";
-                    //         this.caseform.get("caseSource").disable();
-
-                    //     }
-                    //     else {
-                    //         this.caseform.get("caseSource").enable();
-                    //     }
-                    // }
-                    // else {
-                    //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
-                    //         this.caseform.get("attorneyId").disable();
-                    //     }
-                    //     else {
-                    //         this.caseform.get("attorneyId").enable();
-                    //     }
-                    // }
-                    // if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
-                    //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
-                    //         this.caseform.get("attorneyId").disable();
-                    //     }
-                    //     else {
-                    //         this.caseform.get("attorneyId").enable();
-                    //     }
-                    // }
-
+                    let defaultLabel: any[] = [{
+                        label: '-Select Attorney-',
+                        value: '0'
+                    }]
+                    let attorney = _.map(this.attorneys, (currentAttorney: Attorney) => {
+                        return {
+                            label: `${currentAttorney.prefferedAttorney.name}`,
+                            value: currentAttorney.prefferedAttorney.id
+                        };
+                    })
+                    this.attorneys = _.union(defaultLabel, attorney);
                 },
                 (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
                     this._progressBarService.hide();
                 });
-        });
+            // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
+
+            // if (this.caseDetail.attorneyId != null) {
+            //     if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+            //         // this.caseDetail.caseSource = "";
+            //         this.caseform.get("caseSource").disable();
+
+            //     }
+            //     else {
+            //         this.caseform.get("caseSource").enable();
+            //     }
+            // }
+            // else {
+            //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+            //         this.caseform.get("attorneyId").disable();
+            //     }
+            //     else {
+            //         this.caseform.get("attorneyId").enable();
+            //     }
+            // }
+            // if (this.caseDetail.attorneyId != null && this.caseDetail.attorneyId > 0) {
+            //     if (this.caseDetail.caseSource != null && this.caseDetail.caseSource != "") {
+            //         this.caseform.get("attorneyId").disable();
+            //     }
+            //     else {
+            //         this.caseform.get("attorneyId").enable();
+            //     }
+            // }
+
+        },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
         this.caseform = this.fb.group({
             // caseName: [''],
             patientId: [{ value: '', disabled: true }],
@@ -143,7 +162,7 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
             caseSource: [''],
-            claimNumber:['']
+            claimNumber: ['']
             // transportation: [1, Validators.required],
         });
 
@@ -154,7 +173,7 @@ export class CaseBasicComponent implements OnInit {
     }
 
     attorneyChange(event) {
-        this.attorneyId = parseInt(event.target.value);
+        this.attorneyId = parseInt(event.value);
         // if (this.attorneyId > 0) {
         //     this.caseform.get("caseSource").disable();
         // }
@@ -162,35 +181,35 @@ export class CaseBasicComponent implements OnInit {
         //     this.caseform.get("caseSource").enable();
         // }
         if (this.caseDetail.attorneyProviderId != 0) {
-            if (this.attorneyId == 0){
+            if (this.attorneyId == 0) {
                 this.confirmationService.confirm({
-                message: 'Removing attorney from a case will revoke all the permissions from this assigned attorney.Please confirm if you want to proceed?',
-                header: 'Change Confirmation',
-                icon: 'fa fa-trash',
-                accept: () => {
-                    this.currentAttorneyId = this.attorneyId;
-                },
-                reject: () => {
-                    this.currentAttorneyId = this.caseDetail.attorneyProviderId;
-                }
-            });
-        }
-        else
-        this.confirmationService.confirm({
-                message: 'Changing attorney from a case will revoke all the permissions from old assigned attorney.Please confirm if you want to proceed?',
-                header: 'Change Confirmation',
-                icon: 'fa fa-trash',
-                accept: () => {
-                    this.currentAttorneyId = this.attorneyId;
-                },
-                reject: () => {
-                    this.currentAttorneyId = this.caseDetail.attorneyProviderId;
-                }
-            });
+                    message: 'Removing attorney from a case will revoke all the permissions from this assigned attorney.Please confirm if you want to proceed?',
+                    header: 'Change Confirmation',
+                    icon: 'fa fa-trash',
+                    accept: () => {
+                        this.currentAttorneyId = this.attorneyId;
+                    },
+                    reject: () => {
+                        this.currentAttorneyId = this.caseDetail.attorneyProviderId;
+                    }
+                });
+            }
+            else
+                this.confirmationService.confirm({
+                    message: 'Changing attorney from a case will revoke all the permissions from old assigned attorney.Please confirm if you want to proceed?',
+                    header: 'Change Confirmation',
+                    icon: 'fa fa-trash',
+                    accept: () => {
+                        this.currentAttorneyId = this.attorneyId;
+                    },
+                    reject: () => {
+                        this.currentAttorneyId = this.caseDetail.attorneyProviderId;
+                    }
+                });
         }
         else {
             this.attorneyId = parseInt(event.target.value);
-        }    
+        }
     }
 
     casesourceChange(event) {

@@ -66,13 +66,18 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource,
                 claimFileNumber: data.claimFileNumber,
                 createdByCompanyId: data.createdByCompanyId,
+                attorneyProviderId: data.attorneyProviderId,
+                attorneyProviderName: data.attorneyProviderName,
+                medicalProviderId: data.medicalProviderId,
+                medicalProviderName: data.medicalProviderName,
                 orignatorCompanyId: data.orignatorCompanyId,
                 orignatorCompanyName: data.orignatorCompanyName,
-                attorneyProviderId: data.attorneyProviderId,
-                medicalProviderId: data.medicalProviderId
+                caseSource: data.caseSource,
+                orignatorCaseSource: data.orignatorCaseSource,
+                currentCompanyId: data.currentCompanyId,
+                patientName: data.patientName,
                 // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
@@ -137,13 +142,18 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource,
                 claimFileNumber: data.claimFileNumber,
                 createdByCompanyId: data.createdByCompanyId,
+                attorneyProviderId: data.attorneyProviderId,
+                attorneyProviderName: data.attorneyProviderName,
+                medicalProviderId: data.medicalProviderId,
+                medicalProviderName: data.medicalProviderName,
                 orignatorCompanyId: data.orignatorCompanyId,
                 orignatorCompanyName: data.orignatorCompanyName,
-                attorneyProviderId: data.attorneyProviderId,
-                medicalProviderId: data.medicalProviderId
+                caseSource: data.caseSource,
+                orignatorCaseSource: data.orignatorCaseSource,
+                currentCompanyId: data.currentCompanyId,
+                patientName: data.patientName,
                 // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
 
 

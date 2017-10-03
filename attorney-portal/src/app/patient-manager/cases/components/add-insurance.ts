@@ -137,12 +137,31 @@ export class AddInsuranceComponent implements OnInit {
             });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
-            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
+            // .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
+            .subscribe((insuranceMasters: InsuranceMaster[]) => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Insurance Company-',
+                    value: ''
+                }]
+                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
+                    return {
+                        label: `${currentInsuranceMaster.companyName}`,
+                        value: currentInsuranceMaster.id
+                    };
+                })
+                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     selectInsurance(event) {
         // this.selectedInsurance = 0;
-        let currentInsurance: number = parseInt(event.target.value);
+        let currentInsurance: number = parseInt(event.value);
         this.loadInsuranceMasterAddress(currentInsurance);
     }
 

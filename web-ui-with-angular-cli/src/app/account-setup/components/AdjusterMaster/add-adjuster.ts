@@ -1,10 +1,10 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -15,6 +15,8 @@ import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { Adjuster } from '../../models/adjuster';
 import { AdjusterMasterStore } from '../../stores/adjuster-store';
+import { InsuranceMaster } from '../../../patient-manager/patients/models/insurance-master';
+
 // import { PatientsStore } from '../stores/PatientsStore';
 import * as _ from 'underscore';
 
@@ -31,14 +33,15 @@ export class AddAdjusterComponent implements OnInit {
     patientId: number;
     selectedCity = 0;
     isadjusterCitiesLoading = false;
-
     adjusterform: FormGroup;
     adjusterformControls;
     isSaveProgress = false;
+    insuranceMasters: InsuranceMaster[];
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
-        public  _route: ActivatedRoute,
+        public _route: ActivatedRoute,
         private _statesStore: StatesStore,
         private _insuranceStore: InsuranceStore,
         private _notificationsStore: NotificationsStore,
@@ -50,7 +53,7 @@ export class AddAdjusterComponent implements OnInit {
         private _elRef: ElementRef
     ) {
 
-         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._router.navigate(['/account-setup/adjuster']);
         });
 
@@ -58,25 +61,25 @@ export class AddAdjusterComponent implements OnInit {
             this.patientId = parseInt(routeParams.patientId);
         });
         this.adjusterform = this.fb.group({
-                firstname: ['', Validators.required],
-                middlename: [''],
-                lastname: ['', Validators.required],
-                adjusterInsuranceMaster: ['', Validators.required],
-                adjusterAddress: ['', Validators.required],
-                adjusterAddress2: [''],
-                adjusterState: [''],
-                adjusterCity: [''],
-                adjusterZipcode: [''],
-                adjusterCountry: [''],
-                adjusterEmail: ['', [Validators.required, AppValidators.emailValidator]],
-                adjusterCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                adjusterHomePhone: [''],
-                adjusterWorkPhone: [''],
-                adjusterFaxNo: [''],
-                adjusteralternateEmail:  ['', [AppValidators.emailValidator]],
-                adjusterofficeExtension: [''],
-                adjusterpreferredCommunication: ['']
-            });
+            firstname: ['', Validators.required],
+            middlename: [''],
+            lastname: ['', Validators.required],
+            adjusterInsuranceMaster: ['', Validators.required],
+            adjusterAddress: ['', Validators.required],
+            adjusterAddress2: [''],
+            adjusterState: [''],
+            adjusterCity: [''],
+            adjusterZipcode: [''],
+            adjusterCountry: [''],
+            adjusterEmail: ['', [Validators.required, AppValidators.emailValidator]],
+            adjusterCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            adjusterHomePhone: [''],
+            adjusterWorkPhone: [''],
+            adjusterFaxNo: [''],
+            adjusteralternateEmail: ['', [AppValidators.emailValidator]],
+            adjusterofficeExtension: [''],
+            adjusterpreferredCommunication: ['']
+        });
 
         this.adjusterformControls = this.adjusterform.controls;
     }
@@ -84,7 +87,7 @@ export class AddAdjusterComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             // .subscribe(states => this.states = states);
-             .subscribe(states =>
+            .subscribe(states =>
             // this.states = states);
             {
                 let defaultLabel: any[] = [{
@@ -106,7 +109,26 @@ export class AddAdjusterComponent implements OnInit {
             });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
-            .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
+            .subscribe((insuranceMasters: InsuranceMaster[]) => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Insurance Company-',
+                    value: ''
+                }]
+                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
+                    return {
+                        label: `${currentInsuranceMaster.companyName}`,
+                        value: currentInsuranceMaster.id
+                    };
+                })
+                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
     }
 
     selectAdjusterState(event) {
@@ -187,5 +209,5 @@ export class AddAdjusterComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-        }
+    }
 }

@@ -18,6 +18,7 @@ import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import { InsuranceStore } from '../../../patient-manager/patients/stores/insurance-store';
 import * as _ from 'underscore';
+import { InsuranceMaster } from '../../../patient-manager/patients/models/insurance-master';
 
 @Component({
     selector: 'edit-adjuster',
@@ -35,11 +36,12 @@ export class EditAdjusterComponent implements OnInit {
     patientId: number;
     selectedCity;
     isadjusterCitiesLoading = false;
-
-
+    insuranceMasters: InsuranceMaster[];
     adjusterform: FormGroup;
     adjusterformControls;
     isSaveProgress = false;
+    insuranceMasterId: number;
+    
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -72,6 +74,7 @@ export class EditAdjusterComponent implements OnInit {
             result.subscribe(
                 (adjuster: any) => {
                     this.adjuster = adjuster.toJS();
+                    this.insuranceMasterId = this.insuranceMasterId;
                     this.cellPhone = this._phoneFormatPipe.transform(this.adjuster.adjusterContact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.adjuster.adjusterContact.faxNo);
                     this.selectedCity = adjuster.adjusterAddress.city;
@@ -133,7 +136,26 @@ export class EditAdjusterComponent implements OnInit {
             });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
-            .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
+            .subscribe((insuranceMasters: InsuranceMaster[]) => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Insurance Company-',
+                    value: ''
+                }]
+                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
+                    return {
+                        label: `${currentInsuranceMaster.companyName}`,
+                        value: currentInsuranceMaster.id
+                    };
+                })
+                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
     }
 
     selectAdjusterState(event) {

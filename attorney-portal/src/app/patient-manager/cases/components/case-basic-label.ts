@@ -14,7 +14,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
-
+import { Case } from '../models/case';
 
 @Component({
     selector: 'case-basic-label',
@@ -23,8 +23,9 @@ import { NotificationsService } from 'angular2-notifications';
 
 export class CaseBasicLabelComponent implements OnInit {
     caseId: number;
-    companyId:number;
-    caseLabel: CaseLabel;
+    companyId: number;
+    // caseLabel: CaseLabel;
+    caseDetail: Case;
 
     constructor(
         private fb: FormBuilder,
@@ -41,10 +42,11 @@ export class CaseBasicLabelComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
-            let result = this._casesStore.getCaseReadOnly(this.caseId, this.companyId);
+            // let result = this._casesStore.getCaseReadOnly(this.caseId, this.companyId);
+            let result = this._casesStore.getCaseForCaseIdAndCompanyId(this.caseId, this.companyId);
             result.subscribe(
-                (caseLabel: CaseLabel) => {
-                    this.caseLabel = caseLabel;
+                (caseDetail: Case) => {
+                    this.caseDetail = caseDetail;
                 },
                 (error) => {
                     this._router.navigate(['../../']);

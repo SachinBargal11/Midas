@@ -24,8 +24,7 @@ const CaseRecord = Record({
     referral: null,
     patient: null,
     caseCompanyConsentDocument: null,
-    caseSource: '',
-    claimFileNumber:0,
+    claimFileNumber: 0,
     isDeleted: false,
     createByUserID: 0,
     updateByUserID: 0,
@@ -34,13 +33,18 @@ const CaseRecord = Record({
     caseCompanyMapping: null,
     // companies: null,
     attorneyId: 0,
-    orignatorCompanyId: 0,
     createdByCompanyId: 0,
-    orignatorCompanyName: '',
     createdByCompany: null,
     attorneyProviderId: 0,
-    medicalProviderId: 0
-
+    attorneyProviderName: '',
+    medicalProviderId: 0,
+    medicalProviderName: '',
+    orignatorCompanyId: 0,
+    orignatorCompanyName: '',
+    caseSource: '',
+    orignatorCaseSource: '',
+    currentCompanyId: 0,
+    patientName: '',
 });
 
 export class Case extends CaseRecord {
@@ -57,7 +61,6 @@ export class Case extends CaseRecord {
     referral: PendingReferral[];
     patient: Patient;
     caseCompanyConsentDocument: CaseDocument[];
-    caseSource: string;
     claimFileNumber: number;
     isDeleted: boolean;
     createByUserID: number;
@@ -67,12 +70,19 @@ export class Case extends CaseRecord {
     caseCompanyMapping: CaseCompanyMapping[];
     // companies: Company[];
     attorneyId: number;
-    orignatorCompanyId: number;
     createdByCompanyId: number;
     createdByCompany: Company;
-    orignatorCompanyName: string;
     attorneyProviderId: number;
+    attorneyProviderName: string;
     medicalProviderId: number;
+    medicalProviderName: string;
+    orignatorCompanyId: number;
+    orignatorCompanyName: string;
+    caseSource: string;
+    orignatorCaseSource: string;
+    currentCompanyId: number;
+    patientName: string;
+
     constructor(props) {
         super(props);
     }
@@ -126,7 +136,7 @@ export class Case extends CaseRecord {
         //     }
         // });
         if (this.orignatorCompanyId == companyId) {
-             return isCaseLabelEditable = true;
+            return isCaseLabelEditable = true;
         }
         return isCaseLabelEditable;
     }

@@ -16,6 +16,7 @@ import { Address } from '../../../commons/models/address';
 import { Adjuster } from '../../models/adjuster';
 import { AdjusterMasterStore } from '../../stores/adjuster-store';
 // import { PatientsStore } from '../stores/PatientsStore';
+import { InsuranceMaster } from '../../../patient-manager/patients/models/insurance-master';
 import * as _ from 'underscore';
 
 @Component({
@@ -31,10 +32,11 @@ export class AddAdjusterComponent implements OnInit {
     patientId: number;
     selectedCity = 0;
     isadjusterCitiesLoading = false;
-
     adjusterform: FormGroup;
     adjusterformControls;
     isSaveProgress = false;
+    insuranceMasters: InsuranceMaster[];
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -105,7 +107,26 @@ export class AddAdjusterComponent implements OnInit {
             });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
-            .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
+            // .subscribe(insuranceMaster => this.insuranceMaster = insuranceMaster);
+            .subscribe((insuranceMasters: InsuranceMaster[]) => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Insurance Company-',
+                    value: ''
+                }]
+                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
+                    return {
+                        label: `${currentInsuranceMaster.companyName}`,
+                        value: currentInsuranceMaster.id
+                    };
+                })
+                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     selectAdjusterState(event) {

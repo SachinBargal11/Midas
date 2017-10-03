@@ -98,7 +98,7 @@ export class AddCaseComponent implements OnInit {
             caseStatusId: ['1', Validators.required],
             attorneyId: [''],
             caseSource: [''],
-            claimNumber:['']
+            claimNumber: ['']
         });
 
         this.caseformControls = this.caseform.controls;
@@ -114,7 +114,25 @@ export class AddCaseComponent implements OnInit {
                 // let matchingAttorneys: Attorney[] = _.filter(attorneys, (currentAttorney: Attorney) => {
                 //     return currentAttorney.user != null;
                 // });
-                this.attorneys = attorneys;
+                // this.attorneys = attorneys;
+
+                let defaultLabel: any[] = [{
+                    label: '-Select Attorney-',
+                    value: ''
+                }]
+                let attorney = _.map(attorneys, (currentAttorney: Attorney) => {
+                    return {
+                        label: `${currentAttorney.prefferedAttorney.name}`,
+                        value: currentAttorney.prefferedAttorney.id
+                    };
+                })
+                this.attorneys = _.union(defaultLabel, attorney);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
             });
 
         this.loadPatientsWithoutCase();
@@ -122,7 +140,7 @@ export class AddCaseComponent implements OnInit {
 
 
     attorneyChange(event) {
-        this.attorneyId = parseInt(event.target.value);
+        this.attorneyId = parseInt(event.value);
         // if (this.attorneyId > 0) {
         //     this.caseform.get("caseSource").disable();
         // }

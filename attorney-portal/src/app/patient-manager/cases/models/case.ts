@@ -23,7 +23,7 @@ const CaseRecord = Record({
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
-    claimFileNumber:0,
+    claimFileNumber: 0,
     // transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
@@ -32,17 +32,22 @@ const CaseRecord = Record({
     createDate: null,
     updateByUserID: 0,
     updateDate: null,
-    caseSource: null,
     createdByCompanyId: 0,
     createdByCompany: null,
-    orignatorCompanyId: 0,
     caseCompanyMapping: null,
+    attorneyProviderId: 0,
+    attorneyProviderName: '',
+    medicalProviderId: 0,
+    medicalProviderName: '',
+    orignatorCompanyId: 0,
     orignatorCompanyName: '',
-    attorneyProviderId:0,
-    medicalProviderId:0,
-    medicare:false,
-    medicaid:false,
-    ssdisabililtyIncome:false
+    caseSource: '',
+    orignatorCaseSource: '',
+    currentCompanyId: 0,
+    patientName: '',
+    medicare: false,
+    medicaid: false,
+    ssdisabililtyIncome: false
 
 
 });
@@ -70,17 +75,22 @@ export class Case extends CaseRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-    caseSource: string;
     createdByCompanyId: number;
     createdByCompany: Company;
     caseCompanyMapping: CaseCompanyMapping[];
+    attorneyProviderId: number;
+    attorneyProviderName: string;
+    medicalProviderId: number;
+    medicalProviderName: string;
     orignatorCompanyId: number;
     orignatorCompanyName: string;
-    attorneyProviderId:number;
-    medicalProviderId:number;
-    medicare:boolean;
-    medicaid:boolean;
-    ssdisabililtyIncome:boolean;
+    caseSource: string;
+    orignatorCaseSource: string;
+    currentCompanyId: number;
+    patientName: string;
+    medicare: boolean;
+    medicaid: boolean;
+    ssdisabililtyIncome: boolean;
     constructor(props) {
         super(props);
     }
@@ -141,7 +151,7 @@ export class Case extends CaseRecord {
         //     }
         // });
         if (this.orignatorCompanyId == companyId) {
-             return isCaseLabelEditable = true;
+            return isCaseLabelEditable = true;
         }
         return isCaseLabelEditable;
     }

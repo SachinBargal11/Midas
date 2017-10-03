@@ -48,7 +48,16 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-
+  getCaseForCaseIdAndCompanyId(caseId: Number,companyId: number){
+         let promise = new Promise((resolve, reject) => {
+            this._casesService.getCaseForCaseIdAndCompanyId(caseId,companyId).subscribe((cases: Case) => {
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
 
     getCaseReadOnly(caseId: number,companyId:number): Observable<CaseLabel> {
         let promise = new Promise((resolve, reject) => {

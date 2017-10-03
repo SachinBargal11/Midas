@@ -45,17 +45,23 @@
                         <label class="form-label"> Insurance Master
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
+                        <!--<div class="form-group" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
                             <select formControlName="adjusterInsuranceMaster" [ngModel]="adjuster.insuranceMasterId" type="text" class="form-control"
                                 placeholder="" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
                             <option value="">-Select Insurance Master-</option>
                           <option *ngFor="let insurance of insuranceMaster" value="{{insurance.id}}">{{insurance.companyName}}</option>
-                            <!--<option value="1">Insurance Master 1</option>-->
+                            <option value="1">Insurance Master 1</option>
                             </select>
                             <div class='error-list' *ngIf="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
                                 <ul>
                                     <li *ngIf="adjusterformControls.adjusterInsuranceMaster.hasError('required')">Insurance Master is required.</li>
                                 </ul>
+                            </div>
+                        </div>-->
+                        <div class="form-group" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
+                            <p-dropdown [options]="insuranceMasters" formControlName="adjusterInsuranceMaster" [ngModel]="adjuster.insuranceMasterId"  [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <div class='error-list' *ngIf="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
+                                <span class="color-red">Insurance Master is required.</span>
                             </div>
                         </div>
                     </div>

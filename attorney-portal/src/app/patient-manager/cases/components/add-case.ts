@@ -115,7 +115,17 @@ export class AddCaseComponent implements OnInit {
     ngOnInit() {
         this._medicalProviderMasterStore.getAllPreferredMedicalProviders()
             .subscribe((allProviders: MedicalProviderMaster[]) => {
-                this.allProviders = allProviders;
+                 let defaultLabel: any[] = [{
+                    label: '-Select Provider-',
+                    value: ''
+                }]
+                let allProvider = _.map(allProviders, (currentProvider: MedicalProviderMaster) => {
+                    return {
+                        label: `${currentProvider.prefferedProvider.name}`,
+                        value: currentProvider.prefferedProvider.id
+                    };
+                })
+                this.allProviders = _.union(defaultLabel, allProvider);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -131,7 +141,7 @@ export class AddCaseComponent implements OnInit {
     }
 
     providerChange(event) {
-        this.providerId = parseInt(event.target.value);
+        this.providerId = parseInt(event.value);
         // if (this.providerId > 0) {
         //     this.caseform.get("caseSource").disable();
         // }

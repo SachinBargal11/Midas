@@ -61,7 +61,8 @@ export class EditInsuranceComponent implements OnInit {
     insuranceEndDate: Date;
     balanceInsuredAmount: string;
     caseStatusId: number;
-    
+    insuranceMasterId: number;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -81,7 +82,7 @@ export class EditInsuranceComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
             this._progressBarService.show();
-             let result = this._casesStore.fetchCaseById(this.caseId);
+            let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseStatusId = caseDetail.caseStatusId;
@@ -128,6 +129,7 @@ export class EditInsuranceComponent implements OnInit {
                     this.insurance = insurance.toJS();
 
                     this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
+                    this.insuranceMasterId = this.insurance.insuranceMasterId;
                     this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
@@ -217,12 +219,30 @@ export class EditInsuranceComponent implements OnInit {
             });
 
         this._insuranceStore.getInsurancesMasterByCompanyId()
-            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
-
+            // .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
+            .subscribe((insuranceMasters: InsuranceMaster[]) => {
+                let defaultLabel: any[] = [{
+                    label: '-Select Insurance Company-',
+                    value: '0'
+                }]
+                let insuranceMaster = _.map(insuranceMasters, (currentInsuranceMaster: InsuranceMaster) => {
+                    return {
+                        label: `${currentInsuranceMaster.companyName}`,
+                        value: currentInsuranceMaster.id
+                    };
+                })
+                this.insuranceMasters = _.union(defaultLabel, insuranceMaster);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     selectInsurance(event) {
-        let currentInsurance: number = parseInt(event.target.value);
+        let currentInsurance: number = parseInt(event.value);
         if (currentInsurance !== 0) {
             this.loadInsuranceMasterAddress(currentInsurance);
         } else {

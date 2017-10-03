@@ -51,6 +51,27 @@ export class CaseService {
         return <Observable<Case>>Observable.fromPromise(promise);
     }
 
+      getCaseForCaseIdAndCompanyId(caseId: Number, companyId: number): Observable<Case> {
+        let promise: Promise<Case> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/Case/getCaseForCompanyId/' + caseId + '/' + companyId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let cases = null;
+                    if (data) {
+                        cases = CaseAdapter.parseResponse(data);
+                        resolve(cases);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
      getCaseReadOnly(caseId: Number,companyId): Observable<CaseLabel> {
         let promise: Promise<CaseLabel> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/case/getReadOnly/' + caseId + '/' + companyId, {

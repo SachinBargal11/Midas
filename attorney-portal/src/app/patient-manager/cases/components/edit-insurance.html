@@ -292,7 +292,8 @@
                             </div>
                         </div>-->
                         <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
-                            <p-dropdown [options]="states" formControlName="policyState" [ngModel]="insurance.policyAddress.state" [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <p-dropdown [options]="states" formControlName="policyState" [ngModel]="insurance.policyAddress.state" [style]="{'width':'100%'}"
+                                filter="filter"></p-dropdown>
                             <div class='error-list' *ngIf="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                                 <span class="color-red">State is required.</span>
                             </div>
@@ -376,7 +377,7 @@
                         <label class="form-label"> Insurance Company
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                        <!--<div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
                             <select formControlName="insuranceMasterId" type="text" (change)="selectInsurance($event)" [ngModel]="insurance.insuranceMasterId"
                                 class="form-control" placeholder="" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
                             <option value="0">-Select Insurance Company-</option>
@@ -386,6 +387,13 @@
                                 <ul>
                                     <li *ngIf="insuranceformControls.insuranceMasterId.hasError('required')">Insurance Master is required.</li>
                                 </ul>
+                            </div>
+                        </div>-->
+                        <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                            <p-dropdown [options]="insuranceMasters" [(ngModel)]="insuranceMasterId" formControlName="insuranceMasterId" (onChange)="selectInsurance($event)"
+                                [style]="{'width':'100%'}" filter="filter"></p-dropdown>
+                            <div class='error-list' *ngIf="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                                <span class="color-red">Insurance Master is required.</span>
                             </div>
                         </div>
                     </div>

@@ -72,17 +72,22 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource,
                 claimFileNumber: data.claimFileNumber,
                 createdByCompanyId: data.createdByCompanyId,
-                orignatorCompanyId: data.orignatorCompanyId,
-                orignatorCompanyName: data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
                 attorneyProviderId: data.attorneyProviderId,
+                attorneyProviderName: data.attorneyProviderName,
                 medicalProviderId: data.medicalProviderId,
-                medicare:data.medicare,
-                medicaid:data.medicaid,
-                ssdisabililtyIncome:data.ssdisabililtyIncome
+                medicalProviderName: data.medicalProviderName,
+                orignatorCompanyId: data.orignatorCompanyId,
+                orignatorCompanyName: data.orignatorCompanyName,
+                caseSource: data.caseSource,
+                orignatorCaseSource: data.orignatorCaseSource,
+                currentCompanyId: data.currentCompanyId,
+                patientName: data.patientName,
+                medicare: data.medicare,
+                medicaid: data.medicaid,
+                ssdisabililtyIncome: data.ssdisabililtyIncome
             });
         }
         return patient_case;
@@ -146,17 +151,22 @@ export class CaseAdapter {
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-                caseSource: data.caseSource,
                 claimFileNumber: data.claimFileNumber,
                 createdByCompanyId: data.createdByCompanyId,
-                orignatorCompanyId: data.orignatorCompanyId,
-                orignatorCompanyName: data.orignatorCompanyName,
                 createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany),
                 attorneyProviderId: data.attorneyProviderId,
+                attorneyProviderName: data.attorneyProviderName,
                 medicalProviderId: data.medicalProviderId,
-                medicare:data.medicare,
-                medicaid:data.medicaid,
-                ssdisabililtyIncome:data.ssdisabililtyIncome
+                medicalProviderName: data.medicalProviderName,
+                orignatorCompanyId: data.orignatorCompanyId,
+                orignatorCompanyName: data.orignatorCompanyName,
+                caseSource: data.caseSource,
+                orignatorCaseSource: data.orignatorCaseSource,
+                currentCompanyId: data.currentCompanyId,
+                patientName: data.patientName,
+                medicare: data.medicare,
+                medicaid: data.medicaid,
+                ssdisabililtyIncome: data.ssdisabililtyIncome
             });
         }
         return patient_case;
