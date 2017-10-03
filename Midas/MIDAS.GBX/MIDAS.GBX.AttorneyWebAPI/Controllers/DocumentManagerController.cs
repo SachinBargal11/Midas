@@ -234,9 +234,13 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
             HttpResponseMessage res = new HttpResponseMessage();
             res = requestHandler1.GetGbObjects(Request, data);
 
-            string blobPath = ((ObjectContent)requestHandler1.GetObject(Request, data.CaseId, "mergepdfs").Content).Value.ToString();
+            int companyId = data.CompanyId > 0 ? data.CompanyId : Convert.ToInt16(((ObjectContent)requestHandler.GetByObjectIdAndType(Request, data.CaseId, "CASE").Content).Value);
+            if (companyId == 0)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this case company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
-            HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, data.CompanyId);
+            string blobPath = "cs-" + data.CaseId + "/mergepdfs";
+
+            HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyId);
             if (serviceProvider == null)
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
@@ -244,7 +248,7 @@ namespace MIDAS.GBX.AttorneyWebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, res);
             else
             {
-                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, data.CompanyId, ((ObjectContent)res.Content).Value, blobPath + "/" + data.MergedDocumentName, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                HttpResponseMessage res1 = blobhandler.MergeDocuments(Request, companyId, ((ObjectContent)res.Content).Value, blobPath + "/" + data.MergedDocumentName, ((ObjectContent)serviceProvider.Content).Value.ToString());
                 if (res1.StatusCode.Equals(HttpStatusCode.Created) || res1.StatusCode.Equals(HttpStatusCode.OK))
                 {
                     uploadObject = new UploadInfo();
