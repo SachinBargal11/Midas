@@ -46,6 +46,7 @@ export class UserSettingsComponent implements OnInit {
     calendarViewId = 1;
     userSetting: UserSetting;
 
+    isSaveProgress = false;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -349,6 +350,10 @@ export class UserSettingsComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'Select medical provider to delete');
         }
 
+    }
+     goBack(): void {
+        this._router.navigate(['/dashboard']);
+        
     }
 
 }
