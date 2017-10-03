@@ -338,7 +338,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.AttorneyProviderName = casemap.Company1.Name;
                         }
 
-                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 1 && casemap.CompanyId == CompanyId)
+                        if (casemap.Company1 != null && casemap.Company1.CompanyType == 1 && casemap.AddedByCompanyId == caseBO.OrignatorCompanyId)
                         {
                             caseBO.MedicalProviderId = casemap.CompanyId;
                             caseBO.MedicalProviderName = casemap.Company1.Name;
