@@ -38,7 +38,7 @@ export class UserSettingsComponent implements OnInit {
     isPublic: boolean = false;
     isTimeSlot = 30;
     calendarViewId = 1;
-
+    isSaveProgress = false;
     constructor(
         private _authenticationService: AuthenticationService,
         private _notificationsStore: NotificationsStore,

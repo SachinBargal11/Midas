@@ -250,6 +250,7 @@ export class PendingReferralsComponent implements OnInit {
     refreshEvents(event) {
         this.loadPendingReferralsForCompany(this.companyId);
     }
+    handleVisitDialogHide(){}
 
     assign() {
         let shouldAppointVisit: boolean = true;
