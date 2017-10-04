@@ -29,9 +29,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public int PreferredModeOfCommunication { get; set; }
         public bool IsPushNotificationEnabled { get; set; }
         public byte CalendarViewId { get; set; }
+        public byte PreferredUIViewId { get; set; }
     
         public virtual CalendarView CalendarView { get; set; }
         public virtual Company Company { get; set; }
+        public virtual PreferredUIView PreferredUIView { get; set; }
         public virtual User User { get; set; }
     }
 }

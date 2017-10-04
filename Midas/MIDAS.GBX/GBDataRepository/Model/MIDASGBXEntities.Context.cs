@@ -106,6 +106,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PreferredAncillaryProvider> PreferredAncillaryProviders { get; set; }
         public virtual DbSet<PreferredAttorneyProvider> PreferredAttorneyProviders { get; set; }
         public virtual DbSet<PreferredMedicalProvider> PreferredMedicalProviders { get; set; }
+        public virtual DbSet<PreferredUIView> PreferredUIViews { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
         public virtual DbSet<ProcedureCodeCompanyMapping> ProcedureCodeCompanyMappings { get; set; }
         public virtual DbSet<Referral> Referrals { get; set; }

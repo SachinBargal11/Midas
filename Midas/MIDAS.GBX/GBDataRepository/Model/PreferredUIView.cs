@@ -12,20 +12,23 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientPersonalSetting
+    public partial class PreferredUIView
     {
-        public int Id { get; set; }
-        public int PatientId { get; set; }
-        public int PreferredModeOfCommunication { get; set; }
-        public bool IsPushNotificationEnabled { get; set; }
-        public byte CalendarViewId { get; set; }
-        public byte PreferredUIViewId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PreferredUIView()
+        {
+            this.UserPersonalSettings = new HashSet<UserPersonalSetting>();
+        }
+    
+        public byte Id { get; set; }
+        public string PreferredUIViewText { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Patient Patient { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserPersonalSetting> UserPersonalSettings { get; set; }
     }
 }

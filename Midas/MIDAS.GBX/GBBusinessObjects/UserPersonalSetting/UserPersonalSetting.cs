@@ -38,6 +38,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("calendarViewId")]
         public byte CalendarViewId { get; set; }
 
+        [JsonProperty("preferredUIViewId")]
+        public byte PreferredUIViewId { get; set; }
+
         [JsonProperty("user")]
         public User User { get; set; }
     }

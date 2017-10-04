@@ -45,6 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userPersonalSettingBO.PreferredModeOfCommunication = userPersonalSetting.PreferredModeOfCommunication;
             userPersonalSettingBO.IsPushNotificationEnabled = userPersonalSetting.IsPushNotificationEnabled;
             userPersonalSettingBO.CalendarViewId = userPersonalSetting.CalendarViewId;
+            userPersonalSettingBO.PreferredUIViewId = userPersonalSetting.PreferredUIViewId;
 
             userPersonalSettingBO.IsDeleted = userPersonalSetting.IsDeleted;
             userPersonalSettingBO.CreateByUserID = userPersonalSetting.CreateByUserID;
@@ -125,6 +126,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 userPersonalSettingDB.PreferredModeOfCommunication = userPersonalSettingBO.PreferredModeOfCommunication;
                 userPersonalSettingDB.IsPushNotificationEnabled = userPersonalSettingBO.IsPushNotificationEnabled;
                 userPersonalSettingDB.CalendarViewId = userPersonalSettingBO.CalendarViewId;
+                userPersonalSettingDB.PreferredUIViewId = userPersonalSettingBO.PreferredUIViewId;
 
                 if (Add_userPersonalsetting == true)
                 {

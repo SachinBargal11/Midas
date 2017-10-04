@@ -40,6 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             PatientPersonalSettingBO.PreferredModeOfCommunication = PatientPersonalSettingDB.PreferredModeOfCommunication;
             PatientPersonalSettingBO.IsPushNotificationEnabled = PatientPersonalSettingDB.IsPushNotificationEnabled;
             PatientPersonalSettingBO.CalendarViewId = PatientPersonalSettingDB.CalendarViewId;
+            PatientPersonalSettingBO.PreferredUIViewId = PatientPersonalSettingDB.PreferredUIViewId;
 
             PatientPersonalSettingBO.IsDeleted = PatientPersonalSettingDB.IsDeleted;
             PatientPersonalSettingBO.CreateByUserID = PatientPersonalSettingDB.CreateByUserID;
@@ -133,6 +134,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientPersonalSettingDB.PreferredModeOfCommunication = PatientPersonalSettingBO.PreferredModeOfCommunication;
                 PatientPersonalSettingDB.IsPushNotificationEnabled = PatientPersonalSettingBO.IsPushNotificationEnabled;
                 PatientPersonalSettingDB.CalendarViewId = PatientPersonalSettingBO.CalendarViewId;
+                PatientPersonalSettingDB.PreferredUIViewId = PatientPersonalSettingBO.PreferredUIViewId;
+
 
                 if (Add_PatientPersonalSetting == true)
                 {
@@ -142,7 +145,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             PatientPersonalSettingDB = _context.PatientPersonalSettings.Include("Patient")
-                                                                    .Where(p => p.Id == PatientPersonalSettingDB.Id).FirstOrDefault<PatientPersonalSetting>();
+                                                                       .Where(p => p.Id == PatientPersonalSettingDB.Id).FirstOrDefault<PatientPersonalSetting>();
 
 
             var res = Convert<BO.PatientPersonalSetting, PatientPersonalSetting>(PatientPersonalSettingDB);

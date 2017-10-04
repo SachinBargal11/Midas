@@ -226,6 +226,7 @@
     <Build Include="Tables\Latest Tables\OTPCompanyMapping.sql" />
     <Build Include="Tables\Latest Tables\CalendarView.sql" />
     <Build Include="Tables\Latest Tables\PatientPersonalSettings.sql" />
+    <Build Include="Tables\Latest Tables\PreferredUIView.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

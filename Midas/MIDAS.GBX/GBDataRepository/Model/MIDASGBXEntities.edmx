@@ -1021,6 +1021,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="PreferredModeOfCommunication" Type="int" Nullable="false" />
           <Property Name="IsPushNotificationEnabled" Type="bit" Nullable="false" />
           <Property Name="CalendarViewId" Type="tinyint" Nullable="false" />
+          <Property Name="PreferredUIViewId" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -1258,6 +1259,18 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="PrefMedProviderId" Type="int" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="IsCreated" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="PreferredUIView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PreferredUIViewText" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -1651,6 +1664,7 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="PreferredModeOfCommunication" Type="int" Nullable="false" />
           <Property Name="IsPushNotificationEnabled" Type="bit" Nullable="false" />
           <Property Name="CalendarViewId" Type="tinyint" Nullable="false" />
+          <Property Name="PreferredUIViewId" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="UserStatus">
           <Key>
@@ -4062,6 +4076,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId">
+          <End Role="PreferredUIView" Type="Self.PreferredUIView" Multiplicity="1" />
+          <End Role="UserPersonalSettings" Type="Self.UserPersonalSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PreferredUIView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPersonalSettings">
+              <PropertyRef Name="PreferredUIViewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserPersonalSettings_User_UserId">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="UserPersonalSettings" Type="Self.UserPersonalSettings" Multiplicity="*" />
@@ -4176,6 +4202,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PreferredAncillaryProvider" EntityType="Self.PreferredAncillaryProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredAttorneyProvider" EntityType="Self.PreferredAttorneyProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreferredMedicalProvider" EntityType="Self.PreferredMedicalProvider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PreferredUIView" EntityType="Self.PreferredUIView" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProcedureCode" EntityType="Self.ProcedureCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProcedureCodeCompanyMapping" EntityType="Self.ProcedureCodeCompanyMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Referral" EntityType="Self.Referral" Schema="dbo" store:Type="Tables" />
@@ -4993,6 +5020,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_Company_CompanyId" Association="Self.FK_UserPersonalSettings_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
+            <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId" Association="Self.FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId">
+            <End Role="PreferredUIView" EntitySet="PreferredUIView" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_User_UserId" Association="Self.FK_UserPersonalSettings_User_UserId">
@@ -6261,6 +6292,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="PreferredModeOfCommunication" Type="Int32" Nullable="false" />
           <Property Name="IsPushNotificationEnabled" Type="Boolean" Nullable="false" />
           <Property Name="CalendarViewId" Type="Byte" Nullable="false" />
+          <Property Name="PreferredUIViewId" Type="Byte" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -6551,6 +6583,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Company" Relationship="Self.FK_PreferredMedicalProvider_Company_CompanyId" FromRole="PreferredMedicalProvider" ToRole="Company" />
           <NavigationProperty Name="Company1" Relationship="Self.FK_PreferredMedicalProvider_Company_PrefMedProviderId" FromRole="PreferredMedicalProvider" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="PreferredUIView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PreferredUIViewText" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId" FromRole="PreferredUIView" ToRole="UserPersonalSettings" />
         </EntityType>
         <EntityType Name="ProcedureCode">
           <Key>
@@ -7029,8 +7074,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="PreferredModeOfCommunication" Type="Int32" Nullable="false" />
           <Property Name="IsPushNotificationEnabled" Type="Boolean" Nullable="false" />
           <Property Name="CalendarViewId" Type="Byte" Nullable="false" />
+          <Property Name="PreferredUIViewId" Type="Byte" Nullable="false" />
           <NavigationProperty Name="CalendarView" Relationship="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId" FromRole="UserPersonalSettings" ToRole="CalendarView" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="UserPersonalSettings" ToRole="Company" />
+          <NavigationProperty Name="PreferredUIView" Relationship="Self.FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId" FromRole="UserPersonalSettings" ToRole="PreferredUIView" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="UserPersonalSettings" ToRole="User" />
         </EntityType>
         <EntityType Name="UserStatu">
@@ -9188,6 +9235,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId">
+          <End Role="PreferredUIView" Type="Self.PreferredUIView" Multiplicity="1" />
+          <End Role="UserPersonalSettings" Type="Self.UserPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PreferredUIView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPersonalSettings">
+              <PropertyRef Name="PreferredUIViewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProcedureCode_Room_SpecialityId">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
@@ -9556,6 +9615,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PreferredAncillaryProviders" EntityType="Self.PreferredAncillaryProvider" />
           <EntitySet Name="PreferredAttorneyProviders" EntityType="Self.PreferredAttorneyProvider" />
           <EntitySet Name="PreferredMedicalProviders" EntityType="Self.PreferredMedicalProvider" />
+          <EntitySet Name="PreferredUIViews" EntityType="Self.PreferredUIView" />
           <EntitySet Name="ProcedureCodes" EntityType="Self.ProcedureCode" />
           <EntitySet Name="ProcedureCodeCompanyMappings" EntityType="Self.ProcedureCodeCompanyMapping" />
           <EntitySet Name="Referrals" EntityType="Self.Referral" />
@@ -10279,6 +10339,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId" Association="Self.FK_PendingReferralProcedureCodes_ProcedureCode_ProcedureCodeId">
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
             <End Role="PendingReferralProcedureCodes" EntitySet="PendingReferralProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId" Association="Self.FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId">
+            <End Role="PreferredUIView" EntitySet="PreferredUIViews" />
+            <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_ProcedureCode_Room_SpecialityId" Association="Self.FK_ProcedureCode_Room_SpecialityId">
             <End Role="Room" EntitySet="Rooms" />
@@ -11476,6 +11540,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="PreferredModeOfCommunication" ColumnName="PreferredModeOfCommunication" />
                 <ScalarProperty Name="IsPushNotificationEnabled" ColumnName="IsPushNotificationEnabled" />
                 <ScalarProperty Name="CalendarViewId" ColumnName="CalendarViewId" />
+                <ScalarProperty Name="PreferredUIViewId" ColumnName="PreferredUIViewId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -11727,6 +11792,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="PrefMedProviderId" ColumnName="PrefMedProviderId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="IsCreated" ColumnName="IsCreated" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PreferredUIViews">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PreferredUIView">
+              <MappingFragment StoreEntitySet="PreferredUIView">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PreferredUIViewText" ColumnName="PreferredUIViewText" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -12145,6 +12223,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="PreferredModeOfCommunication" ColumnName="PreferredModeOfCommunication" />
                 <ScalarProperty Name="IsPushNotificationEnabled" ColumnName="IsPushNotificationEnabled" />
                 <ScalarProperty Name="CalendarViewId" ColumnName="CalendarViewId" />
+                <ScalarProperty Name="PreferredUIViewId" ColumnName="PreferredUIViewId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

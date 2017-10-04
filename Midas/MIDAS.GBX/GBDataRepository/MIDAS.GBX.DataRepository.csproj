@@ -518,6 +518,9 @@
     <Compile Include="Model\PreferredMedicalProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\PreferredUIView.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ProcedureCode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
