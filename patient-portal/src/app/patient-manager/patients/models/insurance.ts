@@ -6,6 +6,7 @@ import { InsuranceMapping } from '../../cases/models/insurance-mapping';
 import { InsuranceType } from './enums/insurance-type';
 import { PolicyOwner } from './enums/policy-owner';
 import { InsuranceMaster } from './insurance-master';
+import { PreferredCommunication } from '../../../commons/models/enums/preferred-communication';
 
 const InsuranceRecord = Record({
     id: 0,
@@ -14,7 +15,11 @@ const InsuranceRecord = Record({
     policyOwnerId: 0,
     policyHoldersName: '',
     contactPerson: '',
+    insuranceStartDate: moment(),
+    insuranceEndDate: moment(),
+    balanceInsuredAmount: '',
     insuranceMasterId: 0,
+    insuranceMaster: null,
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
     caseInsuranceMapping: null,
@@ -33,7 +38,11 @@ export class Insurance extends InsuranceRecord {
     policyOwnerId: number;
     policyHoldersName: string;
     contactPerson: string;
+    insuranceStartDate: moment.Moment;
+    insuranceEndDate: moment.Moment;
+    balanceInsuredAmount: string
     insuranceMasterId: number;
+    insuranceMaster: InsuranceMaster;
     insuranceType: InsuranceType;
     insuranceCompanyCode: string;
     caseInsuranceMapping: InsuranceMapping;
@@ -75,6 +84,27 @@ export class Insurance extends InsuranceRecord {
                 return 'Child';
             case PolicyOwner.OTHER:
                 return 'Other';
+        }
+    }
+
+    get preferredCommunicationLabel(): string {
+        if (this.insuranceContact.preferredCommunication) {
+            return Insurance.getPreferredCommunicationLabel(this.insuranceContact.preferredCommunication);
+        } else if (this.policyContact.preferredCommunication) {
+            return Insurance.getPreferredCommunicationLabel(this.policyContact.preferredCommunication);
+        }
+    }
+
+    static getPreferredCommunicationLabel(preferredCommunication: PreferredCommunication): string {
+        switch (preferredCommunication) {
+            case PreferredCommunication.CELLPHONE:
+                return 'Cellphone';
+            case PreferredCommunication.EMAIL:
+                return 'Email';
+            case PreferredCommunication.WORKPHONE:
+                return 'Workphone';
+            case PreferredCommunication.POST:
+                return 'Post';
         }
     }
 }

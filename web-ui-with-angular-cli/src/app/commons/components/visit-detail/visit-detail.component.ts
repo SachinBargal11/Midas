@@ -119,7 +119,23 @@ export class VisitDetailComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-        })
+        });
+
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
     }
 
     ngOnInit() {
@@ -128,7 +144,6 @@ export class VisitDetailComponent implements OnInit {
         // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
         this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
         this.getDocuments();
-
         this.checkVisitForCompany();
     }
 
@@ -139,6 +154,7 @@ export class VisitDetailComponent implements OnInit {
             this.disableSaveDelete = true;
         }
     }
+
     handleVisitDialogHide() {
         this.selectedVisit = null;
     }
@@ -164,6 +180,7 @@ export class VisitDetailComponent implements OnInit {
                 // this._progressBarService.hide();
             });
     }
+
     getReadingDoctorsByCompanyId() {
         // this._progressBarService.show();
         this._doctorsStore.getReadingDoctorsByCompanyId()

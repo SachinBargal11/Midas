@@ -48,7 +48,9 @@ import {
   GrowlModule,
   TabViewModule,
   LightboxModule,
-  ListboxModule
+  ListboxModule,
+  DropdownModule,
+
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -78,8 +80,11 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule,ListboxModule
-    ,SignaturePadModule
+    LightboxModule,
+    ListboxModule,
+    SignaturePadModule,
+    DropdownModule,
+
   ],
   declarations: [
     LimitPipe,
@@ -89,7 +94,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
-    DateTimeFormatPipe,    
+    DateTimeFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -146,12 +151,14 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule,ListboxModule,
+    LightboxModule, ListboxModule,
     SignatureFieldComponent,
     ProcedureComponent,
     ReferralsComponent,
     DiagnosisComponent,
-    VisitDetailComponent
+    VisitDetailComponent,
+    DropdownModule,
+
   ]
 })
 export class CommonsModule { }

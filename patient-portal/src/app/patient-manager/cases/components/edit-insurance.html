@@ -80,6 +80,32 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Insurance Start Date
+                            </label>
+                        <div class="form-group">
+                            <label> {{insuranceStartDateLabel}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Insurance End Date
+                            </label>
+                        <div class="form-group">
+                            <label> {{insuranceEndDateLabel}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Balance Insured Amount
+                            </label>
+                        <div class="form-group">
+                            <label> {{insurance.balanceInsuredAmount}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="card">
@@ -134,6 +160,14 @@
                             </label>
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Fax No
+                            </label>
+                        <div class="form-group">
+                            <label> {{policyFaxNo}}
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <!--<div class="col-lg-4">
@@ -173,10 +207,28 @@
                         </div>
                     </div>-->
                     <div class="col-lg-4">
-                        <label class="form-label">Fax No
+                        <label class="form-label">Office Extension
                             </label>
                         <div class="form-group">
-                            <label> {{policyFaxNo}}
+                            <label> {{insurance.policyContact.officeExtension}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Alternate E-mail
+                            </label>
+                        <div class="form-group">
+                            <label> {{insurance.policyContact.alternateEmail}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Preferred Communication
+                            </label>
+                        <div class="form-group">
+                            <label> {{preferredCommunication}}
                             </label>
                         </div>
                     </div>
@@ -354,20 +406,11 @@
                         <label class="form-label"> Insurance Company
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                            <select formControlName="insuranceMasterId" type="text" (change)="selectInsurance($event)" [ngModel]="insurance.insuranceMasterId" class="form-control" placeholder=""
-                                [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                            <option value="0">-Select Insurance Company-</option>
-                            <option *ngFor="let im of insuranceMasters" value="{{im.id}}">{{im.companyCode}} - {{im.companyName}}</option>
-                            </select>
-                            <div class='error-list' *ngIf="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
-                                <ul>
-                                    <li *ngIf="insuranceformControls.insuranceMasterId.hasError('required')">Insurance Master is required.</li>
-                                </ul>
-                            </div>
+                        <div class="form-group">
+                            <label> {{insurance.insuranceMaster.companyName}}
+                            </label>
                         </div>
                     </div>
-
                     <!--<div class="col-lg-4">
                         <label class="form-label">Insurance Type
                                 <span class="color-red">*</span>
@@ -538,6 +581,32 @@
                             </label>
                         <div class="form-group">
                             <label> {{insuranceFaxNo}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">Office Extension
+                            </label>
+                        <div class="form-group">
+                            <label> {{insurance.insuranceContact.officeExtension}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Alternate E-mail
+                            </label>
+                        <div class="form-group">
+                            <label> {{insurance.insuranceContact.alternateEmail}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Preferred Communication
+                            </label>
+                        <div class="form-group">
+                            <label> {{preferredCommunication}}
                             </label>
                         </div>
                     </div>

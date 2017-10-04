@@ -52,7 +52,7 @@ export class DemographicsComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         public sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
@@ -63,30 +63,30 @@ export class DemographicsComponent implements OnInit {
     ) {
         // this._route.parent.params.subscribe((params: any) => {
         //     this.patientId = parseInt(params.patientId, 10);
-            this.patientId = this.sessionStore.session.user.id;
-            this.progressBarService.show();
-            let result = this._patientsStore.getPatientById(this.patientId);
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patientInfo = patient;
-                    this.emergencyContactPerson = this.patientInfo.emergencyContactName;
-                    this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
-                    this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
-                    this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
-                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
-                        ? this.patientInfo.dateOfFirstTreatment.toDate()
-                        : null;
-                    // if (this.patientInfo.user.address.state) {
-                    //     this.loadCities(this.patientInfo.user.address.state);
-                    // }
-                },
-                (error) => {
-                    // this._router.navigate(['/patient-manager/profile/viewall']);
-                    this.progressBarService.hide();
-                },
-                () => {
-                    this.progressBarService.hide();
-                });
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
+        let result = this._patientsStore.getPatientById(this.patientId);
+        result.subscribe(
+            (patient: Patient) => {
+                this.patientInfo = patient;
+                this.emergencyContactPerson = this.patientInfo.emergencyContactName;
+                this.emergencyContactCellPhone = this.patientInfo.emergencyContactPhone;
+                this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
+                this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
+                this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
+                    ? this.patientInfo.dateOfFirstTreatment.toDate()
+                    : null;
+                // if (this.patientInfo.user.address.state) {
+                //     this.loadCities(this.patientInfo.user.address.state);
+                // }
+            },
+            (error) => {
+                // this._router.navigate(['/patient-manager/profile/viewall']);
+                this.progressBarService.hide();
+            },
+            () => {
+                this.progressBarService.hide();
+            });
 
         // });
         this.demographicsform = this.fb.group({
@@ -98,8 +98,8 @@ export class DemographicsComponent implements OnInit {
             }),
             contact: this.fb.group({
                 cellPhone: ['', [Validators.required]],
-                homePhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
-                workPhone: ['', [AppValidators.numberValidator,Validators.maxLength(10)]],
+                homePhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
+                workPhone: ['', [AppValidators.numberValidator, Validators.maxLength(10)]],
                 faxNo: [''],
                 emergencyContactPerson: [''],
                 emergencyContactCellPhone: ['']
@@ -119,7 +119,27 @@ export class DemographicsComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+            // .subscribe(states => this.states = states);
+            .subscribe(states =>
+            // this.states = states);
+            {
+                let defaultLabel: any[] = [{
+                    label: '-Select State-',
+                    value: ''
+                }]
+                let allStates = _.map(states, (currentState: any) => {
+                    return {
+                        label: `${currentState.statetext}`,
+                        value: currentState.statetext
+                    };
+                })
+                this.states = _.union(defaultLabel, allStates);
+            },
+            (error) => {
+            },
+            () => {
+
+            });
     }
 
     savePatient() {
@@ -133,8 +153,8 @@ export class DemographicsComponent implements OnInit {
             height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             updateByUserId: this.sessionStore.session.account.user.id,
-            emergencyContactName:demographicsFormValues.contact.emergencyContactPerson,
-            emergencyContactPhone:demographicsFormValues.contact.emergencyContactCellPhone,
+            emergencyContactName: demographicsFormValues.contact.emergencyContactPerson,
+            emergencyContactPhone: demographicsFormValues.contact.emergencyContactCellPhone,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this.sessionStore.session.account.user.id,
                 contact: new Contact(_.extend(existingPatientJS.user.contact, {

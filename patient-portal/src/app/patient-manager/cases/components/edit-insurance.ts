@@ -27,8 +27,8 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 export class EditInsuranceComponent implements OnInit {
     insuranceMasters: InsuranceMaster[];
-    policyOwner:string;
-    insuranceType:string;
+    policyOwner: string;
+    insuranceType: string;
     insuranceMastersAdress: Address;
     insuranceMaster: InsuranceMaster;
     policyCellPhone: string;
@@ -48,10 +48,16 @@ export class EditInsuranceComponent implements OnInit {
     caseId;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
-
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
+    insuranceStartDate: Date;
+    insuranceEndDate: Date;
+    balanceInsuredAmount: string;
+    insuranceStartDateLabel: string;
+    insuranceEndDateLabel: string;
+    preferredCommunication: string;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -85,6 +91,17 @@ export class EditInsuranceComponent implements OnInit {
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
                     this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
+                    this.insuranceStartDate = this.insurance.insuranceStartDate
+                        ? this.insurance.insuranceStartDate.toDate()
+                        : null;
+                    this.insuranceStartDateLabel = this.insurance.insuranceStartDate.format('MMM Do YY');
+
+                    this.insuranceEndDate = this.insurance.insuranceEndDate
+                        ? this.insurance.insuranceEndDate.toDate()
+                        : null;
+                    this.insuranceEndDateLabel = this.insurance.insuranceEndDate.format('MMM Do YY');
+                    this.preferredCommunication = insurance.preferredCommunicationLabel;
+                    // this.balanceInsuredAmount = this.insurance.balanceInsuredAmount;
                     // this.selectedInsuranceCity = insurance.insuranceAddress.city;
                     // this.selectedPolicyCity = insurance.policyAddress.city;
                     // this.loadInsuranceCities(insurance.insuranceAddress.state);
@@ -111,6 +128,9 @@ export class EditInsuranceComponent implements OnInit {
             policyNo: ['', Validators.required],
             policyOwner: ['', Validators.required],
             policyHolderName: ['', Validators.required],
+            insuranceStartDate: ['', Validators.required],
+            insuranceEndDate: ['', Validators.required],
+            balanceInsuredAmount: ['', Validators.required],
             insuranceCompanyCode: [''],
             insuranceType: ['', Validators.required],
             insuranceMasterId: ['', Validators.required],
@@ -249,6 +269,9 @@ export class EditInsuranceComponent implements OnInit {
             policyHoldersName: insuranceformValues.policyHolderName,
             policyOwnerId: insuranceformValues.policyOwner,
             policyNo: insuranceformValues.policyNo,
+            insuranceStartDate: insuranceformValues.insuranceStartDate ? moment(insuranceformValues.insuranceStartDate) : null,
+            insuranceEndDate: insuranceformValues.insuranceEndDate ? moment(insuranceformValues.insuranceEndDate) : null,
+            balanceInsuredAmount: insuranceformValues.balanceInsuredAmount,
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
             insuranceType: insuranceformValues.insuranceType,
@@ -258,7 +281,8 @@ export class EditInsuranceComponent implements OnInit {
                 emailAddress: insuranceformValues.policyEmail,
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone
+                workPhone: insuranceformValues.policyWorkPhone,
+                preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             policyAddress: new Address({
                 address1: insuranceformValues.policyAddress,
@@ -273,7 +297,8 @@ export class EditInsuranceComponent implements OnInit {
                 emailAddress: insuranceformValues.policyEmail,
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone
+                workPhone: insuranceformValues.policyWorkPhone,
+                preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
                 // address1: insuranceformValues.address,

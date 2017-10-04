@@ -118,8 +118,8 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
-    // defaultView: string = 'agendaDay';
-    defaultView: string;
+    defaultView: string = 'agendaDay';
+    // defaultView: string;
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 

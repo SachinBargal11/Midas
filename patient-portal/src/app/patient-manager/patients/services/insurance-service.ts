@@ -29,14 +29,10 @@ export class InsuranceService {
             return this._http.get(environment.SERVICE_BASE_URL + '/PatientInsuranceInfo/get/' + insuranceId, {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data: Array<any>) => {
+                .subscribe((data:any) => {
                     let insurance = null;
-                    if (data.length) {
                         insurance = InsuranceAdapter.parseResponse(data);
                         resolve(insurance);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
                 }, (error) => {
                     reject(error);
                 });
@@ -44,6 +40,26 @@ export class InsuranceService {
         });
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
+    // getInsurance(insuranceId: Number): Observable<Insurance> {
+    //     let promise: Promise<Insurance> = new Promise((resolve, reject) => {
+    //         return this._http.get(environment.SERVICE_BASE_URL + '/PatientInsuranceInfo/get/' + insuranceId, {
+    //             headers: this._headers
+    //         }).map(res => res.json())
+    //             .subscribe((data: Array<any>) => {
+    //                 let insurance = null;
+    //                 if (data.length) {
+    //                     insurance = InsuranceAdapter.parseResponse(data);
+    //                     resolve(insurance);
+    //                 } else {
+    //                     reject(new Error('NOT_FOUND'));
+    //                 }
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+
+    //     });
+    //     return <Observable<Insurance>>Observable.fromPromise(promise);
+    // }
 
     getInsurances(caseId: Number): Observable<Insurance[]> {
         let promise: Promise<Insurance[]> = new Promise((resolve, reject) => {

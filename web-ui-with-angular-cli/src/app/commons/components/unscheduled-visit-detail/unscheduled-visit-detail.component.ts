@@ -100,6 +100,22 @@ export class UnscheduledVisitDetailComponent implements OnInit {
             readingDoctor: ['']
         });
         this.unscheduledVisitDetailFormControls = this.unscheduledVisitDetailForm.controls;
+        
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
     }
 
     ngOnInit() {

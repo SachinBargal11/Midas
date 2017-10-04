@@ -71,10 +71,11 @@ export class InsuranceStore {
 
     fetchInsuranceById(id: number): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
-            let matchedInsurance: Insurance = this.findInsuranceById(id);
-            if (matchedInsurance) {
-                resolve(matchedInsurance);
-            } else {
+            // let matchedInsurance: Insurance = this.findInsuranceById(id);
+            // if (matchedInsurance) {
+            //     resolve(matchedInsurance);
+            // } else 
+            {
                 this._insuranceService.getInsurance(id).subscribe((insurance: Insurance) => {
                     resolve(insurance);
                 }, error => {
@@ -85,7 +86,6 @@ export class InsuranceStore {
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
    
-
     addInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
             this._insuranceService.addInsurance(insurance).subscribe((insurance: Insurance) => {
