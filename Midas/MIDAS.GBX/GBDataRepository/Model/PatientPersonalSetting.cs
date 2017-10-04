@@ -12,26 +12,19 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserPersonalSetting
+    public partial class PatientPersonalSetting
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public int CompanyId { get; set; }
-        public bool IsPublic { get; set; }
-        public bool IsSearchable { get; set; }
-        public bool IsCalendarPublic { get; set; }
+        public int PatientId { get; set; }
+        public int PreferredModeOfCommunication { get; set; }
+        public bool IsPushNotificationEnabled { get; set; }
+        public byte CalendarViewId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public int SlotDuration { get; set; }
-        public int PreferredModeOfCommunication { get; set; }
-        public bool IsPushNotificationEnabled { get; set; }
-        public byte CalendarViewId { get; set; }
     
-        public virtual CalendarView CalendarView { get; set; }
-        public virtual Company Company { get; set; }
-        public virtual User User { get; set; }
+        public virtual Patient Patient { get; set; }
     }
 }

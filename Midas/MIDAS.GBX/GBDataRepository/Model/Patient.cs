@@ -23,6 +23,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.IMEVisits = new HashSet<IMEVisit>();
             this.PatientDocuments = new HashSet<PatientDocument>();
             this.PatientLanguagePreferenceMappings = new HashSet<PatientLanguagePreferenceMapping>();
+            this.PatientPersonalSettings = new HashSet<PatientPersonalSetting>();
             this.PatientSocialMediaMappings = new HashSet<PatientSocialMediaMapping>();
             this.PatientVisits = new HashSet<PatientVisit>();
             this.PatientVisitUnscheduleds = new HashSet<PatientVisitUnscheduled>();
@@ -60,6 +61,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<PatientDocument> PatientDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientPersonalSetting> PatientPersonalSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientSocialMediaMapping> PatientSocialMediaMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

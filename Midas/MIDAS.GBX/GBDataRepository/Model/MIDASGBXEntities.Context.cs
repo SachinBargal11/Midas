@@ -36,6 +36,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<BlobStorage> BlobStorages { get; set; }
         public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
+        public virtual DbSet<CalendarView> CalendarViews { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
         public virtual DbSet<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
         public virtual DbSet<CaseCompanyMapping> CaseCompanyMappings { get; set; }
@@ -90,6 +91,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         public virtual DbSet<PatientLanguagePreferenceMapping> PatientLanguagePreferenceMappings { get; set; }
+        public virtual DbSet<PatientPersonalSetting> PatientPersonalSettings { get; set; }
         public virtual DbSet<PatientPriorAccidentInjury> PatientPriorAccidentInjuries { get; set; }
         public virtual DbSet<PatientSocialMediaMapping> PatientSocialMediaMappings { get; set; }
         public virtual DbSet<PatientType> PatientTypes { get; set; }
@@ -136,7 +138,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<VisitStatu> VisitStatus { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
-        public virtual DbSet<CalendarView> CalendarViews { get; set; }
     
         public virtual ObjectResult<string> midas_sp_get_document_path(string document_node)
         {

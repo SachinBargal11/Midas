@@ -188,6 +188,7 @@
     <Compile Include="EntityRepository\ICDTypeCode\ICDTypeCodeRepository.cs" />
     <Compile Include="EntityRepository\IMEVisit\IMEvisitRepository.cs" />
     <Compile Include="EntityRepository\OTPCompanyMapping\OTPCompanyMappingRepository.cs" />
+    <Compile Include="EntityRepository\PatientPersonalSetting\PatientPersonalSettingRepository.cs" />
     <Compile Include="EntityRepository\PatientPriorAccidentInjury\PatientPriorAccidentInjuryRepository.cs" />
     <Compile Include="EntityRepository\PatientVisitUnscheduled\PatientVisitUnscheduledRepository.cs" />
     <Compile Include="EntityRepository\PlaintiffVehicle\PlaintiffVehicleRepository.cs" />
@@ -470,6 +471,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientLanguagePreferenceMapping.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientPersonalSetting.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientPriorAccidentInjury.cs">

@@ -365,6 +365,10 @@ namespace MIDAS.GBX
             {
                 repo = new SearchMedicalProvidersRepository(context);
             }
+            else if (typeof(T) == typeof(BO.PatientPersonalSetting))
+            {
+                repo = new PatientPersonalSettingRepository(context);
+            }
 
             return repo;
         }

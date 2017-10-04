@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccidentTreatment">
           <Key>
             <PropertyRef Name="Id" />
@@ -1006,6 +1006,21 @@ warning 6002: The table/view 'MIDASDev.dbo.DocumentNodes' does not have a primar
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="LanguagePreferenceId" Type="tinyint" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="PatientPersonalSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="PreferredModeOfCommunication" Type="int" Nullable="false" />
+          <Property Name="IsPushNotificationEnabled" Type="bit" Nullable="false" />
+          <Property Name="CalendarViewId" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -3027,6 +3042,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientPersonalSettings_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientPersonalSettings">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientPriorAccidentInjury_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="PatientPriorAccidentInjury" Type="Self.PatientPriorAccidentInjury" Multiplicity="*" />
@@ -4134,6 +4161,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientFamilyMembers" EntityType="Self.PatientFamilyMembers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientInsuranceInfo" EntityType="Self.PatientInsuranceInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientLanguagePreferenceMapping" EntityType="Self.PatientLanguagePreferenceMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientPersonalSettings" EntityType="Self.PatientPersonalSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientPriorAccidentInjury" EntityType="Self.PatientPriorAccidentInjury" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientSocialMediaMapping" EntityType="Self.PatientSocialMediaMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientType" EntityType="Self.PatientType" Schema="dbo" store:Type="Tables" />
@@ -4627,6 +4655,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient" EntitySet="Patient" />
             <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMapping" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientPersonalSettings_Patient_PatientId" Association="Self.FK_PatientPersonalSettings_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientPriorAccidentInjury_Case_CaseId" Association="Self.FK_PatientPriorAccidentInjury_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
             <End Role="PatientPriorAccidentInjury" EntitySet="PatientPriorAccidentInjury" />
@@ -4972,7 +5004,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5143,6 +5176,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="IMEVisit" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_CalendarEvent_CalendarEventId" FromRole="CalendarEvent" ToRole="PatientVisit" />
+        </EntityType>
+        <EntityType Name="CalendarView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CalendarViewText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId" FromRole="CalendarView" ToRole="UserPersonalSettings" />
         </EntityType>
         <EntityType Name="Case">
           <Key>
@@ -6035,6 +6081,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="User" Relationship="Self.FK_Patient_User_id" FromRole="Patient" ToRole="User" />
           <NavigationProperty Name="PatientDocuments" Relationship="Self.FK_PatientDocuments_Patient_PatientId" FromRole="Patient" ToRole="PatientDocuments" />
           <NavigationProperty Name="PatientLanguagePreferenceMappings" Relationship="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientLanguagePreferenceMapping" />
+          <NavigationProperty Name="PatientPersonalSettings" Relationship="Self.FK_PatientPersonalSettings_Patient_PatientId" FromRole="Patient" ToRole="PatientPersonalSettings" />
           <NavigationProperty Name="PatientSocialMediaMappings" Relationship="Self.FK_PatientSocialMediaMapping_Patient_PatientId" FromRole="Patient" ToRole="PatientSocialMediaMapping" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Patient_PatientId" FromRole="Patient" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="Patient" ToRole="PatientVisitUnscheduled" />
@@ -6204,6 +6251,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="LanguagePreference" Relationship="Self.FK_PatientLanguagePreferenceMapping_LanguagePreference_LanguagePreferenceId" FromRole="PatientLanguagePreferenceMapping" ToRole="LanguagePreference" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientLanguagePreferenceMapping_Patient_PatientId" FromRole="PatientLanguagePreferenceMapping" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="PatientPersonalSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="PreferredModeOfCommunication" Type="Int32" Nullable="false" />
+          <Property Name="IsPushNotificationEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="CalendarViewId" Type="Byte" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_PatientPersonalSettings_Patient_PatientId" FromRole="PatientPersonalSettings" ToRole="Patient" />
         </EntityType>
         <EntityType Name="PatientPriorAccidentInjury">
           <Key>
@@ -6965,10 +7028,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="SlotDuration" Type="Int32" Nullable="false" />
           <Property Name="PreferredModeOfCommunication" Type="Int32" Nullable="false" />
           <Property Name="IsPushNotificationEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="CalendarViewId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="CalendarView" Relationship="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId" FromRole="UserPersonalSettings" ToRole="CalendarView" />
           <NavigationProperty Name="Company" Relationship="Self.FK_UserPersonalSettings_Company_CompanyId" FromRole="UserPersonalSettings" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserPersonalSettings_User_UserId" FromRole="UserPersonalSettings" ToRole="User" />
-          <Property Name="CalendarViewId" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="CalendarView" Relationship="MIDASGBXModel.FK_UserPersonalSettings_CalendarView_CalendarViewId" FromRole="UserPersonalSetting" ToRole="CalendarView" />
         </EntityType>
         <EntityType Name="UserStatu">
           <Key>
@@ -7382,6 +7445,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientVisit">
               <PropertyRef Name="CalendarEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPersonalSettings_CalendarView_CalendarViewId">
+          <End Role="CalendarView" Type="Self.CalendarView" Multiplicity="1" />
+          <End Role="UserPersonalSettings" Type="Self.UserPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalendarView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPersonalSettings">
+              <PropertyRef Name="CalendarViewId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8801,6 +8876,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientPersonalSettings_Patient_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientPersonalSettings">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientSocialMediaMapping_Patient_PatientId">
           <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
           <End Role="PatientSocialMediaMapping" Type="Self.PatientSocialMediaMapping" Multiplicity="*" />
@@ -9399,6 +9486,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="BlobStorages" EntityType="Self.BlobStorage" />
           <EntitySet Name="BlobStorageTypes" EntityType="Self.BlobStorageType" />
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvent" />
+          <EntitySet Name="CalendarViews" EntityType="Self.CalendarView" />
           <EntitySet Name="Cases" EntityType="Self.Case" />
           <EntitySet Name="CaseCompanyConsentDocuments" EntityType="Self.CaseCompanyConsentDocument" />
           <EntitySet Name="CaseCompanyMappings" EntityType="Self.CaseCompanyMapping" />
@@ -9453,6 +9541,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientFamilyMembers" EntityType="Self.PatientFamilyMember" />
           <EntitySet Name="PatientInsuranceInfoes" EntityType="Self.PatientInsuranceInfo" />
           <EntitySet Name="PatientLanguagePreferenceMappings" EntityType="Self.PatientLanguagePreferenceMapping" />
+          <EntitySet Name="PatientPersonalSettings" EntityType="Self.PatientPersonalSetting" />
           <EntitySet Name="PatientPriorAccidentInjuries" EntityType="Self.PatientPriorAccidentInjury" />
           <EntitySet Name="PatientSocialMediaMappings" EntityType="Self.PatientSocialMediaMapping" />
           <EntitySet Name="PatientTypes" EntityType="Self.PatientType" />
@@ -9610,6 +9699,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisit_CalendarEvent_CalendarEventId" Association="Self.FK_PatientVisit_CalendarEvent_CalendarEventId">
             <End Role="CalendarEvent" EntitySet="CalendarEvents" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId">
+            <End Role="CalendarView" EntitySet="CalendarViews" />
+            <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_Case_CaseStatus_CaseStatusId" Association="Self.FK_Case_CaseStatus_CaseStatusId">
             <End Role="CaseStatus" EntitySet="CaseStatus" />
@@ -10083,6 +10176,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient" EntitySet="Patients" />
             <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMappings" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientPersonalSettings_Patient_PatientId" Association="Self.FK_PatientPersonalSettings_Patient_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientSocialMediaMapping_Patient_PatientId" Association="Self.FK_PatientSocialMediaMapping_Patient_PatientId">
             <End Role="Patient" EntitySet="Patients" />
             <End Role="PatientSocialMediaMapping" EntitySet="PatientSocialMediaMappings" />
@@ -10280,17 +10377,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-          <Parameter Name="document_node" Mode="In" Type="String" />
+            <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASGBXModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
             <Parameter Name="CompanyId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="CalendarViews" EntityType="MIDASGBXModel.CalendarView" />
-          <AssociationSet Name="FK_UserPersonalSettings_CalendarView_CalendarViewId" Association="MIDASGBXModel.FK_UserPersonalSettings_CalendarView_CalendarViewId">
-            <End Role="CalendarView" EntitySet="CalendarViews" />
-            <End Role="UserPersonalSetting" EntitySet="UserPersonalSettings" />
-          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_CaseGetReadOnly_Result">
           <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -10311,31 +10403,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
           <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
         </ComplexType>
-        <EntityType Name="CalendarView">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CalendarViewText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="UserPersonalSettings" Relationship="MIDASGBXModel.FK_UserPersonalSettings_CalendarView_CalendarViewId" FromRole="CalendarView" ToRole="UserPersonalSetting" />
-        </EntityType>
-        <Association Name="FK_UserPersonalSettings_CalendarView_CalendarViewId">
-          <End Type="MIDASGBXModel.CalendarView" Role="CalendarView" Multiplicity="1" />
-          <End Type="MIDASGBXModel.UserPersonalSetting" Role="UserPersonalSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CalendarView">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserPersonalSetting">
-              <PropertyRef Name="CalendarViewId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10485,6 +10552,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="IsCancelled" ColumnName="IsCancelled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CalendarViews">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CalendarView">
+              <MappingFragment StoreEntitySet="CalendarView">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CalendarViewText" ColumnName="CalendarViewText" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -11388,6 +11468,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PatientPersonalSettings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientPersonalSetting">
+              <MappingFragment StoreEntitySet="PatientPersonalSettings">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="PreferredModeOfCommunication" ColumnName="PreferredModeOfCommunication" />
+                <ScalarProperty Name="IsPushNotificationEnabled" ColumnName="IsPushNotificationEnabled" />
+                <ScalarProperty Name="CalendarViewId" ColumnName="CalendarViewId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PatientPriorAccidentInjuries">
             <EntityTypeMapping TypeName="MIDASGBXModel.PatientPriorAccidentInjury">
               <MappingFragment StoreEntitySet="PatientPriorAccidentInjury">
@@ -12034,7 +12130,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="UserPersonalSettings">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserPersonalSetting">
               <MappingFragment StoreEntitySet="UserPersonalSettings">
-                <ScalarProperty Name="CalendarViewId" ColumnName="CalendarViewId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -12049,6 +12144,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="SlotDuration" ColumnName="SlotDuration" />
                 <ScalarProperty Name="PreferredModeOfCommunication" ColumnName="PreferredModeOfCommunication" />
                 <ScalarProperty Name="IsPushNotificationEnabled" ColumnName="IsPushNotificationEnabled" />
+                <ScalarProperty Name="CalendarViewId" ColumnName="CalendarViewId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -12156,19 +12252,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="CalendarViews">
-            <EntityTypeMapping TypeName="MIDASGBXModel.CalendarView">
-              <MappingFragment StoreEntitySet="CalendarView">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CalendarViewText" ColumnName="CalendarViewText" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
