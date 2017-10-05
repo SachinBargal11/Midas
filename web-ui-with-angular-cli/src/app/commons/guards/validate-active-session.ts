@@ -19,7 +19,7 @@ export class ValidateActiveSession implements CanActivate {
         }
 
         // this._router.navigate(['/account/login']);
-        this._sessionStore.logout();
+        // this._sessionStore.logout();
         // this._sessionStore.getToken();
         return false;
     }

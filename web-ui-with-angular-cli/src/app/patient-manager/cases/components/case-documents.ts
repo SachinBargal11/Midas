@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Injectable, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
@@ -42,10 +43,16 @@ export class CaseDocumentsUploadComponent implements OnInit {
     addConsentDialogVisible: boolean = false;
     selectedCaseId: number;
 
+    mergeDocumentsDialogVisible = false;
+    mergeDocDialogHeader = 'Merge Document';
+    documentMergeForm: FormGroup;
+    documentMergeFormControls;
+
     yearFilter: any;
     maxDate;
     minDate;
     constructor(
+        private _fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
         private _casesStore: CasesStore,
@@ -78,6 +85,11 @@ export class CaseDocumentsUploadComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+        
+        this.documentMergeForm = this._fb.group({
+            documentName: ['', [Validators.required]]
+        });
+        this.documentMergeFormControls = this.documentMergeForm.controls;
     }
 
     ngOnInit() {
@@ -87,6 +99,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
     showDialog(currentCaseId: number) {
         this.addConsentDialogVisible = true;
         this.selectedCaseId = currentCaseId;
+    }
+    showMergeDocumentDialog() {
+        this.mergeDocumentsDialogVisible = true;
+    }
+    closeMergeDocumentDialog() {
+        this.mergeDocumentsDialogVisible = false;
+        this.documentMergeForm.reset();
     }
 
     documentUploadComplete(documents: Document[]) {

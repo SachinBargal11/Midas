@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { SessionStore } from '../stores/session-store';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
+import { environment } from '../../../environments/environment';
 
 const SessionRecord = Record({
     account: null,
@@ -56,7 +57,13 @@ export class Session extends SessionRecord {
             if (this.account.accessToken != '' && now < this.account.tokenExpiresAt) {
                 return true;
             } else {
-                this.logout();
+                let url = window.location.href;
+                let host = window.location.protocol + "//" + window.location.host + '/';
+                if (url != host + '' && url != host + '#/404' && url != host + '#/') {
+                localStorage["currentHref"] = window.location.href;
+                }
+                this.getToken();
+                // this.logout();
                 return false;
             }
         } else {
@@ -89,6 +96,32 @@ export class Session extends SessionRecord {
 
     logout() {
         window.location.reload();
+    }
+    getToken() {
+        var authorizationUrl = `${environment.IDENTITY_SERVER_URL}` + '/core/connect/authorize';
+        var redirect_uri = window.location.protocol + "//" + window.location.host + "/";
+        var response_type = "id_token token";
+        var scope: string = `${environment.IDENTITY_SCOPE}`;
+        var client_id: string = `${environment.CLIENT_ID}`;
+
+        var state = this.rand();
+        var nonce = this.rand();
+        localStorage["state"] = state;
+        localStorage["nonce"] = nonce;
+        var url =
+            authorizationUrl + "?" +
+            "client_id=" + encodeURI(client_id) + "&" +
+            "redirect_uri=" + encodeURI(redirect_uri) + "&" +
+            "response_type=" + encodeURI(response_type) + "&" +
+            "scope=" + encodeURI(scope) + "&" +
+            "state=" + encodeURI(state) + "&" +
+            "nonce=" + encodeURI(nonce);
+        url;
+        localStorage["url"] = url;
+        window.location.assign(url);
+    }
+    rand() {
+        return (Date.now() + "" + Math.random()).replace(".", "");
     }
 
 
