@@ -90,7 +90,8 @@ namespace MIDAS.GBX.DocumentManager
             HttpContext.Current.Response.AddHeader("Content-Disposition", "Attachment; filename=" + Path.GetFileName(blobName.ToString()));
             HttpContext.Current.Response.AddHeader("Content-Length", _cblob.Properties.Length.ToString());
             HttpContext.Current.Response.BinaryWrite(fileContents);
-
+            HttpContext.Current.Response.Flush();
+            HttpContext.Current.Response.End();
 
             return (Object)ms;
         }

@@ -972,27 +972,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                         _context.SaveChanges();
                     }
+                }
+                #endregion
 
-                    #region Insert UserSettings
-                    var UserSettings = _context.UserPersonalSettings.Where(p => p.UserId == userDB.id && p.CompanyId == UserCompanyDB.CompanyID
-                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                    .FirstOrDefault();
-                    if (UserSettings == null)
-                    {
-                        UserSettings = new UserPersonalSetting();
-                        UserSettings.UserId = userDB.id;
-                        UserSettings.CompanyId = UserCompanyDB.CompanyID;
-                        UserSettings.IsPublic = true;
-                        UserSettings.IsSearchable = true;
-                        UserSettings.IsCalendarPublic = true;
-                        UserSettings.SlotDuration = 30;
-                        UserSettings.PreferredModeOfCommunication = 3;
-                        UserSettings.IsPushNotificationEnabled = true;
+                #region Insert PatientPersonalSettings
+                var PatientSettings = _context.PatientPersonalSettings.Where(p => p.PatientId == PatientDB.Id
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                .FirstOrDefault();
+                if (PatientSettings == null)
+                {
+                    PatientSettings = new PatientPersonalSetting();
+                    PatientSettings.PatientId = PatientDB.Id;                    
+                    PatientSettings.PreferredModeOfCommunication = 3;
+                    PatientSettings.IsPushNotificationEnabled = true;
+                    PatientSettings.CalendarViewId = 3;
+                    PatientSettings.PreferredUIViewId = 1;
+                    PatientSettings.IsDeleted = null;
+                    PatientSettings.CreateByUserID = PatientDB.CreateByUserID;
+                    PatientSettings.CreateDate = DateTime.UtcNow;
 
-                        _context.UserPersonalSettings.Add(UserSettings);
-                        _context.SaveChanges();
-                    }
-                    #endregion
+                    _context.PatientPersonalSettings.Add(PatientSettings);
+                    _context.SaveChanges();
                 }
                 #endregion
 

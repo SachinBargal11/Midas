@@ -476,6 +476,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserSettings.SlotDuration = 30;
                 UserSettings.PreferredModeOfCommunication = 3;
                 UserSettings.IsPushNotificationEnabled = true;
+                UserSettings.CalendarViewId = 3;
+                UserSettings.PreferredUIViewId = 1;
+                UserSettings.CreateByUserID = userDB.CreateByUserID;
+                UserSettings.CreateDate = DateTime.UtcNow;
 
                 _context.UserPersonalSettings.Add(UserSettings);
                 _context.SaveChanges();
