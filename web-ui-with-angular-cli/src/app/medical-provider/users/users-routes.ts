@@ -75,6 +75,7 @@ export const UsersRoutes: Routes = [
                     {
                         path: 'access',
                         component: UserAccessComponent,
+                        outlet: 'access',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Access'
@@ -83,6 +84,7 @@ export const UsersRoutes: Routes = [
                     {
                         path: 'doctorSpecificInformation',
                         component: DoctorSpecificInformationComponent,
+                        outlet: 'doctorSpecificInformation',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: "Doctor's Information"

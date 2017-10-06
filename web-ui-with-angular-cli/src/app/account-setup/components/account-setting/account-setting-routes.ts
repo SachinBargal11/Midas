@@ -40,6 +40,7 @@ export const AccountSettingShellRoutes: Routes = [
             {
                 path: 'procedure-codes',
                 component: ShellComponent,
+                outlet: 'procedure-codes',
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Procedure Codes'
@@ -65,6 +66,7 @@ export const AccountSettingShellRoutes: Routes = [
             {
                 path: 'document-types',
                 component: DocumentTypeComponent,
+                outlet: 'document-types',
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Document Types'

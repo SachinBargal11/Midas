@@ -81,7 +81,7 @@ export class UserSettingsComponent implements OnInit {
     ngOnInit() {
         this.getPreferredProviders();
 
-        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
+        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyyId)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
                 this.calendarViewId = userSetting.calendarViewId;       
@@ -192,7 +192,7 @@ export class UserSettingsComponent implements OnInit {
         let userSetting = new UserSetting(
             {
                 userId: this.userId,
-                companyId: this.companyId,
+                companyId: this.companyyId,
                 isPublic:null,
                 isCalendarPublic: null,
                 isSearchable: null,

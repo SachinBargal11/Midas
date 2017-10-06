@@ -319,6 +319,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'prior-accident',
                         component: PriorAccidentComponent,
+                        outlet: 'prior-accident',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Prior Accident'
@@ -327,6 +328,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'accident',
                         component: AccidentInfoComponent,
+                        outlet: 'accident',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Accident'
@@ -335,6 +337,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'billings',
                         component: BillingInfoComponent,
+                        outlet: 'billings',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Billings'
@@ -343,6 +346,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'payment',
                         component: PaymentListComponent,
+                        outlet: 'payment',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Payment'
@@ -351,6 +355,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'documents',
                         component: CaseDocumentsUploadComponent,
+                        outlet: 'documents',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Documents'
@@ -359,6 +364,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'insurances',
                         component: InsuranceListComponent,
+                        outlet: 'insurances',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Insurances'
@@ -393,6 +399,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'consent',
                         component: ShellComponent,
+                        outlet: 'consent',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Consent'
@@ -437,6 +444,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'employer',
                         component: CaseEmployerComponent,
+                        outlet: 'employer',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Employer'
@@ -445,6 +453,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'family-members',
                         component: ShellComponent,
+                        outlet: 'family-members',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Family Members'
@@ -479,6 +488,7 @@ export const CasesShellRoutes: Routes = [
                     {
                         path: 'autoInformation',
                         component: AutoInformationInfoComponent,
+                        outlet: 'autoInformation',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'AutoInformation'

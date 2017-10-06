@@ -1,3 +1,27 @@
+<!--<section class="tabs-section">
+    <p-accordion [multiple]="true">
+        <p-accordionTab [routerLink]="general-settings">
+            <p-header>
+                General Settings
+            </p-header>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab [routerLink]="[{outlets:{procedure-codes:'procedure-codes'}}]">
+            <p-header>
+               Procedure Codes
+            </p-header>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active">
+                    <router-outlet name="procedure-codes"></router-outlet>
+                </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
+</section>-->
 <section class="tabs-section">
     <div class="tabs-section-nav">
         <div class="tbl">
@@ -28,9 +52,7 @@
     </div>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active">
-
             <router-outlet></router-outlet>
-
         </div>
     </div>
 </section>

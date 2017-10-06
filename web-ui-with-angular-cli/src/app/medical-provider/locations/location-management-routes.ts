@@ -63,6 +63,7 @@ export const LocationManagementRoutes: Routes = [
                     {
                         path: 'schedule',
                         component: ScheduleComponent,
+                        outlet: 'basic',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Schedule'
@@ -71,6 +72,7 @@ export const LocationManagementRoutes: Routes = [
                     {
                         path: 'schedule-demo',
                         component: ScheduleDemo,
+                        outlet: 'schedule',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Schedule-demo'
@@ -79,6 +81,7 @@ export const LocationManagementRoutes: Routes = [
                     {
                         path: 'settings',
                         component: SettingsComponent,
+                        outlet: 'settings',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Settings'
@@ -87,6 +90,7 @@ export const LocationManagementRoutes: Routes = [
                     {
                         path: 'access',
                         component: AccessComponent,
+                        outlet: 'access',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Access'

@@ -23,6 +23,21 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
+                            <label class="form-label"> Preferred UI View
+                                            <!-- <span class="color-red">*</span> -->
+                                        </label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select formControlName="preferredUIViewId" [(ngModel)]="preferredUIViewId" type="text" class="form-control">
+                                    <option value="1">Tab View  </option>
+                                    <option value="2">Collapsable Panel View</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
                             <button type="submit" class="btn btn-success">
                         Save
                         <loader [visible]="isSaveProgress"></loader>

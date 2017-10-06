@@ -1,5 +1,27 @@
-<!--<main-nav></main-nav>-->
-<!--<medical-provider-nav></medical-provider-nav>-->
+<!--<section class="tabs-section">
+	<p-accordion [multiple]="true">
+		<p-accordionTab [routerLink]="basic">
+			<p-header>
+				Basic
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{locations:'locations'}}]">
+			<p-header>
+				Doctors Locations
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="locations"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		</p-accordion>
+</section>-->
 <section class="tabs-section">
 	<div class="tabs-section-nav">
 		<div class="tbl">
@@ -11,20 +33,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="access" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Access
-						</span>
-					</a>
-				</li>-->
-				<!--<li class="nav-item doctorRole" id="doctorInfo" >
-					<a class="nav-link" routerLink="doctorSpecificInformation" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Doctor's Information
-						</span>
-					</a>
-				</li>-->
 				<li class="nav-item doctorRole" id="doctorLocation">
 					<a class="nav-link" routerLink="locations" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -32,23 +40,12 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="billing" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Billing
-						</span>
-					</a>
-				</li>-->
 			</ul>
 		</div>
 	</div>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active">
-
 			<router-outlet></router-outlet>
-
 		</div>
 	</div>
-	<!--.tab-content-->
 </section>
-<!--.tabs-section-->

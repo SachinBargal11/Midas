@@ -38,6 +38,7 @@ export class UserSettingsComponent implements OnInit {
     isPublic: boolean = false;
     isTimeSlot = 30;
     calendarViewId = 1;
+    preferredUIViewId = 1;
 
     constructor(
         private _authenticationService: AuthenticationService,
@@ -58,6 +59,8 @@ export class UserSettingsComponent implements OnInit {
             isSearchable: [''],
             timeSlot: [''],
             calendarViewId: [''],
+            preferredUIViewId:['']
+            
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
@@ -94,6 +97,7 @@ export class UserSettingsComponent implements OnInit {
                 this.isSearchable = userSetting.isSearchable;
                 this.isTimeSlot = userSetting.SlotDuration;
                 this.calendarViewId = userSetting.calendarViewId;
+                this.preferredUIViewId = userSetting.preferredUIViewId;
                 
             },
             (error) => { },
@@ -133,7 +137,8 @@ export class UserSettingsComponent implements OnInit {
                 isCalendarPublic: this.isCalendarPublic,
                 isSearchable: this.isSearchable,
                 SlotDuration:this.isTimeSlot,
-                calendarViewId:this.calendarViewId
+                calendarViewId:this.calendarViewId,
+                preferredUIViewId:this.preferredUIViewId
             }
         )  
         this._progressBarService.show();

@@ -1,6 +1,59 @@
-<section class="tabs-section">
+<section class="tabs-section" *ngIf="preferredUIViewId == 2">
+	<h5 class="with-border">Details of {{patientName}}
+		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Add Case</span>
+    </a>
+		<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/',patientId]"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Case List</span>
+    </a>
+	</h5>
+
+	<p-accordion [multiple]="true">
+		<p-accordionTab [routerLink]="viewall">
+			<p-header>
+				View All
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{basic:'basic-collapsible'}}]">
+			<p-header>
+				Basic
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="basic"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{demographics:'demographics-collapsible'}}]">
+			<p-header>
+				Demographics
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="demographics"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{documents:'documents-collapsible'}}]">
+			<p-header>
+				Documents
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="documents"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+	</p-accordion>
+</section>
+
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
 	<h3 class="with-border">Details of {{patientName}}</h3>
-	<!--<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/{{patientId}}/add']"><i class="fa fa-plus" aria-hidden="true"></i>-->
 	<a class="pull-right btn-inline btn btn-add btn-sm" [routerLink]="['/patient-manager/cases/'+patientId+'/add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Case</span>
     </a>
@@ -31,27 +84,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="insurances" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Insurances
-						</span>
-					</a>
-				</li>-->
-				<!-- <li class="nav-item">
-					<a class="nav-link" routerLink="family-members" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Family Member
-						</span>
-					</a>
-				</li> -->
-				<!-- <li class="nav-item">
-					<a class="nav-link" routerLink="employer" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Employer
-						</span>
-					</a>
-				</li> -->
 				<li class="nav-item">
 					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -59,41 +91,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="attorney" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Attorney
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="referring-offices" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Referring Offices
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="balances" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Balances
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Documents
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="appointments" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Appointments
-						</span>
-					</a>
-				</li>-->
 			</ul>
 		</div>
 	</div>
@@ -104,6 +101,4 @@
 
 		</div>
 	</div>
-	<!--.tab-content-->
 </section>
-<!--.tabs-section-->

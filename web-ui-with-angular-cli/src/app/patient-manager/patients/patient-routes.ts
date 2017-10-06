@@ -97,6 +97,15 @@ export const PatientsShellRoutes: Routes = [
                             breadcrumb: 'View All'
                         }
                     },
+                    // {
+                    //     path: 'viewall-collapsible',
+                    //     component: ViewAllComponent,
+                    //     // outlet: 'viewall',
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'View All'
+                    //     }
+                    // },
                     {
                         path: 'basic',
                         component: PatientBasicComponent,
@@ -105,9 +114,27 @@ export const PatientsShellRoutes: Routes = [
                             breadcrumb: 'Basic'
                         }
                     },
+                     {
+                        path: 'basic-collapsible',
+                        component: PatientBasicComponent,
+                        outlet: 'basic',
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Basic'
+                        }
+                    },
                     {
                         path: 'demographics',
                         component: DemographicsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Demo Graphics'
+                        }
+                    },
+                    {
+                        path: 'demographics-collapsible',
+                        component: DemographicsComponent,
+                        outlet: 'demographics',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Demo Graphics'
@@ -208,6 +235,15 @@ export const PatientsShellRoutes: Routes = [
                     {
                         path: 'documents',
                         component: DocumentsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Documents'
+                        }
+                    },
+                    {
+                        path: 'documents-collapsible',
+                        component: DocumentsComponent,
+                        outlet: 'documents',
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Documents'

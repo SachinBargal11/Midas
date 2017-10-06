@@ -33,11 +33,8 @@ export class UserSettingsComponent implements OnInit {
 
     addUserSettings: FormGroup;
     addUserSettingsControls;
-    isSearchable: boolean = false;
-    isCalendarPublic: boolean = false;
-    isPublic: boolean = false;
-    isTimeSlot = 30;
     calendarViewId = 1;
+    preferredUIViewId = 1;
     isSaveProgress = false;
     constructor(
         private _authenticationService: AuthenticationService,
@@ -52,26 +49,22 @@ export class UserSettingsComponent implements OnInit {
 
     ) {       
         this.addUserSettings = this._fb.group({
-            isPublic: [''],
-            isCalendarPublic: [''],
-            isSearchable: [''],
-            timeSlot: [''],
             calendarViewId: [''],
+            preferredUIViewId: [''],
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
     }
 
     ngOnInit() {
-        // this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
-        //     .subscribe((userSetting) => {
-        //         this.userSetting = userSetting;
-        //         this.calendarViewId = userSetting.calendarViewId;
-                
-        //     },
-        //     (error) => { },
-        //     () => {
-        //     });
+        this._userSettingStore.getPatientPersonalSettingByPatientId(this.userId)
+            .subscribe((userSetting) => {
+                this.userSetting = userSetting;
+                this.calendarViewId = userSetting.calendarViewId;         
+            },
+            (error) => { },
+            () => {
+            });
 
     }
 
@@ -79,30 +72,21 @@ export class UserSettingsComponent implements OnInit {
         this._notificationsStore.toggleVisibility();
     }
 
-    checkUncheck(event) {
-        if (event == false) {
-            this.isCalendarPublic = false;
-            this.isSearchable = false;
-        }
-
-    }
 
     saveUserSettings() {
         let userSettingsValues = this.addUserSettings.value;
         let result;
         let userSetting = new UserSetting(
             {
-                userId: this.userId,
-                companyId:null,
-                isPublic: null,
-                isCalendarPublic: null,
-                isSearchable: null,
-                SlotDuration:null,
-                calendarViewId:this.calendarViewId
+                patientId: this.userId,
+                preferredModeOfCommunication:null,
+                isPushNotificationEnabled:null,
+                calendarViewId:this.calendarViewId,
+                preferredUIViewId:this.preferredUIViewId
             }
         )
         this._progressBarService.show();
-        result = this._userSettingStore.saveUserSetting(userSetting);
+        result = this._userSettingStore.savePatientPersonalSetting(userSetting);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

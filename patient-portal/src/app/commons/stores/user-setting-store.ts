@@ -37,9 +37,9 @@ export class UserSettingStore {
         return <Observable<UserSetting>>Observable.fromPromise(promise);
     }
 
-    getUserSettingByUserId(userId: number,companyId:number): Observable<UserSetting> {
+    getPatientPersonalSettingByPatientId(patientId: number): Observable<UserSetting> {
         let promise = new Promise((resolve, reject) => {
-            this._userSettingService.getUserSettingByUserId(userId,companyId).subscribe((userSetting: UserSetting) => {
+            this._userSettingService.getPatientPersonalSettingByPatientId(patientId).subscribe((userSetting: UserSetting) => {
                 // this._userSetting.next(List(userSetting));
                 resolve(userSetting);
             }, error => {
@@ -49,9 +49,9 @@ export class UserSettingStore {
         return <Observable<UserSetting>>Observable.fromPromise(promise);
     }
 
-    saveUserSetting(userSetting: UserSetting): Observable<UserSetting> {
+    savePatientPersonalSetting(userSetting: UserSetting): Observable<UserSetting> {
         let promise = new Promise((resolve, reject) => {
-            this._userSettingService.saveUserSettings(userSetting).subscribe((userSetting: UserSetting) => {
+            this._userSettingService.savePatientPersonalSetting(userSetting).subscribe((userSetting: UserSetting) => {
                 // this._userSetting.next(this._userSetting.getValue().push(userSetting));
                 resolve(userSetting);
             }, error => {

@@ -1,3 +1,47 @@
+<!--<section class="tabs-section">
+	<p-accordion [multiple]="true">
+		<p-accordionTab [routerLink]="basic">
+			<p-header>
+				Basic
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{schedule:'schedule'}}]">
+			<p-header>
+				Schedule
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="schedule"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{rooms:'rooms'}}]">
+			<p-header>
+				Rooms
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="rooms"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{doctors:'doctors'}}]">
+			<p-header>
+				Doctors
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="doctors"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		</p-accordion>
+</section>-->
 <section class="tabs-section">
 	<div class="tabs-section-nav">
 		<div class="tbl">
@@ -16,13 +60,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="schedule-demo" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Schedule-demo
-						</span>
-					</a>
-				</li>-->
 				<li class="nav-item">
 					<a class="nav-link" routerLink="rooms" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -37,35 +74,12 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="settings" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Settings
-						</span>
-					</a>
-				</li>-->
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="doctors" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Doctors
-						</span>
-					</a>
-				</li>-->
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="access" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Access
-						</span>
-					</a>
-				</li>-->
 			</ul>
 		</div>
 	</div>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active">
-
 			<router-outlet></router-outlet>
-
 		</div>
 	</div>
 </section>

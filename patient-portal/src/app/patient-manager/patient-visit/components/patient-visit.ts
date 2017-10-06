@@ -134,7 +134,7 @@ export class PatientVisitComponent implements OnInit {
     // procedures: Procedure[];
     // selectedProcedures: Procedure[];
     // selectedSpeciality: Speciality;
-    patientId: number;
+    patientId: number = this.sessionStore.session.user.id;
     location: null;
     locationId: 0;
     case: null;
@@ -203,17 +203,17 @@ export class PatientVisitComponent implements OnInit {
         private _userSettingStore: UserSettingStore,
     ) {
 
-            // this._userSettingStore.getUserSettingByUserId(this.patientId, this.companyId)
-            //     .subscribe((userSetting) => {
-            //         this.userSetting = userSetting;
-            //         this.defaultView = userSetting.calendarViewLabel;
-            //     },
-            //     (error) => { },
-            //     () => {
-            //     });
+            this._userSettingStore.getPatientPersonalSettingByPatientId(this.patientId)
+                .subscribe((userSetting) => {
+                    this.userSetting = userSetting;
+                    this.defaultView = userSetting.calendarViewLabel;
+                },
+                (error) => { },
+                () => {
+                });
 
         
-        this.patientId = this.sessionStore.session.user.id;
+        // this.patientId = this.sessionStore.session.user.id;
         this._progressBarService.show();
         this._patientsStore.fetchPatientById(this.patientId)
             .subscribe(

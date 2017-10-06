@@ -1,26 +1,120 @@
+<!--<section class="tabs-section">
+	<h5 class="with-border">Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
+	<p-accordion [multiple]="true" *ngIf="caseDetail">
+		<p-accordionTab [routerLink]="basic">
+			<p-header>
+				Basic
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{consent:'consent'}}]">
+			<p-header>
+				Consent
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="consent"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{insurances:'insurances'}}]">
+			<p-header>
+				Insurance
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="insurances"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{family-members:'family-members'}}]">
+			<p-header>
+				Family Member
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="family-members"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{documents:'documents'}}]">
+			<p-header>
+				Documents
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="documents"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{employer:'employer'}}]">
+			<p-header>
+				Employment/School
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="basic"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{accident:'accident'}}]">
+			<p-header>
+				Accident
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="accident"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{prior-accident:'prior-accident'}}]">
+			<p-header>
+				Prior Accident/Injuries
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="prior-accident"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{patient-visit:'patient-visit'}}]">
+			<p-header>
+				Visits
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="patient-visit"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>
+		<p-accordionTab [routerLink]="[{outlets:{autoInformation:'autoInformation'}}]">
+			<p-header>
+				Auto Information
+			</p-header>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade in active">
+					<router-outlet name="autoInformation"></router-outlet>
+				</div>
+			</div>
+		</p-accordionTab>	
+	 </p-accordion>
+</section>-->
+
 <section class="tabs-section">
 	<h5 class="with-border">Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist" *ngIf="caseDetail">
 				<li class="nav-item">
-					<!--<a class="nav-link" *ngIf="caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basic" [routerLinkActive]="['active']"
-					 role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Basic
-						</span>
-					</a>-->
 					<a class="nav-link" routerLink="basic" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Basic
 						</span>
 					</a>
-					<!--<a class="nav-link" *ngIf="!caseDetail.caseLabelEditable(sessionStore.session.currentCompany.id)" routerLink="basicLabel"
-					 [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Basic
-						</span>
-					</a>-->
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" routerLink="consent" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
@@ -29,13 +123,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="referrals" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Referrals
-						</span>
-					</a>
-				</li>	-->
 				<li class="nav-item">
 					<a class="nav-link" routerLink="insurances" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -79,13 +166,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="referring-offices" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Referring Offices
-						</span>
-					</a>
-				</li>-->
 				<li class="nav-item">
 					<a class="nav-link" routerLink="patient-visit" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -93,21 +173,6 @@
 						</span>
 					</a>
 				</li>
-				<!--<li class="nav-item">
-					<a class="nav-link" routerLink="billings" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Bills
-						</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" routerLink="payment" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
-						<span class="nav-link-in">
-					Payment
-						</span>
-					</a>
-				</li>-->
-
 				<li class="nav-item">
 					<a class="nav-link" routerLink="autoInformation" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
@@ -120,11 +185,7 @@
 	</div>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active">
-
 			<router-outlet></router-outlet>
-
 		</div>
 	</div>
-	<!--.tab-content-->
 </section>
-<!--.tabs-section-->
