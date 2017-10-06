@@ -15,7 +15,6 @@ using System.Text.RegularExpressions;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DocumentManager")]
-    [Authorize]
     public class DocumentManagerController : ApiController
     {
         internal UploadInfo uploadObject = null;
@@ -197,6 +196,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("downloadfromblob/{companyid}/{documentid}")]
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
         public HttpResponseMessage DownlodFromBlob(int companyid, int documentid)
         {
             HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyid);
@@ -212,7 +212,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("downloadfromnoproviderblob/{documentid}")]
-        [AllowAnonymous]
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
         public HttpResponseMessage DownlodFromNoProviderBlob(int documentid)
         {
             int companyId = 0;

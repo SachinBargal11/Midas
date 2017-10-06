@@ -10,7 +10,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/OTPCompanyMapping")]
-    [Authorize]
     public class OTPCompanyMappingController : ApiController
     {
         private IRequestHandler<OTPCompanyMapping> requestHandler;

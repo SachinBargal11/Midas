@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DefendantVehicle")]
-    [Authorize]
     public class DefendantVehicleController : ApiController
     {
         private IRequestHandler<DefendantVehicle> requestHandler;

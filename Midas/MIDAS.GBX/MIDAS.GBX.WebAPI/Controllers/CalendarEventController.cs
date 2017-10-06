@@ -9,7 +9,6 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/CalendarEvent")]
-    [Authorize]
     public class CalendarEventController : ApiController
     {
         private IRequestHandler<CalendarEvent> requestHandler;

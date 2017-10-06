@@ -19,7 +19,6 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Notification")]
-    [Authorize]
     public class NotificationController : ApiController
     {
         private IRequestHandler<Notification> requestHandlerNotification;

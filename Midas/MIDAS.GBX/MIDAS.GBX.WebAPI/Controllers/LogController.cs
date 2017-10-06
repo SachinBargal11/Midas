@@ -19,7 +19,6 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Log")]
-    [Authorize]
     public class LogController : ApiController
     {
         private IRequestHandler<Log> requestHandler;

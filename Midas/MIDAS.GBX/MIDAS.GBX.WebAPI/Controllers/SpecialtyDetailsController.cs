@@ -19,7 +19,6 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/SpecialtyDetails")]
-    [Authorize]
     public class SpecialtyDetailsController : ApiController
     {
 

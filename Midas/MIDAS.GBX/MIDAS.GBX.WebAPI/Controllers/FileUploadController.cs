@@ -19,7 +19,6 @@ using System.Net.Http.Headers;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
-    [Authorize]
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;

@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/PendingReferral")]
-    [Authorize]
     public class PendingReferralController : ApiController
     {
         private IRequestHandler<PendingReferral> requestHandler;

@@ -21,7 +21,6 @@ using MIDAS.GBX.BusinessObjects.Common;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/templatemanager")]
-    [Authorize]
     public class TemplateManagerController : ApiController
     {        
         private IRequestHandler<TemplateType> requestHandler;

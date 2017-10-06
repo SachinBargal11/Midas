@@ -11,7 +11,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/CaseCompanyMapping")]
-    [Authorize]
     public class CaseCompanyMappingController : ApiController
     {
         private IRequestHandler<CaseCompanyMapping> requestHandler;

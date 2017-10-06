@@ -20,7 +20,6 @@ using MIDAS.GBX.WebAPI.Filters;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/UserCompany")]
-    [Authorize]
     public class UserCompanyController : ApiController
     {
 

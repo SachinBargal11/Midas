@@ -14,7 +14,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DocumentNodeObjectMapping")]
-    [Authorize]
     public class DocumentNodeObjectMapping2Controller : ApiController
     {
         private IRequestHandler<DocumentNodeObjectMapping> requestHandler;

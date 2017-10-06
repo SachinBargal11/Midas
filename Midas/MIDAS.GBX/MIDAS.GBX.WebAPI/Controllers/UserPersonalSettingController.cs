@@ -19,7 +19,6 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/UserPersonalSetting")]
-    [Authorize]
     public class UserPersonalSettingController : ApiController
     {
         private IRequestHandler<UserPersonalSetting> requestHandler;

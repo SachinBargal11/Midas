@@ -9,7 +9,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/AdjusterMaster")]
-    [Authorize]
     public class AdjusterMasterController : ApiController
     {
         private IRequestHandler<AdjusterMaster> requestHandler;

@@ -10,7 +10,6 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/OTP")]
-    [Authorize]
     public class OTPController : ApiController
     {
         private IRequestHandler<OTP> requestHandler;
