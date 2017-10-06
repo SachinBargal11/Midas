@@ -97,15 +97,6 @@ export const PatientsShellRoutes: Routes = [
                             breadcrumb: 'View All'
                         }
                     },
-                    // {
-                    //     path: 'viewall-collapsible',
-                    //     component: ViewAllComponent,
-                    //     // outlet: 'viewall',
-                    //     canActivate: [ValidateActiveSession],
-                    //     data: {
-                    //         breadcrumb: 'View All'
-                    //     }
-                    // },
                     {
                         path: 'basic',
                         component: PatientBasicComponent,
