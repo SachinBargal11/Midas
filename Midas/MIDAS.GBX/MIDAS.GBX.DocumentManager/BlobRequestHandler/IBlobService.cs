@@ -20,6 +20,8 @@ namespace MIDAS.GBX.DocumentManager
 
         HttpResponseMessage MergeDocuments(HttpRequestMessage request, int companyid, object pdfFiles,string blobPath, string servicepProvider);
 
+        HttpResponseMessage PacketDocuments(HttpRequestMessage request, int companyid, object pdfFiles, string blobPath, string servicepProvider);
+
         object CreateTemplate(HttpRequestMessage request, Int32 companyId, string templateBlobPath, Dictionary<string, string> templateKeywords);
     }
 }

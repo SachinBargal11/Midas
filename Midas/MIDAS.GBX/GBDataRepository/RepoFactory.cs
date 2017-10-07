@@ -281,7 +281,7 @@ namespace MIDAS.GBX
             {
                 repo = new ReferralRepository(context);
             }            
-            else if (typeof(T) == typeof(BO.MergePDF) || typeof(T) == typeof(BO.Document) || typeof(T) == typeof(BO.Common.UploadInfo))
+            else if (typeof(T) == typeof(BO.MergePDF) || typeof(T) == typeof(BO.PacketDocument) || typeof(T) == typeof(BO.Document) || typeof(T) == typeof(BO.Common.UploadInfo))
             {
                 repo = new DocumentManagerRepository(context);
             }

@@ -38,6 +38,11 @@ namespace MIDAS.GBX.DocumentManager
             throw new NotImplementedException();
         }
 
+        public virtual Object Packet(int companyid, object pdfFiles, string blobPath)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Template(Int32 CompanyId, string templateBlobPath, Dictionary<string, string> templateKeywords)
         {
             throw new NotImplementedException();

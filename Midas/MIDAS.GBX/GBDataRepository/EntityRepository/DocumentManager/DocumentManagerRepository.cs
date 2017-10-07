@@ -276,6 +276,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 return pdffiles;
             }
+            else if (typeof(T) == typeof(BO.PacketDocument))
+            {
+                BO.PacketDocument mergePDF = (BO.PacketDocument)(object)entity;
+                List<string> pdffiles = new List<string>();
+                _context.MidasDocuments.Where(midasdoc => mergePDF.DocumentIds.Contains(midasdoc.Id)).ToList()
+                                       .ForEach(x => pdffiles.Add(x.DocumentPath));
+
+                //if (!pdffiles.TrueForAll(file => Path.GetExtension(file) == ".pdf"))
+                //    return new BO.ErrorObject { ErrorMessage = "Please select only PDF files to merge", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+                return pdffiles;
+            }
             else
                 return new BO.ErrorObject { ErrorMessage = "Invalid object type", errorObject = "", ErrorLevel = ErrorLevel.Error };
         }

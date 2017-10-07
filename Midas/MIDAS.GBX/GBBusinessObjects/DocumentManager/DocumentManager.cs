@@ -33,4 +33,29 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class PacketDocument : GbObject
+    {
+        [Required]
+        [JsonProperty("packetDocumentName")]
+        public string PacketDocumentName { get; set; }
+
+        [Required]
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [Required]
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("documentIds")]
+        public List<int> DocumentIds { get; set; }
+
+        public override List<BusinessValidation> Validate<T>(T entity)
+        {
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+            BusinessValidation validation = new BusinessValidation();
+            return validations;
+        }
+    }
 }

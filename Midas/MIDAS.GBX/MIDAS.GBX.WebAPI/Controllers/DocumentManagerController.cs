@@ -23,11 +23,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         private IBlobService blobhandler;
         private List<Document> documentList = new List<Document>();
 
+        private IRequestHandler<PacketDocument> requestHandlerPacketDocument;
+
         public DocumentManagerController()
         {
             requestHandler = new GbApiRequestHandler<UploadInfo>();
             requestHandler1 = new GbApiRequestHandler<MergePDF>();
             blobhandler = new BlobServiceHandler();
+            requestHandlerPacketDocument = new GbApiRequestHandler<PacketDocument>();
         }
 
         [HttpPost]
@@ -234,6 +237,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("mergePDFs")]
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
         public HttpResponseMessage MergeDocuments([FromBody]MergePDF data)
         {
             HttpResponseMessage res = new HttpResponseMessage();
@@ -266,6 +270,48 @@ namespace MIDAS.GBX.WebAPI.Controllers
                     return res1;
                 else
                     documentList.Add(new Document { Status = "Failed", DocumentName = data.MergedDocumentName });
+            }
+
+            var restest = (object)documentList;
+            if (restest != null) return Request.CreateResponse(HttpStatusCode.Created, restest);
+            else return Request.CreateResponse(HttpStatusCode.NotFound, restest);
+        }
+
+        [HttpPost]
+        [Route("packetDocuments")]
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
+        public HttpResponseMessage PacketDocuments([FromBody]PacketDocument data)
+        {
+            HttpResponseMessage res = new HttpResponseMessage();
+            res = requestHandlerPacketDocument.GetGbObjects(Request, data);
+
+            int companyId = data.CompanyId > 0 ? data.CompanyId : Convert.ToInt16(((ObjectContent)requestHandler.GetByObjectIdAndType(Request, data.CaseId, "CASE").Content).Value);
+            if (companyId == 0)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this case company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            string blobPath = "cs-" + data.CaseId + "/mergepdfs";
+
+            HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyId);
+            if (serviceProvider == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this company", errorObject = "", ErrorLevel = ErrorLevel.Error });
+
+            if (res == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound, res);
+            else
+            {
+                HttpResponseMessage res1 = blobhandler.PacketDocuments(Request, companyId, ((ObjectContent)res.Content).Value, blobPath + "/" + data.PacketDocumentName, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                if (res1.StatusCode.Equals(HttpStatusCode.Created) || res1.StatusCode.Equals(HttpStatusCode.OK))
+                {
+                    uploadObject = new UploadInfo();
+                    uploadObject.BlobPath = ((ObjectContent)res1.Content).Value.ToString();
+                    uploadObject.ObjectId = data.CaseId;
+                    uploadObject.ObjectType = EN.Constants.CaseType;
+                    documentList.Add((Document)((ObjectContent)requestHandler.CreateGbObject(Request, uploadObject).Content).Value);
+                }
+                else if (res1.StatusCode.Equals(HttpStatusCode.NotFound))
+                    return res1;
+                else
+                    documentList.Add(new Document { Status = "Failed", DocumentName = data.PacketDocumentName });
             }
 
             var restest = (object)documentList;
