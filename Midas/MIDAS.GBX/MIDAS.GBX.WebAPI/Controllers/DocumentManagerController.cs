@@ -289,7 +289,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             if (companyId == 0)
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this case company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
-            string blobPath = "cs-" + data.CaseId + "/mergepdfs";
+            string blobPath = "cs-" + data.CaseId + "/packetDocuments";
 
             HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyId);
             if (serviceProvider == null)

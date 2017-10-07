@@ -145,9 +145,14 @@ namespace MIDAS.GBX.DocumentManager
         public override Object Packet(int companyId, object pdfFiles, string blobPath)
         {
             string tempUploadPath = HttpContext.Current.Server.MapPath("~/App_data/uploads/" + Path.GetFileName(blobPath));
-            tempUploadPath = tempUploadPath.Replace(Path.GetExtension(blobPath), "");
+            tempUploadPath = tempUploadPath.Replace(Path.GetExtension(blobPath), "") + @"\src";
             if (Directory.Exists(tempUploadPath) == false)
             {
+                Directory.CreateDirectory(tempUploadPath);
+            }
+            else
+            {
+                Directory.Delete(tempUploadPath);
                 Directory.CreateDirectory(tempUploadPath);
             }
 
@@ -165,8 +170,10 @@ namespace MIDAS.GBX.DocumentManager
                 File.WriteAllBytes(tempUploadPath + @"\" + Path.GetFileName(path), fileContents);
             });
 
+            string DestinationDirZIP = tempUploadPath.Replace(@"\src", "") + @"\" + Path.GetFileName(blobPath);
+            System.IO.Compression.ZipFile.CreateFromDirectory(tempUploadPath, DestinationDirZIP);
 
-            var blobURL = this.Upload(blobPath, tempUploadPath, companyId);
+            var blobURL = this.Upload(blobPath, DestinationDirZIP, companyId);
             return (object)blobURL;
             //return "";
         }
