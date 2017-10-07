@@ -67,6 +67,8 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
 import { MedicalProviderMasterService } from './account-setup/services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './account-setup/stores/medical-provider-master-store';
 
+import { DocumentManagerService } from './commons/services/document-manager-service';
+
 import { AssociateUserService } from './commons/services/associate-user-service';
 import { AssociateUserStore } from './commons/stores/associate-user-store';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
@@ -160,7 +162,8 @@ export function createConfig(): SignalRConfiguration {
     MedicalProviderMasterService,
     MedicalProviderMasterStore,
     AssociateUserService,
-    AssociateUserStore
+    AssociateUserStore,
+    DocumentManagerService
   ],
   bootstrap: [AppComponent]
 })

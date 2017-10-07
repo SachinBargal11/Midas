@@ -2,6 +2,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 
 const DocumentRecord = Record({
+    id: 0,
     documentId: 0,
     documentPath: '',
     documentName: '',
@@ -18,6 +19,7 @@ const DocumentRecord = Record({
 
 export class Document extends DocumentRecord {
 
+    id: number;
     documentId: number;
     documentPath: string;
     documentName: string;

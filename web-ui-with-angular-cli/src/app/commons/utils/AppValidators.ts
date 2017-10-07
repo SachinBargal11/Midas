@@ -34,6 +34,13 @@ export class AppValidators {
         }
     }
 
+    static removeDotValidator(control: FormControl) {
+        let regEx = /^[^\.]*$/;
+        if (control.value && !regEx.test(control.value)) {
+            return { removeDotValidator: true };
+        }
+    }
+
     static matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
         return (group: FormGroup): { [key: string]: any } => {
             let password = group.controls[passwordKey];

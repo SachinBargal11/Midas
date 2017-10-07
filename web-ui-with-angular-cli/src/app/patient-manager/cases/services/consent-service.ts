@@ -204,10 +204,10 @@ export class ConsentService {
                     }
                     // If everything went fine, return the response
                     else {
-                        window.localStorage.setItem('Authorization', this._sessionStore.session.accessToken)
-                        // window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
+                        // window.localStorage.setItem('Authorization', this._sessionStore.session.accessToken)
+                        window.location.assign(environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId);
                         //window.location. =  environment.SERVICE_BASE_URL
-                        window.location.href =  environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId;
+                        // window.location.href =  environment.SERVICE_BASE_URL + '/documentmanager/downloadfromblob/' + companyId + '/' + documentId;
                         // return res.arrayBuffer();
                     }
                 })

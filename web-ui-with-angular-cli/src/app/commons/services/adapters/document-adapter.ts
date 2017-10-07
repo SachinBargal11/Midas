@@ -7,6 +7,7 @@ export class DocumentAdapter {
         let document = null;
 
         document = new Document({
+            id: data.id,
             documentId: data.documentId,            
             documentPath: data.documentPath,
             documentName: data.documentName,
