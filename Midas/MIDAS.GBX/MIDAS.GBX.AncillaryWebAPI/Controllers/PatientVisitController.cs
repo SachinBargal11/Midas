@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using MIDAS.GBX.BusinessObjects;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace MIDAS.GBX.AncillaryWebAPI.Controllers
@@ -21,17 +12,14 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         public PatientVisitController()
         {
             requestHandler = new GbApiRequestHandler<PatientVisit>();
-        }
+        }       
 
-       
-
-        [HttpPost]
-        [Route("Save")]
-        public HttpResponseMessage Post([FromBody]PatientVisit data)
-        {
-            return requestHandler.CreateGbObject(Request, data);
-        }
-
+        //[HttpPost]
+        //[Route("Save")]
+        //public HttpResponseMessage Post([FromBody]PatientVisit data)
+        //{
+        //    return requestHandler.CreateGbObject(Request, data);
+        //}
 
         [HttpGet]
         [Route("getByAncillaryId/{AncillaryId}")]
@@ -39,7 +27,6 @@ namespace MIDAS.GBX.AncillaryWebAPI.Controllers
         {
             return requestHandler.GetByAncillaryId(Request, AncillaryId);
         }
-
         
         protected override void Dispose(bool disposing)
         {

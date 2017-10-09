@@ -3056,6 +3056,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientPersonalSettings_CalendarView_CalendarViewId">
+          <End Role="CalendarView" Type="Self.CalendarView" Multiplicity="1" />
+          <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalendarView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientPersonalSettings">
+              <PropertyRef Name="CalendarViewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientPersonalSettings_Patient_PatientId">
           <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
           <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSettings" Multiplicity="*" />
@@ -3065,6 +3077,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientPersonalSettings">
               <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId">
+          <End Role="PreferredUIView" Type="Self.PreferredUIView" Multiplicity="1" />
+          <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PreferredUIView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientPersonalSettings">
+              <PropertyRef Name="PreferredUIViewId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4682,8 +4706,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient" EntitySet="Patient" />
             <End Role="PatientLanguagePreferenceMapping" EntitySet="PatientLanguagePreferenceMapping" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_PatientPersonalSettings_CalendarView_CalendarViewId">
+            <End Role="CalendarView" EntitySet="CalendarView" />
+            <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientPersonalSettings_Patient_PatientId" Association="Self.FK_PatientPersonalSettings_Patient_PatientId">
             <End Role="Patient" EntitySet="Patient" />
+            <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId" Association="Self.FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId">
+            <End Role="PreferredUIView" EntitySet="PreferredUIView" />
             <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientPriorAccidentInjury_Case_CaseId" Association="Self.FK_PatientPriorAccidentInjury_Case_CaseId">
@@ -5219,6 +5251,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PatientPersonalSettings" Relationship="Self.FK_PatientPersonalSettings_CalendarView_CalendarViewId" FromRole="CalendarView" ToRole="PatientPersonalSettings" />
           <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId" FromRole="CalendarView" ToRole="UserPersonalSettings" />
         </EntityType>
         <EntityType Name="Case">
@@ -6298,7 +6331,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="CalendarView" Relationship="Self.FK_PatientPersonalSettings_CalendarView_CalendarViewId" FromRole="PatientPersonalSettings" ToRole="CalendarView" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientPersonalSettings_Patient_PatientId" FromRole="PatientPersonalSettings" ToRole="Patient" />
+          <NavigationProperty Name="PreferredUIView" Relationship="Self.FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId" FromRole="PatientPersonalSettings" ToRole="PreferredUIView" />
         </EntityType>
         <EntityType Name="PatientPriorAccidentInjury">
           <Key>
@@ -6595,6 +6630,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="PatientPersonalSettings" Relationship="Self.FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId" FromRole="PreferredUIView" ToRole="PatientPersonalSettings" />
           <NavigationProperty Name="UserPersonalSettings" Relationship="Self.FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId" FromRole="PreferredUIView" ToRole="UserPersonalSettings" />
         </EntityType>
         <EntityType Name="ProcedureCode">
@@ -7492,6 +7528,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientVisit">
               <PropertyRef Name="CalendarEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientPersonalSettings_CalendarView_CalendarViewId">
+          <End Role="CalendarView" Type="Self.CalendarView" Multiplicity="1" />
+          <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalendarView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientPersonalSettings">
+              <PropertyRef Name="CalendarViewId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9007,6 +9055,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId">
+          <End Role="PreferredUIView" Type="Self.PreferredUIView" Multiplicity="1" />
+          <End Role="PatientPersonalSettings" Type="Self.PatientPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PreferredUIView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientPersonalSettings">
+              <PropertyRef Name="PreferredUIViewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId">
           <End Role="SocialMedia" Type="Self.SocialMedia" Multiplicity="1" />
           <End Role="PatientSocialMediaMapping" Type="Self.PatientSocialMediaMapping" Multiplicity="*" />
@@ -9760,6 +9820,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="CalendarEvent" EntitySet="CalendarEvents" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_PatientPersonalSettings_CalendarView_CalendarViewId">
+            <End Role="CalendarView" EntitySet="CalendarViews" />
+            <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId">
             <End Role="CalendarView" EntitySet="CalendarViews" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
@@ -10263,6 +10327,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" Association="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId">
             <End Role="PolicyOwner" EntitySet="PolicyOwners" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId" Association="Self.FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId">
+            <End Role="PreferredUIView" EntitySet="PreferredUIViews" />
+            <End Role="PatientPersonalSettings" EntitySet="PatientPersonalSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId" Association="Self.FK_PatientSocialMediaMapping_SocialMedia_SocialMediaId">
             <End Role="SocialMedia" EntitySet="SocialMedias" />

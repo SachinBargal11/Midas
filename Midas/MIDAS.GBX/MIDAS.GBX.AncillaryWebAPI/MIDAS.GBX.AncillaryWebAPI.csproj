@@ -276,6 +276,7 @@
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\IMEVisitController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\OTPCompanyMappingController.cs" />

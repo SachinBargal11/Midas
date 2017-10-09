@@ -654,6 +654,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Ancillary Id
+        public override object GetByAncillaryId(int AncillaryId)
+        {
+            List<IMEVisit> lstIMEVisit = _context.IMEVisits.Include("CalendarEvent")
+                                                           .Include("Patient")
+                                                           .Include("Patient.Cases")
+                                                           .Include("Patient.User")
+                                                           .Where(p => p.TransportProviderId == AncillaryId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .ToList<IMEVisit>();
+
+            if (lstIMEVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.IMEVisit> lstBOIMEVisit = new List<BO.IMEVisit>();
+                lstIMEVisit.ForEach(p => lstBOIMEVisit.Add(ConvertIMEvisit<BO.IMEVisit, IMEVisit>(p)));
+
+                return lstBOIMEVisit;
+            }
+        }
+        #endregion
+
         #region Delete By Id
         public override object Delete(int Id)
         {

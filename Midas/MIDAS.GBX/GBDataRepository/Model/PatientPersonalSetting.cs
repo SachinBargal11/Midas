@@ -26,6 +26,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual CalendarView CalendarView { get; set; }
         public virtual Patient Patient { get; set; }
+        public virtual PreferredUIView PreferredUIView { get; set; }
     }
 }

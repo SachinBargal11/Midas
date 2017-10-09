@@ -51,15 +51,15 @@ IF EXISTS
 	SELECT	1
 	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 	WHERE	TABLE_SCHEMA = 'dbo'
-	AND		TABLE_NAME = 'UserPersonalSettings'
-	AND		CONSTRAINT_NAME = 'FK_UserPersonalSettings_CalendarView_CalendarViewId'
+	AND		TABLE_NAME = 'PatientPersonalSettings'
+	AND		CONSTRAINT_NAME = 'FK_PatientPersonalSettings_CalendarView_CalendarViewId'
 )
 BEGIN
-	ALTER TABLE [dbo].[UserPersonalSettings] DROP CONSTRAINT [FK_UserPersonalSettings_CalendarView_CalendarViewId]
+	ALTER TABLE [dbo].[PatientPersonalSettings] DROP CONSTRAINT [FK_PatientPersonalSettings_CalendarView_CalendarViewId]
 END
 GO
 
-ALTER TABLE [dbo].[UserPersonalSettings] ADD CONSTRAINT [FK_UserPersonalSettings_CalendarView_CalendarViewId] FOREIGN KEY([CalendarViewId])
+ALTER TABLE [dbo].[PatientPersonalSettings] ADD CONSTRAINT [FK_PatientPersonalSettings_CalendarView_CalendarViewId] FOREIGN KEY([CalendarViewId])
     REFERENCES [dbo].[CalendarView] ([id])
 GO
 
@@ -68,14 +68,14 @@ IF EXISTS
 	SELECT	1
 	FROM	INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 	WHERE	TABLE_SCHEMA = 'dbo'
-	AND		TABLE_NAME = 'UserPersonalSettings'
-	AND		CONSTRAINT_NAME = 'FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId'
+	AND		TABLE_NAME = 'PatientPersonalSettings'
+	AND		CONSTRAINT_NAME = 'FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId'
 )
 BEGIN
-	ALTER TABLE [dbo].[UserPersonalSettings] DROP CONSTRAINT [FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId]
+	ALTER TABLE [dbo].PatientPersonalSettings DROP CONSTRAINT [FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId]
 END
 GO
 
-ALTER TABLE [dbo].[UserPersonalSettings] ADD CONSTRAINT [FK_UserPersonalSettings_PreferredUIView_PreferredUIViewId] FOREIGN KEY([PreferredUIViewId])
+ALTER TABLE [dbo].[PatientPersonalSettings] ADD CONSTRAINT [FK_PatientPersonalSettings_PreferredUIView_PreferredUIViewId] FOREIGN KEY([PreferredUIViewId])
     REFERENCES [dbo].[PreferredUIView] ([id])
 GO

@@ -199,7 +199,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("downloadfromblob/{companyid}/{documentid}")]
-        //[AllowAnonymous] //Added TEMP, Need to be reomoved
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
         public HttpResponseMessage DownlodFromBlob(int companyid, int documentid)
         {
             HttpResponseMessage serviceProvider = requestHandler.GetObject(Request, companyid);
@@ -215,7 +215,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("downloadfromnoproviderblob/{documentid}")]
-        //[AllowAnonymous] //Added TEMP, Need to be reomoved
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
         public HttpResponseMessage DownlodFromNoProviderBlob(int documentid)
         {
             int companyId = 0;
