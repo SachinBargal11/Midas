@@ -10,6 +10,7 @@ import { PendingReferral } from '../../referals/models/pending-referral';
 import { Patient } from '../../patients/models/patient';
 import { CaseDocument } from './case-document';
 import { CaseCompanyMapping } from './caseCompanyMapping';
+import { CompanyAdapter } from "../../../account/services/adapters/company-adapter";
 
 const CaseRecord = Record({
     id: 0,
@@ -175,5 +176,28 @@ export class Case extends CaseRecord {
         }
         // });
         return isSessionCompany;
+    }
+
+    get caseSourceLabel(): string {        
+        return Case.getCaseSourceLabel(this.caseSource, this.orignatorCompanyName, this.orignatorCompanyId);
+    }
+    static getCaseSourceLabel(caseSource, orignatorCompanyName, orignatorCompanyId): string {
+        let storedCurrentCompany: any = JSON.parse(window.localStorage.getItem('current_company'));
+        let currentCompany: Company = CompanyAdapter.parseResponse(storedCurrentCompany);
+        if (orignatorCompanyId === currentCompany.id) {
+            return caseSource
+        } else {
+            return orignatorCompanyName;
+        }
+    }
+
+    get caseConsentLabel(): string {  
+        let storedCurrentCompany: any = JSON.parse(window.localStorage.getItem('current_company'));
+        let currentCompany: Company = CompanyAdapter.parseResponse(storedCurrentCompany);
+        if (this.isConsentReceived(currentCompany.id)) {
+            return 'Yes'
+        } else {
+            return 'Upload Consent Form';
+        }      
     }
 }
