@@ -84,7 +84,7 @@ export class UserSettingsComponent implements OnInit {
         this._userSettingStore.getUserSettingByUserId(this.userId, this.companyyId)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
-                this.calendarViewId = userSetting.calendarViewId;       
+                this.calendarViewId = userSetting.calendarViewId;
             },
             (error) => { },
             () => {
@@ -100,8 +100,8 @@ export class UserSettingsComponent implements OnInit {
         this.displayValidation = true;
     }
 
-    closeDialog(){
-  this.displayValidation = false;
+    closeDialog() {
+        this.displayValidation = false;
     }
 
     generateToken() {
@@ -126,7 +126,7 @@ export class UserSettingsComponent implements OnInit {
                 this.medicalProviderName = this.validateOtpResponse.company.name
             },
             (error) => {
-               let errString = 'Invalid token.';
+                let errString = 'Invalid token.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -184,22 +184,23 @@ export class UserSettingsComponent implements OnInit {
             });
     }
 
-   
 
-     saveUserSettings() {
+
+    saveUserSettings() {
         let userSettingsValues = this.addUserSettings.value;
         let result;
         let userSetting = new UserSetting(
             {
                 userId: this.userId,
                 companyId: this.companyyId,
-                isPublic:null,
+                isPublic: null,
                 isCalendarPublic: null,
                 isSearchable: null,
-                SlotDuration:null,
-                calendarViewId:this.calendarViewId
+                SlotDuration: null,
+                calendarViewId: this.calendarViewId,
+                preferredUIViewId: '1',
             }
-        )  
+        )
         this._progressBarService.show();
         result = this._userSettingStore.saveUserSetting(userSetting);
         result.subscribe(
@@ -219,7 +220,7 @@ export class UserSettingsComponent implements OnInit {
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
-                });  
+                });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
@@ -351,9 +352,9 @@ export class UserSettingsComponent implements OnInit {
         }
 
     }
-     goBack(): void {
+    goBack(): void {
         this._router.navigate(['/dashboard']);
-        
+
     }
 
 }

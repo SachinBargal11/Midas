@@ -17,6 +17,7 @@ export class UserSettingAdapter {
                user:UserAdapter.parseResponse(data.user),
                isDeleted: data.isDeleted ? true : false,
                calendarViewId:data.calendarViewId,
+               preferredUIViewId:data.preferredUIViewId,
                createByUserID: data.createbyuserID,
                createDate: data.createDate ? moment.utc(data.createDate) : null,
                updateByUserID: data.updateByUserID,

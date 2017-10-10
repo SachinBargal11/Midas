@@ -16,6 +16,7 @@ export class UserSettingAdapter {
                isCalendarPublic:data.isCalendarPublic ? true : false,
                SlotDuration:data.slotDuration,
                calendarViewId:data.calendarViewId,
+               preferredUIViewId:data.preferredUIViewId,
                user:UserAdapter.parseResponse(data.user),
                isDeleted: data.isDeleted ? true : false,
                createByUserID: data.createbyuserID,

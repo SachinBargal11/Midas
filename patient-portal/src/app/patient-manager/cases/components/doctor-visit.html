@@ -11,40 +11,40 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
-</div>
+    </div>
 </div>
 
 <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true">
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true" #dt>
     <header>Patient Doctors Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="eventStart" header="Visit Date" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="visitDateLabel" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <!--<ng-template let-visit="rowData" pTemplate="body">
 
             {{visit.eventStart | dateTimeFormat}}
 
-        </ng-template>
+        </ng-template>-->
     </p-column>
 
-    <p-column field="doctor.user.displayName" header="Treating Doctor" [sortable]="true">
+    <p-column field="doctor.user.displayName" header="Treating Doctor" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-visit="rowData" pTemplate="body">
             {{visit.doctor.user.displayName}}
         </ng-template>
     </p-column>
 
-    <p-column field="specialty.displayName" header="Speciality" [sortable]="true">
+    <p-column field="specialty.displayName" header="Speciality" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-visit="rowData" pTemplate="body">
-         {{visit.specialty.displayName}}
+            {{visit.specialty.displayName}}
         </ng-template>
     </p-column>
 
-    <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
-    <p-column field="" header="Billing Status" [sortable]="true">
+    <!--<p-column field="" header="Billing Status" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-visit="rowData" pTemplate="body">
 
         </ng-template>
-    </p-column>
+    </p-column>-->
 
 
     <p-column styleClass="actions-cell" header="Actions">

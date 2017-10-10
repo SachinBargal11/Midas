@@ -143,4 +143,11 @@ export class Case extends CaseRecord {
         });
         return isSessionCompany;
     }
+
+    get caseSourceLabel(): string {        
+        return Case.getCaseSourceLabel(this.caseSource);
+    }
+    static getCaseSourceLabel(caseSource): string {
+            return caseSource
+    }
 }

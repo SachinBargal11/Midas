@@ -18,16 +18,16 @@
 <!--<p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [lazy]="true" [rows]="10" [paginator]="true"
    [totalRecords]="totalRecords" (onLazyLoad)="loadInsurancesLazy($event)" [globalFilter]="gb" [responsive]="true"  >-->
 <p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true"  >
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Insurance List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="policyHoldersName" header="Policy Holder Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="policyHoldersName" header="Policy Holder Name" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-insurance="rowData" pTemplate="body">
             <a title="Edit" routerLink="edit/{{insurance.id}}">{{insurance.policyHoldersName}}</a>
         </ng-template>
     </p-column>
-    <p-column field="policyNo" header="Policy Number" [sortable]="true"></p-column>
-    <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>
+    <p-column field="policyNo" header="Policy Number" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-insurance="rowData" pTemplate="body">
             <a routerLink="edit/{{insurance.id}}"><i class="glyphicon glyphicon-edit"></i></a>

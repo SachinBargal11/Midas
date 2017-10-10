@@ -14,30 +14,30 @@
 </div>
 </div>
 <p-dataTable [value]="roomsVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Patient Rooms Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="eventStart" header="Visit Date" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="visitDateLabel" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <!--<ng-template let-visit="rowData" pTemplate="body">
 
             {{visit.eventStart | dateTimeFormat}}
 
-        </ng-template>
+        </ng-template>-->
     </p-column>
 
-    <p-column field="room.name" header="Testing Room" [sortable]="true">
+    <p-column field="room.name" header="Test Specialty" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-visit="rowData" pTemplate="body">
-            {{visit.room.name}}
+            {{visit.room.roomTest.name}}
         </ng-template>
     </p-column>
 
-    <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
 
-    <p-column field="room.name" header="Billing Status" [sortable]="true">
+    <!--<p-column field="" header="Billing Status" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
         </ng-template>
-    </p-column>
+    </p-column>-->
 
 
     <p-column styleClass="actions-cell" header="Actions">

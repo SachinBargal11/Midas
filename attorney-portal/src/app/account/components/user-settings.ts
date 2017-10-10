@@ -133,7 +133,8 @@ export class UserSettingsComponent implements OnInit {
                 isCalendarPublic: this.isCalendarPublic,
                 isSearchable: this.isSearchable,
                 SlotDuration:this.isTimeSlot,
-                calendarViewId:this.calendarViewId
+                calendarViewId:this.calendarViewId,
+                preferredUIViewId: '1',
             }
         )
         this._progressBarService.show();

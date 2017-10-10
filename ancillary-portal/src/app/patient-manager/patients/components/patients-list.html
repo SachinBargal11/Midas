@@ -19,10 +19,10 @@
 <!--<p-dataTable [value]="patients" [(selection)]="selectedPatients" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [totalRecords]="totalRecords" (onLazyLoad)="loadPatientsLazy($event)">-->
 <p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Patients</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="user.displayName" header="Name">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="user.displayName" header="Name" [filter]="true" styleClass="inbound-column">
         <!--<p-column field="user.displayName" header="Name" [filter]="true" filterPlaceholder="Search Patient Name" >-->
 
         <ng-template let-currentPatient="rowData" pTemplate="body">
@@ -42,17 +42,17 @@
     <p-column field="user.lastName" header="Last Name" [sortable]="true"></p-column>-->
 
     <!--<p-column field="user.address.address1" header="Address" [sortable]="true"></p-column>-->
-    <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true">
+    <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-currentPatient="rowData" pTemplate="body">
             {{currentPatient.user.contact.cellPhone | phoneFormat}}
         </ng-template>
     </p-column>
-    <p-column field="user.contact.emailAddress" header="Email" [sortable]="true"></p-column>
+    <p-column field="user.contact.emailAddress" header="Email" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-patient="rowData" pTemplate="body">
             <div>
                 <a title="Edit" routerLink="{{patient.user.id}}/viewall"><i class="glyphicon glyphicon-edit"></i></a>
-                <a title="View Cases" [routerLink]="['/patient-manager/cases/', patient.user.id]"><i class="glyphicon glyphicon-list"></i></a>
+                <!--<a title="View Cases" [routerLink]="['/patient-manager/cases/', patient.user.id]"><i class="glyphicon glyphicon-list"></i></a>-->
             </div>
 
         </ng-template>

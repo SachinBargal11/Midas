@@ -9,17 +9,17 @@
     </div>
 </div>
 <p-dataTable [value]="companies" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header> List</header>
     <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="name" header="Company Name"></p-column>
-    <p-column field="companyTypeLabel" header="Company Type"></p-column>
-    <p-column field="caseId" header="Case Id">
+    <p-column field="name" header="Company Name" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="companyTypeLabel" header="Company Type" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="caseId" header="Case Id" [filter]="true" styleClass="inbound-column">
         <!--<ng-template pTemplate="body">
             {{caseId}}
         </ng-template>-->
     </p-column>
-    <p-column header="Consent Given">
+    <!--<p-column header="Consent Given">
         <ng-template let-company="rowData" pTemplate="body">
             <div *ngIf="company.isConsentReceived()" (click)="downloadConsent(company.caseCompanyConsentDocument.midasDocumentId, company.id)">
                 <u>Yes</u>
@@ -27,6 +27,16 @@
             <div *ngIf="!company.isConsentReceived()" (click)="showDialog(company.caseId,company.id)">
                 <u>No</u>
             </div>
+        </ng-template>
+    </p-column>-->
+   <p-column field="caseConsentLabel" header="Consent Given" [sortable]="true" [filter]="true" styleClass="inbound-column">
+       <ng-template let-company="rowData" pTemplate="body">
+            <a *ngIf="company.caseConsentLabel == 'Yes'" (click)="downloadConsent(company.caseCompanyConsentDocument.midasDocumentId, company.id)">
+                <u>{{company.caseConsentLabel}}</u>
+            </a>
+            <a *ngIf="company.caseConsentLabel == 'No'" (click)="showDialog(company.caseId,company.id)">
+                <u>{{company.caseConsentLabel}}</u>
+            </a>
         </ng-template>
     </p-column>
     <!--<ng-template let-company="rowData" pTemplate="body">

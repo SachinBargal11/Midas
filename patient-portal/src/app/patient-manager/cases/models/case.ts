@@ -80,7 +80,6 @@ export class Case extends CaseRecord {
         }
     }
 
-
     get caseStatusLabel(): string {
         return Case.getCaseStatusLabel(this.caseStatusId);
     }
@@ -91,9 +90,9 @@ export class Case extends CaseRecord {
                 return 'Open';
             case CaseStatus.CLOSE:
                 return 'Close';
-
         }
     }
+    
     isConsentReceived(companyId): boolean {
         let isConsentReceived: boolean = false;
         if (this.companyCaseConsentApproval.length > 0) {
@@ -105,7 +104,5 @@ export class Case extends CaseRecord {
             return isConsentReceived;
         }
         return isConsentReceived;
-
     }
-
 }

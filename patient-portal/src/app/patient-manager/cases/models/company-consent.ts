@@ -2,6 +2,9 @@ import { Record } from 'immutable';
 import { CompanyType } from '../../../account/models/enums/company-type';
 import { Consent } from '../../cases/models/consent';
 import { CaseDocument } from './case-document';
+import { CompanyAdapter } from "../../../account/services/adapters/company-adapter";
+import { Company } from '../../../account/models/company';
+import * as _ from 'underscore';
 
 const CompanyConsentRecord = Record({
     id: 0,
@@ -50,14 +53,22 @@ export class CompanyConsent extends CompanyConsentRecord {
         }
     }
 
-     isConsentReceived(): boolean {
+    isConsentReceived(companyId): boolean {
         let isConsentReceived: boolean = false;
         if (this.companyCaseConsentApproval != null) {
             return isConsentReceived = true;
         }
         return isConsentReceived;
-
     }
 
+    get caseConsentLabel(): string {
+        let storedCurrentCompany: any = JSON.parse(window.localStorage.getItem('current_company'));
+        let currentCompany: Company = CompanyAdapter.parseResponse(storedCurrentCompany);
+        if (this.isConsentReceived(currentCompany.id)) {
+            return 'Yes'
+        } else {
+            return 'No';
+        }
+    }
 
 }
