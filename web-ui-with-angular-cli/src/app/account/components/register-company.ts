@@ -49,9 +49,9 @@ export class RegisterCompanyComponent implements OnInit {
             lastName: ['', Validators.required],
             taxId: ['', [Validators.required, Validators.maxLength(10)]],
             phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            companyType: ['', Validators.required],
+            companyType: ['1', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]],
-            subscriptionPlan: ['', Validators.required]
+            subscriptionPlan: ['1', Validators.required]
         });
         this.userformControls = this.registercompanyform.controls;
     }
@@ -67,7 +67,7 @@ export class RegisterCompanyComponent implements OnInit {
             companies: new Company({
                 name: registercompanyformValues.companyName,
                 taxId: registercompanyformValues.taxId,
-                companyType: registercompanyformValues.companyType
+                companyType: parseInt(registercompanyformValues.companyType)
             }),
             user: new User({
                 userName: registercompanyformValues.email,
@@ -84,7 +84,7 @@ export class RegisterCompanyComponent implements OnInit {
                 roleType: 'Admin',
                 status: 'active'
             }),
-            subscriptionPlan: registercompanyformValues.subscriptionPlan ? registercompanyformValues.subscriptionPlan : null
+            subscriptionPlan: registercompanyformValues.subscriptionPlan ? parseInt(registercompanyformValues.subscriptionPlan) : null
         });
         result = this._registrationService.registerCompany(company);
         result.subscribe(

@@ -286,7 +286,7 @@ export class AddPatientComponent implements OnInit {
                             });
                             this._notificationsStore.addNotification(notification);
                             this.id = response.id;
-                            this._router.navigate(['patient-manager/patients/'+this.id+'/viewall']);
+                            this._router.navigate(['patient-manager/patients/'+this.id+'/basic']);
                         },
                         (error) => {
                             let errString = 'Unable to add patient.';

@@ -82,7 +82,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
-                                        <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                        <select disabled formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
                                              <option value="">-Select company type-</option>
                                              <option disabled>────────────────────</option>
                                              <option value="1">MedicalProvider</option>
@@ -128,9 +128,10 @@
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
                                         <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
-                                             <option value="">-Select subscription plan-</option>
-                                             <option disabled>────────────────────</option>
-                                             <option value="Trial">Trial</option>
+                                             <!-- <option value="">-Select subscription plan-</option>
+                                             <option disabled>────────────────────</option> -->
+                                             <option value="1">Trial</option>
+                                             <!-- <option value="Trial">Trial</option> -->
                                              <!--<option value="30 day Trial">30 day Trial</option>-->
                                          </select>
                                         <div class='error-list' *ngIf="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
