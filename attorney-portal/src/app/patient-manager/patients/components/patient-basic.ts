@@ -209,15 +209,16 @@ export class PatientBasicComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Patient updated successfully!',
+                    'title': 'Client updated successfully',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patients']);
+                this._notificationsService.success('Success', 'Client updated successfully');
+                // this._router.navigate(['/patient-manager/patients']);
             },
             (error) => {
-                let errString = 'Unable to update patient.';
+                let errString = 'Unable to update Client.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
