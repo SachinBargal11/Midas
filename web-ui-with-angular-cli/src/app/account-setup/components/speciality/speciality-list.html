@@ -8,10 +8,10 @@
          <input #gb type="text" class="form-control" style="float:left" placeholder="Search Specialty">
     </div>
 </div>
-<p-dataTable [value]="specialities" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="specialities" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
     <header>List of Specialities</header>
-    <p-column field="name" header="Name" [sortable]="true"></p-column>
-    <p-column field="specialityCode" header="Specialty Code" [sortable]="true"></p-column>
+    <p-column field="name" header="Name" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="specialityCode" header="Specialty Code" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
    <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-speciality="rowData" pTemplate="body">
         <a routerLink="{{speciality.id}}/edit"><i class="glyphicon glyphicon-edit"></i></a>

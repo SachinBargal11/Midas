@@ -23,23 +23,23 @@
 
 <!--<p-dataTable [value]="locations" [(selection)]="selectedLocations" [lazy]="true" [rows]="10" [paginator]="true"
    [totalRecords]="totalRecords" (onLazyLoad)="loadLocationsLazy($event)" [globalFilter]="gb" [responsive]="true">-->
-<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
     <header>Locations</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="location.name" header="Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="location.name" header="Name" [sortable]="true" [filter]="true" styleClass="inbound-column">
          <ng-template let-location="rowData" pTemplate="body">
             <a routerLink="{{location.location.id}}/basic">{{location.location.name}}
             </a>
         </ng-template>
     </p-column>
-     <p-column field="location.locationTypeLabel" header="Location Type" [sortable]="true">
+     <p-column field="location.locationTypeLabel" header="Location Type" [sortable]="true" [filter]="true" styleClass="inbound-column">
             <!-- <ng-template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
             </ng-template> -->
     </p-column>
-    <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
-    <p-column field="contact.workPhone" header="Phone" [sortable]="true">
+    <p-column field="address.address1" header="Address" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="contact.workPhone" header="Phone" [sortable]="true" [filter]="true" styleClass="inbound-column">
             <ng-template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>

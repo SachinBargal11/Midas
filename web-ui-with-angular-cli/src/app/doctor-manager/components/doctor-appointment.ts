@@ -145,8 +145,7 @@ export class DoctorAppointmentComponent {
         }
     }
 
-    getFormateDate(visitDate){
-        // return moment(visitDate).format('MMMM Do YYYY,h:mm:ss a');
-        return moment(visitDate).local().format('MMMM Do YYYY,h:mm:ss a')
-        }
+    // getFormateDate(visitDate){
+    //     return moment(visitDate).local().format('MMMM Do YYYY,h:mm:ss a')
+    //     }
 }

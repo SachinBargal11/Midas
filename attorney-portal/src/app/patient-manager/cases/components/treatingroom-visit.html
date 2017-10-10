@@ -14,12 +14,12 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Rooms Visits">
-</div>
+    </div>
 </div>
 <p-dataTable [value]="allVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Patient Rooms Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
     <!--<p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
         <a (click)="showDialog(visit.id)">
@@ -41,24 +41,34 @@
         <ng-template let-visit="rowData" pTemplate="body">
         </ng-template>
     </p-column>-->
-     <p-column field="eventStart" header="Visit Date" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
+    <p-column field="eventStart" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <!--<ng-template let-visit="rowData" pTemplate="body">
             <a *ngIf="visit.eventStart && visit.visitStatusLabel != 'Completed'"(click)="showDialog(visit)">
             {{visit.eventStart | dateTimeFormat}}
         </a>
            <a *ngIf="visit.eventStart && visit.visitStatusLabel == 'Completed'"(click)="showDialog(visit)">
             {{visit.eventStart.format('MMMM Do YYYY')}}
         </a>
+        </ng-template>-->
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a *ngIf="visit.isPatientVisitType" (click)="showDialog(visit)">
+            {{visit.eventStart}}
+        </a>
+            <a *ngIf="visit.isUnscheduledVisitType" (click)="showDialog(visit)">
+            {{visit.eventStart}}
+        </a>
         </ng-template>
     </p-column>
 
-    <p-column field="locationName" header="Location" [sortable]="true"></p-column>
+    <p-column field="locationName" header="Location" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
-    <p-column field="roomTestName" header="Test Specialty" [sortable]="true"></p-column>
+    <p-column field="visitType" header="Visit Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+
+    <p-column field="roomTestName" header="Test Specialty" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
     <!--<p-column field="specialityName" header="Specialty" [sortable]="true"></p-column>-->
 
-    <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
 
     <p-column styleClass="actions-cell" header="Actions">

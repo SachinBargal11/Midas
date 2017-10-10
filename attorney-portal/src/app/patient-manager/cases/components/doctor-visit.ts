@@ -34,6 +34,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
         id: number,
         eventStart: any,
         locationName: string,
+        visitType: string,
         doctorName: string,
         specialityName: string,
         visitStatusLabel: string,
@@ -221,6 +222,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     id: number,
                     eventStart: any,
                     locationName: string,
+                    visitType: string,
                     doctorName: string,
                     specialityName: string,
                     visitStatusLabel: string,
@@ -231,8 +233,9 @@ export class PatientVisitListDoctorComponent implements OnInit {
                 _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {
                     mappedAllVisits.push({
                         id: currDoctorVisit.id,
-                        eventStart: currDoctorVisit.eventStart,
+                        eventStart: currDoctorVisit.eventStart.format('MMMM Do YYYY,h:mm:ss a'),
                         locationName: currDoctorVisit.location.name,
+                        visitType: 'Patient Visit',
                         doctorName: currDoctorVisit.doctor.user.displayName,
                         specialityName: currDoctorVisit.specialty.displayName,
                         visitStatusLabel: currDoctorVisit.visitStatusLabel,
@@ -245,8 +248,9 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     if (currDoctorVisit.specialtyId != null) {
                         mappedAllVisits.push({
                             id: currDoctorVisit.id,
-                            eventStart: currDoctorVisit.eventStart,
+                            eventStart: currDoctorVisit.eventStart.format('MMMM Do YYYY'),
                             locationName: currDoctorVisit.locationName,
+                            visitType: 'Unscheduled Visit',
                             doctorName: currDoctorVisit.doctorName,
                             specialityName: currDoctorVisit.specialty ? currDoctorVisit.specialty.name : '',
                             visitStatusLabel: currDoctorVisit.status,

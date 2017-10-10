@@ -161,10 +161,10 @@
             {{ document.documentType }}
           </ng-template>
         </p-column>
-        <p-column field="createDate" header="Created Date" [sortable]="true" [filter]="true">
-          <ng-template let-document="rowData.document" pTemplate="body">
+        <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true">
+          <!--<ng-template let-document="rowData.document" pTemplate="body">
             {{ document.createDate | dateTimeFormat }}
-          </ng-template>
+          </ng-template>-->
         </p-column>
       </p-dataTable>
       <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"

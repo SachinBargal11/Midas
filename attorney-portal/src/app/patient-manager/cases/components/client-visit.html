@@ -14,15 +14,15 @@
     </div>
 </div>
 <p-dataTable [value]="visits" [(selection)]="selectedClientVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Client Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="eventStart" header="Visit Date" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="visitDateLabel" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <!--<ng-template let-visit="rowData" pTemplate="body">
             <a (click)="showDialog(visit)">
             {{visit.calendarEvent.eventStart | dateTimeFormat}}
             </a>
-        </ng-template>
+        </ng-template>-->
     </p-column>
     <!--
     <p-column field="room.name" header="Testing Room" [sortable]="true">
@@ -31,7 +31,7 @@
         </ng-template>
     </p-column>-->
 
-    <p-column field="contactPerson" header="Contact Person" [sortable]="true">
+    <p-column field="contactPerson" header="Contact Person" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-visit="rowData" pTemplate="body">
 
             {{visit.contactPerson}}
@@ -39,7 +39,7 @@
         </ng-template>
     </p-column>
 
-    <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-visit="rowData" pTemplate="body">

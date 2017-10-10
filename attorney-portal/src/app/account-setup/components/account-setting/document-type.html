@@ -45,9 +45,9 @@
 </div>
 
 <p-dataTable [value]="documentType" [(selection)]="selectedDocuments" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Document</header>
-    <p-column selectionMode="single"></p-column>
-    <p-column header="Document Type" field="documentType" [sortable]="true"></p-column>
+    <p-column selectionMode="single" styleClass="inbound-column"></p-column>
+    <p-column header="Document Type" field="documentType" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
 </p-dataTable><br>
 </form>

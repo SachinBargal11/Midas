@@ -496,10 +496,10 @@
                             {{ document.documentType }}
                         </ng-template>
                     </p-column>
-                    <p-column field="document.createDate" header="Created Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
-                        <ng-template let-document="rowData.document" pTemplate="body">
+                    <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+                        <!--<ng-template let-document="rowData.document" pTemplate="body">
                             {{ document.createDate | dateTimeFormat }}
-                        </ng-template>
+                        </ng-template>-->
                     </p-column>
                 </p-dataTable>
 

@@ -19,16 +19,16 @@
 <!--<p-dataTable [value]="familyMembers" [(selection)]="selectedFamilyMembers" [lazy]="true" [rows]="10" [paginator]="true" 
             [totalRecords]="totalRecords" (onLazyLoad)="loadFamilyMembersLazy($event)" [globalFilter]="gb" [responsive]="true">-->
 <p-dataTable [value]="familyMembers" [(selection)]="selectedFamilyMembers" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-             [globalFilter]="gb" [responsive]="true">
+             [globalFilter]="gb" [responsive]="true" #dt>
     <header>Family Member List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="displayName" header="Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="displayName" header="Name" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-familyMember="rowData" pTemplate="body">
         <a routerLink="edit/{{familyMember.id}}">{{familyMember.displayName}}</a>
         </ng-template>
     </p-column>
-    <p-column field="relationLabel" header="Relation" [sortable]="true"></p-column>
-    <p-column field="age" header="Age" [sortable]="true"></p-column>
+    <p-column field="relationLabel" header="Relation" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="age" header="Age" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-familyMember="rowData" pTemplate="body">
             <a routerLink="edit/{{familyMember.id}}"><i class="glyphicon glyphicon-edit"></i></a>

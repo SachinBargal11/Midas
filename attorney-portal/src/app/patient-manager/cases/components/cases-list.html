@@ -14,38 +14,46 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-</div>
+    </div>
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
+    [globalFilter]="gb" [responsive]="true" #dt>
     <header>Cases</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="id" header="Case Id" [sortable]="true"></p-column>
-    <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
-    <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
-    <p-column header="Consent Received">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="id" header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="caseStatusLabel" header="Case Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="caseTypeLabel" header="Case Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="caseConsentLabel" header="Consent Received" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-case="rowData" pTemplate="body">
+            <a *ngIf="case.caseConsentLabel == 'Yes'" (click)="downloadConsent(case.caseCompanyConsentDocument)">
+                <u>{{case.caseConsentLabel}}</u>
+            </a>
+            <a *ngIf="case.caseConsentLabel == 'Upload Consent Form'" (click)="showDialog(case.id)">
+                <u>{{case.caseConsentLabel}}</u>
+            </a>
+        </ng-template>
+        <!--<ng-template let-case="rowData" pTemplate="body">
             <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
                 <u>Yes</u>
             </a>
             <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="showDialog(case.id)">
                 <u>Upload Consent Form</u>
             </a>
-        </ng-template>
+        </ng-template>-->
     </p-column>
 
     <!--<p-column header="Case Source" field="caseSource"> </p-column>-->
-    <p-column header="Case Source" [sortable]="true">
-        <ng-template let-case="rowData" pTemplate="body">
+    <p-column field="caseSourceLabel" header="Case Source" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <!--<ng-template let-case="rowData" pTemplate="body">
             <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.caseSource}}
             </div>
             <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.orignatorCompanyName}}
             </div>
-        </ng-template>
+        </ng-template>-->
     </p-column>
 
     <p-column styleClass="actions-cell" header="Actions">
@@ -54,7 +62,7 @@
             <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)">
                 <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
-           <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
+            <div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)">
                 <!--<a title="Edit" routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>-->
                 <a *ngIf="case.caseStatusId == 2" routerLink="{{case.id}}/basicLabel"><i class="glyphicon glyphicon-edit"></i></a>
                 <div *ngIf="case.caseStatusId == 1">
@@ -73,8 +81,8 @@
     [contentStyle]="{'overflow':'auto', 'max-height':'600px'}">
 
     <div *ngIf="selectedCaseId">
-        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="selectedCaseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
-            [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
+        <app-document-upload [inputCaseId]="selectedCaseId" [currentId]="2" [objectId]="selectedCaseId" [isConsentDocumentOn]="true"
+            [isElectronicSignatureOn]="true" [signedDocumentPostRequestData]="signedDocumentPostRequestData" [signedDocumentUploadUrl]="signedDocumentUploadUrl"
             (signedDocumentUploadComplete)="signedDocumentUploadComplete($event)" (signedDocumentUploadError)="signedDocumentUploadError($event)"
             [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true"
             (download)="downloadTemplate($event)"></app-document-upload>

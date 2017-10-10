@@ -172,4 +172,8 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
         // }
         // return color;
     }
+
+    get visitDateLabel(): string {
+        return moment(this.originalResponse.visitDate).local().format('MMMM Do YYYY,h:mm:ss a')
+    }
 }

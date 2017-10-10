@@ -142,9 +142,9 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
         // if (this.locationId && this.location) {
         //     visitInfo = `${visitInfo}Location Name: ${this.location.name} - `;
         // }
-         if (this.patientId && this.patient) {
+        if (this.patientId && this.patient) {
             visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName}`;
-         }
+        }
 
         // visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
 
@@ -185,5 +185,15 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     //     return '#CC6666';
     // }
     // return color;
+
+    get visitDateLabel(): string {
+        return PatientVisit.getvisitDateLabel(this.calendarEvent.eventStart);
+    }
+
+    static getvisitDateLabel(eventStart): string {
+        if (eventStart) {
+            return eventStart.format('MMMM Do YYYY,h:mm:ss a');
+        }
+    }
 
 }

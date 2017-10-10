@@ -42,17 +42,21 @@
             </div>
         </div>
 
-        <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+        <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
             <header>Doctors Visits List</header>
-            <p-column selectionMode="multiple"></p-column>
-            <p-column field="originalResponse.caseId" header="Case" [sortable]="true"></p-column>
-            <p-column field="originalResponse.patientName" header="Patient Name" [sortable]="true"></p-column>
-            <p-column field="originalResponse.visitDate" header="Visit Date" [sortable]="true">
+            <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+            <p-column field="originalResponse.caseId" header="Case" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+            <p-column field="originalResponse.patientName" header="Patient Name" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+            <p-column field="visitDateLabel" header="Visit Date" [sortable]="true" [filter]="true">
+                <!--<ng-template let-visit="rowData" pTemplate="body">
+                    {{getFormateDate(visit.originalResponse.visitDate)}}
+                </ng-template>-->
+            </p-column>
+            <!--<p-column field="originalResponse.visitDate" header="Visit Date" [sortable]="true" [filter]="true">
                 <ng-template let-visit="rowData" pTemplate="body">
-                    <!--{{visit.originalResponse.visitDate | dateTimeFormat}}-->
                     {{getFormateDate(visit.originalResponse.visitDate)}}
                 </ng-template>
-            </p-column>
+            </p-column>-->
         </p-dataTable>
     </div>
 </section>

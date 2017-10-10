@@ -91,10 +91,10 @@
         </div>
     </div>
 </p-dialog>
-<p-dataTable [value]="providers" [(selection)]="selectedProviders" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="providers" [(selection)]="selectedProviders" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
     <header> Preferred Medical Provider List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="prefferedProvider.name" header="Medical Provider Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="prefferedProvider.name" header="Medical Provider Name" [sortable]="true" [filter]="true" styleClass="inbound-column">
     </p-column>
     <!--<p-column styleClass="actions-cell" header="Actions">
         <ng-template let-provider="rowData" pTemplate="body">

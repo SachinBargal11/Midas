@@ -18,20 +18,20 @@
 </div>
 <!--<p-dataTable [value]="users" [(selection)]="selectedUsers" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadUsersLazy($event)" [responsive]="true">-->
-<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
     <header>Users</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="displayName" header="User Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="displayName" header="User Name" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><u>{{user.displayName}}</u></a>
         </ng-template>
     </p-column>
-    <p-column field="userRole" header="User Role" [sortable]="true">
+    <p-column field="userRole" header="User Role" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-user="rowData" pTemplate="body">
             {{user.userRole}}
         </ng-template>
     </p-column>
-    <p-column field="userName" header="Email" [sortable]="true"></p-column>
+    <p-column field="userName" header="Email" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><i class="glyphicon glyphicon-edit"></i></a>

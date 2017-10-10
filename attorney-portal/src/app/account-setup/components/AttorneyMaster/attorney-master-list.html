@@ -44,10 +44,10 @@
     </a>
 </div>
 </div>
-<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
     <header>Preferred Attorney List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="prefferedAttorney.name" header="Attorney Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="prefferedAttorney.name" header="Attorney Name" [sortable]="true" [filter]="true" styleClass="inbound-column">>
         <!--<ng-template let-attorney="rowData" pTemplate="body">
                     <a title="Edit" routerLink="edit/{{attorney.id}}">{{attorney.user.firstName}}{{attorney.user.lastName}}</a>
                 </ng-template>-->

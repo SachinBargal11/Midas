@@ -18,15 +18,15 @@
 </div>
 <!--<p-dataTable [value]="insuranceMasters" [(selection)]="selectedInsuranceMasters" [lazy]="true" [rows]="10" [paginator]="true"
 [totalRecords]="totalRecords" (onLazyLoad)="loadInsuranceMastersLazy($event)" [globalFilter]="gb" [responsive]="true">-->
-<p-dataTable [value]="insuranceMasters" [(selection)]="selectedInsuranceMasters" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="insuranceMasters" [(selection)]="selectedInsuranceMasters" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
     <header>InsuranceMasters List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="companyName" header="Company Name" [sortable]="true">
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="companyName" header="Company Name" [sortable]="true" [filter]="true" styleClass="inbound-column">>
             <ng-template let-insuranceMaster="rowData" pTemplate="body">
                 <a title="Edit" routerLink="edit/{{insuranceMaster.id}}"><u>{{insuranceMaster.companyName}}</u></a>
             </ng-template>
     </p-column>
-    <p-column field="companyCode" header="Company Code" [sortable]="true"></p-column>
+    <p-column field="companyCode" header="Company Code" [sortable]="true" [filter]="true" styleClass="inbound-column">></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-insuranceMaster="rowData" pTemplate="body">
             <a title="Edit" routerLink="edit/{{insuranceMaster.id}}"><i class="glyphicon glyphicon-edit"></i></a>
