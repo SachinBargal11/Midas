@@ -8,7 +8,7 @@ using BO= MIDAS.GBX.BusinessObjects;
 using System.Net.Http.Headers;
 using System.Configuration;
 using System.Web;
-using static MIDAS.GBX.BusinessObjects.GBEnums;
+//using static MIDAS.GBX.BusinessObjects.GBEnums;
 using MIDAS.GBX.DataRepository.Model;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
@@ -107,7 +107,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
 
-        public PreferedModeOfComunication GetModeOfComunication(string userName, int companyid)
+        public BO.GBEnums.PreferedModeOfComunication GetModeOfComunication(string userName, int companyid)
         {
             using (UserPersonalSettingRepository cmp = new UserPersonalSettingRepository(_context))
 
@@ -117,39 +117,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
               
                 if (userSettings != null)
                 {
-                    return (PreferedModeOfComunication)userSettings.PreferredModeOfCommunication;
+                    return (BO.GBEnums.PreferedModeOfComunication)userSettings.PreferredModeOfCommunication;
                 }
                 else
                 {
-                    return PreferedModeOfComunication.Both;
+                    return BO.GBEnums.PreferedModeOfComunication.Both;
                 }
             }
 
         }
 
-        public PreferedModeOfComunication SendEmailAndSms(string userName,int companyId,BO.EmailMessage emailData,BO.SMS smsData)
+        public BO.GBEnums.PreferedModeOfComunication SendEmailAndSms(string userName,int companyId,BO.EmailMessage emailData,BO.SMS smsData)
         {
             try
             {
 
-                PreferedModeOfComunication predferredModewOfCommunication = GetModeOfComunication(userName, companyId);
+                BO.GBEnums.PreferedModeOfComunication predferredModewOfCommunication = GetModeOfComunication(userName, companyId);
 
-                    if(predferredModewOfCommunication==PreferedModeOfComunication.Email)
+                    if(predferredModewOfCommunication== BO.GBEnums.PreferedModeOfComunication.Email)
                     {
                       
                             AddMessageToEmailQueue(emailData);
-                            return PreferedModeOfComunication.Email;
+                            return BO.GBEnums.PreferedModeOfComunication.Email;
                      }
-                      else if(predferredModewOfCommunication == PreferedModeOfComunication.SMS)
+                      else if(predferredModewOfCommunication == BO.GBEnums.PreferedModeOfComunication.SMS)
                       {
                             AddMessageToSMSQueue(smsData);
-                            return PreferedModeOfComunication.SMS;
+                            return BO.GBEnums.PreferedModeOfComunication.SMS;
                       }
                         else
                         {
                             AddMessageToEmailQueue(emailData);
                             AddMessageToSMSQueue(smsData);
-                            return PreferedModeOfComunication.Both;
+                            return BO.GBEnums.PreferedModeOfComunication.Both;
 
                         }
                     
@@ -158,7 +158,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             catch (Exception e)
             {
-                return PreferedModeOfComunication.Both;
+                return BO.GBEnums.PreferedModeOfComunication.Both;
             }
         }
 

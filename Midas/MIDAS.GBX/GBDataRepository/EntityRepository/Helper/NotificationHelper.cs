@@ -8,7 +8,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 using System.Net.Http.Headers;
 using System.Configuration;
 using System.Web;
-using static MIDAS.GBX.BusinessObjects.GBEnums;
+//using static MIDAS.GBX.BusinessObjects.GBEnums;
 using MIDAS.GBX.DataRepository.Model;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
@@ -112,7 +112,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
 
-        public PushNotificationStatus PushNotification(string username, int compnayid, string message, string eventName)
+        public BO.GBEnums.PushNotificationStatus PushNotification(string username, int compnayid, string message, string eventName)
         {
             try
             {
@@ -130,31 +130,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 var result = PushNotification(username, message, subscription.EventID);
                                 if (result)
                                 {
-                                    return PushNotificationStatus.Delivered;
+                                    return BO.GBEnums.PushNotificationStatus.Delivered;
                                 }
                                 else
                                 {
-                                    return PushNotificationStatus.Failed;
+                                    return BO.GBEnums.PushNotificationStatus.Failed;
                                 }
                             }
                             else
                             {
-                                return PushNotificationStatus.EventNotSubscribed;
+                                return BO.GBEnums.PushNotificationStatus.EventNotSubscribed;
                             }
                         }
                         {
-                            return PushNotificationStatus.NotificationNotEnabled;
+                            return BO.GBEnums.PushNotificationStatus.NotificationNotEnabled;
                         }
                     }
                     else
                     {
-                        return PushNotificationStatus.NotificationNotEnabled;
+                        return BO.GBEnums.PushNotificationStatus.NotificationNotEnabled;
                     }
                 }
             }
             catch (Exception e)
             {
-                return PushNotificationStatus.NotificationNotEnabled;
+                return BO.GBEnums.PushNotificationStatus.NotificationNotEnabled;
             }
         }
     }
