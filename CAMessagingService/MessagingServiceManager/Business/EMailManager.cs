@@ -113,12 +113,12 @@ namespace MessagingServiceManager.Business
                         messageitem.EMailSubject, 
                         messageitem.EMailBody))
                     {
-                        if (messageitem.CcEmail != null || messageitem.CcEmail != string.Empty)
+                        if (messageitem.CcEmail != null && messageitem.CcEmail != string.Empty)
                         {
                             mail.CC.Add(messageitem.CcEmail);
                         }
 
-                        if (messageitem.BccEmail != null || messageitem.BccEmail != string.Empty)
+                        if (messageitem.BccEmail != null && messageitem.BccEmail != string.Empty)
                         {
                             mail.Bcc.Add(messageitem.BccEmail);
                         }
