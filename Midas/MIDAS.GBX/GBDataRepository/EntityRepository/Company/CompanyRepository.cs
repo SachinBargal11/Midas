@@ -380,6 +380,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.SaveChanges();
             #endregion
 
+
+
             #region Update referral
             //var referral = _context.Referrals.Where(p => p.ReferredToEmail == userDB.UserName && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Referral>();
 

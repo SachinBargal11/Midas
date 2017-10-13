@@ -64,6 +64,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 boCompany.CompanyStatusTypeID = (BO.GBEnums.CompanyStatusType)company.CompanyStatusTypeID;
 
+                if (company.Locations != null)
+                {
+                    List<BO.Location> lstLocation = new List<BO.Location>();
+                    foreach (var item in company.Locations)
+                    {
+                        using (LocationRepository sr = new LocationRepository(_context))
+                        {
+                            BO.Location location = sr.Convert<BO.Location, Location>(item);
+                            location.Company = null;
+                            lstLocation.Add(location);
+                        }
+                    }
+
+                    boCompany.Locations = lstLocation;
+                }
+
                 otpCompanyMappingBO.Company = boCompany;
             }
 
@@ -140,8 +156,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Invalid OTP.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var res = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappings);
-            return (object)res;
+            var OTPCompanyMappingBO = Convert<BO.OTPCompanyMapping, OTPCompanyMapping>(OTPCompanyMappings);
+
+            int CompanyId = OTPCompanyMappingBO.CompanyId;
+            var LocationDB = _context.Locations.Include("AddressInfo")
+                                               .Where(p => p.CompanyID == CompanyId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList();
+
+            OTPCompanyMappingBO.Company.Locations = new List<BO.Location>();
+            LocationRepository locRepo = new LocationRepository(_context);
+
+            foreach (var eachLocation in LocationDB)
+            {
+                BO.Location location = locRepo.Convert<BO.Location, Location>(eachLocation);
+                location.Company = null;
+                OTPCompanyMappingBO.Company.Locations.Add(location);
+            }
+
+            return (object)OTPCompanyMappingBO;
 
         }
         #endregion
