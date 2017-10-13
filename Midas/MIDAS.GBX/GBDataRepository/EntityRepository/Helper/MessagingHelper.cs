@@ -75,6 +75,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 response.EnsureSuccessStatusCode();
                 var status = response.Content.ReadAsStringAsync().Result;
 
+
+                //TEMP
+                //HttpResponseMessage response2 = client.PostAsJsonAsync("EMail/SendMessageInstantly", message).Result;
+
+
                 return status;
             }
             catch (Exception e)
