@@ -161,6 +161,7 @@ export class AddLocationDoctorSpecialityComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success', 'Specialty added successfully!');
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {

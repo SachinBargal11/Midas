@@ -1,110 +1,161 @@
-<!--<section class="tabs-section">
-	<h5 class="with-border">Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
-	<p-accordion [multiple]="true" *ngIf="caseDetail">
-		<p-accordionTab [routerLink]="basic">
-			<p-header>
-				Basic
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
+<section class="tabs-section" *ngIf="preferredUIViewId == 2">
+	<h5>Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
+	<br>
+	<!-- <section id="accordion">
+	<div>
+		<input type="checkbox" [(ngModel)]="currAccordion1" (change)="setContent()" name="accordion1" id="check-1" routerLink="basic"/>
+		<label for="check-1">Option 1</label>
+		<article *ngIf="currAccordion1">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</article>
+	</div>
+	<div>
+		<input type="checkbox" [(ngModel)]="currAccordion2" (change)="setContent()" name="accordion2" id="check-2" routerLink="consent"/>
+		<label for="check-2">Option 2</label>
+		<article *ngIf="currAccordion2">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</article>
+	</div>
+	<div>
+		<input type="checkbox" [(ngModel)]="currAccordion3" (change)="setContent()" name="accordion3" id="check-3" routerLink="insurances"/>
+		<label for="check-3">Option 3</label>
+		<article *ngIf="currAccordion3">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</article>
+	</div>
+</section> -->
+	<!-- <section class="faq-container" id="accordion"> -->
+	<!-- <section class="card" id="accordion"> -->
+		<div class="accordion">
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
+			class="accordion-toggle"/>
+			<label for="basic">Basic</label>
+			<section *ngIf="currAccordion=='basic'">
+				<p>
 					<router-outlet></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{consent:'consent'}}]">
-			<p-header>
-				Consent
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="consent"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{insurances:'insurances'}}]">
-			<p-header>
-				Insurance
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="insurances"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{family-members:'family-members'}}]">
-			<p-header>
-				Family Member
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="family-members"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{documents:'documents'}}]">
-			<p-header>
-				Documents
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="documents"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{employer:'employer'}}]">
-			<p-header>
-				Employment/School
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="basic"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{accident:'accident'}}]">
-			<p-header>
-				Accident
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="accident"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{prior-accident:'prior-accident'}}]">
-			<p-header>
-				Prior Accident/Injuries
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="prior-accident"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{patient-visit:'patient-visit'}}]">
-			<p-header>
-				Visits
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="patient-visit"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{autoInformation:'autoInformation'}}]">
-			<p-header>
-				Auto Information
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="autoInformation"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>	
-	 </p-accordion>
-</section>-->
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="consent" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="consent" routerLink="consent"
+			class="accordion-toggle"/>
+			<label for="consent">Consent</label>
+			<section *ngIf="currAccordion=='consent'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="insurances" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="insurances" routerLink="insurances"
+			class="accordion-toggle"/>
+			<label for="insurances">Insurances</label>
+			<section *ngIf="currAccordion=='insurances'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="family-members" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="family-members" routerLink="family-members"
+			class="accordion-toggle"/>
+			<label for="family-members">Family Member</label>
+			<section *ngIf="currAccordion=='family-members'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="employer" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="employer" routerLink="employer"
+			class="accordion-toggle"/>
+			<label for="employer">Employment/School</label>
+			<section *ngIf="currAccordion=='employer'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="documents" routerLink="documents"
+			class="accordion-toggle"/>
+			<label for="documents">Documents</label>
+			<section *ngIf="currAccordion=='documents'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="case-merged-documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="case-merged-documents" routerLink="case-merged-documents"
+			class="accordion-toggle"/>
+			<label for="case-merged-documents">Merged Documents</label>
+			<section *ngIf="currAccordion=='case-merged-documents'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="case-document-packeting" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="case-document-packeting" routerLink="case-document-packeting"
+			class="accordion-toggle"/>
+			<label for="case-document-packeting">Packeting</label>
+			<section *ngIf="currAccordion=='case-document-packeting'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="prior-accident" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="prior-accident" routerLink="prior-accident"
+			class="accordion-toggle"/>
+			<label for="prior-accident">Prior Accident/Injuries</label>
+			<section *ngIf="currAccordion=='prior-accident'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="accident" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="accident" routerLink="accident"
+			class="accordion-toggle"/>
+			<label for="accident">Accident</label>
+			<section *ngIf="currAccordion=='accident'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="patient-visit" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="patient-visit" routerLink="patient-visit"
+			class="accordion-toggle"/>
+			<label for="patient-visit">Visits</label>
+			<section *ngIf="currAccordion=='patient-visit'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="autoInformation" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="autoInformation" routerLink="autoInformation"
+			class="accordion-toggle"/>
+			<label for="autoInformation">Auto Information</label>
+			<section *ngIf="currAccordion=='autoInformation'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	<!-- </section> -->
+</section>
 
-<section class="tabs-section">
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
 	<h5 class="with-border">Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
 	<div class="tabs-section-nav">
 		<div class="tbl">

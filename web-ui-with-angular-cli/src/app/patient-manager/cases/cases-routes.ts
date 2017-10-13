@@ -375,14 +375,14 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Packeted Documents'
                         }
                     },
-                    {
-                        path: 'insurances',
-                        component: InsuranceListComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Insurances'
-                        }
-                    },
+                    // {
+                    //     path: 'insurances',
+                    //     component: InsuranceListComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Insurances'
+                    //     }
+                    // },
                     {
                         path: 'insurances',
                         component: ShellComponent,
@@ -391,6 +391,14 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Insurances'
                         },
                         children: [
+                            {
+                                path: '',
+                                component: InsuranceListComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
                             {
                                 path: 'add',
                                 component: AddInsuranceComponent,

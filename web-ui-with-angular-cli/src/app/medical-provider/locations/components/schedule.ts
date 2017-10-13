@@ -218,7 +218,8 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._notificationsService.success('Success', 'Schedule updated successfully!');
+                // this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
@@ -260,7 +261,8 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._notificationsService.success('Success', 'Schedule added successfully!');
+                // this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
@@ -294,7 +296,8 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._notificationsService.success('Success', 'Schedule updated successfully!');
+                // this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;

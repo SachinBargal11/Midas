@@ -168,7 +168,8 @@ export class BasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medical-provider/locations']);
+                this._notificationsService.success('Success', 'Location updated successfully!');
+                // this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
                 let errString = 'Unable to update location.';

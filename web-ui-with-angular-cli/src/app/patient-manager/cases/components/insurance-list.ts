@@ -44,7 +44,7 @@ export class InsuranceListComponent implements OnInit {
         private _casesStore: CasesStore,
         private _sessionStore: SessionStore
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
             this._progressBarService.show();
             let result = this._casesStore.fetchCaseById(this.caseId);
@@ -96,7 +96,7 @@ export class InsuranceListComponent implements OnInit {
     }
 
     loadInsurances() {
-        this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
             this._insuranceStore.getInsurances(this.caseId)

@@ -197,6 +197,7 @@ export class AssignDoctorComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success', 'Location added successfully!');
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {

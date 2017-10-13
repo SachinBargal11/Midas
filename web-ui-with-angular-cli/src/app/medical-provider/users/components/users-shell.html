@@ -1,28 +1,26 @@
-<!--<section class="tabs-section">
-	<p-accordion [multiple]="true">
-		<p-accordionTab [routerLink]="basic">
-			<p-header>
-				Basic
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		<p-accordionTab [routerLink]="[{outlets:{locations:'locations'}}]">
-			<p-header>
-				Doctors Locations
-			</p-header>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane fade in active">
-					<router-outlet name="locations"></router-outlet>
-				</div>
-			</div>
-		</p-accordionTab>
-		</p-accordion>
-</section>-->
-<section class="tabs-section">
+<section *ngIf="preferredUIViewId == 2">
+	<div class="accordion">
+		<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
+		 class="accordion-toggle" />
+		<label for="basic">Basic</label>
+		<section *ngIf="currAccordion=='basic'">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</section>
+	</div>
+	<div class="accordion" *ngIf="roleType == 3">
+		<input type="radio" value="locations" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="locations"
+		 routerLink="locations" class="accordion-toggle" />
+		<label for="locations">Doctors Locations</label>
+		<section *ngIf="currAccordion=='locations'">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</section>
+	</div>
+</section>
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist">
@@ -33,7 +31,7 @@
 						</span>
 					</a>
 				</li>
-				<li class="nav-item doctorRole" id="doctorLocation">
+				<li class="nav-item doctorRole" id="doctorLocation" *ngIf="roleType == 3">
 					<a class="nav-link" routerLink="locations" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Doctors Locations

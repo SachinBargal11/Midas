@@ -101,9 +101,29 @@ export class UnscheduledVisitDetailComponent implements OnInit {
         });
         this.unscheduledVisitDetailFormControls = this.unscheduledVisitDetailForm.controls;
         
+    }
+
+    ngOnInit() {
+        this.fetchCase();
+        this.fetchPatient();
+        this.selectedVisit = this.selectedVisit;
+        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+        this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
+        this.getDocuments();
+
+        // this.checkVisitForCompany();
+    }
+
+    fetchCase() {        
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            let result = this._casesStore.fetchCaseById(this.caseId);
+            let result
+            if (this.caseId) {
+            result = this._casesStore.fetchCaseById(this.caseId);
+            } else {
+                result = this._casesStore.fetchCaseById(this.selectedVisit.caseId);
+                this.caseId = this.selectedVisit.caseId
+            }
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseStatusId = caseDetail.caseStatusId;
@@ -116,16 +136,6 @@ export class UnscheduledVisitDetailComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-    }
-
-    ngOnInit() {
-        this.fetchPatient();
-        this.selectedVisit = this.selectedVisit;
-        // this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
-        this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-        this.getDocuments();
-
-        // this.checkVisitForCompany();
     }
 
     fetchPatient() {
