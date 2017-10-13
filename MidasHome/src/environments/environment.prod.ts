@@ -12,6 +12,5 @@ export const environment = {
   MEDICAL_PROVIDER_URI: 'http://medicalproviderdev.codearray.tk/',
   PATIENT_PORTAL_URI: 'http://patientdev.codearray.tk/',
   ATTORNEY_PORTAL_URI: 'http://attorneydev.codearray.tk/',
-  ANCILLARY_PORTAL_URI: 'http://ancillarydev.codearray.tk/',
-  REGISTER_MP_URL: 'http://medicalproviderdev.codearray.tk/#/account/register-company'
+  ANCILLARY_PORTAL_URI: 'http://ancillarydev.codearray.tk/'
 };

@@ -21,8 +21,5 @@ export const environment = {
   // MEDICAL_PROVIDER_URI: 'http://caserver:7001/',
   PATIENT_PORTAL_URI: 'http://caserver:7009/',
   ATTORNEY_PORTAL_URI: 'http://caserver:7004/',
-  ANCILLARY_PORTAL_URI: 'http://caserver:7007/',
-
-  // REGISTER_MP_URL: 'http://medicalproviderdev.codearray.tk/#/account/register-company'
-  REGISTER_MP_URL: 'http://localhost:4201/#/account/register-company'
+  ANCILLARY_PORTAL_URI: 'http://caserver:7007/'
 };
