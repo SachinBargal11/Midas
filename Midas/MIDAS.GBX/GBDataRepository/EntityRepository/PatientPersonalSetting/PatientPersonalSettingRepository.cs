@@ -36,9 +36,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.PatientPersonalSetting PatientPersonalSettingBO = new BO.PatientPersonalSetting();
 
             PatientPersonalSettingBO.ID = PatientPersonalSettingDB.Id;
-            PatientPersonalSettingBO.PatientId = PatientPersonalSettingDB.PatientId;            
-            PatientPersonalSettingBO.PreferredModeOfCommunication = PatientPersonalSettingDB.PreferredModeOfCommunication;
-            PatientPersonalSettingBO.IsPushNotificationEnabled = PatientPersonalSettingDB.IsPushNotificationEnabled;
+            PatientPersonalSettingBO.PatientId = PatientPersonalSettingDB.PatientId;
+            PatientPersonalSettingBO.PreferredModeOfCommunication = 3; // PatientPersonalSettingDB.PreferredModeOfCommunication;
+            PatientPersonalSettingBO.IsPushNotificationEnabled = true; // PatientPersonalSettingDB.IsPushNotificationEnabled;
             PatientPersonalSettingBO.CalendarViewId = PatientPersonalSettingDB.CalendarViewId;
             PatientPersonalSettingBO.PreferredUIViewId = PatientPersonalSettingDB.PreferredUIViewId;
 
@@ -131,8 +131,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 PatientPersonalSettingDB.PatientId = PatientPersonalSettingBO.PatientId;
-                PatientPersonalSettingDB.PreferredModeOfCommunication = PatientPersonalSettingBO.PreferredModeOfCommunication;
-                PatientPersonalSettingDB.IsPushNotificationEnabled = PatientPersonalSettingBO.IsPushNotificationEnabled;
+                PatientPersonalSettingDB.PreferredModeOfCommunication = 3; // PatientPersonalSettingBO.PreferredModeOfCommunication;
+                PatientPersonalSettingDB.IsPushNotificationEnabled = true; // PatientPersonalSettingBO.IsPushNotificationEnabled;
                 PatientPersonalSettingDB.CalendarViewId = PatientPersonalSettingBO.CalendarViewId;
                 PatientPersonalSettingDB.PreferredUIViewId = PatientPersonalSettingBO.PreferredUIViewId;
 
