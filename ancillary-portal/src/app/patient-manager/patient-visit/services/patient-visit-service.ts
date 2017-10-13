@@ -1,3 +1,4 @@
+import { ImeVisit } from '../models/ime-visit';
 import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Injectable } from '@angular/core';
@@ -452,5 +453,22 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
-}
 
+    getIMEVisitByAncillaryId(companyId: number): Observable<ImeVisit[]> {
+        let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/IMEVisit/getByAncillaryId/' + companyId,
+                { headers: this._headers })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
+    }
+}

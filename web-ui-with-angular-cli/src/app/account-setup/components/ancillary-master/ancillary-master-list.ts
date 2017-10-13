@@ -34,6 +34,7 @@ export class AncillaryListComponent implements OnInit {
     displayValidation: boolean = false;
     otp: string;
     medicalProviderName: string;
+    medicalProviderAddress: string;
     validateOtpResponse: any;
     addAncillaryProviderByToken: FormGroup;
     addAncillaryProviderByTokenControls;
@@ -52,7 +53,7 @@ export class AncillaryListComponent implements OnInit {
         private fb: FormBuilder,
 
     ) {
-         this.addAncillaryProviderByToken = this.fb.group({
+        this.addAncillaryProviderByToken = this.fb.group({
             token: ['', Validators.required],
         })
         this.addAncillaryProviderByTokenControls = this.addAncillaryProviderByToken.controls
@@ -78,10 +79,10 @@ export class AncillaryListComponent implements OnInit {
         this.addAncillaryProviderByToken.reset();
     }
 
-    closeDialog(){
-  this.displayValidation = false;
+    closeDialog() {
+        this.displayValidation = false;
     }
-    deleteAncillaryProviders() {}
+    deleteAncillaryProviders() { }
 
     generateToken() {
         this._progressBarService.show();
@@ -102,10 +103,16 @@ export class AncillaryListComponent implements OnInit {
         this._medicalProviderMasterStore.validateToken(this.addAncillaryProviderByToken.value.token)
             .subscribe((data: any) => {
                 this.validateOtpResponse = data;
-                this.medicalProviderName = this.validateOtpResponse.company.name
+                this.medicalProviderName = this.validateOtpResponse.company.name;
+                this.medicalProviderAddress = this.validateOtpResponse.company.location[0].name + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.address1 + ', ' +
+                    // this.validateOtpResponse.company.location[0].addressInfo.address2 + ',' +
+                    this.validateOtpResponse.company.location[0].addressInfo.city + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.state + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.zipCode
             },
             (error) => {
-               let errString = 'Invalid token.';
+                let errString = 'Invalid token.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

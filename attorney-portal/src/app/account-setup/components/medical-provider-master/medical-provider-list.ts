@@ -33,6 +33,7 @@ export class MedicalProviderListComponent implements OnInit {
     displayValidation: boolean = false;
     otp: string;
     medicalProviderName: string;
+    medicalProviderAddress: string;
     validateOtpResponse: any;
     addMedicalProviderByToken: FormGroup;
     addMedicalProviderByTokenControls;
@@ -76,8 +77,8 @@ export class MedicalProviderListComponent implements OnInit {
         this.addMedicalProviderByToken.reset();
     }
 
-    closeDialog(){
-  this.displayValidation = false;
+    closeDialog() {
+        this.displayValidation = false;
     }
 
     generateToken() {
@@ -99,10 +100,16 @@ export class MedicalProviderListComponent implements OnInit {
         this._medicalProviderMasterStore.validateToken(this.addMedicalProviderByToken.value.token)
             .subscribe((data: any) => {
                 this.validateOtpResponse = data;
-                this.medicalProviderName = this.validateOtpResponse.company.name
+                this.medicalProviderName = this.validateOtpResponse.company.name;
+                this.medicalProviderAddress = this.validateOtpResponse.company.location[0].name + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.address1 + ', ' +
+                    // this.validateOtpResponse.company.location[0].addressInfo.address2 + ',' +
+                    this.validateOtpResponse.company.location[0].addressInfo.city + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.state + ', ' +
+                    this.validateOtpResponse.company.location[0].addressInfo.zipCode
             },
             (error) => {
-               let errString = 'Invalid token.';
+                let errString = 'Invalid token.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

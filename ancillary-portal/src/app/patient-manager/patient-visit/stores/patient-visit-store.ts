@@ -1,3 +1,4 @@
+import { ImeVisit } from '../models/ime-visit';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -19,6 +20,7 @@ export class PatientVisitsStore {
     private _patientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _companyPatientVisits: BehaviorSubject<List<PatientVisit>> = new BehaviorSubject(List([]));
     private _consent: BehaviorSubject<List<Consent>> = new BehaviorSubject(List([]));
+    private _imeVisits: BehaviorSubject<List<ImeVisit>> = new BehaviorSubject(List([]));
 
     constructor(
         private _patientVisitsService: PatientVisitService,
@@ -363,6 +365,18 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getIMEVisitByAncillaryId(companyId: number): Observable<ImeVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getIMEVisitByAncillaryId(companyId).subscribe((imeVisits: ImeVisit[]) => {
+                // this._imeVisits.next(List(imeVisits));
+                resolve(imeVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ImeVisit[]>>Observable.fromPromise(promise);
     }
 
 }

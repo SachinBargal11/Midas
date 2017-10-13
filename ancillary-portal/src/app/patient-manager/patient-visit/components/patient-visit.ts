@@ -50,6 +50,7 @@ import { UserSetting } from '../../../commons/models/user-setting';
 
 import { Location } from '../../../medical-provider/locations/models/location';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
+import { ImeVisit } from '../models/ime-visit';
 
 @Component({
     selector: 'patient-visit',
@@ -81,7 +82,7 @@ export class PatientVisitComponent implements OnInit {
     doctorSchedule: Schedule;
 
     /* Selections */
-    selectedVisit: PatientVisit;
+    selectedVisit: any;
     selectedCalEvent: ScheduledEventInstance;
     selectedLocationId: number = 0;
     selectedDoctorId: number = 0;
@@ -157,10 +158,12 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.owningEvent.recurrenceRule) {
             content = `<i class="fa fa-refresh"></i>`;
         }
-        if (event.eventWrapper.room == null) {
+        if (event.eventWrapper.room == null && event.eventWrapper.isPatientVisitType) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
-        } else if (event.eventWrapper.doctor == null) {
+        } else if (event.eventWrapper.doctor == null && event.eventWrapper.isPatientVisitType) {
             content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.room.name}</span>`;
+        }  else if (event.eventWrapper && event.eventWrapper.isImeVisitType) {
+            content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">IME-${event.eventWrapper.patient.user.displayName}</span>`;
         }
         element.find('.fc-content').html(content);
     }
@@ -193,17 +196,17 @@ export class PatientVisitComponent implements OnInit {
         private _userSettingStore: UserSettingStore,
     ) {
 
-          this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
-                .subscribe((userSetting) => {
-                    this.userSetting = userSetting;
-                    this.defaultView = userSetting.calendarViewLabel;
-                    // this.calendarViewId = userSetting.calendarViewId;
+        this._userSettingStore.getUserSettingByUserId(this.userId, this.companyId)
+            .subscribe((userSetting) => {
+                this.userSetting = userSetting;
+                this.defaultView = userSetting.calendarViewLabel;
+                // this.calendarViewId = userSetting.calendarViewId;
 
-                },
-                (error) => { },
-                () => {
-                });
-        
+            },
+            (error) => { },
+            () => {
+            });
+
         this.patientScheduleForm = this._fb.group({
             // patientId: ['', Validators.required],
             // isAddNewPatient: [''],
@@ -236,6 +239,7 @@ export class PatientVisitComponent implements OnInit {
     ngOnInit() {
         // this.loadAllVisits();       
         this.loadAllVisitsForPatientId();
+        this.loadImeVisits();
 
         this.header = {
             left: 'prev,next today',
@@ -375,7 +379,8 @@ export class PatientVisitComponent implements OnInit {
         this._patientVisitsStore.getByAncillaryId(this.sessionStore.session.currentCompany.id)
             .subscribe(
             (visits: PatientVisit[]) => {
-                this.events = this.getVisitOccurrences(visits);
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
                 console.log(this.events);
             },
             (error) => {
@@ -396,6 +401,30 @@ export class PatientVisitComponent implements OnInit {
                     });
                     this._notificationsService.error('Oh no!', 'error.message');
                 }
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadImeVisits() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getIMEVisitByAncillaryId(this.companyId)
+            .subscribe(
+            (visits: ImeVisit[]) => {
+                let events = this.getImeVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
                 this._notificationsStore.addNotification(notification);
                 this._progressBarService.hide();
             },
@@ -440,6 +469,45 @@ export class PatientVisitComponent implements OnInit {
         occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
             return !occurrence.eventWrapper.calendarEvent.isCancelled;
         });
+        return occurrences;
+    }
+
+    getImeVisitOccurrences(visits) {
+        let occurrences: ScheduledEventInstance[] = [];
+        let calendarEvents: ScheduledEvent[] = _.chain(visits)
+            .map((visit: ImeVisit) => {
+                return visit.calendarEvent;
+            })
+            .unique((event: ScheduledEvent) => {
+                return event.id;
+            })
+            .value();
+        _.forEach(calendarEvents, (event: ScheduledEvent) => {
+            occurrences.push(...event.getEventInstances(null));
+        });
+        _.forEach(occurrences, (occurrence: ScheduledEventInstance) => {
+            let matchingVisits: ImeVisit[] = _.filter(visits, (currentVisit: ImeVisit) => {
+                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
+            });
+            let visitForOccurrence: ImeVisit = _.find(matchingVisits, (currentMatchingVisit: ImeVisit) => {
+                if (!currentMatchingVisit.isOriginalVisit) {
+                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
+                }
+                return false;
+            });
+            if (visitForOccurrence) {
+                // occurrence.eventWrapper = visitForOccurrence;
+            } else {
+                let originalVisit: ImeVisit = _.find(matchingVisits, (currentMatchingVisit: ImeVisit) => {
+                    return currentMatchingVisit.isOriginalVisit;
+                });
+                occurrence.eventWrapper = originalVisit;
+            }
+            return occurrence;
+        });
+        // occurrences = _.filter(occurrences, (occurrence: ScheduledEventInstance) => {
+        //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
+        // });
         return occurrences;
     }
 
@@ -535,10 +603,10 @@ export class PatientVisitComponent implements OnInit {
         return patientVisit;
     }
 
-    handleEventClick(event) {       
+    handleEventClick(event) {
         let clickedEventInstance: ScheduledEventInstance = event.calEvent;
         let scheduledEventForInstance: ScheduledEvent = clickedEventInstance.owningEvent;
-        let patientVisit: PatientVisit = <PatientVisit>(clickedEventInstance.eventWrapper);
+        let patientVisit: any = (clickedEventInstance.eventWrapper);
         this.selectedCalEvent = clickedEventInstance;
 
         this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
@@ -547,10 +615,10 @@ export class PatientVisitComponent implements OnInit {
             this.patientScheduleForm.controls[key].updateValueAndValidity();
         });
         this.visitInfo = this.selectedVisit.visitDisplayString;
-        this.providerName = this.selectedVisit.originalResponse.location.company.name;
-        this.providerContactNo = this.selectedVisit.originalResponse.location.contactInfo.cellPhone;
-        this.doctorName = this.selectedVisit.originalResponse.doctor.user.firstName + ' ' + this.selectedVisit.originalResponse.doctor.user.lastName;
-        this.doctorLocation = this.selectedVisit.originalResponse.location.name;
+        // this.providerName = this.selectedVisit.originalResponse.location.company.name;
+        // this.providerContactNo = this.selectedVisit.originalResponse.location.contactInfo.cellPhone;
+        // this.doctorName = this.selectedVisit.originalResponse.doctor.user.firstName + ' ' + this.selectedVisit.originalResponse.doctor.user.lastName;
+        // this.doctorLocation = this.selectedVisit.originalResponse.location.name;
 
         this.patientInfoDialogVisible = true;
         this.getPatientInfo(this.selectedVisit.patientId);

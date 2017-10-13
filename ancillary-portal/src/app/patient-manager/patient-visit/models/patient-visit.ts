@@ -35,6 +35,7 @@ const PatientVisitRecord = Record({
     notes: '',
     visitStatusId: VisitStatus.SCHEDULED,
     visitType: 0,
+    isPatientVisitType: true,
     calendarEvent: null,
     patientVisitDiagnosisCodes: [],
     patientVisitProcedureCodes: [],
@@ -72,6 +73,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     notes: string;
     visitStatusId: VisitStatus;
     visitType: number;
+    isPatientVisitType: boolean;
     calendarEvent: ScheduledEvent;
     patientVisitDiagnosisCodes: DiagnosisCode[];
     patientVisitProcedureCodes: Procedure[];
@@ -156,7 +158,9 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
             return this.room.roomTest.color;
         } else if (this.doctor && this.doctorId) {
             return this.specialty ? this.specialty.color : '';
-        } else {
+        } else if (this.patient && this.patientId) {
+            return this.patient.user.displayName;
+        }else {
             return '';
         }
         // let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
