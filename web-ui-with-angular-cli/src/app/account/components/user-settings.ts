@@ -152,7 +152,7 @@ export class UserSettingsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'User setting saved successfully!');
-                // this._router.navigate(['/dashboard']);
+                this._router.navigate(['/dashboard']);
             },
             (error) => {
                 let errString = 'Unable to save user setting.';

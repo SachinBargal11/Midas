@@ -79,7 +79,7 @@ export class PatientsShellComponent implements OnInit {
             });
     }
     setContent(value) {
-        console.log(value)
+        // console.log(value)
         // this.currAccordion = this.currAccordion == value ? this.currAccordion = '' : this.currAccordion;
         // let value = e.target.value;
         // let href = window.location.href;

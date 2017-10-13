@@ -1,4 +1,27 @@
-<section class="tabs-section">
+<section *ngIf="preferredUIViewId == 2">
+	<div class="accordion">
+		<input type="radio" value="user-settings" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="user-settings"
+		 routerLink="user-settings" class="accordion-toggle" />
+		<label for="user-settings">General Settings</label>
+		<section *ngIf="currAccordion=='user-settings'">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</section>
+	</div>
+	<div class="accordion">
+		<input type="radio" value="notification-subscription" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion"
+		 id="notification-subscription" routerLink="notification-subscription" class="accordion-toggle" />
+		<label for="notification-subscription"> Notification subscription</label>
+		<section *ngIf="currAccordion=='notification-subscription'">
+			<p>
+				<router-outlet></router-outlet>
+			</p>
+		</section>
+	</div>
+</section>
+
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
 	<div class="tabs-section-nav">
 		<div class="tbl">
 			<ul class="nav" role="tablist">
