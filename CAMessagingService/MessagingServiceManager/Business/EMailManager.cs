@@ -45,12 +45,12 @@ namespace MessagingServiceManager.Business
 
                 using (var mail = new System.Net.Mail.MailMessage(message.FromEmail, message.ToEmail, message.EMailSubject, message.EMailBody))
                 {
-                    if (message.CcEmail != null || message.CcEmail != string.Empty)
+                    if (message.CcEmail != null && message.CcEmail != string.Empty)
                     {
                         mail.CC.Add(message.CcEmail);
                     }
 
-                    if (message.BccEmail != null || message.BccEmail != string.Empty)
+                    if (message.BccEmail != null && message.BccEmail != string.Empty)
                     {
                         mail.Bcc.Add(message.BccEmail);
                     }
