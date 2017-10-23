@@ -50,46 +50,48 @@
 			</div>
 		</p-accordionTab>
 	</p-accordion> -->
-	<div class="accordion">
-		<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="viewall" routerLink="viewall"
-		 class="accordion-toggle" />
-		<label for="viewall">View All</label>
-		<section *ngIf="currAccordion=='viewall'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
-	<div class="accordion">
-		<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="basic" routerLink="basic"
-		 class="accordion-toggle" />
-		<label for="basic">Basic</label>
-		<section *ngIf="currAccordion=='basic'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
-	<div class="accordion">
-		<input type="radio" value="demographics" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="demographics"
-		 routerLink="demographics" class="accordion-toggle" />
-		<label for="demographics">Demographics</label>
-		<section *ngIf="currAccordion=='demographics'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
-	<div class="accordion">
-		<input type="radio" value="documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="documents"
-		 routerLink="documents" class="accordion-toggle" />
-		<label for="documents">Documents</label>
-		<section *ngIf="currAccordion=='documents'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
+	<section class="faq-container" id="accordion">
+		<div class="accordion">
+			<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="viewall"
+			 routerLink="viewall" class="accordion-toggle" />
+			<label for="viewall">View All</label>
+			<section *ngIf="currAccordion=='viewall'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="basic" routerLink="basic"
+			 class="accordion-toggle" />
+			<label for="basic">Basic</label>
+			<section *ngIf="currAccordion=='basic'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="demographics" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="demographics"
+			 routerLink="demographics" class="accordion-toggle" />
+			<label for="demographics">Demographics</label>
+			<section *ngIf="currAccordion=='demographics'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="documents"
+			 routerLink="documents" class="accordion-toggle" />
+			<label for="documents">Documents</label>
+			<section *ngIf="currAccordion=='documents'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	</section>
 </section>
 
 <section class="tabs-section" *ngIf="preferredUIViewId == 1">

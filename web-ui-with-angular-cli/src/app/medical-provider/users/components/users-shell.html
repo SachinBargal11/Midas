@@ -1,24 +1,26 @@
 <section *ngIf="preferredUIViewId == 2">
-	<div class="accordion">
-		<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
-		 class="accordion-toggle" />
-		<label for="basic">Basic</label>
-		<section *ngIf="currAccordion=='basic'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
-	<div class="accordion" *ngIf="roleType == 3">
-		<input type="radio" value="locations" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="locations"
-		 routerLink="locations" class="accordion-toggle" />
-		<label for="locations">Doctors Locations</label>
-		<section *ngIf="currAccordion=='locations'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
+	<section class="faq-container" id="accordion">
+		<div class="accordion">
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
+			 class="accordion-toggle" />
+			<label for="basic">Basic</label>
+			<section *ngIf="currAccordion=='basic'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion" *ngIf="roleType == 3">
+			<input type="radio" value="locations" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="locations"
+			 routerLink="locations" class="accordion-toggle" />
+			<label for="locations">Doctors Locations</label>
+			<section *ngIf="currAccordion=='locations'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	</section>
 </section>
 <section class="tabs-section" *ngIf="preferredUIViewId == 1">
 	<div class="tabs-section-nav">

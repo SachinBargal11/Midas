@@ -1,6 +1,5 @@
 <section class="tabs-section" *ngIf="preferredUIViewId == 2">
 	<h5>Patient Name: {{patientName}} - Case Status: {{caseStatus}} - Case Type: {{caseType}}</h5>
-	<br>
 	<!-- <section id="accordion">
 	<div>
 		<input type="checkbox" [(ngModel)]="currAccordion1" (change)="setContent()" name="accordion1" id="check-1" routerLink="basic"/>
@@ -30,7 +29,7 @@
 		</article>
 	</div>
 </section> -->
-	<!-- <section class="faq-container" id="accordion"> -->
+	<section class="faq-container" id="accordion">
 	<!-- <section class="card" id="accordion"> -->
 		<div class="accordion">
 			<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
@@ -152,7 +151,7 @@
 				</p>
 			</section>
 		</div>
-	<!-- </section> -->
+	</section>
 </section>
 
 <section class="tabs-section" *ngIf="preferredUIViewId == 1">
