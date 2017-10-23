@@ -1,4 +1,27 @@
-<section class="tabs-section">
+<section *ngIf="preferredUIViewId == 2">
+    <div class="accordion">
+        <input type="radio" value="general-settings" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="general-settings"
+            routerLink="general-settings" class="accordion-toggle" />
+        <label for="general-settings">General Settings</label>
+        <section *ngIf="currAccordion=='general-settings'">
+            <p>
+                <router-outlet></router-outlet>
+            </p>
+        </section>
+    </div>
+    <div class="accordion">
+        <input type="radio" value="document-types" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="document-types"
+            routerLink="document-types" class="accordion-toggle" />
+        <label for="document-types">Document Types</label>
+        <section *ngIf="currAccordion=='document-types'">
+            <p>
+                <router-outlet></router-outlet>
+            </p>
+        </section>
+    </div>
+</section>
+
+<section class="tabs-section" *ngIf="preferredUIViewId == 1">
     <div class="tabs-section-nav">
         <div class="tbl">
             <ul class="nav" role="tablist">
@@ -8,7 +31,7 @@
 					General Settings
 						</span>
                     </a>
-                   </li>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="document-types" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
                         <span class="nav-link-in">

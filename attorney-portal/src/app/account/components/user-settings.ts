@@ -27,7 +27,7 @@ export class UserSettingsComponent implements OnInit {
     userSetting: UserSetting;
     doctorRoleFlag = false;
     disabled: boolean = false;
-  
+
     /* Dialog Visibilities */
     settingsDialogVisible: boolean = false;
 
@@ -38,6 +38,7 @@ export class UserSettingsComponent implements OnInit {
     isPublic: boolean = false;
     isTimeSlot = 30;
     calendarViewId = 1;
+    preferredUIViewId = 1;
 
     constructor(
         private _authenticationService: AuthenticationService,
@@ -53,11 +54,12 @@ export class UserSettingsComponent implements OnInit {
     ) {
 
         this.addUserSettings = this._fb.group({
-             isPublic: [''],
+            isPublic: [''],
             isCalendarPublic: [''],
             isSearchable: [''],
             timeSlot: [''],
             calendarViewId: [''],
+            preferredUIViewId: [''],
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
@@ -94,7 +96,8 @@ export class UserSettingsComponent implements OnInit {
                 this.isSearchable = userSetting.isSearchable;
                 this.isTimeSlot = userSetting.SlotDuration;
                 this.calendarViewId = userSetting.calendarViewId;
-                
+                this.preferredUIViewId = userSetting.preferredUIViewId;
+
             },
             (error) => { },
             () => {
@@ -132,9 +135,9 @@ export class UserSettingsComponent implements OnInit {
                 isPublic: this.isPublic,
                 isCalendarPublic: this.isCalendarPublic,
                 isSearchable: this.isSearchable,
-                SlotDuration:this.isTimeSlot,
-                calendarViewId:this.calendarViewId,
-                preferredUIViewId: '1',
+                SlotDuration: this.isTimeSlot,
+                calendarViewId: this.calendarViewId,
+                preferredUIViewId: this.preferredUIViewId,
             }
         )
         this._progressBarService.show();
@@ -148,7 +151,7 @@ export class UserSettingsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'User setting saved successfully!');
-                // this._router.navigate(['/dashboard']);
+                this._router.navigate(['/dashboard']);
             },
             (error) => {
                 let errString = 'Unable to save user setting.';
@@ -156,7 +159,7 @@ export class UserSettingsComponent implements OnInit {
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
-                });  
+                });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
@@ -167,8 +170,8 @@ export class UserSettingsComponent implements OnInit {
 
     }
 
-     goBack(): void {
+    goBack(): void {
         this._router.navigate(['/dashboard']);
-        
+
     }
 }

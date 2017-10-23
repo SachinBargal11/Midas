@@ -33,7 +33,13 @@
             </div>
         </ng-template>
     </p-column>
-    <p-column field="id" header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <!--<p-column field="id" header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>-->
+    <p-column header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a routerLink="{{case.patient.user.id}}/{{case.id}}/basic">{{case.id}}
+         </a>
+        </ng-template>
+    </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column field="caseConsentLabel" header="Consent Received" [sortable]="true" [filter]="true" styleClass="inbound-column">
