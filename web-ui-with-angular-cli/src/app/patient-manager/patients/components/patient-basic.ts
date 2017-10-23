@@ -25,7 +25,8 @@ import { ConsentService } from '../../cases/services/consent-service';
 
 @Component({
     selector: 'basic',
-    templateUrl: './patient-basic.html'
+    templateUrl: './patient-basic.html',
+    styleUrls: ['./patient-basic.scss']
 })
 
 export class PatientBasicComponent implements OnInit {

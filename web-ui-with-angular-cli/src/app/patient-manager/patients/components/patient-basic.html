@@ -8,7 +8,8 @@
                         <label class="form-label">Profile Photo</label>
                         <button type="button" class="avatar-preview avatar-preview-128">
 				<!--<img src={{imageLink}} alt="" />-->
-                <object [attr.data]="imageLink" type="image/jpg" width="100%" height="100%"></object>
+				<img [src]="imageLink" alt="" width="100%" height="100%" />
+                <!-- <object [attr.data]="imageLink" type="image/jpg" width="100%" height="100%"></object> -->
 				<!--<span class="update">
 					<i class="font-icon font-icon-picture-double"></i>
 					Update photo
@@ -23,8 +24,9 @@
                     <br>
                     <div class="row">
                         <label class="form-label">Photo ID(Copy of license)</label>
-                        <button type="button" class="avatar-preview avatar-preview-128">				
-                <object [attr.data]="imagePhotoIDLink" type="image/jpg" width="100%" height="100%"></object>			
+                        <button type="button" class="avatar-preview avatar-preview-128">
+                            <img [src]="imagePhotoIDLink" alt="" width="100%" height="100%" />				
+                <!-- <object [attr.data]="imagePhotoIDLink" type="image/jpg" width="100%" height="100%"></object>			 -->
 			</button>
                     </div><br>
                     <div class="row">
