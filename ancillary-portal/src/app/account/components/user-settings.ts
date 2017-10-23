@@ -44,6 +44,7 @@ export class UserSettingsComponent implements OnInit {
     addUserSettings: FormGroup;
     addUserSettingsControls;
     calendarViewId = 1;
+    preferredUIViewId = 1;
     userSetting: UserSetting;
 
     isSaveProgress = false;
@@ -69,6 +70,7 @@ export class UserSettingsComponent implements OnInit {
 
         this.addUserSettings = this.fb.group({
             calendarViewId: [''],
+            preferredUIViewId: [''],
         })
         this.addUserSettingsControls = this.addUserSettings.controls;
 
@@ -85,6 +87,7 @@ export class UserSettingsComponent implements OnInit {
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
                 this.calendarViewId = userSetting.calendarViewId;
+                this.preferredUIViewId = userSetting.preferredUIViewId;  
             },
             (error) => { },
             () => {
@@ -198,7 +201,7 @@ export class UserSettingsComponent implements OnInit {
                 isSearchable: null,
                 SlotDuration: null,
                 calendarViewId: this.calendarViewId,
-                preferredUIViewId: '1',
+                preferredUIViewId:this.preferredUIViewId
             }
         )
         this._progressBarService.show();

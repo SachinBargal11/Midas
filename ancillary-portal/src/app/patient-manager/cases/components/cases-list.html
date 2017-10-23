@@ -14,7 +14,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-</div>
+    </div>
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
@@ -36,16 +36,16 @@
         </ng-template>
     </p-column>-->
 
-    <p-column header="Case Source" [sortable]="true">
-        <ng-template let-case="rowData" pTemplate="body">
+    <p-column field="caseSourceLabel" header="Case Source" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <!--<ng-template let-case="rowData" pTemplate="body">
             <div *ngIf="case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.caseSource}}
             </div>
             <div *ngIf="!case.isCreatedByCompany(sessionStore.session.currentCompany.id)">
                 {{case.createdByCompany.name}}
             </div>
-        </ng-template>
-    </p-column>
+        </ng-template>-->
+    <!--</p-column>-->
 
     <!--<p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">

@@ -64,7 +64,8 @@ export class CaseAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
-                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
+                orignatorCompanyId: data.orignatorCompanyId,
+                // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
             });
         }
         return patient_case;
@@ -123,7 +124,8 @@ export class CaseAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 caseSource: data.caseSource,
                 createdByCompanyId: data.createdByCompanyId,
-                createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
+                orignatorCompanyId: data.orignatorCompanyId,
+                // createdByCompany: CompanyAdapter.parseResponse(data.createdByCompany)
 
 
             });

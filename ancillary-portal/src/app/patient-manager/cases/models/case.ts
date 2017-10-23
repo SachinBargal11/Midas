@@ -34,7 +34,8 @@ const CaseRecord = Record({
     updateDate: null,
     caseSource: '',
     createdByCompanyId: 0,
-    createdByCompany: null
+    createdByCompany: null,
+    orignatorCompanyId: 0,
 
 });
 
@@ -63,6 +64,7 @@ export class Case extends CaseRecord {
     caseSource: string;
     createdByCompanyId: Number;
     createdByCompany: Company;
+    orignatorCompanyId: number;
     constructor(props) {
         super(props);
     }
@@ -108,9 +110,17 @@ export class Case extends CaseRecord {
         return isConsentReceived;
     }
 
+    // isCreatedByCompany(companyId): boolean {
+    //     let isCreatedByCompany: boolean = false;
+    //     if (this.createdByCompany.id === companyId) {
+    //         isCreatedByCompany = true;
+    //     }
+    //     return isCreatedByCompany;
+    // }
+
     isCreatedByCompany(companyId): boolean {
         let isCreatedByCompany: boolean = false;
-        if (this.createdByCompany.id === companyId) {
+        if (this.orignatorCompanyId === companyId) {
             isCreatedByCompany = true;
         }
         return isCreatedByCompany;
@@ -144,10 +154,10 @@ export class Case extends CaseRecord {
         return isSessionCompany;
     }
 
-    get caseSourceLabel(): string {        
+    get caseSourceLabel(): string {
         return Case.getCaseSourceLabel(this.caseSource);
     }
     static getCaseSourceLabel(caseSource): string {
-            return caseSource
+        return caseSource
     }
 }
