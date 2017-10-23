@@ -29,16 +29,26 @@
             </a>
         </ng-template>
     </p-column>
-    <p-column field="id" header="Case Id" [sortable]="true"></p-column>
+    <!--<p-column field="id" header="Case Id" [sortable]="true"></p-column>-->
+    <p-column header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a routerLink="{{case.patient.user.id}}/{{case.id}}/basic">{{case.id}}
+         </a>
+        </ng-template>
+    </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column header="Consent Received">
         <ng-template let-case="rowData" pTemplate="body">
-             <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)"><u>Yes</u></a>
-             <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.patient.id}}/{{case.id}}/consent"><u>No</u></a>
+            <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
+                <u>Yes</u>
+            </a>
+            <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.patient.id}}/{{case.id}}/consent">
+                <u>No</u>
+            </a>
         </ng-template>
     </p-column>
-    <p-column  header="Referral History">
+    <p-column header="Referral History">
         <ng-template let-case="rowData" pTemplate="body">
             <a routerLink="/patient-manager/referrals/inbound-referrals">
                 <u>{{referralAvailable(case)}}</u>

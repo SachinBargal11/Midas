@@ -1,0 +1,341 @@
+// @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+// @import url("https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css");
+// * {
+//   margin: 0;
+//   padding: 0;
+// }
+
+// *, *:before, *:after {
+//   box-sizing: border-box;
+// }
+
+// html, body {
+//   height: 100%;
+//   font: 16px/1 'Open Sans', sans-serif;
+//   color: #555;
+//   background: #e5e5e5;
+// }
+
+// body {
+//   padding: 50px;
+// }
+
+// .accordion{
+// 	transform: translateZ(0);
+// 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+//   background: #fff;
+// }
+
+// .accordion > .accordion-toggle{
+// 	position: absolute;
+// 	opacity: 0;
+// 	display: none;
+// }
+
+// .accordion > label{
+// 	position: relative;
+// 	display: block;
+// 	height: 40px;
+// 	line-height: 40px;
+// 	padding: 0 20px;
+// 	font-size: 14px;
+// 	font-weight: 700;
+// 	border-top: 1px solid #ddd;
+// 	background: #eee;
+// 	cursor: pointer;
+// 	border-left: 1px solid #ddd;
+// 	border-right: 1px solid #ddd;
+// }
+
+// .accordion > label:after {
+//   content: '\f078';
+//   position: absolute;
+//   top: 0px;
+//   right: 20px;
+//   font-family: fontawesome;
+//   transform: rotate(90deg);
+//   transition: .3s transform;
+// }
+
+// .accordion > section{
+// 	height: 0;
+// 	transition: .3s all;
+// 	overflow: hidden;
+// }
+
+// .accordion > .accordion-toggle:checked ~ label:after{
+//  transform: rotate(0deg);
+// }
+
+// .accordion > .accordion-toggle:checked ~ section{
+//   height: 100%;
+//   border-left: 1px solid #ddd;
+//   border-right: 1px solid #ddd;
+// //   border-bottom: 1px solid #ddd;
+// }
+
+// .accordion > section p {
+//   margin: 15px 0;
+//   padding: 0 20px;
+//   font-size: 12px;
+//   line-height: 1.5;
+// }
+
+///////////////////////////////////////////////////////////////
+#accordion input {
+	display: none;
+}
+#accordion label{
+	position: relative;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 20px;
+	font-size: 14px;
+	font-weight: 700;
+	border-top: 1px solid #ddd;
+	background: #eee;
+	cursor: pointer;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+#accordion label:after {
+  content: '\f078';
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  font-family: fontawesome;
+  transform: rotate(90deg);
+  transition: .3s transform;
+}
+#accordion label:hover {
+	background: #ccc;
+}
+
+#accordion input:checked + label {
+	background: #ccc;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	// color: white;
+	margin-bottom: 0;
+}
+#accordion input:checked ~ label:after{
+  content: '\f078';
+ transform: rotate(0deg);
+}
+#accordion section {
+	// background: #f7f7f7;
+	height:0px;
+	overflow:hidden;
+	z-index:10;
+}
+#accordion section p {
+	padding: 1em;
+}
+#accordion input:checked section {
+}
+#accordion input:checked ~ section {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+	height: auto;
+}
+
+////////////////////////////////////////////////////
+// * {
+// 	font-family: Arial, sans;
+// 	margin: 0;
+// 	padding: 0;
+// 	box-sizing: border-box;
+// 	-moz-box-sizing: border-box;
+// }
+// h1, h2 {
+// 	margin: 1em 0 0 0;
+// 	text-align: center;
+// }
+// h2 {
+// 	margin: 0 0 1em 0;
+// }
+// #container {
+//     margin: 0 auto;
+//     width: 50%;
+// }
+// #accordion input {
+// 	display: none;
+// }
+// #accordion label {
+// 	background: #eee;
+// 	border-radius: .25em;
+// 	cursor: pointer;
+// 	display: block;
+// 	margin-bottom: .125em;
+// 	padding: .8em 1em;
+// 	z-index: 20;
+// }
+// #accordion label:hover {
+// 	background: #ccc;
+// }
+
+// #accordion input:checked + label {
+// 	background: #ccc;
+// 	border-bottom-right-radius: 0;
+// 	border-bottom-left-radius: 0;
+// 	color: white;
+// 	margin-bottom: 0;
+// }
+// #accordion article {
+// 	// background: #f7f7f7;
+// 	height:0px;
+// 	overflow:hidden;
+// 	z-index:10;
+// }
+// #accordion article p {
+// 	padding: 1em;
+// }
+// #accordion input:checked article {
+// }
+// #accordion input:checked ~ article {
+// 	border-bottom-left-radius: .25em;
+// 	border-bottom-right-radius: .25em;
+// 	height: auto;
+// 	margin-bottom: .125em;
+// }
+
+///////////////////////////////////////////////////////////////////////////////////
+// @import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700';
+
+// body {
+//   background: #FFF;
+//   font-family: 'Source Sans Pro';
+//   font-weight: 400;
+// }
+
+// h1 {
+//   color: #333;
+//   font-size: 36px;
+//   font-weight: normal;
+//   text-align: center;
+// }
+// h1 sup a { color: #999; font-size: 14px; text-decoration: none; }
+// h1 sup a:hover { color: #666; text-decoration: none; }
+// h1 sup a:focus,
+// h1 sup a:active { color: #666; text-decoration: underline; }
+
+// h2 {
+//   color: #333;
+//   font-size: 30px;
+//   font-weight: normal;
+//   text-align: left;
+// }
+
+// big {
+//   color: #333;
+//   font-size: 20px;
+//   font-weight: normal;
+//   margin: 0;
+//   padding: 0;
+//   text-align: left;
+// }
+// big pre {
+//   display: inline-block;
+//   font-weight: bold;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .faq-container {
+//   text-align: left;
+//   margin: 10px auto 30px auto;
+//   position: relative;
+// }
+// .faq-container article p { margin: 10px 15px 15px 15px; }
+// .faq-container input[type=checkbox],
+// .faq-container input[type=radio] {
+//   background-color: transparent;
+//   border: 1px solid transparent;
+//   height: 1px;
+//   position: absolute;
+//   width: 1px;
+//   margin: 4px 0 0 0;
+//   outline: none;
+// }
+// .faq-container input[type=checkbox] + label,
+// .faq-container input[type=radio] + label {
+//   background: #EEEEEE;
+//   border-bottom: 1px solid #fff;
+//   color: #333;
+//   cursor: pointer;
+//   display: block;
+//   font-size: 18px;
+//   font-weight: normal;
+//   line-height: 32px;
+//   padding: 10px 15px;
+//   position: relative;
+//   z-index: 20;
+// }
+// .faq-container input[type=checkbox] + label:before,
+// .faq-container input[type=radio] + label:before,
+// .faq-container input[type=checkbox] + label:after,
+// .faq-container input[type=radio] + label:after {
+//   display: inline-block;
+//   font-family: FontAwesome;
+//   font-size: 24px;
+//   font-style: normal;
+//   font-weight: normal;
+//   text-decoration: inherit;
+// }
+// .faq-container input[type=checkbox] + label:before,
+// .faq-container input[type=radio] + label:before {
+// //   content: "\f29c";
+//   padding-right: 10px;
+// }
+// .faq-container input[type=checkbox] + label:after,
+// .faq-container input[type=radio] + label:after {
+//   content: "\f054";
+//   float: right;
+//   padding-left: 10px;
+// }
+// .faq-container input[type=checkbox] + label:hover,
+// .faq-container input[type=radio] + label:hover { background: #D6D6D6; }
+// .faq-container input[type=checkbox]:checked + label,
+// .faq-container input[type=radio]:checked + label { background: #EEEEEE; }
+// .faq-container input[type=checkbox]:focus + label,
+// .faq-container input[type=radio]:focus + label { background: #BEBEBE; }
+// .faq-container input[type=checkbox]:checked + label:hover,
+// .faq-container input[type=radio]:checked + label:hover { background: #D6D6D6; }
+// .faq-container input[type=checkbox]:checked + label:after,
+// .faq-container input[type=radio]:checked + label:after {
+// 	-webkit-transform: rotate(90deg);
+// 	   -moz-transform: rotate(90deg);
+// 	    -ms-transform: rotate(90deg);
+// 	     -o-transform: rotate(90deg);
+// 	        transform: rotate(90deg);
+// }
+// .faq-container input[type=checkbox] + label + article,
+// .faq-container input[type=radio] + label + article {
+//   display: none;
+//   /* display: none; - Content is ignored by screen readers, additionally stops tabbing through hidden content */
+//   height: 0;
+//   max-height: 0;
+//   overflow: hidden;
+//   /* 0, 0, hidden; - Content is ignored by screen readers, but tab key still steps through hidden elements */
+//   -webkit-transition: all 1.5s ease-in-out;
+//   -moz-transition: all 1.5s ease-in-out;
+//   -o-transition: all 1.5s ease-in-out;
+//   -ms-transition: all 1.5s ease-in-out;
+//   transition: all 1.5s ease-in-out;
+// }
+// .faq-container input[type=checkbox]:checked + label + article,
+// .faq-container input[type=radio]:checked + label + article {
+//   display: block;
+//   height: auto;
+//   max-height: 2000px;
+//   -webkit-transition: all 1.5s ease-in-out;
+//   -moz-transition: all 1.5s ease-in-out;
+//   -o-transition: all 1.5s ease-in-out;
+//   -ms-transition: all 1.5s ease-in-out;
+//   transition: all 1.5s ease-in-out;
+// }
+
+

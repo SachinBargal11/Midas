@@ -60,7 +60,8 @@ export class UserSettingsComponent implements OnInit {
         this._userSettingStore.getPatientPersonalSettingByPatientId(this.userId)
             .subscribe((userSetting) => {
                 this.userSetting = userSetting;
-                this.calendarViewId = userSetting.calendarViewId;         
+                this.calendarViewId = userSetting.calendarViewId;  
+                this.preferredUIViewId = userSetting.preferredUIViewId;       
             },
             (error) => { },
             () => {

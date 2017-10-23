@@ -14,13 +14,19 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-</div>
+    </div>
 </div>
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true" #dt>
     <header>Cases</header>
     <!--<p-column selectionMode="multiple"></p-column>-->
-    <p-column field="id" header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <!--<p-column field="id" header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>-->
+    <p-column header="Case Id" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a routerLink="{{case.id}}/basic">{{case.id}}
+         </a>
+        </ng-template>
+    </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
@@ -40,9 +46,8 @@
             (signedDocumentUploadError)="signedDocumentUploadError($event)" [url]="url" (uploadComplete)="documentUploadComplete($event)"
             (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true" (download)="downloadTemplate($event)">
         </app-document-upload>-->
-        <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true"
-            [url]="url" (uploadComplete)="documentUploadComplete($event)"
-            (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true">
+        <app-document-upload [currentId]="2" [objectId]="caseId" [isConsentDocumentOn]="true" [isElectronicSignatureOn]="true" [url]="url"
+            (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)" [isdownloadTemplate]="true">
         </app-document-upload>
     </div>
 </p-dialog>
