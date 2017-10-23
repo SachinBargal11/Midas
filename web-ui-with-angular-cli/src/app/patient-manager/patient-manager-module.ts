@@ -126,7 +126,7 @@ import { AutoInformationInfoComponent } from './cases/components/auto-Informatio
 import { AutoInformationService } from './cases/services/autoInformation-service';
 import { AutoInformationStore } from './cases/stores/autoInformation-store';
 import { PriorAccidentComponent } from './cases/components/prior-accident';
-
+import { CaseDocumentShellComponent } from './cases/components/case-documents-shell';
 
 @NgModule({
     imports: [
@@ -203,7 +203,8 @@ import { PriorAccidentComponent } from './cases/components/prior-accident';
         AutoInformationInfoComponent,
         PriorAccidentComponent,
         CaseMergedDocumentsComponent,
-        CaseDocumentPacketingComponent
+        CaseDocumentPacketingComponent,
+        CaseDocumentShellComponent
     ],
     providers: [
         PatientsService,

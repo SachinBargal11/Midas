@@ -82,15 +82,15 @@ export class CaseDocumentsUploadComponent implements OnInit {
         private _documentManagerService: DocumentManagerService
 
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
             // this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
             this.url = `${this._url}/documentmanager/uploadtoblob`;
             // documentmanager/uploadtoblob?inputjson={"ObjectType":"visit","DocumentType":"reval","CompanyId":"16",%20"ObjectId":"60"}
         });
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
-            let result = this._casesStore.fetchCaseById(this.caseId);
+        // this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            // this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.currentCaseId);
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseStatusId = caseDetail.caseStatusId;
@@ -102,7 +102,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-        });
+        // });
 
         this.documentMergeForm = this._fb.group({
             documentName: ['', [Validators.required, AppValidators.removeDotValidator]]

@@ -1,0 +1,61 @@
+<!--<section class="tabs-section" *ngIf="preferredUIViewId == 2">
+    <div class="accordion">
+        <input type="radio" value="case-documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="case-documents" routerLink="case-documents"
+            class="accordion-toggle" />
+        <label for="case-documents">Uploaded Documents</label>
+        <section *ngIf="currAccordion=='case-documents'">
+            <p>
+                <router-outlet></router-outlet>
+            </p>
+        </section>
+    </div>
+    <div class="accordion">
+        <input type="radio" value="case-merged-documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="case-merged-documents" routerLink="case-merged-documents"
+            class="accordion-toggle" />
+        <label for="case-merged-documents">Merged Documents</label>
+        <section *ngIf="currAccordion=='case-merged-documents'">
+            <p>
+                <router-outlet></router-outlet>
+            </p>
+        </section>
+    </div>
+    <div class="accordion">
+        <input type="radio" value="case-document-packeting" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="case-document-packeting"
+            routerLink="case-document-packeting" class="accordion-toggle" />
+        <label for="case-document-packeting">Packeting Documents</label>
+        <section *ngIf="currAccordion=='case-document-packeting'">
+            <p>
+                <router-outlet></router-outlet>
+            </p>
+        </section>
+    </div>
+</section>-->
+
+<section class="tabs-section">
+    <div class="tabs-section-nav tabs-section-nav-inline">
+        <ul class="nav" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="case-documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">	
+					Uploaded Documents
+					</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="case-merged-documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">	
+					Merged Documents
+					</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="case-document-packeting" [routerLinkActive]="['active']" role="tab" data-toggle="tab">	
+					Packeting Documents
+					</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active">
+
+            <router-outlet></router-outlet>
+
+        </div>
+    </div>
+</section>

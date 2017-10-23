@@ -44,6 +44,8 @@ import { PriorAccidentComponent } from './components/prior-accident';
 import { CaseMergedDocumentsComponent } from './components/case-merged-documents';
 import { CaseDocumentPacketingComponent } from './components/case-document-packeting';
 
+import { CaseDocumentShellComponent }from './components/case-documents-shell';
+
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -351,29 +353,102 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Payment'
                         }
                     },
+                    // {
+                    //     path: 'documents',
+                    //     component: CaseDocumentsUploadComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Documents'
+                    //     }
+                    // },
+                    // {
+                    //     path: 'case-merged-documents',
+                    //     component: CaseMergedDocumentsComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Merged Documents'
+                    //     }
+                    // },
+                    // {
+                    //     path: 'case-document-packeting',
+                    //     component: CaseDocumentPacketingComponent,
+                    //     canActivate: [ValidateActiveSession],
+                    //     data: {
+                    //         breadcrumb: 'Packeted Documents'
+                    //     }
+                    // },
                     {
-                        path: 'documents',
-                        component: CaseDocumentsUploadComponent,
+                        path: 'case-documents',
+                        component: CaseDocumentShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Documents'
-                        }
-                    },
-                    {
-                        path: 'case-merged-documents',
-                        component: CaseMergedDocumentsComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Merged Documents'
-                        }
-                    },
-                    {
-                        path: 'case-document-packeting',
-                        component: CaseDocumentPacketingComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Packeted Documents'
-                        }
+                        },
+                        children: [
+                            {
+                                path: '',
+                                redirectTo: 'case-documents',
+                                pathMatch: 'full'
+                            },
+                            {
+                                path: 'case-documents',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'case-documents'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: CaseDocumentsUploadComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        }
+                                    },
+                                ]
+                            },
+                            {
+                                path: 'case-merged-documents',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Merged Documents'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: CaseMergedDocumentsComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+
+
+                                    },
+                                ]
+                            },
+                            {
+                                path: 'case-document-packeting',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Packeted Documents'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: CaseDocumentPacketingComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+
+
+                                    },
+                                ]
+                            },
+                        ]
                     },
                     // {
                     //     path: 'insurances',

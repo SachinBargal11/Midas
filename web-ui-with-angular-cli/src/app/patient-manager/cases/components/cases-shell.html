@@ -83,7 +83,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="documents" routerLink="documents"
+			<input type="radio" value="documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="documents" routerLink="case-documents"
 			class="accordion-toggle"/>
 			<label for="documents">Documents</label>
 			<section *ngIf="currAccordion=='documents'">
@@ -92,7 +92,7 @@
 				</p>
 			</section>
 		</div>
-		<div class="accordion">
+		<!--<div class="accordion">
 			<input type="radio" value="case-merged-documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="case-merged-documents" routerLink="case-merged-documents"
 			class="accordion-toggle"/>
 			<label for="case-merged-documents">Merged Documents</label>
@@ -111,7 +111,7 @@
 					<router-outlet></router-outlet>
 				</p>
 			</section>
-		</div>
+		</div>-->
 		<div class="accordion">
 			<input type="radio" value="prior-accident" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="prior-accident" routerLink="prior-accident"
 			class="accordion-toggle"/>
@@ -197,13 +197,13 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" routerLink="documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					<a class="nav-link" routerLink="case-documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Documents
 						</span>
 					</a>
 				</li>
-				<li class="nav-item">
+				<!--<li class="nav-item">
 					<a class="nav-link" routerLink="case-merged-documents" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">
 					Merged Documents
@@ -216,7 +216,7 @@
 					Packeting
 						</span>
 					</a>
-				</li>
+				</li>-->
 				<li class="nav-item">
 					<a class="nav-link" routerLink="prior-accident" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
 						<span class="nav-link-in">

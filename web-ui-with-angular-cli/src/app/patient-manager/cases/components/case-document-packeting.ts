@@ -44,7 +44,7 @@ export class CaseDocumentPacketingComponent implements OnInit {
         private _documentManagerService: DocumentManagerService
 
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
