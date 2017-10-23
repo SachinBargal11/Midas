@@ -1,24 +1,26 @@
 <section *ngIf="preferredUIViewId == 2">
-	<div class="accordion">
-		<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
-		 class="accordion-toggle" />
-		<label for="basic">Basic</label>
-		<section *ngIf="currAccordion=='basic'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
-	<div class="accordion">
-		<input type="radio" value="schedule" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="schedule" routerLink="schedule"
-		 class="accordion-toggle" />
-		<label for="schedule">Schedule</label>
-		<section *ngIf="currAccordion=='schedule'">
-			<p>
-				<router-outlet></router-outlet>
-			</p>
-		</section>
-	</div>
+	<section class="faq-container" id="accordion">
+		<div class="accordion">
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
+			 class="accordion-toggle" />
+			<label for="basic">Basic</label>
+			<section *ngIf="currAccordion=='basic'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+		<div class="accordion">
+			<input type="radio" value="schedule" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="schedule" routerLink="schedule"
+			 class="accordion-toggle" />
+			<label for="schedule">Schedule</label>
+			<section *ngIf="currAccordion=='schedule'">
+				<p>
+					<router-outlet></router-outlet>
+				</p>
+			</section>
+		</div>
+	</section>
 </section>
 
 <section class="tabs-section" *ngIf="preferredUIViewId == 1">
