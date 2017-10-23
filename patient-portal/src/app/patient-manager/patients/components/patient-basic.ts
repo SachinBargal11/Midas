@@ -20,7 +20,8 @@ import { PatientDocument } from '../models/patient-document';
 
 @Component({
     selector: 'basic',
-    templateUrl: './patient-basic.html'
+    templateUrl: './patient-basic.html',
+    styleUrls: ['./patient-basic.scss']
 })
 
 export class PatientBasicComponent implements OnInit {
@@ -136,7 +137,7 @@ export class PatientBasicComponent implements OnInit {
 
     onBeforeSendEvent(event) {
         event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"profile", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
-        // event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+        event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
     }
 
     onFilesUploadComplete(event) {
@@ -220,7 +221,7 @@ export class PatientBasicComponent implements OnInit {
 
         onBeforeSendEventPhotoID(event) {
             event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
-            //event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+            event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
         }
         onFilesUploadCompletePhotoID(event) {
             var response = JSON.parse(event.xhr.responseText);
