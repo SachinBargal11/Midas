@@ -50,7 +50,9 @@
                         <option value="0">-Select-</option>
              <optgroup *ngIf="specialityId != 0" label="Select MedicalProvider-Doctor">
                      <option data-type="1" [attr.data-id]="currentPreferredMedicalProviderDoctor.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderDoctor of medicalProviderDoctor" [value]="currentPreferredMedicalProviderDoctor.doctor.id">
-                         {{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</option>
+                         <label *ngIf="currentPreferredMedicalProviderDoctor.doctor.user">{{currentPreferredMedicalProviderDoctor.preferredMedical.name}} - {{currentPreferredMedicalProviderDoctor.doctor.user.displayName}}</label>
+                         <label *ngIf="!currentPreferredMedicalProviderDoctor.doctor.user">{{currentPreferredMedicalProviderDoctor.preferredMedical.name}}</label>
+                        </option>
              </optgroup>
              <optgroup *ngIf="roomTestId != 0" label="Select MedicalProvider-Room">
                     <option data-type="2" [attr.data-testId]="currentPreferredMedicalProviderRoom.preferredMedical.id" *ngFor="let currentPreferredMedicalProviderRoom of medicalProviderRoom" [value]="currentPreferredMedicalProviderRoom.room.id">

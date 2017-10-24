@@ -6,13 +6,13 @@
             <loader [visible]="isDeleteProgress"></loader>
         </a>
         <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
-            <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add</span>
+            <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down"> Add</span>
          </a>
-        <button [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showMergeDocumentDialog()">
-             <span class="hidden-md-down">Merge</span>
+        <button title="Merge" [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showMergeDocumentDialog()">
+            <i class="fa fa-code-fork" aria-hidden="true"></i><span class="hidden-md-down"> Merge</span>
         </button>
-        <button [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showPacketDocumentDialog()">
-             <span class="hidden-md-down">Packet</span>
+        <button title="Packet" [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showPacketDocumentDialog()">
+            <i class="fa fa-file-archive-o" aria-hidden="true"></i><span class="hidden-md-down"> Packet</span>
         </button>
     </h3>
 </div>

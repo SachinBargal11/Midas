@@ -33,9 +33,10 @@ export class ReferralsShellComponent implements OnInit {
             })
 
     }
-    setContent() {
-        // let value = e.target.value;
-        this.currAccordion;
+    setContent(elem) {
+        if(this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 
 }

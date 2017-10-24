@@ -39,9 +39,10 @@ export class LocationShellComponent implements OnInit {
             console.log(routeParams);
         });
     }
-    setContent() {
-        // let value = e.target.value;
-        this.currAccordion;
+    setContent(elem) {
+        if(this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 
 }

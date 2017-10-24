@@ -131,12 +131,11 @@ export class CaseShellComponent implements OnInit {
         this.index = e.index;
     }
 
-    setContent() {
+    setContent(elem) {
         // let value = e.target.value;
-        this.currAccordion;
-        // this.currAccordion1;
-        // this.currAccordion2;
-        // this.currAccordion3;
+        if(this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 
 }

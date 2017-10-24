@@ -76,9 +76,10 @@ export class UserShellComponent implements OnInit {
                 this.preferredUIViewId = userSetting.preferredUIViewId;
             });
     }
-    setContent() {
-        // let value = e.target.value;
-        this.currAccordion;
+    setContent(elem) {
+        if(this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 
 }

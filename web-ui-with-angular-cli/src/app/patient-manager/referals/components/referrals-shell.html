@@ -1,7 +1,7 @@
 <section *ngIf="preferredUIViewId == 2">
 	<section class="faq-container" id="accordion">
 		<div class="accordion" *ngIf="!sessionStore.isOnlyDoctorRole()">
-			<input type="radio" value="pending-referrals" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="pending-referrals"
+			<input type="radio" value="pending-referrals" [(ngModel)]="currAccordion" (click)="setContent('pending-referrals')" name="accordion" id="pending-referrals"
 			 routerLink="pending-referrals" class="accordion-toggle" />
 			<label for="pending-referrals">Pending Referrals</label>
 			<section *ngIf="currAccordion=='pending-referrals'">
@@ -11,7 +11,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="inbound-referrals" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="inbound-referrals"
+			<input type="radio" value="inbound-referrals" [(ngModel)]="currAccordion" (click)="setContent('inbound-referrals')" name="accordion" id="inbound-referrals"
 			 routerLink="inbound-referrals" class="accordion-toggle" />
 			<label for="inbound-referrals">Inbound Referrals</label>
 			<section *ngIf="currAccordion=='inbound-referrals'">
@@ -21,7 +21,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="outbound-referrals" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="outbound-referrals"
+			<input type="radio" value="outbound-referrals" [(ngModel)]="currAccordion" (click)="setContent('outbound-referrals')" name="accordion" id="outbound-referrals"
 			 routerLink="outbound-referrals" class="accordion-toggle" />
 			<label for="outbound-referrals">Outbound Referrals</label>
 			<section *ngIf="currAccordion=='outbound-referrals'">
@@ -31,7 +31,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="external-referral" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="external-referral"
+			<input type="radio" value="external-referral" [(ngModel)]="currAccordion" (click)="setContent('external-referral')" name="accordion" id="external-referral"
 			 routerLink="external-referral" class="accordion-toggle" />
 			<label for="external-referral">External Referral</label>
 			<section *ngIf="currAccordion=='external-referral'">
