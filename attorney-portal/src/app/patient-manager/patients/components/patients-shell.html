@@ -9,7 +9,7 @@
 	</h3>
 	<section class="faq-container" id="accordion">
 		<div class="accordion">
-			<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="viewall"
+			<input type="radio" value="viewall" [(ngModel)]="currAccordion" (click)="setContent('viewall')" name="accordion" id="viewall"
 			 routerLink="viewall" class="accordion-toggle" />
 			<label for="viewall">View All</label>
 			<section *ngIf="currAccordion=='viewall'">
@@ -19,7 +19,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent($event)" name="accordion" id="basic" routerLink="basic"
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
 			 class="accordion-toggle" />
 			<label for="basic">Basic</label>
 			<section *ngIf="currAccordion=='basic'">
@@ -29,7 +29,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="demographics" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="demographics"
+			<input type="radio" value="demographics" [(ngModel)]="currAccordion" (click)="setContent('demographics')" name="accordion" id="demographics"
 			 routerLink="demographics" class="accordion-toggle" />
 			<label for="demographics">Demographics</label>
 			<section *ngIf="currAccordion=='demographics'">

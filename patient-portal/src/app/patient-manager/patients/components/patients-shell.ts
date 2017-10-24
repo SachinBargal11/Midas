@@ -36,15 +36,10 @@ export class PatientsShellComponent implements OnInit {
                 this.preferredUIViewId = userSetting.preferredUIViewId;
             });
     }
-    setContent(value) {
-        // console.log(value)
-        // this.currAccordion = this.currAccordion == value ? this.currAccordion = '' : this.currAccordion;
-        // let value = e.target.value;
-        // let href = window.location.href;
-        // let currRoute = href.substr(href.lastIndexOf('/') + 1);
-        // if (this.currAccordion == currRoute) {
-        //     this.currAccordion = '';
-        // }
+    setContent(elem) {
+        if (this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 
 }

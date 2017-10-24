@@ -19,13 +19,13 @@ export class CaseShellComponent implements OnInit {
     index: number;
     routerLink: string;
     userSetting: UserSetting;
-    preferredUIViewId:number;
+    preferredUIViewId: number;
     userId: number = this.sessionStore.session.user.id;
 
     constructor(
         public router: Router,
         private _userSettingStore: UserSettingStore,
-                public sessionStore: SessionStore,
+        public sessionStore: SessionStore,
 
     ) {
         let href = window.location.href;
@@ -45,13 +45,10 @@ export class CaseShellComponent implements OnInit {
         this.index = e.index;
     }
 
-    setContent() {
+    setContent(elem) {
         // let value = e.target.value;
-        this.currAccordion;
-        // this.currAccordion1;
-        // this.currAccordion2;
-        // this.currAccordion3;
+        if (this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
-
-
 }

@@ -40,9 +40,11 @@ export class UserSettingsShellComponent implements OnInit {
             console.log(routeParams);
         });
     }
-    setContent() {
+    setContent(elem) {
         // let value = e.target.value;
-        this.currAccordion;
+        if (this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 
 }

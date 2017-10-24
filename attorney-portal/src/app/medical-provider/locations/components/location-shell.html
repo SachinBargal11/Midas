@@ -1,7 +1,7 @@
 <section *ngIf="preferredUIViewId == 2">
 	<section class="faq-container" id="accordion">
 		<div class="accordion">
-			<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
 			 class="accordion-toggle" />
 			<label for="basic">Basic</label>
 			<section *ngIf="currAccordion=='basic'">
@@ -11,7 +11,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="schedule" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="schedule" routerLink="schedule"
+			<input type="radio" value="schedule" [(ngModel)]="currAccordion" (click)="setContent('schedule')" name="accordion" id="schedule" routerLink="schedule"
 			 class="accordion-toggle" />
 			<label for="schedule">Schedule</label>
 			<section *ngIf="currAccordion=='schedule'">

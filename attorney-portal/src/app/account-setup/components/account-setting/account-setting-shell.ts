@@ -35,8 +35,10 @@ export class AccountSettingShellComponent implements OnInit {
                 this.preferredUIViewId = userSetting.preferredUIViewId;
             });
     }
-    setContent() {
+    setContent(elem) {
         // let value = e.target.value;
-        this.currAccordion;
+        if (this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 }

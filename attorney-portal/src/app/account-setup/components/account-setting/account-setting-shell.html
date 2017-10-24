@@ -1,8 +1,8 @@
 <section *ngIf="preferredUIViewId == 2">
     <section class="faq-container" id="accordion">
         <div class="accordion">
-            <input type="radio" value="general-settings" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="general-settings"
-                routerLink="general-settings" class="accordion-toggle" />
+            <input type="radio" value="general-settings" [(ngModel)]="currAccordion" (click)="setContent('general-settings')" name="accordion"
+                id="general-settings" routerLink="general-settings" class="accordion-toggle" />
             <label for="general-settings">General Settings</label>
             <section *ngIf="currAccordion=='general-settings'">
                 <p>
@@ -11,8 +11,8 @@
             </section>
         </div>
         <div class="accordion">
-            <input type="radio" value="document-types" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="document-types"
-                routerLink="document-types" class="accordion-toggle" />
+            <input type="radio" value="document-types" [(ngModel)]="currAccordion" (click)="setContent('document-types')" name="accordion"
+                id="document-types" routerLink="document-types" class="accordion-toggle" />
             <label for="document-types">Document Types</label>
             <section *ngIf="currAccordion=='document-types'">
                 <p>

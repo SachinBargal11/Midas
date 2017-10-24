@@ -22,15 +22,15 @@ export class UserSettingsShellComponent implements OnInit {
         public _router: Router,
         public _route: ActivatedRoute,
         private _sessionStore: SessionStore,
-        private _userSettingStore: UserSettingStore, 
-        public sessionStore: SessionStore,    
-        
+        private _userSettingStore: UserSettingStore,
+        public sessionStore: SessionStore,
+
     ) {
         let href = window.location.href;
         this.currAccordion = href.substr(href.lastIndexOf('/') + 1);
-    //    this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-    //         this._router.navigate(['/dashboard']);
-    //     });
+        //    this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        //         this._router.navigate(['/dashboard']);
+        //     });
     }
 
     ngOnInit() {
@@ -43,8 +43,9 @@ export class UserSettingsShellComponent implements OnInit {
             console.log(routeParams);
         });
     }
-    setContent() {
-        // let value = e.target.value;
-        this.currAccordion;
+    setContent(elem) {
+        if (this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
     }
 }

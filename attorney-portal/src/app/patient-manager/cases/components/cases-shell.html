@@ -34,7 +34,7 @@
 	<!-- <section class="card" id="accordion"> -->
 	<section class="faq-container" id="accordion">
 		<div class="accordion">
-			<input type="radio" value="basic" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="basic" routerLink="basic"
+			<input type="radio" value="basic" [(ngModel)]="currAccordion" (click)="setContent('basic')" name="accordion" id="basic" routerLink="basic"
 			 class="accordion-toggle" />
 			<label for="basic">Basic</label>
 			<section *ngIf="currAccordion=='basic'">
@@ -44,8 +44,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="consent" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="consent" routerLink="consent"
-			 class="accordion-toggle" />
+			<input type="radio" value="consent" [(ngModel)]="currAccordion" (click)="setContent('consent')" name="accordion" id="consent"
+			 routerLink="consent" class="accordion-toggle" />
 			<label for="consent">Consent</label>
 			<section *ngIf="currAccordion=='consent'">
 				<p>
@@ -54,7 +54,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="insurances" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="insurances"
+			<input type="radio" value="insurances" [(ngModel)]="currAccordion" (click)="setContent('insurances')" name="accordion" id="insurances"
 			 routerLink="insurances" class="accordion-toggle" />
 			<label for="insurances">Insurances</label>
 			<section *ngIf="currAccordion=='insurances'">
@@ -64,8 +64,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="family-members" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="family-members"
-			 routerLink="family-members" class="accordion-toggle" />
+			<input type="radio" value="family-members" [(ngModel)]="currAccordion" (click)="setContent('family-members')" name="accordion"
+			 id="family-members" routerLink="family-members" class="accordion-toggle" />
 			<label for="family-members">Family Member</label>
 			<section *ngIf="currAccordion=='family-members'">
 				<p>
@@ -74,8 +74,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="employer" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="employer" routerLink="employer"
-			 class="accordion-toggle" />
+			<input type="radio" value="employer" [(ngModel)]="currAccordion" (click)="setContent('employer')" name="accordion" id="employer"
+			 routerLink="employer" class="accordion-toggle" />
 			<label for="employer">Employment/School</label>
 			<section *ngIf="currAccordion=='employer'">
 				<p>
@@ -84,7 +84,7 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="documents" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="documents"
+			<input type="radio" value="documents" [(ngModel)]="currAccordion" (click)="setContent('documents')" name="accordion" id="documents"
 			 routerLink="documents" class="accordion-toggle" />
 			<label for="documents">Documents</label>
 			<section *ngIf="currAccordion=='documents'">
@@ -94,8 +94,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="prior-accident" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="prior-accident"
-			 routerLink="prior-accident" class="accordion-toggle" />
+			<input type="radio" value="prior-accident" [(ngModel)]="currAccordion" (click)="setContent('prior-accident')" name="accordion"
+			 id="prior-accident" routerLink="prior-accident" class="accordion-toggle" />
 			<label for="prior-accident">Prior Accident/Injuries</label>
 			<section *ngIf="currAccordion=='prior-accident'">
 				<p>
@@ -104,8 +104,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="accident" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="accident" routerLink="accident"
-			 class="accordion-toggle" />
+			<input type="radio" value="accident" [(ngModel)]="currAccordion" (click)="setContent('accident')" name="accordion" id="accident"
+			 routerLink="accident" class="accordion-toggle" />
 			<label for="accident">Accident</label>
 			<section *ngIf="currAccordion=='accident'">
 				<p>
@@ -114,8 +114,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="patient-visit" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="patient-visit"
-			 routerLink="patient-visit" class="accordion-toggle" />
+			<input type="radio" value="patient-visit" [(ngModel)]="currAccordion" (click)="setContent('patient-visit')" name="accordion"
+			 id="patient-visit" routerLink="patient-visit" class="accordion-toggle" />
 			<label for="patient-visit">Visits</label>
 			<section *ngIf="currAccordion=='patient-visit'">
 				<p>
@@ -124,8 +124,8 @@
 			</section>
 		</div>
 		<div class="accordion">
-			<input type="radio" value="autoInformation" [(ngModel)]="currAccordion" (change)="setContent()" name="accordion" id="autoInformation"
-			 routerLink="autoInformation" class="accordion-toggle" />
+			<input type="radio" value="autoInformation" [(ngModel)]="currAccordion" (click)="setContent('autoInformation')" name="accordion"
+			 id="autoInformation" routerLink="autoInformation" class="accordion-toggle" />
 			<label for="autoInformation">Auto Information</label>
 			<section *ngIf="currAccordion=='autoInformation'">
 				<p>

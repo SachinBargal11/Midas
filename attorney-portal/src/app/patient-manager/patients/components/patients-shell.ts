@@ -61,7 +61,11 @@ export class PatientsShellComponent implements OnInit {
                 this.preferredUIViewId = userSetting.preferredUIViewId;
             });
     }
-    setContent(value) {
+    
+    setContent(elem) {
+        if (this.currAccordion == elem) {
+            this.currAccordion = '';
+        }
         // console.log(value)
         // this.currAccordion = this.currAccordion == value ? this.currAccordion = '' : this.currAccordion;
         // let value = e.target.value;
