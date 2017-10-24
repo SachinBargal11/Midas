@@ -98,6 +98,12 @@
 	cursor: pointer;
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 2px;
+	border-top-left-radius: .25em;
+	border-top-right-radius: .25em;
+	border-bottom-left-radius: .25em;
+	border-bottom-right-radius: .25em;
 }
 
 #accordion label:after {
@@ -109,16 +115,22 @@
   transform: rotate(90deg);
   transition: .3s transform;
 }
+#accordion input:checked + label:hover {
+	background: #ccc;
+}
 #accordion label:hover {
 	background: #ccc;
 }
 
 #accordion input:checked + label {
-	background: #ccc;
+	background: #eee;
+	border-bottom: none;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 	// color: white;
 	margin-bottom: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 }
 #accordion input:checked ~ label:after{
   content: '\f078';
@@ -136,10 +148,13 @@
 #accordion input:checked section {
 }
 #accordion input:checked ~ section {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+	border-bottom-left-radius: .25em;
+	border-bottom-right-radius: .25em;
+  	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 	height: auto;
+	margin-bottom: 2px;
 }
 
 ////////////////////////////////////////////////////
