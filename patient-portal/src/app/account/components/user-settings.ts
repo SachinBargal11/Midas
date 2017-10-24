@@ -97,7 +97,7 @@ export class UserSettingsComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.success('Success!', 'User setting saved successfully!');
-                // this._router.navigate(['/dashboard']);
+                this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
                 let errString = 'Unable to save user setting.';
@@ -117,7 +117,7 @@ export class UserSettingsComponent implements OnInit {
     }
 
      goBack(): void {
-        this._router.navigate(['/dashboard']);
+        this._router.navigate(['/patient-manager/profile/viewall']);
         
     }
 }

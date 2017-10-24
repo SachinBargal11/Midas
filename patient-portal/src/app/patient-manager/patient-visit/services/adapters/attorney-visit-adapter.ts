@@ -53,7 +53,7 @@ export class AttorneyVisitAdapter {
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 companyid: data.companyid,
                 attorneyId: data.attorneyId,
-                notes: data.agenda,
+                notes: data.notes,
                 name: data.subject,
                 contactPerson: data.contactPerson,
                 company: data.company ? CompanyAdapter.parseResponse(data.company) : null

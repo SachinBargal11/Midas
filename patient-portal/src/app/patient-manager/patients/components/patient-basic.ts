@@ -166,70 +166,71 @@ export class PatientBasicComponent implements OnInit {
             })
         }
 
-            this.isSavePatientProgress = true;
-            let basicFormValues = this.basicform.value;
-            let result;
-            let existingPatientJS = this.patientInfo.toJS();
-            let patient = new Patient(_.extend(existingPatientJS, {
-                maritalStatusId: basicFormValues.maritalStatusId,
+        this.isSavePatientProgress = true;
+        let basicFormValues = this.basicform.value;
+        let result;
+        let existingPatientJS = this.patientInfo.toJS();
+        let patient = new Patient(_.extend(existingPatientJS, {
+            maritalStatusId: basicFormValues.maritalStatusId,
+            updateByUserId: this.sessionStore.session.account.user.id,
+            patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+            languagePreferenceOther: parseInt(this.languagePreference) == 3 ? basicFormValues.otherLanguage : null,
+            patientSocialMediaMappings: patientSocialMediaMappings,
+            parentOrGuardianName: !this.isEighteenOrAbove ? basicFormValues.parentName : null,
+            legallyMarried: null,
+            spouseName: parseInt(basicFormValues.maritalStatusId) == 2 ? basicFormValues.spouseName : null,
+            user: new User(_.extend(existingPatientJS.user, {
+                dateOfBirth: basicFormValues.dob ? moment(basicFormValues.dob) : null,
+                firstName: basicFormValues.firstname,
+                middleName: basicFormValues.middlename,
+                lastName: basicFormValues.lastname,
                 updateByUserId: this.sessionStore.session.account.user.id,
-                patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
-                languagePreferenceOther: parseInt(this.languagePreference) == 3 ? basicFormValues.otherLanguage : null,
-                patientSocialMediaMappings: patientSocialMediaMappings,
-                parentOrGuardianName: !this.isEighteenOrAbove ? basicFormValues.parentName : null,
-                legallyMarried: null,
-                spouseName: parseInt(basicFormValues.maritalStatusId) == 2 ? basicFormValues.spouseName : null,
-                user: new User(_.extend(existingPatientJS.user, {
-                    dateOfBirth: basicFormValues.dob ? moment(basicFormValues.dob) : null,
-                    firstName: basicFormValues.firstname,
-                    middleName: basicFormValues.middlename,
-                    lastName: basicFormValues.lastname,
-                    updateByUserId: this.sessionStore.session.account.user.id,
-                    gender: basicFormValues.gender
-                }))
-            }));
+                gender: basicFormValues.gender
+            }))
+        }));
 
-            this.progressBarService.show();
-            result = this._patientsStore.updatePatient(patient);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Patient updated successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this.notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/profile/viewall']);
-                },
-                (error) => {
-                    let errString = 'Unable to update patient.';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this.isSavePatientProgress = false;
-                    this.notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this.progressBarService.hide();
-                },
-                () => {
-                    this.isSavePatientProgress = false;
-                    this.progressBarService.hide();
+        this.progressBarService.show();
+        result = this._patientsStore.updatePatient(patient);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Patient updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
                 });
-        }
-
-        onBeforeSendEventPhotoID(event) {
-            event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
-            event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
-        }
-        onFilesUploadCompletePhotoID(event) {
-            var response = JSON.parse(event.xhr.responseText);
-            let documentId = response[0].documentId;
-            console.log(documentId)
-            this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
-        }
-        onFilesUploadErrorPhotoID(event) {
-            let even = event;
-        }
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.success('Success', 'Patient updated successfully!');
+                // this._router.navigate(['/patient-manager/profile/viewall']);
+            },
+            (error) => {
+                let errString = 'Unable to update patient.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.isSavePatientProgress = false;
+                this.notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this.progressBarService.hide();
+            },
+            () => {
+                this.isSavePatientProgress = false;
+                this.progressBarService.hide();
+            });
     }
+
+    onBeforeSendEventPhotoID(event) {
+        event.xhr.setRequestHeader("inputjson", '{"ObjectType":"patient","DocumentType":"dl", "CompanyId": "' + this._sessionStore.session.currentCompany.id + '","ObjectId":"' + this.patientId + '"}');
+        event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);
+    }
+    onFilesUploadCompletePhotoID(event) {
+        var response = JSON.parse(event.xhr.responseText);
+        let documentId = response[0].documentId;
+        console.log(documentId)
+        this.imagePhotoIDLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(documentId));
+    }
+    onFilesUploadErrorPhotoID(event) {
+        let even = event;
+    }
+}

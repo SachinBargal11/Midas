@@ -184,8 +184,9 @@ export class DemographicsComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/profile/viewall']);
+                this.notificationsStore.addNotification(notification); 
+                this._notificationsService.success('Success', 'Patient updated successfully!');
+                // this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
                 let errString = 'Unable to update patient.';

@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="selectedVisit.isCreatedByCompany(sessionStore.session.currentCompany.id)">
           <!--<div class="col-md-1"><label class="form-label">Notes<span *ngIf="sessionStore.isOnlyDoctorRole()" class="color-red">*</span></label></div>-->
           <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
           <!--<div class="col-md-6" *ngIf="!sessionStore.isOnlyDoctorRole()">
@@ -71,6 +71,15 @@
                   <li *ngIf="unscheduledVisitDetailFormControls.notes.hasError('required')">Please enter Notes.</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!selectedVisit.isCreatedByCompany(sessionStore.session.currentCompany.id)">
+          <div class="col-md-1"><label class="form-label">Notes</label></div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>{{selectedVisit.notes}}
+                                </label>
             </div>
           </div>
         </div>

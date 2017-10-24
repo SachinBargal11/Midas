@@ -81,30 +81,11 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this.visitUploadDocumentUrl = this._url + '/documentmanager/uploadtoblob';
-            // this._progressBarService.show();
-            // let result = this._casesStore.fetchCaseById(this.caseId);
-            // result.subscribe(
-            //     (caseDetail: Case) => {
-            //         this.caseStatusId = caseDetail.caseStatusId;
-            //     },
-            //     (error) => {
-            //         this._router.navigate(['../'], { relativeTo: this._route });
-            //         this._progressBarService.hide();
-            //     },
-            //     () => {
-            //         this._progressBarService.hide();
-            //     });
-        });
-
-
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = this.sessionStore.session.user.id;
             this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -114,6 +95,26 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+
+
+        // this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = this.sessionStore.session.user.id;
+            this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    // this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                    this.patientName = patient.user.displayName;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        // });
     }
 
     ngOnInit() {
