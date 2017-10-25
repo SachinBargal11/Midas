@@ -11,7 +11,7 @@ select.disabled {
         padding-right: 0;
     }
     .with-side-menu-compact & {
-        padding-left: 100px;
+        padding-left: 85px;
     }
 }
 
@@ -48,11 +48,22 @@ h6 {
 
 .side-menu {
     &.side-menu-compact {
-        padding-top: 50px;
+        padding-top: 60px;
     }
 }
 
 body {
+    .ui-dialog {
+        .ui-dialog-titlebar {
+            .ui-dialog-title {
+                font-weight: bold;
+                font-size: 1em;
+            }
+        }
+    }
+    .ui-dialog-footer {
+        padding: 0px;
+    }
     .ui-widget-header {
         padding: 0;
         border: none;
@@ -70,13 +81,11 @@ body {
                 //         width: 100px;
                 //     }
                 //     &.inbound-column {
-                //         border-right: 1px solid #c7c7c7 !important;
-                //         // width: 38px;
+                //         border-right: 1px solid #c7c7c7 !important; // width: 38px;
                 //     }
                 //     &.inbound-column-span {
                 //         border-right: 1px solid #c7c7c7 !important;
-                //         text-align: center; 
-                //         // width: 38px;
+                //         text-align: center; // width: 38px;
                 //     }
                 //     &.ui-selection-column {
                 //         width: 38px;
@@ -134,6 +143,41 @@ body {
     .select-list {
         width: 300px;
     }
+
+    // Primeng selection color changes
+
+    .ui-datatable .ui-datatable-data tr.ui-datatable-even.ui-state-highlight {
+        background-color: #59c09d;
+        border-color: #59c09d;
+    }
+    .ui-listbox .ui-listbox-item.ui-state-highlight {
+        background-color: #59c09d;
+    }
+    .ui-listbox .ui-listbox-item.ui-state-highlight .ui-chkbox {    
+        border: 1px solid #59c09d;
+    }
+    .ui-chkbox .ui-chkbox-box.ui-state-active {        
+        border: 1px solid #59c09d;
+        background-color: #59c09d
+    }
+    .ui-state-active,.ui-state-highlight {
+        background-color: #59c09d;
+    }
+    .ui-button {
+        background-color: #59c09d;
+    }
+    .ui-radiobutton .ui-radiobutton-box.ui-state-active {
+        border: #59c09d;
+        background-color: #59c09d;
+    }
+    .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
+        background-color: #59c09d;
+    }
+    .ui-datepicker table.ui-datepicker-calendar td:not(.ui-state-disabled) a.ui-state-active {
+        background-color: #59c09d;
+    }
+    
+    //
 }
 
 .breadcrumb {
@@ -180,16 +224,10 @@ body {
         font-weight: bold;
     }
 }
-// .site-header {
-//     background-color: gray;
-// }
 
-
-// .form-label {
-//     font-size: 14px;
-//     font-weight: 700;
-//     color: #333;
-// }
+.warningMsg {
+    color: red;
+}
 
 .with-side-menu-compact .page-content {
     padding-top: inherit;
@@ -199,24 +237,29 @@ body {
     font-weight: 700;
     color: #333;
 }
+
 .site-header {
     background-color: #59c09d;
     .site-header-collapsed {
         background: #59c09d;
     }
 }
+// .site-header {
+//     background-color: darkolivegreen;
+// }
 
 .site-header .header-alarm {
     opacity: 0.7;
 }
 
-.btn.btn-grey {
-    background-color: #adb7be;
-    border-color: #adb7be;
+.btn.btn-add {
+    background-color: #59c09d;
+    border-color: #59c09d;
+    padding: .25rem .75rem;
 }
 
 .side-menu.side-menu-compact {
-    width: 80px;
+    width: 90px;
 }
 .side-menu.side-menu-compact .side-menu-list a {
     color: #222;

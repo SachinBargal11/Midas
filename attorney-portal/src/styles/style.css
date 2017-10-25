@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* CSS Document */
 
-body{font-size:14px;font-family: 'Open Sans', sans-serif;background:#f9f9f9;padding-top: 70px;}
+body{font-size:14px;font-family: 'Open Sans', sans-serif;background:#f9f9f9;padding-top: 60px;}
 body.frm{padding-top: 0;background:#eee;}
 /*body.log{padding-top: 0;background: url(../images/bg.jpg);background-size: cover;}*/
 body.log{padding-top: 0;background: url(../assets/theme/img/bg.jpg);background-size: cover;}

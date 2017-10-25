@@ -166,6 +166,16 @@ body {
     .ui-button {
         background-color: #59c09d;
     }
+    .ui-radiobutton .ui-radiobutton-box.ui-state-active {
+        border: #59c09d;
+        background-color: #59c09d;
+    }
+    .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight {
+        background-color: #59c09d;
+    }
+    .ui-datepicker table.ui-datepicker-calendar td:not(.ui-state-disabled) a.ui-state-active {
+        background-color: #59c09d;
+    }
     
     //
 }

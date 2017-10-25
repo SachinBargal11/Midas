@@ -11,7 +11,7 @@ select.disabled {
         padding-right: 0;
     }
     .with-side-menu-compact & {
-        padding-left: 100px;
+        padding-left: 85px;
     }
 }
 
@@ -48,7 +48,7 @@ h6 {
 
 .side-menu {
     &.side-menu-compact {
-        padding-top: 50px;
+        padding-top: 60px;
     }
 }
 
@@ -215,7 +215,7 @@ body {
 }
 
 .side-menu.side-menu-compact {
-    width: 80px;
+    width: 90px;
 }
 .side-menu.side-menu-compact .side-menu-list a {
     color: #222;
