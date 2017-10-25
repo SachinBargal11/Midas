@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
@@ -12,6 +13,10 @@ import { PushNotification } from '../../commons/models/push-notification';
 import { PushNotificationAdapter } from '../../commons/services/adapters/push-notification-adapter';
 import { PushNotificationStore } from '../../commons/stores/push-notification-store';
 import { environment } from '../../../environments/environment';
+import { PatientsStore } from '../../patient-manager/patients/stores/patients-store';
+import { Patient } from "../../patient-manager/patients/models/patient";
+import { PatientDocument } from "../../patient-manager/patients/models/patient-document";
+import { PatientsService } from "../../patient-manager/patients/services/patients-service";
 
 @Component({
     selector: 'app-header',
@@ -22,6 +27,8 @@ import { environment } from '../../../environments/environment';
 export class AppHeaderComponent implements OnInit {
     private _notificationServerUrl: string = `${environment.NOTIFICATION_SERVER_URL}`;
     messages: PushNotification[] = [];
+    
+    imageLink: SafeResourceUrl = '../../../assets/theme/img/avatar.png';
 
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
@@ -41,6 +48,9 @@ export class AppHeaderComponent implements OnInit {
         private _router: Router,
         private _notificationsService: NotificationsService,
         private _pushNotificationStore: PushNotificationStore,
+        private _patientsStore: PatientsStore,
+        private _patientsService: PatientsService,
+        private _sanitizer: DomSanitizer,
         private _elRef: ElementRef
 
     ) {
@@ -85,6 +95,16 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        let result = this._patientsStore.getPatientById(this.sessionStore.session.user.id);
+        result.subscribe(
+            (patient: Patient) => {
+                _.forEach(patient.patientDocuments, (currentPatientDocument: PatientDocument) => {
+                    if (currentPatientDocument.document.documentType == 'profile') {
+                        this.imageLink = this._sanitizer.bypassSecurityTrustResourceUrl(this._patientsService.getProfilePhotoDownloadUrl(currentPatientDocument.document.originalResponse.midasDocumentId));
+                    }
+                })
+            });
+                    
     }
     onLeftBurgerClick() {
         if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {

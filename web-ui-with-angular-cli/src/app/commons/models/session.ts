@@ -3,6 +3,7 @@ import { Account } from '../../account/models/account';
 import { Record } from 'immutable';
 import { User } from './user';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { Router } from '@angular/router';
 import { SessionStore } from '../stores/session-store';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
@@ -38,6 +39,17 @@ export class Session extends SessionRecord {
 
     public get companies(): Company[] {
         return this._account ? this._account.companies : null;
+    }
+    
+    public get companiesWithoutCurrentCompany(): Company[] {
+        if(this._account) {
+            let companies: Company[];
+            return companies = _.reject(this._account.companies, (currCompany: Company) => {
+                return this._currentCompany.name == currCompany.name;
+            }); 
+        } else {
+            return null;
+        }
     }
 
     public get account(): Account {
