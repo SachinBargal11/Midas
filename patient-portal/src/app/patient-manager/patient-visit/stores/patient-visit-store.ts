@@ -433,5 +433,29 @@ export class PatientVisitsStore {
         });
         return <Observable<EoVisit[]>>Observable.fromPromise(promise);
     }
+
+    getPatientVisitDetailById(id: number): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitDetailById(id).subscribe((patientVisit: PatientVisit) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(patientVisit);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
+
+    getClientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getClientVisitsByCaseId(caseId).subscribe((patientVisits: PatientVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
 }
 

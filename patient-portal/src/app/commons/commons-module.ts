@@ -27,7 +27,7 @@ import { ProcedureComponent } from './components/procedure/procedure.component';
 import { ReferralsComponent } from './components/referrals/referrals.component';
 import { DiagnosisComponent } from './components/diagnosis/diagnosis.component';
 import { VisitDetailComponent } from './components/visit-detail/visit-detail.component';
-
+import { ClientVisitDetailComponent } from '../commons/components/client-visit-detail/client-visit-detail.component';
 
 import {
   AccordionModule,
@@ -108,7 +108,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ProcedureComponent,
     ReferralsComponent,
     DiagnosisComponent,
-    VisitDetailComponent
+    VisitDetailComponent,
+    ClientVisitDetailComponent
   ],
 
   exports: [
@@ -158,7 +159,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     DiagnosisComponent,
     VisitDetailComponent,
     DropdownModule,
-
+    ClientVisitDetailComponent
   ]
 })
 export class CommonsModule { }

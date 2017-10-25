@@ -51,7 +51,6 @@ import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
 import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
 
-
 // import { PatientVisitComponent } from './patient-visit/components/patient-visit';
 // import { PatientVisitsStore } from './patient-visit/stores/patient-visit-store';
 // import { PatientVisitService } from './patient-visit/services/patient-visit-service';
@@ -107,6 +106,7 @@ import { PriorAccidentComponent } from './cases/components/prior-accident';
 import { AutoInformationInfoComponent } from './cases/components/auto-Information';
 import { AutoInformationService } from './cases/services/autoInformation-service';
 import { AutoInformationStore } from './cases/stores/autoInformation-store';
+import { ClientVisitListComponent } from './cases/components/client-visit';
 
 @NgModule({
     imports: [
@@ -169,7 +169,8 @@ import { AutoInformationStore } from './cases/stores/autoInformation-store';
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,
         PriorAccidentComponent,
-        AutoInformationInfoComponent
+        AutoInformationInfoComponent,
+        ClientVisitListComponent,
     ],
     providers: [
         PatientsService,

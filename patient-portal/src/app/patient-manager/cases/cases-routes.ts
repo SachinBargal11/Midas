@@ -32,6 +32,7 @@ import { AddInsuranceComponent } from './components/add-insurance';
 import { EditInsuranceComponent } from './components/edit-insurance';
 import { PriorAccidentComponent } from './components/prior-accident';
 import { AutoInformationInfoComponent } from './components/auto-Information';
+import { ClientVisitListComponent } from './components/client-visit';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -87,8 +88,26 @@ export const CasesShellRoutes: Routes = [
                         children: [
                             {
                                 path: '',
-                                redirectTo: 'doctor-visit',
+                                redirectTo: 'client-visit',
                                 pathMatch: 'full'
+                            },
+                            {
+                                path: 'client-visit',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Client Visits'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: ClientVisitListComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 path: 'doctor-visit',

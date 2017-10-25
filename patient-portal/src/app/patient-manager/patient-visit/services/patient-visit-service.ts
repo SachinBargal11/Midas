@@ -569,5 +569,45 @@ export class PatientVisitService {
         });
         return <Observable<EoVisit[]>>Observable.fromPromise(promise);
     }
+
+    getPatientVisitDetailById(patientVisitId: Number): Observable<PatientVisit> {
+        let promise: Promise<PatientVisit> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/attorneyVisit/get/' + patientVisitId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let patientVisits = null;
+                    if (data) {
+                        patientVisits = PatientVisitAdapter.parseResponse(data);
+                        resolve(patientVisits);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
+
+    getClientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/AttorneyVisit/getByCaseId/' + caseId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
 }
 
