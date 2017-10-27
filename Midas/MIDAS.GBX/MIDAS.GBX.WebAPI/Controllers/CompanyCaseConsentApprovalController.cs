@@ -79,6 +79,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("download/{caseid}/{companyid}")]
+        [AllowAnonymous] //Added TEMP, Need to be reomoved
         public void DownloadConsent(int caseid, int companyid, bool download = true)
         {
             string filepath = requestHandler.Download(Request, caseid, companyid);
