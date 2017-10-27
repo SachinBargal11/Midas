@@ -125,7 +125,7 @@
     </form>
 </p-dialog>
 
-<p-dialog [minWidth]="500" [width]="1200" [height]="300" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+<p-dialog [minWidth]="500" [width]="1200" [height]="400" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <p-tabView>

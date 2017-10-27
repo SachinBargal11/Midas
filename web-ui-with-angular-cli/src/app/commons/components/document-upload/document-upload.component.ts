@@ -15,6 +15,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { Notification } from '../../../commons/models/notification';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { DocumentType } from '../../../account-setup/models/document-type';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-document-upload',
@@ -38,6 +39,7 @@ export class DocumentUploadComponent implements OnInit {
   documentTypes: DocumentType[];
   companyId: number = this._sessionStore.session.currentCompany.id;
   documentType: string = '';
+  private _url: string = `${environment.SERVICE_BASE_URL}`;
 
   @Input() signedDocumentUploadUrl: string;
   @Input() signedDocumentPostRequestData: any;
@@ -84,6 +86,13 @@ export class DocumentUploadComponent implements OnInit {
     if (this.signedDocumentPostRequestData) {
       this.cosentFormUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this._consentService.getConsentFormDownloadUrl(this.signedDocumentPostRequestData.caseId, this.signedDocumentPostRequestData.companyId));
     }
+    this.signedDocumentUploadUrl = `${this._url}/CompanyCaseConsentApproval/uploadsignedconsent`;
+    this.url = `${this._url}/documentmanager/uploadtoblob`;
+    // this.signedDocumentUploadUrl = `${this._url}/documentmanager/uploadtoblob`;
+    this.signedDocumentPostRequestData = {
+      companyId: this.companyId,
+      caseId: this.inputCaseId
+    };
   }
 
   ngOnDestroy() {

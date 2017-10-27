@@ -88,7 +88,7 @@ export class CompanyCasesComponent implements OnInit {
     loadCases() {
         this._progressBarService.show();
         this._casesStore.getCasesByCompany()
-           .subscribe((cases:Case[]) => {
+            .subscribe((cases: Case[]) => {
                 this.cases = cases;
             },
             (error) => {
@@ -97,19 +97,19 @@ export class CompanyCasesComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-            // let openCases: Case[] = _.filter(cases, (currentCase: Case) => {
-            //         return currentCase.caseStatusId == 1;
-            //     });
+        // let openCases: Case[] = _.filter(cases, (currentCase: Case) => {
+        //         return currentCase.caseStatusId == 1;
+        //     });
 
-            //     this.cases = openCases; 
-            // },
-            // (error) => {
-            //     this._progressBarService.hide();
-            // },
-            // () => {
-            //     this._progressBarService.hide();
-            // });
-            
+        //     this.cases = openCases; 
+        // },
+        // (error) => {
+        //     this._progressBarService.hide();
+        // },
+        // () => {
+        //     this._progressBarService.hide();
+        // });
+
     }
 
     isCurrentUser(userId): boolean {
@@ -132,6 +132,16 @@ export class CompanyCasesComponent implements OnInit {
     //     });
     //     return isCreatedByCompany;
     // }
+    signedDocumentUploadError(error: Error) {
+        let errString = 'Not able to signed document.';
+        let notification = new Notification({
+            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+            'type': 'ERROR',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    }
 
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
@@ -232,7 +242,7 @@ export class CompanyCasesComponent implements OnInit {
             }
         }, 250);
     }
-    
+
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({

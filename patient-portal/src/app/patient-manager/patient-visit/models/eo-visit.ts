@@ -93,6 +93,6 @@ export class EoVisit extends EoVisitRecord {
     }
 
     get visitDisplayString(): string {
-        let visitInfo: string = `EO Visit`;        return visitInfo;
+        let visitInfo: string = `EUO Visit`;        return visitInfo;
     }
 }

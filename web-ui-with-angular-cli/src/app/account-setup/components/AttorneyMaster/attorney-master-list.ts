@@ -71,12 +71,14 @@ export class AttorneyMasterListComponent implements OnInit {
     }
 
     showValidation() {
+        this.validateOtpResponse = null;
         this.displayValidation = true;
         this.addAttorneyByToken.reset();
     }
 
     closeDialog() {
         this.displayValidation = false;
+        this.validateOtpResponse = null;
     }
 
     generateToken() {

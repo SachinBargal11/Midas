@@ -75,12 +75,14 @@ export class AncillaryListComponent implements OnInit {
     }
 
     showValidation() {
+        this.validateOtpResponse = null;
         this.displayValidation = true;
         this.addAncillaryProviderByToken.reset();
     }
 
     closeDialog() {
         this.displayValidation = false;
+        this.validateOtpResponse = null;
     }
     deleteAncillaryProviders() { }
 
@@ -104,15 +106,15 @@ export class AncillaryListComponent implements OnInit {
             .subscribe((data: any) => {
                 this.validateOtpResponse = data;
                 this.medicalProviderName = this.validateOtpResponse.company.name;
-                if(this.validateOtpResponse.company.location.length > 0){
-                this.medicalProviderAddress = this.validateOtpResponse.company.location[0].name + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.address1 + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.address2 + ',' +
-                    this.validateOtpResponse.company.location[0].addressInfo.city + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.state + ', ' +
-                    this.validateOtpResponse.company.location[0].addressInfo.zipCode
+                if (this.validateOtpResponse.company.location.length > 0) {
+                    this.medicalProviderAddress = this.validateOtpResponse.company.location[0].name + ', ' +
+                        this.validateOtpResponse.company.location[0].addressInfo.address1 + ', ' +
+                        this.validateOtpResponse.company.location[0].addressInfo.address2 + ',' +
+                        this.validateOtpResponse.company.location[0].addressInfo.city + ', ' +
+                        this.validateOtpResponse.company.location[0].addressInfo.state + ', ' +
+                        this.validateOtpResponse.company.location[0].addressInfo.zipCode
                 }
-                
+
             },
             (error) => {
                 let errString = 'Invalid token.';
