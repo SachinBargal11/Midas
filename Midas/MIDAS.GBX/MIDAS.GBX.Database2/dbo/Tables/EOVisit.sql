@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[EOVisit] (
+    [ID]                      INT            IDENTITY (1, 1) NOT NULL,
+    [DoctorId]                INT            NULL,
+    [InsuranceProviderId]     INT            NULL,
+    [CalendarEventId]         INT            NOT NULL,
+    [VisitStatusId]           INT            NULL,
+    [EventStart]              DATETIME2 (7)  NULL,
+    [EventEnd]                DATETIME2 (7)  NULL,
+    [Notes]                   NVARCHAR (250) NULL,
+    [IsDeleted]               BIT            DEFAULT ((0)) NULL,
+    [CreateByUserID]          INT            NOT NULL,
+    [CreateDate]              DATETIME2 (7)  NOT NULL,
+    [UpdateByUserID]          INT            NULL,
+    [UpdateDate]              DATETIME2 (7)  NULL,
+    [VisitCreatedByCompanyId] INT            NOT NULL,
+    [PatientId]               INT            NULL,
+    [CaseId]                  INT            NULL,
+    PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [FK_EOVisit_Calender_CalendarEventId] FOREIGN KEY ([CalendarEventId]) REFERENCES [dbo].[CalendarEvent] ([Id]),
+    CONSTRAINT [FK_EOVisit_Case_CaseId] FOREIGN KEY ([CaseId]) REFERENCES [dbo].[Case] ([Id]),
+    CONSTRAINT [FK_EOVisit_Company_VisitCreatedByCompanyId] FOREIGN KEY ([VisitCreatedByCompanyId]) REFERENCES [dbo].[Company] ([id]),
+    CONSTRAINT [FK_EOVisit_Doctor_DoctorId] FOREIGN KEY ([DoctorId]) REFERENCES [dbo].[Doctor] ([Id]),
+    CONSTRAINT [FK_EOVisit_Patient_PatientId] FOREIGN KEY ([PatientId]) REFERENCES [dbo].[Patient] ([Id]),
+    CONSTRAINT [FK_EOVisit_VisitStatus_VisitStatusId] FOREIGN KEY ([VisitStatusId]) REFERENCES [dbo].[VisitStatus] ([ID])
+);
+

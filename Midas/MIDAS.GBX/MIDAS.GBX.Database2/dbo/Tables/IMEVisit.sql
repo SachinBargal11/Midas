@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[IMEVisit] (
+    [ID]                      INT            IDENTITY (1, 1) NOT NULL,
+    [CaseId]                  INT            NULL,
+    [PatientId]               INT            NULL,
+    [CalendarEventId]         INT            NOT NULL,
+    [VisitStatusId]           INT            NULL,
+    [EventStart]              DATETIME2 (7)  NULL,
+    [EventEnd]                DATETIME2 (7)  NULL,
+    [Notes]                   NVARCHAR (250) NULL,
+    [TransportProviderId]     INT            NULL,
+    [IsDeleted]               BIT            DEFAULT ((0)) NULL,
+    [CreateByUserID]          INT            NOT NULL,
+    [CreateDate]              DATETIME2 (7)  NOT NULL,
+    [UpdateByUserID]          INT            NULL,
+    [UpdateDate]              DATETIME2 (7)  NULL,
+    [DoctorName]              VARCHAR (50)   NOT NULL,
+    [VisitCreatedByCompanyId] INT            NOT NULL,
+    PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [FK_IMEVisit_Calender_CalendarEventId] FOREIGN KEY ([CalendarEventId]) REFERENCES [dbo].[CalendarEvent] ([Id]),
+    CONSTRAINT [FK_IMEVisit_Case_CaseId] FOREIGN KEY ([CaseId]) REFERENCES [dbo].[Case] ([Id]),
+    CONSTRAINT [FK_IMEVisit_Company_VisitCreatedByCompanyId] FOREIGN KEY ([VisitCreatedByCompanyId]) REFERENCES [dbo].[Company] ([id]),
+    CONSTRAINT [FK_IMEVisit_Patient_PatientId] FOREIGN KEY ([PatientId]) REFERENCES [dbo].[Patient] ([Id]),
+    CONSTRAINT [FK_IMEVisit_Transport_TransportProviderId] FOREIGN KEY ([TransportProviderId]) REFERENCES [dbo].[Company] ([id]),
+    CONSTRAINT [FK_IMEVisit_VisitStatus_VisitStatusId] FOREIGN KEY ([VisitStatusId]) REFERENCES [dbo].[VisitStatus] ([ID])
+);
+

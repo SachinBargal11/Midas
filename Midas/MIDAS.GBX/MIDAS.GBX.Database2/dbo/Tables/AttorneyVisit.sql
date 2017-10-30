@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[AttorneyVisit] (
+    [Id]              INT             IDENTITY (1, 1) NOT NULL,
+    [CalendarEventId] INT             NOT NULL,
+    [CaseId]          INT             NOT NULL,
+    [PatientId]       INT             NOT NULL,
+    [AttorneyId]      INT             NOT NULL,
+    [EventStart]      DATETIME2 (7)   NULL,
+    [EventEnd]        DATETIME2 (7)   NULL,
+    [Subject]         NVARCHAR (256)  NULL,
+    [VisitStatusId]   TINYINT         NULL,
+    [ContactPerson]   NVARCHAR (128)  NULL,
+    [CompanyId]       INT             NOT NULL,
+    [Agenda]          NVARCHAR (1024) NULL,
+    [IsDeleted]       BIT             CONSTRAINT [DF_AttorneyVisit_IsDeleted] DEFAULT 0 NULL,
+    [CreateByUserID]  INT             NOT NULL,
+    [CreateDate]      DATETIME2 (7)   NOT NULL,
+    [UpdateByUserID]  INT             NULL,
+    [UpdateDate]      DATETIME2 (7)   NULL,
+    CONSTRAINT [PK_AttorneyVisit] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_AttorneyVisit_CalendarEvent_CaseId] FOREIGN KEY ([CalendarEventId]) REFERENCES [dbo].[CalendarEvent] ([Id]),
+    CONSTRAINT [FK_AttorneyVisit_Case_CaseId] FOREIGN KEY ([CaseId]) REFERENCES [dbo].[Case] ([Id]),
+    CONSTRAINT [FK_AttorneyVisit_Company_CompanyId] FOREIGN KEY ([CompanyId]) REFERENCES [dbo].[Company] ([id]),
+    CONSTRAINT [FK_AttorneyVisit_Patient_PatientId] FOREIGN KEY ([PatientId]) REFERENCES [dbo].[Patient] ([Id]),
+    CONSTRAINT [FK_AttorneyVisit_User_UserId] FOREIGN KEY ([AttorneyId]) REFERENCES [dbo].[User] ([id])
+);
+
