@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {DndModule} from 'ng2-dnd';
 import { LimitPipe } from './pipes/limit-array-pipe';
 import { DateFormatPipe } from './pipes/date-format-pipe';
 import { MapToJSPipe } from './pipes/map-to-js';
@@ -68,6 +69,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    DndModule,
     AccordionModule,
     InputTextModule,
     ChartModule,
@@ -128,6 +130,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     CommonModule,
     FormsModule,
     RouterModule,
+    DndModule,
     LimitPipe,
     DateFormatPipe,
     MapToJSPipe,

@@ -8,10 +8,12 @@
         <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down"> Add</span>
          </a>
-        <button title="Merge" [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showMergeDocumentDialog()">
+        <button title="Merge" [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm"
+            (click)="showMergeDocumentDialog()">
             <i class="fa fa-code-fork" aria-hidden="true"></i><span class="hidden-md-down"> Merge</span>
         </button>
-        <button title="Packet" [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showPacketDocumentDialog()">
+        <button title="Packet" [disabled]="selectedDocumentList.length <= 0" class="pull-right btn-inline btn btn-primary btn-sm"
+            (click)="showPacketDocumentDialog()">
             <i class="fa fa-file-archive-o" aria-hidden="true"></i><span class="hidden-md-down"> Packet</span>
         </button>
     </h3>
@@ -51,26 +53,55 @@
 <p-dialog [minWidth]="600" [width]="1200" [(visible)]="addConsentDialogVisible" [responsive]="true" showEffect="fade" [modal]="false"
     [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
-    <app-document-upload [url]="url" [currentId]="2" [objectId]="currentCaseId" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
+    <app-document-upload [url]="url" [currentId]="2" [objectId]="currentCaseId" (uploadComplete)="documentUploadComplete($event)"
+        (uploadError)="documentUploadError($event)"></app-document-upload>
 </p-dialog>
 
-<p-dialog [minHeight]="400" [minWidth]="600" [width]="1200" [(visible)]="mergeDocumentsDialogVisible" header="{{mergeDocDialogHeader}}" appendTo="body"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+<p-dialog [minHeight]="400" [minWidth]="600" [width]="1200" [(visible)]="mergeDocumentsDialogVisible" header="{{mergeDocDialogHeader}}"
+    appendTo="body" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="mergeDocumentsDialogVisible">
-        <p-orderList [(value)]="orderedDocumentList" [listStyle]="{'height':'250px'}" [responsive]="true" header="Documents" dragdrop="true">
-        <!-- <p-orderList [(value)]="orderedDocumentList" (onReorder)="onReorderList($event)" [listStyle]="{'height':'250px'}" [responsive]="true" header="Documents" dragdrop="true">
-        filter="filter"  filterBy="brand" filterPlaceholder="Filter" dragdrop="true"> -->
+        <!-- <p-orderList [(value)]="orderedDocumentList" [listStyle]="{'height':'250px'}" [responsive]="true" header="Documents" dragdrop="true">
             <ng-template let-currDocument pTemplate="item">
                 <div class="ui-helper-clearfix">
                     <div style="font-size:14px;float:left;">{{currDocument.documentName}}</div>
                     <div style="font-size:14px;float:right;">{{currDocument.documentType}}</div>
-                    <!-- <div style="font-size:14px;float:left;">{{currDocument.document.originalResponse.documentName}}</div>
-                    <div style="font-size:14px;float:right;">{{currDocument.document.documentType}}</div>
-                    <div style="font-size:14px;float:right;">{{currDocument.document.formattedCreateDate}}</div> -->
                 </div>
             </ng-template>
         </p-orderList>
+        <br> -->
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        Documents (Drag and drop to Reorder list)
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group" dnd-sortable-container [sortableData]="orderedDocumentList">
+                            <li *ngFor="let item of orderedDocumentList; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item.documentName}} <label class="pull-right">{{item.documentType}}</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        My preferences:<br/>
+                        <span *ngFor="let item of orderedDocumentList; let i = index">
+                                <div class="col-lg-8">
+                                    {{i + 1}}) {{item.documentName}}
+                                </div>
+                                <div class="col-lg-4"> 
+                                    {{item.documentType}}
+                                </div>
+                                <br/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br>
+
         <form [formGroup]="documentMergeForm" (ngSubmit)="mergeDocuments()">
             <section class="card">
                 <!-- <header class="card-header card-header-lg">
@@ -115,8 +146,8 @@
     </div>
 </p-dialog>
 
-<p-dialog [minHeight]="400" [minWidth]="600" [width]="1200" [(visible)]="packetDocumentsDialogVisible" header="{{packetDocumetDialogHeader}}" appendTo="body"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+<p-dialog [minHeight]="400" [minWidth]="600" [width]="1200" [(visible)]="packetDocumentsDialogVisible" header="{{packetDocumetDialogHeader}}"
+    appendTo="body" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="packetDocumentsDialogVisible">
         <form [formGroup]="packetDocumentForm" (ngSubmit)="packetDocuments()">
             <section class="card">

@@ -7,6 +7,7 @@ import { HttpModule, Http } from '@angular/http';
 import { SignalRModule } from 'ng2-signalr';
 import { SignalRConfiguration } from 'ng2-signalr';
 import { AmChartsModule } from "@amcharts/amcharts3-angular";
+import { DndModule } from 'ng2-dnd';
 
 import { ConfigService, configServiceFactory } from './account/services/config-service';
 import { environment } from '../environments/environment';
@@ -108,7 +109,8 @@ export function createConfig(): SignalRConfiguration {
     // SignalRModule.forRoot(createConfig)
     SignalRModule,
     // MomentModule,
-    NgIdleKeepaliveModule.forRoot()
+    NgIdleKeepaliveModule.forRoot(),
+    DndModule.forRoot()
   ],
   providers: [
     {
