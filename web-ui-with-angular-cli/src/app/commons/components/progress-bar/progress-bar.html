@@ -1,8 +1,23 @@
 <!--<div style="position:fixed; top:0; width:100%; z-index:100;">
     <div class="loader"></div>
 </div>-->
-<div class="loader">
-    <svg width="70" height="20">
+<div class="loader-overlay">
+    <div class="loader">
+        <!-- <div class="wrap">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <div class="bar4"></div>
+            <div class="bar5"></div>
+            <div class="bar6"></div>
+            <div class="bar7"></div>
+            <div class="bar8"></div>
+            <div class="bar7"></div>
+            <div class="bar8"></div>
+            <div class="bar9"></div>
+            <div class="bar10"></div>
+        </div> -->
+        <svg width="70" height="20">
         <rect width="20" height="20" x="0" y="0" rx="3" ry="3">
             <animate attributeName="width" values="0;20;20;20;0" dur="1000ms" repeatCount="indefinite" />
             <animate attributeName="height" values="0;20;20;20;0" dur="1000ms" repeatCount="indefinite" />
@@ -22,4 +37,5 @@
             <animate attributeName="y" values="10;0;0;0;10" begin="400ms" dur="1000ms" repeatCount="indefinite" />
         </rect>
     </svg>
+    </div>
 </div>
