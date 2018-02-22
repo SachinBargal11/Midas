@@ -1,0 +1,254 @@
+<div *ngIf="currentAccident">
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Patient Accident Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Plate Number
+                            </label>
+
+                    <label>{{currentAccident.plateNumber}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of Accident
+                            </label>
+                    <label>{{accidentDateLabel}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of Admission
+                            </label>
+                    <label>{{dateOfAdmissionLabel}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Report Number
+                            </label>
+
+                    <label>{{currentAccident.reportNumber}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Hospital Name
+                            </label>
+
+                    <label>{{currentAccident.hospitalName}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Describe Injury
+                            </label>
+
+                    <label>{{currentAccident.describeInjury}}</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Patient Type 
+                            </label>
+                    <label>{{currentAccident.patientTypeLabel}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Medical Report Number 
+                            </label>
+
+                    <label>{{currentAccident.medicalReportNumber}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Additional Patient 
+                            </label>
+
+                    <label>{{currentAccident.additionalPatients}}</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Weather
+                                        </label>
+                    <label>{{currentAccident.weather}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Precinct
+                                        </label>
+                    <label>{{currentAccident.precinct}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Police at the scene?
+                                        </label>
+                    <label>{{policeAtScene}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Wearing seatbelt?
+                                        </label>
+                    <label>{{isWearingSeatbelt}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Did the airbags deploy?
+                                        </label>
+                    <label>{{isAirBagDeploy}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Ambulance?
+                                        </label>
+                    <label>{{ambulance}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Photos taken?
+                                        </label>
+                    <label>{{isPhotoTaken}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident description
+                                        </label>
+                    <label>{{currentAccident.accidentDescription}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Did they take x-rays?
+                                        </label>
+                    <label>{{xraysTaken}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Any witnesses
+                                        </label>
+                    <label>{{isAnyWitnesses}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Admitted?
+                                        </label>
+                    <label>{{admitted}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Treadted and Released?
+                                        </label>
+                    <label>{{treatedAndReleased}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label">Witness list
+                                </label>
+                    <p-dataTable [value]="witnesses" [responsive]="true">
+                        <header>Witnesses</header>
+                        <p-column field="witnessName" header="Witness Name"></p-column>
+                        <p-column field="witnessContactNumber" header="Witness Phone Number"></p-column>
+                    </p-dataTable>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label">Accident treatments 
+                                </label>
+                    <p-dataTable [value]="treatmentMedicalFacilities" [responsive]="true">
+                        <header>Witnesses</header>
+                        <p-column field="medicalFacilityName" header="Medical Facility Name" [sortable]="true"></p-column>
+                        <p-column field="doctorName" header="Doctor Name"></p-column>
+                        <p-column field="contactNumber" header="Contact Number"></p-column>
+                        <p-column field="address" header="Address"></p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+            <br>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Accident Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident Address1 
+                            </label>
+
+                    <label>{{currentAccident.accidentAddress.address1}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident Address2 
+                            </label>
+
+                    <label>{{currentAccident.accidentAddress.address2}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident State 
+                            </label>
+
+                    <label>{{currentAccident.accidentAddress.state}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident City 
+                            </label>
+
+                    <label>{{currentAccident.accidentAddress.city}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident Zip code
+                            </label>
+
+                    <label>{{currentAccident.accidentAddress.zipCode}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident Country
+                            </label>
+
+                    <label>{{currentAccident.accidentAddress.country}}</label>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Hospital Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Address1
+                            </label>
+
+                    <label>{{currentAccident.hospitalAddress.address1}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Address2
+                            </label>
+
+                    <label>{{currentAccident.hospitalAddress.address2}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> State
+                            </label>
+
+                    <label>{{currentAccident.hospitalAddress.state}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> City
+                            </label>
+                    <label>{{currentAccident.hospitalAddress.city}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zip code
+                            </label>
+
+                    <label>{{currentAccident.hospitalAddress.zipCode}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                            </label>
+
+                    <label>{{currentAccident.hospitalAddress.country}}</label>
+                </div>
+            </div>
+        </div>
+    </section>
+    <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+</div>

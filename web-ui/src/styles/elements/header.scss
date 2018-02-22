@@ -1,0 +1,31 @@
+// .site-header {
+//     height: 50px;
+//     padding-top: 5px;
+// }
+
+.site-header
+{
+    .site-header-collapsed
+    {
+        margin-right: -250px;   
+        width: auto;     
+    }
+
+    .site-header-content .site-header-content-in
+    {
+        margin-left: 80px;
+    }
+
+    .dropdown.dropdown-typical
+    {
+        a
+        {
+            line-height: 30px;
+            color: #adb7be;
+            &.active
+            {
+                color:#00a8ff;
+            }
+        }
+    }
+}

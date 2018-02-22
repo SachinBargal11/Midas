@@ -1,0 +1,53 @@
+<form [formGroup]="documentform" (ngSubmit)="save()">
+    <p-confirmDialog width="425"></p-confirmDialog>
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="form-label">Document Type For
+        </label>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select type="text" formControlName="currentId" [(ngModel)]="currentId" class="form-control" placeholder="" (change)="selectDocument($event)">
+        <option value="0">- Select -</option>
+        <option value="1">Patient</option>
+        <option value="2">Case</option>
+        <option value="3">Visits</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="form-label"> Document Type </label>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <input formControlName="documentType" type="text" class="form-control" placeholder="">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <a class="btn btn-primary btn-sm" (click)="save()"><i class="fa fa-plus" aria-hidden="true"></i>
+            <span class="hidden-md-down">Add</span>
+            </a>
+        </div>
+    </div>
+    <div class="ui-widget-header row">
+        <div class="col-lg-4 input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+</div>
+<div class="col-lg-8">
+    <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document</span>
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+</div>
+</div>
+
+<p-dataTable [value]="documentType" [(selection)]="selectedDocuments" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true">
+    <header>Document</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column header="Document Type" field="documentType" [sortable]="true"></p-column>
+</p-dataTable><br>
+</form>

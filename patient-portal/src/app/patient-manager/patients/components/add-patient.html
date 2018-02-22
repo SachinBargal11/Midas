@@ -1,0 +1,322 @@
+<h3 class="with-border">
+    Add Patient</h3>
+<form [formGroup]="patientform" (ngSubmit)="savePatient()">
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Patient Information
+        </header>
+        <div class="card-block" formGroupName="userInfo">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.firstname.touched && !patientformControls.userInfo.controls.firstname.valid">
+                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!patientformControls.userInfo.controls.firstname.valid">
+                        <div class='error-list' *ngIf="patientformControls.userInfo.controls.firstname.touched && !patientformControls.userInfo.controls.firstname.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.firstname.hasError('required')">First Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Middle Name</label>
+                    <div class="form-group">
+                        <input formControlName="middlename" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.lastname.touched && !patientformControls.userInfo.controls.lastname.valid">
+                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!patientformControls.userInfo.controls.lastname.valid">
+                        <div class='error-list' *ngIf="patientformControls.userInfo.controls.lastname.touched && !patientformControls.userInfo.controls.lastname.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.lastname.hasError('required')">Last Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Gender
+                                    <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.gender.touched && !patientformControls.userInfo.controls.gender.valid">
+                        <select formControlName="gender" class="select2-arrow form-control" [class.error]="patientformControls.userInfo.controls.gender.touched && !patientformControls.userInfo.controls.gender.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Male</option>
+                                             <option value="2">Female</option>
+                                             <option value="3">Others</option>
+                                         </select>
+                        <div class='error-list' *ngIf="patientformControls.userInfo.controls.gender.touched && !patientformControls.userInfo.controls.gender.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.gender.hasError('required')">Gender is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Marital Status
+                                            <span class="color-red">*</span>
+                                        </label>
+
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                        <select formControlName="maritalStatusId" type="text" class="form-control" placeholder="" [class.error]="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="1">Single</option>
+                                        <option value="2">Married</option>
+                                    </select>
+                        <div class='error-list' *ngIf="patientformControls.userInfo.controls.maritalStatusId.touched && !patientformControls.userInfo.controls.maritalStatusId.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.maritalStatusId.hasError('required')">Marital Status is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of Birth
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dob" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+
+                <div class="col-lg-4">
+                    <label class="form-label"> SSN
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.userInfo.controls.ssn.touched && !patientformControls.userInfo.controls.ssn.valid">
+                        <input formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!patientformControls.userInfo.controls.ssn.valid">
+                        <div class='error-list' *ngIf="patientformControls.userInfo.controls.ssn.touched && !patientformControls.userInfo.controls.ssn.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.userInfo.controls.ssn.hasError('required')">First Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Weight (lbs)</label>
+                    <div class="form-group">
+                        <input formControlName="weight" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Height (cms)</label>
+                    <div class="form-group">
+                        <input formControlName="height" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of First Treatment
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Contact Information
+
+        </header>
+        <div class="card-block" formGroupName="contact">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
+                        <input type="email" formControlName="email" [class.error]="!patientformControls.contact.controls.email.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
+                        <!--<input type="text" formControlName="cellPhone" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid" class="form-control"/>-->
+                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid"
+                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.cellPhone.touched && !patientformControls.contact.controls.cellPhone.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Home Phone No</label>
+                        <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Work Phone No</label>
+                        <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Fax No</label>
+                        <!--<input formControlName="faxNo" type="text" class="form-control" placeholder="" />-->
+                        <p-inputMask mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Address Information
+        </header>
+        <div class="card-block" formGroupName="address">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Address1
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.address1.touched && !patientformControls.address.controls.address1.valid">
+                        <input formControlName="address1" type="email" [class.error]="!patientformControls.address.controls.address1.valid" class="form-control"
+                            placeholder="" type="text" />
+                        <div class='error-list' *ngIf="patientformControls.address.controls.address1.touched && !patientformControls.address.controls.address1.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.address1.hasError('required')">Address1 is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="form-label"> Address2
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.address2.touched && !patientformControls.address.controls.address2.valid">
+                        <input formControlName="address2" type="text" class="form-control" [class.error]="!patientformControls.address.controls.address2.valid"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.address.controls.address2.touched && !patientformControls.address.controls.address2.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.address2.hasError('required')">Address2 is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> State
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                        <select formControlName="state" type="text" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                                        <option value="">-Select State-</option>
+                                        <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                                    </select>
+                        <div class='error-list' *ngIf="patientformControls.address.controls.state.touched && !patientformControls.address.controls.state.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.state.hasError('required')">State is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> City
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.city.touched && !patientformControls.address.controls.city.valid">
+                        <input formControlName="city" type="text" class="form-control" [class.error]="!patientformControls.address.controls.city.valid"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.address.controls.city.touched && !patientformControls.address.controls.city.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.city.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-lg-3">
+                    <label class="form-label"> City
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.city.touched && !patientformControls.address.controls.city.valid">
+                        <select formControlName="city" type="text" [(ngModel)]="selectedCity" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.city.touched && !patientformControls.address.controls.city.valid">
+                                        <option value="0">-Select City-</option>
+                                        <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
+                                    </select>
+                        <div class='error-list' *ngIf="patientformControls.address.controls.city.touched && !patientformControls.address.controls.city.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.city.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 m-t-lg">
+                    <loader [visible]="isCitiesLoading"></loader>
+                </div>-->
+                <div class="col-lg-4">
+                    <label class="form-label"> Zipcode
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.zipCode.touched && !patientformControls.address.controls.zipCode.valid">
+                        <input formControlName="zipCode" type="text" class="form-control" [class.error]="!patientformControls.address.controls.zipCode.valid"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.address.controls.zipCode.touched && !patientformControls.address.controls.zipCode.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.zipCode.hasError('required')">ZipCode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.address.controls.country.touched && !patientformControls.address.controls.country.valid">
+                        <!--<input formControlName="country" type="text" class="form-control" [class.error]="!patientformControls.address.controls.country.valid"
+                            placeholder="" />-->
+                        <select formControlName="country" type="text" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.country.touched && !patientformControls.address.controls.country.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
+                        <div class='error-list' *ngIf="patientformControls.address.controls.country.touched && !patientformControls.address.controls.country.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.address.controls.country.hasError('required')">Country is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <button [disabled]="!patientform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSavePatientProgress"></loader>
+                </button>
+    <a [routerLink]="['/patient-manager/profile/viewall']" class="btn btn-secondary">Cancel</a>
+</form>

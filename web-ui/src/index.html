@@ -1,0 +1,214 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+
+    <!-- build:process -->
+    <base href="/<%= base %>/">
+    <!-- /build -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Green Your Bills</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <!-- build:process -->
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/css/bootstrap.min.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeng/resources/themes/bootstrap/theme.css"
+        charset="utf-8" />
+    <!--<link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css"
+        charset="utf-8" />-->
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeng/resources/primeng.min.css"
+        charset="utf-8" />
+    <!--<link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css"
+        charset="utf-8" />-->
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/datatables/media/css/jquery.dataTables.min.css"
+        charset="utf-8" />
+    <!-- /build -->
+
+    <link rel="stylesheet" type="text/css" href="theme/css/main.css" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="styles/styles.css" charset="utf-8" />
+</head>
+
+<body class="application viewport with-side-menu-compact">
+
+    <app-root>
+        <div style="position: fixed; z-index: 999; height: 2em; width: 2em; overflow: show; margin: auto; top: 0; left: 0; bottom: 0; right: 0;">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </app-root>
+
+    <!-- build:process -->
+
+    <script src="<%= externalComponentsDirectory %>/node_modules/zone.js/dist/zone.js"></script>
+    <script src="<%= externalComponentsDirectory %>/node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="<%= externalComponentsDirectory %>/node_modules/systemjs/dist/system.src.js"></script>
+
+    <script>
+        System.config({
+                map: {
+                    '@angular': '<%= externalComponentsDirectory %>/node_modules/@angular',
+                    'rxjs': '<%= externalComponentsDirectory %>/node_modules/rxjs',
+                    'reflect-metadata': '<%= externalComponentsDirectory %>/node_modules/reflect-metadata/Reflect.js',
+                    'angular2-notifications': '<%= externalComponentsDirectory %>/node_modules/angular2-notifications',
+                    'ng2-bootstrap': '<%= externalComponentsDirectory %>/node_modules/ng2-bootstrap',
+                    'moment' : '<%= externalComponentsDirectory %>/node_modules/moment/moment.js',
+                    'immutable' : '<%= externalComponentsDirectory %>/node_modules/immutable/dist/immutable.js',
+                    'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js',
+                    'jquery': '<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js',
+                    'primeng': '<%= externalComponentsDirectory %>/node_modules/primeng',
+                    'primeui': '<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.js',
+                    'jquery.inputmask': '<%= externalComponentsDirectory %>/node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
+                    'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',         
+                    'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
+                    'datatables': '<%= externalComponentsDirectory %>/node_modules/datatables/media/js/jquery.dataTables.min.js',
+                    'chart.js': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js'
+                },
+                meta: 
+                {
+                    'primeng' : {
+                        deps: [
+                            'jquery-ui',
+                            'jquery-ui-timepicker-addon',
+                            'jquery.inputmask'
+                        ]
+                    },
+                    'jquery-ui': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'datatables': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'chart.js': {
+                        deps: [
+                            'jquery',
+                            'moment'
+                        ]
+                    },
+                    'jquery.inputmask': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'jquery-ui-timepicker-addon': {
+                        deps: [
+                            'jquery-ui'
+                        ]
+                    }
+                },
+                packages: {
+                    'scripts': {
+                        defaultExtension: 'js'
+                    },
+                    'services': {
+                        defaultExtension: 'js'
+                    },
+                    'models': {
+                        defaultExtension: 'js'
+                    },
+                    'modules': {
+                        defaultExtension: 'js'
+                    },
+                    'stores': {
+                        defaultExtension: 'js'
+                    },
+                    'pipes': {
+                        defaultExtension: 'js'
+                    },
+                    'utils': {
+                        defaultExtension: 'js'
+                    },
+                    'components': {
+                        defaultExtension: 'js'
+                    },
+                    'routes': {
+                        defaultExtension: 'js'
+                    },
+                    '@angular/common': {
+                        main: 'bundles/common.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/forms': {
+                        main: 'bundles/forms.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/compiler': {
+                        main: 'bundles/compiler.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/core': {
+                        main: 'bundles/core.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/http': {
+                        main: 'bundles/http.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/platform-browser': {
+                        main: 'bundles/platform-browser.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/platform-browser-dynamic': {
+                        main: 'bundles/platform-browser-dynamic.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/router': {
+                        main: 'bundles/router.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/upgrade': {
+                        main: 'bundles/upgrade.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    'rxjs': {
+                        defaultExtension: 'js'
+                    },
+                    'angular2-notifications': { 
+                        main: 'components.js', 
+                        defaultExtension: 'js' 
+                    },
+                    'ng2-bootstrap': {
+                        main: 'ng2-bootstrap.js',
+                        defaultExtension: 'js'
+                    },
+                    'primeng': {
+                        defaultExtension: 'js'
+                    }
+                }
+            });
+            
+            System.import('moment').then(function(moment){
+                window.moment = moment;
+            }).then(function(){
+                return Promise.all([
+                    System.import('moment'),
+                    System.import('jquery'),
+                    System.import('jquery-ui'),
+                    System.import('jquery-ui-timepicker-addon'),
+                    System.import('jquery.inputmask'),
+                    System.import('datatables')
+                    // System.import('chart.js')
+                ]);
+            }).then(function()
+                {
+                    return System.import('scripts/bootstraper')
+                })
+                .catch(function(error)
+                {
+                    console.error(error);
+                });
+    </script>
+    <!-- /build -->
+</body>
+
+</html>

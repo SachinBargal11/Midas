@@ -1,0 +1,116 @@
+<div class="form-group">
+    <div class="form-check form-check-inline">
+        <label class="form-check-label">
+            <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Scan Documents
+        </label>
+    </div>
+    <div class="form-check  form-check-inline">
+        <label class="form-check-label">
+            <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Upload Documents
+        </label>
+    </div>
+    <div class="form-check  form-check-inline" *ngIf="isElectronicSignatureOn">
+        <label class="form-check-label">
+            <input type="radio" value="3" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Electronic Signature Form
+        </label>
+    </div>
+    <div class="form-check  form-check-inline" *ngIf="!isConsentDocumentOn">
+        <select class="select2-arrow form-control" (change)="selectDocument($event)">
+        <option value="">-Select document type-</option>
+        <option *ngFor="let currentDocumentType of documentTypes" value="{{currentDocumentType.documentType}}">{{currentDocumentType.documentType}}</option>
+        </select>
+    </div>
+    <div class="form-check  form-check-inline" *ngIf="isdownloadTemplate">
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="downloadTemplate()">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            <span class="hidden-md-down">Download Consent Form</span>
+        </a>
+    </div>
+</div>
+<section class="card" [hidden]="documentMode != '1'">
+    <header class="card-header card-header-lg">
+        Scan Documents
+    </header>
+    <div class="card-block">
+        <div *ngIf="twainSources.length > 0">
+            <div class="row">
+                <div class="col-md-4">
+                    <select [(ngModel)]="selectedTwainSource" class="form-control">
+                    <option *ngFor="let source of twainSources" [ngValue]="source">
+                        {{source.name}}
+                    </option>
+                </select>
+                </div>
+                <div class="col-md-8">
+                    <button class="btn btn-primary" (click)="acquireImage()"><i class="fa fa-file-text-o"></i> Scan</button>
+                    <button class="btn btn-primary" [disabled]="dwObject.HowManyImagesInBuffer === 0" (click)="resetWebTwain()"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </div>
+            <div class="row m-t">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control" [(ngModel)]="scannedFileName" placeholder="File Name" />
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary" [disabled]="dwObject.HowManyImagesInBuffer === 0" (click)="uploadScannedDocuments()"><i class="fa fa-upload"></i> Upload<loader [visible]="isSaveProgress"></loader></button>
+                </div>
+            </div>
+        </div>
+        <div id="{{scannerContainerId}}" style="width: 600px;margin-top: 10px;margin-bottom: 10px;">
+
+</div>
+<div class="alert alert-warning" *ngIf="twainSources.length == 0">
+    <h4 class="alert-heading">Aww No!</h4>
+    <p class="mb-0">There are no scanners found.</p>
+</div>
+</div>
+</section>
+<section class="card" [hidden]="documentMode != '2'">
+    <header class="card-header card-header-lg">
+        Upload Documents for Case
+    </header>
+    <div class="card-block">
+        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onBeforeSend)="onBeforeSendEvent($event)" (onError)="onFilesUploadError($event)"
+            (onUpload)="onFilesUploadComplete($event)" maxFileSize="1000000">
+            <!-- <ng-template pTemplate type="content">
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                </ul>
+            </ng-template> -->
+        </p-fileUpload>
+    </div>
+    <br>
+</section>
+<section class="card" [hidden]="documentMode != '3'" *ngIf="isElectronicSignatureOn">
+    <header class="card-header card-header-lg">
+
+    </header>
+    <div class="card-block">
+        <form [formGroup]="digitalForm" (submit)="saveDigitalForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <!--<embed src="./Consent_iCare Clinic.pdf" width="100%" height="500px" />-->
+                    <object [attr.data]="cosentFormUrl" type="application/pdf" width="100%" height="100%"></object>
+                </div>
+                <div class="col-md-6">
+                    <div class="signature-box">
+                        <div class="signature-field-wrapper sig-container" #signatureContainer>
+                            <signature-field formControlName="signatureField"></signature-field>
+                        </div>
+                        <button class="btn-clear-signature btn btn-default" type="button" (click)="sigs.first.clear()" [disabled]="!digitalForm.controls.signatureField.valid">Clear</button>
+                    </div>
+                    <p class="signature-field-help-text">
+                        <input type="checkbox" formControlName="iAgreeChkBox" id="iAgreeChkBox" value="1">
+                        <label for="iAgreeChkBox">I have read the document &amp; I agree to it </label>
+                    </p>
+                    <div class="actions-container">
+                        <!--<button class="btn btn-primary" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField1.valid && !digitalForm.controls.signatureField2.valid">Clear</button>-->
+                        <button class="btn btn-primary" type="submit" [disabled]="!digitalForm.valid">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

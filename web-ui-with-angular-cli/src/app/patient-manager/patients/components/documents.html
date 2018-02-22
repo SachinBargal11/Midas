@@ -1,0 +1,49 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<div class="input-group">
+    <h3 class="with-border">Uploaded Documents
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
+            <loader [visible]="isDeleteProgress"></loader>
+        </a>
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
+            <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Document</span>
+         </a>
+    </h3>
+</div>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+    </div>
+</div>
+
+<p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true" #dt>
+    <header> List</header>
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="document.originalResponse.documentName" header="Document Name" [filter]="true" styleClass="inbound-column">
+        <ng-template let-document="rowData" pTemplate="body">
+            <a (click)="downloadPdf(document.document.originalResponse.documentId)">
+                <u>{{document.document.originalResponse.documentName}}</u>
+            </a>
+        </ng-template>
+    </p-column>
+    <p-column field="document.documentType" header="Document Type" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.documentType }}
+        </ng-template>
+    </p-column>
+    <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true">
+        <!--<ng-template let-document="rowData.document" pTemplate="body">
+            {{ document.createDate | dateTimeFormat }}
+        </ng-template>-->
+    </p-column>
+</p-dataTable>
+
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+    <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
+    <app-document-upload *ngIf="addConsentDialogVisible" [url]="url" [currentId]="1" [objectId]="patientId" (uploadComplete)="documentUploadComplete($event)"
+        (uploadError)="documentUploadError($event)"></app-document-upload>
+</p-dialog>
+<router-outlet></router-outlet>

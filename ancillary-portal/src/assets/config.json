@@ -1,0 +1,9 @@
+{
+    "baseUrl": "http://localhost:51995/midasancillaryapi",
+    "identityServerUrl": "https://gb-identityserver.qwinix.io",
+    "notificationServerUrl": "http://gb-notificationmanager.qwinix.io",
+    "home_url": "http://localhost:4200",
+    "app_url": "http://localhost:4204",
+    "identity_scope": "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
+    "client_id": "MidasPortalLocal"
+}

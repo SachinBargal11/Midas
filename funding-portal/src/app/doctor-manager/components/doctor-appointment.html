@@ -1,0 +1,61 @@
+<section class="card">
+    <div class="card-block">
+        <div class="input-group">
+            <h3 class="with-border">Appointments
+                <a class="pull-right btn btn-danger btn-sm" (click)="deleteVisits()">
+                    <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Visits</span>
+                    <loader [visible]="isDeleteProgress"></loader>
+                </a>
+            </h3>
+        </div>
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <div class="col-lg-5">
+                        <div class='input-group date'>
+                            From Date
+                            <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" dateFormat="M d, yy" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class='input-group date'>
+                            To Date
+                            <p-calendar [(ngModel)]="endDate" [readonlyInput]="true" dateFormat="M d, yy" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <a class="btn btn-primary btn-sm pull-right" (click)="loadPatientVisits()">
+                            <i class="fa fa-search"></i>
+                            <span class="hidden-md-down">Search visits</span>
+                            <loader [visible]="isSearchInProgress"></loader>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+            <header>Doctors Visits List</header>
+            <p-column selectionMode="multiple"></p-column>
+            <p-column field="caseId" header="Case" [sortable]="true"></p-column>
+            <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
+                <ng-template let-visit="rowData" pTemplate="body">
+                    {{visit.patient.user.displayName}}
+                </ng-template>
+            </p-column>
+            <p-column field="eventStart" header="Visit Date" [sortable]="true">
+                <ng-template let-visit="rowData" pTemplate="body">
+                    {{visit.eventStart | dateTimeFormat}}
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+</section>

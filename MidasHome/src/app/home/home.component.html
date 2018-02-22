@@ -1,0 +1,30 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{title}}
+  </h1>
+  <img width="300" src="assets\Midaslogo.png">
+</div>
+<a class="btn btn-link" href="{{medicalProviderURI + '#/account/register-company'}}"><h6>Click here to sign up Medical Provider</h6></a>
+<br>
+<a class="btn btn-link" href="{{attorneyPortalURI + '#/account/register-company'}}"><h6>Click here to sign up Attorney</h6></a>
+<br>
+<a class="btn btn-link" href="{{ancillaryPortalURI + '#/account/register-company'}}"><h6>Click here to sign up Ancillary</h6></a>
+<h2>Here are some links to help you start: </h2>
+<ul>
+  <li>
+    <!-- <button type="button" class="btn btn-link" (click)="getToken(medicalProviderURI)"><h4>Medical Provider</h4></button> -->
+    <a class="btn btn-link" href={{medicalProviderURI}}><h4>Medical Provider</h4></a>
+  </li>
+  <li>
+    <!-- <button type="button" class="btn btn-link" (click)="getToken(patientPortalURI)"><h4>Patient Portal</h4></button> -->
+    <a class="btn btn-link" href={{patientPortalURI}}><h4>Patient Portal</h4></a>
+  </li>
+  <li>
+    <!-- <button type="button" class="btn btn-link" (click)="getToken(attorneyPortalURI)"><h4>Attorney Portal</h4></button> -->
+    <a class="btn btn-link" href={{attorneyPortalURI}}><h4>Attorney Portal</h4></a>
+  </li>
+  <li>
+    <!-- <button type="button" class="btn btn-link" (click)="getToken(ancillaryPortalURI)"><h4>Ancillary Portal</h4></button> -->
+    <a class="btn btn-link" href={{ancillaryPortalURI}}><h4>Ancillary Portal</h4></a>
+  </li>
+</ul>

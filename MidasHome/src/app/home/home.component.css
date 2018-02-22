@@ -1,0 +1,4 @@
+.btn-link, .btn-link:active, .btn-link:focus {
+    padding-bottom: inherit;
+    padding-top: inherit;
+}

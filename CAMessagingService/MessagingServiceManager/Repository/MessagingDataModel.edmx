@@ -1,0 +1,560 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MessagingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="QueueTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMailConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="SMTPClientHostName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SmtpClientPortNumber" Type="int" Nullable="false" />
+          <Property Name="SMTPClientUserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SMTPClientPassword" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="MaxNumberOfRetry" Type="int" Nullable="false" />
+          <Property Name="IsSSLEnabled" Type="bit" Nullable="false" />
+          <Property Name="FromEmailID" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="EMailQueue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+          <Property Name="EmailObject" Type="varbinary(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DeliveryDate" Type="datetime" />
+          <Property Name="NumberOfAttempts" Type="int" Nullable="false" />
+          <Property Name="DeliveryResponse" Type="varchar(max)" />
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="500" />
+          <Property Name="FromEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="ToEmail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CcEmail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="BccEmail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="EMailSubject" Type="nvarchar" MaxLength="4000" />
+          <Property Name="EMailBody" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MessageStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="QueueType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QueueTypeName" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SMSConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="AccountSid" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="AuthToken" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MaxNumberOfRetry" Type="int" Nullable="false" />
+          <Property Name="SMSFromPhoneNumber" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="SMSQueue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+          <Property Name="SMSObject" Type="varbinary(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DeliveryDate" Type="datetime" />
+          <Property Name="NumberOfAttempts" Type="int" Nullable="false" />
+          <Property Name="DeliveryResponse" Type="varchar(max)" />
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ToNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="FromNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="Message" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__Applicati__Queue__25869641">
+          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QueueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="QueueTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EMailConf__Appli__412EB0B6">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="EMailConfiguration" Type="Self.EMailConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailConfiguration">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EMailQueu__Appli__440B1D61">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="EMailQueue" Type="Self.EMailQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailQueue">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EMailQueu__Statu__44FF419A">
+          <End Role="MessageStatus" Type="Self.MessageStatus" Multiplicity="1" />
+          <End Role="EMailQueue" Type="Self.EMailQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailQueue">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSConfig__Appli__47DBAE45">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSConfiguration">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSQueue__Applic__4AB81AF0">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="SMSQueue" Type="Self.SMSQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSQueue">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSQueue__Status__4BAC3F29">
+          <End Role="MessageStatus" Type="Self.MessageStatus" Multiplicity="1" />
+          <End Role="SMSQueue" Type="Self.SMSQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSQueue">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MessagingModelStoreContainer">
+          <EntitySet Name="Application" EntityType="Self.Application" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMailConfiguration" EntityType="Self.EMailConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMailQueue" EntityType="Self.EMailQueue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessageStatus" EntityType="Self.MessageStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QueueType" EntityType="Self.QueueType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMSConfiguration" EntityType="Self.SMSConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMSQueue" EntityType="Self.SMSQueue" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Applicati__Queue__25869641" Association="Self.FK__Applicati__Queue__25869641">
+            <End Role="QueueType" EntitySet="QueueType" />
+            <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EMailConf__Appli__412EB0B6" Association="Self.FK__EMailConf__Appli__412EB0B6">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="EMailConfiguration" EntitySet="EMailConfiguration" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EMailQueu__Appli__440B1D61" Association="Self.FK__EMailQueu__Appli__440B1D61">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="EMailQueue" EntitySet="EMailQueue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EMailQueu__Statu__44FF419A" Association="Self.FK__EMailQueu__Statu__44FF419A">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="EMailQueue" EntitySet="EMailQueue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSConfig__Appli__47DBAE45" Association="Self.FK__SMSConfig__Appli__47DBAE45">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="SMSConfiguration" EntitySet="SMSConfiguration" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSQueue__Applic__4AB81AF0" Association="Self.FK__SMSQueue__Applic__4AB81AF0">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="SMSQueue" EntitySet="SMSQueue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSQueue__Status__4BAC3F29" Association="Self.FK__SMSQueue__Status__4BAC3F29">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="SMSQueue" EntitySet="SMSQueue" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MessagingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QueueTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QueueType" Relationship="Self.FK__Applicati__Queue__25869641" FromRole="Application" ToRole="QueueType" />
+          <NavigationProperty Name="EMailConfigurations" Relationship="Self.FK__EMailConf__Appli__412EB0B6" FromRole="Application" ToRole="EMailConfiguration" />
+          <NavigationProperty Name="EMailQueues" Relationship="Self.FK__EMailQueu__Appli__440B1D61" FromRole="Application" ToRole="EMailQueue" />
+          <NavigationProperty Name="SMSConfigurations" Relationship="Self.FK__SMSConfig__Appli__47DBAE45" FromRole="Application" ToRole="SMSConfiguration" />
+          <NavigationProperty Name="SMSQueues" Relationship="Self.FK__SMSQueue__Applic__4AB81AF0" FromRole="Application" ToRole="SMSQueue" />
+        </EntityType>
+        <EntityType Name="EMailConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="SMTPClientHostName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SmtpClientPortNumber" Type="Int32" Nullable="false" />
+          <Property Name="SMTPClientUserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SMTPClientPassword" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="MaxNumberOfRetry" Type="Int32" Nullable="false" />
+          <Property Name="IsSSLEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="FromEmailID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Application" Relationship="Self.FK__EMailConf__Appli__412EB0B6" FromRole="EMailConfiguration" ToRole="Application" />
+        </EntityType>
+        <EntityType Name="EMailQueue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <Property Name="EmailObject" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="NumberOfAttempts" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryResponse" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FromEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ToEmail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CcEmail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="BccEmail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="EMailSubject" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="EMailBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Application" Relationship="Self.FK__EMailQueu__Appli__440B1D61" FromRole="EMailQueue" ToRole="Application" />
+          <NavigationProperty Name="MessageStatu" Relationship="Self.FK__EMailQueu__Statu__44FF419A" FromRole="EMailQueue" ToRole="MessageStatus" />
+        </EntityType>
+        <EntityType Name="MessageStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EMailQueues" Relationship="Self.FK__EMailQueu__Statu__44FF419A" FromRole="MessageStatus" ToRole="EMailQueue" />
+          <NavigationProperty Name="SMSQueues" Relationship="Self.FK__SMSQueue__Status__4BAC3F29" FromRole="MessageStatus" ToRole="SMSQueue" />
+        </EntityType>
+        <EntityType Name="QueueType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QueueTypeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__Queue__25869641" FromRole="QueueType" ToRole="Application" />
+        </EntityType>
+        <EntityType Name="SMSConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="AccountSid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AuthToken" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MaxNumberOfRetry" Type="Int32" Nullable="false" />
+          <Property Name="SMSFromPhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Application" Relationship="Self.FK__SMSConfig__Appli__47DBAE45" FromRole="SMSConfiguration" ToRole="Application" />
+        </EntityType>
+        <EntityType Name="SMSQueue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <Property Name="SMSObject" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="NumberOfAttempts" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryResponse" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ToNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FromNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Application" Relationship="Self.FK__SMSQueue__Applic__4AB81AF0" FromRole="SMSQueue" ToRole="Application" />
+          <NavigationProperty Name="MessageStatu" Relationship="Self.FK__SMSQueue__Status__4BAC3F29" FromRole="SMSQueue" ToRole="MessageStatus" />
+        </EntityType>
+        <Association Name="FK__Applicati__Queue__25869641">
+          <End Role="QueueType" Type="Self.QueueType" Multiplicity="1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QueueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="QueueTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EMailConf__Appli__412EB0B6">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="EMailConfiguration" Type="Self.EMailConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailConfiguration">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EMailQueu__Appli__440B1D61">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="EMailQueue" Type="Self.EMailQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailQueue">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSConfig__Appli__47DBAE45">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="SMSConfiguration" Type="Self.SMSConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSConfiguration">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSQueue__Applic__4AB81AF0">
+          <End Role="Application" Type="Self.Application" Multiplicity="1" />
+          <End Role="SMSQueue" Type="Self.SMSQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSQueue">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EMailQueu__Statu__44FF419A">
+          <End Role="MessageStatus" Type="Self.MessageStatu" Multiplicity="1" />
+          <End Role="EMailQueue" Type="Self.EMailQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EMailQueue">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SMSQueue__Status__4BAC3F29">
+          <End Role="MessageStatus" Type="Self.MessageStatu" Multiplicity="1" />
+          <End Role="SMSQueue" Type="Self.SMSQueue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SMSQueue">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MessagingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Applications" EntityType="Self.Application" />
+          <EntitySet Name="EMailConfigurations" EntityType="Self.EMailConfiguration" />
+          <EntitySet Name="EMailQueues" EntityType="Self.EMailQueue" />
+          <EntitySet Name="MessageStatus" EntityType="Self.MessageStatu" />
+          <EntitySet Name="QueueTypes" EntityType="Self.QueueType" />
+          <EntitySet Name="SMSConfigurations" EntityType="Self.SMSConfiguration" />
+          <EntitySet Name="SMSQueues" EntityType="Self.SMSQueue" />
+          <AssociationSet Name="FK__Applicati__Queue__25869641" Association="Self.FK__Applicati__Queue__25869641">
+            <End Role="QueueType" EntitySet="QueueTypes" />
+            <End Role="Application" EntitySet="Applications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EMailConf__Appli__412EB0B6" Association="Self.FK__EMailConf__Appli__412EB0B6">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="EMailConfiguration" EntitySet="EMailConfigurations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EMailQueu__Appli__440B1D61" Association="Self.FK__EMailQueu__Appli__440B1D61">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="EMailQueue" EntitySet="EMailQueues" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSConfig__Appli__47DBAE45" Association="Self.FK__SMSConfig__Appli__47DBAE45">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="SMSConfiguration" EntitySet="SMSConfigurations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSQueue__Applic__4AB81AF0" Association="Self.FK__SMSQueue__Applic__4AB81AF0">
+            <End Role="Application" EntitySet="Applications" />
+            <End Role="SMSQueue" EntitySet="SMSQueues" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EMailQueu__Statu__44FF419A" Association="Self.FK__EMailQueu__Statu__44FF419A">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="EMailQueue" EntitySet="EMailQueues" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SMSQueue__Status__4BAC3F29" Association="Self.FK__SMSQueue__Status__4BAC3F29">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="SMSQueue" EntitySet="SMSQueues" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MessagingModelStoreContainer" CdmEntityContainer="MessagingEntities">
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="MessagingModel.Application">
+              <MappingFragment StoreEntitySet="Application">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMailConfigurations">
+            <EntityTypeMapping TypeName="MessagingModel.EMailConfiguration">
+              <MappingFragment StoreEntitySet="EMailConfiguration">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="SMTPClientHostName" ColumnName="SMTPClientHostName" />
+                <ScalarProperty Name="SmtpClientPortNumber" ColumnName="SmtpClientPortNumber" />
+                <ScalarProperty Name="SMTPClientUserName" ColumnName="SMTPClientUserName" />
+                <ScalarProperty Name="SMTPClientPassword" ColumnName="SMTPClientPassword" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="MaxNumberOfRetry" ColumnName="MaxNumberOfRetry" />
+                <ScalarProperty Name="IsSSLEnabled" ColumnName="IsSSLEnabled" />
+                <ScalarProperty Name="FromEmailID" ColumnName="FromEmailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMailQueues">
+            <EntityTypeMapping TypeName="MessagingModel.EMailQueue">
+              <MappingFragment StoreEntitySet="EMailQueue">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="EmailObject" ColumnName="EmailObject" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="NumberOfAttempts" ColumnName="NumberOfAttempts" />
+                <ScalarProperty Name="DeliveryResponse" ColumnName="DeliveryResponse" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
+                <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
+                <ScalarProperty Name="CcEmail" ColumnName="CcEmail" />
+                <ScalarProperty Name="BccEmail" ColumnName="BccEmail" />
+                <ScalarProperty Name="EMailSubject" ColumnName="EMailSubject" />
+                <ScalarProperty Name="EMailBody" ColumnName="EMailBody" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageStatus">
+            <EntityTypeMapping TypeName="MessagingModel.MessageStatu">
+              <MappingFragment StoreEntitySet="MessageStatus">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QueueTypes">
+            <EntityTypeMapping TypeName="MessagingModel.QueueType">
+              <MappingFragment StoreEntitySet="QueueType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QueueTypeName" ColumnName="QueueTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMSConfigurations">
+            <EntityTypeMapping TypeName="MessagingModel.SMSConfiguration">
+              <MappingFragment StoreEntitySet="SMSConfiguration">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="AccountSid" ColumnName="AccountSid" />
+                <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
+                <ScalarProperty Name="MaxNumberOfRetry" ColumnName="MaxNumberOfRetry" />
+                <ScalarProperty Name="SMSFromPhoneNumber" ColumnName="SMSFromPhoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMSQueues">
+            <EntityTypeMapping TypeName="MessagingModel.SMSQueue">
+              <MappingFragment StoreEntitySet="SMSQueue">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="SMSObject" ColumnName="SMSObject" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="NumberOfAttempts" ColumnName="NumberOfAttempts" />
+                <ScalarProperty Name="DeliveryResponse" ColumnName="DeliveryResponse" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
+                <ScalarProperty Name="FromNumber" ColumnName="FromNumber" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
