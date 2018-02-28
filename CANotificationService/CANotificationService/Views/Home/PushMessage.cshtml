@@ -1,0 +1,42 @@
+﻿@model CANotificationService.Models.NotificationMessage
+@{
+    ViewBag.Title = "Push Notification Message";
+
+}
+
+<h2><strong>Push Notification Message</strong></h2>
+
+@using (Html.BeginForm())
+{
+    <div class="flex-box">
+        <div class="inner">
+            <div class="alert-danger">
+                @Html.ValidationSummary()
+            </div>
+            <div class="frm-block">
+                <form>
+                    <div class="form-group mb-1">
+                        @Html.Label("Application Name")
+                        @Html.TextBoxFor(model => model.ApplicationName, new { Value = "Midas", required = "required", @class = "form-control" })
+                    </div>
+                    <div class="form-group mb-3">
+                        @Html.Label("Event Name")
+                        @Html.DropDownListFor(model => model.EventID, (IEnumerable<SelectListItem>)ViewBag.ApplicationEvents, new { required = "required", @class = "form-control" })
+                    </div>
+                    <div class="form-group mb-3">
+                        @Html.Label("User Name")
+                        @*@Html.TextBoxFor(model => model.ReceiverUserID, new { required = "required", @class = "form-control" })*@
+                        @Html.DropDownListFor(model => model.ReceiverUserID, (IEnumerable<SelectListItem>)ViewBag.ApplicationUsers, new { required = "required", @class = "form-control" })
+                    </div>
+                    <div class="form-group mb-1">
+                        @Html.Label("Message")
+                        @Html.TextAreaFor(model => model.Message, new {required = "required", @class = "form-control" })
+                    </div>
+                    
+                   
+                     <button class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

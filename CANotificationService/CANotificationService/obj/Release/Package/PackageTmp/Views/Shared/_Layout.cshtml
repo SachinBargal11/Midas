@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Notification Service</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+
+                <span class="noti glyphicon glyphicon-bell"><span class="count">&nbsp;</span></span>
+                <div class="noti-content">
+                    <div class="noti-top-arrow"></div>
+                    <ul id="notiContent"></ul>
+                </div>
+                
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Push Message", "PushMessage", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    @* Add Jquery Library *@
+    <script src="http://192.168.0.128/CANotificationService/signalR/hubs"></script>
+
+    <style type="text/css">
+        /*Added css for design notification area, you can design by your self*/
+        /* COPY css content from youtube video description*/
+        .noti-content {
+            position: fixed;
+            right: 100px;
+            background: #e5e5e5;
+            border-radius: 4px;
+            top: 47px;
+            width: 250px;
+            display: none;
+            border: 1px solid #9E988B;
+        }
+
+        ul#notiContent {
+            max-height: 200px;
+            overflow: auto;
+            padding: 0px;
+            margin: 0px;
+            padding-left: 20px;
+        }
+
+            ul#notiContent li {
+                margin: 3px;
+                padding: 6px;
+                background: #fff;
+            }
+
+        .noti-top-arrow {
+            border-color: transparent;
+            border-bottom-color: #F5DEB3;
+            border-style: dashed dashed solid;
+            border-width: 0 8.5px 8.5px;
+            position: absolute;
+            right: 32px;
+            top: -8px;
+        }
+
+        span.noti {
+            color: #FF2323;
+            margin: 15px;
+            position: fixed;
+            right: 100px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        span.count {
+            position: relative;
+            top: -3px;
+        }
+    </style>
+
+    @* Add jquery code for Get Notification & setup signalr *@
+    <script type="text/javascript">
+        var accessToken = null;
+
+        $(function () {
+            // Click on notification icon for show notification
+            $('span.noti').click(function (e) {
+                e.stopPropagation();
+                $('.noti-content').show();
+                //var count = 0;
+                //count = parseInt($('span.count').html()) || 0;
+                //$('span.count', this).html('&nbsp;');
+                updateMessageStatus();
+            })
+            // hide notifications
+            $('html').click(function () {
+                $('.noti-content').hide();
+            })
+
+            // update notification count
+            function updateNotificationCount() {
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
+                count++;
+
+                if (count > 0) {
+                    $('span.count').html(count);
+                }
+                else {
+                    $('span.count').html('&nbsp;');
+                }
+            }
+
+            //Get Token
+            function getAccessToken() {
+                $.ajax({
+                    async: false,
+                    url: "https://lt007.codearray.tech/CAIdentityServer/token/GetToken?clientid=NotificationService&clientsecret=secret&username=bajpai.adarsh@gmail.com&password=Satish@78",
+                    dataType: 'json',
+                    success: function (results) {
+                        console.log(results.AccessToken);
+                        accessToken = results.AccessToken;
+                        //alert(accessToken);
+                        return accessToken;
+                    }
+                });
+            }
+
+            //Update msessage status read
+            function updateMessageStatus() {
+                $.ajax({
+                    async: false,
+                    type: 'GET',
+                    url: 'http://192.168.0.128/CANotificationService/Home/UpdateMessageStatus?username=bajpai.adarsh@gmail.com',
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // signalr js code for start hub and send receive notification
+            getAccessToken();
+            $.connection.hub.qs = { 'access_token': accessToken, 'application_name': 'Midas' };
+            var notificationHub = $.connection.notificationHub;
+
+            // Client side method for receiving the list of notifications on the connected event from the server
+            notificationHub.client.refreshNotification = function (data) {
+                $("#notiContent").empty();
+                var count = 0;
+                //$('span.count').html(data.length);
+                $.each(data, function (index, value) {
+                    if (!value.IsRead) {
+                        count++;
+                    }
+                    $('#notiContent').append($('<li>' + '<B>' + value.EventName + '</B></br>' + value.Message + '</br>' + value.NotificationTime + '</li>'));
+                });
+
+                if (count > 0) {
+                    $('span.count').html(count);
+                   
+                }
+                else
+                {
+                    $('span.count').html('&nbsp;');
+                }
+            }
+
+            //Fires when a new message is added
+            notificationHub.client.addLatestNotification = function (data) {
+                $('#notiContent').append($('<li>' + '<B>' + data.EventName + '</B></br>' + data.Message + '</br>' + data.NotificationTime + '</li>'));
+                updateNotificationCount();
+            }
+
+            //Fires when a message's read status is updated
+            notificationHub.client.messageReadNotification = function (data) {
+                count = parseInt($('span.count').html()) || 0;
+
+                if (count > 0)
+                {
+                    count--;
+                    
+                }
+                if (count > 0) {
+                    $('span.count').html(count);
+                }
+                else {
+                    $('span.count').html('&nbsp;');
+                }
+            }
+
+            $.connection.hub.start().done(function () {
+                console.log('Notification hub started');
+            });
+
+            window.onbeforeunload = function (e) {
+                $.connection.hub.stop();
+            };
+        })
+
+    </script>
+
+</body>
+</html>

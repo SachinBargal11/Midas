@@ -1,0 +1,2089 @@
+﻿using MIDAS.GBX.Common;
+using MIDAS.GBX.DataRepository.Model;
+using MIDAS.GBX.EN;
+using MIDAS.GBX.EntityRepository;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BO = MIDAS.GBX.BusinessObjects;
+
+namespace MIDAS.GBX.DataRepository.EntityRepository
+{
+    internal class UserRepository : BaseEntityRepo, IDisposable
+    {
+        private DbSet<User> _dbSet;
+        private DbSet<OTP> _dbOTP;
+        private DbSet<UserCompany> _dbUserCompany;
+        private DbSet<UserCompanyRole> _dbUserCompanyRole;
+        private DbSet<Invitation> _dbInvitation;
+
+        #region Constructor
+        public UserRepository(MIDASGBXEntities context) : base(context)
+        {
+            _dbSet = context.Set<User>();
+            _dbOTP = context.Set<OTP>();
+            _dbUserCompany = context.Set<UserCompany>();
+            _dbUserCompanyRole = context.Set<UserCompanyRole>();
+            _dbInvitation = context.Set<Invitation>();
+            context.Configuration.ProxyCreationEnabled = false;
+        }
+        #endregion
+
+        #region Entity Conversion
+        public override T Convert<T, U>(U entity)
+        {
+            if (entity.GetType().Name == "OTP")
+            {
+                OTP otp = entity as OTP;
+
+                if (otp == null)
+                    return default(T);
+
+                BO.OTP boOTP = new BO.OTP();
+                boOTP.Pin = otp.Pin;
+                BO.User boUser_ = new BusinessObjects.User();
+                boUser_.ID = otp.UserID;
+                boOTP.User = boUser_;
+                return (T)(object)boOTP;
+            }
+            User user = entity as User;
+            if (user == null)
+                return default(T);
+
+            BO.User boUser = new BO.User();
+
+            boUser.UserName = user.UserName;
+            boUser.ID = user.id;
+            boUser.FirstName = user.FirstName;
+            boUser.MiddleName = user.MiddleName;
+            boUser.LastName = user.LastName;
+            boUser.ImageLink = user.ImageLink;
+            boUser.UserType = (BO.GBEnums.UserType)user.UserType;
+
+            if (user.Gender.HasValue == true)
+                boUser.Gender = (BO.GBEnums.Gender)user.Gender;
+
+            boUser.CreateByUserID = user.CreateByUserID;
+
+            if (user.C2FactAuthEmailEnabled.HasValue)
+                boUser.C2FactAuthEmailEnabled = user.C2FactAuthEmailEnabled.Value;
+            if (user.C2FactAuthSMSEnabled.HasValue)
+                boUser.C2FactAuthSMSEnabled = user.C2FactAuthSMSEnabled.Value;
+            if (user.DateOfBirth.HasValue)
+                boUser.DateOfBirth = user.DateOfBirth.Value;
+            if (user.DateOfBirth.HasValue)
+                boUser.DateOfBirth = user.DateOfBirth.Value;
+            if (user.IsDeleted.HasValue)
+                boUser.IsDeleted = System.Convert.ToBoolean(user.IsDeleted.Value);
+            if (user.UpdateByUserID.HasValue)
+                boUser.UpdateByUserID = user.UpdateByUserID.Value;
+
+            if (user.AddressInfo != null)
+            {
+                BO.AddressInfo boAddress = new BO.AddressInfo();
+                boAddress.Name = user.AddressInfo.Name;
+                boAddress.Address1 = user.AddressInfo.Address1;
+                boAddress.Address2 = user.AddressInfo.Address2;
+                boAddress.City = user.AddressInfo.City;
+                boAddress.State = user.AddressInfo.State;
+                boAddress.ZipCode = user.AddressInfo.ZipCode;
+                boAddress.Country = user.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                boAddress.StateCode = user.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
+                boAddress.CreateByUserID = user.AddressInfo.CreateByUserID;
+                boAddress.ID = user.AddressInfo.id;
+                boUser.AddressInfo = boAddress;
+            }
+
+            if (user.ContactInfo != null)
+            {
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.Name = user.ContactInfo.Name;
+                boContactInfo.CellPhone = user.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = user.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = user.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = user.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = user.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = user.ContactInfo.CreateByUserID;
+                boContactInfo.ID = user.ContactInfo.id;
+                boContactInfo.OfficeExtension = user.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = user.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = user.ContactInfo.PreferredCommunication;
+
+
+                boUser.ContactInfo = boContactInfo;
+            }
+
+            if (user.UserCompanies != null && user.UserCompanies.Count > 0)
+            {
+                List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
+                user.UserCompanies.Where(p => p.IsAccepted == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                  .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, UserId = x.UserID, UserStatusID = (BO.GBEnums.UserStatu)x.UserStatusID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
+                boUser.UserCompanies = boUserCompany;
+            }
+
+            if (user.UserCompanyRoles != null)
+            {
+                List<BO.Role> roles = new List<BO.Role>();
+                //user.UserCompanyRoles.ToList().ForEach(p => roles.Add(new BO.Role() { RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
+                user.UserCompanyRoles.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                     .ToList().ForEach(p => roles.Add(new BO.Role() { ID = p.id, RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
+                boUser.Roles = roles;
+            }
+
+            return (T)(object)boUser;
+        }
+        #endregion
+
+        #region Delete
+        public override Object Delete<T>(T entity)
+        {
+            BO.User userBO = entity as BO.User;
+
+            User userDB = new User();
+            userDB.id = userBO.ID;
+            _dbSet.Remove(_context.Users.Single<User>(p => p.id == userBO.ID));
+            _context.SaveChanges();
+
+            var res = (BO.GbObject)(object)entity;
+            return userDB;
+        }
+        #endregion
+
+        #region Delete
+        public override Object Delete(int id)
+        {
+            var acc = _context.Users.Include("UserCompanies").Where(p => p.id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<User>();
+            if (acc != null)
+            {
+                if (acc.UserCompanies != null)
+                {
+                    foreach (var item in acc.UserCompanies)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                            {
+                                sr.Delete(item.id);
+                            }
+                        }
+                    }
+                }
+
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.User, User>(acc);
+            return (object)res;
+        }
+        #endregion
+
+        #region Validate Entities
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
+        {
+            dynamic result = null;
+            if (typeof(T) == typeof(BO.AddUser))
+            {
+                BO.AddUser addUser = (BO.AddUser)(object)entity;
+                result = addUser.Validate(addUser);
+            }
+            if (typeof(T) == typeof(BO.User))
+            {
+                BO.User addUser = (BO.User)(object)entity;
+                result = addUser.Validate(addUser);
+            }
+            return result;
+        }
+        #endregion
+
+        #region Save Data
+        public override Object Save<T>(T entity)
+        {
+            BO.AddUser addUserBO = (BO.AddUser)(object)entity;
+            BO.User userBO = addUserBO.user;
+            if (addUserBO.user == null) return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            if (userBO.ID == 0) if (addUserBO.role == null) return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+            BO.AddressInfo addressBO = addUserBO.address;
+            BO.ContactInfo contactinfoBO = addUserBO.contactInfo;
+            BO.Role[] roleBO = addUserBO.role;
+            BO.Company companyBO = addUserBO.company;
+            foreach (Enum f in roleBO.Select(p => p.RoleType)) if (!Enum.IsDefined(typeof(BO.GBEnums.RoleType), f)) return new BO.ErrorObject { ErrorMessage = "RoleType does not exist.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
+
+            User userDB = new User();
+            AddressInfo addressDB = new AddressInfo();
+            ContactInfo contactinfoDB = new ContactInfo();
+            UserCompany userCompanyDB = new UserCompany();
+            UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
+            Invitation invitationDB = new Invitation();
+            bool isEditMode = false;
+
+            #region Address
+            if (addressBO != null)
+            {
+                addressDB.id = addressBO.ID;
+                addressDB.Name = addressBO.Name;
+                addressDB.Address1 = addressBO.Address1;
+                addressDB.Address2 = addressBO.Address2;
+                addressDB.City = addressBO.City;
+                addressDB.State = addressBO.State;
+                addressDB.ZipCode = addressBO.ZipCode;
+                addressDB.Country = addressBO.Country;
+                //[STATECODE-CHANGE]
+                //addressDB.StateCode = addressBO.StateCode;
+                //[STATECODE-CHANGE]
+            }
+            #endregion
+
+            #region Contact Info
+            if (contactinfoBO != null)
+            {
+                contactinfoDB.id = contactinfoBO.ID;
+                contactinfoDB.Name = contactinfoBO.Name;
+                contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+                contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+                contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+                contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+                contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+                contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+                contactinfoDB.OfficeExtension = contactinfoBO.OfficeExtension;
+                contactinfoDB.AlternateEmail = contactinfoBO.AlternateEmail;
+                contactinfoDB.PreferredCommunication = contactinfoBO.PreferredCommunication;
+            }
+            #endregion
+
+            #region User
+
+            userDB.UserName = userBO.UserName;
+            userDB.FirstName = userBO.FirstName;
+            userDB.LastName = userBO.LastName;
+            userDB.id = userBO.ID;
+            userDB.Gender = System.Convert.ToByte(userBO.Gender);
+            userDB.UserType = System.Convert.ToByte(userBO.UserType);
+            userDB.ImageLink = userBO.ImageLink;
+            userDB.UserStatus = System.Convert.ToByte(userBO.Status);
+            userDB.Password = userBO.Password;
+            userDB.AddressInfo = addressDB;
+            userDB.ContactInfo = contactinfoDB;
+            if (userBO.DateOfBirth.HasValue) userDB.DateOfBirth = userBO.DateOfBirth.Value;
+            if (userBO.IsDeleted.HasValue) userDB.IsDeleted = userBO.IsDeleted.Value;
+            userDB.C2FactAuthEmailEnabled = true;
+
+            #region Company
+            if (companyBO != null)
+                if (companyBO.ID > 0)
+                {
+                    Company company = _context.Companies.Where(p => p.id == companyBO.ID
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                     .FirstOrDefault<Company>();
+                    if (company != null)
+                    {
+                        userCompanyDB.User = userDB;
+                        userCompanyDB.Company = company;
+                        userCompanyDB.UserStatusID = 1;
+                        userCompanyDB.IsAccepted = true;
+                        invitationDB.Company = company;
+                    }
+                    else return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                }
+            #endregion
+
+            switch (userBO.UserType)
+            {
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Staff: break;
+                default: break;
+            }
+            #endregion
+
+            if (userDB.id > 0)
+            {
+                //Find User By ID
+                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Include("UserCompanies").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>();
+
+                List<int> companyRoles_New = roleBO.Select(p => (int)p.RoleType).ToList<int>();
+
+                //Call for removing data
+                List<UserCompanyRole> removeUserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == usr.id && p.CompanyID == companyBO.ID && !companyRoles_New.Contains(p.RoleID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<UserCompanyRole>();
+                if (removeUserCompanyRoles != null && removeUserCompanyRoles.Count > 0)
+                {
+                    removeUserCompanyRoles.ForEach(p => p.IsDeleted = true);
+                    _context.SaveChanges();
+                }
+
+                List<int> existingUserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == usr.id && p.CompanyID == companyBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => (int)p.RoleID).ToList<int>();
+                //Call to insert data
+                List<UserCompanyRole> insertUserCompanyRoles = companyRoles_New.Where(p => !existingUserCompanyRoles.Contains(p)).Select(p => new UserCompanyRole { UserID = usr.id, CompanyID = companyBO.ID, RoleID = p }).ToList<UserCompanyRole>();
+                //foreach (var child in usr.UserCompanyRoles.ToList()) _context.UserCompanyRoles.Remove(child);
+
+                if (insertUserCompanyRoles != null && insertUserCompanyRoles.Count > 0) insertUserCompanyRoles.ForEach(P => _context.UserCompanyRoles.Add(P));
+                //usr.UserCompanyRoles = insertUserCompanyRoles;
+
+                _context.SaveChanges();
+
+                if (userDB != null)
+                {
+                    if (addUserBO.role.Where(x => (int)x.RoleType == 3).Count() == 0)
+                    {
+                        if (!_context.UserCompanyRoles.Any(p => p.UserID == userDB.id && p.RoleID == 3))
+                        {
+                            var doctor = _context.Doctors.Where(p => p.Id == userDB.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                            if (doctor != null)
+                            {
+                                doctor.IsDeleted = true;
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+                }
+
+                if (usr != null)
+                {
+                    isEditMode = true;
+                    #region User                    
+                    usr.UpdateDate = DateTime.UtcNow;
+                    usr.IsDeleted = userBO.IsDeleted;
+                    usr.UserName = userBO.UserName == null ? usr.UserName : userBO.UserName;
+                    usr.FirstName = userBO.FirstName == null ? usr.FirstName : userBO.FirstName;
+                    usr.MiddleName = userBO.MiddleName == null ? usr.MiddleName : userBO.MiddleName;
+                    usr.LastName = userBO.LastName == null ? usr.LastName : userBO.LastName;
+                    usr.Gender = System.Convert.ToByte(userBO.Gender);
+                    usr.UserType = System.Convert.ToByte(userBO.UserType);
+                    usr.UserStatus = System.Convert.ToByte(userBO.Status);
+                    usr.ImageLink = userBO.ImageLink;
+                    usr.DateOfBirth = userBO.DateOfBirth;
+                    if (userBO.UpdateByUserID.HasValue) usr.UpdateByUserID = userBO.UpdateByUserID.Value;
+                    if (userBO.Password != null) usr.Password = PasswordHash.HashPassword(userBO.Password);
+                    usr.IsDeleted = userBO.IsDeleted;
+                    #endregion
+
+                    #region Address
+                    if (addressBO != null)
+                    {
+                        usr.AddressInfo.CreateByUserID = usr.CreateByUserID;
+                        usr.AddressInfo.CreateDate = usr.CreateDate;
+                        usr.AddressInfo.UpdateDate = DateTime.UtcNow;
+                        usr.AddressInfo.Name = addressBO.Name == null ? usr.AddressInfo.Name : addressBO.Name;
+                        usr.AddressInfo.Address1 = addressBO.Address1 == null ? usr.AddressInfo.Address1 : addressBO.Address1;
+                        usr.AddressInfo.Address2 = addressBO.Address2 == null ? usr.AddressInfo.Address2 : addressBO.Address2;
+                        usr.AddressInfo.City = addressBO.City == null ? usr.AddressInfo.City : addressBO.City;
+                        usr.AddressInfo.State = addressBO.State == null ? usr.AddressInfo.State : addressBO.State;
+                        usr.AddressInfo.ZipCode = addressBO.ZipCode == null ? usr.AddressInfo.ZipCode : addressBO.ZipCode;
+                        usr.AddressInfo.Country = addressBO.Country;
+                        //[STATECODE-CHANGE]
+                        usr.AddressInfo.StateCode = addressBO.StateCode;
+                        //[STATECODE-CHANGE]
+                        if (userBO.UpdateByUserID.HasValue) usr.AddressInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
+                    }
+                    #endregion
+
+                    #region Contact Info 
+                    if (contactinfoBO != null)
+                    {
+                        usr.ContactInfo.CreateByUserID = usr.CreateByUserID;
+                        usr.ContactInfo.CreateDate = usr.CreateDate;
+                        usr.ContactInfo.UpdateDate = DateTime.UtcNow;
+                        usr.ContactInfo.Name = contactinfoBO.Name;
+                        usr.ContactInfo.CellPhone = contactinfoBO.CellPhone;
+                        usr.ContactInfo.EmailAddress = contactinfoBO.EmailAddress;
+                        usr.ContactInfo.HomePhone = contactinfoBO.HomePhone;
+                        usr.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
+                        usr.ContactInfo.FaxNo = contactinfoBO.FaxNo;
+                        if (userBO.UpdateByUserID.HasValue) usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
+                        usr.ContactInfo.OfficeExtension = contactinfoBO.OfficeExtension;
+                        usr.ContactInfo.AlternateEmail = contactinfoBO.AlternateEmail;
+                        usr.ContactInfo.PreferredCommunication = contactinfoBO.PreferredCommunication;
+
+                    }
+                    #endregion
+                }
+                else return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
+
+                if (usr.IsDeleted == true)
+                {
+                    //if (_context.UserCompanies.Any(p => p.UserID == usr.id && p.CompanyID != companyBO.ID && (p.IsDeleted == false || p.IsDeleted == null)))
+                    //{
+                    usr.IsDeleted = false;
+                    var UserCompanies = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == companyBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if (UserCompanies != null)
+                    {
+                        UserCompanies.IsDeleted = true;
+                        _context.SaveChanges();
+                    }
+
+                    var UserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == userDB.id && p.CompanyID == companyBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+                    if (UserCompanyRoles != null && UserCompanyRoles.Count > 0)
+                    {
+                        foreach (var item in UserCompanyRoles)
+                        {
+                            var UserCompanyRolesdelete = _context.UserCompanyRoles.Where(p => p.id == item.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                            if (UserCompanyRolesdelete != null)
+                            {
+                                UserCompanyRolesdelete.IsDeleted = true;
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                //}
+                _context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
+                userDB = usr;
+                _context.SaveChanges();
+
+                BO.User usr_ = Convert<BO.User, User>(userDB);
+                var res_ = (BO.GbObject)(object)usr_;
+                return (object)res_;
+            }
+            else
+            {
+                if (_context.Users.Any(o => o.UserName == userBO.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false))))
+                    return new BO.ErrorObject { ErrorMessage = "User already exists in this company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+
+                userDB.CreateDate = DateTime.UtcNow;
+                userDB.CreateByUserID = userBO.CreateByUserID;
+
+                addressDB.CreateDate = DateTime.UtcNow;
+                addressDB.CreateByUserID = userBO.CreateByUserID;
+
+                contactinfoDB.CreateDate = DateTime.UtcNow;
+                contactinfoDB.CreateByUserID = userBO.CreateByUserID;
+
+                _context.Users.Add(userDB);
+            }
+
+            _context.SaveChanges();
+
+            #region Insert User Block
+            if (userCompanyDB.Company.id > 0)
+            {
+                userCompanyDB.CreateDate = DateTime.UtcNow;
+                userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
+                userCompanyDB.UserStatusID = 1;
+                _dbUserCompany.Add(userCompanyDB);
+                _context.SaveChanges();
+            }
+            else { return new BO.ErrorObject { ErrorMessage = "Please pass valid company details.", errorObject = "", ErrorLevel = ErrorLevel.Information }; }
+            #endregion
+
+            #region Insert User Company Role
+            //userCompanyRoleDB.User = userCompanyDB.User;
+            //userCompanyRoleDB.RoleID = (int)(roleBO.RoleType);
+            //userCompanyRoleDB.CreateDate = DateTime.UtcNow;
+            //userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
+            //_dbUserCompanyRole.Add(userCompanyRoleDB);
+            roleBO.ToList().ForEach(rl => _dbUserCompanyRole.Add(new UserCompanyRole()
+            {
+                CreateByUserID = userBO.CreateByUserID,
+                CreateDate = DateTime.UtcNow,
+                RoleID = (int)rl.RoleType,
+                UserID = userDB.id,
+                CompanyID = userCompanyDB.Company.id,
+                IsDeleted = false
+            }));
+            _context.SaveChanges();
+            #endregion
+
+            #region Insert UserSettings
+            var UserSettings = _context.UserPersonalSettings.Where(p => p.UserId == userDB.id && p.CompanyId == userCompanyDB.CompanyID
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
+            if (UserSettings == null)
+            {
+                UserSettings = new UserPersonalSetting();
+                UserSettings.UserId = userDB.id;
+                UserSettings.CompanyId = userCompanyDB.CompanyID;
+                UserSettings.IsPublic = true;
+                UserSettings.IsSearchable = true;
+                UserSettings.IsCalendarPublic = true;
+                UserSettings.SlotDuration = 30;
+                UserSettings.PreferredModeOfCommunication = 3;
+                UserSettings.IsPushNotificationEnabled = true;
+                UserSettings.CalendarViewId = 3;
+                UserSettings.PreferredUIViewId = 1;
+                UserSettings.CreateByUserID = userDB.CreateByUserID;
+                UserSettings.CreateDate = DateTime.UtcNow;
+
+                _context.UserPersonalSettings.Add(UserSettings);
+                _context.SaveChanges();
+            }
+            #endregion
+
+            #region Insert Invitation
+            invitationDB.User = userCompanyDB.User;
+            invitationDB.UniqueID = Guid.NewGuid();
+            invitationDB.CreateDate = DateTime.UtcNow;
+            invitationDB.CreateByUserID = userBO.CreateByUserID;
+            _dbInvitation.Add(invitationDB);
+            _context.SaveChanges();
+            #endregion
+
+            BO.User acc_ = Convert<BO.User, User>(userDB);
+
+            #region Notification and messaging code for staff
+            if (userBO.UserType == BO.GBEnums.UserType.Staff)
+            {
+                //try
+                //{
+                //    #region Send Email
+                //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                //    objEmail.SendMail();
+                //    #endregion
+                //}
+                //catch (Exception ex) { }
+
+                if (isEditMode == false)
+                {
+                    #region notification for Add User
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
+                        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New Staff " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == acc_.UserName && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and staff 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, companyBO.ID, NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, companyBO.ID, emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    #region notification for Edit User
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForStaff = "You have been registered in midas portal as a staff by : " + identityHelper.DisplayName;
+                        string SmsMessageForStaff = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New Staff " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == acc_.UserName && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and staff 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForStaff;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForStaff;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForStaff, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+                }
+
+
+
+            }
+
+            #endregion
+            #region Notification and messaging code for Doctor
+            if (userBO.UserType == BO.GBEnums.UserType.Doctor)
+            {
+                //try
+                //{
+                //    #region Send Email
+                //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                //    objEmail.SendMail();
+                //    #endregion
+                //}
+                //catch (Exception ex) { }
+
+                if (isEditMode == false)
+                {
+                    #region notification for Add Doctor
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForDocotr = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForDoctor = "You have been registered in midas portal as a Doctor by : " + identityHelper.DisplayName;
+                        string SmsMessageForDoctor = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Doctor email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New  Docotr " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Docotr email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == acc_.UserName && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and doctor 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, companyBO.ID, NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, companyBO.ID, emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDocotr;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDocotr;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, companyBO.ID, NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, companyBO.ID, emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+
+                }
+                else
+                {
+                    #region notification for Edit User
+                    try
+                    {
+
+                        IdentityHelper identityHelper = new IdentityHelper();
+
+                        string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+
+                        string MailMessageForDoctor = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                        string NotificationForDoctor = "You have been registered in midas portal as a doctor by : " + identityHelper.DisplayName;
+                        string SmsMessageForDoctor = "Dear " + userBO.FirstName + ",<br><br>You have been registered in midas portal as a Doctor by:- " + identityHelper.DisplayName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+                        string MailMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Doctor email:- " + userBO.UserName + "";
+                        string NotificationForAdmin = "New Doctor " + userBO.UserName + " has been registered.";
+                        string SmsMessageForAdmin = "Dear " + identityHelper.DisplayName + ",<br><br>Thanks for registering new Doctor.<br><br> Doctor email:- " + userBO.UserName + "";
+
+
+
+                        User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == identityHelper.Email && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+                        int CurrentCompanyId = companyBO.ID;
+
+                        List<User> lstStaff = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                              .Where(p => p.UserName == acc_.UserName && p.UserCompanies.Where(p1 => p1.CompanyID == CurrentCompanyId && (p1.IsDeleted.HasValue == false || (p1.IsDeleted.HasValue == true && p1.IsDeleted.Value == false))).Any() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .ToList<User>();
+
+
+                        #region  admin mail object                 
+                        BO.EmailMessage emAdmin = new BO.EmailMessage();
+                        emAdmin.ApplicationName = "Midas";
+                        emAdmin.ToEmail = identityHelper.Email;
+                        emAdmin.EMailSubject = "MIDAS Notification";
+                        emAdmin.EMailBody = MailMessageForAdmin;
+                        #endregion
+
+                        #region admin sms object
+                        BO.SMS smsAdmin = new BO.SMS();
+                        if (AdminUser != null)
+                        {
+                            smsAdmin.ApplicationName = "Midas";
+                            smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                            smsAdmin.Message = SmsMessageForAdmin;
+                        }
+                        #endregion
+
+
+                        NotificationHelper nh = new NotificationHelper();
+                        MessagingHelper mh = new MessagingHelper();
+
+
+                        #region admin and staff 
+                        if (AdminUser.UserType == 4)
+                        {
+                            nh.PushNotification(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForAdmin, "New Patient Registration");
+                            mh.SendEmailAndSms(AdminUser.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emAdmin, smsAdmin);
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDoctor;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in lstStaff)
+                            {
+                                #region  staff mail object                 
+                                BO.EmailMessage emStaff = new BO.EmailMessage();
+                                emStaff.ApplicationName = "Midas";
+                                emStaff.ToEmail = item.UserName;
+                                emStaff.EMailSubject = "MIDAS Notification";
+                                emStaff.EMailBody = MailMessageForDoctor;
+                                #endregion
+
+                                #region staff sms object
+                                BO.SMS smsStaff = new BO.SMS();
+                                smsStaff.ApplicationName = "Midas";
+                                smsStaff.ToNumber = item.ContactInfo.CellPhone;
+                                smsStaff.Message = SmsMessageForDoctor;
+                                #endregion
+
+                                nh.PushNotification(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), NotificationForDoctor, "New Patient Registration");
+                                mh.SendEmailAndSms(item.UserName, userBO.UserCompanies.Select(p => p.Company.ID).FirstOrDefault(), emStaff, smsStaff);
+                            }
+                        }
+
+                        #endregion
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    #endregion
+                }
+
+
+
+            }
+
+            #endregion
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
+        }
+
+        #endregion
+
+        #region Get User By ID
+        public override Object Get(int id)
+        {
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                BO.User acc_ = Convert<BO.User, User>(acc);
+                return (object)acc_;
+            }
+
+        }
+        #endregion
+
+        #region Get User By ID and CompnayID
+        public override Object GetUserByIDAndCompnayID(int id, int CompnayID)
+        {
+            #region  Commeneted Code   
+            /* var data = (from usr in _context.Users
+                         join uc in _context.UserCompanies on usr.id equals uc.UserID
+                         join ucr in _context.UserCompanyRoles on usr.id equals ucr.UserID
+                         join addinfo in _context.AddressInfoes on usr.AddressId equals addinfo.id
+                         join continfo in _context.ContactInfoes on usr.ContactInfoId equals continfo.id
+                         where uc.CompanyID == CompnayID && (uc.IsDeleted == false || uc.IsDeleted == null)
+                         && ucr.CompanyID == CompnayID && (ucr.IsDeleted == false || ucr.IsDeleted == null)
+                         && (usr.id == id) && (usr.IsDeleted == false || usr.IsDeleted == null)
+                         select new
+                         {
+                             usr,
+                             uc,
+                             ucr,
+                             addinfo,
+                             continfo
+                         }).ToList();
+             if (data == null || data.Count == 0)
+             {
+                 return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+             }
+             else
+             {
+                 List<User> lstUsers = new List<User>();
+                 foreach (var item1 in data)
+                 {
+                     if (!lstUsers.Any(y => y.id == item1.usr.id))
+                     {
+                         User obj = new User();
+                         obj.UserCompanyRoles.Add(item1.ucr);
+                         obj.UserCompanies.Add(item1.uc);
+                         obj.AddressId = item1.usr.AddressId;
+                         obj.AddressInfo = item1.addinfo;
+                         obj.Attorney = item1.usr.Attorney;
+                         obj.AttorneyVisits = item1.usr.AttorneyVisits;
+                         obj.C2FactAuthEmailEnabled = item1.usr.C2FactAuthEmailEnabled;
+                         obj.C2FactAuthSMSEnabled = item1.usr.C2FactAuthSMSEnabled;
+                         obj.ContactInfo = item1.continfo;
+                         obj.ContactInfoId = item1.usr.ContactInfoId;
+                         obj.CreateByUserID = item1.usr.CreateByUserID;
+                         obj.CreateDate = item1.usr.CreateDate;
+                         obj.DateOfBirth = item1.usr.DateOfBirth;
+                         obj.Doctor = item1.usr.Doctor;
+                         obj.FirstName = item1.usr.FirstName;
+                         obj.Gender = item1.usr.Gender;
+                         obj.id = item1.usr.id;
+                         obj.ImageLink = item1.usr.ImageLink;
+                         obj.Invitations = item1.usr.Invitations;
+                         obj.IsDeleted = item1.usr.IsDeleted;
+                         obj.LastName = item1.usr.LastName;
+                         obj.MiddleName = item1.usr.MiddleName;
+                         obj.Password = item1.usr.Password;
+                         obj.Patient = item1.usr.Patient;
+                         obj.PendingReferrals = item1.usr.PendingReferrals;
+                         obj.Referrals = item1.usr.Referrals;
+                         obj.Referrals1 = item1.usr.Referrals1;
+                         obj.UpdateByUserID = item1.usr.UpdateByUserID;
+                         obj.UpdateDate = item1.usr.UpdateDate;
+                         obj.UserName = item1.usr.UserName;
+                         obj.UserPersonalSettings = item1.usr.UserPersonalSettings;
+                         obj.UserStatus = item1.usr.UserStatus;
+                         obj.UserType = item1.usr.UserType;
+                         obj.UserType1 = item1.usr.UserType1;
+                         lstUsers.Add(obj);
+                     }
+                     else
+                     {
+                         foreach (var rol in lstUsers.Where(y => y.id == item1.usr.id))
+                         {
+                             rol.UserCompanyRoles.Add(item1.ucr);
+                         }
+                     }
+                 }
+
+            
+            }*/
+
+            #endregion
+            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                    .Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).Select(p => new
+                                                    {
+                                                        Users = p,
+                                                        AddressInfo = p.AddressInfo,
+                                                        ContactInfo = p.ContactInfo,
+                                                        UserCompanies = p.UserCompanies.Where(y => y.CompanyID == CompnayID && y.UserID == id && (y.IsDeleted == false || y.IsDeleted == null)),
+                                                        UserCompanyRoles = p.UserCompanyRoles.Where(s => s.CompanyID == CompnayID && s.UserID == id && (s.IsDeleted == false || s.IsDeleted == null))
+                                                    }).ToList().Select(p => p.Users).ToList<User>();
+            if (data == null || data.Count == 0)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else if (data.FirstOrDefault().UserCompanies.Count == 0)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+
+            BO.User acc_ = Convert<BO.User, User>(data.FirstOrDefault());
+            return (object)acc_;
+
+        }
+        #endregion
+
+        #region Get User By UserName
+        public override Object GetUserByUserName(string UserName)
+        {
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.UserName == UserName && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                BO.User acc_ = Convert<BO.User, User>(acc);
+                return (object)acc_;
+            }
+
+        }
+        #endregion
+
+        #region MapUserToCompany
+        public override Object Mapusertothecompnay(string UserName, int CompnayID, int CurrentUserId)
+        {
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.UserName == UserName && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if (acc == null)
+            {
+
+            }
+            else
+            {
+                if (!_context.UserCompanies.Any(y => y.CompanyID == CompnayID && y.UserID == acc.id && (y.IsDeleted == false || y.IsDeleted == null)))
+                {
+                    //var data = _context.UserCompanies.Where(y => y.CompanyID == CompnayID && y.UserID == acc.id).ToList();
+                    //if (data == null && data.Count == 0)
+                    //{
+                    //    var userCompanyDB = new UserCompany();
+                    //    userCompanyDB.CreateDate = DateTime.UtcNow;
+                    //    userCompanyDB.CreateByUserID = CurrentUserId;
+                    //    userCompanyDB.CompanyID = CompnayID;
+                    //    userCompanyDB.UserID = acc.id;
+                    //    userCompanyDB.UserStatusID = 2;
+                    //    userCompanyDB.IsAccepted = true;
+                    //    _dbUserCompany.Add(userCompanyDB);
+                    //    _context.SaveChanges();
+                    //}
+                    //else
+                    //{
+                    //    foreach (var newdata in data)
+                    //    {
+                    //        var usercompanies = _context.UserCompanies.Where(s => s.id == newdata.id).FirstOrDefault();
+                    //        if (usercompanies != null)
+                    //        {
+                    //            usercompanies.IsDeleted = false;
+                    //            _context.SaveChanges();
+                    //        }
+                    //    }
+
+                    //}
+
+                    var userCompanyDB = new UserCompany();
+                    userCompanyDB.CreateDate = DateTime.UtcNow;
+                    userCompanyDB.CreateByUserID = CurrentUserId;
+                    userCompanyDB.CompanyID = CompnayID;
+                    userCompanyDB.UserID = acc.id;
+                    userCompanyDB.UserStatusID = 2;
+                    userCompanyDB.IsAccepted = true;
+                    _dbUserCompany.Add(userCompanyDB);
+                    _context.SaveChanges();
+
+                }
+
+                if (!_context.UserPersonalSettings.Any(y => y.CompanyId == CompnayID && y.UserId == acc.id && (y.IsDeleted == false || y.IsDeleted == null)))
+                {
+                    var UserSettings = new UserPersonalSetting();
+                    UserSettings.UserId = acc.id;
+                    UserSettings.CompanyId = CompnayID;
+                    UserSettings.IsPublic = true;
+                    UserSettings.IsSearchable = true;
+                    UserSettings.IsCalendarPublic = true;
+                    UserSettings.SlotDuration = 30;
+                    UserSettings.PreferredModeOfCommunication = 3;
+                    UserSettings.IsPushNotificationEnabled = true;
+                    UserSettings.CalendarViewId = 3;
+                    UserSettings.PreferredUIViewId = 1;
+                    UserSettings.CreateByUserID = CurrentUserId;
+                    UserSettings.CreateDate = DateTime.UtcNow;
+                    _context.UserPersonalSettings.Add(UserSettings);
+                    _context.SaveChanges();
+                }
+
+                if (!_context.UserCompanyRoles.Any(y => y.CompanyID == CompnayID && y.UserID == acc.id && (y.IsDeleted == false || y.IsDeleted == null)))
+                {
+                    //var data = _context.UserCompanyRoles.Where(y => y.CompanyID == CompnayID && y.UserID == acc.id).ToList();
+                    //if (data == null && data.Count == 0)
+                    //{
+                    //    var rl = new UserCompanyRole();
+                    //    rl.CreateByUserID = CurrentUserId;
+                    //    rl.CreateDate = DateTime.UtcNow;
+                    //    rl.RoleID = (int)BO.GBEnums.RoleType.Admin;
+                    //    rl.UserID = acc.id;
+                    //    rl.CompanyID = CompnayID;
+                    //    rl.IsDeleted = false;
+                    //    _dbUserCompanyRole.Add(rl);
+                    //    _context.SaveChanges();
+                    //}
+                    //else
+                    //{
+                    //    foreach (var datanew in data)
+                    //    {
+                    //        var UserCompanyRoles = _context.UserCompanyRoles.Where(s => s.id == datanew.id).FirstOrDefault();
+                    //        if (UserCompanyRoles != null)
+                    //        {
+                    //            UserCompanyRoles.IsDeleted = false;
+                    //            _context.SaveChanges();
+                    //        }
+                    //    }
+                    //}
+
+                    var rl = new UserCompanyRole();
+                    rl.CreateByUserID = CurrentUserId;
+                    rl.CreateDate = DateTime.UtcNow;
+                    rl.RoleID = (int)BO.GBEnums.RoleType.Admin;
+                    rl.UserID = acc.id;
+                    rl.CompanyID = CompnayID;
+                    rl.IsDeleted = false;
+                    _dbUserCompanyRole.Add(rl);
+                    _context.SaveChanges();
+
+                }
+
+            }
+
+            User AdminUser = _context.Users.Include("ContactInfo").Include("UserCompanies").Include("UserCompanies.company")
+                                            .Where(p => p.id == CurrentUserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .FirstOrDefault();
+
+            Company comp = _context.Companies.Where(p => p.id == CurrentUserId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .FirstOrDefault();
+
+            string VerificationLink = "";
+            if ((BO.GBEnums.CompanyType)comp.CompanyType == BO.GBEnums.CompanyType.MedicalProvider)
+            {
+                VerificationLink = "<a href='" + Utility.GetConfigValue("MedicalProviderLoginLink") + "' target='_blank'>" + Utility.GetConfigValue("MedicalProviderLoginLink") + "</a>";
+            }
+            else if ((BO.GBEnums.CompanyType)comp.CompanyType == BO.GBEnums.CompanyType.Attorney)
+            {
+                VerificationLink = "<a href='" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "' target='_blank'>" + Utility.GetConfigValue("AttorneyProviderLoginLink") + "</a>";
+            }
+            else if ((BO.GBEnums.CompanyType)comp.CompanyType == BO.GBEnums.CompanyType.Ancillary)
+            {
+                VerificationLink = "<a href='" + Utility.GetConfigValue("AncillaryProviderLoginLink") + "' target='_blank'>" + Utility.GetConfigValue("AncillaryProviderLoginLink") + "</a>";
+            }
+
+
+
+            string MailMessageForStaff = "Dear " + acc.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + comp.Name + "<br><br> Please login by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+            string NotificationForStaff = "You have been registered in midas portal as a staff by : " + comp.Name;
+            string SmsMessageForStaff = "Dear " + acc.FirstName + ",<br><br>You have been registered in midas portal as a Staff by:- " + comp.Name + "<br><br> Please login by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+
+            string MailMessageForAdmin = "Dear " + AdminUser.FirstName + AdminUser.LastName + ",<br><br>Thanks for registering new Staff.<br><br> Staff email:- " + acc.UserName + "";
+            string NotificationForAdmin = "New Staff " + acc.UserName + " has been registered.";
+            string SmsMessageForAdmin = "Dear " + AdminUser.FirstName + AdminUser.LastName + ",<br><br>Thanks for registering new staff.<br><br> Staff email:- " + acc.UserName + "";
+
+            #region  admin mail object                 
+            BO.EmailMessage emAdmin = new BO.EmailMessage();
+            emAdmin.ApplicationName = "Midas";
+            emAdmin.ToEmail = AdminUser.UserName;
+            emAdmin.EMailSubject = "MIDAS Notification";
+            emAdmin.EMailBody = MailMessageForAdmin;
+            #endregion
+
+            #region admin sms object
+            BO.SMS smsAdmin = new BO.SMS();
+            if (AdminUser != null)
+            {
+                smsAdmin.ApplicationName = "Midas";
+                smsAdmin.ToNumber = AdminUser.ContactInfo.CellPhone;
+                smsAdmin.Message = SmsMessageForAdmin;
+            }
+            #endregion
+
+            NotificationHelper nh = new NotificationHelper();
+            MessagingHelper mh = new MessagingHelper();
+
+
+            #region admin and staff 
+
+            nh.PushNotification(AdminUser.UserName, CompnayID, NotificationForAdmin, "New Staff Registration");
+            mh.SendEmailAndSms(AdminUser.UserName, CompnayID, emAdmin, smsAdmin);
+            #region  staff mail object                 
+            BO.EmailMessage emStaff = new BO.EmailMessage();
+            emStaff.ApplicationName = "Midas";
+            emStaff.ToEmail = UserName;
+            emStaff.EMailSubject = "MIDAS Notification";
+            emStaff.EMailBody = MailMessageForStaff;
+            #endregion
+
+            #region staff sms object
+            BO.SMS smsStaff = new BO.SMS();
+            smsStaff.ApplicationName = "Midas";
+            smsStaff.ToNumber = acc.ContactInfo.CellPhone;
+            smsStaff.Message = SmsMessageForStaff;
+            #endregion
+
+            nh.PushNotification(UserName, CompnayID, NotificationForStaff, "New Staff Registration");
+            mh.SendEmailAndSms(UserName, CompnayID, emStaff, smsStaff);
+            #endregion
+
+
+            BO.User usr_ = Convert<BO.User, User>(acc);
+            var res_ = (BO.GbObject)(object)usr_;
+            return (object)res_;
+
+        }
+        #endregion
+
+        #region GetIsExistingUser by UserName or SSN
+        public override Object GetIsExistingUser(string User, string SSN)
+        {
+            var ssn = _context.Patients.Where(p => p.SSN == SSN
+                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .ToList()
+                                                         .Select(p => p.Id);
+
+            var acc = _context.Users.Include("UserCompanies").Where(p => p.UserName == User
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                            || ssn.Contains(p.id))
+                                                            .ToList();
+            //var user = from u in _context.Users
+            //           where (u.Patient2.SSN == SSN
+            //           && (u.Patient2.IsDeleted.HasValue == false || (u.Patient2.IsDeleted.HasValue == true && u.Patient2.IsDeleted.Value == false)))
+            //           || (u.UserName == User
+            //           && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false)))
+            //           join uc in _context.UserCompanies on u.id equals uc.UserID
+            //           select 
+            //              (
+            //               u
+            //               );
+
+            //var acc = user.ToList();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this User Name.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.User> lstUser = new List<BO.User>();
+                foreach (User item in acc)
+                {
+                    lstUser.Add(Convert<BO.User, User>(item));
+                }
+                return lstUser;
+            }
+
+        }
+        #endregion
+
+        #region CheckIsExistingUser by UserName
+        public override Object Get(string User)
+        {
+            var acc = from u in _context.Users
+                      join ut in _context.UserTypes on u.UserType equals ut.id
+                      where (u.UserName == User
+                      && (u.IsDeleted.HasValue == false || (u.IsDeleted.HasValue == true && u.IsDeleted.Value == false)))
+                      select new
+                      {
+                          IsExisting = true,
+                          //IsDoctor = u.UserType == 4 ? true : false,
+                          IsDoctor = _context.Doctors.Any(p => p.Id == u.id
+                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                          IsPatient = _context.Patients.Any(p => p.Id == u.id
+                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))),
+                          Message = "User already exist.",
+                          User = new { u.id, u.FirstName, u.MiddleName, u.LastName, u.UserName }
+                      };
+
+            var ExistingUser = acc.FirstOrDefault();
+
+
+            if (ExistingUser == null)
+            {
+                User _user = null;
+                return new
+                {
+                    IsExisting = false,
+                    IsDoctor = false,
+                    IsPatient = false,
+                    Message = "User does not exist",
+                    User = _user
+                };
+            }
+            else
+            {
+                return ExistingUser;
+            }
+
+        }
+        #endregion
+
+        #region Login
+        public override Object Login<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            string Pass = userBO.Password;
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName
+                                                && (x.IsDeleted.HasValue == false || (x.IsDeleted.HasValue == true && x.IsDeleted.Value == false))).FirstOrDefault();
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            bool isPasswordCorrect = false;
+            try
+            {
+                isPasswordCorrect = PasswordHash.ValidatePassword(userBO.Password, ((User)data_).Password);
+
+                if (!isPasswordCorrect)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //Check if the User even if valid is logging as invalid User Type
+            bool isUserTypeValid = false;
+            try
+            {
+                if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
+                {
+                    isUserTypeValid = true;
+                }
+                //else if (userBO.UserType == 0) //Since ADMIN API dosent check for usertype. Need to be removed later.
+                //{
+                //    isUserTypeValid = true;
+                //}
+
+                if (!isUserTypeValid)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //Check if the User even if valid is logging as invalid User Type
+            BO.User acc_ = isPasswordCorrect && isUserTypeValid ? Convert<BO.User, User>(data_) : null;
+
+            //bool UseOTP = true;
+            //if (bool.TryParse(Utility.GetConfigValue("UseOTP"), out UseOTP))
+            //{
+            //    userBO.forceLogin = UseOTP;
+            //}
+            //userBO.forceLogin = true;
+
+            if (!userBO.forceLogin)
+            {
+                if (acc_.C2FactAuthEmailEnabled)
+                {
+
+                    var otpOld = _context.OTPs.Where(p => p.UserID == acc_.ID).ToList<OTP>();
+                    otpOld.ForEach(a => { a.IsDeleted = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });
+                    if (otpOld != null)
+                    {
+                        _context.SaveChanges();
+                    }
+
+                    //Send OTP Via Email
+
+                    OTP otpDB = new OTP();
+                    otpDB.OTP1 = Utility.GenerateRandomNumber(6);
+                    otpDB.Pin = Utility.GenerateRandomNo();
+                    otpDB.UserID = acc_.ID;
+                    otpDB.CreateDate = DateTime.UtcNow;
+                    otpDB.CreateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+
+                    _dbOTP.Add(otpDB);
+                    _context.SaveChanges();
+
+                    string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
+
+                    BO.Email objEmail = new BO.Email { ToEmail = acc_.UserName, Subject = "Alert Message From GBX MIDAS", Body = Message };
+                    objEmail.SendMail();
+
+                    otpDB.UserID = acc_.ID;
+                    otpDB.OTP1 = 0000;
+
+                    BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User = new BO.User();
+                        usrComp.User.ID = acc_.ID;
+                        boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                    }
+                    boOTP.User = acc_;
+
+                    List<BO.Role> RoleBO1 = new List<BO.Role>();
+                    var roles1 = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in roles1)
+                    {
+                        RoleBO1.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID
+                        });
+                    }
+                    boOTP.User.Roles = RoleBO1;
+                    return boOTP;
+                }
+                else if (acc_.C2FactAuthSMSEnabled)
+                {
+                    //Send OTP Via SMS
+                }
+            }
+
+            BO.OTP boOTP_ = new BusinessObjects.OTP();
+            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+            {
+                BO.UserCompany usrComp = new BO.UserCompany();
+                usrComp.User = new BO.User();
+                usrComp.User.ID = acc_.ID;
+                boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+            }
+            boOTP_.User = acc_;
+
+            List<BO.Role> RoleBO = new List<BO.Role>();
+            var roles = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+            foreach (var item in roles)
+            {
+                RoleBO.Add(new BO.Role()
+                {
+                    ID = item.RoleID,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                    RoleType = (BO.GBEnums.RoleType)item.RoleID
+                });
+            }
+            boOTP_.User.Roles = RoleBO;
+            return boOTP_;
+        }
+
+        public override Object Login2<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            string Pass = userBO.Password;
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            bool isPasswordCorrect = false;
+            try
+            {
+                isPasswordCorrect = PasswordHash.ValidatePassword(userBO.Password, ((User)data_).Password);
+
+                if (!isPasswordCorrect)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //Check if the User even if valid is logging as invalid User Type
+            BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
+
+            return acc_;
+        }
+        #endregion
+
+        #region Login with Only UserName
+        public override Object LoginWithUserName<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+
+            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
+
+            if (data_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            //Check if the User even if valid is logging as invalid User Type
+            bool isUserTypeValid = false;
+            try
+            {
+                if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
+                {
+                    isUserTypeValid = true;
+                }
+
+                if (!isUserTypeValid)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            BO.User acc_ = isUserTypeValid ? Convert<BO.User, User>(data_) : null;
+
+            if (!userBO.forceLogin)
+            {
+                if (acc_.C2FactAuthEmailEnabled)
+                {
+
+                    var otpOld = _context.OTPs.Where(p => p.UserID == acc_.ID).ToList<OTP>();
+                    otpOld.ForEach(a => { a.IsDeleted = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });
+                    if (otpOld != null)
+                    {
+                        _context.SaveChanges();
+                    }
+
+                    //Send OTP Via Email
+                    OTP otpDB = new OTP();
+                    //otpDB.OTP1 = Utility.GenerateRandomNumber(6);
+                    //otpDB.Pin = Utility.GenerateRandomNo();
+                    //otpDB.UserID = acc_.ID;
+                    //otpDB.CreateDate = DateTime.UtcNow;
+                    //otpDB.CreateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
+
+                    //_dbOTP.Add(otpDB);
+                    //_context.SaveChanges();
+
+                    //string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
+
+                    //BO.Email objEmail = new BO.Email { ToEmail = acc_.UserName, Subject = "Alert Message From GBX MIDAS", Body = Message };
+                    //objEmail.SendMail();
+
+                    //otpDB.UserID = acc_.ID;
+                    //otpDB.OTP1 = 0000;
+
+                    BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User = new BO.User();
+                        usrComp.User.ID = acc_.ID;
+                        boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                    }
+                    boOTP.User = acc_;
+
+                    List<BO.Role> RoleBO1 = new List<BO.Role>();
+                    var roles1 = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in roles1)
+                    {
+                        RoleBO1.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID,
+                            CompanyId = item.CompanyID
+                        });
+                    }
+                    boOTP.User.Roles = RoleBO1;
+                    return boOTP;
+                }
+                else if (acc_.C2FactAuthSMSEnabled)
+                {
+                    //Send OTP Via SMS
+                }
+            }
+
+            BO.OTP boOTP_ = new BusinessObjects.OTP();
+            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+            {
+                BO.UserCompany usrComp = new BO.UserCompany();
+                usrComp.User = new BO.User();
+                usrComp.User.ID = acc_.ID;
+                boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+            }
+            boOTP_.User = acc_;
+
+            List<BO.Role> RoleBO = new List<BO.Role>();
+            var roles = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+            foreach (var item in roles)
+            {
+                RoleBO.Add(new BO.Role()
+                {
+                    ID = item.RoleID,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                    RoleType = (BO.GBEnums.RoleType)item.RoleID,
+                    CompanyId = item.CompanyID
+                });
+            }
+            boOTP_.User.Roles = RoleBO;
+            return boOTP_;
+        }
+
+        #endregion
+
+        #region Get By Filter
+        public override object Get<T>(T entity)
+        {
+            BO.User userBO = (BO.User)(object)entity;
+            List<BO.User> lstUsers = new List<BO.User>();
+
+            if (userBO.UserCompanies != null)
+            {
+                if (userBO.UserCompanies[0].Company.ID > 0)
+                {
+                    int CompID = userBO.UserCompanies[0].Company.ID;
+                    byte UserTpe = System.Convert.ToByte(userBO.UserType);
+                    switch (userBO.UserType)
+                    {
+                        case BO.GBEnums.UserType.Patient:
+                        case BO.GBEnums.UserType.Staff:
+                            #region Commented Code and old Code
+                            /*var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                     .Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe
+                                                           && p.UserCompanies.Any(d => d.CompanyID == CompID
+                                                               && (d.IsDeleted.HasValue == false || (d.IsDeleted.HasValue == true && d.IsDeleted.Value == false)))
+                                                               && p.UserCompanyRoles.Any(s => s.CompanyID == CompID && s.UserID == p.id
+                                                               && (s.IsDeleted.HasValue == false || (s.IsDeleted.HasValue == true && s.IsDeleted.Value == false))))
+                                                    .ToList<User>();*/
+
+                            /* var data = (from usr in _context.Users
+                                         join uc in _context.UserCompanies on usr.id equals uc.UserID
+                                         join ucr in _context.UserCompanyRoles on usr.id equals ucr.UserID
+                                         join addinfo in _context.AddressInfoes on usr.AddressId equals addinfo.id
+                                         join continfo in _context.ContactInfoes on usr.ContactInfoId equals continfo.id
+                                         where uc.CompanyID == CompID && (uc.IsDeleted == false || uc.IsDeleted == null)
+                                         && ucr.CompanyID == CompID && (ucr.IsDeleted == false || ucr.IsDeleted == null)
+                                         && (usr.UserType == UserTpe) && (usr.IsDeleted == false || usr.IsDeleted == null)
+                                         select new
+                                         {
+                                             usr,
+                                             uc,
+                                             ucr,
+                                             addinfo,
+                                             continfo
+                                         }).ToList();
+
+                             if (data == null || data.Count == 0)
+                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                             foreach (var item1 in data)
+                             {
+                                 if (!lstUsers.Any(y => y.ID == item1.usr.id))
+                                 {
+                                     User obj = new User();
+                                     obj.UserCompanyRoles.Add(item1.ucr);
+                                     obj.UserCompanies.Add(item1.uc);
+                                     obj.AddressId = item1.usr.AddressId;
+                                     obj.AddressInfo = item1.addinfo;
+                                     obj.Attorney = item1.usr.Attorney;
+                                     obj.AttorneyVisits = item1.usr.AttorneyVisits;
+                                     obj.C2FactAuthEmailEnabled = item1.usr.C2FactAuthEmailEnabled;
+                                     obj.C2FactAuthSMSEnabled = item1.usr.C2FactAuthSMSEnabled;
+                                     obj.ContactInfo = item1.continfo;
+                                     obj.ContactInfoId = item1.usr.ContactInfoId;
+                                     obj.CreateByUserID = item1.usr.CreateByUserID;
+                                     obj.CreateDate = item1.usr.CreateDate;
+                                     obj.DateOfBirth = item1.usr.DateOfBirth;
+                                     obj.Doctor = item1.usr.Doctor;
+                                     obj.FirstName = item1.usr.FirstName;
+                                     obj.Gender = item1.usr.Gender;
+                                     obj.id = item1.usr.id;
+                                     obj.ImageLink = item1.usr.ImageLink;
+                                     obj.Invitations = item1.usr.Invitations;
+                                     obj.IsDeleted = item1.usr.IsDeleted;
+                                     obj.LastName = item1.usr.LastName;
+                                     obj.MiddleName = item1.usr.MiddleName;
+                                     obj.Password = item1.usr.Password;
+                                     obj.Patient = item1.usr.Patient;
+                                     obj.PendingReferrals = item1.usr.PendingReferrals;
+                                     obj.Referrals = item1.usr.Referrals;
+                                     obj.Referrals1 = item1.usr.Referrals1;
+                                     obj.UpdateByUserID = item1.usr.UpdateByUserID;
+                                     obj.UpdateDate = item1.usr.UpdateDate;
+                                     obj.UserName = item1.usr.UserName;
+                                     obj.UserPersonalSettings = item1.usr.UserPersonalSettings;
+                                     obj.UserStatus = item1.usr.UserStatus;
+                                     obj.UserType = item1.usr.UserType;
+                                     obj.UserType1 = item1.usr.UserType1;
+                                     lstUsers.Add(Convert<BO.User, User>(obj));
+                                 }
+                                 else
+                                 {
+                                     foreach (var rol in lstUsers.Where(y => y.ID == item1.usr.id))
+                                     {
+                                         BO.Role roles = new BO.Role();
+                                         roles.ID = item1.ucr.id;
+                                         roles.RoleType = (BO.GBEnums.RoleType)item1.ucr.RoleID;
+                                         roles.Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item1.ucr.RoleID);
+                                         rol.Roles.Add(roles);
+                                     }
+                                 }
+                             } */
+
+                            #endregion
+
+                            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                     .Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe).Select(p => new
+                                                     {
+                                                         Users = p,
+                                                         AddressInfo = p.AddressInfo,
+                                                         ContactInfo = p.ContactInfo,
+                                                         UserCompanies = p.UserCompanies.Where(y => y.CompanyID == CompID && y.UserID == p.id && (y.IsDeleted == false || y.IsDeleted == null)),
+                                                         UserCompanyRoles = p.UserCompanyRoles.Where(s => s.CompanyID == CompID && s.UserID == p.id && (s.IsDeleted == false || s.IsDeleted == null))
+                                                     }).ToList().Select(p => p.Users).ToList<User>();
+
+                            if (data == null || data.Count == 0)
+                                return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+                            foreach (User item in data)
+                            {
+                                if (item.UserCompanyRoles.Count > 0)
+                                {
+                                    lstUsers.Add(Convert<BO.User, User>(item));
+                                }
+
+                            }
+                            return lstUsers;
+
+                        default:
+                            #region Commented Code and old Code
+                            /* var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                      .Where(p => p.UserType != 1  && (p.IsDeleted == false || p.IsDeleted == null)
+                                                           && p.UserCompanies.Where(d => d.CompanyID == CompID
+                                                                && (d.IsDeleted.HasValue == false || (d.IsDeleted.HasValue == true && d.IsDeleted.Value == false))).Any()
+                                                                && p.UserCompanyRoles.Where(s => (s.IsDeleted.HasValue == false || (s.IsDeleted.HasValue == true && s.IsDeleted.Value == false))).Any(s2=> s2.CompanyID == CompID))
+                                                      .ToList<User>()*/
+
+                            /*  var data1 = (from usr in _context.Users
+                                           join uc in _context.UserCompanies on usr.id equals uc.UserID
+                                           join ucr in _context.UserCompanyRoles on usr.id equals ucr.UserID
+                                           join addinfo in _context.AddressInfoes on usr.AddressId equals addinfo.id
+                                           join continfo in _context.ContactInfoes on usr.ContactInfoId equals continfo.id
+                                           where uc.CompanyID == CompID && (uc.IsDeleted == false || uc.IsDeleted == null)
+                                           && ucr.CompanyID == CompID && (ucr.IsDeleted == false || ucr.IsDeleted == null)
+                                           && (usr.UserType != 1) && (usr.IsDeleted == false || usr.IsDeleted == null)
+                                           select new
+                                           {
+                                               usr,
+                                               uc,
+                                               ucr,
+                                               addinfo,
+                                               continfo
+                                           }).ToList();
+
+                              if (data1 == null || data1.Count == 0)
+                                  return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+                              foreach (var item1 in data1)
+                              {
+                                  if (!lstUsers.Any(y => y.ID == item1.usr.id))
+                                  {
+                                      User obj = new User();
+                                      obj.UserCompanyRoles.Add(item1.ucr);
+                                      obj.UserCompanies.Add(item1.uc);
+                                      obj.AddressId = item1.usr.AddressId;
+                                      obj.AddressInfo = item1.addinfo;
+                                      obj.Attorney = item1.usr.Attorney;
+                                      obj.AttorneyVisits = item1.usr.AttorneyVisits;
+                                      obj.C2FactAuthEmailEnabled = item1.usr.C2FactAuthEmailEnabled;
+                                      obj.C2FactAuthSMSEnabled = item1.usr.C2FactAuthSMSEnabled;
+                                      obj.ContactInfo = item1.continfo;
+                                      obj.ContactInfoId = item1.usr.ContactInfoId;
+                                      obj.CreateByUserID = item1.usr.CreateByUserID;
+                                      obj.CreateDate = item1.usr.CreateDate;
+                                      obj.DateOfBirth = item1.usr.DateOfBirth;
+                                      obj.Doctor = item1.usr.Doctor;
+                                      obj.FirstName = item1.usr.FirstName;
+                                      obj.Gender = item1.usr.Gender;
+                                      obj.id = item1.usr.id;
+                                      obj.ImageLink = item1.usr.ImageLink;
+                                      obj.Invitations = item1.usr.Invitations;
+                                      obj.IsDeleted = item1.usr.IsDeleted;
+                                      obj.LastName = item1.usr.LastName;
+                                      obj.MiddleName = item1.usr.MiddleName;
+                                      obj.Password = item1.usr.Password;
+                                      obj.Patient = item1.usr.Patient;
+                                      obj.PendingReferrals = item1.usr.PendingReferrals;
+                                      obj.Referrals = item1.usr.Referrals;
+                                      obj.Referrals1 = item1.usr.Referrals1;
+                                      obj.UpdateByUserID = item1.usr.UpdateByUserID;
+                                      obj.UpdateDate = item1.usr.UpdateDate;
+                                      obj.UserName = item1.usr.UserName;
+                                      obj.UserPersonalSettings = item1.usr.UserPersonalSettings;
+                                      obj.UserStatus = item1.usr.UserStatus;
+                                      obj.UserType = item1.usr.UserType;
+                                      obj.UserType1 = item1.usr.UserType1;
+                                      lstUsers.Add(Convert<BO.User, User>(obj));
+                                  }
+                                  else
+                                  {
+                                      foreach (var rol in lstUsers.Where(y => y.ID == item1.usr.id))
+                                      {
+                                          BO.Role roles = new BO.Role();
+                                          roles.ID = item1.ucr.id;
+                                          roles.RoleType = (BO.GBEnums.RoleType)item1.ucr.RoleID;
+                                          roles.Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item1.ucr.RoleID);
+                                          rol.Roles.Add(roles);
+                                      }
+                                  }
+                              }*/
+                            #endregion
+                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles")
+                                                      .Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null)).Select(p => new
+                                                      {
+                                                          Users = p,
+                                                          AddressInfo = p.AddressInfo,
+                                                          ContactInfo = p.ContactInfo,
+                                                          UserCompanies = p.UserCompanies.Where(y => y.CompanyID == CompID && y.UserID == p.id && (y.IsDeleted == false || y.IsDeleted == null)),
+                                                          UserCompanyRoles = p.UserCompanyRoles.Where(s => s.CompanyID == CompID && s.UserID == p.id && (s.IsDeleted == false || s.IsDeleted == null))
+                                                      }).ToList().Select(p => p.Users).ToList<User>();
+                            if (data1 == null || data1.Count == 0)
+                                return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+                            foreach (User item in data1)
+                            {
+                                if (item.UserCompanyRoles.Count > 0)
+                                {
+                                    lstUsers.Add(Convert<BO.User, User>(item));
+                                }
+                            }
+                            return lstUsers;
+                    }
+
+                }
+                return null;
+            }
+            else
+            {
+                switch (userBO.UserType)
+                {
+                    case BO.GBEnums.UserType.Patient:
+                    case BO.GBEnums.UserType.Staff:
+                        byte UserTpe = System.Convert.ToByte(userBO.UserType);
+                        var acc_ = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe).ToList<User>();
+                        if (acc_ == null || acc_.Count == 0)
+                            return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        foreach (User item in acc_)
+                        {
+                            lstUsers.Add(Convert<BO.User, User>(item));
+                        }
+
+                        return lstUsers;
+                    default:
+                        {
+                            var acc1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null)).ToList<User>();
+                            if (acc1 == null || acc1.Count == 0)
+                                return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            foreach (User item in acc1)
+                            {
+                                lstUsers.Add(Convert<BO.User, User>(item));
+                            }
+
+                            return lstUsers;
+                        }
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+
+        #region ResetPassword
+        public override Object ResetPassword<T>(T entity)
+        {
+            BO.AddUser addUserBO = (BO.AddUser)(object)entity;
+            BO.User userBO = addUserBO.user;
+            BO.Company companyBO = addUserBO.company;
+
+            if (addUserBO.user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (userBO.ID == 0)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user id", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            User userDB = new User();
+            Company companyDB = new Company();
+            Invitation invitationDB = new Invitation();
+
+            userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
+
+            if (companyBO == null)
+            {
+                userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            }
+            else
+            {
+                var userCompany = _context.UserCompanies.Where(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                companyDB = _context.Companies.Where(p => p.id == companyBO.ID
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
+
+                if (_context.UserCompanies.Any(p => p.UserID == userBO.ID && p.CompanyID == companyBO.ID
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))) == true)
+                {
+                    if (companyDB.CompanyStatusTypeID == 2 && userCompany.UserStatusID == 1)
+                    {
+                        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                        companyDB.CompanyStatusTypeID = 3;
+                        userCompany.UserStatusID = 2;
+                    }
+                    else if (companyDB.CompanyStatusTypeID == 2 && userCompany.UserStatusID == 2)
+                    {
+                        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                        companyDB.CompanyStatusTypeID = 3;
+                    }
+                    else if (companyDB.CompanyStatusTypeID == 3 && userCompany.UserStatusID == 1)
+                    {
+                        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                        userCompany.UserStatusID = 2;
+                    }
+                    else if (companyDB.CompanyStatusTypeID == 3 && userCompany.UserStatusID == 2)
+                    {
+                        userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                    }
+                }
+                else
+                {
+                    userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                }
+            }
+
+
+            _context.SaveChanges();
+
+            userDB = _context.Users.Where(p => p.id == userBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<User>();
+
+            BO.User acc_ = Convert<BO.User, User>(userDB);
+
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
+        }
+
+        #endregion
+    }
+}

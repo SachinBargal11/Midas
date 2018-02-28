@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CAIdentityServerModelStoreContainer" CdmEntityContainer="CAIdentityServerEntitiesModel">
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.Client">
+        <MappingFragment StoreEntitySet="Client">
+          <ScalarProperty Name="UserStoreConnectionString" ColumnName="UserStoreConnectionString" />
+          <ScalarProperty Name="UserStoreServiceName" ColumnName="UserStoreServiceName" />
+          <ScalarProperty Name="IsTwoFactorAuthentication" ColumnName="IsTwoFactorAuthentication" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="Flow" ColumnName="Flow" />
+          <ScalarProperty Name="ClientUri" ColumnName="ClientUri" />
+          <ScalarProperty Name="RequireConsent" ColumnName="RequireConsent" />
+          <ScalarProperty Name="AllowRememberConsent" ColumnName="AllowRememberConsent" />
+          <ScalarProperty Name="AccessTokenLifetime" ColumnName="AccessTokenLifetime" />
+          <ScalarProperty Name="AccessTokenType" ColumnName="AccessTokenType" />
+          <ScalarProperty Name="AuthorizationCodeLifetime" ColumnName="AuthorizationCodeLifetime" />
+          <ScalarProperty Name="IdentityTokenLifetime" ColumnName="IdentityTokenLifetime" />
+          <ScalarProperty Name="RefreshTokenUsage" ColumnName="RefreshTokenUsage" />
+          <ScalarProperty Name="RefreshTokenExpiration" ColumnName="RefreshTokenExpiration" />
+          <ScalarProperty Name="AbsoluteRefreshTokenLifetime" ColumnName="AbsoluteRefreshTokenLifetime" />
+          <ScalarProperty Name="SlidingRefreshTokenLifetime" ColumnName="SlidingRefreshTokenLifetime" />
+          <ScalarProperty Name="UpdateAccessTokenClaimsOnRefresh" ColumnName="UpdateAccessTokenClaimsOnRefresh" />
+          <ScalarProperty Name="RequireSignOutPrompt" ColumnName="RequireSignOutPrompt" />
+          <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientAllowedCorsOrigins">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ClientAllowedCorsOrigin">
+        <MappingFragment StoreEntitySet="ClientAllowedCorsOrigin">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientPostLogoutRedirectURIs">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ClientPostLogoutRedirectURI">
+        <MappingFragment StoreEntitySet="ClientPostLogoutRedirectURI">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientRedirectURIs">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ClientRedirectURI">
+        <MappingFragment StoreEntitySet="ClientRedirectURI">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientScopes">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ClientScope">
+        <MappingFragment StoreEntitySet="ClientScope">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ScopeName" ColumnName="ScopeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Scopes">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.Scope">
+        <MappingFragment StoreEntitySet="Scope">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="ScopeType" ColumnName="ScopeType" />
+          <ScalarProperty Name="Emphasize" ColumnName="Emphasize" />
+          <ScalarProperty Name="ShowInDiscoveryDocument" ColumnName="ShowInDiscoveryDocument" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ScopeClaims">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ScopeClaim">
+        <MappingFragment StoreEntitySet="ScopeClaim">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ScopeID" ColumnName="ScopeID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ScopeClaimDescription" ColumnName="ScopeClaimDescription" />
+          <ScalarProperty Name="AlwaysIncludeInIdToken" ColumnName="AlwaysIncludeInIdToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ScopeSecrets">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ScopeSecret">
+        <MappingFragment StoreEntitySet="ScopeSecret">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ScopeID" ColumnName="ScopeID" />
+          <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientSecrets">
+      <EntityTypeMapping TypeName="CAIdentityServerModel.ClientSecret">
+        <MappingFragment StoreEntitySet="ClientSecret">
+          <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

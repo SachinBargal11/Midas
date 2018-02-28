@@ -1,0 +1,17 @@
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.Common.dll.config
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.Common.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.Common.pdb
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.BusinessObjects.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\Newtonsoft.Json.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.Extensions.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.Formatting.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.Primitives.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.WebRequest.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.BusinessObjects.pdb
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\Newtonsoft.Json.xml
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.xml
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\bin\Release.MIDAS.GBX.WebAPI\System.Net.Http.WebRequest.xml
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.Common.csprojResolveAssemblyReference.cache
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.Common.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\Common\obj\Release.MIDAS.GBX.WebAPI\MIDAS.GBX.Common.pdb

@@ -1,0 +1,64 @@
+2/1/2018 3:35:55 PM: Email Delivery Service Started. Time Duration is: 60000
+-------------------------------------------------------
+
+
+2/1/2018 3:36:57 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:37:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:38:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:39:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:40:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:41:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:42:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:43:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:44:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:45:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:46:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:48:11 PM: Email Delivery Service Called: 1 emailes out of 1 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:48:56 PM: Email Delivery Service Called: 0 emailes out of 0 sent successfully while 0 emails could not be sent at moment
+-------------------------------------------------------
+
+
+2/1/2018 3:49:43 PM: Email Delivery Service Stopped.
+-------------------------------------------------------
+
+
+2/1/2018 10:19:39 PM: Email Delivery Service Started. Time Duration is: 60000
+-------------------------------------------------------
+
+

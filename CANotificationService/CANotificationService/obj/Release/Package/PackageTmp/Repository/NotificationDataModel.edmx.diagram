@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a1a9daa682b74b44a319fd5fc0b7a592" Name="Diagram1">
+        <EntityTypeShape EntityType="NotificationModel.Application" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.ApplicationGroup" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.Event" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.EventGroup" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.EventSubscription" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.Message" Width="1.5" PointX="5.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.User" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="NotificationModel.UserConnection" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <AssociationConnector Association="NotificationModel.FK__Applicati__Appli__32E0915F" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__Event__Applicati__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__User__Applicatio__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__EventGrou__Group__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__EventGrou__Event__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__EventSubs__Event__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__Message__EventID__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="NotificationModel.FK__UserConne__UserN__398D8EEE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

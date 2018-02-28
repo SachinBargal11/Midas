@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MessagingModelStoreContainer" CdmEntityContainer="MessagingEntities">
+    <EntitySetMapping Name="Applications">
+      <EntityTypeMapping TypeName="MessagingModel.Application">
+        <MappingFragment StoreEntitySet="Application">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="QueueTypeId" ColumnName="QueueTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EMailConfigurations">
+      <EntityTypeMapping TypeName="MessagingModel.EMailConfiguration">
+        <MappingFragment StoreEntitySet="EMailConfiguration">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="SMTPClientHostName" ColumnName="SMTPClientHostName" />
+          <ScalarProperty Name="SmtpClientPortNumber" ColumnName="SmtpClientPortNumber" />
+          <ScalarProperty Name="SMTPClientUserName" ColumnName="SMTPClientUserName" />
+          <ScalarProperty Name="SMTPClientPassword" ColumnName="SMTPClientPassword" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="MaxNumberOfRetry" ColumnName="MaxNumberOfRetry" />
+          <ScalarProperty Name="IsSSLEnabled" ColumnName="IsSSLEnabled" />
+          <ScalarProperty Name="FromEmailID" ColumnName="FromEmailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EMailQueues">
+      <EntityTypeMapping TypeName="MessagingModel.EMailQueue">
+        <MappingFragment StoreEntitySet="EMailQueue">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="EmailObject" ColumnName="EmailObject" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="NumberOfAttempts" ColumnName="NumberOfAttempts" />
+          <ScalarProperty Name="DeliveryResponse" ColumnName="DeliveryResponse" />
+          <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+          <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
+          <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
+          <ScalarProperty Name="CcEmail" ColumnName="CcEmail" />
+          <ScalarProperty Name="BccEmail" ColumnName="BccEmail" />
+          <ScalarProperty Name="EMailSubject" ColumnName="EMailSubject" />
+          <ScalarProperty Name="EMailBody" ColumnName="EMailBody" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MessageStatus">
+      <EntityTypeMapping TypeName="MessagingModel.MessageStatu">
+        <MappingFragment StoreEntitySet="MessageStatus">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QueueTypes">
+      <EntityTypeMapping TypeName="MessagingModel.QueueType">
+        <MappingFragment StoreEntitySet="QueueType">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="QueueTypeName" ColumnName="QueueTypeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SMSConfigurations">
+      <EntityTypeMapping TypeName="MessagingModel.SMSConfiguration">
+        <MappingFragment StoreEntitySet="SMSConfiguration">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="AccountSid" ColumnName="AccountSid" />
+          <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
+          <ScalarProperty Name="MaxNumberOfRetry" ColumnName="MaxNumberOfRetry" />
+          <ScalarProperty Name="SMSFromPhoneNumber" ColumnName="SMSFromPhoneNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SMSQueues">
+      <EntityTypeMapping TypeName="MessagingModel.SMSQueue">
+        <MappingFragment StoreEntitySet="SMSQueue">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="SMSObject" ColumnName="SMSObject" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="NumberOfAttempts" ColumnName="NumberOfAttempts" />
+          <ScalarProperty Name="DeliveryResponse" ColumnName="DeliveryResponse" />
+          <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+          <ScalarProperty Name="ToNumber" ColumnName="ToNumber" />
+          <ScalarProperty Name="FromNumber" ColumnName="FromNumber" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

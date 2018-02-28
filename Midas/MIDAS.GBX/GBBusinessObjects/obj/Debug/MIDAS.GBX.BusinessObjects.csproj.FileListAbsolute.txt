@@ -1,0 +1,7 @@
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\bin\Debug\MIDAS.GBX.BusinessObjects.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\bin\Debug\MIDAS.GBX.BusinessObjects.pdb
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\bin\Debug\Newtonsoft.Json.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\bin\Debug\Newtonsoft.Json.xml
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\obj\Debug\MIDAS.GBX.BusinessObjects.csprojResolveAssemblyReference.cache
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\obj\Debug\MIDAS.GBX.BusinessObjects.dll
+F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\GBBusinessObjects\obj\Debug\MIDAS.GBX.BusinessObjects.pdb

@@ -1,0 +1,595 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CAIdentityServerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClientName" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Flow" Type="tinyint" Nullable="false" />
+          <Property Name="ClientUri" Type="varchar" MaxLength="255" />
+          <Property Name="RequireConsent" Type="bit" Nullable="false" />
+          <Property Name="AllowRememberConsent" Type="bit" Nullable="false" />
+          <Property Name="AccessTokenLifetime" Type="int" Nullable="false" />
+          <Property Name="AccessTokenType" Type="tinyint" Nullable="false" />
+          <Property Name="AuthorizationCodeLifetime" Type="int" Nullable="false" />
+          <Property Name="IdentityTokenLifetime" Type="int" Nullable="false" />
+          <Property Name="RefreshTokenUsage" Type="tinyint" Nullable="false" />
+          <Property Name="RefreshTokenExpiration" Type="tinyint" Nullable="false" />
+          <Property Name="AbsoluteRefreshTokenLifetime" Type="int" Nullable="false" />
+          <Property Name="SlidingRefreshTokenLifetime" Type="int" Nullable="false" />
+          <Property Name="UpdateAccessTokenClaimsOnRefresh" Type="bit" Nullable="false" />
+          <Property Name="RequireSignOutPrompt" Type="bit" Nullable="false" />
+          <Property Name="IsEnabled" Type="bit" Nullable="false" />
+          <Property Name="IsTwoFactorAuthentication" Type="bit" Nullable="false" />
+          <Property Name="UserStoreServiceName" Type="varchar" MaxLength="255" />
+          <Property Name="UserStoreConnectionString" Type="varchar" MaxLength="512" />
+        </EntityType>
+        <EntityType Name="ClientAllowedCorsOrigin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientPostLogoutRedirectURI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientRedirectURI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientScope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="ScopeName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientSecret">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="SecretValue" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Scope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DisplayName" Type="varchar" MaxLength="255" />
+          <Property Name="ScopeType" Type="tinyint" Nullable="false" />
+          <Property Name="Emphasize" Type="bit" Nullable="false" />
+          <Property Name="ShowInDiscoveryDocument" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScopeClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScopeID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ScopeClaimDescription" Type="varchar" MaxLength="255" />
+          <Property Name="AlwaysIncludeInIdToken" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScopeSecret">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScopeID" Type="int" Nullable="false" />
+          <Property Name="SecretValue" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <Association Name="FK__ClientAll__Clien__440B1D61">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientAllowedCorsOrigin" Type="Self.ClientAllowedCorsOrigin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientAllowedCorsOrigin">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientPos__Clien__44FF419A">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientPostLogoutRedirectURI" Type="Self.ClientPostLogoutRedirectURI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientPostLogoutRedirectURI">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientRed__Clien__45F365D3">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientRedirectURI" Type="Self.ClientRedirectURI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientRedirectURI">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSco__Clien__46E78A0C">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientScope" Type="Self.ClientScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientScope">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSec__Clien__47DBAE45">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientSecret" Type="Self.ClientSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSecret">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ScopeClai__Scope__48CFD27E">
+          <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
+          <End Role="ScopeClaim" Type="Self.ScopeClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scope">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScopeClaim">
+              <PropertyRef Name="ScopeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ScopeSecr__Scope__49C3F6B7">
+          <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
+          <End Role="ScopeSecret" Type="Self.ScopeSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scope">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScopeSecret">
+              <PropertyRef Name="ScopeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CAIdentityServerModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientAllowedCorsOrigin" EntityType="Self.ClientAllowedCorsOrigin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientPostLogoutRedirectURI" EntityType="Self.ClientPostLogoutRedirectURI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientRedirectURI" EntityType="Self.ClientRedirectURI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientScope" EntityType="Self.ClientScope" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientSecret" EntityType="Self.ClientSecret" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scope" EntityType="Self.Scope" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScopeClaim" EntityType="Self.ScopeClaim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScopeSecret" EntityType="Self.ScopeSecret" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ClientAll__Clien__440B1D61" Association="Self.FK__ClientAll__Clien__440B1D61">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientAllowedCorsOrigin" EntitySet="ClientAllowedCorsOrigin" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientPos__Clien__44FF419A" Association="Self.FK__ClientPos__Clien__44FF419A">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientPostLogoutRedirectURI" EntitySet="ClientPostLogoutRedirectURI" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientRed__Clien__45F365D3" Association="Self.FK__ClientRed__Clien__45F365D3">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientRedirectURI" EntitySet="ClientRedirectURI" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSco__Clien__46E78A0C" Association="Self.FK__ClientSco__Clien__46E78A0C">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientScope" EntitySet="ClientScope" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSec__Clien__47DBAE45" Association="Self.FK__ClientSec__Clien__47DBAE45">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientSecret" EntitySet="ClientSecret" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ScopeClai__Scope__48CFD27E" Association="Self.FK__ScopeClai__Scope__48CFD27E">
+            <End Role="Scope" EntitySet="Scope" />
+            <End Role="ScopeClaim" EntitySet="ScopeClaim" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ScopeSecr__Scope__49C3F6B7" Association="Self.FK__ScopeSecr__Scope__49C3F6B7">
+            <End Role="Scope" EntitySet="Scope" />
+            <End Role="ScopeSecret" EntitySet="ScopeSecret" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CAIdentityServerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClientName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Flow" Type="Byte" Nullable="false" />
+          <Property Name="ClientUri" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RequireConsent" Type="Boolean" Nullable="false" />
+          <Property Name="AllowRememberConsent" Type="Boolean" Nullable="false" />
+          <Property Name="AccessTokenLifetime" Type="Int32" Nullable="false" />
+          <Property Name="AccessTokenType" Type="Byte" Nullable="false" />
+          <Property Name="AuthorizationCodeLifetime" Type="Int32" Nullable="false" />
+          <Property Name="IdentityTokenLifetime" Type="Int32" Nullable="false" />
+          <Property Name="RefreshTokenUsage" Type="Byte" Nullable="false" />
+          <Property Name="RefreshTokenExpiration" Type="Byte" Nullable="false" />
+          <Property Name="AbsoluteRefreshTokenLifetime" Type="Int32" Nullable="false" />
+          <Property Name="SlidingRefreshTokenLifetime" Type="Int32" Nullable="false" />
+          <Property Name="UpdateAccessTokenClaimsOnRefresh" Type="Boolean" Nullable="false" />
+          <Property Name="RequireSignOutPrompt" Type="Boolean" Nullable="false" />
+          <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClientAllowedCorsOrigins" Relationship="Self.FK__ClientAll__Clien__403A8C7D" FromRole="Client" ToRole="ClientAllowedCorsOrigin" />
+          <NavigationProperty Name="ClientPostLogoutRedirectURIs" Relationship="Self.FK__ClientPos__Clien__3D5E1FD2" FromRole="Client" ToRole="ClientPostLogoutRedirectURI" />
+          <NavigationProperty Name="ClientRedirectURIs" Relationship="Self.FK__ClientRed__Clien__3A81B327" FromRole="Client" ToRole="ClientRedirectURI" />
+          <NavigationProperty Name="ClientScopes" Relationship="Self.FK__ClientSco__Clien__4316F928" FromRole="Client" ToRole="ClientScope" />
+          <NavigationProperty Name="ClientSecrets" Relationship="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" FromRole="Client" ToRole="ClientSecret" />
+          <Property Name="IsTwoFactorAuthentication" Type="Boolean" Nullable="false" />
+          <Property Name="UserStoreServiceName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UserStoreConnectionString" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ClientAllowedCorsOrigin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__ClientAll__Clien__403A8C7D" FromRole="ClientAllowedCorsOrigin" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="ClientPostLogoutRedirectURI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__ClientPos__Clien__3D5E1FD2" FromRole="ClientPostLogoutRedirectURI" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="ClientRedirectURI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__ClientRed__Clien__3A81B327" FromRole="ClientRedirectURI" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="ClientScope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="ScopeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__ClientSco__Clien__4316F928" FromRole="ClientScope" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Scope">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ScopeType" Type="Byte" Nullable="false" />
+          <Property Name="Emphasize" Type="Boolean" Nullable="false" />
+          <Property Name="ShowInDiscoveryDocument" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ScopeClaims" Relationship="Self.FK__ScopeClai__Scope__36B12243" FromRole="Scope" ToRole="ScopeClaim" />
+          <NavigationProperty Name="ScopeSecrets" Relationship="Self.FK__ScopeSecr__Scope__45F365D3" FromRole="Scope" ToRole="ScopeSecret" />
+        </EntityType>
+        <EntityType Name="ScopeClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScopeID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ScopeClaimDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AlwaysIncludeInIdToken" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Scope" Relationship="Self.FK__ScopeClai__Scope__36B12243" FromRole="ScopeClaim" ToRole="Scope" />
+        </EntityType>
+        <EntityType Name="ScopeSecret">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScopeID" Type="Int32" Nullable="false" />
+          <Property Name="SecretValue" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Scope" Relationship="Self.FK__ScopeSecr__Scope__45F365D3" FromRole="ScopeSecret" ToRole="Scope" />
+        </EntityType>
+        <Association Name="FK__ClientAll__Clien__403A8C7D">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientAllowedCorsOrigin" Type="Self.ClientAllowedCorsOrigin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientAllowedCorsOrigin">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientPos__Clien__3D5E1FD2">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientPostLogoutRedirectURI" Type="Self.ClientPostLogoutRedirectURI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientPostLogoutRedirectURI">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientRed__Clien__3A81B327">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientRedirectURI" Type="Self.ClientRedirectURI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientRedirectURI">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSco__Clien__4316F928">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ClientScope" Type="Self.ClientScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientScope">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ScopeClai__Scope__36B12243">
+          <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
+          <End Role="ScopeClaim" Type="Self.ScopeClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scope">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScopeClaim">
+              <PropertyRef Name="ScopeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ScopeSecr__Scope__45F365D3">
+          <End Role="Scope" Type="Self.Scope" Multiplicity="1" />
+          <End Role="ScopeSecret" Type="Self.ScopeSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scope">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScopeSecret">
+              <PropertyRef Name="ScopeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CAIdentityServerEntitiesModel" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="ClientAllowedCorsOrigins" EntityType="Self.ClientAllowedCorsOrigin" />
+          <EntitySet Name="ClientPostLogoutRedirectURIs" EntityType="Self.ClientPostLogoutRedirectURI" />
+          <EntitySet Name="ClientRedirectURIs" EntityType="Self.ClientRedirectURI" />
+          <EntitySet Name="ClientScopes" EntityType="Self.ClientScope" />
+          <EntitySet Name="Scopes" EntityType="Self.Scope" />
+          <EntitySet Name="ScopeClaims" EntityType="Self.ScopeClaim" />
+          <EntitySet Name="ScopeSecrets" EntityType="Self.ScopeSecret" />
+          <AssociationSet Name="FK__ClientAll__Clien__403A8C7D" Association="Self.FK__ClientAll__Clien__403A8C7D">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientAllowedCorsOrigin" EntitySet="ClientAllowedCorsOrigins" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientPos__Clien__3D5E1FD2" Association="Self.FK__ClientPos__Clien__3D5E1FD2">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientPostLogoutRedirectURI" EntitySet="ClientPostLogoutRedirectURIs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientRed__Clien__3A81B327" Association="Self.FK__ClientRed__Clien__3A81B327">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientRedirectURI" EntitySet="ClientRedirectURIs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSco__Clien__4316F928" Association="Self.FK__ClientSco__Clien__4316F928">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientScope" EntitySet="ClientScopes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ScopeClai__Scope__36B12243" Association="Self.FK__ScopeClai__Scope__36B12243">
+            <End Role="Scope" EntitySet="Scopes" />
+            <End Role="ScopeClaim" EntitySet="ScopeClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ScopeSecr__Scope__45F365D3" Association="Self.FK__ScopeSecr__Scope__45F365D3">
+            <End Role="Scope" EntitySet="Scopes" />
+            <End Role="ScopeSecret" EntitySet="ScopeSecrets" />
+          </AssociationSet>
+          <EntitySet Name="ClientSecrets" EntityType="CAIdentityServerModel.ClientSecret" />
+          <AssociationSet Name="FK__ClientSec__Clien__48CFD27E" Association="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientSecret" EntitySet="ClientSecrets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ClientSecret">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="SecretValue" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="CAIdentityServerModel.FK__ClientSec__Clien__48CFD27E" FromRole="ClientSecret" ToRole="Client" />
+        </EntityType>
+        <Association Name="FK__ClientSec__Clien__48CFD27E">
+          <End Type="CAIdentityServerModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="CAIdentityServerModel.ClientSecret" Role="ClientSecret" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSecret">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CAIdentityServerModelStoreContainer" CdmEntityContainer="CAIdentityServerEntitiesModel">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="UserStoreConnectionString" ColumnName="UserStoreConnectionString" />
+                <ScalarProperty Name="UserStoreServiceName" ColumnName="UserStoreServiceName" />
+                <ScalarProperty Name="IsTwoFactorAuthentication" ColumnName="IsTwoFactorAuthentication" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="Flow" ColumnName="Flow" />
+                <ScalarProperty Name="ClientUri" ColumnName="ClientUri" />
+                <ScalarProperty Name="RequireConsent" ColumnName="RequireConsent" />
+                <ScalarProperty Name="AllowRememberConsent" ColumnName="AllowRememberConsent" />
+                <ScalarProperty Name="AccessTokenLifetime" ColumnName="AccessTokenLifetime" />
+                <ScalarProperty Name="AccessTokenType" ColumnName="AccessTokenType" />
+                <ScalarProperty Name="AuthorizationCodeLifetime" ColumnName="AuthorizationCodeLifetime" />
+                <ScalarProperty Name="IdentityTokenLifetime" ColumnName="IdentityTokenLifetime" />
+                <ScalarProperty Name="RefreshTokenUsage" ColumnName="RefreshTokenUsage" />
+                <ScalarProperty Name="RefreshTokenExpiration" ColumnName="RefreshTokenExpiration" />
+                <ScalarProperty Name="AbsoluteRefreshTokenLifetime" ColumnName="AbsoluteRefreshTokenLifetime" />
+                <ScalarProperty Name="SlidingRefreshTokenLifetime" ColumnName="SlidingRefreshTokenLifetime" />
+                <ScalarProperty Name="UpdateAccessTokenClaimsOnRefresh" ColumnName="UpdateAccessTokenClaimsOnRefresh" />
+                <ScalarProperty Name="RequireSignOutPrompt" ColumnName="RequireSignOutPrompt" />
+                <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientAllowedCorsOrigins">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ClientAllowedCorsOrigin">
+              <MappingFragment StoreEntitySet="ClientAllowedCorsOrigin">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientPostLogoutRedirectURIs">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ClientPostLogoutRedirectURI">
+              <MappingFragment StoreEntitySet="ClientPostLogoutRedirectURI">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientRedirectURIs">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ClientRedirectURI">
+              <MappingFragment StoreEntitySet="ClientRedirectURI">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientScopes">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ClientScope">
+              <MappingFragment StoreEntitySet="ClientScope">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ScopeName" ColumnName="ScopeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scopes">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.Scope">
+              <MappingFragment StoreEntitySet="Scope">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="ScopeType" ColumnName="ScopeType" />
+                <ScalarProperty Name="Emphasize" ColumnName="Emphasize" />
+                <ScalarProperty Name="ShowInDiscoveryDocument" ColumnName="ShowInDiscoveryDocument" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScopeClaims">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ScopeClaim">
+              <MappingFragment StoreEntitySet="ScopeClaim">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ScopeID" ColumnName="ScopeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ScopeClaimDescription" ColumnName="ScopeClaimDescription" />
+                <ScalarProperty Name="AlwaysIncludeInIdToken" ColumnName="AlwaysIncludeInIdToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScopeSecrets">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ScopeSecret">
+              <MappingFragment StoreEntitySet="ScopeSecret">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ScopeID" ColumnName="ScopeID" />
+                <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientSecrets">
+            <EntityTypeMapping TypeName="CAIdentityServerModel.ClientSecret">
+              <MappingFragment StoreEntitySet="ClientSecret">
+                <ScalarProperty Name="SecretValue" ColumnName="SecretValue" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

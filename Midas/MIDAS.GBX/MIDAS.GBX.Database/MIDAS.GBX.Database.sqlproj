@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>MIDAS.GBX.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{62f2c75f-2e1b-4ba3-b031-c231eb1ad8c5}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>MIDAS.GBX.Database</RootNamespace>
+    <AssemblyName>MIDAS.GBX.Database</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.WebAPI|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.PatientWebAPI|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.AttorneyWebAPI|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.AncillaryWebAPI|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.CollectionWebAPI|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.FundingWebAPI|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="Tables\Latest Tables" />
+    <Folder Include="StoredProcedure" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\AddressInfo.sql" />
+    <Build Include="Tables\Company.sql" />
+    <Build Include="Tables\CompanyType.sql" />
+    <Build Include="Tables\ContactInfo.sql" />
+    <Build Include="Tables\Doctor.sql" />
+    <Build Include="Tables\DoctorSpecialities.sql" />
+    <Build Include="Tables\Invitation.sql" />
+    <Build Include="Tables\InvitationType.sql" />
+    <Build Include="Tables\Location.sql" />
+    <Build Include="Tables\Log.sql" />
+    <Build Include="Tables\PreferredMedicalProvider.sql" />
+    <Build Include="Tables\OTP.sql" />
+    <Build Include="Tables\PasswordToken.sql" />
+    <Build Include="Tables\Role.sql" />
+    <Build Include="Tables\Specialty.sql" />
+    <Build Include="Tables\SpecialtyDetails.sql" />
+    <Build Include="Tables\SubscriptionPlan.sql" />
+    <Build Include="Tables\User.sql" />
+    <Build Include="Tables\UserCompany.sql" />
+    <Build Include="Tables\UserCompanyRole.sql" />
+    <Build Include="Tables\UserToken.sql" />
+    <Build Include="Tables\UserType.sql" />
+    <Build Include="Tables\CompanySpecialtyDetails.sql" />
+    <Build Include="Tables\Room.sql" />
+    <Build Include="Tables\RoomDetails.sql" />
+    <Build Include="Tables\Schedule.sql" />
+    <Build Include="Tables\DoctorLocationSchedule.sql" />
+    <Build Include="Tables\RoomTest.sql" />
+    <Build Include="Tables\ScheduleDetail.sql" />
+    <Build Include="Tables\Latest Tables\Patient.sql" />
+    <Build Include="Tables\Latest Tables\PatientEmpInfo.sql" />
+    <Build Include="Tables\Latest Tables\PatientInsuranceInfo.sql" />
+    <Build Include="Tables\Latest Tables\State.sql" />
+    <Build Include="Tables\Latest Tables\City.sql" />
+    <Build Include="Tables\Latest Tables\MaritalStatus.sql" />
+    <Build Include="Tables\Latest Tables\Gender.sql" />
+    <Build Include="Tables\Latest Tables\Case.sql" />
+    <Build Include="Tables\Latest Tables\PatientFamilyMembers.sql" />
+    <Build Include="Tables\Latest Tables\Relations.sql" />
+    <Build Include="Tables\Latest Tables\RefferingOffice.sql" />
+    <Build Include="Tables\Latest Tables\PatientAccidentInfo.sql" />
+    <Build Include="Tables\Latest Tables\PolicyOwner.sql" />
+    <Build Include="Tables\Latest Tables\InsuranceType.sql" />
+    <Build Include="Tables\Latest Tables\PatientType.sql" />
+    <Build Include="Tables\Latest Tables\CaseInsuranceMapping.sql" />
+    <Build Include="Tables\Latest Tables\Attorney.sql" />
+    <Build Include="Tables\Latest Tables\CaseType.sql" />
+    <Build Include="Tables\Latest Tables\CaseStatus.sql" />
+    <Build Include="Tables\Latest Tables\InsuranceMaster.sql" />
+    <Build Include="Tables\Latest Tables\AdjusterMaster.sql" />
+    <Build Include="Tables\Latest Tables\CalendarEvent.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisit.sql" />
+    <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
+    <Build Include="Tables\Latest Tables\CaseCompanyMapping.sql" />
+    <Build Include="Tables\Latest Tables\CompanyCaseConsentApproval.sql" />
+    <Build Include="Tables\MidasDocuments.sql" />
+    <Build Include="Tables\CaseDocuments.sql" />
+    <Build Include="Tables\Latest Tables\Notification.sql" />
+    <Build Include="Tables\Latest Tables\Templates.sql" />
+    <Build Include="Tables\Latest Tables\ReferralDocuments.sql" />
+    <Build Include="Tables\Latest Tables\BlobStorage.sql" />
+    <Build Include="Tables\Latest Tables\BlobStorageType.sql" />
+    <Build Include="Tables\Latest Tables\ConsentGivenType.sql" />
+    <Build Include="Tables\Latest Tables\DiagnosisType.sql" />
+    <Build Include="Tables\Latest Tables\DiagnosisCode.sql" />
+    <Build Include="Tables\Latest Tables\ProcedureCode.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisitDiagnosisCodes.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisitProcedureCodes.sql" />
+    <Build Include="Tables\Latest Tables\UserPersonalSettings.sql" />
+    <Build Include="Tables\Latest Tables\PendingReferral.sql" />
+    <Build Include="Tables\Latest Tables\PendingReferralProcedureCodes.sql" />
+    <Build Include="Tables\Latest Tables\DocumentNodes.sql" />
+    <Build Include="Tables\Latest Tables\DocumentNodeObjectMapping.sql" />
+    <Build Include="Tables\VisitDocuments.sql" />
+    <Build Include="Tables\Latest Tables\Referral.sql" />
+    <Build Include="Tables\Latest Tables\ReferralProcedureCodes.sql" />
+    <Build Include="Tables\Latest Tables\MailTemplates.sql" />
+    <Build Include="Tables\Latest Tables\GeneralSettings.sql" />
+    <Build Include="Tables\Latest Tables\PreferredAttorneyProvider.sql" />
+    <Build Include="Tables\Latest Tables\CaseCompanyConsentDocuments.sql" />
+    <Build Include="Tables\Latest Tables\PreferredAncillaryProvider.sql" />
+    <Build Include="StoredProcedure\sp_CaseGetReadOnly.sql" />
+    <Build Include="Tables\Latest Tables\DoctorTaxType.sql" />
+    <Build Include="Tables\Latest Tables\VisitType.sql" />
+    <Build Include="Tables\Latest Tables\DoctorRoomTestMapping.sql" />
+    <Build Include="Tables\Latest Tables\AttorneyVisit.sql" />
+    <Build Include="Tables\Latest Tables\LanguagePreference.sql" />
+    <Build Include="Tables\Latest Tables\PatientLanguagePreferenceMapping.sql" />
+    <Build Include="Tables\Latest Tables\SocialMedia.sql" />
+    <Build Include="Tables\Latest Tables\PatientSocialMediaMapping.sql" />
+    <Build Include="Tables\Latest Tables\IMEVisit.sql" />
+    <Build Include="Tables\Latest Tables\EOVisit.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisitUnscheduled.sql" />
+    <Build Include="Tables\Latest Tables\SchoolInformation.sql" />
+    <Build Include="Tables\Latest Tables\AccidentWitness.sql" />
+    <Build Include="Tables\Latest Tables\AccidentTreatment.sql" />
+    <Build Include="Tables\Latest Tables\PlaintiffVehicle.sql" />
+    <Build Include="Tables\Latest Tables\DefendantVehicle.sql" />
+    <Build Include="Tables\Latest Tables\PatientPriorAccidentInjury.sql" />
+    <Build Include="Tables\Latest Tables\OTPCompanyMapping.sql" />
+    <Build Include="Tables\Latest Tables\CalendarView.sql" />
+    <Build Include="Tables\Latest Tables\PatientPersonalSettings.sql" />
+    <Build Include="Tables\Latest Tables\PreferredUIView.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
+  </ItemGroup>
+</Project>

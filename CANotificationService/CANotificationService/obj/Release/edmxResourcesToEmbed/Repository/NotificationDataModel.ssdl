@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NotificationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Application">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ApplicationGroup">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ApplicationID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="256" Nullable="false" />
+    <Property Name="ApplicationID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventGroup">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupID" Type="int" Nullable="false" />
+    <Property Name="EventID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventSubscription">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nvarchar" MaxLength="255" />
+    <Property Name="EventID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NotificationMessage" Type="varchar(max)" />
+    <Property Name="ReceiverUserID" Type="nvarchar" MaxLength="255" />
+    <Property Name="NotificationTime" Type="datetime" Nullable="false" />
+    <Property Name="IsRead" Type="bit" Nullable="false" />
+    <Property Name="EventID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ApplicationID" Type="int" />
+  </EntityType>
+  <EntityType Name="UserConnection">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="UserAgent" Type="varchar" MaxLength="255" />
+    <Property Name="UserName" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK__Applicati__Appli__32E0915F">
+    <End Role="Application" Type="Self.Application" Multiplicity="1" />
+    <End Role="ApplicationGroup" Type="Self.ApplicationGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Application">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ApplicationGroup">
+        <PropertyRef Name="ApplicationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Event__Applicati__33D4B598">
+    <End Role="Application" Type="Self.Application" Multiplicity="1" />
+    <End Role="Event" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Application">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="ApplicationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EventGrou__Event__34C8D9D1">
+    <End Role="Event" Type="Self.Event" Multiplicity="1" />
+    <End Role="EventGroup" Type="Self.EventGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventGroup">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EventGrou__Group__35BCFE0A">
+    <End Role="ApplicationGroup" Type="Self.ApplicationGroup" Multiplicity="1" />
+    <End Role="EventGroup" Type="Self.EventGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApplicationGroup">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EventGroup">
+        <PropertyRef Name="GroupID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EventSubs__Event__36B12243">
+    <End Role="Event" Type="Self.Event" Multiplicity="1" />
+    <End Role="EventSubscription" Type="Self.EventSubscription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventSubscription">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Message__EventID__37A5467C">
+    <End Role="Event" Type="Self.Event" Multiplicity="1" />
+    <End Role="Message" Type="Self.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__User__Applicatio__38996AB5">
+    <End Role="Application" Type="Self.Application" Multiplicity="0..1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Application">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="ApplicationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserConne__UserN__398D8EEE">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserConnection" Type="Self.UserConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserName" />
+      </Principal>
+      <Dependent Role="UserConnection">
+        <PropertyRef Name="UserName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NotificationModelStoreContainer">
+    <EntitySet Name="Application" EntityType="Self.Application" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ApplicationGroup" EntityType="Self.ApplicationGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EventGroup" EntityType="Self.EventGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EventSubscription" EntityType="Self.EventSubscription" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserConnection" EntityType="Self.UserConnection" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Applicati__Appli__32E0915F" Association="Self.FK__Applicati__Appli__32E0915F">
+      <End Role="Application" EntitySet="Application" />
+      <End Role="ApplicationGroup" EntitySet="ApplicationGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Event__Applicati__33D4B598" Association="Self.FK__Event__Applicati__33D4B598">
+      <End Role="Application" EntitySet="Application" />
+      <End Role="Event" EntitySet="Event" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EventGrou__Event__34C8D9D1" Association="Self.FK__EventGrou__Event__34C8D9D1">
+      <End Role="Event" EntitySet="Event" />
+      <End Role="EventGroup" EntitySet="EventGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EventGrou__Group__35BCFE0A" Association="Self.FK__EventGrou__Group__35BCFE0A">
+      <End Role="ApplicationGroup" EntitySet="ApplicationGroup" />
+      <End Role="EventGroup" EntitySet="EventGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EventSubs__Event__36B12243" Association="Self.FK__EventSubs__Event__36B12243">
+      <End Role="Event" EntitySet="Event" />
+      <End Role="EventSubscription" EntitySet="EventSubscription" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Message__EventID__37A5467C" Association="Self.FK__Message__EventID__37A5467C">
+      <End Role="Event" EntitySet="Event" />
+      <End Role="Message" EntitySet="Message" />
+    </AssociationSet>
+    <AssociationSet Name="FK__User__Applicatio__38996AB5" Association="Self.FK__User__Applicatio__38996AB5">
+      <End Role="Application" EntitySet="Application" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserConne__UserN__398D8EEE" Association="Self.FK__UserConne__UserN__398D8EEE">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserConnection" EntitySet="UserConnection" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

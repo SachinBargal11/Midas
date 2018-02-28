@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{336EA526-404F-47FF-A82D-3F4A34CCAA8E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MIDAS.GBX.BusinessObjects</RootNamespace>
+    <AssemblyName>MIDAS.GBX.BusinessObjects</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.WebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.WebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.PatientWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.PatientWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.AttorneyWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.AttorneyWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.AncillaryWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.AncillaryWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.CollectionWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.CollectionWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.MIDAS.GBX.FundingWebAPI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release.MIDAS.GBX.FundingWebAPI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address\AddressInfo.cs" />
+    <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
+    <Compile Include="AttorneyMaster\AttorneyMaster.cs" />
+    <Compile Include="AttorneyVisit\AttorneyVisit.cs" />
+    <Compile Include="Common\LanguagePreference.cs" />
+    <Compile Include="Common\SocialMedia.cs" />
+    <Compile Include="CompanyICDTypeCode\CompanyICDTypeCode.cs" />
+    <Compile Include="Company\CompanyType.cs" />
+    <Compile Include="DefendantVehicle\DefendantVehicle.cs" />
+    <Compile Include="DiagnosisCodeCompany\DiagnosisCodeCompanyMapping.cs" />
+    <Compile Include="DiagnosisTypeCompany\DiagnosisTypeCompany.cs" />
+    <Compile Include="EOVisit\EOVisit.cs" />
+    <Compile Include="Doctor\DoctorRoomTestMapping.cs" />
+    <Compile Include="ICDTypeCode\ICDTypeCode.cs" />
+    <Compile Include="IMEVisit\IMEVisit.cs" />
+    <Compile Include="InsuranceMaster\InsuranceMasterType.cs" />
+    <Compile Include="InsuranceType\InsuranceType.cs" />
+    <Compile Include="MesssagingService\Subscription.cs" />
+    <Compile Include="MesssagingService\SMS.cs" />
+    <Compile Include="MesssagingService\EmailMessage.cs" />
+    <Compile Include="OTPCompanyMapping\OTPCompanyMapping.cs" />
+    <Compile Include="PatientAccidentInfo\AccidentTreatment.cs" />
+    <Compile Include="PatientAccidentInfo\AccidentWitness.cs" />
+    <Compile Include="PatientDocument\PatientDocument.cs" />
+    <Compile Include="PatientPersonalSetting\PatientPersonalSetting.cs" />
+    <Compile Include="PatientPriorAccidentInjury\PatientPriorAccidentInjury.cs" />
+    <Compile Include="PatientVisitUnscheduled\PatientVisitUnscheduled.cs" />
+    <Compile Include="Patient\PatientLanguagePreferenceMapping.cs" />
+    <Compile Include="Patient\PatientSocialMediaMapping.cs" />
+    <Compile Include="PlaintiffVehicle\PlaintiffVehicle.cs" />
+    <Compile Include="PreferredAncillaryProvider\PreferredAncillaryProvider.cs" />
+    <Compile Include="PreferredAttorneyProvider\PreferredAttorneyProvider.cs" />
+    <Compile Include="BoolConverter.cs" />
+    <Compile Include="BusinessValidation.cs" />
+    <Compile Include="BusinessValidationResult.cs" />
+    <Compile Include="CalendarEvent\CalendarEvent.cs" />
+    <Compile Include="Case\Case.cs" />
+    <Compile Include="Case\CaseCompanyConsentDocument.cs" />
+    <Compile Include="Case\CaseCompanyMapping.cs" />
+    <Compile Include="Case\CaseInsuranceMapping.cs" />
+    <Compile Include="Common\CaseStatus.cs" />
+    <Compile Include="Common\TemplateType.cs" />
+    <Compile Include="Common\CaseType.cs" />
+    <Compile Include="Common\City.cs" />
+    <Compile Include="Common\Gender.cs" />
+    <Compile Include="Common\InsuranceType.cs" />
+    <Compile Include="Common\MaritalStatus.cs" />
+    <Compile Include="Common\PatientType.cs" />
+    <Compile Include="Common\PolicyOwner.cs" />
+    <Compile Include="Common\Relation.cs" />
+    <Compile Include="Common\State.cs" />
+    <Compile Include="Common\UploadInfo.cs" />
+    <Compile Include="Company\Company.cs" />
+    <Compile Include="Company\Signup.cs" />
+    <Compile Include="ConsentGivenType\ConsentGivenType.cs" />
+    <Compile Include="ContactInfo\ContactInfo.cs" />
+    <Compile Include="DiagnosisCode\DiagnosisCode.cs" />
+    <Compile Include="DiagnosisType\DiagnosisType.cs" />
+    <Compile Include="Doctor\Doctor.cs" />
+    <Compile Include="CompanyCaseConsentApproval\CompanyCaseConsentApproval.cs" />
+    <Compile Include="Doctor\DoctorLocation.cs" />
+    <Compile Include="Doctor\DoctorSpeciality.cs" />
+    <Compile Include="DocumentInfo\Document.cs" />
+    <Compile Include="DocumentManager\DocumentManager.cs" />
+    <Compile Include="DocumentNodeObjectMapping\DocumentNodeObjectMapping.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="ErrorObject.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="GBEnums.cs" />
+    <Compile Include="GbObject.cs" />
+    <Compile Include="GeneralSetting\GeneralSetting.cs" />
+    <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
+    <Compile Include="PendingReferralProcedureCode\PendingReferralProcedureCode.cs" />
+    <Compile Include="PendingReferral\PendingReferral.cs" />
+    <Compile Include="PreferredMedicalProvider\PreferredMedicalProvider.cs" />
+    <Compile Include="Notification\Notification.cs" />
+    <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
+    <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />
+    <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
+    <Compile Include="Invitation\Invitation.cs" />
+    <Compile Include="Location\Location.cs" />
+    <Compile Include="Location\LocationSchedule.cs" />
+    <Compile Include="Location\LocationSpeciality.cs" />
+    <Compile Include="Location\SaveLocation.cs" />
+    <Compile Include="Log\Log.cs" />
+    <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
+    <Compile Include="PatientVisitDiagnosisCode\PatientVisitDiagnosisCode.cs" />
+    <Compile Include="PatientVisitEvent\PatientVisitEvent.cs" />
+    <Compile Include="PatientVisitProcedureCode\PatientVisitProcedureCode.cs" />
+    <Compile Include="PatientVisit\PatientVisit.cs" />
+    <Compile Include="Patient\Patient.cs" />
+    <Compile Include="Patient\PatientType.cs" />
+    <Compile Include="ProcedureCodeCompanyMapping\ProcedureCodeCompanyMapping.cs" />
+    <Compile Include="ProcedureCode\ProcedureCode.cs" />
+    <Compile Include="ReferralProcedureCode\ReferralProcedureCode.cs" />
+    <Compile Include="Referral\MidasDocument.cs" />
+    <Compile Include="Referral\Referral.cs" />
+    <Compile Include="Referral\ReferralDocument.cs" />
+    <Compile Include="RefferingOffice\RefferingOffice.cs" />
+    <Compile Include="Relation\Relation.cs" />
+    <Compile Include="Reports\Reports.cs" />
+    <Compile Include="Room\CompanyRoomTestDetails.cs" />
+    <Compile Include="Room\Room.cs" />
+    <Compile Include="Room\RoomTest.cs" />
+    <Compile Include="Schedule\Schedule.cs" />
+    <Compile Include="Schedule\ScheduleDetail.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role\Role.cs" />
+    <Compile Include="SchoolInformation\SchoolInformation.cs" />
+    <Compile Include="Search\SearchDoctors.cs" />
+    <Compile Include="Search\SearchMedicalProviders.cs" />
+    <Compile Include="Speciality\CompanySpecialtyDetails.cs" />
+    <Compile Include="Speciality\Specialty.cs" />
+    <Compile Include="Speciality\SpecialtyDetails.cs" />
+    <Compile Include="UserPersonalSetting\UserPersonalSetting.cs" />
+    <Compile Include="User\AddUser.cs" />
+    <Compile Include="User\OTP.cs" />
+    <Compile Include="User\PasswordToken.cs" />
+    <Compile Include="User\ResetPassword.cs" />
+    <Compile Include="User\User.cs" />
+    <Compile Include="User\UserCompany.cs" />
+    <Compile Include="User\UserCompanyRole.cs" />
+    <Compile Include="ValidateOTP.cs" />
+    <Compile Include="Validation\IValidation.cs" />
+    <Compile Include="Validation\Validations.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
