@@ -1,0 +1,16 @@
+﻿Installing assembly 'F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService\bin\Debug\MessagingService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService\bin\Debug\MessagingService.exe
+   logfile = F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService\bin\Debug\MessagingService.InstallLog
+Installing service CA SMS Delivery Service...
+Service CA SMS Delivery Service has been successfully installed.
+Creating EventLog source CA SMS Delivery Service in log Application...
+Installing service CA Email Delivery Service...
+Service CA Email Delivery Service has been successfully installed.
+Creating EventLog source CA Email Delivery Service in log Application...
+Committing assembly 'F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService\bin\Debug\MessagingService.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService\bin\Debug\MessagingService.exe
+   logfile = F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService\bin\Debug\MessagingService.InstallLog

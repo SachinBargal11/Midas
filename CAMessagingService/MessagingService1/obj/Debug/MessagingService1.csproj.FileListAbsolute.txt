@@ -1,0 +1,6 @@
+F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService1\bin\Debug\MessagingService1.exe.config
+F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService1\bin\Debug\MessagingService1.exe
+F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService1\bin\Debug\MessagingService1.pdb
+F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService1\obj\Debug\MessagingService1.csprojResolveAssemblyReference.cache
+F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService1\obj\Debug\MessagingService1.exe
+F:\Midas-develop\Midas-develop\CAMessagingService\MessagingService1\obj\Debug\MessagingService1.pdb
