@@ -312,9 +312,48 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getPatientVisitsByLocationDoctorAndRoomId(locationId: number, doctorId: number, roomId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientVisit/getByLocationDoctorAndRoomId/' + locationId + '/' + doctorId + '/' + roomId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
     getPatientVisitsByLocationAndDoctorId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/PatientVisit/getByLocationAndDoctorId/' + locationId + '/' + doctorId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getPatientVisitsByLocationDoctorAndCompanyId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/PatientVisit/getByLocationDoctorAndCompanyId/' + locationId + '/' + doctorId + '/' + companyId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -750,6 +789,27 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getPatientVisitsByCompanyDoctorId(): Observable<PatientVisit[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
+        let doctorId = this._sessionStore.session.user.id;
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/getByCompanyAndDoctorId/' + companyId  + '/' + doctorId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
     getImeVisitByCompanyId(): Observable<ImeVisit[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<ImeVisit[]> = new Promise((resolve, reject) => {
@@ -804,7 +864,7 @@ export class PatientVisitService {
     }
 
     getEoVisitByCompanyAndDoctorId(doctorId: number): Observable<EoVisit[]> {
-        let companyId = this._sessionStore.session.currentCompany.id;
+        let companyId = this._sessionStore.session.currentCompany.id;       
         let promise: Promise<EoVisit[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/EOvisit/getByCompanyAndDoctorId/' + companyId + '/' + doctorId, {
                 headers: this._headers

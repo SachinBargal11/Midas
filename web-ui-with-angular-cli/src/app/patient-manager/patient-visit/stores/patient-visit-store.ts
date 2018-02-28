@@ -95,9 +95,33 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
+    getPatientVisitsByLocationDoctorAndRoomId(locationId: number, doctorId: number, roomId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitsByLocationDoctorAndRoomId(locationId, doctorId, roomId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
     getPatientVisitsByLocationAndDoctorId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getPatientVisitsByLocationAndDoctorId(locationId, doctorId).subscribe((patientVisits: PatientVisit[]) => {
+                this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+    getPatientVisitsByLocationDoctorAndCompanyId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitsByLocationDoctorAndCompanyId(locationId, doctorId).subscribe((patientVisits: PatientVisit[]) => {
                 this._patientVisits.next(List(patientVisits));
                 resolve(patientVisits);
             }, error => {
@@ -567,6 +591,19 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
+    getPatientVisitsByCompanyIdDoctorId(): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitsByCompanyDoctorId().subscribe((patientVisits: PatientVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    
 
     getImeVisitByCompanyId(companyId: number): Observable<ImeVisit[]> {
         let promise = new Promise((resolve, reject) => {

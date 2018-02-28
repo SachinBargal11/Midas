@@ -92,7 +92,8 @@ export class AddDiagnosisCodeComponent implements OnInit {
         this.isSaveProgress = true;
         if(this.newDiagnosisTypeText.trim() != "" && this.newDiagnosisTypeText.trim() != undefined)
         {
-        if (this.selectedDiagnosis.length > 0 && this.selectedDiagnosis != undefined) {
+        if (this.selectedDiagnosis != undefined   && this.selectedDiagnosis.length > 0) 
+        {
             this.selectedDiagnosis.forEach(currentDiagnosis => {
                 this.selDiagnosisCodes.push({
                     'diagnosisCodeID': currentDiagnosis.id,
@@ -124,6 +125,7 @@ export class AddDiagnosisCodeComponent implements OnInit {
            
         }
         else {
+            debugger;
             this.isSaveProgress = false;
             let notification = new Notification({
                 'title': 'Select record to save',

@@ -74,6 +74,19 @@ export class DoctorsStore {
         return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
 
+    getReadingDoctorsByCompanyLocationRoomTestId(locationId: number, testId: number): Observable<Doctor[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._doctorsService.getReadingDoctorsByCompanyLocationRoomTestId(companyId, locationId, testId).subscribe((doctors: Doctor[]) => {
+                this._doctors.next(List(doctors));
+                resolve(doctors);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
+
     getDoctorsTaxType(): Observable<any[]> {
         let promise = new Promise((resolve, reject) => {
             this._doctorsService.getDoctorsTaxType().subscribe((taxType: any[]) => {

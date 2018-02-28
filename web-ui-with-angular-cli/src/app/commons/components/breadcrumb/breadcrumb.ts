@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from '@angular/router';
 import 'rxjs/add/operator/filter';
 import { SessionStore } from '../../stores/session-store';
+import * as _ from 'underscore';
 
 interface IBreadcrumb {
     label: string;
@@ -42,20 +43,62 @@ export class BreadcrumbComponent implements OnInit {
     }
 
     home() {
+        let doctorRoleOnly = null;
         let roles = this._sessionStore.session.user.roles;
         if (roles) {
-            roles.forEach(role => {
-                if (role.roleType === 3) {
-                    this.doctorRole = true;
+           
+            if (roles.length === 1) {
+                doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+            else if (roles.length > 1) {
+                let count = 0;
+                let currentcompanyrole = 0;
+                _.forEach(roles, (currentRole) => {
+                   if(currentRole.companyId == this._sessionStore.session.currentCompany.id)
+                   {
+                      if(currentRole.roleType === 3)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                      if(currentRole.roleType === 1)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                   }
+                });
+                if(count > 1)
+                {
+                    doctorRoleOnly = true;
                 }
-            });
-        }
+                else{
+                    if(currentcompanyrole == 3)
+                    {
+                        doctorRoleOnly = true;
+                    }
+                    else{
+                        doctorRoleOnly = false;
+                    }
+                 }
+
+                 if (doctorRoleOnly) {
+                    this.doctorRole = true;
+                } else {
+                    this.doctorRole = false;
+                }
+             }
+        debugger;
         if (this.doctorRole) {
+           
             this.router.navigate(['/doctor-manager/doctor-appointment']);
         } else {
             this.router.navigate(['/dashboard']);
         }
     }
+}
 
     /**
      * Let's go!
@@ -64,13 +107,54 @@ export class BreadcrumbComponent implements OnInit {
      * @method ngOnInit
      */
     ngOnInit() {
+        debugger;
+        let doctorRoleOnly = null;
         let roles = this._sessionStore.session.user.roles;
         if (roles) {
-            roles.forEach(role => {
-                if (role.roleType === 3) {
-                    this.doctorRole = true;
+            if (roles.length === 1) {
+                doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+            else if (roles.length > 1) {
+                let count = 0;
+                let currentcompanyrole = 0;
+                _.forEach(roles, (currentRole) => {
+                   if(currentRole.companyId == this._sessionStore.session.currentCompany.id)
+                   {
+                      if(currentRole.roleType === 3)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                      if(currentRole.roleType === 1)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                   }
+                });
+                if(count > 1)
+                {
+                    doctorRoleOnly = true;
                 }
-            });
+                else{
+                    if(currentcompanyrole == 3)
+                    {
+                        doctorRoleOnly = true;
+                    }
+                    else{
+                        doctorRoleOnly = false;
+                    }
+                 }
+
+                 if (doctorRoleOnly) {
+                  
+                    this.doctorRole = true;
+                } else {
+                    this.doctorRole = false;
+                }
+             }
         }
         // const ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
 

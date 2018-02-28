@@ -161,8 +161,10 @@ export class PatientVisitComponent implements OnInit {
     selectedEventDate;
     dayRenderer;
     isVisitTypeDisabled = false;
+    visitStatusIdC = 0;    
     patientsWithOpenCase: SelectItem[] = [];
     userSetting: UserSetting;
+
 
     eventRenderer: Function = (event, element) => {
         // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
@@ -428,9 +430,29 @@ export class PatientVisitComponent implements OnInit {
             return false;
         }
     }
-    getReadingDoctorsByCompanyId() {
+    getReadingDoctorsByCompanyId() {        
         // this._progressBarService.show();
         this.doctorsStore.getReadingDoctorsByCompanyId()
+            .subscribe((readingDoctors: Doctor[]) => {
+                let doctorDetails = _.reject(readingDoctors, (currentDoctor: Doctor) => {
+                    return currentDoctor.user == null;
+                })
+                this.readingDoctors = doctorDetails;
+            },
+
+            (error) => {
+                // this._progressBarService.hide();
+            },
+            () => {
+                // this._progressBarService.hide();
+            });
+    }
+
+
+    getReadingDoctorsByCompanyLocationTestId(locationId:number, testId:number) {        
+        // this._progressBarService.show();
+        this.readingDoctors = [];
+        this.doctorsStore.getReadingDoctorsByCompanyLocationRoomTestId(locationId, testId)
             .subscribe((readingDoctors: Doctor[]) => {
                 let doctorDetails = _.reject(readingDoctors, (currentDoctor: Doctor) => {
                     return currentDoctor.user == null;
@@ -597,6 +619,12 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
+    selectedvisitstat()
+    {   
+        let patientVisitFormValues = this.patientVisitForm.value;
+        this.visitStatusIdC = patientVisitFormValues.visitStatusId;  
+    }
+
     selectLocation() {
         if (this.selectedLocationId == 0) {
             this.selectedMode = 0;
@@ -606,6 +634,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
             this.events = [];
+            this.loadAllVisitsByCompanyId();
         } else {
             this.events = [];
             this.loadLocationVisits();
@@ -697,6 +726,56 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
+    loadAllVisitsByCompanyId() {
+        this._progressBarService.show();          
+        if(this.sessionStore.isOnlyDoctorRole())
+        {
+            this._patientVisitsStore.getPatientVisitsByCompanyIdDoctorId()
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
+        }
+        else
+        {
+            this._patientVisitsStore.getPatientVisitsByCompanyId(this.companyId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });    
+        }        
+    }
+
     selectOption(event) {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
@@ -726,7 +805,7 @@ export class PatientVisitComponent implements OnInit {
             this.ShowAllProcedureCodeTest = false;
         } else {
             this.selectedMode = 0;
-            this.selectLocation();
+            this.selectLocation();            
         }
     }
 
@@ -861,31 +940,7 @@ export class PatientVisitComponent implements OnInit {
         //     return !occurrence.eventWrapper.calendarEvent.isCancelled;
         // });
         return occurrences;
-    }
-
-    loadAllVisitsByCompanyId() {
-        this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByCompanyId(this.companyId)
-            .subscribe(
-            (visits: PatientVisit[]) => {
-                let events = this.getVisitOccurrences(visits);
-                this.events = _.union(this.events, events);
-                console.log(this.events);
-            },
-            (error) => {
-                this.events = [];
-                let notification = new Notification({
-                    'title': error.message,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
+    }    
 
     loadLocationDoctorSpeciatityVisits() {
         this._progressBarService.show();
@@ -911,6 +966,29 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationRoomVisits() {
         this._progressBarService.show();
+        if(this.sessionStore.isOnlyDoctorRole())
+        {
+            this._patientVisitsStore.getPatientVisitsByLocationDoctorAndRoomId(this.selectedLocationId, this.sessionStore.session.user.id, this.selectedRoomId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                this.events = this.getVisitOccurrences(visits);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        }
+        else
+        {
         this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId)
             .subscribe(
             (visits: PatientVisit[]) => {
@@ -929,11 +1007,14 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+        }
     }
 
     loadLocationVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId)
+        if(this.sessionStore.isOnlyDoctorRole())
+        {
+            this._patientVisitsStore.getPatientVisitsByLocationDoctorAndCompanyId(this.selectedLocationId, this.sessionStore.session.user.id)
             .subscribe(
             (visits: PatientVisit[]) => {
                 let events = this.getVisitOccurrences(visits);
@@ -953,6 +1034,30 @@ export class PatientVisitComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+        }
+        else
+        {
+            this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId)
+            .subscribe(
+            (visits: PatientVisit[]) => {
+                let events = this.getVisitOccurrences(visits);
+                this.events = _.union(this.events, events);
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        }
     }
 
     loadEoVisits() {
@@ -1158,10 +1263,19 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {        
+    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {           
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
-        let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);        
+        let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper); 
+        this.visitStatusIdC = 0; 
+        if(patientVisit.roomId != null)      
+        {
+            this.getReadingDoctorsByCompanyLocationTestId(patientVisit.locationId, patientVisit.roomId);
+        }        
         if (eventInstance.isInPast) {
+            if(patientVisit.roomId != null)
+            { this.selectedOption = 2;}             
+            else{ this.selectedOption = 1;}
+            this.visitStatusIdC = patientVisit.visitStatusId;
             this.isVisitTypeDisabled = false;
             if (scheduledEventForInstance.isChangedInstanceOfSeries) {
                 // Edit Existing Single Occurance of Visit
@@ -1221,8 +1335,8 @@ export class PatientVisitComponent implements OnInit {
                 patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
                     user: new User(_.extend(patientVisit.patient.user.toJS()))
                 })) : null
-            }))
-
+            }))                        
+                       
             /*this.selectedDoctorId = null;
             this.selectedRoomId = null;
             this.selectedOption = 0;
@@ -1384,16 +1498,25 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
-    saveVisit() {
-        
+    saveVisit() {  
+        debugger;      
         let result;
         let patientVisitFormValues = this.patientVisitForm.value;
         if (this.selectedVisit.isPatientVisitType) {
             let updatedVisit: PatientVisit;
+            let docID = null;
+            if(this.sessionStore.isOnlyDoctorRole())
+            {
+                docID = this.selectedVisit.doctorId == null ? this.sessionStore.session.user.id : this.selectedVisit.doctorId;
+            }   
+            else
+            {
+                docID = this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
+            }
             updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
                 notes: patientVisitFormValues.notes,
                 visitStatusId: patientVisitFormValues.visitStatusId,
-                doctorId: this.selectedOption == 2 ? parseInt(patientVisitFormValues.readingDoctor) : this.selectedVisit.doctorId
+                doctorId: docID
             }));
             result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
         } else if (this.selectedVisit.isEoVisitType) {
@@ -1415,7 +1538,9 @@ export class PatientVisitComponent implements OnInit {
         }
         result.subscribe(
             (response) => {
+                
                 this.selectedVisit = response;
+                this.visitStatusIdC = this.selectedVisit.visitStatusId;
                 let notification = new Notification({
                     'title': 'Event updated successfully!',
                     'type': 'SUCCESS',
@@ -1685,7 +1810,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveEvent() {
-
+        debugger;
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
@@ -1700,12 +1825,23 @@ export class PatientVisitComponent implements OnInit {
         } else {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
         }
+        debugger;
+        let docID = null;
+        if(this.sessionStore.isOnlyDoctorRole())
+        {
+            docID = this.sessionStore.session.user.id;
+        }
+        else
+        {
+            docID = this.selectedOption == 1 ? this.selectedDoctorId : null;
+        }
+
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             // patientId: leaveEvent ? null : patientScheduleFormValues.patientId ? patientScheduleFormValues.patientId : this.idPatient,
             patientId: leaveEvent ? null : this.idPatient ? (this.idPatient) : patientScheduleFormValues.patientId,
             caseId: leaveEvent ? null : patientScheduleFormValues.caseId ? patientScheduleFormValues.caseId : this.caseId,
             locationId: this.selectedLocationId,
-            doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+            doctorId: docID,
             roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
@@ -1785,6 +1921,9 @@ export class PatientVisitComponent implements OnInit {
                         this.loadVisits();
                         this._notificationsStore.addNotification(notification);
                         // this.event = null;
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectLocation();
                     },
                     (error) => {
                         let errString = 'Unable to add event!';
@@ -1864,6 +2003,9 @@ export class PatientVisitComponent implements OnInit {
                         this.loadVisits();
                         this._notificationsStore.addNotification(notification);
                         // this.event = null;
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectLocation();
                     },
                     (error) => {
                         let errString = 'Unable to add event!';

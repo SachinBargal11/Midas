@@ -58,6 +58,38 @@ export class PatientsListComponent implements OnInit {
                     return currentRole.roleType === 3;
                 });
             }
+            else if (roles.length > 1) {
+                let count = 0;
+                let currentcompanyrole = 0;
+                _.forEach(roles, (currentRole) => {
+                   if(currentRole.companyId == this.sessionStore.session.currentCompany.id)
+                   {
+                      if(currentRole.roleType === 3)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                      if(currentRole.roleType === 1)
+                      {
+                        count = count + 1;
+                        currentcompanyrole = currentRole.roleType;
+                      }
+                   }
+                });
+                if(count > 1)
+                {
+                    doctorRoleOnly = true;
+                }
+                else{
+                    if(currentcompanyrole == 3)
+                    {
+                        doctorRoleOnly = true;
+                    }
+                    else{
+                        doctorRoleOnly = false;
+                    }
+                 }
+                }
             if (doctorRoleOnly) {
                 this.loadPatientsByCompanyAndDoctor();
             } else {

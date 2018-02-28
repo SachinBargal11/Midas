@@ -14,8 +14,15 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                            <!-- <option value="0"> -- Select specialty -- </option>
+                            <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>                                        -->
                             <option value="0"> -- Select specialty -- </option>
-                            <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>                                       
+                            <optgroup label="Select Doctor">
+                                <option data-type="1" [attr.data-specialityId]="specialty.speciality.id" *ngFor="let specialty of doctorSpecialities" [value]="doctorId">{{specialty.speciality.name}}</option>
+                            </optgroup>                            
+                            <optgroup label="Select Room">
+                                <option data-type="2" [attr.data-testId]="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>
+                            </optgroup>
                         </select>
                     </div>
                 </div>
@@ -408,7 +415,6 @@
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="selectedVisit && visitDialogVisible">
         <!--<app-visit-detail [selectedVisit]="selectedVisit" [routeFrom]="1" (closeDialog)="closePatientVisitDialog($event)"></app-visit-detail>-->
-
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
@@ -445,14 +451,14 @@
                         <!--<div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-6">-->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
+                                <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control" (change)="selectedvisitstat()" >
                                     <option value="2">Complete</option>
                                     <option value="4">No Show</option>
                                  </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row" *ngIf="!selectedVisit.specialtyId && selectedVisit.isPatientVisitType">
+                    </div>                    
+                    <div class="row" *ngIf="!selectedVisit.specialtyId && selectedVisit.isPatientVisitType && !sessionStore.isOnlyDoctorRole() && visitStatusIdC != 4">
                         <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -476,7 +482,7 @@
                 </form>
             </p-tabPanel>
 
-            <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Documents" *ngIf="selectedVisit.id && visitStatusIdC != 4">
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
@@ -534,14 +540,14 @@
                     </div>
                 </p-dialog>
             </p-tabPanel>
-
-            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+            <!--&& selectedVisit.visitStatusId != 4-->
+            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType && visitStatusIdC != 4">
                 <app-referrals [selectedVisit]="selectedVisit" (save)="saveReferral($event)"></app-referrals>
             </p-tabPanel>
-            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType && visitStatusIdC != 4">
                 <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
             </p-tabPanel>
-            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType">
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id && selectedVisit.isPatientVisitType && visitStatusIdC != 4">
                 <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
             </p-tabPanel>
 
