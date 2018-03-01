@@ -458,8 +458,8 @@
                             </div>
                         </div>
                     </div>                    
-                    <div class="row" *ngIf="!selectedVisit.specialtyId && selectedVisit.isPatientVisitType && !sessionStore.isOnlyDoctorRole() && visitStatusIdC != 4">
-                        <div class="col-md-1"><label class="form-label">Reading Doctor</label></div>
+                    <div class="row" *ngIf="!selectedVisit.specialtyId && selectedVisit.isPatientVisitType && !sessionStore.isOnlyDoctorRole() && visitStatusIdR != 4">
+                        <div class="col-md-1"><label class="form-label">Reading Doctor<span class="color-red">*</span></label></div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <select formControlName="readingDoctor" [ngModel]="selectedVisit.doctorId" class="select2-arrow form-control">
@@ -472,7 +472,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
-                            <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                            <button *ngIf="selectedVisit.visitUpdateStatus" [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                                 <loader [visible]="isSaveProgress"></loader>
                             </button>
                             <!--<button *ngIf="sessionStore.isOnlyDoctorRole()" type="button" class="btn btn-secondary" (click)="closePatientVisitDialog()">Cancel</button>-->

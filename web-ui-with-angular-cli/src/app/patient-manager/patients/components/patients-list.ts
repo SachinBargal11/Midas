@@ -42,7 +42,8 @@ export class PatientsListComponent implements OnInit {
     ) {
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadPatientsCheckingDoctor();
-            this._router.navigate(['/patient-manager/patients']);
+            //this._router.navigate(['/patient-manager/patients']);
+            this._router.navigate(['/dashboard']);
         });
     }
 

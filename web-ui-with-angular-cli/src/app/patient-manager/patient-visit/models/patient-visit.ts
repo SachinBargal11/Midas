@@ -50,7 +50,8 @@ const PatientVisitRecord = Record({
     updateDate: null,//Moment
     originalResponse: null,
     addedByCompanyId: null,
-    visitTimeStatus: false
+    visitTimeStatus: false,
+    visitUpdateStatus: false
 });
 
 
@@ -91,6 +92,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     originalResponse: any;
     addedByCompanyId: number;
     visitTimeStatus: boolean;
+    visitUpdateStatus: boolean;
 
     constructor(props) {
         super(props);

@@ -161,7 +161,8 @@ export class PatientVisitComponent implements OnInit {
     selectedEventDate;
     dayRenderer;
     isVisitTypeDisabled = false;
-    visitStatusIdC = 0;    
+    visitStatusIdC = 0; 
+    visitStatusIdR = 0;   
     patientsWithOpenCase: SelectItem[] = [];
     userSetting: UserSetting;
 
@@ -622,7 +623,7 @@ export class PatientVisitComponent implements OnInit {
     selectedvisitstat()
     {   
         let patientVisitFormValues = this.patientVisitForm.value;
-        this.visitStatusIdC = patientVisitFormValues.visitStatusId;  
+        this.visitStatusIdR = patientVisitFormValues.visitStatusId;  
     }
 
     selectLocation() {
@@ -728,11 +729,13 @@ export class PatientVisitComponent implements OnInit {
 
     loadAllVisitsByCompanyId() {
         this._progressBarService.show();          
+        debugger;
         if(this.sessionStore.isOnlyDoctorRole())
         {
             this._patientVisitsStore.getPatientVisitsByCompanyIdDoctorId()
             .subscribe(
             (visits: PatientVisit[]) => {
+                
                 let events = this.getVisitOccurrences(visits);
                 this.events = _.union(this.events, events);
                 console.log(this.events);
@@ -757,8 +760,7 @@ export class PatientVisitComponent implements OnInit {
             .subscribe(
             (visits: PatientVisit[]) => {
                 let events = this.getVisitOccurrences(visits);
-                this.events = _.union(this.events, events);
-                console.log(this.events);
+                this.events = _.union(this.events, events);                
             },
             (error) => {
                 this.events = [];
@@ -1218,7 +1220,6 @@ export class PatientVisitComponent implements OnInit {
         let canScheduleAppointement: boolean = this._validateAppointmentCreation(event);
 
         if (canScheduleAppointement) {
-
             // Potential Refactoring for creating visit
             let selectedDoctor: Doctor = null;
             let selectedRoom: Room = null;
@@ -1263,10 +1264,12 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {           
+    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {     
+        debugger;      
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper); 
         this.visitStatusIdC = 0; 
+        this.visitStatusIdR = 0;
         if(patientVisit.roomId != null)      
         {
             this.getReadingDoctorsByCompanyLocationTestId(patientVisit.locationId, patientVisit.roomId);
@@ -1276,6 +1279,7 @@ export class PatientVisitComponent implements OnInit {
             { this.selectedOption = 2;}             
             else{ this.selectedOption = 1;}
             this.visitStatusIdC = patientVisit.visitStatusId;
+            this.visitStatusIdR = this.visitStatusIdC;
             this.isVisitTypeDisabled = false;
             if (scheduledEventForInstance.isChangedInstanceOfSeries) {
                 // Edit Existing Single Occurance of Visit
@@ -1428,7 +1432,7 @@ export class PatientVisitComponent implements OnInit {
         let patientVisit: any = (clickedEventInstance.eventWrapper);
         if (patientVisit.isPatientVisitType) {
             this.selectedVisitType = '1';
-            this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
+            this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);            
         } else if (patientVisit.isImeVisitType) {
             this.selectedVisitType = '2';
             this.selectedVisit = this._getImeVisitToBeEditedForEventInstance(clickedEventInstance);
@@ -1498,13 +1502,31 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
-    saveVisit() {  
-        debugger;      
+    saveVisit() {          
         let result;
         let patientVisitFormValues = this.patientVisitForm.value;
-        if (this.selectedVisit.isPatientVisitType) {
+        if (this.selectedVisit.isPatientVisitType) {            
             let updatedVisit: PatientVisit;
             let docID = null;
+            if(patientVisitFormValues.visitStatusId == 1)
+            {
+                this._notificationsService.error('Unable to update!', 'Please select the status');
+                this._progressBarService.hide();
+                return;
+            }
+
+            if(patientVisitFormValues.visitStatusId == 2)
+            {
+                if(this.selectedVisit.roomId != null)
+                {
+                    if(patientVisitFormValues.readingDoctor == null || patientVisitFormValues.readingDoctor == 0)
+                    {
+                        this._notificationsService.error('Unable to update!', 'Please select reading doctor');
+                        this._progressBarService.hide();
+                        return;
+                    }
+                }
+            }
             if(this.sessionStore.isOnlyDoctorRole())
             {
                 docID = this.selectedVisit.doctorId == null ? this.sessionStore.session.user.id : this.selectedVisit.doctorId;
@@ -1536,11 +1558,13 @@ export class PatientVisitComponent implements OnInit {
             }));
             result = this._patientVisitsStore.updateImeVisitDetail(updatedVisit);
         }
+        this.isSaveProgress = true;
         result.subscribe(
             (response) => {
                 
                 this.selectedVisit = response;
                 this.visitStatusIdC = this.selectedVisit.visitStatusId;
+                this.visitStatusIdR = this.visitStatusIdC;
                 let notification = new Notification({
                     'title': 'Event updated successfully!',
                     'type': 'SUCCESS',
@@ -1548,7 +1572,7 @@ export class PatientVisitComponent implements OnInit {
                 });
                 this.events = [];
                 this.loadAllVisitsByCompanyId();
-                this.loadVisits();
+                //this.loadVisits();
                 this.loadImeVisits();
                 this.loadEoVisits();
                 this._notificationsStore.addNotification(notification);
@@ -1561,11 +1585,13 @@ export class PatientVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._progressBarService.hide();
                 this._notificationsStore.addNotification(notification);
             },
             () => {
                 this._progressBarService.hide();
+                this.isSaveProgress = false;
             });
         this.visitDialogVisible = true;
     }
@@ -1809,8 +1835,7 @@ export class PatientVisitComponent implements OnInit {
         this._confirmationDialog.hide();
     }
 
-    saveEvent() {
-        debugger;
+    saveEvent() {        
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
@@ -1824,8 +1849,7 @@ export class PatientVisitComponent implements OnInit {
             updatedEvent = this._scheduledEventEditorComponent.getEditedEvent();
         } else {
             leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
-        }
-        debugger;
+        }        
         let docID = null;
         if(this.sessionStore.isOnlyDoctorRole())
         {
@@ -1868,6 +1892,14 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadVisits();
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
                         this._notificationsStore.addNotification(notification);
                     },
                     (error) => {
@@ -1877,6 +1909,14 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -1911,7 +1951,6 @@ export class PatientVisitComponent implements OnInit {
 
                 let addVisitResult = this._patientVisitsStore.addPatientVisit(updatedAddNewVisit);
                 addVisitResult.subscribe(
-
                     (response) => {
                         let notification = new Notification({
                             'title': 'Event added successfully!',
@@ -1923,7 +1962,13 @@ export class PatientVisitComponent implements OnInit {
                         // this.event = null;
                         this.selectedLocationId = 0;
                         this.idPatient = 0;
-                        this.selectLocation();
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
+                        //this.selectLocation();
                     },
                     (error) => {
                         let errString = 'Unable to add event!';
@@ -1932,6 +1977,14 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -1948,6 +2001,14 @@ export class PatientVisitComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadVisits();
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
                         this._notificationsStore.addNotification(notification);
                     },
                     (error) => {
@@ -1957,6 +2018,14 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -2002,10 +2071,16 @@ export class PatientVisitComponent implements OnInit {
                         });
                         this.loadVisits();
                         this._notificationsStore.addNotification(notification);
-                        // this.event = null;
+                        // this.event = null;                        
                         this.selectedLocationId = 0;
                         this.idPatient = 0;
-                        this.selectLocation();
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
+                        //this.selectLocation();
                     },
                     (error) => {
                         let errString = 'Unable to add event!';
@@ -2014,6 +2089,14 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.selectedLocationId = 0;
+                        this.idPatient = 0;
+                        this.selectedMode = 0;
+                        this.selectedOption = 0;
+                        this.selectedDoctorId = 0;
+                        this.selectedRoomId = 0;
+                        this.selectedSpecialityId = 0;
+                        this.selectedTestId = 0;
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
