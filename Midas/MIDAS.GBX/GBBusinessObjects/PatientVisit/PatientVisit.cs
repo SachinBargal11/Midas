@@ -104,6 +104,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("VisitTimeStatus")]
         public bool? VisitTimeStatus { get; set; }
 
+        [JsonProperty("VisitUpdateStatus")]
+        public bool? VisitUpdateStatus { get; set; }
+
     }
 
     public class mPatientVisits : GbObject
@@ -156,6 +159,12 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("visitTypeId")]
         public int? VisitTypeId { get; set; }
+
+        [JsonProperty("VisitTimeStatus")]
+        public bool? VisitTimeStatus { get; set; }
+
+        [JsonProperty("VisitUpdateStatus")]
+        public bool? VisitUpdateStatus { get; set; }
     }
 
     public class PatientVisitCompleted

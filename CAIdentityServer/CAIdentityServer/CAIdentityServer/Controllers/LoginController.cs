@@ -194,13 +194,14 @@ namespace CAIdentityServer.Controllers
             {
                 cookie = new HttpCookie("remembermemidas");
             }
-            if (LoginCredential.Cookieusername == model.Username)
+            if (LoginCredential.Cookieusername == model.Username && LoginCredential.CurotpStatus == "true")
             {
                 LoginCredential.Isotpverified = true;
             }
             else
             {
                 cookie["username"] = EncryptDecryptService.EncryptText(model.Username);
+                cookie["isOtpVerified"] = EncryptDecryptService.EncryptText("false");
                 //cookie["password"] = EncryptDecryptService.EncryptText(model.Password);
                 //cookie["rememberme"] = EncryptDecryptService.EncryptText(model.RememberMe.ToString());
                 cookie.Expires = DateTime.Now.AddYears(1);
@@ -227,16 +228,25 @@ namespace CAIdentityServer.Controllers
             HttpCookie cookie = Request.Cookies["remembermemidas"];
             if (cookie == null)
             {
-
                 ViewBag.Username = string.Empty;
                 ViewBag.Password = string.Empty;
                 ViewBag.RememberMe = false;
                 LoginCredential.Cookieusername = string.Empty;
                 LoginCredential.Isotpverified = false;
+                LoginCredential.CurotpStatus = "false";
             }
             else
             {
                 LoginCredential.Cookieusername = EncryptDecryptService.DecryptText(cookie["username"]);
+                if (cookie["isOtpVerified"] != "" && cookie["isOtpVerified"] != null)
+                {
+                    string _isOtpVerified = cookie["isOtpVerified"];
+                    LoginCredential.CurotpStatus = EncryptDecryptService.DecryptText(cookie["isOtpVerified"]);
+                }
+                else
+                {
+                    LoginCredential.CurotpStatus = "false";
+                }
                 //ViewBag.Username = EncryptDecryptService.DecryptText(cookie["username"]);
                 //ViewBag.Password = EncryptDecryptService.DecryptText(cookie["Password"]);
                 //ViewBag.RememberMe = Convert.ToBoolean(EncryptDecryptService.DecryptText(cookie["rememberme"]));

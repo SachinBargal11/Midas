@@ -38,6 +38,8 @@ namespace CAIdentityServer.Models
 
         public static bool Isotpverified { get; set; }
 
+        public static string CurotpStatus { get; set; }
+
         public static string Cookieusername { get; set; }
     }
 }

@@ -79,7 +79,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisitBO.IsCancelled = patientVisit.IsCancelled;
                 patientVisitBO.IsDeleted = patientVisit.IsDeleted;
                 patientVisitBO.CreateByUserID = patientVisit.CreateByUserID;
-                patientVisitBO.UpdateByUserID = patientVisit.UpdateByUserID;               
+                patientVisitBO.UpdateByUserID = patientVisit.UpdateByUserID;
+                if (patientVisit.EventStart != null)
+                {
+                    if (patientVisit.EventStart.Value.Date < System.DateTime.Now.Date)
+                    {
+                        patientVisitBO.VisitUpdateStatus = false;
+                    }
+                    else
+                    {
+                        patientVisitBO.VisitUpdateStatus = true;
+                    }
+                }
+                else
+                {
+                    patientVisitBO.VisitUpdateStatus = true;
+                }
 
                 if (patientVisit.Patient != null)
                 {
@@ -800,14 +815,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                patientVisitDBOld = _context.PatientVisits.Include("CalendarEvent")
-                                                            .Include("Location")
-                                                            .Include("Location.Company")
-                                                            .Include("Patient").Include("Patient.User").Include("Patient.User.UserCompanies")
-                                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
-                                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
-                                                            .Include("Room.RoomTest")
-                                                            .Where(p => p.Id == patientVisitBO.ID
+                patientVisitDBOld = _context.PatientVisits.Where(p => p.Id == patientVisitBO.ID
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<PatientVisit>();
                 if(patientVisitDBOld != null)
@@ -862,72 +870,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     if (patientVisitBO.VisitStatusId != 2 && patientVisitBO.VisitStatusId != 4)
                     {
+                        if(patientVisitBO.SpecialtyId != null)
+                        {  
                         Specialty specialdetail = _context.Specialties.Where(p => p.id == patientVisitBO.SpecialtyId).FirstOrDefault<Specialty>();
                         CompanySpecialtyDetail companyspecialtydetail = _context.CompanySpecialtyDetails.Where(p => p.SpecialtyId == patientVisitBO.SpecialtyId && p.CompanyID == patientVisitBO.AddedByCompanyId).FirstOrDefault<CompanySpecialtyDetail>();
-                        if (companyspecialtydetail == null)
-                        {
-                            var lstPatientVisitDB = _context.PatientVisits.Include("CalendarEvent")
-                                                                 .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) == DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule == "")
-                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)))
-                                                                        .ToList<PatientVisit>();
-
-                            var lstPatientVisitDBRecurrening = _context.PatientVisits.Include("CalendarEvent")
-                                                             .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) <= DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule != "")
-                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)))
-                                                                    .ToList<PatientVisit>();
-
-                            if (lstPatientVisitDB != null)
+                            if (companyspecialtydetail == null)
                             {
-                                if (lstPatientVisitDB.Count > 0)
-                                {
-                                    dbContextTransaction.Rollback();
-                                    if (specialdetail != null)
-                                    {
-                                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for " + specialdetail.Name + " specialty, Please update the specialty details in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
-                                    }
-                                    else
-                                    {
-                                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for this specialty, Please update the specialty details in in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
-                                    }
-                                }
-                            }
-
-                            foreach (PatientVisit pv in lstPatientVisitDBRecurrening)
-                            {
-                                var calendarevents = _context.CalendarEvents.Where(p => p.Id == pv.CalendarEventId).FirstOrDefault<CalendarEvent>();
-
-                                var RecurrenceRule = calendarevents.RecurrenceRule;
-                                if (RecurrenceRule != "")
-                                {
-                                    var calendar = new Calendar();
-                                    RecurrencePattern rr = new RecurrencePattern(RecurrenceRule);
-                                    Event evt = new Event();
-                                    evt.RecurrenceRules.Add(rr);
-                                    evt.Start = new CalDateTime(calendarevents.EventStart, "UTC");
-                                    evt.End = new CalDateTime(calendarevents.EventEnd, "UTC");
-                                    calendar.Events.Add(evt);
-                                    var Occurrences = calendar.GetOccurrences(calendarevents.EventStart.AddYears(-1), calendarevents.EventEnd.AddYears(1));
-                                    foreach (var eachOccurrences in Occurrences)
-                                    {
-                                        if (eachOccurrences.Period.StartTime.Date == CalendarEventBO.EventStart.Value.Date)
-                                        {
-                                            dbContextTransaction.Rollback();
-                                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for " + specialdetail.Name + " specialty, Please update the specialty details in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            if (companyspecialtydetail.AllowMultipleVisit == false)
-                            {
-
                                 var lstPatientVisitDB = _context.PatientVisits.Include("CalendarEvent")
-                                                                 .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) == DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule == "")
-                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)))
-                                                                        .ToList<PatientVisit>();
+                                                                     .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) == DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule == "")
+                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)))
+                                                                            .ToList<PatientVisit>();
 
                                 var lstPatientVisitDBRecurrening = _context.PatientVisits.Include("CalendarEvent")
                                                                  .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) <= DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule != "")
@@ -950,7 +902,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     }
                                 }
 
-
                                 foreach (PatientVisit pv in lstPatientVisitDBRecurrening)
                                 {
                                     var calendarevents = _context.CalendarEvents.Where(p => p.Id == pv.CalendarEventId).FirstOrDefault<CalendarEvent>();
@@ -972,6 +923,66 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             {
                                                 dbContextTransaction.Rollback();
                                                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for " + specialdetail.Name + " specialty, Please update the specialty details in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                if (companyspecialtydetail.AllowMultipleVisit == false)
+                                {
+
+                                    var lstPatientVisitDB = _context.PatientVisits.Include("CalendarEvent")
+                                                                     .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) == DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule == "")
+                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)))
+                                                                            .ToList<PatientVisit>();
+
+                                    var lstPatientVisitDBRecurrening = _context.PatientVisits.Include("CalendarEvent")
+                                                                     .Where(p => (DbFunctions.TruncateTime(p.CalendarEvent.EventStart) <= DbFunctions.TruncateTime(CalendarEventBO.EventStart.Value) && p.PatientId == patientVisitBO.PatientId && p.SpecialtyId == patientVisitBO.SpecialtyId && p.CalendarEvent.RecurrenceRule != "")
+                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false)))
+                                                                            .ToList<PatientVisit>();
+
+                                    if (lstPatientVisitDB != null)
+                                    {
+                                        if (lstPatientVisitDB.Count > 0)
+                                        {
+                                            dbContextTransaction.Rollback();
+                                            if (specialdetail != null)
+                                            {
+                                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for " + specialdetail.Name + " specialty, Please update the specialty details in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                            else
+                                            {
+                                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for this specialty, Please update the specialty details in in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
+                                            }
+                                        }
+                                    }
+
+
+                                    foreach (PatientVisit pv in lstPatientVisitDBRecurrening)
+                                    {
+                                        var calendarevents = _context.CalendarEvents.Where(p => p.Id == pv.CalendarEventId).FirstOrDefault<CalendarEvent>();
+
+                                        var RecurrenceRule = calendarevents.RecurrenceRule;
+                                        if (RecurrenceRule != "")
+                                        {
+                                            var calendar = new Calendar();
+                                            RecurrencePattern rr = new RecurrencePattern(RecurrenceRule);
+                                            Event evt = new Event();
+                                            evt.RecurrenceRules.Add(rr);
+                                            evt.Start = new CalDateTime(calendarevents.EventStart, "UTC");
+                                            evt.End = new CalDateTime(calendarevents.EventEnd, "UTC");
+                                            calendar.Events.Add(evt);
+                                            var Occurrences = calendar.GetOccurrences(calendarevents.EventStart.AddYears(-1), calendarevents.EventEnd.AddYears(1));
+                                            foreach (var eachOccurrences in Occurrences)
+                                            {
+                                                if (eachOccurrences.Period.StartTime.Date == CalendarEventBO.EventStart.Value.Date)
+                                                {
+                                                    dbContextTransaction.Rollback();
+                                                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Multiple Visit has set as No for " + specialdetail.Name + " specialty, Please update the specialty details in Account Setup  -> Specialities", ErrorLevel = ErrorLevel.Error };
+                                                }
                                             }
                                         }
                                     }

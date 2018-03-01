@@ -19,8 +19,8 @@ namespace CAIdentityServer.Service
     public class MidasUserService : UserServiceBase
     {
         OwinContext ctx;
-       
-        
+        EncryptDecrypt EncryptDecryptService = new EncryptDecrypt();
+
         public MidasUserService(OwinEnvironmentService owinEnv)
         {
             ctx = new OwinContext(owinEnv.Environment);
@@ -102,6 +102,7 @@ namespace CAIdentityServer.Service
             IUserStoreService service = GetUserStoreService(message.ClientId);
 
             var result = service.VerifyOTP(Convert.ToInt32(userId), Convert.ToInt32(code));
+            GetRemembermeCookie(result);
             return result;
         }
 
@@ -164,6 +165,35 @@ namespace CAIdentityServer.Service
             return userStoreService;
         }
 
+
+        private void GetRemembermeCookie(bool otpsuccess)
+        {
+            
+            LoginCredential model = new LoginCredential();
+            HttpCookie cookie = HttpContext.Current.Request.Cookies["remembermemidas"];
+            if (cookie == null)
+            {
+                LoginCredential.Cookieusername = string.Empty;
+                LoginCredential.Isotpverified = false;
+                LoginCredential.CurotpStatus = "false";
+            }
+            else
+            {
+                cookie["username"] = cookie["username"];
+                if (otpsuccess)
+                {
+                    cookie["isOtpVerified"] = EncryptDecryptService.EncryptText("true");
+                }
+                else
+                {
+                    cookie["isOtpVerified"] = EncryptDecryptService.EncryptText("false");
+                }
+                //cookie["password"] = EncryptDecryptService.EncryptText(model.Password);
+                //cookie["rememberme"] = EncryptDecryptService.EncryptText(model.RememberMe.ToString());
+                cookie.Expires = DateTime.Now.AddYears(1);
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
+        }
 
 
     }

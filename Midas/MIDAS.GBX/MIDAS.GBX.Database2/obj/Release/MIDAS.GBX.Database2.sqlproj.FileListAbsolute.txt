@@ -3,3 +3,8 @@ F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Release\M
 F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Release\MIDAS.GBX.Database2.pdb
 F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Release\MIDAS.GBX.Database2.dll
 F:\Midas-develop\Midas-develop\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Release\MIDAS.GBX.Database2.pdb
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Release\MIDAS.GBX.Database2.dacpac
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Release\MIDAS.GBX.Database2.dll
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\bin\Release\MIDAS.GBX.Database2.pdb
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Release\MIDAS.GBX.Database2.dll
+F:\Midas-develop\Midas-develop-Api\Midas\MIDAS.GBX\MIDAS.GBX.Database2\obj\Release\MIDAS.GBX.Database2.pdb
