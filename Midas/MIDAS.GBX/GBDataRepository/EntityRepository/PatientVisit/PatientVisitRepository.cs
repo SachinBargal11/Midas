@@ -82,7 +82,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisitBO.UpdateByUserID = patientVisit.UpdateByUserID;
                 if (patientVisit.EventStart != null)
                 {
-                    if (patientVisit.EventStart.Value.Date < System.DateTime.Now.Date)
+                    if (patientVisit.CreateDate.Date < System.DateTime.Now.Date)
                     {
                         patientVisitBO.VisitUpdateStatus = false;
                     }
