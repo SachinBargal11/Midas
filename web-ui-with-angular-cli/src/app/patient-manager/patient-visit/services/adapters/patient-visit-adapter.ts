@@ -60,6 +60,7 @@ export class PatientVisitAdapter {
                 updateByUserID: data.updateByUserID,
                 updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
                 visitTimeStatus: data.VisitTimeStatus,
+                visitUpdateStatus: data.VisitUpdateStatus,
                 originalResponse: data
             });
         }

@@ -202,6 +202,7 @@ export class SessionStore {
         this._session.currentCompany = company;
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
+        window.location.assign(window.location.protocol + "//" + window.location.host + '/#/dashboard');
     }
     isOnlyDoctorRole() {
         let isOnlyDoctorRole: boolean = false;

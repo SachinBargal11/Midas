@@ -65,10 +65,10 @@ export class PatientsShellComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            //this._router.navigate(['/patient-manager/patients']);
+        /*this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/patient-manager/patients']);
             this._router.navigate(['/dashboard']);
-        });
+        });*/
 
     }
 
