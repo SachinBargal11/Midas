@@ -1,9 +1,0 @@
-{
-    "baseUrl": "http://gb-patientwebapi.qwinix.io/midaspatientapi",
-    "identityServerUrl": "https://gb-identityserver.qwinix.io",
-    "notificationServerUrl": "http://gb-notificationmanager.qwinix.io",
-    "home_url": "http://greenyourbills.qwinix.io",
-    "app_url": "http://gb-patient.qwinix.io",
-    "identity_scope": "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
-    "client_id": "MidasPortal"
-}
