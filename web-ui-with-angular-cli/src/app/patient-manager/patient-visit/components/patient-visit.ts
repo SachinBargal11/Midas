@@ -1601,7 +1601,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedVisit: PatientVisit;
         let diagnosisCodes = [];
         inputDiagnosisCodes.forEach(currentDiagnosisCode => {
-            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.diagnosisCodeId });
         });
 
         updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {

@@ -90,7 +90,7 @@ export class BreadcrumbComponent implements OnInit {
                     this.doctorRole = false;
                 }
              }
-        debugger;
+       
         if (this.doctorRole) {
            
             this.router.navigate(['/doctor-manager/doctor-appointment']);
@@ -107,7 +107,6 @@ export class BreadcrumbComponent implements OnInit {
      * @method ngOnInit
      */
     ngOnInit() {
-        debugger;
         let doctorRoleOnly = null;
         let roles = this._sessionStore.session.user.roles;
         if (roles) {

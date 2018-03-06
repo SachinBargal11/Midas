@@ -12,12 +12,16 @@ export class ProcedureAdapter {
         if (data) {
             procedure = new Procedure({
                 id: data.id,
-                procedureCodeId: data.procedureCodeId ? data.procedureCodeId : data.procedureCodeID,
+                procedureCodeId: data.procedureCodeId ? data.procedureCodeId : data.id,
                 specialityId: data.specialityId,
                 roomId: data.roomId,
                 roomTestId: data.roomTestId,
                 companyId: data.companyId,
                 amount: data.amount ? data.amount : null,
+                procedureAmount: data.procedureAmount !=0 && data.procedureAmount != null ? data.procedureAmount : data.amount,
+                procedureUnit: data.procedureUnit ? data.procedureUnit : 0 ,
+                procedureOldUnit: data.procedureUnit ? data.procedureUnit : 0 ,
+                procedureTotalAmount: data.procedureTotalAmount !=0 && data.procedureTotalAmount != null ? data.procedureTotalAmount : 0,
                 procedureCodeText: data.procedureCodeText,
                 procedureCodeDesc: data.procedureCodeDesc,
                 company: CompanyAdapter.parseResponse(data.company),
@@ -44,6 +48,9 @@ export class ProcedureAdapter {
                 procedureCodeText: data.procedureCodeText,
                 procedureCodeDesc: data.procedureCodeDesc,
                 amount: data.amount ? data.amount : null,
+                procedureAmount: data.procedureAmount !=0 && data.procedureAmount != null ? data.procedureAmount : data.amount,
+                procedureUnit: data.procedureUnit != 0 &&  data.procedureUnit != null ? data.procedureUnit : 0,
+                procedureTotalAmount: data.procedureTotalAmount !=0 && data.procedureTotalAmount != null ? data.procedureTotalAmount : 0,
                 isPreffredCode: data.isPreffredCode? data.isPreffredCode:false,
                 specialityId: data.specialtyId,
                 originalResponse: data

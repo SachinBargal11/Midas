@@ -13,6 +13,10 @@ const ProcedureRecord = Record({
     roomTestId: 0,
     companyId: 0,
     amount: 0,
+    procedureAmount:0,
+    procedureUnit:0,
+    procedureOldUnit: 0,
+    procedureTotalAmount:0,
     procedureCodeText: '',
     procedureCodeDesc: '',
     company: null,
@@ -38,7 +42,11 @@ export class Procedure extends ProcedureRecord {
     companyId: number;
     procedureCodeText: string;
     procedureCodeDesc: string;
-    amount: number
+    amount: number;
+    procedureAmount: number;
+    procedureUnit: number;
+    procedureOldUnit: number;
+    procedureTotalAmount: number;
     company: Company;
     room: Room;
     roomTest: Tests;

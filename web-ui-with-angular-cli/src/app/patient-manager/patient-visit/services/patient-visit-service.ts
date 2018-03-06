@@ -537,7 +537,7 @@ export class PatientVisitService {
         let promise = new Promise((resolve, reject) => {
             let requestData = patientVisitDetail.toJS();
             let procedures = _.map(requestData.patientVisitProcedureCodes, (currentProcedure: Procedure) => {
-                return { 'procedureCodeId': currentProcedure.id };
+                return { 'procedureCodeId': currentProcedure.procedureCodeId,'procedureAmount': currentProcedure.procedureAmount,'procedureUnit': currentProcedure.procedureUnit,'procedureTotalAmount':currentProcedure.procedureTotalAmount };
             })
             requestData.patientVisitProcedureCodes = procedures;
             requestData.addedByCompanyId = this._sessionStore.session.currentCompany.id;

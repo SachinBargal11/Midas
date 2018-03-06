@@ -10,7 +10,7 @@ export class DiagnosisCodeAdapter {
         if (data) {
             diagnosisCode = new DiagnosisCode({
                 id: data.id,
-                diagnosisCodeId: data.diagnosisCodeId ? data.diagnosisCodeId : data.diagnosisCodeId,
+                diagnosisCodeId: data.diagnosisCodeId ? data.diagnosisCodeId : data.id,
                 diagnosisTypeId: data.diagnosisTypeId,
                 companyId: data.companyId,
                 company: CompanyAdapter.parseResponse(data.company),

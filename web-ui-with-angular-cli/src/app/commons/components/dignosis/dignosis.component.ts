@@ -64,7 +64,7 @@ export class DignosisComponent implements OnInit {
   ngOnInit() {
     this.routeFrom;
     this.loadAllDiagnosisCodes();
-    this.loadDiagnosisCodesByCompanyId();
+    //this.loadDiagnosisCodesByCompanyId();
     this. loadAllDiagnosisTypes();
     this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
   }
@@ -88,7 +88,14 @@ export class DignosisComponent implements OnInit {
     this._progressBarService.show();
     let result = this._diagnosisStore.getAllDiagnosisCodes();
     result.subscribe((diagnosisCodes: DiagnosisCode[]) => {
-        this.diagnosisCodesArr = _.map(diagnosisCodes, (currDiagnosis: DiagnosisCode) => {
+        this.diagCodes = diagnosisCodes;
+        let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisCodes, (currentProcedure: DiagnosisCode) => {
+                       return currentProcedure.diagnosisCodeId;
+               });
+       let diganosisDetails = _.filter(this.diagCodes, (currentDiagnosis: DiagnosisCode) => {
+                        return _.indexOf(diagnosisCodeIds, currentDiagnosis.diagnosisCodeId) < 0 ? true : false;
+                   });
+        this.diagnosisCodesArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
             return {
                 label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
                 value: currDiagnosis
@@ -108,7 +115,15 @@ loadDiagnosisCodesByCompanyId() {
   this._progressBarService.show();
   let result1 = this._diagnosisCodeMasterStore.getDiagnosisCodeByCompanyId(this.sessionStore.session.currentCompany.id);
   result1.subscribe((diagnosisCodes: DiagnosisCode[]) => {
-    this.diagnosisCodesCompArr = _.map(diagnosisCodes, (currDiagnosis: DiagnosisCode) => {
+
+     this.diagCodes = diagnosisCodes;
+     let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisCodes, (currentProcedure: DiagnosisCode) => {
+                    return currentProcedure.diagnosisCodeId;
+            });
+    let diganosisDetails = _.filter(this.diagCodes, (currentDiagnosis: DiagnosisCode) => {
+                     return _.indexOf(diagnosisCodeIds, currentDiagnosis.diagnosisCodeId) < 0 ? true : false;
+                });
+    this.diagnosisCodesCompArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
         return {
             label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
             value: currDiagnosis
@@ -124,12 +139,11 @@ loadDiagnosisCodesByCompanyId() {
 }
   
 selectOption(event) {
-  this.selectedDiagnosisCodes = [];
   this.selectedDiagnosisForCompany = [];
   if (event.target.value == '0') {
       this.selectedDiagnosisTypeCompnayID = 0;
       this.selectedMode = 0;
-      this.loadDiagnosisCodesByCompanyId();
+      //this.loadDiagnosisCodesByCompanyId();
   } else  {
       this.selectedDiagnosisTypeCompnayID = parseInt(event.target.value);
       this.loadDiagnosisCodesByCompanyAndDiagnosisType(this.selectedDiagnosisTypeCompnayID);
@@ -141,7 +155,15 @@ loadDiagnosisCodesByCompanyAndDiagnosisType(diagnosisTypeCompnayID: number) {
   this._progressBarService.show();
   let result2 = this._diagnosisCodeMasterStore.getDiagnosisCodesByCompanyAndDiagnosisType(this.sessionStore.session.currentCompany.id, diagnosisTypeCompnayID);
   result2.subscribe((diagnosisCodes: DiagnosisCode[]) => {
-    this.diagnosisCodesCompArr = _.map(diagnosisCodes, (currDiagnosis: DiagnosisCode) => {
+    this.diagCodes = diagnosisCodes;
+    debugger;
+    let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisCodes, (currentProcedure: DiagnosisCode) => {
+                   return currentProcedure.diagnosisCodeId;
+           });
+   let diganosisDetails = _.filter(this.diagCodes, (currentDiagnosis: DiagnosisCode) => {
+                    return _.indexOf(diagnosisCodeIds, currentDiagnosis.diagnosisCodeId) < 0 ? true : false;
+               });
+    this.diagnosisCodesCompArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
         return {
             label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
             value: currDiagnosis
@@ -161,7 +183,7 @@ loadDiagnosisCodesByCompanyAndDiagnosisType(diagnosisTypeCompnayID: number) {
 showCPreffredDiagnosisCodes(){
   this.showAllDiagnosisCode = false;
   this.showPreDiagnosisCode = true;
-  this.loadDiagnosisCodesByCompanyId();
+  //this.loadDiagnosisCodesByCompanyId();
 }
 
 showCAllDiagnosisCodes(){
@@ -170,24 +192,38 @@ this.showPreDiagnosisCode = false;
 this.loadAllDiagnosisCodes();
 }
 
-  
-
-  
-
 
   saveDiagnosisCodes() {
     this.save.emit(this.selectedDiagnosisCodes);
+    this.showAllDiagnosisCode = false;
+    this.showPreDiagnosisCode = true;
+    if(this.selectedDiagnosisTypeCompnayID != 0)
+    {
+        this.loadDiagnosisCodesByCompanyAndDiagnosisType(this.selectedDiagnosisTypeCompnayID);
+    }
+    else{
+        this.diagnosisCodesCompArr = [];
+    }
+    this.loadAllDiagnosisCodes();
   }
 
   deleteDiagnosis() {
     let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosis, (currentDiagnosisCode: DiagnosisCode) => {
-      return currentDiagnosisCode.id;
+      return currentDiagnosisCode.diagnosisCodeId;
     });
     let diagnosisCodeDetails = _.filter(this.selectedDiagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
-      return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.id) < 0 ? true : false;
+      return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.diagnosisCodeId) < 0 ? true : false;
     });
-
+    debugger;
     this.selectedDiagnosisCodes = diagnosisCodeDetails;
+    if(this.selectedDiagnosisTypeCompnayID != 0)
+    {
+        this.loadDiagnosisCodesByCompanyAndDiagnosisType(this.selectedDiagnosisTypeCompnayID);
+    }
+    else{
+        this.diagnosisCodesCompArr = [];
+    }
+    this.loadAllDiagnosisCodes();
   }
 
 }

@@ -8,6 +8,7 @@ import { DiagnosisCode } from '../models/diagnosis-code';
 import { DiagnosisType } from '../models/diagnosis-type';
 import { DiagnosisService } from '../services/diagnosis-service';
 import { SessionStore } from './session-store';
+import { DiagnosisCodeAdapter } from '../../commons/services/adapters/diagnosis-code-adapter';
 
 
 @Injectable()
@@ -98,8 +99,10 @@ export class DiagnosisStore {
     getAllDiagnosisCodes(): Observable<DiagnosisCode[]> {
         let promise = new Promise((resolve, reject) => {
             this._diagnosisService.getDiagnosisCode().subscribe((diagnosisCodes: DiagnosisCode[]) => {
-                this._diagnosisCodes.next(List(diagnosisCodes));
-                resolve(diagnosisCodes);
+                let diagnosisCodes1 = (<Object[]>diagnosisCodes).map((data: any) => {
+                    return DiagnosisCodeAdapter.parseResponse(data);
+                });
+                resolve(diagnosisCodes1);
             }, error => {
                 reject(error);
             });

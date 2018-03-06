@@ -25,6 +25,9 @@ export class PatientVisitAdapter {
                 diagnosisCodes.push(DiagnosisCodeAdapter.parseResponse(currentDiagnosisCode.diagnosisCode));
             });
             _.forEach(data.patientVisitProcedureCodes, (currentProcedureCode: any) => {
+                currentProcedureCode.procedureCode.procedureAmount = currentProcedureCode.procedureAmount;
+                currentProcedureCode.procedureCode.procedureUnit = currentProcedureCode.procedureUnit;
+                currentProcedureCode.procedureCode.procedureTotalAmount = currentProcedureCode.procedureTotalAmount;
                 procedureCodes.push(ProcedureAdapter.parseResponse(currentProcedureCode.procedureCode));
             });
             patientVisit = new PatientVisit({

@@ -7,8 +7,18 @@
       <span class="input-group-addon"><i class="fa fa-search"></i></span>
       <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
     </div>
+    <div *ngIf="showPreProcedureCode">
+      <a class="pull-right btn btn-info btn-sm" (click)="showCAllProcuderCodes()">
+      <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View All Procedure codes </span>
+    </a>
   </div>
-  <p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="5" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+  <div *ngIf="showAllProcedureCode">
+    <a class="pull-right btn btn-info btn-sm" (click)="showCPreffredProcedureCodes()">
+    <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View Preffred Procedure codes </span>
+  </a>
+</div>
+  </div>
+  <p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="5" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt1>
     <header>Procedures</header>
     <p-headerColumnGroup>
       <p-row>
@@ -25,7 +35,7 @@
 </div>
 
 <div class="input-group">
-  <h3 class="with-border">Selected Procedures
+  <h3 class="with-border">Selected Procedures</h3>
     <!--<a class="pull-right btn btn-danger btn-sm" *ngIf="sessionStore.isOnlyDoctorRole()" (click)="deleteProcedureCode()">-->
   <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
       <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">
@@ -39,29 +49,36 @@
       <!--<loader [visible]="isDeleteProgress"></loader>-->
     </a>
   </div>
-  </h3>
 </div>
-<p-dataTable [value]="selectedProcedures" [(selection)]="selectedProceduresToDelete" [rows]="10" [paginator]="true" [responsive]="true">
+<br>
+<p-dataTable [value]="selectedProcedures" [editable]="true" [(selection)]="selectedProceduresToDelete" [rows]="10" [paginator]="true" 
+[responsive]="true" #dt [immutable]="false" >
   <header>Procedures</header>
-  <p-column selectionMode="multiple"></p-column>
+  <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
   <!--<p-column field="displayName" header="Date of service" [sortable]="true"></p-column>-->
-  <p-column field="procedureCodeText" header="Procedure Code"></p-column>
-  <p-column field="procedureCodeDesc" header="Description"></p-column>
-  <p-column field="amount" header="Amount"></p-column>
-  <p-column header="Unit">
-    <ng-template let-procedure="rowData" pTemplate="body">
-      <input type="number" [(ngModel)]="selectedValue" value="" min="1" max="10" class="form-control" />
+  <p-column field="procedureCodeText" header="Procedure Code" styleClass="inbound-column"></p-column>
+  <p-column field="procedureCodeDesc" header="Description"  styleClass="inbound-column"></p-column>
+  <p-column field="procedureAmount" header="Amount"  styleClass="inbound-column"></p-column>
+  <!--<p-column field="procedureOldUnit"   header="Old Unit"  styleClass="inbound-column"></p-column>-->
+ <p-column header="Unit" field="procedureUnitNew" [editable]="true"  styleClass="inbound-column">
+    <ng-template let-col let-procedure="rowData" pTemplate="body">
+        {{procedure[col.procedureUnitNew]}}
+    </ng-template>
+    <ng-template let-col let-procedure="rowData" pTemplate="editor">
+     <input type="number" pInputText  minlength="1" maxlength="10"  [(ngModel)]="procedure[col.procedureUnitNew]"  (change)="updateUnit(procedure[col.procedureUnitNew],procedure.procedureCodeId)" (keypress)="_keyPress($event)" appendTo="body"  />
+     <!--<span #gname="ngModel" [pattern]="numberPattern" *ngIf="gname.errors?.pattern" class="color-red">Please Enter Valid Number.</span>-->
     </ng-template>
   </p-column>
   <p-column header="Total charge per day">
-    <ng-template let-procedure="rowData" pTemplate="body">
-      {{selectedValue * procedure.amount}}
+    <ng-template let-procedure1="rowData" pTemplate="body">
+      <span *ngIf="procedure1.undefined != undefined">{{procedure1.undefined * procedure1.procedureAmount | number : '1.2-2'}} | ({{procedure1.undefined}} units)</span>
+      <span *ngIf="procedure1.undefined == undefined">{{procedure1.procedureTotalAmount | number : '1.2-2'}} | ({{procedure1.procedureOldUnit}} units)</span>
     </ng-template>
   </p-column>
 </p-dataTable>
 <br>
 <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
-  <button  class="btn btn-success sign-up" (click)="saveProcedures()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">Save    
+  <button    class="btn btn-success sign-up" (click)="saveProcedures()" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">Save    
   </button>
 </div>
 <div *ngIf="!sessionStore.isOnlyDoctorRole()">
