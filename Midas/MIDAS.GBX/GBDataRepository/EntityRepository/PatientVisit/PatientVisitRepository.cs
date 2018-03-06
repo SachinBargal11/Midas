@@ -233,6 +233,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 patientVisitProcedureCodeBO.ID = eachVisitProcedure.Id;
                                 patientVisitProcedureCodeBO.ProcedureCodeId = eachVisitProcedure.ProcedureCodeId;
                                 patientVisitProcedureCodeBO.PatientVisitId = eachVisitProcedure.PatientVisitId;
+                                patientVisitProcedureCodeBO.ProcedureAmount = eachVisitProcedure.ProcedureAmount;
+                                patientVisitProcedureCodeBO.ProcedureUnit = eachVisitProcedure.ProcedureUnit;
+                                patientVisitProcedureCodeBO.ProcedureTotalAmount = eachVisitProcedure.ProcedureTotalAmount;
                                 patientVisitProcedureCodeBO.IsDeleted = eachVisitProcedure.IsDeleted;
                                 patientVisitProcedureCodeBO.CreateByUserID = eachVisitProcedure.CreateByUserID;
                                 patientVisitProcedureCodeBO.UpdateByUserID = eachVisitProcedure.UpdateByUserID;
@@ -246,6 +249,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         patientVisitProcedureCodeBO.ProcedureCode = procCode;
                                     }
                                 }
+
+                               
 
                                 BOpatientVisitProcedureCode.Add(patientVisitProcedureCodeBO);
                             }
@@ -1227,6 +1232,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                             _context.PatientVisitDiagnosisCodes.Add(AddDiagnosisCodeDB);
                         }
+                        else
+                        {
+
+                            AddDiagnosisCodeDB.UpdateByUserID = patientVisitBO.UpdateByUserID;
+                            AddDiagnosisCodeDB.UpdateDate = DateTime.UtcNow;
+                            _context.SaveChanges();
+                        }
                     }
 
                     _context.SaveChanges();
@@ -1269,12 +1281,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                             AddProcedureCodeDB.PatientVisitId = PatientVisitId;
                             AddProcedureCodeDB.ProcedureCodeId = eachPatientVisitProcedureCode.ProcedureCodeId;
-
+                            AddProcedureCodeDB.ProcedureAmount = eachPatientVisitProcedureCode.ProcedureAmount;
+                            AddProcedureCodeDB.ProcedureUnit = eachPatientVisitProcedureCode.ProcedureUnit;
+                            AddProcedureCodeDB.ProcedureTotalAmount = (eachPatientVisitProcedureCode.ProcedureUnit * eachPatientVisitProcedureCode.ProcedureAmount);
                             _context.PatientVisitProcedureCodes.Add(AddProcedureCodeDB);
+
+                        }
+                        else
+                        {
+                            AddProcedureCodeDB.ProcedureAmount = eachPatientVisitProcedureCode.ProcedureAmount;
+                            AddProcedureCodeDB.ProcedureUnit = eachPatientVisitProcedureCode.ProcedureUnit;
+                            AddProcedureCodeDB.ProcedureTotalAmount = (eachPatientVisitProcedureCode.ProcedureUnit * eachPatientVisitProcedureCode.ProcedureAmount);
+                            AddProcedureCodeDB.UpdateByUserID = patientVisitBO.UpdateByUserID;
+                            AddProcedureCodeDB.UpdateDate = DateTime.UtcNow;
+                            _context.SaveChanges();
                         }
                     }
-
                     _context.SaveChanges();
+
                 }
                 #endregion
 
@@ -2293,10 +2317,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("Location")
                                             .Include("Doctor")
                                             .Include("Doctor.User")
+                                            .Include("Specialty")
                                             .Include("Room")
                                             .Include("Room.RoomTest")
                                             .Include("Patient")
                                             .Include("Patient.User")
+                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.Location.CompanyID == Id
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList<PatientVisit>();
@@ -2325,10 +2352,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("Location")
                                             .Include("Doctor")
                                             .Include("Doctor.User")
+                                            .Include("Specialty")
                                             .Include("Room")
                                             .Include("Room.RoomTest")
                                             .Include("Patient")
                                             .Include("Patient.User")
+                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.DoctorId == doctorId && p.Location.CompanyID == CompanyId
                                                     &&  (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList();

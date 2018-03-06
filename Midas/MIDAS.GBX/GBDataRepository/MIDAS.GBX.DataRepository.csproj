@@ -194,6 +194,7 @@
     <Compile Include="EntityRepository\PatientPersonalSetting\PatientPersonalSettingRepository.cs" />
     <Compile Include="EntityRepository\PatientPriorAccidentInjury\PatientPriorAccidentInjuryRepository.cs" />
     <Compile Include="EntityRepository\PatientVisitUnscheduled\PatientVisitUnscheduledRepository.cs" />
+    <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\PlaintiffVehicle\PlaintiffVehicleRepository.cs" />
     <Compile Include="EntityRepository\PreferredAncillaryProvider\PreferredAncillaryProviderRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
@@ -241,7 +242,6 @@
     <Compile Include="EntityRepository\PatientFamilyMember\PatientFamilyMemberRepository.cs" />
     <Compile Include="EntityRepository\PatientInsuranceInfo\PatientInsuranceInfoRepository.cs" />
     <Compile Include="EntityRepository\PatientVisitEvent\PatientVisitEventRepository.cs" />
-    <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCodeCompanyMapping\ProcedureCodeCompanyMappingRepository.cs" />
     <Compile Include="EntityRepository\ProcedureCode\ProcedureCodeRepository.cs" />
