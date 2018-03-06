@@ -16,7 +16,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object Save(List<T> gbObject);
         Object SaveDoctor(T gbObject);
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
-        Object SaveAsBlob(int id, int CompanyId, string objectType, string docType, string uploadpath);
+        Object SaveAsBlob(int id, int CompanyId, string objectType, string docType, string uploadpath, int createUserId, int updateUserId);
         Object AddQuickPatient(T gbObject);
         Object SaveIMEVisit(T gbObject);
         Object SaveEOVisit(T gbObject);

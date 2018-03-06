@@ -82,7 +82,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisitBO.UpdateByUserID = patientVisit.UpdateByUserID;
                 if (patientVisit.EventStart != null)
                 {
-                    if (patientVisit.EventStart.Value.Date < System.DateTime.Now.Date)
+                    if (patientVisit.CreateDate.Date < System.DateTime.Now.Date)
                     {
                         patientVisitBO.VisitUpdateStatus = false;
                     }
@@ -1278,21 +1278,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 #endregion
 
-                
-                if(DoctorIdOld != null)
+
+                if (patientVisitBO.VisitStatusId != 4)
                 {
-                    if (DoctorIdOld != patientVisitBO.DoctorId)
+                    if (DoctorIdOld != null)
                     {
-                        if(patientVisitDB.RoomId != null)
+                        if (DoctorIdOld != patientVisitBO.DoctorId)
                         {
-                            if (sendNotificationMessage == false)
+                            if (patientVisitDB.RoomId != null)
                             {
-                                sendnotificationtodr = true;
-                                sendNotificationMessage = true;
+                                if (sendNotificationMessage == false)
+                                {
+                                    sendnotificationtodr = true;
+                                    sendNotificationMessage = true;
+                                }
                             }
-                        }                        
+                        }
                     }
-                } 
+                }
 
                 dbContextTransaction.Commit();
 

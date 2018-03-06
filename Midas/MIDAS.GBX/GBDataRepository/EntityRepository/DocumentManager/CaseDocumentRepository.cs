@@ -25,7 +25,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        public override Object SaveAsBlob(int objectId, int companyId, string objectType, string documentType, string uploadpath)
+        public override Object SaveAsBlob(int objectId, int companyId, string objectType, string documentType, string uploadpath, int createUserId, int updateUserId)
         {
             BO.Document docInfo = new BO.Document();
             string errMessage = string.Empty;
@@ -40,7 +40,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     DocumentType = documentType,
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                     DocumentPath = uploadpath,
-                    CreateDate = DateTime.UtcNow
+                    CreateDate = DateTime.UtcNow,
+                    CreateUserId = createUserId
                 });
                 _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
                 _context.SaveChanges();
@@ -54,7 +55,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         DocumentType = documentType,
                         CompanyId = companyId,
                         DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
-                        CreateDate = DateTime.UtcNow
+                        CreateDate = DateTime.UtcNow,
+                        CreateUserId = createUserId
                     });
                     _context.Entry(caseCompConsentDoc).State = System.Data.Entity.EntityState.Added;
                     _context.SaveChanges();
@@ -80,7 +82,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         CaseId = objectId,
                         DocumentType = documentType,
                         DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
-                        CreateDate = DateTime.UtcNow
+                        CreateDate = DateTime.UtcNow,
+                        CreateUserId = createUserId
                     });
                     _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
                     _context.SaveChanges();

@@ -571,7 +571,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object SaveAsBlob(int ObjectId, int CompanyId, string ObjectType, string DocumentType, string uploadpath)
+        public Object SaveAsBlob(int ObjectId, int CompanyId, string ObjectType, string DocumentType, string uploadpath, int CreateUserId, int UpdateUserId)
         {
             BaseEntityRepo baseRepo = RepoFactory.GetRepo<Document>(dbContextProvider.GetGbDBContext());
             /*List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(ObjectId, DocumentType, streamContent);
@@ -581,7 +581,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
             else
             {*/
-            var gbdata = baseRepo.SaveAsBlob(ObjectId, CompanyId, ObjectType, DocumentType, uploadpath);
+            var gbdata = baseRepo.SaveAsBlob(ObjectId, CompanyId, ObjectType, DocumentType, uploadpath, CreateUserId, UpdateUserId);
             return gbdata;
             //}
         }

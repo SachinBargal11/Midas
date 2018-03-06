@@ -14,7 +14,7 @@ namespace MIDAS.GBX.DocumentManager
 
         public BlobServiceHandler() { }
 
-        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId, string servicepProvider)
+        public HttpResponseMessage UploadToBlob(HttpRequestMessage request, HttpContent content, string blobPath, int companyId, string servicepProvider, int CreateUserId, int UpdateUserId)
         {
             string objResult = "";
             try

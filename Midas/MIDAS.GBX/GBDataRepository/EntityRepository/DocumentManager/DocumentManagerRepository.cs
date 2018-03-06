@@ -147,7 +147,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 DocumentId = x.Id,
                 DocumentName = x.DocumentName,
                 DocumentType=x.DocumentType,
-                DocumentPath = x.DocumentPath + "/" + x.DocumentName
+                DocumentPath = x.DocumentPath + "/" + x.DocumentName,
+                CreateByUserID = x.CreateUserId.GetValueOrDefault()
             }));
 
             return (object)docInfo;
@@ -292,7 +293,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Invalid object type", errorObject = "", ErrorLevel = ErrorLevel.Error };
         }
 
-        public override object SaveAsBlob(int ObjectId, int CompanyId, string DocumentObject, string DocumentType, string uploadpath)
+        public override object SaveAsBlob(int ObjectId, int CompanyId, string DocumentObject, string DocumentType, string uploadpath, int CreateUserId, int UpdateUserId)
         {
             BO.Document docInfo = new BO.Document();
 
@@ -300,7 +301,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 case EN.Constants.CaseType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
-                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath, CreateUserId, UpdateUserId);
                     break;
                 case EN.Constants.VisitType:
                 case EN.Constants.IMEVisitType:
@@ -308,11 +309,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 case EN.Constants.ATTORNEYVisitType:
                 case EN.Constants.UNSCHVisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
-                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath, CreateUserId, UpdateUserId);
                     break;
                 case EN.Constants.PatientType:
                     PatientDocumentRepository PatientDocumentRepository = new PatientDocumentRepository(_context);
-                    docInfo = (BO.Document)PatientDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    docInfo = (BO.Document)PatientDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath, CreateUserId, UpdateUserId);
                     break;
             }
 
@@ -329,7 +330,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 case EN.Constants.CaseType:
                 //case EN.Constants.ConsentType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
-                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath, uploadInfo.CreateUserId, uploadInfo.UpdateUserId);
                     break;
                 case EN.Constants.VisitType:
                 case EN.Constants.IMEVisitType:
@@ -337,11 +338,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 case EN.Constants.ATTORNEYVisitType:
                 case EN.Constants.UNSCHVisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
-                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath, uploadInfo.CreateUserId, uploadInfo.UpdateUserId);
                     break;
                 case EN.Constants.PatientType:
                     PatientDocumentRepository PatientDocumentRepository = new PatientDocumentRepository(_context);
-                    docInfo = (BO.Document)PatientDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    docInfo = (BO.Document)PatientDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath, uploadInfo.CreateUserId, uploadInfo.UpdateUserId);
                     break;
             }
             

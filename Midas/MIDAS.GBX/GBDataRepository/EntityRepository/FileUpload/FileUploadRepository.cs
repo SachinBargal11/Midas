@@ -127,7 +127,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         }
         #endregion
 
-        public override object SaveAsBlob(int ObjectId, int CompanyId, string DocumentObject, string DocumentType, string uploadpath)
+        public override object SaveAsBlob(int ObjectId, int CompanyId, string DocumentObject, string DocumentType, string uploadpath, int CreateUserId, int UpdateUserId)
         {
             BO.Document docInfo = new BO.Document();
 
@@ -135,11 +135,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             {
                 case EN.Constants.CaseType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
-                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath, CreateUserId, UpdateUserId);
                     break;
                 case EN.Constants.VisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
-                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath, CreateUserId, UpdateUserId);
                     break;
             }
             //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
@@ -157,11 +157,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 case EN.Constants.CaseType:
                 case EN.Constants.ConsentType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
-                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath, uploadInfo.CreateUserId, uploadInfo.UpdateUserId);
                     break;
                 case EN.Constants.VisitType:
                     VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
-                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(uploadInfo.ObjectId, uploadInfo.CompanyId, uploadInfo.ObjectType, uploadInfo.DocumentType, uploadInfo.BlobPath, uploadInfo.CreateUserId, uploadInfo.UpdateUserId);
                     break;
             }
             //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);

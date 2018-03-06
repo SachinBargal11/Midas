@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,9 @@ namespace MIDAS.GBX.BusinessObjects.Common
         public string BlobPath { get; set; }
         public int ObjectId { get; set; }
         public int CompanyId { get; set; }
-        
+        public int CreateUserId { get; set; }
+        public int UpdateUserId { get; set; }
+
         public UploadInfo()
         {
             ObjectId = 0;
@@ -23,6 +25,8 @@ namespace MIDAS.GBX.BusinessObjects.Common
             DocumentType = "";
             ObjectType = "";
             BlobPath = "";
+            CreateUserId = 0;
+            UpdateUserId = 0;       
         }
     }
 }
