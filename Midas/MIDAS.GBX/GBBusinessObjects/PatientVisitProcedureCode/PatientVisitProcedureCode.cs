@@ -17,6 +17,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("procedureCodeId")]
         public int ProcedureCodeId { get; set; }
 
+        [JsonProperty("procedureAmount")]
+        public decimal? ProcedureAmount { get; set; }
+
+        [JsonProperty("procedureUnit")]
+        public decimal? ProcedureUnit { get; set; }
+
+        [JsonProperty("procedureTotalAmount")]
+        public decimal? ProcedureTotalAmount { get; set; }
+
         [JsonProperty("procedureCode")]
         public ProcedureCode ProcedureCode { get; set; }
 
@@ -35,6 +44,15 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("procedureCode")]
         public mProcedureCode mProcedureCode { get; set; }
+
+        [JsonProperty("procedureAmount")]
+        public decimal? ProcedureAmount { get; set; }
+
+        [JsonProperty("procedureUnit")]
+        public decimal? ProcedureUnit { get; set; }
+
+        [JsonProperty("procedureTotalAmount")]
+        public decimal? ProcedureTotalAmount { get; set; }
 
         //[JsonProperty("mPatientVisit")]
         //public mPatientVisit mPatientVisit { get; set; }

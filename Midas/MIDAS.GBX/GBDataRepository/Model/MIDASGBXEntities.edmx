@@ -1146,6 +1146,9 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientVisitId" Type="int" Nullable="false" />
           <Property Name="ProcedureCodeId" Type="int" Nullable="false" />
+          <Property Name="ProcedureAmount" Type="money" />
+          <Property Name="ProcedureUnit" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ProcedureTotalAmount" Type="money" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -6512,6 +6515,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="PatientVisit" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId" FromRole="PatientVisitProcedureCodes" ToRole="PatientVisit" />
           <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="PatientVisitProcedureCodes" ToRole="ProcedureCode" />
+          <Property Name="ProcedureAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ProcedureUnit" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ProcedureTotalAmount" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="PatientVisitUnscheduled">
           <Key>
@@ -10564,7 +10570,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-            <Parameter Name="document_node" Mode="In" Type="String" />
+          <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
@@ -11807,6 +11813,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PatientVisitProcedureCodes">
             <EntityTypeMapping TypeName="MIDASModel.PatientVisitProcedureCode">
               <MappingFragment StoreEntitySet="PatientVisitProcedureCodes">
+                <ScalarProperty Name="ProcedureTotalAmount" ColumnName="ProcedureTotalAmount" />
+                <ScalarProperty Name="ProcedureUnit" ColumnName="ProcedureUnit" />
+                <ScalarProperty Name="ProcedureAmount" ColumnName="ProcedureAmount" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
