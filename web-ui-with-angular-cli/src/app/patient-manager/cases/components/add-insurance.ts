@@ -18,6 +18,8 @@ import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Adjuster } from '../../../account-setup/models/adjuster';
+import { AdjusterMasterStore } from '../../../account-setup/stores/adjuster-store';
 import * as _ from 'underscore';
 
 @Component({
@@ -30,6 +32,9 @@ export class AddInsuranceComponent implements OnInit {
     states: any[];
     insuranceMasters: InsuranceMaster[];
     insuranceMaster: InsuranceMaster;
+    adjusterMasters: Adjuster[];
+    adjusterMaster: Adjuster;
+    adjusterMastersList: Adjuster[];
     insuranceMastersAdress: Address;
     policyCities: any[];
     insuranceCities: any[];
@@ -40,14 +45,20 @@ export class AddInsuranceComponent implements OnInit {
     isInsuranceCitiesLoading = false;
     patientId: number;
     insurance: Insurance;
+    insuranceAdjuster: Insurance;
     policyCellPhone: string;
     policyFaxNo: string;
+    insuranceCellPhone: string;
+    insuranceFaxNo: string;
     // msgs: Message[];
     uploadedFiles: any[] = [];
     insuranceform: FormGroup;
     insuranceformControls;
     isSaveProgress = false;
     insuranceMasterId: number = 0;
+    insuranceContactPerson:string = '';
+    showAdjusterList = false;
+    adjusterMasterId = '';
 
     constructor(
         private fb: FormBuilder,
@@ -59,6 +70,7 @@ export class AddInsuranceComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
+        private _adjusterMasterStore: AdjusterMasterStore,
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef,
         private _phoneFormatPipe: PhoneFormatPipe,
@@ -74,6 +86,7 @@ export class AddInsuranceComponent implements OnInit {
             debugger;
             this.patientId = parseInt(routeParams.patientId, 10);
             this.clearInsuranceFields();
+            this.clearInsuranceAdjusterFields();
         });
         //  this._insuranceStore.getInsurancesMaster()
         //     .subscribe(
@@ -123,7 +136,8 @@ export class AddInsuranceComponent implements OnInit {
             faxNo: [''],
             alternateEmail: ['', [AppValidators.emailValidator]],
             officeExtension: ['', [AppValidators.numberValidator, Validators.maxLength(5)]],
-            preferredCommunication: ['']
+            preferredCommunication: [''],
+            adjusterMasterId:['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
@@ -185,14 +199,136 @@ export class AddInsuranceComponent implements OnInit {
             this._insuranceStore.getInsuranceMasterById(currentInsurance)
                 .subscribe(
                 (insuranceMaster) => {
+                    debugger;
                     this.insuranceMaster = insuranceMaster;
                     this.insuranceMastersAdress = insuranceMaster.Address
+                    this.loadInsuranceAdjusterInfo(this.insuranceMaster.id);
                 });
         } else {
             this.insuranceMaster = null;
             this.insuranceMastersAdress = null;
         }
     }
+
+    loadInsuranceAdjusterInfo(insuranceId:number)
+    {
+        this._adjusterMasterStore.getAdjusterByCompanyAndInsuranceMasterId(insuranceId)
+        .subscribe(
+        (adjusterMaster) => {
+            this.adjusterMasters = adjusterMaster;
+            if(this.adjusterMasters.length == 0)
+            {
+                this.showAdjusterList = false;
+                this.clearInsuranceAdjusterFields();
+            }
+            else if(this.adjusterMasters.length == 1)
+            {
+                this.showAdjusterList = false;
+                var adjusterContactInfo = this.adjusterMasters[0].adjusterContact;
+                var adjusterAddressInfo =this.adjusterMasters[0].adjusterAddress;
+                if((adjusterContactInfo != null && adjusterContactInfo != undefined) && (adjusterAddressInfo != null && adjusterAddressInfo != undefined) )
+                {
+                this.insuranceCellPhone = this._phoneFormatPipe.transform(adjusterContactInfo.cellPhone);
+                this.policyFaxNo = this._faxNoFormatPipe.transform(adjusterContactInfo.faxNo);
+                this.insuranceContactPerson = this.adjusterMasters[0].firstName + '' + this.adjusterMasters[0].lastName;
+                this.insuranceAdjuster =   new Insurance({
+                insuranceContact: new Contact({
+                    cellPhone: adjusterContactInfo.cellPhone,
+                    emailAddress: adjusterContactInfo.emailAddress,
+                    faxNo:  adjusterContactInfo.faxNo,
+                    homePhone: adjusterContactInfo.homePhone,
+                    workPhone: adjusterContactInfo.workPhone,
+                    officeExtension: adjusterContactInfo.officeExtension,
+                    alternateEmail:  adjusterContactInfo.alternateEmail,
+                    preferredCommunication: adjusterContactInfo.preferredCommunication ? adjusterContactInfo.preferredCommunication :'',
+    
+                }),
+                insuranceAddress: new Address({
+                    address1: adjusterAddressInfo.address1,
+                    address2: adjusterAddressInfo.address2,
+                    city: adjusterAddressInfo.city,
+                    country: adjusterAddressInfo.country,
+                    state: adjusterAddressInfo.state,
+                    zipCode: adjusterAddressInfo.zipCode
+                })
+               
+            });
+        }
+        else{
+            this.showAdjusterList = false;
+            this.clearInsuranceAdjusterFields();
+        }
+    }
+    else if(this.adjusterMasters.length > 1)
+    {
+        this.showAdjusterList = true;
+        let defaultLabel: any[] = [{
+            label: '-Select Adjuster-',
+            value: ''
+        }]
+        let adjusterMasterLst = _.map(adjusterMaster, (currentAdjusterMaster: Adjuster) => {
+            return {
+                label: `${currentAdjusterMaster.firstName + '' + currentAdjusterMaster.lastName}`,
+                value: currentAdjusterMaster.id
+            };
+        })
+        this.adjusterMastersList = _.union(defaultLabel, adjusterMasterLst);
+    }
+
+   });
+ }
+
+
+ loadInsuranceAdjusterInfoByID(event)
+ {
+     if(event.value != '' && event.value != undefined)
+     {
+         debugger;
+     this._adjusterMasterStore.fetchAdjusterById(event.value)
+     .subscribe(
+     (adjusterMaster) => {
+         debugger;
+         this.adjusterMaster = adjusterMaster;
+             var adjusterContactInfo = this.adjusterMaster.adjusterContact;
+             var adjusterAddressInfo = this.adjusterMaster.adjusterAddress;
+             if((adjusterContactInfo != null && adjusterContactInfo != undefined) && (adjusterAddressInfo != null && adjusterAddressInfo != undefined) )
+             {
+             this.insuranceCellPhone = this._phoneFormatPipe.transform(adjusterContactInfo.cellPhone);
+             this.policyFaxNo = this._faxNoFormatPipe.transform(adjusterContactInfo.faxNo);
+             this.insuranceContactPerson =  this.adjusterMaster.firstName + '' +  this.adjusterMaster.lastName;
+             this.insuranceAdjuster =   new Insurance({
+             insuranceContact: new Contact({
+                 cellPhone: adjusterContactInfo.cellPhone,
+                 emailAddress: adjusterContactInfo.emailAddress,
+                 faxNo:  adjusterContactInfo.faxNo,
+                 homePhone: adjusterContactInfo.homePhone,
+                 workPhone: adjusterContactInfo.workPhone,
+                 officeExtension: adjusterContactInfo.officeExtension,
+                 alternateEmail:  adjusterContactInfo.alternateEmail,
+                 preferredCommunication: adjusterContactInfo.preferredCommunication ? adjusterContactInfo.preferredCommunication :'',
+ 
+             }),
+             insuranceAddress: new Address({
+                 address1: adjusterAddressInfo.address1,
+                 address2: adjusterAddressInfo.address2,
+                 city: adjusterAddressInfo.city,
+                 country: adjusterAddressInfo.country,
+                 state: adjusterAddressInfo.state,
+                 zipCode: adjusterAddressInfo.zipCode
+             })
+            
+         });
+        }
+     else{
+         this.clearInsuranceAdjusterFields();
+     }
+  });
+ }
+ else{
+    this.clearInsuranceAdjusterFields();
+ }
+}
+
 
     onUpload(event) {
 
@@ -288,6 +424,8 @@ export class AddInsuranceComponent implements OnInit {
 
     clearInsuranceFields()
     {
+        this.policyCellPhone = null;
+        this.policyFaxNo = null;
         this.insurance =   new Insurance({
             policyContact: new Contact({
                 cellPhone: null,
@@ -313,9 +451,38 @@ export class AddInsuranceComponent implements OnInit {
     }
 
 
+    clearInsuranceAdjusterFields()
+    {
+        this.adjusterMasterId = '';
+        this.insuranceContactPerson = '';
+        this.insuranceCellPhone = null;
+        this.insuranceFaxNo = null;
+        this.insuranceAdjuster =   new Insurance({
+            insuranceContact: new Contact({
+                cellPhone: null,
+                emailAddress: null,
+                faxNo: null,
+                homePhone: null,
+                workPhone: null,
+                officeExtension: null,
+                alternateEmail: null,
+                preferredCommunication: '',
+            }),
+            insuranceAddress: new Address({
+                address1: null,
+                address2: null,
+                city: null,
+                country: null,
+                state: null,
+                zipCode: null
+            })
+        });
+    
+    }
+
+
     loadPatientInfoIfExists(event)
     {
-        debugger;
         if(event.target.value == '1')
         {
         this._progressBarService.show();
