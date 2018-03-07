@@ -16,6 +16,8 @@ import { Insurance } from '../../patients/models/insurance';
 import { InsuranceMaster } from '../../patients/models/insurance-master';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 import * as _ from 'underscore';
 
 @Component({
@@ -36,6 +38,10 @@ export class AddInsuranceComponent implements OnInit {
     selectedCity = 0;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
+    patientId: number;
+    insurance: Insurance;
+    policyCellPhone: string;
+    policyFaxNo: string;
     // msgs: Message[];
     uploadedFiles: any[] = [];
     insuranceform: FormGroup;
@@ -54,12 +60,20 @@ export class AddInsuranceComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _phoneFormatPipe: PhoneFormatPipe,
+        private _faxNoFormatPipe: FaxNoFormatPipe
     ) {
 
         this.eventStartAsDate = moment().toDate();
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
+        });
+
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            debugger;
+            this.patientId = parseInt(routeParams.patientId, 10);
+            this.clearInsuranceFields();
         });
         //  this._insuranceStore.getInsurancesMaster()
         //     .subscribe(
@@ -270,5 +284,87 @@ export class AddInsuranceComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
+    }
+
+    clearInsuranceFields()
+    {
+        this.insurance =   new Insurance({
+            policyContact: new Contact({
+                cellPhone: null,
+                emailAddress: null,
+                faxNo:  null,
+                homePhone: null,
+                workPhone: null,
+                officeExtension: null,
+                alternateEmail: null,
+                preferredCommunication: '',
+
+            }),
+            policyAddress: new Address({
+                address1: null,
+                address2: null,
+                city: null,
+                country: null,
+                state: null,
+                zipCode: null
+            })
+        });
+    
+    }
+
+
+    loadPatientInfoIfExists(event)
+    {
+        debugger;
+        if(event.target.value == '1')
+        {
+        this._progressBarService.show();
+        let fetchPatient = this._patientsStore.fetchPatientById(this.patientId);
+        fetchPatient.subscribe(
+            (patients: any) => {
+                
+                var patientInfo = patients.toJS();
+                var patientContactInfo = patientInfo.user.contact;
+                var patientAddressInfo = patientInfo.user.address;
+                if((patientContactInfo != null && patientContactInfo != undefined) && (patientAddressInfo != null && patientAddressInfo != undefined) )
+                {
+                    this.policyCellPhone = this._phoneFormatPipe.transform(patientContactInfo.cellPhone);
+                    this.policyFaxNo = this._faxNoFormatPipe.transform(patientContactInfo.faxNo);
+                   
+                this.insurance =   new Insurance({
+                    policyContact: new Contact({
+                        cellPhone: patientContactInfo.cellPhone,
+                        emailAddress: patientContactInfo.emailAddress,
+                        faxNo:  patientContactInfo.faxNo,
+                        homePhone: patientContactInfo.homePhone,
+                        workPhone: patientContactInfo.workPhone,
+                        officeExtension: patientContactInfo.officeExtension,
+                        alternateEmail:  patientContactInfo.alternateEmail,
+                        preferredCommunication: patientContactInfo.preferredCommunication ? patientContactInfo.preferredCommunication :'',
+        
+                    }),
+                    policyAddress: new Address({
+                        address1: patientAddressInfo.address1,
+                        address2: patientAddressInfo.address2,
+                        city: patientAddressInfo.city,
+                        country: patientAddressInfo.country,
+                        state: patientAddressInfo.state,
+                        zipCode: patientAddressInfo.zipCode
+                    })
+                   
+                });
+            }
+               
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        }
+        else{
+            this.clearInsuranceFields();
+        }
     }
 }
