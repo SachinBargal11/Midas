@@ -318,6 +318,7 @@
         <AssociationConnector Association="MIDASModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

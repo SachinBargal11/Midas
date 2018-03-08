@@ -37,5 +37,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Doctor Doctor { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual VisitStatu VisitStatu { get; set; }
+        public virtual InsuranceMaster InsuranceMaster { get; set; }
     }
 }
