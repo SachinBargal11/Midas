@@ -331,6 +331,22 @@ export class CaseService {
         return <Observable<Case>>Observable.from(promise);
     }
 
+    deleteCaseDocument(caseId:number, documentId:number): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/delete/' + caseId + '/' + documentId, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCaseDocument: CaseDocument = null;
+                    parsedCaseDocument = CaseDocumentAdapter.parseResponse(data);
+                    resolve(parsedCaseDocument);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Case>>Observable.from(promise);
+    }
+
     downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
         let thefile = {};
         let companyId = this._sessionStore.session.currentCompany.id;

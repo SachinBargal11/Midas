@@ -21,6 +21,7 @@ import { PatientDocumentAdapter } from '../services/adapters/patient-document-ad
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Document } from '../../../commons/models/document';
 import { Patient } from '../models/patient';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'documents',
@@ -53,6 +54,7 @@ export class DocumentsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _scannerService: ScannerService,
         private confirmationService: ConfirmationService,
+        public sessionStore: SessionStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.currentPatientId = parseInt(routeParams.patientId);
@@ -128,6 +130,7 @@ export class DocumentsComponent implements OnInit {
         this._progressBarService.show();
         this._patientStore.getDocumentsForPatientId(this.patientId)
             .subscribe(document => {
+                debugger;
                 this.documents = document;
             },
 
@@ -165,7 +168,7 @@ export class DocumentsComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-    deleteDocument() {
+    deleteDocuments() {
         if (this.selectedDocumentList.length > 0) {
             this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
@@ -219,6 +222,49 @@ export class DocumentsComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
     }
+
+    deleteDocument(currentdocument: any) {  
+        debugger;           
+        //  this.confirmationService.confirm({
+        //     message: 'Do you want to delete this record?',
+        //     header: 'Delete Confirmation',
+        //     icon: 'fa fa-trash',
+        //     accept: () => {            
+                this._progressBarService.show();
+                this.isDeleteProgress = true;
+                this._patientStore.deletePatientDocument(this.patientId, currentdocument.documentId)
+                    .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Record deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.getDocuments();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedDocumentList = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete record';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedDocumentList = [];
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                    });            
+                }
+//              });        
+//          }
+ 
 }
 
 export interface TwainSource {

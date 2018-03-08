@@ -63,6 +63,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     packetDocumetDialogHeader = 'Packet Documents';
     packetDocumentForm: FormGroup;
     packetDocumentFormControls;
+   
 
     yearFilter: any;
     maxDate;
@@ -195,6 +196,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentsForCaseId(this.currentCaseId)
             .subscribe(document => {
+                debugger;
                 this.documents = document;
                 let dateArray = _.map(this.documents, (currDocument: CaseDocument) => {
                     return currDocument.document.createDate.toDate();
@@ -214,7 +216,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     downloadPdf(documentId) {
         this._progressBarService.show();
-        this._casesStore.downloadDocumentForm(this.currentCaseId, documentId)
+        this._casesStore.downloadDocumentForm(this.caseId, documentId)
             .subscribe(
             (response) => {
                 // this.document = document
@@ -287,22 +289,64 @@ export class CaseDocumentsUploadComponent implements OnInit {
         }
     }
 
+    deletedocument(currentdocument : any) {
+        debugger;
+        let result;        
+            this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this._progressBarService.show();
+                    this.isDeleteProgress = true;                    
+                    result = this._casesStore.deleteCaseDocumentbyCaseDocumentId(this.currentCaseId, currentdocument.documentId);                    
+                    result.subscribe(
+                        (response) => {
+                            let notification = new Notification({
+                                'title': 'Record deleted successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+
+                            });
+                            this.getDocuments();
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.success('Success!', 'Record deleted successfully!');
+                            this.selectedDocumentList = [];
+                        },
+                        (error) => {
+                            let errString = 'Unable to delete record';
+                            let notification = new Notification({
+                                'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                'type': 'ERROR',
+                                'createdAt': moment()
+                            });
+                            this.selectedDocumentList = [];
+                            this._progressBarService.hide();
+                            this.isDeleteProgress = false;
+                            this._notificationsStore.addNotification(notification);
+                            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                        },
+                        () => {
+                            this._progressBarService.hide();
+                            this.isDeleteProgress = false;
+                        });
+                }
+            });        
+    }
+
     onReorderList(event) {
         // this.orderedDocumentList = event.value;
     }
 
     mergeDocuments() {
-        if(this.documentMergeForm.value.documentName.trim() != "" && this.documentMergeForm.value.documentName.trim() != undefined)
-        {
         let documentIds: number[] = _.map(this.orderedDocumentList, (currDocument: any) => {
             return currDocument.documentId;
         })
         let mergedDocumentName = this.documentMergeForm.value.documentName + '.pdf';
         let companyId = this._sessionStore.session.currentCompany.id;
         this.isSaveProgress = true;
-        this._documentManagerService.mergePdfDocuments(documentIds, this.currentCaseId, mergedDocumentName, companyId)
+        this._documentManagerService.mergePdfDocuments(documentIds, this.caseId, mergedDocumentName, companyId)
             .subscribe((response) => {
-                debugger;
                 let notification = new Notification({
                     'title': 'Documents merged successfully!',
                     'type': 'SUCCESS',
@@ -314,17 +358,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this.isSaveProgress = false;
                 this.getDocuments();
                 this.mergeDocumentsDialogVisible = false;
-                this.documentMergeForm.reset();
-                this.orderedDocumentList = [];
-                this.selectedDocumentList = [];
             },
             (error) => {
-                debugger;
                 let errString = 'Unable to merge documents';
-                if(error._body)
-                {
-                    errString = error._body
-                }
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -333,37 +369,20 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this.isSaveProgress = false;
-                this.mergeDocumentsDialogVisible = false;
-                this.documentMergeForm.reset();
-                this.orderedDocumentList = [];
-                this.selectedDocumentList = [];
             },
             () => {
                 this.isSaveProgress = false;
             });
-        }
-        else {
-            this.isSaveProgress = false;
-            let notification = new Notification({
-                'title': 'Enter document name to save',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Enter document name to save');
-        }
     }
 
     packetDocuments() {
-        if(this.packetDocumentForm.value.documentName.trim() != "" && this.packetDocumentForm.value.documentName.trim() != undefined)
-        {
         let documentIds: number[] = _.map(this.selectedDocumentList, (currDocument: CaseDocument) => {
             return currDocument.document.documentId;
         })
         let packetDocumentName = this.packetDocumentForm.value.documentName + '.zip';
         let companyId = this._sessionStore.session.currentCompany.id;
         this.isSaveProgress = true;
-        this._documentManagerService.packetDocuments(documentIds, this.currentCaseId, packetDocumentName, companyId)
+        this._documentManagerService.packetDocuments(documentIds, this.caseId, packetDocumentName, companyId)
             .subscribe((response) => {
                 let notification = new Notification({
                     'title': 'Documents packeted successfully!',
@@ -376,8 +395,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this.isSaveProgress = false;
                 this.getDocuments();
                 this.packetDocumentsDialogVisible = false;
-                this.packetDocumentForm.reset();
-                this.selectedDocumentList = [];
             },
             (error) => {
                 let errString = 'Unable to packet documents';
@@ -389,24 +406,10 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this.isSaveProgress = false;
-                this.packetDocumentsDialogVisible = false;
-                this.packetDocumentForm.reset();
-                this.selectedDocumentList = [];
             },
             () => {
                 this.isSaveProgress = false;
             });
-        }
-        else {
-            this.isSaveProgress = false;
-            let notification = new Notification({
-                'title': 'Enter document name to save',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Enter document name to save');
-        }
     }
 }
 

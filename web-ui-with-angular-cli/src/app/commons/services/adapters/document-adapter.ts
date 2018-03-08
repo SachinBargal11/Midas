@@ -14,7 +14,7 @@ export class DocumentAdapter {
             documentType: data.documentType,
             status: data.status,
             message: data.message,
-            createByUserID: data.createbyuserID,
+            createByUserID: data.createByUserID,
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,

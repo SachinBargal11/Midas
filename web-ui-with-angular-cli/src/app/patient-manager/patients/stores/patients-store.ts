@@ -230,6 +230,17 @@ export class PatientsStore {
         return <Observable<Patient>>Observable.from(promise);
     }
 
+    deletePatientDocument(patientId: number, documentId: number): Observable<Patient> {        
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.deletePatientDocument(patientId, documentId).subscribe((patient: PatientDocument) => {                
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.from(promise);
+    }
+
 //  getOpenCasesByCompanyWithPatient(): Observable<Patient[]> {
 //         let companyId: number = this._sessionStore.session.currentCompany.id;
 //         let promise = new Promise((resolve, reject) => {

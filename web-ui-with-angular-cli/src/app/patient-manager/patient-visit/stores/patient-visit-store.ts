@@ -503,6 +503,17 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
+    deleteVisitDocument(visitId: number, documentId: number): Observable<PatientVisit> {        
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deleteVisitDocument(visitId, documentId).subscribe((caseDetail: PatientVisit) => {                
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
     downloadDocumentForm(visitId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.downloadDocumentForm(visitId, documentId).subscribe((consent: Consent[]) => {
@@ -756,5 +767,30 @@ export class PatientVisitsStore {
             });
         });
         return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+
+    getVisitStatusbyPatientVisitIdSpecialityId(patientVisitId: number, specialityId: number ): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getVisitStatusbyPatientVisitIdSpecialityId(patientVisitId, specialityId).subscribe((patientVisitDetails: PatientVisit[]) => {
+                //.next(List(patientVisitDetails));
+                resolve(patientVisitDetails);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.from(promise);
+    }
+
+    getVisitStatusbyPatientVisitIdRoomTestId(patientVisitId: number, roomTestId: number ): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getVisitStatusbyPatientVisitIdRoomTestId(patientVisitId, roomTestId).subscribe((patientVisitDetails: PatientVisit[]) => {
+                //.next(List(patientVisitDetails));
+                resolve(patientVisitDetails);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.from(promise);
     }
 }
