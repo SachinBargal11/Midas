@@ -1220,7 +1220,7 @@ export class PatientVisitComponent implements OnInit {
         this.patientScheduleForm.reset();
         this.selectedVisit = null;
         if (this.selectedOption == 1) {
-            if(this.selectedSpeciality.mandatoryProcCode != null)
+            if(this.selectedSpeciality != null)
             {
                 if (this.selectedSpeciality.mandatoryProcCode) {
                     this.isProcedureCode = true;

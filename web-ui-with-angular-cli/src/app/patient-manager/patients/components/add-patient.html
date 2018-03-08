@@ -8,21 +8,6 @@
         <div class="card-block" formGroupName="userInfo">
             <div class="row">
                 <div class="col-lg-4">
-                    <label class="form-label"> E-Mail
-                                            <span class="color-red">*</span>
-                                        </label>
-                    <div class="form-group" [class.error]="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
-                        <input type="email" formControlName="email" [class.error]="!patientformControls.contact.controls.email.valid" class="form-control" (change)="getUserByUserName($event)"
-                            type="text" placeholder="" />
-                        <div class='error-list' *ngIf="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
-                            <ul>
-                                <li *ngIf="patientformControls.contact.controls.email.hasError('required')">Email is required.</li>
-                                <li *ngIf="patientformControls.contact.controls.email.hasError('emailValidator')">Email is invalid.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
                     <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
@@ -41,8 +26,6 @@
                         <input formControlName="middlename" type="text" class="form-control" placeholder="">
                     </div>
                 </div>
-            </div>
-                <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
@@ -56,6 +39,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Gender
                                     <span class="color-red">*</span>
@@ -255,7 +240,22 @@
 
         </header>
         <div class="card-block" formGroupName="contact">
-            <div class="row">                
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
+                        <input type="email" formControlName="email" [class.error]="!patientformControls.contact.controls.email.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="patientformControls.contact.controls.email.touched && !patientformControls.contact.controls.email.valid">
+                            <ul>
+                                <li *ngIf="patientformControls.contact.controls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="patientformControls.contact.controls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-4">
                     <label class="form-label"> Cellphone
                                             <span class="color-red">*</span>
