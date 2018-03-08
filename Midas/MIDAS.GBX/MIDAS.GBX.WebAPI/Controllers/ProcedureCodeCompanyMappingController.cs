@@ -104,6 +104,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetProcedureCodesbySpecialtyCompanyIdforVisit(Request, companyId, specialtyId);
         }
 
+        [HttpGet]
+        [Route("GetPreffredProcedureCodesForVisitUpdate/{companyId}/{specialtyId}")]
+        public HttpResponseMessage GetPreffredProcedureCodesForVisitUpdate(int companyId, int specialtyId)
+        {
+            return requestHandler.GetPreffredProcedureCodesForVisitUpdate(Request, companyId, specialtyId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

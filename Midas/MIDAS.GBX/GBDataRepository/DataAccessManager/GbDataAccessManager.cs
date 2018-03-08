@@ -4754,28 +4754,6 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetProcedureCodesbyRoomTestCompanyIdforVisit(int CompanyId, int SpecialtyId)
-        {
-            try
-            {
-                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetProcedureCodesbySpecialtyCompanyIdforVisit(CompanyId, SpecialtyId);
-
-                return gbdata;
-            }
-
-            catch (GbException gbe)
-            {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
-                return gbe;
-            }
-            catch (Exception ex)
-            {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
-                return ex;
-            }
-        }
-
         public Object GetAllProcedureCodesbyRoomTestCompanyIdforVisit(int CompanyId, int RoomTestId)
         {
             try
@@ -4827,6 +4805,29 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetByLocationDoctorAndRoomId(locationId, doctorId, roomId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+
+        public Object GetPreffredProcedureCodesForVisitUpdate(int CompanyId, int SpecialtyId)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetPreffredProcedureCodesForVisitUpdate(CompanyId, SpecialtyId);
 
                 return gbdata;
             }

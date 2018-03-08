@@ -2836,5 +2836,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+
+        public HttpResponseMessage GetPreffredProcedureCodesForVisitUpdate(HttpRequestMessage request, int CompanyId, int SpecialtyId)
+        {
+            var objResult = dataAccessManager.GetPreffredProcedureCodesForVisitUpdate(CompanyId, SpecialtyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }
