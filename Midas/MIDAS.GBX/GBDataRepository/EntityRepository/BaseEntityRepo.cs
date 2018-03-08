@@ -1141,6 +1141,16 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetVisitStatusbyPatientVisitSpecialityId(int PatientVisitId, int specialityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetVisitStatusbyPatientVisitRoomTestId(int PatientVisitId, int roomTestId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

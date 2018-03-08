@@ -950,7 +950,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         //    return (object)res;
         //}
         #endregion
-
+            
 
         #region save
         public override object Save<T>(List<T> entities)
@@ -1051,8 +1051,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         _context.PendingReferralProcedureCodes.Add(AddProcedureCodeDB);
                                     }
                                 }
-
-
                             }
                             #endregion
 
@@ -1191,6 +1189,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             return result;
         }
+
+       
 
         public void Dispose()
         {

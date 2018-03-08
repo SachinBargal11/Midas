@@ -2948,6 +2948,128 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Patient Referral Visit Status by Patient Visit Id and Speciality Id
+        public override object GetVisitStatusbyPatientVisitSpecialityId(int PatientVisitId, int SpecialityId)
+        {
+            var res = _context.Referrals.Include("PendingReferral").Where(p => p.PendingReferral.PatientVisitId == PatientVisitId && p.PendingReferral.ForSpecialtyId == SpecialityId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            if (res != null)
+            {
+                var ress = _context.Referrals.Where(p => p.ScheduledPatientVisitId == res.ScheduledPatientVisitId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (ress != null)
+                {
+                    var result1 = _context.PatientVisits.Where(p => p.Id == ress.ScheduledPatientVisitId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if(result1 != null)
+                    {
+                        var result = _context.PatientVisits.Where(p => p.CalendarEventId == result1.CalendarEventId && p.VisitStatusId == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+                        if (result != null && result.Count() > 0)
+                        {
+                            ////return result;
+                            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                            foreach (PatientVisit item in result)
+                            {
+                                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                            }
+                            return lstPatientVisit;
+                            // var resss = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferral.PatientVisitId == PatientVisitId && p.PendingReferral.ForSpecialtyId == SpecialityId).FirstOrDefault();
+                            //return resss;
+                        }
+                        else
+                        {
+                            //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                            foreach (PatientVisit item in result)
+                            {
+                                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                            }
+                            return lstPatientVisit;
+                        }
+                    }
+                    else
+                    {
+                        List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                        return lstPatientVisit;
+                    }                    
+                }
+                else
+                {
+                    //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();                    
+                    return lstPatientVisit;
+                }
+            }
+            else
+            {
+                //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                //foreach (PatientVisit item in result)
+                //{
+                //    lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                //}
+                return lstPatientVisit;
+            }
+            //var result = _context.PatientVisits.Where(p => p.Id == ress.ScheduledPatientVisitId).ToList<PatientVisit>();
+        }
+        #endregion
+
+        #region Get Patient Referral Visit Status by Patient Visit Id and Room Test Id
+        public override object GetVisitStatusbyPatientVisitRoomTestId(int PatientVisitId, int RoomTestId)
+        {
+            var res = _context.Referrals.Include("PendingReferral").Where(p => p.PendingReferral.PatientVisitId == PatientVisitId && p.PendingReferral.ForRoomTestId == RoomTestId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            if (res != null)
+            {
+                var ress = _context.Referrals.Where(p => p.ScheduledPatientVisitId == res.ScheduledPatientVisitId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (ress != null)
+                {
+                    var result1 = _context.PatientVisits.Where(p => p.Id == ress.ScheduledPatientVisitId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    if (result1 != null)
+                    {
+                        var result = _context.PatientVisits.Where(p => p.CalendarEventId == result1.CalendarEventId && p.VisitStatusId == 2 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+                        if (result != null && result.Count() > 0)
+                        {
+                            ////return result;
+                            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                            foreach (PatientVisit item in result)
+                            {
+                                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                            }
+                            return lstPatientVisit;
+                            // var resss = _context.PendingReferralProcedureCodes.Where(p => p.PendingReferral.PatientVisitId == PatientVisitId && p.PendingReferral.ForSpecialtyId == SpecialityId).FirstOrDefault();
+                            //return resss;
+                        }
+                        else
+                        {
+                            //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                            foreach (PatientVisit item in result)
+                            {
+                                lstPatientVisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
+                            }
+                            return lstPatientVisit;
+                        }
+                    }
+                    else
+                    {
+                        List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                        return lstPatientVisit;
+                    }
+                }
+                else
+                {
+                    //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                    return lstPatientVisit;
+                }
+            }
+            else
+            {
+                //return new BO.ErrorObject { ErrorMessage = "No records found", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                List<BO.PatientVisit> lstPatientVisit = new List<BO.PatientVisit>();
+                return lstPatientVisit;
+            }
+            //var result = _context.PatientVisits.Where(p => p.Id == ress.ScheduledPatientVisitId).ToList<PatientVisit>();
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

@@ -200,5 +200,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetAllProcedureCodesbyRoomTestCompanyIdforVisit(HttpRequestMessage request, int CompanyId, int RoomTestId);
         HttpResponseMessage GetByLocationDoctorAndCompanyId(HttpRequestMessage request, int locationId, int doctorId, int companyId);
         HttpResponseMessage GetByLocationDoctorAndRoomId(HttpRequestMessage request, int locationId, int doctorId, int roomId);
+        HttpResponseMessage GetVisitStatusbyPatientVisitSpecialityId(HttpRequestMessage request, int PatientVisitId, int specialityId);
+        HttpResponseMessage GetVisitStatusbyPatientVisitRoomTestId(HttpRequestMessage request, int PatientVisitId, int roomTestId);
     }
 }

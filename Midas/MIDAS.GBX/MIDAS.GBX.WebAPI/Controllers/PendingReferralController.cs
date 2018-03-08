@@ -97,6 +97,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientVisitIdWithProcedureCodes(Request, patientVisitId);
         }
 
+     
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -2836,5 +2836,32 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetVisitStatusbyPatientVisitSpecialityId(HttpRequestMessage request, int PatientVisitId, int specialityId)
+        {
+            var objResult = dataAccessManager.GetVisitStatusbyPatientVisitSpecialityId( PatientVisitId, specialityId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+        public HttpResponseMessage GetVisitStatusbyPatientVisitRoomTestId(HttpRequestMessage request, int PatientVisitId, int roomTestId)
+        {
+            var objResult = dataAccessManager.GetVisitStatusbyPatientVisitRoomTestId(PatientVisitId, roomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }
