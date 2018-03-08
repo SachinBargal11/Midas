@@ -1,0 +1,117 @@
+<header class="card-header card-header-lg">
+    Edit Preferred Medical Provider
+</header>
+<div *ngIf="medicalProviderMaster">
+    <form [formGroup]="providerform" name="providerform" (ngSubmit)="updateMedicalProvider()">
+        <section class="card">
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> Company Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="providerformControls.companyName.touched && !providerformControls.companyName.valid">
+                            <input formControlName="companyName" [ngModel]="medicalProviderMaster.signup.company.name" type="text" class="form-control"
+                                [class.error]="!providerformControls.companyName.valid" />
+                            <div class='error-list' *ngIf="providerformControls.companyName.touched && !providerformControls.companyName.valid">
+                                <ul>
+                                    <li *ngIf="providerformControls.companyName.pending">Checking...</li>
+                                    <li *ngIf="providerformControls.companyName.hasError('required')">Company Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label"> Company type
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                            <select disabled [ngModel]=1 formControlName="companyType" [ngModel]="medicalProviderMaster.signup.company.companyType" class="selectpicker form-control"
+                                title="Select Company Type." [class.error]="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                                             <!--<option value="">-Select company type-</option>
+                                             <option disabled>────────────────────</option>-->
+                                             <option value="1">Medical Provider</option>                                             
+                                         </select>
+                            <div class='error-list' *ngIf="providerformControls.companyType.touched && !providerformControls.companyType.valid">
+                                <ul>
+                                    <li *ngIf="providerformControls.companyType.hasError('required')">Company type is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="providerformControls.firstName.touched && !providerformControls.firstName.valid">
+                            <input formControlName="firstName" [ngModel]="medicalProviderMaster.signup.user.firstName" type="text" class="form-control"
+                                [class.error]="!providerformControls.firstName.valid" />
+                            <div class='error-list' *ngIf="providerformControls.firstName.touched && !providerformControls.firstName.valid">
+                                <ul>
+                                    <li *ngIf="providerformControls.firstName.hasError('required')">First name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="providerformControls.lastName.touched && !providerformControls.lastName.valid">
+                            <input formControlName="lastName" [ngModel]="medicalProviderMaster.signup.user.lastName" type="text" class="form-control"
+                                [class.error]="!providerformControls.lastName.valid" />
+                            <div class='error-list' *ngIf="providerformControls.lastName.touched && !providerformControls.lastName.valid">
+                                <ul>
+                                    <li *ngIf="providerformControls.lastName.hasError('required')">Last name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="providerformControls.email.touched && !providerformControls.email.valid">
+                            <input formControlName="email" type="email" [ngModel]="medicalProviderMaster.signup.contactInfo.emailAddress" [class.error]="!providerformControls.email.valid"
+                                class="form-control" placeholder="" type="text" />
+                            <div class='error-list' *ngIf="providerformControls.email.touched && !providerformControls.email.valid">
+                                <ul>
+                                    <li *ngIf="providerformControls.email.hasError('required')">Email is required.</li>
+                                    <li *ngIf="providerformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label"> Phone number
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="providerformControls.phoneNo.touched && !providerformControls.attorneyCellPhone.valid">
+                            <p-inputMask mask="+1 999-999-9999" formControlName="phoneNo" [ngModel]="medicalProviderMaster.signup.contactInfo.cellPhone"
+                                [class.error]="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid" placeholder="+1 999-999-9999"
+                                styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="providerformControls.phoneNo.touched && !providerformControls.phoneNo.valid">
+                                <ul>
+                                    <li *ngIf="providerformControls.phoneNo.hasError('required')">Phone number is required.</li>
+                                    <li *ngIf="providerformControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <button [disabled]="!providerform.valid || isRegistrationInProgress" type="submit" class="btn btn-success sign-up">Save
+                                <loader [visible]="isRegistrationInProgress"></loader>
+                            </button>
+        <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

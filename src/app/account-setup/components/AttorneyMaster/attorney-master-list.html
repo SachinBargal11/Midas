@@ -1,0 +1,108 @@
+<section class="card">
+    <header class="card-header card-header-lg">
+        Preferred Attorney List
+    </header>
+    <p-confirmDialog width="425"></p-confirmDialog>
+    <div class="card-block">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Attorney">
+</div>
+<div class="col-lg-8">
+    <a class="pull-right btn btn-danger btn-sm" (click)="deleteAttorneys()">
+        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down">  Remove Attorney</span>
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showValidation()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Assign Attorney </span>
+    </a>
+    <!--<a type="text" class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()"><i class="fa-external-link-square" aria-hidden="true"></i>
+    <span class="hidden-md-down">Generate Token</span></a>-->
+</div>
+</div>
+
+<p-dialog header="Validation" [(visible)]="displayValidation" [width]="700" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
+    <div class="row">
+        <div class="col-lg-4">
+            <label class="form-label">Enter Attorney Provider Token Number</label>
+        </div>
+        <div class="col-lg-8">
+            <form [formGroup]="addAttorneyByToken" (ngSubmit)="validateGeneratedToken()">
+                <div class="col-lg-4">
+                    <div class="form-group" [class.error]="addAttorneyByTokenControls.token.touched && !addAttorneyByTokenControls.token.valid">
+                        <input formControlName="token" type="text" class="form-control" placeholder="" [class.error]="addAttorneyByTokenControls.token.touched && !addAttorneyByTokenControls.token.valid">
+                        <div class='error-list' *ngIf="addAttorneyByTokenControls.token.touched && !addAttorneyByTokenControls.token.valid">
+                            <ul>
+                                <li *ngIf="addAttorneyByTokenControls.token.hasError('required')">Please enter attorney provider OTP.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <button class="btn btn-success sign-up" [disabled]="!addAttorneyByToken.valid" type="submit"><i aria-hidden="true"></i>
+                  Validate Token
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="validateOtpResponse" class="row" style="text-align: left;">
+        <div class="col-lg-6">
+            <label class="form-label">Validated Attorney Company:                              
+                                    </label>
+        </div>
+        <div class="col-lg-6">
+            <!--<label class="form-label">{{medicalProviderName}}-->
+            <label class="form-label">{{attorneyProviderName}}
+                                </label>
+        </div>
+    </div>
+    <div *ngIf="validateOtpResponse && attorneyAddress" class="row" style="text-align: left;">
+        <div class="col-lg-6">
+            <label class="form-label">Validated Attorney Company Address:                              
+                                    </label>
+        </div>
+        <div class="col-lg-6">
+            <label class="form-label">{{attorneyAddress}}
+                                </label>
+        </div>
+    </div>
+<div *ngIf="validateOtpResponse" class="row">
+     <div class="col-lg-6">
+        <a class="btn btn-primary btn-sm" (click)="associateAttorney()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Associate Attorney</span>
+    </a>
+    </div>
+    <div class="col-lg-6">
+        <a class="btn btn-danger btn-sm" (click)="closeDialog()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Dismiss Attorney</span>
+        </a>
+    </div>
+</div>
+</p-dialog>
+<p-dialog header="Generated Token Number" [(visible)]="displayToken" [width]="300" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
+    <div class="row">
+        <div class="col-lg-6">
+            <label class="form-label">Token Number:
+                            </label></div>
+        <div class="col-lg-6">
+            <label class="form-label">{{otp}}
+                </label>
+        </div>
+    </div>
+</p-dialog>
+<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" #dt>
+    <header>Preferred Attorney List</header>
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="prefferedAttorney.name" header="Attorney Name" [sortable]="true" [filter]="true" styleClass="inbound-column">
+    </p-column>
+    <!--<p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-attorney="rowData" pTemplate="body">
+            <a *ngIf="attorney.isCreated" routerLink="edit/{{attorney.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+            <a *ngIf="!attorney.isCreated"><i class=" glyphicon glyphicon-edit "></i></a>
+        </ng-template>
+    </p-column>-->
+</p-dataTable>
+</div><br>
+</section>

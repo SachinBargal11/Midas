@@ -1,0 +1,27 @@
+<h3 class="with-border">Calendar</h3>
+<p-schedule [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
+    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer">
+    </p-schedule>
+    <p-confirmDialog acceptIcon="" rejectIcon="" acceptLabel="Edit Current Occurrence" rejectLabel="Edit The Series" header="Edit Recurring Item"
+        icon="fa fa-question-circle" width="600">
+        </p-confirmDialog>
+        <p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleDialogHide()" header="Visit" [(visible)]="dialogVisible" [responsive]="true"
+            showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [responsive]="true">
+            <form [formGroup]="calendarForm" (ngSubmit)="saveEvent()">
+                <div class="" *ngIf="selectedEvent">
+
+                    <scheduled-event-editor [selectedEvent]="selectedEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
+
+                </div>
+                <p-footer>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <button [disabled]="!isFormValid()" type="submit" class="btn btn-success sign-up">Save
+            </button>
+                            <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+                        </div>
+                    </div>
+                </p-footer>
+            </form>
+            </p-dialog>

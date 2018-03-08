@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-md-4">
+        <label class="form-label"> Generate Token 
+    </label></div>
+    <div class="col-md-4">
+        <a type="text" class="btn-inline btn btn-primary btn-sm" (click)="showDialog()"><i class="fa fa-commenting-o" aria-hidden="true"></i>
+    <span class="hidden-md-down">Generate Token</span></a>
+    </div>
+    <div class="col-md-4">
+        <button type="text" (click)="showHelpDialog()" pButton icon="fa fa-info-circle" label="Help"></button>
+    </div>
+</div>
+<form [formGroup]="settingForm" (ngSubmit)="save()">
+    <div class="row">
+        <div class="col-md-4">
+            <label class="form-label"> Test Room Preferred Time Slot
+                                            <span class="color-red">*</span>
+                                        </label>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group" [class.error]="settingFormControls.roomTimeSlot.touched && !settingFormControls.roomTimeSlot.valid">
+                <select formControlName="roomTimeSlot" [(ngModel)]="isTimeSlot" type="text" class="form-control">
+                            <option value="">-Select -</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
+                            <option value="120">120 minutes</option>
+                        </select>
+
+                <div class='error-list' *ngIf="settingFormControls.roomTimeSlot.touched && !settingFormControls.roomTimeSlot.valid">
+                    <ul>
+                        <li *ngIf="settingFormControls.roomTimeSlot.hasError('required')">Room Timeslot is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-success sign-up">Save
+    <loader [visible]="isSaveProgress"></loader>
+</button>
+    </div>
+</form>
+
+<p-dialog header="Generate 6-Digit token for Medical Provider" [(visible)]="display" [width]="350">
+    1.If you want to generate/share a six-digit valid token click on generate token button.<br> 2.Share this generated token
+    with other medical provider,ancillary provider or attorney company in order to get add to their company.<br>
+</p-dialog>
+
+<p-dialog header="Generated Token Number" [(visible)]="displayToken" [width]="300" [responsive]="true" [contentStyle]="{'overflow':'auto', 'max-height':'450px'}">
+    <div class="row">
+        <div class="col-lg-6">
+            <label class="form-label">Token Number:
+                            </label></div>
+        <div class="col-lg-6">
+            <label class="form-label">{{otp}}
+                </label>
+        </div>
+    </div>
+</p-dialog>
