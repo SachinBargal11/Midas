@@ -56,7 +56,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object SaveAsBlob(int id, int CompanyId, string objecttype, string documenttype, string uploadpath)
+        public virtual Object SaveAsBlob(int id, int CompanyId, string objecttype, string documenttype, string uploadpath, int createUserId, int updateUserId)
         {
             throw new NotImplementedException();
         }

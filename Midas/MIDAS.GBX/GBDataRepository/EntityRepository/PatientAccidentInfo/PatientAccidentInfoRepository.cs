@@ -286,6 +286,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         PatientAccidentInfoDB = new PatientAccidentInfo();
                         Add_PatientAccidentInfoDB = true;
+
+                        var patientinfo = _context.Cases.Where(p => p.Id == PatientAccidentInfoBO.CaseId).FirstOrDefault();
+                        if(patientinfo != null)
+                        {
+                            var patientaccidentlist = _context.PatientAccidentInfoes.Include("Case").Where(p => p.Case.PatientId == patientinfo.PatientId && DbFunctions.TruncateTime(p.AccidentDate) ==  DbFunctions.TruncateTime(PatientAccidentInfoBO.AccidentDate) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                            if (patientaccidentlist != null && patientaccidentlist.Count() > 0)
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "You can't have multiple accidents on same date", ErrorLevel = ErrorLevel.Error };
+                            }                            
+                        }
+                        
                     }
                     else if (PatientAccidentInfoDB == null && PatientAccidentInfoBO.ID > 0)
                     {
@@ -295,6 +307,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (IsEditMode == false)
                     {
                         PatientAccidentInfoDB.CaseId = PatientAccidentInfoBO.CaseId;
+                    }
+                    else
+                    {
+                        var patientinfo = _context.Cases.Where(p => p.Id == PatientAccidentInfoBO.CaseId).FirstOrDefault();
+                        if (patientinfo != null)
+                        {
+                            var patientaccidentlist = _context.PatientAccidentInfoes.Include("Case").Where(p => p.Id != PatientAccidentInfoBO.ID && p.Case.PatientId == patientinfo.PatientId && DbFunctions.TruncateTime(p.AccidentDate) == DbFunctions.TruncateTime(PatientAccidentInfoBO.AccidentDate) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                            if (patientaccidentlist != null && patientaccidentlist.Count() > 0)
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "You can't have multiple accidents on same date", ErrorLevel = ErrorLevel.Error };
+                            }
+                        }
                     }
 
                     PatientAccidentInfoDB.AccidentDate = (IsEditMode == true && PatientAccidentInfoBO.AccidentDate == null) ? PatientAccidentInfoDB.AccidentDate : PatientAccidentInfoBO.AccidentDate;

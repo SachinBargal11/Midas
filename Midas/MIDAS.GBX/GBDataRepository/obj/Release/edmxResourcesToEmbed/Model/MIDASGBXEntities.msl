@@ -1198,6 +1198,9 @@
     <EntitySetMapping Name="PatientVisitProcedureCodes">
       <EntityTypeMapping TypeName="MIDASModel.PatientVisitProcedureCode">
         <MappingFragment StoreEntitySet="PatientVisitProcedureCodes">
+          <ScalarProperty Name="ProcedureTotalAmount" ColumnName="ProcedureTotalAmount" />
+          <ScalarProperty Name="ProcedureUnit" ColumnName="ProcedureUnit" />
+          <ScalarProperty Name="ProcedureAmount" ColumnName="ProcedureAmount" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
           <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />

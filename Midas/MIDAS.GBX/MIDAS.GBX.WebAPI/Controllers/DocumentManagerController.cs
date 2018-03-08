@@ -68,7 +68,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 foreach (HttpContent ctnt in streamContent)
                 {
                     string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
-                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, uploadObject.CompanyId, ((ObjectContent)serviceProvider.Content).Value.ToString(), uploadObject.CreateUserId, uploadObject.UpdateUserId);
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {
@@ -162,6 +162,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 List<HttpContent> streamContent = streamProvider.Contents.ToList();
 
                 int companyId = Convert.ToInt16(((ObjectContent)requestHandler.GetByObjectIdAndType(Request, uploadObject.ObjectId, uploadObject.ObjectType).Content).Value);
+                int CreateUserId = 0;
+                int UpdateUserId = 0;
                 if (companyId == 0)
                     return Request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Blob storage provider not found for this case company", errorObject = "", ErrorLevel = ErrorLevel.Error });
 
@@ -176,7 +178,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 foreach (HttpContent ctnt in streamContent)
                 {
                     string blobPath = ((ObjectContent)resDocumentPath.Content).Value.ToString();
-                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, companyId, ((ObjectContent)serviceProvider.Content).Value.ToString());
+                    HttpResponseMessage resBlob = blobhandler.UploadToBlob(Request, ctnt, blobPath, companyId, ((ObjectContent)serviceProvider.Content).Value.ToString(), CreateUserId, UpdateUserId);
 
                     if (resBlob.StatusCode.Equals(HttpStatusCode.Created) || resBlob.StatusCode.Equals(HttpStatusCode.OK))
                     {

@@ -1442,7 +1442,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return ExistingUser;
             }
-
         }
         #endregion
 

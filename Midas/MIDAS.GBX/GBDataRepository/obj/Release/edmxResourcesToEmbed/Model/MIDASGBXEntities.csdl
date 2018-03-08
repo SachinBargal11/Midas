@@ -1406,6 +1406,9 @@
     <Property Name="UpdateDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="PatientVisit" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId" FromRole="PatientVisitProcedureCodes" ToRole="PatientVisit" />
     <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="PatientVisitProcedureCodes" ToRole="ProcedureCode" />
+    <Property Name="ProcedureAmount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ProcedureUnit" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ProcedureTotalAmount" Type="Decimal" Precision="19" Scale="4" />
   </EntityType>
   <EntityType Name="PatientVisitUnscheduled">
     <Key>

@@ -31,6 +31,12 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("message")]
         public string Message { get; set; }
 
+        [JsonProperty("createbyuserID")]
+        public int ? createUserId { get; set; }
+
+        [JsonProperty("updateByUserID")]
+        public int ? updateUserId { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
