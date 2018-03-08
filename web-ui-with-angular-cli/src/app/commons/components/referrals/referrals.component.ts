@@ -19,6 +19,7 @@ import { SpecialityService } from '../../../account-setup/services/speciality-se
 import { VisitReferral } from '../../../patient-manager/patient-visit/models/visit-referral';
 import { VisitReferralProcedureCode } from '../../../patient-manager/patient-visit/models/visit-referral-procedure-code';
 import { VisitReferralStore } from '../../../patient-manager/patient-visit/stores/visit-referral-store';
+import { PatientVisitsStore } from '../../../patient-manager/patient-visit/stores/patient-visit-store';
 
 @Component({
   selector: 'app-referrals',
@@ -44,6 +45,8 @@ export class ReferralsComponent implements OnInit {
   selectedTestId: number;
   msg: string;
   selectedEvent;
+  iscomplete: boolean;
+  
 
   @Input() routeFrom: number;
   @Input() selectedVisit: PatientVisit;
@@ -59,13 +62,15 @@ export class ReferralsComponent implements OnInit {
     private _specialityStore: SpecialityStore,
     private _roomsStore: RoomsStore,
     private _visitReferralStore: VisitReferralStore,
-    private _specialityService: SpecialityService
+    private _specialityService: SpecialityService,
+    private _patientVisitStore: PatientVisitsStore
   ) {
   }
 
   ngOnInit() {
     this.loadAllSpecialitiesAndTests();
     this.getPendingReferralByPatientVisitId();
+    this.iscomplete = false;
     // if (this.selectedVisit.specialtyId) {
     //   this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
     // } else if (this.selectedVisit.roomId) {
@@ -119,6 +124,91 @@ export class ReferralsComponent implements OnInit {
       });
   }
 
+  CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {
+    debugger;
+     this._progressBarService.show();
+     this.iscomplete = false;
+     let result = this._patientVisitStore.getVisitStatusbyPatientVisitIdSpecialityId(this.selectedVisit.id, specialityId);
+     result.subscribe(
+      (ptvist: PatientVisit[]) => {  
+         debugger;              
+        if(ptvist.length > 0)
+        {
+           this.iscomplete = true;
+        }
+        else
+        {
+          this.iscomplete = false;
+        }       
+      },
+      (error) => {
+        this._progressBarService.hide();
+      },
+       () => {
+        this._progressBarService.hide();
+        if(isdelete)
+        {
+          if(this.iscomplete == false)
+          {            
+            let procedureCodeIds: number[] = [];
+            procedureCodeIds.push(procedureCodeId);
+            let procedureCodeDetails = _.filter(this.proceduresList, (currentProcedure: Procedure) => {
+              return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+            });
+      
+            this.proceduresList = procedureCodeDetails;
+            this.selectOption(this.selectedEvent);
+            this.selectedProceduresToDelete = null;          
+          }
+          else
+          {
+            this._notificationsService.error('Unable to delete!', 'This referral visit has been complete');
+          }
+        }
+      });
+  }
+
+  CheckReferralPtVisitStatusForUpdatebyRoomTest(roomTestId: number,procedureCodeId:number, isdelete: boolean) {
+    this._progressBarService.show();
+    let result = this._patientVisitStore.getVisitStatusbyPatientVisitIdRoomTestId(this.selectedVisit.id, roomTestId);
+    result.subscribe(
+      (ptvist: PatientVisit[]) => {
+        if(ptvist.length > 0)
+        {
+          this.iscomplete = true;
+        }
+        else
+        {
+          this.iscomplete = false;
+        }
+      },
+      (error) => {
+        this._progressBarService.hide();
+      },
+      () => {
+        this._progressBarService.hide();
+        if(isdelete)
+        {        
+          if(this.iscomplete == false)
+          {
+            let procedureCodeIds: number[];
+            procedureCodeIds.push(procedureCodeId);
+            let procedureCodeDetails = _.filter(this.proceduresList, (currentProcedure: Procedure) => {
+              return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+            });
+      
+            this.proceduresList = procedureCodeDetails;
+            this.selectOption(this.selectedEvent);
+            this.selectedProceduresToDelete = null;
+          }
+        else
+          {
+            this._notificationsService.error('Unable to delete!', 'This referral visit has been complete');
+          }
+        }
+      });
+  }
+
   selectOption(event) {
     this.selectedEvent = event;
     this.selectedDoctorId = 0;
@@ -129,12 +219,14 @@ export class ReferralsComponent implements OnInit {
       this.selectedSpecialityId = parseInt(event.target.value, 10);
       this.loadProceduresForSpeciality(this.selectedSpecialityId);
       this.fetchSelectedSpeciality(this.selectedSpecialityId);
+      this.CheckReferralPtVisitStatusForUpdatebySpecialty(this.selectedSpecialityId, 0, false);
       // this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
     } else if (event.target.selectedOptions[0].getAttribute('data-type') === '2') {
       this.selectedOption = 2;
       this.selectedTestId = parseInt(event.target.value, 10);
       this.loadProceduresForRoomTest(this.selectedTestId);
       this.fetchSelectedTestingFacility(this.selectedTestId);
+      this.CheckReferralPtVisitStatusForUpdatebyRoomTest(this.selectedTestId, 0, false);
       // this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
     } else {
       this.selectedMode = 0;
@@ -142,6 +234,8 @@ export class ReferralsComponent implements OnInit {
     }
     this.msg = '';
   }
+
+  
 
   loadProceduresForSpeciality(specialityId: number) {
     this._progressBarService.show();
@@ -357,16 +451,26 @@ export class ReferralsComponent implements OnInit {
     // this.save.emit(this.proceduresList);
   }
 
-  deleteProcedureCode() {
-    let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
-      return currentProcedure.id;
-    });
-    let procedureCodeDetails = _.filter(this.proceduresList, (currentProcedure: Procedure) => {
-      return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-    });
+  deleteProcedureCode(proc) {    
+    debugger;
+    
+    if(proc.specialityId != null)
+    {
+      this.CheckReferralPtVisitStatusForUpdatebySpecialty(proc.specialityId, proc.id, true);
+    }
+    else if(proc.roomTestId != null)
+    {
+      this.CheckReferralPtVisitStatusForUpdatebyRoomTest(proc.specialityId, proc.id, true);
+    }
+    // let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
+    //   return currentProcedure.id;
+    // });
+    //let procedureCodeDetails = _.filter(this.proceduresList, (currentProcedure: Procedure) => {
+    //  return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+    //});
 
-    this.proceduresList = procedureCodeDetails;
-    this.selectOption(this.selectedEvent);
-    this.selectedProceduresToDelete = null;
+    //this.proceduresList = procedureCodeDetails;
+    //this.selectOption(this.selectedEvent);
+    //this.selectedProceduresToDelete = null;
   }
 }

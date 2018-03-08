@@ -10,6 +10,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import * as _ from 'underscore';
 import { UnscheduledVisitReferral } from '../models/unscheduled-visit-referral';
 import { UnscheduledVisit } from '../models/unscheduled-visit';
+import { PatientVisit } from '../models/patient-visit';
 
 @Injectable()
 export class VisitReferralStore {
@@ -43,6 +44,8 @@ export class VisitReferralStore {
         });
         return <Observable<VisitReferral[]>>Observable.from(promise);
     }
+
+
     getPendingReferralByCompanyId(companyId: number): Observable<VisitReferral[]> {
         let promise = new Promise((resolve, reject) => {
             this._visitReferralService.getPendingReferralByCompanyId(companyId).subscribe((visitReferralDetails: VisitReferral[]) => {

@@ -1,10 +1,10 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group" *ngIf="caseStatusId === 1">
     <h3 class="with-border">Uploaded Documents
-        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+        <!-- <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete </span>
             <loader [visible]="isDeleteProgress"></loader>
-        </a>
+        </a> -->
         <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down"> Add</span>
          </a>
@@ -32,16 +32,22 @@
     <p-column field="document.originalResponse.documentName" header="Document Name" [filter]="true" styleClass="inbound-column">
         <ng-template let-document="rowData" pTemplate="body">
             <a (click)="downloadPdf(document.document.originalResponse.documentId)">
-                <u>{{document.document.originalResponse.documentName}}</u>
+                <u>{{document.document.originalResponse.documentName}}                    
+                </u>
             </a>
         </ng-template>
     </p-column>
     <p-column field="document.documentType" header="Document Type" [sortable]="true" [filter]="true" styleClass="inbound-column">
         <ng-template let-document="rowData.document" pTemplate="body">
-            {{ document.documentType }}
+            {{ document.documentType }}                  
         </ng-template>
     </p-column>
     <p-column field="document.formattedCreateDate" header="Created Date" [sortable]="true" [filter]="true"></p-column>
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-document="rowData" pTemplate="body">            
+            <button type="button" *ngIf="document.document.originalResponse.createByUserID == _sessionStore.session.user.id"  pButton (click)="deletedocument(document.document.originalResponse)"  icon="fa-trash-o"></button>
+        </ng-template>
+    </p-column>
     <!-- <p-column field="document.formattedCreateDate" header="Created Date ({{yearFilter||'No Filter'}})" [sortable]="true" [filter]="true" filterMatchMode="equals" styleClass="inbound-column">
         <ng-template pTemplate="filter" let-col>
             <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null,col.field,col.filterMatchMode)"></i>

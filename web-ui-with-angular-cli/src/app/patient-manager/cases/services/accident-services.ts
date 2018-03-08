@@ -77,6 +77,7 @@ export class AccidentService {
             })
                 .map(res => res.json())
                 .subscribe((data: any) => {
+                    debugger;
                     let parsedAccident: Accident = null;
                     parsedAccident = AccidentAdapter.parseResponse(data);
                     resolve(parsedAccident);
@@ -101,6 +102,7 @@ export class AccidentService {
             })
                 .map(res => res.json())
                 .subscribe((data: any) => {
+                    debugger;
                     let parsedAccident: Accident = null;
                     parsedAccident = AccidentAdapter.parseResponse(data);
                     resolve(data);

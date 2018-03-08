@@ -164,22 +164,22 @@ export class DocumentUploadComponent implements OnInit {
       let param: string;
       if (this.currentId == 2) {
         if (this.isConsentDocumentOn) {
-          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+          param = '{"ObjectType":"case","DocumentType":"consent", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
         } else {
-          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+          param = '{"ObjectType":"case","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
         }
       } else if (this.currentId == 3) {
-        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"visit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
       } else if (this.currentId == 1) {
-        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"patient","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
       } else if (this.currentId == 4) {
-        param = '{"ObjectType":"imeVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"imeVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
       } else if (this.currentId == 5) {
-        param = '{"ObjectType":"euoVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"euoVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
       } else if (this.currentId == 6) {
-        param = '{"ObjectType":"attorneyVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"attorneyVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
       } else if (this.currentId == 7) {
-        param = '{"ObjectType":"unscheduleVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '"}';
+        param = '{"ObjectType":"unscheduleVisit","DocumentType":"' + this.documentType + '", "CompanyId": "' + this.companyId + '","ObjectId":"' + this.objectId + '","CreateUserId":"'+ this._sessionStore.session.user.id +'","UpdateUserId":"'+ this._sessionStore.session.user.id +'"}';
       }
       event.xhr.setRequestHeader("inputjson", param);
       event.xhr.setRequestHeader("Authorization", this._sessionStore.session.accessToken);

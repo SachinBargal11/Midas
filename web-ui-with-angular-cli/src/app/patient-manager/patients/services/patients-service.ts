@@ -289,6 +289,22 @@ export class PatientsService {
         return <Observable<PatientDocument>>Observable.from(promise);
     }
 
+    deletePatientDocument(patientId: number, documentId: number): Observable<PatientDocument> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/fileupload/delete/' + patientId  + '/' + documentId,  {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedPatientDocument: PatientDocument = null;
+                    parsedPatientDocument = PatientDocumentAdapter.parseResponse(data);
+                    resolve(parsedPatientDocument);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientDocument>>Observable.from(promise);
+    }
+
     getProfilePhotoDownloadUrl(documentId: Number, download: Boolean = true): string {
         return `${environment.SERVICE_BASE_URL}/documentmanager/downloadfromnoproviderblob/${documentId}`;
     }

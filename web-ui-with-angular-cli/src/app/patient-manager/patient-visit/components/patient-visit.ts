@@ -728,8 +728,8 @@ export class PatientVisitComponent implements OnInit {
     }
 
     loadAllVisitsByCompanyId() {
-        this._progressBarService.show();          
-        debugger;
+        this.events = [];
+        this._progressBarService.show();                  
         if(this.sessionStore.isOnlyDoctorRole())
         {
             this._patientVisitsStore.getPatientVisitsByCompanyIdDoctorId()
@@ -737,8 +737,7 @@ export class PatientVisitComponent implements OnInit {
             (visits: PatientVisit[]) => {
                 
                 let events = this.getVisitOccurrences(visits);
-                this.events = _.union(this.events, events);
-                console.log(this.events);
+                this.events = _.union(this.events, events);                
             },
             (error) => {
                 this.events = [];
@@ -811,13 +810,26 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
+    clearselection()
+    {
+        this.selectedLocationId = 0;
+        this.idPatient = 0;
+        this.selectedMode = 0;
+        this.selectedOption = 0;
+        this.selectedDoctorId = 0;
+        this.selectedRoomId = 0;
+        this.selectedSpecialityId = 0;
+        this.selectedTestId = 0;
+    }
+
     loadVisits() {
+        debugger;
         if (this.selectedOption == 1) {
             this.loadLocationDoctorSpeciatityVisits();
         } else if (this.selectedOption == 2) {
             this.loadLocationRoomVisits();
         } else {
-            this.loadLocationVisits();
+            this.loadAllVisitsByCompanyId();
         }
     }
 
@@ -1200,6 +1212,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
+        this.procedures = [];
         this.selectedVisitType = '1';
         this.selectedEventDate = event.date.clone().local();
         this.selectedProcedures = null;
@@ -1208,10 +1221,13 @@ export class PatientVisitComponent implements OnInit {
         this.patientScheduleForm.reset();
         this.selectedVisit = null;
         if (this.selectedOption == 1) {
-            if (this.selectedSpeciality.mandatoryProcCode) {
-                this.isProcedureCode = true;
-            } else {
-                this.isProcedureCode = false;
+            if(this.selectedSpeciality != null)
+            {
+                if (this.selectedSpeciality.mandatoryProcCode) {
+                    this.isProcedureCode = true;
+                } else {
+                    this.isProcedureCode = false;
+                }
             }
         } else if (this.selectedOption == 2) {
             this.isProcedureCode = true;
@@ -1264,8 +1280,7 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {     
-        debugger;      
+    private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {                 
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper); 
         this.visitStatusIdC = 0; 
@@ -1835,7 +1850,7 @@ export class PatientVisitComponent implements OnInit {
         this._confirmationDialog.hide();
     }
 
-    saveEvent() {        
+    saveEvent() {                
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent;
         let leaveEvent: LeaveEvent;
@@ -1891,15 +1906,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadVisits();
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        this.clearselection();
+                        this.loadVisits();                        
                         this._notificationsStore.addNotification(notification);
                     },
                     (error) => {
@@ -1909,14 +1917,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        this.clearselection();
+                        this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -1957,17 +1959,10 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
+                        this.clearselection();
                         this.loadVisits();
                         this._notificationsStore.addNotification(notification);
-                        // this.event = null;
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        // this.event = null;                        
                         //this.selectLocation();
                     },
                     (error) => {
@@ -1977,14 +1972,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        this.clearselection();
+                        this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -2000,15 +1989,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadVisits();
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        this.clearselection();
+                        this.loadVisits();                        
                         this._notificationsStore.addNotification(notification);
                     },
                     (error) => {
@@ -2018,14 +2000,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        this.clearselection();
+                        this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -2054,6 +2030,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.clearselection();
+                        this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -2069,17 +2047,10 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
+                        this.clearselection();
                         this.loadVisits();
                         this._notificationsStore.addNotification(notification);
-                        // this.event = null;                        
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        // this.event = null; 
                         //this.selectLocation();
                     },
                     (error) => {
@@ -2089,14 +2060,8 @@ export class PatientVisitComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.selectedLocationId = 0;
-                        this.idPatient = 0;
-                        this.selectedMode = 0;
-                        this.selectedOption = 0;
-                        this.selectedDoctorId = 0;
-                        this.selectedRoomId = 0;
-                        this.selectedSpecialityId = 0;
-                        this.selectedTestId = 0;
+                        this.clearselection();
+                        this.loadVisits();
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
@@ -2194,7 +2159,7 @@ export class PatientVisitComponent implements OnInit {
         this._progressBarService.hide();
     }
 
-    deleteDocument() {
+    deleteDocuments() {
         if (this.selectedDocumentList.length > 0) {
             // this.confirmationService.confirm({
             //     message: 'Do you want to delete this record?',
@@ -2398,4 +2363,46 @@ export class PatientVisitComponent implements OnInit {
     // showEoDialog() {
     //     this.addEoVisitDialogVisible = true;
     // }
+
+    deleteDocument(currentdocument: any) {                 
+        // this.confirmationService.confirm({
+        // message: 'Do you want to delete this record?',
+        // header: 'Delete Confirmation',
+        // icon: 'fa fa-trash',
+        // accept: () => {            
+               this._progressBarService.show();
+               this.isDeleteProgress = true;
+               this._patientVisitsStore.deleteVisitDocument(this.selectedVisit.id, currentdocument.documentId)
+                   .subscribe(
+                   (response) => {
+                       let notification = new Notification({
+                           'title': 'Record deleted successfully!',
+                           'type': 'SUCCESS',
+                           'createdAt': moment()
+                       });
+                       this.getDocuments();
+                       this._notificationsStore.addNotification(notification);
+                       this.selectedDocumentList = [];
+                   },
+                   (error) => {
+                       let errString = 'Unable to delete record';
+                       let notification = new Notification({
+                           'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                           'type': 'ERROR',
+                           'createdAt': moment()
+                       });
+                       this.selectedDocumentList = [];
+                       this._progressBarService.hide();
+                       this.isDeleteProgress = false;
+                       this._notificationsStore.addNotification(notification);
+                       this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                   },
+                   () => {
+                       this._progressBarService.hide();
+                       this.isDeleteProgress = false;
+                   });            
+                }
+            //  });        
+         //}
 }
+

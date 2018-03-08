@@ -39,11 +39,10 @@
   </p-headerColumnGroup>
   <p-column selectionMode="multiple"></p-column>
   <p-column field="procedureCodeText" [style]="{'width':'150px'}"></p-column>
-  <p-column field="procedureCodeDesc"></p-column>
+  <p-column field="procedureCodeDesc"></p-column>  
 </p-dataTable>
 <br>
 </div>
-
 <div class="col-lg-6">
   <h3 class="with-border">Selected Referrals</h3>
   <div style="padding-bottom: 0.1rem;"></div>
@@ -53,10 +52,10 @@
     <input #gbsl type="text" class="form-control" style="float:left" placeholder="Search ">
 </div>
 <div class="col-lg-6 input-group" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">  
-  <button class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()"  *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">
+  <!-- <button class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()"  *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)">
       <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Referrals </span>
       <loader [visible]="isDeleteProgress"></loader>
-    </button>
+    </button> -->
 </div>
 </div>
 <p-dataTable [value]="proceduresList" [(selection)]="selectedProceduresToDelete" [rows]="5" [paginator]="true" [pageLinks]="3"
@@ -86,6 +85,11 @@
   </p-column>
   <p-column field="procedureCodeText" header="Procedure Code"></p-column>*ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor.user != null">  
   <p-column field="procedureCodeDesc" header="Description"></p-column>
+  <p-column styleClass="actions-cell" header="Actions">
+      <ng-template let-procedure="rowData" pTemplate="body">            
+          <button type="button" pButton (click)="deleteProcedureCode(procedure)"  icon="fa-trash-o"></button>                                
+      </ng-template>
+</p-column>
 </p-dataTable>
 <br>
 <div *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">  

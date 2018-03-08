@@ -1,4 +1,5 @@
 <!--<div *ngIf="selectedVisit && visitDialogVisible">-->
+<p-confirmDialog width="425"></p-confirmDialog>
 <div *ngIf="selectedVisit">
   <p-tabView>
     <p-tabPanel header="Visit Details" [selected]="true">
@@ -148,10 +149,10 @@
       <p-confirmDialog width="425"></p-confirmDialog>
       <div class="input-group" *ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor != null">
         <h3 class="with-border">Uploaded Documents
-          <a *ngIf="!disableSaveDelete && (sessionStore.session.user.id == selectedVisit.doctor.user.id)" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+          <!--<a *ngIf="!disableSaveDelete && (sessionStore.session.user.id == selectedVisit.doctor.user.id)" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
           <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
           <loader [visible]="isDeleteProgress"></loader>
-          </a>
+          </a>-->
           <a class="pull-right btn-inline btn btn-primary btn-sm" *ngIf="(sessionStore.session.user.id == selectedVisit.doctor.user.id)" (click)="showDialog()">
             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
           </a>
@@ -159,10 +160,10 @@
       </div>
       <div class="input-group" *ngIf="!sessionStore.isOnlyDoctorRole()">
           <h3 class="with-border">Uploaded Documents
-            <a *ngIf="!disableSaveDelete" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+            <!-- <a *ngIf="!disableSaveDelete" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
             <loader [visible]="isDeleteProgress"></loader>
-            </a>
+            </a> -->
             <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
               <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
             </a>
@@ -194,6 +195,11 @@
           <!--<ng-template let-document="rowData.document" pTemplate="body">
             {{ document.createDate | dateTimeFormat }}
           </ng-template>-->
+        </p-column>
+        <p-column styleClass="actions-cell" header="Actions">
+            <ng-template let-document="rowData" pTemplate="body">            
+                <button type="button" *ngIf="document.document.originalResponse.createByUserID == sessionStore.session.user.id"  pButton (click)="deleteDocument(document.document.originalResponse)"  icon="fa-trash-o"></button>
+            </ng-template>
         </p-column>
       </p-dataTable>
       <p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleAddConsentDialogHide()" [(visible)]="addConsentDialogVisible"

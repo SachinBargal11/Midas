@@ -244,6 +244,16 @@ export class CasesStore {
         return <Observable<Case>>Observable.from(promise);
     }
 
+    deleteCaseDocumentbyCaseDocumentId(caseId: number, documentId: number): Observable<Case> {        
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.deleteCaseDocument(caseId, documentId).subscribe((caseDetail: Case) => {                
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.from(promise);
+    }
       downloadDocumentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._casesService.downloadDocumentForm(CaseId, documentId).subscribe((consent: Consent[]) => {

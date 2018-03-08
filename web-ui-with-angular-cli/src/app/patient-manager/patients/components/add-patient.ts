@@ -324,4 +324,125 @@ export class AddPatientComponent implements OnInit {
         xhr.withCredentials = false;
         xhr.send(formData);
     }
+
+    getUserByUserName()
+    {
+        this.usersStore.getIsExistingUser(this.patientform.value.contact.email)
+        .subscribe((data: any) => {
+            this.users = data.user;
+            this.isExist = false;
+            this.displayExistPopup = false;
+            // if (data.isPatient == true) {
+            //     this.isExist = true;
+            //     this.displayExistPopup = true;
+            // } else if (data.isDoctor == false && data.isPatient == false && data.user != null) {
+            //     let errString = 'User already exists & it is staff.';
+            //     let notification = new Notification({
+            //         'title': errString,
+            //         'type': 'ERROR',
+            //         'createdAt': moment()
+            //     });
+            //     this._notificationsStore.addNotification(notification);
+            //     this._notificationsService.error('Oh No!', errString);
+            // } else if (data.isDoctor == true && data.isPatient == false) {
+            //     let errString = 'User already exists & it is doctor.';
+            //     let notification = new Notification({
+            //         'title': errString,
+            //         'type': 'ERROR',
+            //         'createdAt': moment()
+            //     });
+            //     this._notificationsStore.addNotification(notification);
+            //     this._notificationsService.error('Oh No!', errString);
+
+            // }
+            // else {
+                this.isSavePatientProgress = true;
+                let patientFormValues = this.patientform.value;
+                let result;
+                let patient = new Patient({
+                    ssn: patientFormValues.userInfo.ssn,
+                    weight: patientFormValues.userInfo.weight,
+                    height: patientFormValues.userInfo.height,
+                    dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
+                    maritalStatusId: patientFormValues.userInfo.maritalStatusId,
+                    createByUserId: this._sessionStore.session.account.user.id,
+                    companyId: this._sessionStore.session.currentCompany.id,
+                    //patientLanguagePreferenceMappings: patientLanguagePreferenceMappings,
+                    languagePreferenceOther: parseInt(this.languagePreference) == 3 ? patientFormValues.userInfo.otherLanguage : null,
+                    //patientSocialMediaMappings: patientSocialMediaMappings,
+                    parentOrGuardianName: !this.isEighteenOrAbove ? patientFormValues.userInfo.parentName : null,
+                    emergencyContactName: patientFormValues.contact.emergencyContactPerson,
+                    emergencyContactPhone: patientFormValues.contact.emergencyContactCellPhone,
+                    legallyMarried: null,
+                    spouseName: parseInt(this.martialStatus) == 2 ? patientFormValues.userInfo.spouseName : null,
+                    user: new User({
+                        dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
+                        firstName: patientFormValues.userInfo.firstname,
+                        middleName: patientFormValues.userInfo.middlename,
+                        lastName: patientFormValues.userInfo.lastname,
+                        userType: UserType.PATIENT,
+                        userName: patientFormValues.contact.email,
+                        createByUserId: this._sessionStore.session.account.user.id,
+                        gender: patientFormValues.userInfo.gender,
+                        contact: new Contact({
+                            cellPhone: patientFormValues.contact.cellPhone ? patientFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                            emailAddress: patientFormValues.contact.email,
+                            faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                            homePhone: patientFormValues.contact.homePhone,
+                            workPhone: patientFormValues.contact.workPhone,
+                            officeExtension: patientFormValues.contact.officeExtension,
+                            alternateEmail: patientFormValues.contact.alternateEmail,
+                            preferredCommunication: patientFormValues.contact.preferredCommunication,
+                            createByUserId: this._sessionStore.session.account.user.id
+                        }),
+                        address: new Address({
+                            address1: patientFormValues.address.address1,
+                            address2: patientFormValues.address.address2,
+                            city: patientFormValues.address.city,
+                            country: patientFormValues.address.country,
+                            state: patientFormValues.address.state,
+                            zipCode: patientFormValues.address.zipCode,
+                            createByUserId: this._sessionStore.session.account.user.id
+                        })
+                    })
+                });
+                this._progressBarService.show();
+                result = this._patientsStore.addPatient(patient);
+                result.subscribe(
+                    (response) => {
+                        if (this.files.length > 0) {
+                            this.uploadProfileImage(response.id);
+                        }
+                        if (this.fileLicence.length > 0) {
+                            this.uploadLicenceImage(response.id);
+                        }
+                        let notification = new Notification({
+                            'title': 'Patient added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                        this.id = response.id;
+                        this._router.navigate(['patient-manager/patients/'+this.id+'/basic']);
+                    },
+                    (error) => {
+                        let errString = 'Unable to add patient.';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.isSavePatientProgress = false;
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                        this._progressBarService.hide();
+                    },
+                    () => {
+                        this.isSavePatientProgress = false;
+                        this._progressBarService.hide();
+                    });
+           // }
+        },
+        (error) => { });
+    }
 }

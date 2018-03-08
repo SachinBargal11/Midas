@@ -287,8 +287,7 @@ export class AddUserComponent implements OnInit {
            },
            () => {
                this._progressBarService.hide();
-           });
-        
+           });        
     }
 
     saveUser() {

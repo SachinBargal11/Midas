@@ -208,13 +208,13 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                 });
                 let roomsVisits = matchingRoomVisits.reverse();
                 let unscheduledVisits = results[1];
-
+                let doctorname = "";
                 let mappedAllVisits: {
                     id: number,
                     eventStart: any,
                     locationName: string,
                     visitType: string,
-                    // doctorName: string,
+                     doctorName: string,
                     roomTestName: string,
                     visitStatusLabel: string,
                     isPatientVisitType: boolean,
@@ -222,13 +222,14 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                     medicalProviderName: string,
                     visitTimeStatus: boolean
                 }[] = [];
-                _.forEach(roomsVisits, (currRoomVisit: PatientVisit) => {
+                _.forEach(roomsVisits, (currRoomVisit: PatientVisit) => {                    
+                    doctorname = currRoomVisit.doctor == null ? "" : currRoomVisit.doctor.user.displayName;
                     mappedAllVisits.push({
                         id: currRoomVisit.id,
                         eventStart: currRoomVisit.eventStart == null ? currRoomVisit.calendarEvent.eventStart.format('MMMM Do YYYY') : currRoomVisit.eventStart.format('MMMM Do YYYY'),
                         locationName: currRoomVisit.location.name,
                         visitType: 'Patient Visit',
-                        // doctorName: currRoomVisit.doctor.user.displayName,
+                         doctorName: doctorname,
                         roomTestName: currRoomVisit.room.roomTest.name,
                         visitStatusLabel: currRoomVisit.visitStatusLabel,
                         isPatientVisitType: true,
@@ -238,13 +239,13 @@ export class PatientVisitListTreatingRoomComponent implements OnInit {
                     })
                 })
                 _.forEach(unscheduledVisits, (currRoomVisit: UnscheduledVisit) => {
-                    if (currRoomVisit.roomTestId != null) {
+                    if (currRoomVisit.roomTestId != null) {                        
                         mappedAllVisits.push({
                             id: currRoomVisit.id,
                             eventStart: currRoomVisit.eventStart.format('MMMM Do YYYY'),
                             locationName: currRoomVisit.locationName,
                             visitType: 'Unscheduled Visit',
-                            // doctorName: currRoomVisit.doctorName,
+                             doctorName: currRoomVisit.doctorName,
                             roomTestName: currRoomVisit.roomTest ? currRoomVisit.roomTest.name : '',
                             visitStatusLabel: currRoomVisit.status,
                             isPatientVisitType: false,
