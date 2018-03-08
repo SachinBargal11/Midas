@@ -1,0 +1,5 @@
+version: 0.0
+os: windows
+files:
+  - source: dist
+    destination: C:\inetpub\websites\dev-gb-medicalprovider.qwinix.io\
