@@ -823,6 +823,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     loadVisits() {
+        debugger;
         if (this.selectedOption == 1) {
             this.loadLocationDoctorSpeciatityVisits();
         } else if (this.selectedOption == 2) {

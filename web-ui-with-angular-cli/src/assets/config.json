@@ -1,9 +1,9 @@
 {
-    "baseUrl": "http://dev-gb-midasapi.qwinix.io/midasapi",
-    "identityServerUrl": "https://dev-gb-identityserver.qwinix.io",
+    "baseUrl": "http://localhost:65184/midasapi",
+    "identityServerUrl": "https://localhost:44300",
     "notificationServerUrl": "http://dev-gb-notificationmanager.qwinix.io",
-    "home_url": "http://dev-greenyourbills.qwinix.io",
-    "mp_url": "http://dev-gb-medicalprovider.qwinix.io'",
+    "home_url": "http://localhost:4201",
+    "mp_url": "http://localhost:4201",
     "identity_scope": "openid profile email roles MidasMedicalProviderAPI NotificationService MessagingServiceAPI",
-    "client_id": "MidasPortal"
+    "client_id": "MidasPortalLocal"
 }
