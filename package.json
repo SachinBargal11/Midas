@@ -29,6 +29,7 @@
     "@ng-idle/core": "^2.0.0-beta.12",
     "@ng-idle/keepalive": "^2.0.0-beta.12",
     "@types/amcharts": "^0.0.41",
+    "@types/angular": "^1.6.36",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.1",
     "@types/ng-file-upload": "^12.2.1",
