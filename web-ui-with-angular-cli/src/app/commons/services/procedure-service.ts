@@ -76,6 +76,25 @@ export class ProcedureService {
         });
         return <Observable<Procedure[]>>Observable.fromPromise(promise);
     }
+
+    getPreferredProceduresBySpecialityIdForVisitUpdate(specialityId: number, companyId:number): Observable<Procedure[]> {
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/GetPreffredProcedureCodesForVisitUpdate/' + companyId + '/' + specialityId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let procedures = (<Object[]>data).map((data: any) => {
+                        return ProcedureAdapter.parsePreferredResponse(data);
+                    });
+                    resolve(procedures);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
     getPreferredProceduresBySpecialityIdForPVisit(specialityId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getbySpecialtyAndCompanyIdforVisit/' + companyId + '/' + specialityId, {

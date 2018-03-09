@@ -1,38 +1,82 @@
 <p-confirmDialog width="425"></p-confirmDialog>
 <br>
-<div class="col-lg-6">
+<div class="col-lg-12">
 <div *ngIf="showAllDiagnosisCode">
-      <a class="pull-right btn btn-info btn-sm" (click)="showCPreffredDiagnosisCodes()">
+    <h3 class="with-border">Diagnosis Codes</h3>
+    <div class="ui-widget-header row">
+        <div class="col-lg-6 input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input #gb1 type="text" class="form-control" style="float:left" placeholder="Search ">
+        </div>
+        <div class="col-lg-6">
+         <a class="pull-right btn btn-info btn-sm" (click)="showCPreffredDiagnosisCodes()">
           <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View Preferred Diagnosis Code</span>
-      </a>
-      <br>
-      <br>
-    <p-listbox [options]="diagnosisCodesArr" [(ngModel)]="selectedDiagnosisCodes" multiple="multiple" styleClass="list-control" checkbox="checkbox"
+         </a>
+        </div>
+    </div>
+   <!-- <p-listbox [options]="diagnosisCodesArr" [(ngModel)]="selectedDiagnosisCodes" multiple="multiple" styleClass="list-control" checkbox="checkbox"
       filter="filter" [listStyle]="{'max-height':'250px'}">
     <ng-template let-diagnosisCodes pTemplate="item">
         {{diagnosisCodes.label}}
     </ng-template>
-    </p-listbox>
+    </p-listbox>-->
+    <p-dataTable [value]="diagnosisCodesArr" [(selection)]="selectedDiagnosisCodes" [rows]="7" [paginator]="true" [globalFilter]="gb1" [responsive]="true" #dt1>
+        <header>Diagnosis Codes</header>
+        <p-headerColumnGroup>
+          <p-row>
+            <p-column [style]="{'width':'38px'}"></p-column>
+            <p-column header="Diagnosis Code"></p-column>
+            <p-column header="Description"></p-column>
+          </p-row>
+        </p-headerColumnGroup>
+        <p-column selectionMode="multiple"></p-column>
+        <p-column field="diagnosisCodeText"></p-column>
+        <p-column field="diagnosisCodeDesc"></p-column>
+      </p-dataTable>
+      <br>
   </div>
   <div *ngIf="showPreDiagnosisCode">
-      <select [(ngModel)]="selectedMode"  class="select-list form-control" (change)="selectOption($event)">
-          <option value="0">-Select Diagnosis Type-</option>
-          <option *ngFor="let diagnosisType of diagnosisTypes" value="{{diagnosisType.id}}">{{diagnosisType.diagnosisTypeText}}</option>
-      </select>
-      <a class="pull-right btn btn-info btn-sm" (click)="showCAllDiagnosisCodes()">
+      <h3 class="with-border">Preffered Diagnosis Codes</h3>
+      <div class="ui-widget-header row">
+          <div class="col-lg-4 input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input #gb2 type="text" class="form-control" style="float:left" placeholder="Search ">
+          </div>
+          <div class="col-lg-4">
+           <select [(ngModel)]="selectedMode"  class="select-list form-control" (change)="selectOption($event)">
+            <option value="0">-Select Diagnosis Type-</option>
+            <option *ngFor="let diagnosisType of diagnosisTypes" value="{{diagnosisType.id}}">{{diagnosisType.diagnosisTypeText}}</option>
+           </select>
+         </div>
+         <div class="col-lg-4">
+          <a class="pull-right btn btn-info btn-sm" (click)="showCAllDiagnosisCodes()">
           <i class="fa fa-check fa-1x"></i><span class="hidden-md-down"> View All Diagnosis Code</span>
-      </a>
-      <br>
-      <br>
-    <p-listbox [options]="diagnosisCodesCompArr" [(ngModel)]="selectedDiagnosisCodes" multiple="multiple" styleClass="list-control" checkbox="checkbox"
+          </a>
+         </div>
+      </div>
+    <!--<p-listbox [options]="diagnosisCodesCompArr" [(ngModel)]="selectedDiagnosisCodes" multiple="multiple" styleClass="list-control" checkbox="checkbox"
       filter="filter" [listStyle]="{'max-height':'250px'}">
     <ng-template let-diagnosisCodes pTemplate="item">
         {{diagnosisCodes.label}}
     </ng-template>
-    </p-listbox>
+    </p-listbox>-->
+    <p-dataTable [value]="diagnosisCodesCompArr" [(selection)]="selectedDiagnosisCodes" [rows]="7" [paginator]="true" [globalFilter]="gb2" [responsive]="true" #dt2>
+        <header>Preffered Diagnosis Codes</header>
+        <p-headerColumnGroup>
+          <p-row>
+            <p-column [style]="{'width':'38px'}"></p-column>
+            <p-column header="Diagnosis Code"></p-column>
+            <p-column header="Description"></p-column>
+          </p-row>
+        </p-headerColumnGroup>
+        <p-column selectionMode="multiple"></p-column>
+        <p-column field="diagnosisCodeText"></p-column>
+        <p-column field="diagnosisCodeDesc"></p-column>
+      </p-dataTable>
+      <br>
   </div>
 </div>
-<div class="col-lg-6">
+<div class="col-lg-12">
   <h3 class="with-border">Selected Diagnosis</h3>
   <div class="ui-widget-header row">
     <div class="col-lg-6 input-group">

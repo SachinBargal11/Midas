@@ -96,10 +96,11 @@ export class ProcedureComponent implements OnInit {
 
   loadProceduresForSpeciality(specialityId: number) {
     // this._progressBarService.show();
-    let result = this._procedureStore.getPreferredProceduresBySpecialityIdForPVisit(specialityId);
+    let result = this._procedureStore.getPreferredProceduresBySpecialityIdForVisitUpdate(specialityId);
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
+        debugger;
         let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
           return currentProcedure.id;
         });
@@ -197,7 +198,6 @@ export class ProcedureComponent implements OnInit {
 
   updateUnit(unit:number,proceduerID:number)
   {
-    debugger;
     let itemIndex = this.selectedProcedures.findIndex(item => item.procedureCodeId == proceduerID);
     
     if(itemIndex != -1)
