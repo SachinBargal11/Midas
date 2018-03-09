@@ -3,3 +3,4 @@ os: windows
 files:
   - source: .
     destination: C:\inetpub\website\dev-gb-midasapi.qwinix.io\
+    overwrite: purge
