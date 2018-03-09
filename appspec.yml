@@ -3,4 +3,8 @@ os: windows
 files:
   - source: .
     destination: C:\inetpub\website\dev-gb-midasapi.qwinix.io\
-    overwrite: purge
+
+  hooks:
+  BeforeInstall:
+    - location: before-install.bat
+      timeout: 900
