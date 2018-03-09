@@ -29,6 +29,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getByCaseId/{id}")]
+        public HttpResponseMessage GetByCaseId(int id)
+        {
+            return requestHandler.GetByCaseId(Request, id);
+        }
+
+        [HttpGet]
         [Route("getByPatientId/{PatientId}")]
         public HttpResponseMessage GetByPatientId(int PatientId)
         {
