@@ -124,14 +124,12 @@ export class ReferralsComponent implements OnInit {
       });
   }
 
-  CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {
-    debugger;
+  CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {    
      this._progressBarService.show();
      this.iscomplete = false;
      let result = this._patientVisitStore.getVisitStatusbyPatientVisitIdSpecialityId(this.selectedVisit.id, specialityId);
      result.subscribe(
-      (ptvist: PatientVisit[]) => {  
-         debugger;              
+      (ptvist: PatientVisit[]) => {           
         if(ptvist.length > 0)
         {
            this.iscomplete = true;
@@ -149,7 +147,7 @@ export class ReferralsComponent implements OnInit {
         if(isdelete)
         {
           if(this.iscomplete == false)
-          {            
+          {       
             let procedureCodeIds: number[] = [];
             procedureCodeIds.push(procedureCodeId);
             let procedureCodeDetails = _.filter(this.proceduresList, (currentProcedure: Procedure) => {
@@ -446,14 +444,29 @@ export class ReferralsComponent implements OnInit {
         visitReferralDetails.push(visitReferral);
         procedureCodes = [];
       }
-    })
+    })    
+    if(visitReferralDetails.length == 0)
+    {
+      let visitReferral = new VisitReferral({
+        patientVisitId: this.selectedVisit.id,
+        fromCompanyId: this.sessionStore.session.currentCompany.id,
+        fromLocationId: this.selectedVisit.locationId,
+        fromDoctorId: this.selectedVisit.doctorId,
+        forSpecialtyId: null,
+        forRoomId: null,
+        forRoomTestId: null,
+        isReferralCreated: false,
+        pendingReferralProcedureCode: procedureCodes
+      });
+      visitReferralDetails.push(visitReferral);
+      procedureCodes = [];
+    }
+
     this.save.emit(visitReferralDetails);
     // this.save.emit(this.proceduresList);
   }
 
   deleteProcedureCode(proc) {    
-    debugger;
-    
     if(proc.specialityId != null)
     {
       this.CheckReferralPtVisitStatusForUpdatebySpecialty(proc.specialityId, proc.id, true);
