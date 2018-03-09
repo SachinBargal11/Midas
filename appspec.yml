@@ -4,7 +4,7 @@ files:
   - source: .
     destination: C:\inetpub\website\dev-gb-midasapi.qwinix.io\
 
-  hooks:
+hooks:
   BeforeInstall:
     - location: before-install.bat
       timeout: 900
