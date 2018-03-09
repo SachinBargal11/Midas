@@ -630,6 +630,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Get By Case ID
+        public override object GetByCaseId(int id)
+        {
+            //var caseId = _context.CaseCompanyMappings.Where(p => p.CompanyId == id
+            //                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            //                                                     ).Select(p => p.CaseId);
+            var IMEVisit = _context.IMEVisits.Include("CalendarEvent")
+                                             .Include("Patient").Include("Patient.Cases").Include("Patient.User")
+                                             .Where(p => p.CaseId == id
+                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .ToList();
+
+            List<BO.IMEVisit> boIMEVisit = new List<BO.IMEVisit>();
+            if (IMEVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachVisit in IMEVisit)
+                {
+                    boIMEVisit.Add(ConvertIMEvisit<BO.IMEVisit, IMEVisit>(EachVisit));
+                }
+
+            }
+
+            return (object)boIMEVisit;
+        }
+        #endregion
+
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {

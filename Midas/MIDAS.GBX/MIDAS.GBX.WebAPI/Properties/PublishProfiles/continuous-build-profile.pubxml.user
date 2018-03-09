@@ -291,13 +291,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/24/2017 19:01:25</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DataRepository.dll">
-      <publishTime>03/09/2018 10:57:31</publishTime>
+      <publishTime>03/09/2018 14:47:19</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DocumentManager.dll">
       <publishTime>03/09/2018 10:58:01</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.WebAPI.dll">
-      <publishTime>03/09/2018 10:58:19</publishTime>
+      <publishTime>03/09/2018 14:47:40</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>06/13/2016 23:06:14</publishTime>

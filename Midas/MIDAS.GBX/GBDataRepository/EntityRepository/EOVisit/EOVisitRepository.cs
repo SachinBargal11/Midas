@@ -106,15 +106,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                //if (EOVisit.InsuranceMaster != null)
-                //{
-                //    BO.InsuranceMaster InsuranceMasterBO = new BO.InsuranceMaster();
-                //    using (InsuranceMasterRepository InsuranceMasterRepo = new InsuranceMasterRepository(_context))
-                //    {
-                //        InsuranceMasterBO = InsuranceMasterRepo.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(EOVisit.InsuranceMaster);
-                //        EOVisitBO.InsuranceMaster = InsuranceMasterBO;
-                //    }
-                //}
+                if (EOVisit.InsuranceMaster != null)
+                {
+                    BO.InsuranceMaster InsuranceMasterBO = new BO.InsuranceMaster();
+                    using (InsuranceMasterRepository InsuranceMasterRepo = new InsuranceMasterRepository(_context))
+                    {
+                        InsuranceMasterBO = InsuranceMasterRepo.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(EOVisit.InsuranceMaster);
+                        EOVisitBO.InsuranceMaster = InsuranceMasterBO;
+                    }
+                }
 
                 if (EOVisit.CalendarEvent != null)
                 {
