@@ -354,6 +354,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
+      
 
         #region Get All By Company ID and Specialty
         public override object GetAllProcedureCodesbySpecaltyCompanyId(int CompanyId, int SpecialtyId)
@@ -467,6 +468,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                      select new
                                      {
                                          id = pc.Id,
+                                         procedureCodeText = pc.ProcedureCodeText,
+                                         procedureCodeDesc = pc.ProcedureCodeDesc,
+                                         amount = pccm.Amount,
+                                         isPreffredCode = pccm.IsPreffredCode
+                                     }).ToList().Distinct().ToList();
+
+            if (procedureCodeInfo == null)
+            {
+                return procedureCodeInfo;
+                //return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                return procedureCodeInfo;
+            }
+        }
+        #endregion
+
+        #region Get By Company ID and Specialty For Visit Update
+        public override object GetPreffredProcedureCodesForVisitUpdate(int CompanyId, int SpecialtyId)
+        {
+
+            var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
+                                     join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                     where pccm.CompanyID == CompanyId
+                                           && pc.SpecialityId == SpecialtyId
+                                           && pccm.IsPreffredCode == true
+                                           && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                           && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                     select new
+                                     {
+                                         id = pccm.ID,
+                                         procedureCodeId = pc.Id,
                                          procedureCodeText = pc.ProcedureCodeText,
                                          procedureCodeDesc = pc.ProcedureCodeDesc,
                                          amount = pccm.Amount,

@@ -1125,6 +1125,7 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+       
 
         public virtual Object GetAllProcedureCodesbyRoomTestCompanyIdforVisit(int CompanyId, int RoomTestId)
         {
@@ -1147,6 +1148,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object GetVisitStatusbyPatientVisitRoomTestId(int PatientVisitId, int roomTestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetPreffredProcedureCodesForVisitUpdate(int CompanyId, int SpecialtyId)
         {
             throw new NotImplementedException();
         }

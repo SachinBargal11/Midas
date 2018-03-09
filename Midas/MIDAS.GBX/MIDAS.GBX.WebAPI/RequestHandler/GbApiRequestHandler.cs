@@ -95,7 +95,6 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, List<T> gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);
-
             try
             {
                 var res = (object)objResult;
@@ -2835,7 +2834,6 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-
         public HttpResponseMessage GetVisitStatusbyPatientVisitSpecialityId(HttpRequestMessage request, int PatientVisitId, int specialityId)
         {
             var objResult = dataAccessManager.GetVisitStatusbyPatientVisitSpecialityId( PatientVisitId, specialityId);
@@ -2853,6 +2851,20 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetVisitStatusbyPatientVisitRoomTestId(HttpRequestMessage request, int PatientVisitId, int roomTestId)
         {
             var objResult = dataAccessManager.GetVisitStatusbyPatientVisitRoomTestId(PatientVisitId, roomTestId);
+
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPreffredProcedureCodesForVisitUpdate(HttpRequestMessage request, int CompanyId, int SpecialtyId)
+        {
+            var objResult = dataAccessManager.GetPreffredProcedureCodesForVisitUpdate(CompanyId, SpecialtyId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
