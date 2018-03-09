@@ -1,3 +1,3 @@
-cd ..
-cd ..
-rm  C:\inetpub\website\dev-gb-midasapi.qwinix.io\* -force -r
+
+cd C:\inetpub\website\dev-gb-midasapi.qwinix.io
+del * /S /Q
