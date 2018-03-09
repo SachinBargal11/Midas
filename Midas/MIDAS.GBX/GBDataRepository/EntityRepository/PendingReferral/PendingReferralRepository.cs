@@ -959,7 +959,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             List<PendingReferral> lstPendingReferralDB = new  List<PendingReferral>();
             List<BO.PendingReferral> boListPendingReferral = new List<BO.PendingReferral>();
-
+            List<int> ExisitingPendingReferral = new List<int>();
             int patientVisitId = 0;
             if (lstPendingReferralBO != null)
             {
@@ -973,8 +973,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                             PendingReferral pendingReferralDB = new PendingReferral();
                             pendingReferralDB = _context.PendingReferrals.Where(p => p.Id == item.ID 
-                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                         .FirstOrDefault();
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault(); 
 
                             bool add_pendingReferral = false;
 
@@ -1020,6 +1019,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             }
                             else
                             {
+                                ExisitingPendingReferral.Add(pendingReferralDB.Id);
                                 int PendingReferralId = pendingReferralDB.Id;
                                 List<int> NewProcedureCodeIds = PendingReferralProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
 
@@ -1058,6 +1058,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         }                        
                     }
 
+                    List<PendingReferral> pendingReferralDBNew = new List<PendingReferral>();
+                    pendingReferralDBNew = _context.PendingReferrals.Where(p => p.PatientVisitId == patientVisitId
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                 .ToList<PendingReferral>();
+
+                    foreach(var itemold in pendingReferralDBNew)
+                    {
+                        //foreach(var item in lstPendingReferralBO)
+                        //{
+                        if (itemold.IsReferralCreated == false)
+                        {                            
+                            if (!ExisitingPendingReferral.Contains(itemold.Id))
+                            {
+                                List<PendingReferralProcedureCode> ReomveProcedureCodeDB = new List<PendingReferralProcedureCode>();
+                                ReomveProcedureCodeDB = _context.PendingReferralProcedureCodes.Where(p => p.Id == itemold.Id 
+                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+
+                                ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+                                var db = _context.PendingReferrals.Where(p => p.Id == itemold.Id).FirstOrDefault();
+
+                                if (db != null)
+                                {
+                                    db.IsDeleted = true;
+                                    _context.PendingReferrals.Remove(db);
+                                }
+                            }
+                        }
+                        //}
+                    }
+
                     dbContextTransaction.Commit();
                 }                    
             }
@@ -1087,6 +1117,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)lstPendingReferral;            
         }
         #endregion
+
+       
 
         public override object GetByPatientVisitIdWithProcedureCodes(int PatientVisitId)
         {

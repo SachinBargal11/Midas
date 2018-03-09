@@ -2522,6 +2522,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_EOVisit_Insurance_InsuranceProviderId">
+    <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+    <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceMaster">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EOVisit">
+        <PropertyRef Name="InsuranceProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_EOVisit_Patient_PatientId">
     <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
     <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
@@ -4553,6 +4565,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     </AssociationSet>
     <AssociationSet Name="FK_EOVisit_Doctor_DoctorId" Association="Self.FK_EOVisit_Doctor_DoctorId">
       <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="EOVisit" EntitySet="EOVisit" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EOVisit_Insurance_InsuranceProviderId" Association="Self.FK_EOVisit_Insurance_InsuranceProviderId">
+      <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
       <End Role="EOVisit" EntitySet="EOVisit" />
     </AssociationSet>
     <AssociationSet Name="FK_EOVisit_Patient_PatientId" Association="Self.FK_EOVisit_Patient_PatientId">

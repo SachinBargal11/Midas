@@ -758,6 +758,7 @@
     <NavigationProperty Name="Doctor" Relationship="Self.FK_EOVisit_Doctor_DoctorId" FromRole="EOVisit" ToRole="Doctor" />
     <NavigationProperty Name="Patient" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="EOVisit" ToRole="Patient" />
     <NavigationProperty Name="VisitStatu" Relationship="Self.FK_EOVisit_VisitStatus_VisitStatusId" FromRole="EOVisit" ToRole="VisitStatus" />
+    <NavigationProperty Name="InsuranceMaster" Relationship="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
   </EntityType>
   <EntityType Name="Gender">
     <Key>
@@ -850,6 +851,7 @@
     <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
     <NavigationProperty Name="InsuranceMasterType" Relationship="Self.FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId" FromRole="InsuranceMaster" ToRole="InsuranceMasterType" />
     <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
+    <NavigationProperty Name="EOVisits" Relationship="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="InsuranceMaster" ToRole="EOVisit" />
   </EntityType>
   <EntityType Name="InsuranceMasterType">
     <Key>
@@ -5481,6 +5483,10 @@
       <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
     </FunctionImport>
     <FunctionImport Name="spDeletePatient" />
+    <AssociationSet Name="FK_EOVisit_Insurance_InsuranceProviderId" Association="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId">
+      <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+      <End Role="EOVisit" EntitySet="EOVisits" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_CaseGetReadOnly_Result">
     <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -5501,4 +5507,16 @@
     <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
     <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
   </ComplexType>
+  <Association Name="FK_EOVisit_Insurance_InsuranceProviderId">
+    <End Type="MIDASModel.InsuranceMaster" Role="InsuranceMaster" Multiplicity="0..1" />
+    <End Type="MIDASModel.EOVisit" Role="EOVisit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceMaster">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EOVisit">
+        <PropertyRef Name="InsuranceProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

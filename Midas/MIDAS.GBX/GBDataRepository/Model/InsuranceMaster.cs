@@ -19,6 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.AdjusterMasters = new HashSet<AdjusterMaster>();
             this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
+            this.EOVisits = new HashSet<EOVisit>();
         }
     
         public int Id { get; set; }
@@ -46,5 +47,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual InsuranceMasterType InsuranceMasterType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EOVisit> EOVisits { get; set; }
     }
 }
