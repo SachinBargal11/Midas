@@ -59,10 +59,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByCompanyAndRoomTestIdForVisit/{companyId}/{roomTestId}")]
+        [Route("getAllByCompanyAndRoomTestIdForVisit/{companyId}/{roomTestId}")]
         public HttpResponseMessage GetByCompanyAndRoomTestIdForVisit(int companyId, int roomTestId)
         {
             return requestHandler.Get3(Request, companyId, roomTestId);
+        }
+
+        [HttpGet]
+        [Route("getAllByCompanyAndRoomTestId/{companyId}/{roomTestId}")]
+        public HttpResponseMessage getAllByCompanyAndRoomTestId(int companyId, int roomTestId)
+        {
+            return requestHandler.Get2(Request, companyId, roomTestId);
         }
 
         [HttpGet]
@@ -70,6 +77,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetAllByCompanyAndRoomTestIdForVisit(int companyId, int roomTestId)
         {
             return requestHandler.GetAllProcedureCodesbyRoomTestCompanyIdforVisit(Request, companyId, roomTestId);
+        }
+
+        [HttpGet]
+        [Route("getPreffredRoomProcedureCodesForVisitUpdate/{companyId}/{roomTestId}")]
+        public HttpResponseMessage GetPreffredRoomProcedureCodesForVisitUpdate(int companyId, int roomTestId)
+        {
+            return requestHandler.GetPreffredRoomProcedureCodesForVisitUpdate(Request, companyId, roomTestId);
         }
 
 

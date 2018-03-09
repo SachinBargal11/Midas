@@ -95,6 +95,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage Get1(HttpRequestMessage request, int param1, int param2);
+        HttpResponseMessage Get2(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage Get3(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetByCaseAndCompanyId(HttpRequestMessage request, int caseId, int companyId);
         HttpResponseMessage DismissPendingReferral(HttpRequestMessage request, int PendingReferralId, int userId);       
@@ -203,5 +204,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetVisitStatusbyPatientVisitSpecialityId(HttpRequestMessage request, int PatientVisitId, int specialityId);
         HttpResponseMessage GetVisitStatusbyPatientVisitRoomTestId(HttpRequestMessage request, int PatientVisitId, int roomTestId);
         HttpResponseMessage GetPreffredProcedureCodesForVisitUpdate(HttpRequestMessage request, int CompanyId, int SpecialtyId);
+        HttpResponseMessage GetPreffredRoomProcedureCodesForVisitUpdate(HttpRequestMessage request, int CompanyId, int roomTestId);
     }
 }

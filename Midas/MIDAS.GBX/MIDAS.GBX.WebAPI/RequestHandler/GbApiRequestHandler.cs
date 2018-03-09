@@ -1407,6 +1407,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage Get2(HttpRequestMessage request, int param1, int param2)
+        {
+            var objResult = dataAccessManager.Get2(param1, param2);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage Get3(HttpRequestMessage request, int param1, int param2)
         {
             var objResult = dataAccessManager.Get3(param1, param2);
@@ -2865,6 +2878,19 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetPreffredProcedureCodesForVisitUpdate(HttpRequestMessage request, int CompanyId, int SpecialtyId)
         {
             var objResult = dataAccessManager.GetPreffredProcedureCodesForVisitUpdate(CompanyId, SpecialtyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetPreffredRoomProcedureCodesForVisitUpdate(HttpRequestMessage request, int CompanyId, int roomTestId)
+        {
+            var objResult = dataAccessManager.GetPreffredRoomProcedureCodesForVisitUpdate(CompanyId, roomTestId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
