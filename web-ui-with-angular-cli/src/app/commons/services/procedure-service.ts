@@ -148,7 +148,7 @@ export class ProcedureService {
     }
     getPrefferedProceduresByRoomTestId(roomTestId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
-            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndSpecialtyId/' + companyId + '/' + roomTestId, {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getAllByCompanyAndRoomTestId/' + companyId + '/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -166,6 +166,24 @@ export class ProcedureService {
     getPrefferedProceduresByRoomTestIdForVisit(roomTestId: number, companyId:number): Observable<Procedure[]> {
         let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
             return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getByCompanyAndRoomTestIdForVisit/' + companyId + '/' + roomTestId, {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let procedures = (<Object[]>data).map((data: any) => {
+                        return ProcedureAdapter.parsePreferredResponse(data);
+                    });
+                    resolve(procedures);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+    getPrefferedProceduresByRoomTestIdForVisitUpdate(roomTestId: number, companyId:number): Observable<Procedure[]> {
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            return this._http.get(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/getPreffredRoomProcedureCodesForVisitUpdate/' + companyId + '/' + roomTestId, {
                 headers: this._headers
             })
                 .map(res => res.json())
