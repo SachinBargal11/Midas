@@ -25,8 +25,8 @@ export class DignosisComponent implements OnInit {
   diagnosisTypes: DiagnosisType[];
   selectedDiagnosisType: DiagnosisType;
   diagCodes: DiagnosisCode[];
-  diagnosisCodesArr: SelectItem[] = [];
-  diagnosisCodesCompArr: SelectItem[] = [];
+  diagnosisCodesArr: DiagnosisCode[];
+  diagnosisCodesCompArr: DiagnosisCode[];
   codes: SelectItem[] = [];
   selectedDiagnosisCodes: DiagnosisCode[];
   selectedDiagnosis: DiagnosisCode[];
@@ -95,12 +95,15 @@ export class DignosisComponent implements OnInit {
        let diganosisDetails = _.filter(this.diagCodes, (currentDiagnosis: DiagnosisCode) => {
                         return _.indexOf(diagnosisCodeIds, currentDiagnosis.diagnosisCodeId) < 0 ? true : false;
                    });
-        this.diagnosisCodesArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
+
+       this.diagnosisCodesArr =  diganosisDetails;          
+                      
+       /* this.diagnosisCodesArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
             return {
                 label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
                 value: currDiagnosis
             };
-        })
+        })*/
     },
         (error) => {
             this._progressBarService.hide();
@@ -123,12 +126,14 @@ loadDiagnosisCodesByCompanyId() {
     let diganosisDetails = _.filter(this.diagCodes, (currentDiagnosis: DiagnosisCode) => {
                      return _.indexOf(diagnosisCodeIds, currentDiagnosis.diagnosisCodeId) < 0 ? true : false;
                 });
-    this.diagnosisCodesCompArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
+
+     this.diagnosisCodesCompArr = diganosisDetails;
+    /*this.diagnosisCodesCompArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
         return {
             label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
             value: currDiagnosis
         };
-    })
+    })*/
 },
     (error) => {
         this._progressBarService.hide();
@@ -163,12 +168,14 @@ loadDiagnosisCodesByCompanyAndDiagnosisType(diagnosisTypeCompnayID: number) {
    let diganosisDetails = _.filter(this.diagCodes, (currentDiagnosis: DiagnosisCode) => {
                     return _.indexOf(diagnosisCodeIds, currentDiagnosis.diagnosisCodeId) < 0 ? true : false;
                });
-    this.diagnosisCodesCompArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
+
+   this.diagnosisCodesCompArr =   diganosisDetails;        
+    /*this.diagnosisCodesCompArr = _.map(diganosisDetails, (currDiagnosis: DiagnosisCode) => {
         return {
             label: `${currDiagnosis.diagnosisCodeText} - ${currDiagnosis.diagnosisCodeDesc}`,
             value: currDiagnosis
         };
-    })
+    })*/
 },
     (error) => {
         this._progressBarService.hide();
@@ -194,17 +201,26 @@ this.loadAllDiagnosisCodes();
 
 
   saveDiagnosisCodes() {
-    this.save.emit(this.selectedDiagnosisCodes);
-    this.showAllDiagnosisCode = false;
-    this.showPreDiagnosisCode = true;
-    if(this.selectedDiagnosisTypeCompnayID != 0)
-    {
-        this.loadDiagnosisCodesByCompanyAndDiagnosisType(this.selectedDiagnosisTypeCompnayID);
-    }
-    else{
-        this.diagnosisCodesCompArr = [];
-    }
-    this.loadAllDiagnosisCodes();
+      if(this.selectedDiagnosisCodes.length > 0)
+      {
+        this.save.emit(this.selectedDiagnosisCodes);
+        this.showAllDiagnosisCode = false;
+        this.showPreDiagnosisCode = true;
+        if(this.selectedDiagnosisTypeCompnayID != 0)
+        {
+            this.loadDiagnosisCodesByCompanyAndDiagnosisType(this.selectedDiagnosisTypeCompnayID);
+        }
+        else{
+            this.diagnosisCodesCompArr = [];
+        }
+        this.loadAllDiagnosisCodes();
+      }
+      else
+      {
+        let errString = 'Please select diagnosis code to save .';
+        this._notificationsService.error('Oh No!', errString);
+      }
+  
   }
 
   deleteDiagnosis() {
@@ -214,7 +230,6 @@ this.loadAllDiagnosisCodes();
     let diagnosisCodeDetails = _.filter(this.selectedDiagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
       return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.diagnosisCodeId) < 0 ? true : false;
     });
-    debugger;
     this.selectedDiagnosisCodes = diagnosisCodeDetails;
     if(this.selectedDiagnosisTypeCompnayID != 0)
     {
