@@ -1157,6 +1157,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+
+        public virtual Object GetPreffredRoomProcedureCodesForVisitUpdate(int CompanyId, int roomTestId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

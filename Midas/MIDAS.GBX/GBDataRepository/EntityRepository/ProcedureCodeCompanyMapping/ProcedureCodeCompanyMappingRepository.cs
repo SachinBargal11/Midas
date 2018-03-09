@@ -677,6 +677,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company ID and RoomTest For Visit Update
+        public override object GetPreffredRoomProcedureCodesForVisitUpdate(int CompanyId, int RoomTestId)
+        {
+
+            var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
+                                     join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
+                                     where pccm.CompanyID == CompanyId
+                                           && pc.RoomTestId == RoomTestId
+                                           && pccm.IsPreffredCode == true
+                                           && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
+                                           && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
+                                     select new
+                                     {
+                                         id = pccm.ID,
+                                         procedureCodeId = pc.Id,
+                                         procedureCodeText = pc.ProcedureCodeText,
+                                         procedureCodeDesc = pc.ProcedureCodeDesc,
+                                         amount = pccm.Amount,
+                                         isPreffredCode = pccm.IsPreffredCode
+                                     }).ToList().Distinct().ToList();
+
+            if (procedureCodeInfo == null)
+            {
+                return procedureCodeInfo;
+                //return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                return procedureCodeInfo;
+            }
+        }
+        #endregion
+
         #region Get All By Company ID and RoomTest
         public override object GetAllProcedureCodesbyRoomTestCompanyIdforVisit(int CompanyId, int RoomTestId)
         {
@@ -692,10 +725,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 var procedureCodeInfos = (from pccm in _context.ProcedureCodeCompanyMappings
                                           join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
-                                          //join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
+                                          join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
                                           where pccm.CompanyID == CompanyId
                                                 && pc.RoomTestId == RoomTestId
-                                                //&& sm.ShowProcCode == true
+                                                && sm.ShowProcCode == true
                                                 && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                 && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                           orderby pccm.IsPreffredCode descending
@@ -745,10 +778,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 var procedureCodeInfo = (from pccm in _context.ProcedureCodeCompanyMappings
                                          join pc in _context.ProcedureCodes on pccm.ProcedureCodeID equals pc.Id
-                                         //join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
+                                         join sm in _context.CompanyRoomTestDetails on pc.RoomTestId equals sm.RoomTestID
                                          where pccm.CompanyID == CompanyId
                                                && pc.RoomTestId == RoomTestId
-                                               //&& sm.ShowProcCode == true
+                                               && sm.ShowProcCode == true
                                                && (pccm.IsDeleted.HasValue == false || (pccm.IsDeleted.HasValue == true && pccm.IsDeleted.Value == false))
                                                && (pc.IsDeleted.HasValue == false || (pc.IsDeleted.HasValue == true && pc.IsDeleted.Value == false))
                                          orderby pccm.IsPreffredCode descending
