@@ -82,7 +82,7 @@ export class ProcedureComponent implements OnInit {
     if (this.selectedVisit.specialtyId) {
       this.loadAllProceduresForSpeciality(this.selectedVisit.specialtyId)
     } else if (this.selectedVisit.roomId && this.selectedVisit.room) {
-      this.loadProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
+      this.loadAllProceduresForRoomTest(this.selectedVisit.room.roomTest.id);
     }
   }
 
@@ -119,7 +119,7 @@ export class ProcedureComponent implements OnInit {
 
   loadProceduresForRoomTest(roomTestId: number) {
     // this._progressBarService.show();
-    let result = this._procedureStore.getPrefferedProceduresByRoomTestIdForVisit(roomTestId);
+    let result = this._procedureStore.getPrefferedProceduresByRoomTestIdForVisitUpdate(roomTestId);
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
@@ -141,8 +141,7 @@ export class ProcedureComponent implements OnInit {
 
   loadAllProceduresForRoomTest(roomTestId: number) {
      this._progressBarService.show();
-    debugger;
-    let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
+    let result = this._procedureStore.getPrefferedProceduresByRoomTestId(roomTestId);
     result.subscribe(
       (procedures: Procedure[]) => {
         // this.procedures = procedures;
