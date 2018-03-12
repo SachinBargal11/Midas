@@ -37,7 +37,8 @@ export class EoVisitAdapter {
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,
             updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
-
+            visitTimeStatus: data.visitTimeStatus,
+            visitUpdateStatus: data.visitUpdateStatus
         });
 
         return eoVisit;

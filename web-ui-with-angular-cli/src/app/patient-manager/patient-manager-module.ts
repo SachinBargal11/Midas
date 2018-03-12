@@ -104,6 +104,7 @@ import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
 import { VisitShellComponent } from './cases/components/visit-shell';
 import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
+import { PatientVisitListImeComponent } from './cases/components/ime-visit';
 import { PendingReferralsComponent } from './referals/components/pending-referrals';
 import { BillingInfoComponent } from './cases/components/billing'
 import { PaymentListComponent } from './cases/components/payment-list';
@@ -192,6 +193,7 @@ import { CaseDocumentShellComponent } from './cases/components/case-documents-sh
         VisitShellComponent,
         PatientVisitListDoctorComponent,
         PatientVisitListTreatingRoomComponent,
+        PatientVisitListImeComponent,
         PendingReferralsComponent,
         BillingInfoComponent,
         PaymentListComponent,
