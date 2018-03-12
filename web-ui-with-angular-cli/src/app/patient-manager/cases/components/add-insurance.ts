@@ -261,6 +261,7 @@ export class AddInsuranceComponent implements OnInit {
     }
     else if(this.adjusterMasters.length > 1)
     {
+        this.clearInsuranceAdjusterFields();
         this.showAdjusterList = true;
         let defaultLabel: any[] = [{
             label: '-Select Adjuster-',
