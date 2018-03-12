@@ -4,6 +4,9 @@ files:
   - source: dist
     destination: C:\inetpub\website\dev-gb-medicalprovider.qwinix.io\
 hooks:
+   BeforeInstall:
+     - location: before-install.bat
+hooks:
    AfterInstall:
      - location: after-install.bat
 
