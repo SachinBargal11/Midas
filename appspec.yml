@@ -3,3 +3,6 @@ os: windows
 files:
   - source: /
     destination: C:\inetpub\websites\dev-gb-midasapi.qwinix.io\
+hooks:
+   BeforeInstall:
+     - location: before-install.bat
