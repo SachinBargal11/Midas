@@ -1,2 +1,2 @@
-
- aws cloudfront create-invalidation --distribution-id E3Q819PYFEAHWT --paths "/*"
+cd C:\
+aws cloudfront create-invalidation --distribution-id E3Q819PYFEAHWT --paths "/*"
