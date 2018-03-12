@@ -394,7 +394,6 @@ namespace MIDAS.GBX
             {
                 repo = new DiagnosisCodeCompanyMappingRepository(context);
             }
-
             return repo;
         }
     }

@@ -126,6 +126,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+
+                if (EOVisit.VisitStatusId == 1)
+                {
+                    EOVisitBO.VisitUpdateStatus = true;
+                }
+                else
+                {
+                    if (EOVisit.UpdateDate.Value.Date < DateTime.Now.Date)
+                    {
+                        EOVisitBO.VisitUpdateStatus = false;
+                    }
+                    else
+                    {
+                        EOVisitBO.VisitUpdateStatus = true;
+                    }
+
+                }
+
+
+
+                if (EOVisit.CalendarEvent != null)
+                {
+                    if (EOVisit.CalendarEvent.EventStart > DateTime.UtcNow)
+                    {
+                        EOVisitBO.VisitTimeStatus = false;
+
+                    }
+                    else
+                    {
+                        if (EOVisit.VisitStatusId == 4)
+                        {
+                            EOVisitBO.VisitTimeStatus = false;
+
+                        }
+                        else
+                        {
+                            EOVisitBO.VisitTimeStatus = true;
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    EOVisitBO.VisitTimeStatus = true;
+                }
+
                 return (T)(object)EOVisitBO;
             }
 
