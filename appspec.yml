@@ -3,6 +3,4 @@ os: windows
 files:
   - source: dist
     destination: C:\inetpub\websites\dev-gb-medicalprovider.qwinix.io\
-hooks:
-   AfterInstall:
-     - location: after-install.bat
+
