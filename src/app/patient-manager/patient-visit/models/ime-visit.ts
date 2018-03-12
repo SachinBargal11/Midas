@@ -32,6 +32,8 @@ const ImeVisitRecord = Record({
     createDate: null, //Moment
     updateDate: null,//Moment
     VisitCreatedByCompanyId: null,
+    visitTimeStatus: false,
+    visitUpdateStatus: false
 });
 
 
@@ -59,6 +61,8 @@ export class ImeVisit extends ImeVisitRecord {
     createDate: moment.Moment;
     updateDate: moment.Moment;
     VisitCreatedByCompanyId: number;
+    visitTimeStatus: boolean;
+    visitUpdateStatus: boolean;
 
     constructor(props) {
         super(props);
@@ -94,5 +98,22 @@ export class ImeVisit extends ImeVisitRecord {
             visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
         }
         return visitInfo;
+    }
+
+    get visitStatusLabel(): string {
+        return ImeVisit.getvisitStatusLabel(this.visitStatusId);
+    }
+
+    static getvisitStatusLabel(visitStatus: VisitStatus): string {
+        switch (visitStatus) {
+            case VisitStatus.SCHEDULED:
+                return 'Scheduled';
+            case VisitStatus.COMPLETE:
+                return 'Complete';
+            case VisitStatus.RESCHEDULE:
+                return 'Rescheduled';
+            case VisitStatus.NOSHOW:
+                return 'Noshow';
+        }
     }
 }
