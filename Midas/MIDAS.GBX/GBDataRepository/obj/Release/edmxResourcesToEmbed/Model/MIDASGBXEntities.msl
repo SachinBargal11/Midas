@@ -474,6 +474,7 @@
     <EntitySetMapping Name="DiagnosisTypes">
       <EntityTypeMapping TypeName="MIDASModel.DiagnosisType">
         <MappingFragment StoreEntitySet="DiagnosisType">
+          <ScalarProperty Name="ICDTypeCodeID" ColumnName="ICDTypeCodeID" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DiagnosisTypeText" ColumnName="DiagnosisTypeText" />
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -1215,6 +1216,7 @@
     <EntitySetMapping Name="PatientVisitUnscheduleds">
       <EntityTypeMapping TypeName="MIDASModel.PatientVisitUnscheduled">
         <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
+          <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CaseId" ColumnName="CaseId" />
           <ScalarProperty Name="PatientId" ColumnName="PatientId" />

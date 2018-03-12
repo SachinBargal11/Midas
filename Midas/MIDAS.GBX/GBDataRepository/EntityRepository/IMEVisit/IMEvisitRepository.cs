@@ -24,6 +24,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         private DbSet<IMEVisit> _dbIMEVisit;
         private Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
+
         public IMEvisitRepository(MIDASGBXEntities context) : base(context)
         {
             _dbIMEVisit = context.Set<IMEVisit>();
@@ -93,6 +94,52 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         IMEVisitBO.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(IMEVisit.CalendarEvent);
                     }
+                }
+
+                if (IMEVisit.VisitStatusId == 1)
+                {
+                    IMEVisitBO.VisitUpdateStatus = true;
+                }
+                else
+                {
+                    if (IMEVisit.UpdateDate.Value.Date < DateTime.Now.Date)
+                    {
+                        IMEVisitBO.VisitUpdateStatus = false;
+                    }
+                    else
+                    {
+                        IMEVisitBO.VisitUpdateStatus = true;
+                    }
+
+                }
+               
+                
+
+                if (IMEVisit.CalendarEvent != null)
+                {
+                    if (IMEVisit.CalendarEvent.EventStart > DateTime.UtcNow)
+                    {
+                        IMEVisitBO.VisitTimeStatus = false;
+
+                    }
+                    else
+                    {
+                        if (IMEVisit.VisitStatusId == 4)
+                        {
+                            IMEVisitBO.VisitTimeStatus = false;
+
+                        }
+                        else
+                        {
+                            IMEVisitBO.VisitTimeStatus = true;
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    IMEVisitBO.VisitTimeStatus = true;
                 }
 
                 return (T)(object)IMEVisitBO;
@@ -599,6 +646,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By ID
+        public override object Get(int id)
+        {
+            var IMEVisit = _context.IMEVisits.Include("CalendarEvent")
+                                             .Include("Patient").Include("Patient.Cases").Include("Patient.User")
+                                             .Where(p => p.ID == id
+                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .FirstOrDefault<IMEVisit>();
+
+            BO.IMEVisit acc_ = ConvertIMEvisit<BO.IMEVisit, IMEVisit>(IMEVisit);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
+
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
@@ -629,7 +696,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)boIMEVisit;
         }
         #endregion
-
 
         #region Get By Case ID
         public override object GetByCaseId(int id)

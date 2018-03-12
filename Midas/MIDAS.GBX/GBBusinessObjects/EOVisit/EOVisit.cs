@@ -59,5 +59,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("insuranceMaster")]
         public InsuranceMaster InsuranceMaster { get; set; }
 
+        [JsonProperty("visitTimeStatus")]
+        public bool? VisitTimeStatus { get; set; }
+
+        [JsonProperty("visitUpdateStatus")]
+        public bool? VisitUpdateStatus { get; set; }
+
     }
 }

@@ -167,6 +167,7 @@
     <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="EOVisit" />
     <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="IMEVisit" />
     <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_CalendarEvent_CalendarEventId" FromRole="CalendarEvent" ToRole="PatientVisit" />
+    <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="MIDASModel.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="CalendarEvent" ToRole="PatientVisitUnscheduled" />
   </EntityType>
   <EntityType Name="CalendarView">
     <Key>
@@ -590,6 +591,8 @@
     <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
     <Property Name="UpdateByUserID" Type="Int32" />
     <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+    <Property Name="ICDTypeCodeID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ICDTypeCode" Relationship="MIDASModel.FK_DiagnosisType_ICDTypeCode" FromRole="DiagnosisType" ToRole="ICDTypeCode" />
   </EntityType>
   <EntityType Name="DiagnosisTypeCompany">
     <Key>
@@ -797,6 +800,7 @@
     <Property Name="UpdateDate" Type="DateTime" Precision="3" />
     <NavigationProperty Name="CompanyICDTypeCodes" Relationship="Self.FK_Company_ICDTypeCode" FromRole="ICDTypeCode" ToRole="CompanyICDTypeCode" />
     <NavigationProperty Name="DiagnosisCodes" Relationship="Self.FK_DiagnosisCode_ICDTypeCode" FromRole="ICDTypeCode" ToRole="DiagnosisCode" />
+    <NavigationProperty Name="DiagnosisTypes" Relationship="MIDASModel.FK_DiagnosisType_ICDTypeCode" FromRole="ICDTypeCode" ToRole="DiagnosisType" />
   </EntityType>
   <EntityType Name="IMEVisit">
     <Key>
@@ -1439,6 +1443,8 @@
     <NavigationProperty Name="Referral" Relationship="Self.FK_PatientVisitUnscheduled_Referral_ReferralId" FromRole="PatientVisitUnscheduled" ToRole="Referral" />
     <NavigationProperty Name="RoomTest" Relationship="Self.FK_PatientVisitUnscheduled_RoomTest_RoomTestId" FromRole="PatientVisitUnscheduled" ToRole="RoomTest" />
     <NavigationProperty Name="Specialty" Relationship="Self.FK_PatientVisitUnscheduled_Specialty_SpecialtyId" FromRole="PatientVisitUnscheduled" ToRole="Specialty" />
+    <Property Name="CalendarEventId" Type="Int32" />
+    <NavigationProperty Name="CalendarEvent" Relationship="MIDASModel.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="PatientVisitUnscheduled" ToRole="CalendarEvent" />
   </EntityType>
   <EntityType Name="PendingReferral">
     <Key>
@@ -5487,6 +5493,14 @@
       <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
       <End Role="EOVisit" EntitySet="EOVisits" />
     </AssociationSet>
+    <AssociationSet Name="FK_PatientVisitUnscheduled_CalendarEvent" Association="MIDASModel.FK_PatientVisitUnscheduled_CalendarEvent">
+      <End Role="CalendarEvent" EntitySet="CalendarEvents" />
+      <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DiagnosisType_ICDTypeCode" Association="MIDASModel.FK_DiagnosisType_ICDTypeCode">
+      <End Role="ICDTypeCode" EntitySet="ICDTypeCodes" />
+      <End Role="DiagnosisType" EntitySet="DiagnosisTypes" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_CaseGetReadOnly_Result">
     <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -5516,6 +5530,30 @@
       </Principal>
       <Dependent Role="EOVisit">
         <PropertyRef Name="InsuranceProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PatientVisitUnscheduled_CalendarEvent">
+    <End Type="MIDASModel.CalendarEvent" Role="CalendarEvent" Multiplicity="0..1" />
+    <End Type="MIDASModel.PatientVisitUnscheduled" Role="PatientVisitUnscheduled" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CalendarEvent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PatientVisitUnscheduled">
+        <PropertyRef Name="CalendarEventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DiagnosisType_ICDTypeCode">
+    <End Type="MIDASModel.ICDTypeCode" Role="ICDTypeCode" Multiplicity="1" />
+    <End Type="MIDASModel.DiagnosisType" Role="DiagnosisType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICDTypeCode">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DiagnosisType">
+        <PropertyRef Name="ICDTypeCodeID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

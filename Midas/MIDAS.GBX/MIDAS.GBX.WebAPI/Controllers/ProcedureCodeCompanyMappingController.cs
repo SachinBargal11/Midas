@@ -21,8 +21,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
 
-
-
         [HttpPost]
         [Route("save")]
         public HttpResponseMessage Post([FromBody]List<ProcedureCodeCompanyMapping> data)
@@ -119,7 +117,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetPreffredProcedureCodesForVisitUpdate/{companyId}/{specialtyId}")]
+        [Route("getPreffredProcedureCodesForVisitUpdate/{companyId}/{specialtyId}")]
         public HttpResponseMessage GetPreffredProcedureCodesForVisitUpdate(int companyId, int specialtyId)
         {
             return requestHandler.GetPreffredProcedureCodesForVisitUpdate(Request, companyId, specialtyId);
