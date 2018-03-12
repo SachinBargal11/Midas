@@ -4,7 +4,7 @@ files:
   - source: dist
     destination: C:\inetpub\website\dev-gb-medicalprovider.qwinix.io\
 files:
-  - source: dist/*
+  - source: dist\*
     destination: C:\inetpub\website\dev-gb-medicalprovider.qwinix.io\
 hooks:
    BeforeInstall:
