@@ -14,6 +14,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseId")]
         public int? CaseId { get; set; }
 
+        [JsonProperty("calendarEventId")]
+        public int? CalendarEventId { get; set; }
+
         [JsonProperty("patientId")]
         public int? PatientId { get; set; }
 
@@ -58,6 +61,12 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("specialty")]
         public Specialty Specialty { get; set; }
+
+        [JsonProperty("calendarEvent")]
+        public CalendarEvent CalendarEvent { get; set; }
+
+        [JsonProperty("visitTimeStatus")]
+        public bool VisitTimeStatus { get; set; }
     }
 
     public class ReferralVisitUnscheduled : GbObject

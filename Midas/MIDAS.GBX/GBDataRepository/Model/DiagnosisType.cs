@@ -21,5 +21,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public int ICDTypeCodeID { get; set; }
+    
+        public virtual ICDTypeCode ICDTypeCode { get; set; }
     }
 }

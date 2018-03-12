@@ -319,6 +319,8 @@
         <AssociationConnector Association="MIDASModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASModel.FK_UserPersonalSettings_User_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" />
+        <AssociationConnector Association="MIDASModel.FK_PatientVisitUnscheduled_CalendarEvent" />
+        <AssociationConnector Association="MIDASModel.FK_DiagnosisType_ICDTypeCode" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

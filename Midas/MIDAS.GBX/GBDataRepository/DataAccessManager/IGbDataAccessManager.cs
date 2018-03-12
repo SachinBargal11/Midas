@@ -229,5 +229,6 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetVisitStatusbyPatientVisitRoomTestId(int PatientVisitId, int roomTestId);
         Object GetPreffredProcedureCodesForVisitUpdate(int CompanyId, int SpecialtyId);
         Object GetPreffredRoomProcedureCodesForVisitUpdate(int CompanyId, int roomTestId);
+        Object GetPatientVisitUnscheduledByCompanyId(int CompanyId);
     }
 }
