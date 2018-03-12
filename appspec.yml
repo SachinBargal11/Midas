@@ -3,9 +3,6 @@ os: windows
 files:
   - source: dist
     destination: C:\inetpub\website\dev-gb-medicalprovider.qwinix.io\
-files:
-  - source: dist\*
-    destination: C:\inetpub\website\dev-gb-medicalprovider.qwinix.io\
 hooks:
    BeforeInstall:
      - location: before-install.bat
