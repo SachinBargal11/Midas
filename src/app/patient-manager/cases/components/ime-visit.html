@@ -1,0 +1,50 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<div class="input-group" *ngIf="caseStatusId === 1">
+    <h3 class="with-border">{{patientName}} Visits
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="addVisitDialog()"><i class="fa fa-plus" aria-hidden="true"></i>
+        <span class="hidden-md-down">Add Visit</span>
+        </a>
+    </h3>
+</div>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search IME Visits">
+    </div>
+    <div class="col-lg-4"> 
+        <p-checkbox (onChange)="loadVisits()" [(ngModel)]="viewall" 
+        binary="true" label="View All"></p-checkbox>
+    </div>
+</div>
+<p-dataTable [value]="allVisits" [(selection)]="selectedIMEVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true" #dt>
+    <header>Patient IME Visits List</header>
+    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
+    <p-column field="eventStart" header="Visit Date" [sortable]="true" [filter]="true" styleClass="inbound-column">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a *ngIf="visit.isPatientVisitType">
+            {{visit.eventStart}}
+           </a>
+        </ng-template>
+    </p-column>
+    <p-column field="doctorName" header="Doctor Name" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true" [filter]="true" styleClass="inbound-column"></p-column>
+
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a *ngIf="visit.visitTimeStatus == true" (click)="showDialog(visit)"><i class="glyphicon glyphicon-edit"></i></a>
+        </ng-template>
+    </p-column>
+</p-dataTable><br>
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="selectedVisit && visitDialogVisible">
+        <app-ime-visit-detail [selectedVisit]="selectedVisit" (closeDialog)="closePatientVisitDialog($event)"></app-ime-visit-detail>
+    </div>
+</p-dialog>
+<p-dialog *ngIf="caseId && patientId" [width]="1200" [height]="500" header="{{visitInfo}}" [(visible)]="addVisitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="addVisitDialogVisible && caseId && patientId">
+        <patient-visit (closeDialog)="closeAddVisitDialog($event)" [caseId]="caseId" [idPatient]="patientId" [routeFromCase]="true"></patient-visit>
+    </div>
+</p-dialog>

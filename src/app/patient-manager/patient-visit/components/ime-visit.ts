@@ -168,6 +168,7 @@ export class ImeVisitComponent implements OnInit {
             this.doctorName = this._selectedEvent.doctorName;
             this.transportProviderId = this._selectedEvent.transportProviderId;
             this.notes = this._selectedEvent.notes;
+            this.selectPatient(this._selectedEvent.patientId);
             
         }
     }
@@ -268,14 +269,23 @@ export class ImeVisitComponent implements OnInit {
     }
 
     selectPatient(event) {
-        let currentPatient: number = parseInt(event.target.value);
-        if (event.value != '') {
-            let result = this._casesStore.getOpenCaseForPatientByPatientIdAndCompanyId(currentPatient);
+        if(event.target == undefined)
+        {
+            let result = this._casesStore.getOpenCaseForPatientByPatientIdAndCompanyId(event);
             result.subscribe((cases) => { this.cases = cases; }, null);
         }
+        else{
+            let currentPatient: number = parseInt(event.target.value);
+            if (event.value != '') {
+                let result = this._casesStore.getOpenCaseForPatientByPatientIdAndCompanyId(currentPatient);
+                result.subscribe((cases) => { this.cases = cases; }, null);
+            }
+        }
+       
     }
 
     saveEvent() {
+        debugger;
         this.isSaveProgress = true;
         let imeScheduleFormValues = this.imeScheduleForm.value;
         let result;
@@ -284,6 +294,7 @@ export class ImeVisitComponent implements OnInit {
         let endDate = moment(this.eventEndAsDate).format('YYYY-MM-DD');
         let endDateTime = new Date(startDate + ' ' + imeScheduleFormValues.eventEndTime);
         let ime = new ImeVisit({
+            id: this.selectedVisit.id? this.selectedVisit.id : 0,
             patientId: this.imeScheduleForm.value.patientId,
             caseId: this.imeScheduleForm.value.caseId,
             notes: this.imeScheduleForm.value.notes,
@@ -295,6 +306,8 @@ export class ImeVisitComponent implements OnInit {
                 // eventStart: moment(this.eventStartAsDate),
                 // eventEnd: moment(this.eventStartAsDate).add(this.duration, 'minutes'),
                 // eventEnd: moment(this.eventEndAsDate),
+                id: this.selectedVisit.calendarEventId ? this.selectedVisit.calendarEventId :0,
+                name:  this.imeScheduleForm.value.name,
                 eventStart: moment(startDateTime),
                 eventEnd: moment(endDateTime),
                 timezone: this.eventStartAsDate.getTimezoneOffset(),

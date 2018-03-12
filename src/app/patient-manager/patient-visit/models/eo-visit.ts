@@ -35,6 +35,9 @@ const EoVisitRecord = Record({
     updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null,//Moment
+    visitTimeStatus: false,
+    visitUpdateStatus: false
+    
 });
 
 
@@ -63,6 +66,8 @@ export class EoVisit extends EoVisitRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    visitTimeStatus: boolean;
+    visitUpdateStatus: boolean;
 
     constructor(props) {
         super(props);
@@ -98,5 +103,22 @@ export class EoVisit extends EoVisitRecord {
         }
 
         return visitInfo;
+    }
+
+    get visitStatusLabel(): string {
+        return EoVisit.getvisitStatusLabel(this.visitStatusId);
+    }
+
+    static getvisitStatusLabel(visitStatus: VisitStatus): string {
+        switch (visitStatus) {
+            case VisitStatus.SCHEDULED:
+                return 'Scheduled';
+            case VisitStatus.COMPLETE:
+                return 'Complete';
+            case VisitStatus.RESCHEDULE:
+                return 'Rescheduled';
+            case VisitStatus.NOSHOW:
+                return 'Noshow';
+        }
     }
 }
