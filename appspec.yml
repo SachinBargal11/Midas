@@ -8,7 +8,7 @@ hooks:
      - location: before-install.bat
    AfterInstall:
      - location: after-install.bat
-       runas: Administrator
+       runas: administrator
 
 
 
