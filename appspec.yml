@@ -6,9 +6,7 @@ files:
 hooks:
    BeforeInstall:
      - location: before-install.bat
-hooks:
-   AfterInstall:
-     - location: after-install.bat
+
 
 
 
