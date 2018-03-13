@@ -137,13 +137,11 @@ export class ReferralsComponent implements OnInit {
   }
 
   CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {
-    debugger;
      this._progressBarService.show();
      this.iscomplete = false;
      let result = this._patientVisitStore.getVisitStatusbyPatientVisitIdSpecialityId(this.selectedVisit.id, specialityId);
      result.subscribe(
-      (ptvist: PatientVisit[]) => {  
-         debugger;              
+      (ptvist: PatientVisit[]) => {              
         if(ptvist.length > 0)
         {
            this.iscomplete = true;
@@ -400,7 +398,6 @@ export class ReferralsComponent implements OnInit {
   saveReferral() {
     let procedureCodes = [];
     let visitReferralDetails: VisitReferral[] = [];
-    debugger;
     let uniqSpeciality = _.uniq(this.proceduresList, (currentProc: Procedure) => {
       return currentProc.specialityId
     })
@@ -464,6 +461,25 @@ export class ReferralsComponent implements OnInit {
         procedureCodes = [];
       }
     })
+
+    if(visitReferralDetails.length == 0)
+    {
+      let visitReferral = new VisitReferral({
+        patientVisitId: this.selectedVisit.id,
+        fromCompanyId: this.sessionStore.session.currentCompany.id,
+        fromLocationId: this.selectedVisit.locationId,
+        fromDoctorId: this.selectedVisit.doctorId,
+        forSpecialtyId: null,
+        forRoomId: null,
+        forRoomTestId: null,
+        isReferralCreated: false,
+        pendingReferralProcedureCode: procedureCodes,
+        doctorSignature: this.sigs.first.signature
+      });
+      visitReferralDetails.push(visitReferral);
+      procedureCodes = [];
+    }
+
     this.save.emit(visitReferralDetails);
     this.digitalForm.reset();
     this.clear();
@@ -476,9 +492,7 @@ export class ReferralsComponent implements OnInit {
     this.sigs.first.signature = undefined;
   }
 
-  deleteProcedureCode(proc) {    
-    debugger;
-    
+  deleteProcedureCode(proc) {
     if(proc.specialityId != null)
     {
       this.CheckReferralPtVisitStatusForUpdatebySpecialty(proc.specialityId, proc.id, true);
