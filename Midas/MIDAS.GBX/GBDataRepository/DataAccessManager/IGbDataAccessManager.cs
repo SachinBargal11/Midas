@@ -230,5 +230,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetPreffredProcedureCodesForVisitUpdate(int CompanyId, int SpecialtyId);
         Object GetPreffredRoomProcedureCodesForVisitUpdate(int CompanyId, int roomTestId);
         Object GetPatientVisitUnscheduledByCompanyId(int CompanyId);
+        Object SetUpdatePrefferedProcedureCodeMultiple(List<T> gbObject);
+        Object RemoveUpdatePrefferedProcedureCodeMultiple(List<T> gbObject);
     }
 }

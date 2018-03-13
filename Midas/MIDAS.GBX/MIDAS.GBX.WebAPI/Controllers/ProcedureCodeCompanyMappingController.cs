@@ -123,6 +123,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetPreffredProcedureCodesForVisitUpdate(Request, companyId, specialtyId);
         }
 
+
+        [HttpPost]
+        [Route("setUpdatePrefferedProcedureCodeMultiple")]
+        public HttpResponseMessage SetUpdatePrefferedProcedureCodeMultiple([FromBody]List<ProcedureCodeCompanyMapping> data)
+        {
+            return requestHandler.SetUpdatePrefferedProcedureCodeMultiple(Request, data);
+        }
+
+        [HttpPost]
+        [Route("removeUpdatePrefferedProcedureCodeMultiple")]
+        public HttpResponseMessage RemoveUpdatePrefferedProcedureCodeMultiple([FromBody]List<ProcedureCodeCompanyMapping> data)
+        {
+            return requestHandler.RemoveUpdatePrefferedProcedureCodeMultiple(Request, data);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
