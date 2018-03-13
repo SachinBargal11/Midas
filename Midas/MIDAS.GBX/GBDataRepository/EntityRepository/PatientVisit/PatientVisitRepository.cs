@@ -74,8 +74,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisitBO.IsTransportationRequired = patientVisit.IsTransportationRequired;
                 patientVisitBO.TransportProviderId = patientVisit.TransportProviderId;
                 patientVisitBO.AncillaryProviderId = patientVisit.AncillaryProviderId;
-                patientVisitBO.VisitTypeId = patientVisit.VisitTypeId;
-                patientVisitBO.VisitTimeStatus = patientVisit.VisitTimeStatus;
+                patientVisitBO.VisitTypeId = patientVisit.VisitTypeId;                
                 patientVisitBO.IsCancelled = patientVisit.IsCancelled;
                 patientVisitBO.IsDeleted = patientVisit.IsDeleted;
                 patientVisitBO.CreateByUserID = patientVisit.CreateByUserID;
@@ -94,6 +93,59 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 else
                 {
                     patientVisitBO.VisitUpdateStatus = true;
+                }
+
+                if (patientVisit.EventStart == null)
+                {
+                    int s = _context.PatientVisits.Where(p => p.CalendarEventId == patientVisit.CalendarEventId).Count();
+                    if (s <= 1)
+                    {
+                        //var calendaritem = _context.CalendarEvents.Where(p => p.Id == item.CalendarEventId)
+                        if (patientVisit.CalendarEvent.EventStart > DateTime.Now.Date)
+                        {
+                            patientVisitBO.VisitTimeStatus = false;                            
+                        }
+                        else
+                        {
+                            if (patientVisitBO.VisitStatusId == 4)
+                            {
+                                patientVisitBO.VisitTimeStatus = false;
+                            }
+                            else
+                            {
+                                patientVisitBO.VisitTimeStatus = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        patientVisitBO.VisitTimeStatus = false;
+                    }
+                }
+                else
+                {
+                    if (patientVisitBO.CalendarEvent != null)
+                    {
+                        if (patientVisitBO.CalendarEvent.EventStart > DateTime.Now.Date)
+                        {
+                            patientVisitBO.VisitTimeStatus = false;
+                        }
+                        else
+                        {
+                            if (patientVisitBO.VisitStatusId == 4)
+                            {
+                                patientVisitBO.VisitTimeStatus = false;
+                            }
+                            else
+                            {
+                                patientVisitBO.VisitTimeStatus = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        patientVisitBO.VisitTimeStatus = false;
+                    }
                 }
 
                 if (patientVisit.Patient != null)
@@ -1735,53 +1787,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.PatientVisit> lstpatientvisit = new List<BO.PatientVisit>();
                 foreach (PatientVisit item in acc)
                 {
-                    if (item.EventStart == null)
-                    {
-                        int s = _context.PatientVisits.Where(p => p.CalendarEventId == item.CalendarEventId).Count();
-                        if (s <= 1)
-                        {
-                            //var calendaritem = _context.CalendarEvents.Where(p => p.Id == item.CalendarEventId)
-                            if (item.CalendarEvent.EventStart > DateTime.Now.Date)
-                            {
-                                item.VisitTimeStatus = false;
-                                lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                            }
-                            else
-                            {
-                                if (item.VisitStatusId == 4)
-                                {
-                                    item.VisitTimeStatus = false;
-                                    lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                                }
-                                else
-                                {
-                                    item.VisitTimeStatus = true;
-                                    lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (item.CalendarEvent.EventStart > DateTime.Now.Date)
-                        {
-                            item.VisitTimeStatus = false;
-                            lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                        }
-                        else
-                        {
-                            if (item.VisitStatusId == 4)
-                            {
-                                item.VisitTimeStatus = false;
-                                lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                            }
-                            else
-                            {
-                                item.VisitTimeStatus = true;
-                                lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));
-                            }
-                        }
-                    }
+                    lstpatientvisit.Add(Convert<BO.PatientVisit, PatientVisit>(item));                    
                 }
                 return lstpatientvisit;
             }

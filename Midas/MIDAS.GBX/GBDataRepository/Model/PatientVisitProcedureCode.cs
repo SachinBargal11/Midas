@@ -17,14 +17,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public int Id { get; set; }
         public int PatientVisitId { get; set; }
         public int ProcedureCodeId { get; set; }
+        public Nullable<decimal> ProcedureAmount { get; set; }
+        public Nullable<decimal> ProcedureUnit { get; set; }
+        public Nullable<decimal> ProcedureTotalAmount { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<decimal> ProcedureAmount { get; set; }
-        public Nullable<decimal> ProcedureUnit { get; set; }
-        public Nullable<decimal> ProcedureTotalAmount { get; set; }
     
         public virtual PatientVisit PatientVisit { get; set; }
         public virtual ProcedureCode ProcedureCode { get; set; }

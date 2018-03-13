@@ -2901,5 +2901,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetPatientVisitUnscheduledByCompanyId(HttpRequestMessage request, int CompanyId)
+        {
+            var objResult = dataAccessManager.GetPatientVisitUnscheduledByCompanyId(CompanyId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

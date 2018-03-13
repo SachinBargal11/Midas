@@ -167,6 +167,7 @@
     <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="EOVisit" />
     <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="IMEVisit" />
     <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_CalendarEvent_CalendarEventId" FromRole="CalendarEvent" ToRole="PatientVisit" />
+    <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="CalendarEvent" ToRole="PatientVisitUnscheduled" />
   </EntityType>
   <EntityType Name="CalendarView">
     <Key>
@@ -756,9 +757,9 @@
     <NavigationProperty Name="Case" Relationship="Self.FK_EOVisit_Case_CaseId" FromRole="EOVisit" ToRole="Case" />
     <NavigationProperty Name="Company" Relationship="Self.FK_EOVisit_Company_VisitCreatedByCompanyId" FromRole="EOVisit" ToRole="Company" />
     <NavigationProperty Name="Doctor" Relationship="Self.FK_EOVisit_Doctor_DoctorId" FromRole="EOVisit" ToRole="Doctor" />
+    <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
     <NavigationProperty Name="Patient" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="EOVisit" ToRole="Patient" />
     <NavigationProperty Name="VisitStatu" Relationship="Self.FK_EOVisit_VisitStatus_VisitStatusId" FromRole="EOVisit" ToRole="VisitStatus" />
-    <NavigationProperty Name="InsuranceMaster" Relationship="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
   </EntityType>
   <EntityType Name="Gender">
     <Key>
@@ -849,9 +850,9 @@
     <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
     <NavigationProperty Name="Company" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="InsuranceMaster" ToRole="Company" />
     <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
+    <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="InsuranceMaster" ToRole="EOVisit" />
     <NavigationProperty Name="InsuranceMasterType" Relationship="Self.FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId" FromRole="InsuranceMaster" ToRole="InsuranceMasterType" />
     <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
-    <NavigationProperty Name="EOVisits" Relationship="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="InsuranceMaster" ToRole="EOVisit" />
   </EntityType>
   <EntityType Name="InsuranceMasterType">
     <Key>
@@ -1401,6 +1402,9 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="PatientVisitId" Type="Int32" Nullable="false" />
     <Property Name="ProcedureCodeId" Type="Int32" Nullable="false" />
+    <Property Name="ProcedureAmount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ProcedureUnit" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="ProcedureTotalAmount" Type="Decimal" Precision="19" Scale="4" />
     <Property Name="IsDeleted" Type="Boolean" />
     <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
     <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -1408,15 +1412,13 @@
     <Property Name="UpdateDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="PatientVisit" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId" FromRole="PatientVisitProcedureCodes" ToRole="PatientVisit" />
     <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="PatientVisitProcedureCodes" ToRole="ProcedureCode" />
-    <Property Name="ProcedureAmount" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="ProcedureUnit" Type="Decimal" Precision="18" Scale="0" />
-    <Property Name="ProcedureTotalAmount" Type="Decimal" Precision="19" Scale="4" />
   </EntityType>
   <EntityType Name="PatientVisitUnscheduled">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CalendarEventId" Type="Int32" />
     <Property Name="CaseId" Type="Int32" Nullable="false" />
     <Property Name="PatientId" Type="Int32" Nullable="false" />
     <Property Name="EventStart" Type="DateTime" Precision="7" />
@@ -1433,6 +1435,8 @@
     <Property Name="UpdateDate" Type="DateTime" Precision="7" />
     <Property Name="OrignatorCompanyId" Type="Int32" Nullable="false" />
     <Property Name="LocationName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="VisitStatusId" Type="Byte" />
+    <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="PatientVisitUnscheduled" ToRole="CalendarEvent" />
     <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="PatientVisitUnscheduled" ToRole="Case" />
     <NavigationProperty Name="Company" Relationship="Self.FK_PatientVisitUnscheduled_Company_OrignatorCompanyId" FromRole="PatientVisitUnscheduled" ToRole="Company" />
     <NavigationProperty Name="Patient" Relationship="Self.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="PatientVisitUnscheduled" ToRole="Patient" />
@@ -1452,6 +1456,7 @@
     <Property Name="ForSpecialtyId" Type="Int32" />
     <Property Name="ForRoomId" Type="Int32" />
     <Property Name="ForRoomTestId" Type="Int32" />
+    <Property Name="DoctorSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="IsReferralCreated" Type="Boolean" />
     <Property Name="IsDeleted" Type="Boolean" />
     <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
@@ -1469,7 +1474,6 @@
     <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
     <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
     <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
-    <Property Name="DoctorSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="PendingReferralProcedureCode">
     <Key>
@@ -2481,6 +2485,18 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="PatientVisit">
+        <PropertyRef Name="CalendarEventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PatientVisitUnscheduled_CalendarEvent">
+    <End Role="CalendarEvent" Type="Self.CalendarEvent" Multiplicity="0..1" />
+    <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CalendarEvent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PatientVisitUnscheduled">
         <PropertyRef Name="CalendarEventId" />
       </Dependent>
     </ReferentialConstraint>
@@ -3649,6 +3665,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_EOVisit_Insurance_InsuranceProviderId">
+    <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+    <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InsuranceMaster">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EOVisit">
+        <PropertyRef Name="InsuranceProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_EOVisit_Patient_PatientId">
     <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
     <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
@@ -4775,6 +4803,10 @@
       <End Role="CalendarEvent" EntitySet="CalendarEvents" />
       <End Role="PatientVisit" EntitySet="PatientVisits" />
     </AssociationSet>
+    <AssociationSet Name="FK_PatientVisitUnscheduled_CalendarEvent" Association="Self.FK_PatientVisitUnscheduled_CalendarEvent">
+      <End Role="CalendarEvent" EntitySet="CalendarEvents" />
+      <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
+    </AssociationSet>
     <AssociationSet Name="FK_UserPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId">
       <End Role="CalendarView" EntitySet="CalendarViews" />
       <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
@@ -5163,6 +5195,10 @@
       <End Role="Specialty" EntitySet="Specialties" />
       <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
     </AssociationSet>
+    <AssociationSet Name="FK_EOVisit_Insurance_InsuranceProviderId" Association="Self.FK_EOVisit_Insurance_InsuranceProviderId">
+      <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+      <End Role="EOVisit" EntitySet="EOVisits" />
+    </AssociationSet>
     <AssociationSet Name="FK_EOVisit_Patient_PatientId" Association="Self.FK_EOVisit_Patient_PatientId">
       <End Role="Patient" EntitySet="Patients" />
       <End Role="EOVisit" EntitySet="EOVisits" />
@@ -5484,10 +5520,6 @@
       <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
     </FunctionImport>
     <FunctionImport Name="spDeletePatient" />
-    <AssociationSet Name="FK_EOVisit_Insurance_InsuranceProviderId" Association="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId">
-      <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
-      <End Role="EOVisit" EntitySet="EOVisits" />
-    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_CaseGetReadOnly_Result">
     <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -5508,16 +5540,4 @@
     <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
     <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
   </ComplexType>
-  <Association Name="FK_EOVisit_Insurance_InsuranceProviderId">
-    <End Type="MIDASModel.InsuranceMaster" Role="InsuranceMaster" Multiplicity="0..1" />
-    <End Type="MIDASModel.EOVisit" Role="EOVisit" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="InsuranceMaster">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EOVisit">
-        <PropertyRef Name="InsuranceProviderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

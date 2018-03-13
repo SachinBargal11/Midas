@@ -1163,6 +1163,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetPatientVisitUnscheduledByCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

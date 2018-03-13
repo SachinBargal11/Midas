@@ -12,7 +12,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="appspec.yml">
-      <publishTime>03/09/2018 09:55:50</publishTime>
+      <publishTime>03/13/2018 13:43:01</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>11/01/2017 05:18:14</publishTime>
@@ -76,6 +76,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Areas/HelpPage/Views/_ViewStart.cshtml">
       <publishTime>11/01/2017 05:18:14</publishTime>
+    </File>
+    <File Include="before-install.bat">
+      <publishTime>03/13/2018 13:43:01</publishTime>
     </File>
     <File Include="bin/antlr.runtime.dll">
       <publishTime>05/02/2017 16:51:36</publishTime>
@@ -285,19 +288,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/23/2017 15:48:04</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.BusinessObjects.dll">
-      <publishTime>03/08/2018 14:48:02</publishTime>
+      <publishTime>03/13/2018 14:57:17</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.Common.dll">
       <publishTime>11/24/2017 19:01:25</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DataRepository.dll">
-      <publishTime>03/09/2018 14:47:19</publishTime>
+      <publishTime>03/13/2018 14:57:28</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.DocumentManager.dll">
-      <publishTime>03/09/2018 10:58:01</publishTime>
+      <publishTime>03/13/2018 14:53:24</publishTime>
     </File>
     <File Include="bin/MIDAS.GBX.WebAPI.dll">
-      <publishTime>03/09/2018 14:47:40</publishTime>
+      <publishTime>03/13/2018 14:57:39</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>06/13/2016 23:06:14</publishTime>
@@ -522,7 +525,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/01/2017 05:18:14</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/09/2018 10:58:24</publishTime>
+      <publishTime>03/13/2018 14:57:42</publishTime>
     </File>
   </ItemGroup>
 </Project>

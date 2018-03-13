@@ -51,6 +51,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 PatientVisitUnscheduledBO.IsDeleted = PatientVisitUnscheduledDB.IsDeleted;
                 PatientVisitUnscheduledBO.CreateByUserID = PatientVisitUnscheduledDB.CreateByUserID;
                 PatientVisitUnscheduledBO.UpdateByUserID = PatientVisitUnscheduledDB.UpdateByUserID;
+                PatientVisitUnscheduledBO.CalendarEventId = PatientVisitUnscheduledDB.CalendarEventId;
+                PatientVisitUnscheduledBO.VisitTimeStatus = false;                    
+                
 
                 if (PatientVisitUnscheduledDB.Patient != null)
                 {
@@ -109,8 +112,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (PatientVisitUnscheduledDB.CalendarEvent != null)
+                {
+                    CalendarEvent CalendarEventDB = entity as CalendarEvent;
+
+                    //if (CalendarEventDB == null)
+                    //    return default(T);
+
+                    BO.CalendarEvent CalendarEvent = new BO.CalendarEvent();
+                    using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+                    {
+                        CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(PatientVisitUnscheduledDB.CalendarEvent);
+                    }
+
+                    PatientVisitUnscheduledBO.CalendarEvent = CalendarEvent;
+                    //return (T)(object)CalendarEvent;
+                }
+
                 return (T)(object)PatientVisitUnscheduledBO;
-            }            
+            }
 
             return default(T);
         }
@@ -141,11 +161,70 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.PatientVisitUnscheduled PatientVisitUnscheduledBO = (BO.PatientVisitUnscheduled)(object)entity;
             PatientVisitUnscheduled PatientVisitUnscheduledDB = new PatientVisitUnscheduled();
+            BO.CalendarEvent CalendarEventBO = PatientVisitUnscheduledBO.CalendarEvent;
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
-            {                
+            {
                 bool IsEditMode = false;
                 IsEditMode = (PatientVisitUnscheduledBO != null && PatientVisitUnscheduledBO.ID > 0) ? true : false;
+
+                CalendarEvent CalendarEventDB = new CalendarEvent();
+                #region Calendar Event
+                //if (CalendarEventBO != null)
+                //{
+                bool Add_CalendarEventDB = false;
+                CalendarEventDB = _context.CalendarEvents.Where(p => p.Id == PatientVisitUnscheduledBO.CalendarEventId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .FirstOrDefault();
+
+                if (CalendarEventDB == null && PatientVisitUnscheduledBO.CalendarEventId != null)
+                {
+                    CalendarEventDB = new CalendarEvent();
+                    Add_CalendarEventDB = true;
+                }
+                else if (CalendarEventDB == null && PatientVisitUnscheduledBO.CalendarEventId > 0)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Calendar Event details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                }
+
+                CalendarEventDB.Name = "Unscheduled Visit";
+                CalendarEventDB.EventStart = PatientVisitUnscheduledBO.EventStart.Value;
+                CalendarEventDB.EventEnd = PatientVisitUnscheduledBO.EventStart.Value;
+                CalendarEventDB.TimeZone = "-330";
+                CalendarEventDB.Description = PatientVisitUnscheduledBO.Notes;
+                CalendarEventDB.RecurrenceId = null;
+                CalendarEventDB.RecurrenceRule = "";
+                CalendarEventDB.RecurrenceException = "";
+                CalendarEventDB.IsAllDay = false;
+
+                if (IsEditMode == false)
+                {
+                    CalendarEventDB.CreateByUserID = PatientVisitUnscheduledBO.CreateByUserID;
+                    CalendarEventDB.CreateDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    CalendarEventDB.UpdateByUserID = PatientVisitUnscheduledBO.UpdateByUserID;
+                    CalendarEventDB.UpdateDate = DateTime.UtcNow;
+                }
+
+                if (Add_CalendarEventDB == true)
+                {
+                    CalendarEventDB = _context.CalendarEvents.Add(CalendarEventDB);
+                }
+                _context.SaveChanges();
+                //}
+                //else
+                //{
+                //    if (IsEditMode == false && PatientVisitUnscheduledBO.CalendarEventId <= 0)
+                //    {
+                //        dbContextTransaction.Rollback();
+                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Calendar Event details.", ErrorLevel = ErrorLevel.Error };
+                //    }
+                //    CalendarEventDB = null;
+                //}
+                #endregion
 
                 #region Patient Visit Unscheduled
                 if (PatientVisitUnscheduledBO != null
@@ -170,7 +249,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     PatientVisitUnscheduledDB.CaseId = IsEditMode == true && PatientVisitUnscheduledBO.CaseId.HasValue == false ? PatientVisitUnscheduledDB.CaseId : (PatientVisitUnscheduledBO.CaseId.HasValue == false ? PatientVisitUnscheduledDB.CaseId : PatientVisitUnscheduledBO.CaseId.Value);
                     PatientVisitUnscheduledDB.PatientId = IsEditMode == true && PatientVisitUnscheduledBO.PatientId.HasValue == false ? PatientVisitUnscheduledDB.PatientId : (PatientVisitUnscheduledBO.PatientId.HasValue == false ? PatientVisitUnscheduledDB.PatientId : PatientVisitUnscheduledBO.PatientId.Value);
-                    
+
                     PatientVisitUnscheduledDB.EventStart = PatientVisitUnscheduledBO.EventStart;
                     PatientVisitUnscheduledDB.MedicalProviderName = PatientVisitUnscheduledBO.MedicalProviderName;
                     PatientVisitUnscheduledDB.DoctorName = PatientVisitUnscheduledBO.DoctorName;
@@ -179,6 +258,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisitUnscheduledDB.Notes = PatientVisitUnscheduledBO.Notes;
                     PatientVisitUnscheduledDB.SpecialtyId = PatientVisitUnscheduledBO.SpecialtyId;
                     PatientVisitUnscheduledDB.RoomTestId = PatientVisitUnscheduledBO.RoomTestId;
+                    PatientVisitUnscheduledDB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisitUnscheduledBO.CalendarEventId.HasValue == true) ? PatientVisitUnscheduledBO.CalendarEventId.Value : PatientVisitUnscheduledBO.CalendarEventId);
 
                     if (IsEditMode == false)
                     {
@@ -198,9 +278,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         PatientVisitUnscheduledDB = _context.PatientVisitUnscheduleds.Add(PatientVisitUnscheduledDB);
                     }
-                    _context.SaveChanges();                    
+                    _context.SaveChanges();
                 }
                 #endregion
+
+
 
                 dbContextTransaction.Commit();
 
@@ -226,9 +308,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByCaseId(int CaseId)
         {
             var acc = _context.PatientVisitUnscheduleds.Include("Patient")
-                                                       .Include("Patient.User") 
-                                                       .Include("Specialty")      
-                                                       .Include("RoomTest")                                    
+                                                       .Include("Patient.User")
+                                                       .Include("Specialty")
+                                                       .Include("RoomTest")
                                                        .Where(p => p.CaseId == CaseId
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .ToList<PatientVisitUnscheduled>();
@@ -265,8 +347,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
-            {              
-               var res = Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(acc);              
+            {
+                var res = Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(acc);
                 return (object)res;
             }
         }
@@ -421,6 +503,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        .Include("Specialty")
                                                        .Include("RoomTest")
                                                        .Where(p => CaseIds.Contains(p.CaseId) == true && p.ReferralId != null
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                       .ToList<PatientVisitUnscheduled>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisitUnscheduled> lstpatientvisit = new List<BO.PatientVisitUnscheduled>();
+                foreach (PatientVisitUnscheduled item in acc)
+                {
+                    lstpatientvisit.Add(Convert<BO.PatientVisitUnscheduled, PatientVisitUnscheduled>(item));
+                }
+                return lstpatientvisit;
+            }
+        }
+        #endregion
+
+
+        #region Get Patient Visit Unscheduled By CompanyId
+        public override object GetPatientVisitUnscheduledByCompanyId(int CompanyId)
+        {
+            var CaseIds = _context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .Select(p => p.CaseId);
+
+            var acc = _context.PatientVisitUnscheduleds.Include("Patient")
+                                                       .Include("Patient.User")
+                                                       .Include("Specialty")
+                                                       .Include("RoomTest")
+                                                       .Include("CalendarEvent")
+                                                       .Where(p => CaseIds.Contains(p.CaseId) == true
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                        .ToList<PatientVisitUnscheduled>();
 

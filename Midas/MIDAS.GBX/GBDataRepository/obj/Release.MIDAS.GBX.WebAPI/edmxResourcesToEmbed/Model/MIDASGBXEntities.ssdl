@@ -1155,6 +1155,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CalendarEventId" Type="int" />
     <Property Name="CaseId" Type="int" Nullable="false" />
     <Property Name="PatientId" Type="int" Nullable="false" />
     <Property Name="EventStart" Type="datetime2" Precision="7" />
@@ -1171,6 +1172,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="UpdateDate" Type="datetime2" Precision="7" />
     <Property Name="OrignatorCompanyId" Type="int" Nullable="false" />
     <Property Name="LocationName" Type="nvarchar" MaxLength="128" />
+    <Property Name="VisitStatusId" Type="tinyint" />
   </EntityType>
   <EntityType Name="PendingReferral">
     <Key>
@@ -3303,6 +3305,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PatientVisitUnscheduled_CalendarEvent">
+    <End Role="CalendarEvent" Type="Self.CalendarEvent" Multiplicity="0..1" />
+    <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CalendarEvent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PatientVisitUnscheduled">
+        <PropertyRef Name="CalendarEventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PatientVisitUnscheduled_Case_CaseId">
     <End Role="Case" Type="Self.Case" Multiplicity="1" />
     <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
@@ -4827,6 +4841,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     <AssociationSet Name="FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId" Association="Self.FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId">
       <End Role="PatientVisit" EntitySet="PatientVisit" />
       <End Role="PatientVisitProcedureCodes" EntitySet="PatientVisitProcedureCodes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PatientVisitUnscheduled_CalendarEvent" Association="Self.FK_PatientVisitUnscheduled_CalendarEvent">
+      <End Role="CalendarEvent" EntitySet="CalendarEvent" />
+      <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduled" />
     </AssociationSet>
     <AssociationSet Name="FK_PatientVisitUnscheduled_Case_CaseId" Association="Self.FK_PatientVisitUnscheduled_Case_CaseId">
       <End Role="Case" EntitySet="Case" />

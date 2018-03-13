@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccidentTreatment">
           <Key>
             <PropertyRef Name="Id" />
@@ -1160,6 +1160,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CalendarEventId" Type="int" />
           <Property Name="CaseId" Type="int" Nullable="false" />
           <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="EventStart" Type="datetime2" Precision="7" />
@@ -1176,6 +1177,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="OrignatorCompanyId" Type="int" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar" MaxLength="128" />
+          <Property Name="VisitStatusId" Type="tinyint" />
         </EntityType>
         <EntityType Name="PendingReferral">
           <Key>
@@ -3308,6 +3310,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientVisitUnscheduled_CalendarEvent">
+          <End Role="CalendarEvent" Type="Self.CalendarEvent" Multiplicity="0..1" />
+          <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalendarEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientVisitUnscheduled">
+              <PropertyRef Name="CalendarEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisitUnscheduled_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
@@ -4833,6 +4847,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PatientVisit" EntitySet="PatientVisit" />
             <End Role="PatientVisitProcedureCodes" EntitySet="PatientVisitProcedureCodes" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientVisitUnscheduled_CalendarEvent" Association="Self.FK_PatientVisitUnscheduled_CalendarEvent">
+            <End Role="CalendarEvent" EntitySet="CalendarEvent" />
+            <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduled" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisitUnscheduled_Case_CaseId" Association="Self.FK_PatientVisitUnscheduled_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
             <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduled" />
@@ -5122,7 +5140,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="VisitDocuments" EntitySet="VisitDocuments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5293,6 +5312,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="EOVisit" />
           <NavigationProperty Name="IMEVisits" Relationship="Self.FK_IMEVisit_Calender_CalendarEventId" FromRole="CalendarEvent" ToRole="IMEVisit" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_CalendarEvent_CalendarEventId" FromRole="CalendarEvent" ToRole="PatientVisit" />
+          <NavigationProperty Name="PatientVisitUnscheduleds" Relationship="Self.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="CalendarEvent" ToRole="PatientVisitUnscheduled" />
         </EntityType>
         <EntityType Name="CalendarView">
           <Key>
@@ -5882,9 +5902,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Case" Relationship="Self.FK_EOVisit_Case_CaseId" FromRole="EOVisit" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_EOVisit_Company_VisitCreatedByCompanyId" FromRole="EOVisit" ToRole="Company" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_EOVisit_Doctor_DoctorId" FromRole="EOVisit" ToRole="Doctor" />
+          <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_EOVisit_Patient_PatientId" FromRole="EOVisit" ToRole="Patient" />
           <NavigationProperty Name="VisitStatu" Relationship="Self.FK_EOVisit_VisitStatus_VisitStatusId" FromRole="EOVisit" ToRole="VisitStatus" />
-          <NavigationProperty Name="InsuranceMaster" Relationship="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="EOVisit" ToRole="InsuranceMaster" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -5975,9 +5995,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Company" Relationship="Self.FK_InsuranceMaster_Company_CreatedByCompanyId" FromRole="InsuranceMaster" ToRole="Company" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
+          <NavigationProperty Name="EOVisits" Relationship="Self.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="InsuranceMaster" ToRole="EOVisit" />
           <NavigationProperty Name="InsuranceMasterType" Relationship="Self.FK_InsuranceMaster_InsuranceMasterType_InsuranceMasterTypeId" FromRole="InsuranceMaster" ToRole="InsuranceMasterType" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
-          <NavigationProperty Name="EOVisits" Relationship="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId" FromRole="InsuranceMaster" ToRole="EOVisit" />
         </EntityType>
         <EntityType Name="InsuranceMasterType">
           <Key>
@@ -6527,6 +6547,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientVisitId" Type="Int32" Nullable="false" />
           <Property Name="ProcedureCodeId" Type="Int32" Nullable="false" />
+          <Property Name="ProcedureAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ProcedureUnit" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ProcedureTotalAmount" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -6534,15 +6557,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="PatientVisit" Relationship="Self.FK_PatientVisitProcedureCodes_PatientVisit_PatientVisitId" FromRole="PatientVisitProcedureCodes" ToRole="PatientVisit" />
           <NavigationProperty Name="ProcedureCode" Relationship="Self.FK_PatientVisitDiagnosisCodes_ProcedureCode_ProcedureCodeId" FromRole="PatientVisitProcedureCodes" ToRole="ProcedureCode" />
-          <Property Name="ProcedureAmount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="ProcedureUnit" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="ProcedureTotalAmount" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="PatientVisitUnscheduled">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CalendarEventId" Type="Int32" />
           <Property Name="CaseId" Type="Int32" Nullable="false" />
           <Property Name="PatientId" Type="Int32" Nullable="false" />
           <Property Name="EventStart" Type="DateTime" Precision="7" />
@@ -6559,6 +6580,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="OrignatorCompanyId" Type="Int32" Nullable="false" />
           <Property Name="LocationName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="VisitStatusId" Type="Byte" />
+          <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_PatientVisitUnscheduled_CalendarEvent" FromRole="PatientVisitUnscheduled" ToRole="CalendarEvent" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisitUnscheduled_Case_CaseId" FromRole="PatientVisitUnscheduled" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_PatientVisitUnscheduled_Company_OrignatorCompanyId" FromRole="PatientVisitUnscheduled" ToRole="Company" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_PatientVisitUnscheduled_Patient_PatientId" FromRole="PatientVisitUnscheduled" ToRole="Patient" />
@@ -6578,6 +6601,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="ForSpecialtyId" Type="Int32" />
           <Property Name="ForRoomId" Type="Int32" />
           <Property Name="ForRoomTestId" Type="Int32" />
+          <Property Name="DoctorSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsReferralCreated" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
@@ -6595,7 +6619,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
           <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
-          <Property Name="DoctorSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PendingReferralProcedureCode">
           <Key>
@@ -7607,6 +7630,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PatientVisit">
+              <PropertyRef Name="CalendarEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientVisitUnscheduled_CalendarEvent">
+          <End Role="CalendarEvent" Type="Self.CalendarEvent" Multiplicity="0..1" />
+          <End Role="PatientVisitUnscheduled" Type="Self.PatientVisitUnscheduled" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CalendarEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientVisitUnscheduled">
               <PropertyRef Name="CalendarEventId" />
             </Dependent>
           </ReferentialConstraint>
@@ -8775,6 +8810,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EOVisit_Insurance_InsuranceProviderId">
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+          <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EOVisit">
+              <PropertyRef Name="InsuranceProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EOVisit_Patient_PatientId">
           <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
           <End Role="EOVisit" Type="Self.EOVisit" Multiplicity="*" />
@@ -9901,6 +9948,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="CalendarEvent" EntitySet="CalendarEvents" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientVisitUnscheduled_CalendarEvent" Association="Self.FK_PatientVisitUnscheduled_CalendarEvent">
+            <End Role="CalendarEvent" EntitySet="CalendarEvents" />
+            <End Role="PatientVisitUnscheduled" EntitySet="PatientVisitUnscheduleds" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserPersonalSettings_CalendarView_CalendarViewId" Association="Self.FK_UserPersonalSettings_CalendarView_CalendarViewId">
             <End Role="CalendarView" EntitySet="CalendarViews" />
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
@@ -10289,6 +10340,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
           </AssociationSet>
+          <AssociationSet Name="FK_EOVisit_Insurance_InsuranceProviderId" Association="Self.FK_EOVisit_Insurance_InsuranceProviderId">
+            <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+            <End Role="EOVisit" EntitySet="EOVisits" />
+          </AssociationSet>
           <AssociationSet Name="FK_EOVisit_Patient_PatientId" Association="Self.FK_EOVisit_Patient_PatientId">
             <End Role="Patient" EntitySet="Patients" />
             <End Role="EOVisit" EntitySet="EOVisits" />
@@ -10590,7 +10645,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserPersonalSettings" EntitySet="UserPersonalSettings" />
           </AssociationSet>
           <FunctionImport Name="midas_sp_get_document_path" ReturnType="Collection(String)">
-          <Parameter Name="document_node" Mode="In" Type="String" />
+            <Parameter Name="document_node" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_CaseGetReadOnly" ReturnType="Collection(MIDASModel.sp_CaseGetReadOnly_Result)">
             <Parameter Name="CaseId" Mode="In" Type="Int32" />
@@ -10610,10 +10665,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <Parameter Name="HardDelete" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="spDeletePatient" />
-          <AssociationSet Name="FK_EOVisit_Insurance_InsuranceProviderId" Association="MIDASModel.FK_EOVisit_Insurance_InsuranceProviderId">
-            <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
-            <End Role="EOVisit" EntitySet="EOVisits" />
-          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_CaseGetReadOnly_Result">
           <Property Type="Int32" Name="CaseId" Nullable="false" />
@@ -10634,18 +10685,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Type="Int32" Name="UpdateByUserID" Nullable="true" />
           <Property Type="DateTime" Name="UpdateDate" Nullable="true" />
         </ComplexType>
-        <Association Name="FK_EOVisit_Insurance_InsuranceProviderId">
-          <End Type="MIDASModel.InsuranceMaster" Role="InsuranceMaster" Multiplicity="0..1" />
-          <End Type="MIDASModel.EOVisit" Role="EOVisit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="InsuranceMaster">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EOVisit">
-              <PropertyRef Name="InsuranceProviderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11849,12 +11888,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PatientVisitProcedureCodes">
             <EntityTypeMapping TypeName="MIDASModel.PatientVisitProcedureCode">
               <MappingFragment StoreEntitySet="PatientVisitProcedureCodes">
-                <ScalarProperty Name="ProcedureTotalAmount" ColumnName="ProcedureTotalAmount" />
-                <ScalarProperty Name="ProcedureUnit" ColumnName="ProcedureUnit" />
-                <ScalarProperty Name="ProcedureAmount" ColumnName="ProcedureAmount" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="ProcedureCodeId" ColumnName="ProcedureCodeId" />
+                <ScalarProperty Name="ProcedureAmount" ColumnName="ProcedureAmount" />
+                <ScalarProperty Name="ProcedureUnit" ColumnName="ProcedureUnit" />
+                <ScalarProperty Name="ProcedureTotalAmount" ColumnName="ProcedureTotalAmount" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -11867,6 +11906,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <EntityTypeMapping TypeName="MIDASModel.PatientVisitUnscheduled">
               <MappingFragment StoreEntitySet="PatientVisitUnscheduled">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CalendarEventId" ColumnName="CalendarEventId" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="EventStart" ColumnName="EventStart" />
@@ -11883,13 +11923,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="OrignatorCompanyId" ColumnName="OrignatorCompanyId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="VisitStatusId" ColumnName="VisitStatusId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PendingReferrals">
             <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
               <MappingFragment StoreEntitySet="PendingReferral">
-                <ScalarProperty Name="DoctorSignature" ColumnName="DoctorSignature" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />
@@ -11898,6 +11938,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="ForSpecialtyId" ColumnName="ForSpecialtyId" />
                 <ScalarProperty Name="ForRoomId" ColumnName="ForRoomId" />
                 <ScalarProperty Name="ForRoomTestId" ColumnName="ForRoomTestId" />
+                <ScalarProperty Name="DoctorSignature" ColumnName="DoctorSignature" />
                 <ScalarProperty Name="IsReferralCreated" ColumnName="IsReferralCreated" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
