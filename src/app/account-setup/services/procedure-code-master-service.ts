@@ -159,4 +159,37 @@ export class ProcedureCodeMasterService {
         });
         return <Observable<Procedure>>Observable.from(promise);
     }
+
+
+    updatePreffredProcedureMappingMultiple(requestData: Procedure[]): Observable<Procedure[]> {
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/setUpdatePrefferedProcedureCodeMultiple', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
+
+    RemoveupdatePreffredProcedureMappingMultiple(requestData: Procedure[]): Observable<Procedure[]> {
+        let promise: Promise<Procedure[]> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(environment.SERVICE_BASE_URL + '/ProcedureCodeCompanyMapping/removeUpdatePrefferedProcedureCodeMultiple', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json()).subscribe((data) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Procedure[]>>Observable.fromPromise(promise);
+    }
 }
