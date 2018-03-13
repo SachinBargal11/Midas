@@ -31,6 +31,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("forRoomTestId")]
         public int? ForRoomTestId { get; set; }
 
+        [JsonProperty("doctorSignature")]
+        public string DoctorSignature { get; set; }
+
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }
 
@@ -80,6 +83,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("forRoomTestId")]
         public int? ForRoomTestId { get; set; }
+
+        [JsonProperty("doctorSignature")]
+        public string DoctorSignature { get; set; }
 
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }
@@ -146,6 +152,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("forRoomTestId")]
         public int? ForRoomTestId { get; set; }
+
+        [JsonProperty("doctorSignature")]
+        public string DoctorSignature { get; set; }
 
         [JsonProperty("isReferralCreated")]
         public bool? IsReferralCreated { get; set; }

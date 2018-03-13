@@ -1238,6 +1238,7 @@
     <EntitySetMapping Name="PendingReferrals">
       <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
         <MappingFragment StoreEntitySet="PendingReferral">
+          <ScalarProperty Name="DoctorSignature" ColumnName="DoctorSignature" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
           <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />

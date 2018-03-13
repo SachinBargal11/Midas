@@ -1184,6 +1184,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
     <Property Name="ForSpecialtyId" Type="int" />
     <Property Name="ForRoomId" Type="int" />
     <Property Name="ForRoomTestId" Type="int" />
+    <Property Name="DoctorSignature" Type="nvarchar(max)" />
     <Property Name="IsReferralCreated" Type="bit" />
     <Property Name="IsDeleted" Type="bit" />
     <Property Name="CreateByUserID" Type="int" Nullable="false" />

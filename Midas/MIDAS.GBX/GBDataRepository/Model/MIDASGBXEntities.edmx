@@ -1189,6 +1189,7 @@ warning 6002: The table/view 'MIDAS.dbo.DocumentNodes' does not have a primary k
           <Property Name="ForSpecialtyId" Type="int" />
           <Property Name="ForRoomId" Type="int" />
           <Property Name="ForRoomTestId" Type="int" />
+          <Property Name="DoctorSignature" Type="nvarchar(max)" />
           <Property Name="IsReferralCreated" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
@@ -6594,6 +6595,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="User" Relationship="Self.FK_PendingReferral_User_DismissedBy" FromRole="PendingReferral" ToRole="User" />
           <NavigationProperty Name="PendingReferralProcedureCodes" Relationship="Self.FK_PendingReferralProcedureCodes_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="PendingReferralProcedureCodes" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_PendingReferral_PendingReferralId" FromRole="PendingReferral" ToRole="Referral" />
+          <Property Name="DoctorSignature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PendingReferralProcedureCode">
           <Key>
@@ -11887,6 +11889,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="PendingReferrals">
             <EntityTypeMapping TypeName="MIDASModel.PendingReferral">
               <MappingFragment StoreEntitySet="PendingReferral">
+                <ScalarProperty Name="DoctorSignature" ColumnName="DoctorSignature" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PatientVisitId" ColumnName="PatientVisitId" />
                 <ScalarProperty Name="FromCompanyId" ColumnName="FromCompanyId" />
