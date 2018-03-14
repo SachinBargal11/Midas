@@ -285,8 +285,8 @@ export class ImeVisitComponent implements OnInit {
     }
 
     saveEvent() {
-        debugger;
         this.isSaveProgress = true;
+        this._progressBarService.show();
         let imeScheduleFormValues = this.imeScheduleForm.value;
         let result;
         let startDate = moment(this.eventStartAsDate).format('YYYY-MM-DD');
@@ -317,7 +317,7 @@ export class ImeVisitComponent implements OnInit {
             })
         });
 
-        // this._progressBarService.show();
+        
 
         result = this._patientVisitsStore.addImeVisit(ime);
         result.subscribe(
@@ -328,6 +328,8 @@ export class ImeVisitComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this.isSaveProgress = false;
                 this.closeDialog();
                 this.refreshImeEvents();
             },
@@ -338,13 +340,13 @@ export class ImeVisitComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                // this._progressBarService.hide();
+                this._progressBarService.hide();
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                // this.closeDialog();
-                // this.refreshImeEvents();
-                // this._progressBarService.hide();
+                 this._progressBarService.hide();
+                 this.isSaveProgress = false;
             });
     }
 
