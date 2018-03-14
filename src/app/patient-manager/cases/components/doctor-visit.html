@@ -111,6 +111,14 @@
     </div>
 </p-dialog>
 
+<p-dialog *ngIf="caseId && patientId && id" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
+    [(visible)]="unscheduledEditVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledEditVisitDialogVisible && caseId && patientId && id">
+        <unscheduled-visit (closeDialogBox)="closeDialog($event)" (refreshEvents)="refreshEvents($event)" [caseId]="caseId" [idPatient]="patientId" [id]="id"></unscheduled-visit>
+    </div>
+</p-dialog>
+
 <p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="unscheduledDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="unscheduledVisit && unscheduledDialogVisible">

@@ -1,4 +1,4 @@
-{
+    {
     "baseUrl": "http://dev-gb-midasapi.qwinix.io/midasapi",
     "identityServerUrl": "https://dev-gb-identityserver.qwinix.io",
     "notificationServerUrl": "http://dev-gb-notificationmanager.qwinix.io",

@@ -313,6 +313,7 @@ export class EoVisitComponent implements OnInit {
             eventStartTime: [''],
             eventEndDate: ['', Validators.required],
             eventEndTime: [''],
+            doctorName: [''],
             // duration: ['', Validators.required],
         });
         // this.loadPrefferdAncillaries();
@@ -380,6 +381,7 @@ export class EoVisitComponent implements OnInit {
 
 
     saveEvent() {
+        debugger;
         this.isSaveProgress = true;
         let eoScheduleFormValues = this.eoScheduleForm.value;
         let result;
@@ -389,7 +391,7 @@ export class EoVisitComponent implements OnInit {
         let endDateTime = new Date(startDate + ' ' + eoScheduleFormValues.eventEndTime) ;
         let eo = new EoVisit({
             id: this.selectedVisit.id ? this.selectedVisit.id : 0,
-            doctorId: this.eoScheduleForm.value.doctorId,
+            doctorId: this.eoScheduleForm.value.doctorId? this.eoScheduleForm.value.doctorId: this.userId ,
             caseId: null,
             insuranceProviderId: this.eoScheduleForm.value.insuranceProviderId,
             VisitCreatedByCompanyId: this.sessionStore.session.currentCompany.id,

@@ -48,7 +48,7 @@
                     </label></div>
             <div class="col-md-4">
                 <div class="form-group" [class.error]="unscheduledFormControls.medicalProviderName.touched && !unscheduledFormControls.medicalProviderName.valid">
-                    <input formControlName="medicalProviderName" type="text" class="form-control" [class.error]="!unscheduledFormControls.medicalProviderName.valid"
+                    <input [ngModel]="medicalProviderName" formControlName="medicalProviderName" type="text" class="form-control" [class.error]="!unscheduledFormControls.medicalProviderName.valid"
                     />
                     <div class='error-list' *ngIf="unscheduledFormControls.medicalProviderName && unscheduledFormControls.medicalProviderName.touched && !unscheduledFormControls.medicalProviderName.valid">
                         <ul>
@@ -64,7 +64,7 @@
                     </label></div>
             <div class="col-md-4">
                 <div class="form-group" [class.error]="unscheduledFormControls.locationName.touched && !unscheduledFormControls.locationName.valid">
-                    <input formControlName="locationName" type="text" class="form-control" [class.error]="!unscheduledFormControls.locationName.valid"
+                    <input [ngModel]="locationName" formControlName="locationName" type="text" class="form-control" [class.error]="!unscheduledFormControls.locationName.valid"
                     />
                     <div class='error-list' *ngIf="unscheduledFormControls.locationName && unscheduledFormControls.locationName.touched && !unscheduledFormControls.locationName.valid">
                         <ul>
@@ -79,7 +79,7 @@
                     </label></div>
             <div class="col-md-4">
                 <div class="form-group" [class.error]="unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
-                    <input formControlName="doctorName" type="text" class="form-control" [class.error]="!unscheduledFormControls.doctorName.valid"
+                    <input [ngModel]="doctorName" formControlName="doctorName" type="text" class="form-control" [class.error]="!unscheduledFormControls.doctorName.valid"
                     />
                     <div class='error-list' *ngIf="unscheduledFormControls.doctorName && unscheduledFormControls.doctorName.touched && !unscheduledFormControls.doctorName.valid">
                         <ul>

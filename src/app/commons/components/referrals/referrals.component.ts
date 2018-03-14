@@ -137,11 +137,11 @@ export class ReferralsComponent implements OnInit {
   }
 
   CheckReferralPtVisitStatusForUpdatebySpecialty(specialityId: number, procedureCodeId:number, isdelete: boolean) {
-     this._progressBarService.show();
+       this._progressBarService.show();
      this.iscomplete = false;
      let result = this._patientVisitStore.getVisitStatusbyPatientVisitIdSpecialityId(this.selectedVisit.id, specialityId);
      result.subscribe(
-      (ptvist: PatientVisit[]) => {              
+      (ptvist: PatientVisit[]) => {           
         if(ptvist.length > 0)
         {
            this.iscomplete = true;
@@ -159,7 +159,7 @@ export class ReferralsComponent implements OnInit {
         if(isdelete)
         {
           if(this.iscomplete == false)
-          {            
+          {       
             let procedureCodeIds: number[] = [];
             procedureCodeIds.push(procedureCodeId);
             let procedureCodeDetails = _.filter(this.proceduresList, (currentProcedure: Procedure) => {
@@ -461,7 +461,6 @@ export class ReferralsComponent implements OnInit {
         procedureCodes = [];
       }
     })
-
     if(visitReferralDetails.length == 0)
     {
       let visitReferral = new VisitReferral({
@@ -486,6 +485,7 @@ export class ReferralsComponent implements OnInit {
     this.diableSave = true;
     // this.save.emit(this.proceduresList);
   }
+
 
   clear() {
     this.sigs.first.clear();

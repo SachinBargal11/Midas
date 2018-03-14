@@ -85,11 +85,20 @@
         </div>
         <div class="row">
           <div class="col-md-1"><label class="form-label">Status</label></div>
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <div class="form-group">
+              
               <label>{{selectedVisit.status}}
                                 </label>
             </div>
+          </div> -->
+          <div class="col-md-6">
+              <div class="form-group">
+                  <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control" >
+                      <option value="2">Complete</option>
+                      <option value="4">No Show</option>
+                   </select>
+              </div>
           </div>
         </div>
         <!--<div class="row">-->

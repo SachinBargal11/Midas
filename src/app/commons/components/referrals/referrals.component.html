@@ -105,7 +105,7 @@
                             <div class="signature-field-wrapper sig-container" #signatureContainer>
                                 <signature-field formControlName="signatureField"></signature-field>
                             </div>
-                            <button class="btn-clear-signature btn btn-default" type="button" (click)="sigs.first.clear()" [disabled]="!digitalForm.controls.signatureField.valid">Clear</button>
+                            <button class="btn-clear-signature btn btn-default" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField.valid">Clear</button>
                         </div>
                     </div>
                 </div>
