@@ -11,7 +11,8 @@
         <div class="col-md-2"><label class="form-label">Doctor<span class="color-red">*</span></label></div>
         <div *ngIf="sessionStore.isOnlyDoctorRole()" class="col-md-4">
             <div class="form-group">
-                <input disabled formControlName="doctorId" type="text" class="form-control" [ngModel]="userName" />
+                <input disabled formControlName="doctorName" type="text" class="form-control" [ngModel]="userName" />
+                <input hidden  formControlName="doctorId" type="text" class="form-control" [ngModel]="userId" />
             </div>
         </div>
         <div *ngIf="!sessionStore.isOnlyDoctorRole()" class="col-md-4">

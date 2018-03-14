@@ -118,8 +118,8 @@ export class ProcedureCodeMasterStore {
     }
 
     UpdatePreffredProcedureMapping(procedure: Procedure) : Observable<Procedure> {
-        let proceduresMap = this._procedure.getValue();
-        let index = proceduresMap.findIndex((currentprocedureMapping: Procedure) => currentprocedureMapping.id === procedure.id);
+        //let proceduresMap = this._procedure.getValue();
+       // let index = proceduresMap.findIndex((currentprocedureMapping: Procedure) => currentprocedureMapping.id === procedure.id);
         let promise = new Promise((resolve, reject) => {
             this._procedureCodeMasterService.updatePreffredProcedureMapping(procedure).subscribe((procedure: Procedure) => {
                     resolve(procedure);
