@@ -86,7 +86,7 @@
   <p-column field="procedureCodeText" header="Procedure Code"></p-column>*ngIf="sessionStore.isOnlyDoctorRole() && selectedVisit.doctor.user != null">  
   <p-column field="procedureCodeDesc" header="Description"></p-column>
   <p-column styleClass="actions-cell" header="Actions">
-      <ng-template let-procedure="rowData" pTemplate="body">            
+      <ng-template let-procedure="rowData" pTemplate="body" *ngIf="sessionStore.isOnlyDoctorRole()">            
           <button type="button" pButton (click)="deleteProcedureCode(procedure)"  icon="fa-trash-o"></button>                                
       </ng-template>
 </p-column>

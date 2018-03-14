@@ -486,10 +486,10 @@
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
                     <h3 class="with-border">Uploaded Documents
-                        <!-- <a *ngIf="!disableSaveDelete" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
+                        <a *ngIf="!disableSaveDelete" class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
                             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
                             <loader [visible]="isDeleteProgress"></loader>
-                        </a> -->
+                        </a>
                         <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="showDialog()">
                             <i class="fa fa-plus" aria-hidden="true"></i><span class="hidden-md-down">Add Documents</span>
                         </a>
@@ -504,7 +504,7 @@
                 <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
                     [globalFilter]="gb" [responsive]="true" #dt>
                     <header> List</header>
-                    <!-- <p-column selectionMode="multiple" styleClass="inbound-column"></p-column> -->
+                    <p-column selectionMode="multiple" styleClass="inbound-column"></p-column>
                     <p-column field="document.originalResponse.documentName" header="Document Name" [filter]="true" styleClass="inbound-column">
                         <ng-template let-document="rowData" pTemplate="body">
                             <a (click)="downloadPdf(document.document.originalResponse.documentId)">
@@ -521,11 +521,6 @@
                         <!--<ng-template let-document="rowData.document" pTemplate="body">
                             {{ document.createDate | dateTimeFormat }}
                         </ng-template>-->
-                    </p-column>
-                    <p-column styleClass="actions-cell" header="Actions">
-                            <ng-template let-document="rowData.document" pTemplate="body">            
-                                <button type="button" *ngIf="document.createByUserID == sessionStore.session.user.id" pButton (click)="deleteDocument(document)"  icon="fa-trash-o"></button>                                
-                            </ng-template>
                     </p-column>
                 </p-dataTable>
 
@@ -559,4 +554,27 @@
         </p-tabView>
     </div>
 
+</p-dialog>
+
+<!--<p-dialog *ngIf="caseId && patientId" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
+    [(visible)]="unscheduledVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledVisitDialogVisible && caseId && patientId">
+        <unscheduled-visit (closeDialogBox)="closeDialog($event)" (refreshEvents)="loadVisits()" [caseId]="caseId" [idPatient]="patientId"></unscheduled-visit>
+    </div>
+</p-dialog>-->
+
+<p-dialog *ngIf="caseId && patientId && id" [width]="1200" [height]="500" (onAfterHide)="handleUnscheduledVisitDialogHide()" header="{{visitInfo}}"
+    [(visible)]="unscheduledEditVisitDialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+    [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledEditVisitDialogVisible && caseId && patientId && id">
+        <unscheduled-visit (closeDialogBox)="closeDialog($event)" (refreshEvents)="loadVisits()" [caseId]="caseId" [idPatient]="patientId" [id]="id"></unscheduled-visit>
+    </div>
+</p-dialog>
+
+<p-dialog [width]="1200" [height]="500" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="unscheduledDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+    <div *ngIf="unscheduledVisit && unscheduledDialogVisible">
+        <unscheduled-visit-detail [selectedVisit]="unscheduledVisit" [routeFrom]="2" (closeDialog)="closePatientVisitDialog($event)"></unscheduled-visit-detail>
+    </div>
 </p-dialog>

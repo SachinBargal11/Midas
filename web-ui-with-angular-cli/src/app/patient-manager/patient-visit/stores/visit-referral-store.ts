@@ -139,6 +139,17 @@ export class VisitReferralStore {
         });
         return <Observable<UnscheduledVisit[]>>Observable.from(promise);
     }
+    getUnscheduledVisitByCompanyId(): Observable<UnscheduledVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._visitReferralService.getUnscheduledVisitByCompanyId()
+            .subscribe((unscheduledVisitReferralDetail: UnscheduledVisit[]) => {
+                resolve(unscheduledVisitReferralDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UnscheduledVisit[]>>Observable.from(promise);
+    }
 
     // updatePatientVisit(pendingReferralDetail: PendingReferral): Observable<PendingReferral> {
     //     let promise = new Promise((resolve, reject) => {

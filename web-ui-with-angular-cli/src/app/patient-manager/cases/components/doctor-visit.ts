@@ -69,6 +69,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     visitDialogVisible = false;
     addVisitDialogVisible = false;
     unscheduledDialogVisible = false;
+    unscheduledEditVisitDialogVisible = false;
     unscheduledVisitDialogVisible = false;
     case: Case;
     routeFromCase: true;
@@ -78,6 +79,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     selectedUnscheduledVisit: UnscheduledVisit[] = [];
     patientVisitId: number;
     viewall: false;
+    id:number=0;
 
     constructor(
         private _fb: FormBuilder,
@@ -165,6 +167,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
         // this.loadPatientVisits();
         // this.loadUnscheduledVisits();
     }
+    
 
     loadPatientVisits() {
         this._progressBarService.show();
@@ -230,6 +233,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     return currentVisit.doctor != null && currentVisit.specialtyId != null;
                 });
                 
+                debugger;
                 
                 let doctorsVisits = matchingDoctorVisits.reverse();
                 let unscheduledVisits = results[1];
@@ -248,6 +252,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
                     visitTimeStatus: boolean
                 }[] = [];
                 _.forEach(doctorsVisits, (currDoctorVisit: PatientVisit) => {
+                    debugger;
                     mappedAllVisits.push({
                         id: currDoctorVisit.id,
                         eventStart: currDoctorVisit.eventStart == null ? currDoctorVisit.calendarEvent.eventStart.format('MMMM Do YYYY') : currDoctorVisit.eventStart.format('MMMM Do YYYY'),
@@ -271,11 +276,11 @@ export class PatientVisitListDoctorComponent implements OnInit {
                             visitType: 'Unscheduled Visit',
                             doctorName: currDoctorVisit.doctorName,
                             specialityName: currDoctorVisit.specialty ? currDoctorVisit.specialty.name : '',
-                            visitStatusLabel: currDoctorVisit.status,
+                            visitStatusLabel: currDoctorVisit.visitStatusLabel,
                             isPatientVisitType: false,
                             isUnscheduledVisitType: true,
                             medicalProviderName: currDoctorVisit.medicalProviderName,
-                            visitTimeStatus: currDoctorVisit.visitTimeStatus
+                            visitTimeStatus: true
                         });
                     }
                 });
@@ -314,7 +319,6 @@ export class PatientVisitListDoctorComponent implements OnInit {
     }
 
     showDialog(visit: any) {
-
         if (visit.isPatientVisitType) {
             this.fetchPatientVisit(visit.id);
             this.selectedVisitId = visit.id;
@@ -322,8 +326,33 @@ export class PatientVisitListDoctorComponent implements OnInit {
         } else if (visit.isUnscheduledVisitType) {
             this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
                 .subscribe((visit: UnscheduledVisit) => {
+                    debugger;                    
                     this.unscheduledVisit = visit;
-                    this.unscheduledDialogVisible = true;
+                    let isinpast = visit.eventStart.isBefore(moment());
+                    if(isinpast)
+                    {
+                        this.id = 0;
+                        this.unscheduledDialogVisible = true;
+                        this.unscheduledEditVisitDialogVisible = false;
+                    }
+                    else{
+                        this.id = visit.id;
+                        this.unscheduledDialogVisible = false;
+                        this.unscheduledEditVisitDialogVisible = true;                       
+                    }                    
+                });
+        }
+    }
+
+    showDialogEdit(visit: any) {
+         if (visit.isUnscheduledVisitType) {
+            this._patientVisitStore.getUnscheduledVisitDetailById(visit.id)
+                .subscribe((visit: UnscheduledVisit) => {
+                    debugger;
+                    this.unscheduledVisit = visit;
+                    this.id = visit.id;
+                    this.unscheduledDialogVisible = false;
+                    this.unscheduledEditVisitDialogVisible = true;
                 });
         }
     }
@@ -343,7 +372,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
         this.unscheduledDialogVisible = false;
-        this.unscheduledDialogVisible = false;
+        this.unscheduledEditVisitDialogVisible = false;
     }
 
     unscheduledVisitDialog() {

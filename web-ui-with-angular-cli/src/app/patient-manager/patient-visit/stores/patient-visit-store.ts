@@ -770,7 +770,7 @@ export class PatientVisitsStore {
     }
 
 
-    getVisitStatusbyPatientVisitIdSpecialityId(patientVisitId: number, specialityId: number ): Observable<PatientVisit[]> {
+    getVisitStatusbyPatientVisitIdSpecialityId(patientVisitId: number, specialityId: number ): Observable<any> {
         let promise = new Promise((resolve, reject) => {
             this._patientVisitsService.getVisitStatusbyPatientVisitIdSpecialityId(patientVisitId, specialityId).subscribe((patientVisitDetails: PatientVisit[]) => {
                 //.next(List(patientVisitDetails));
@@ -779,7 +779,7 @@ export class PatientVisitsStore {
                 reject(error);
             });
         });
-        return <Observable<PatientVisit[]>>Observable.from(promise);
+        return <Observable<any>>Observable.from(promise);
     }
 
     getVisitStatusbyPatientVisitIdRoomTestId(patientVisitId: number, roomTestId: number ): Observable<PatientVisit[]> {
